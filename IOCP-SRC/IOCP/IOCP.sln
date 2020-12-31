@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IOCP", "IOCP.vcproj", "{0E618B92-A4A3-4EDF-BB12-BE5AA323E76B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IOCPClient", "IOCPClient\IOCPClient.vcproj", "{9B62AA97-9866-4D8C-8B49-6BD731FBDEFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E618B92-A4A3-4EDF-BB12-BE5AA323E76B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0E618B92-A4A3-4EDF-BB12-BE5AA323E76B}.Debug|Win32.Build.0 = Debug|Win32
+		{0E618B92-A4A3-4EDF-BB12-BE5AA323E76B}.Release|Win32.ActiveCfg = Release|Win32
+		{0E618B92-A4A3-4EDF-BB12-BE5AA323E76B}.Release|Win32.Build.0 = Release|Win32
+		{9B62AA97-9866-4D8C-8B49-6BD731FBDEFB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9B62AA97-9866-4D8C-8B49-6BD731FBDEFB}.Debug|Win32.Build.0 = Debug|Win32
+		{9B62AA97-9866-4D8C-8B49-6BD731FBDEFB}.Release|Win32.ActiveCfg = Release|Win32
+		{9B62AA97-9866-4D8C-8B49-6BD731FBDEFB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

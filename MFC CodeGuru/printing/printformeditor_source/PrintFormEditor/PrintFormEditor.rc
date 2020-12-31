@@ -1,0 +1,714 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "secres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Italian (Italy) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+#ifdef _WIN32
+LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""secres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 16, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\PrintFormEditor.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.ita\\afxres.rc""          // Standard components\r\n"
+    "#include ""l.ita\\afxprint.rc""        // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "#define SEC_NO_TLB\r\n"
+    "#include ""secres.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\PrintFormEditor.ico"
+IDR_PRINTFTYPE          ICON    DISCARDABLE     "res\\doc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+IDB_APPLOGO             BITMAP  MOVEABLE PURE   "res\\applogo.bmp"
+IDR_TOOL_BAR            BITMAP  DISCARDABLE     "res\\toolbar1.bmp"
+IDB_PROPHELP            BITMAP  DISCARDABLE     "res\\prophelp.bmp"
+IDB_PROPPIN1            BITMAP  DISCARDABLE     "res\\proppin1.bmp"
+IDB_PROPPIN2            BITMAP  DISCARDABLE     "res\\bitmap2.bmp"
+IDB_PROPPIN3            BITMAP  DISCARDABLE     "res\\proppin3.bmp"
+IDR_ALIGN_BAR           BITMAP  DISCARDABLE     "res\\bmp00001.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_TOOL_BAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      IDC_TOOL_ARROW
+    SEPARATOR
+    BUTTON      IDC_TOOL_STATIC
+    BUTTON      IDC_TOOL_EDIT
+    BUTTON      IDC_TOOL_BORDER
+    BUTTON      IDC_TOOL_RADIO
+    BUTTON      IDC_TOOL_CHECK
+    BUTTON      IDC_TOOL_IMAGE
+    BUTTON      IDC_TOOL_LINE
+    BUTTON      IDC_TOOL_RECT
+    BUTTON      IDC_TOOL_VLINE
+    BUTTON      IDC_TOOL_HLINE
+    SEPARATOR
+    BUTTON      IDC_TOOL_SOTTOREPORT
+END
+
+IDR_ALIGN_BAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_ALIGN_LEFT
+    BUTTON      ID_ALIGN_RIGHT
+    BUTTON      ID_ALIGN_TOP
+    BUTTON      ID_ALIGN_BOTTOM
+    BUTTON      ID_SIZE_HORZ
+    BUTTON      ID_SIZE_VERT
+    BUTTON      ID_SIZE_ALL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Nuovo\tCtrl+N",              ID_FILE_NEW
+        MENUITEM "&Apri...\tCtrl+A",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Imposta s&tampante...",       ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Ultimo file usato",           ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Esci",                       ID_APP_EXIT
+    END
+    POPUP "&Visualizza"
+    BEGIN
+        MENUITEM "Barra degli st&rumenti",      ID_VIEW_TOOLBAR
+        MENUITEM "Barra di st&ato",             ID_VIEW_STATUS_BAR
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "Infor&mazioni su PrintFormEditor...", ID_APP_ABOUT
+    END
+END
+
+IDR_PRINTFTYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Nuovo\tCtrl+N",              ID_FILE_NEW
+        MENUITEM "&Apri...\tCtrl+A",            ID_FILE_OPEN
+        MENUITEM "&Chiudi",                     ID_FILE_CLOSE
+        MENUITEM "&Salva\tCtrl+S",              ID_FILE_SAVE
+        MENUITEM "Sa&lva con nome...",          ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Stam&pa...\tCtrl+P",          ID_FILE_PRINT
+        MENUITEM "Antepri&ma di stampa",        ID_FILE_PRINT_PREVIEW
+        MENUITEM "Imposta s&tampante...",       ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Ultimo file usato",           ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Esci",                       ID_APP_EXIT
+    END
+    POPUP "&Modifica"
+    BEGIN
+        MENUITEM "&Annulla\tCtrl+Z",            ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Tag&lia\tCtrl+X",             ID_EDIT_CUT
+        MENUITEM "&Copia\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "&Incolla\tCtrl+V",            ID_EDIT_PASTE
+    END
+    POPUP "&Visualizza"
+    BEGIN
+        MENUITEM "Barra degli st&rumenti",      ID_VIEW_TOOLBAR
+        MENUITEM "Barra di st&ato",             ID_VIEW_STATUS_BAR
+        MENUITEM "&Show page bar",              ID_SHOW_PAGEBAR
+        MENUITEM SEPARATOR
+        MENUITEM "Property",                    ID_GFX_PROPERTY
+    END
+    POPUP "&Pages"
+    BEGIN
+        MENUITEM "Paper &size && margins",      IDC_PAPER_SIZE
+        MENUITEM "&Add a page",                 IDC_ADD_PAGE
+        MENUITEM "&Remove page",                IDC_REMOVE_PAGE
+    END
+    POPUP "Fi&nestra"
+    BEGIN
+        MENUITEM "&Nuova finestra",             ID_WINDOW_NEW
+        MENUITEM "&Sovrapponi",                 ID_WINDOW_CASCADE
+        MENUITEM "&Affianca",                   ID_WINDOW_TILE_HORZ
+        MENUITEM "&Disponi icone",              ID_WINDOW_ARRANGE
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "Infor&mazioni su PrintFormEditor...", ID_APP_ABOUT
+    END
+END
+
+IDR_POPS MENU DISCARDABLE 
+BEGIN
+    POPUP "popup"
+    BEGIN
+        MENUITEM "Tag&lia\tCtrl+X",             ID_EDIT_CUT
+        MENUITEM "&Copia\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "&Incolla\tCtrl+V",            ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Property",                    ID_GFX_PROPERTY
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "A",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 284, 187
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Informazioni su PrintFormEditor"
+FONT 8, "Arial", 0, 0, 0x1
+BEGIN
+    LTEXT           "PrintFormEditor",IDC_TEXT4,52,8,224,8,SS_NOPREFIX
+    LTEXT           "Copyright © 1998 Iuri Apollonio. Tutti i diritti riservati.",
+                    IDC_STATIC,52,28,224,8
+    DEFPUSHBUTTON   "OK",IDOK,212,140,64,13,WS_GROUP
+    PUSHBUTTON      "&System Info..",IDC_BT_SYSINFO,212,156,64,13
+    PUSHBUTTON      "S&upporto tecnico",IDC_TECHSUPPORT,212,172,64,13
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,136,278,1
+    LTEXT           "ATTENZIONE. Questo programma è tutelato dalle leggi sul copyright, dalle leggi sui diritti d'autore e dalle disposizioni dei trattati internazionali. La riproduzione o distribuzione non",
+                    IDC_STATIC,4,140,200,24
+    LTEXT           "autorizzata di questo programma, o di parte di esso, sarà perseguibile civilmente e penalmente.",
+                    IDC_STATIC,4,164,200,20
+    LTEXT           "Questo prodotto è concesso in licenza a:",IDC_STATIC,52,
+                    88,133,8
+    CONTROL         130,IDC_STATIC,"Static",SS_BITMAP,0,0,35,137,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,52,98,224,30
+    LTEXT           "Mr. John Doe",IDC_TEXT1,56,100,216,8
+    LTEXT           "A.C.M.E. Corporation",IDC_TEXT2,56,108,216,8
+    LTEXT           "Seriale:",IDC_STATIC,56,116,24,8
+    LTEXT           "xxxx-xxxx-xxxxxx",IDC_TEXT3,84,116,188,8
+    LTEXT           "",IDC_TEXT5,52,16,224,8,SS_NOPREFIX
+END
+
+IDD_PROP_PAGE1 DIALOG DISCARDABLE  0, 0, 221, 81
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Font:",IDC_STATIC,5,5,17,8
+    LTEXT           "[font]",IDC_STATIC_FONT,25,5,80,8
+    LTEXT           "Size:",IDC_STATIC,5,15,16,8
+    LTEXT           "[size]",IDC_STATIC_SIZE,25,15,80,8
+    PUSHBUTTON      "&Font",IDC_BT_FONT,5,25,50,14
+    LTEXT           "&X Pos.:",IDC_STATIC,5,47,24,8
+    EDITTEXT        IDC_ED_X,31,45,54,14,ES_AUTOHSCROLL
+    LTEXT           "&Y Pos.:",IDC_STATIC,115,47,24,8
+    EDITTEXT        IDC_ED_Y,141,45,54,14,ES_AUTOHSCROLL
+    LTEXT           "&X Size:",IDC_STATIC,5,63,23,8
+    EDITTEXT        IDC_ED_XSIZE,31,60,54,14,ES_AUTOHSCROLL
+    LTEXT           "&Y Size:",IDC_STATIC,115,63,23,8
+    EDITTEXT        IDC_ED_YSIZE,141,60,54,14,ES_AUTOHSCROLL
+    CONTROL         "&Bold",IDC_CHK_BOLD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,115,5,30,10
+    CONTROL         "&Underline",IDC_CHK_UNDERLINE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,170,5,46,10
+    CONTROL         "&Italic",IDC_CHK_ITALIC,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,115,15,31,10
+END
+
+IDD_PROP_PAGE2 DIALOG DISCARDABLE  0, 0, 221, 81
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_CB_ID,35,5,175,55,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&ID:",IDC_STATIC,5,5,10,8
+    LTEXT           "&Cond.:",IDC_STATIC,5,20,25,8
+    COMBOBOX        IDC_CB_COND,35,20,175,55,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CB_ID2,35,35,175,65,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&2nd ID:",IDC_STATIC,5,35,24,8
+    LTEXT           "H Align:",IDC_STATIC,5,60,26,8
+    COMBOBOX        IDC_CB_HALIGN,35,60,70,81,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "V Align:",IDC_STATIC,110,60,25,8
+    COMBOBOX        IDC_CB_VALIGN,140,60,70,66,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_PROP_PAGE3 DIALOG DISCARDABLE  0, 0, 221, 81
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Color:",IDC_STATIC,5,5,19,8
+    LTEXT           "&Backg.:",IDC_STATIC,5,20,26,8
+    LTEXT           "Line Type:",IDC_STATIC,5,35,34,8
+    LTEXT           "Border:",IDC_STATIC,5,50,24,8
+    LTEXT           "Border Size:",IDC_STATIC,5,65,39,8
+    LTEXT           "Border Color:",IDC_STATIC,105,5,42,8
+    COMBOBOX        IDC_CB_LINETYPE,45,35,55,50,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CB_BORDER,45,50,55,55,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_CB_BORDERSIZE,45,65,55,55,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Bck Type:",IDC_STATIC,105,20,34,8
+    COMBOBOX        IDC_CB_BCK_TYPE,150,20,55,50,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Color",IDC_BT_TEXTCOLOR,45,5,55,12
+    PUSHBUTTON      "Color",IDC_BT_BCKCOL,45,20,55,12
+    PUSHBUTTON      "Color",IDC_BT_COLORBDR,150,5,55,12
+    LTEXT           "Line width:",IDC_STATIC,105,35,35,8
+    EDITTEXT        IDC_ED_LW,150,35,55,14,ES_AUTOHSCROLL
+END
+
+IDD_PROP_DLG DIALOGEX 0, 0, 295, 100
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Proprietà"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Tab1",IDC_TAB1,"SysTabControl32",0x0,0,1,255,98
+    PUSHBUTTON      "&Apply",IDC_BT_APPLY,257,13,37,14
+END
+
+IDD_PAPERSIZE DIALOG DISCARDABLE  0, 0, 272, 126
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Paper Size and Margins"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,150,106,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,215,106,50,14
+    GROUPBOX        "Pages rect (in 10th of mm)",IDC_STATIC,5,35,260,65
+    LTEXT           "&Left start:",IDC_STATIC,15,56,30,8
+    EDITTEXT        IDC_ED_LEFT,50,56,65,14,ES_AUTOHSCROLL
+    LTEXT           "&Top start:",IDC_STATIC,15,76,31,8
+    EDITTEXT        IDC_ED_TOP,50,76,65,14,ES_AUTOHSCROLL
+    LTEXT           "&Right start:",IDC_STATIC,125,56,35,8
+    EDITTEXT        IDC_ED_RIGHT,170,56,65,14,ES_AUTOHSCROLL
+    LTEXT           "&Bottom start:",IDC_STATIC,125,76,40,8
+    EDITTEXT        IDC_ED_BOTTOM,170,76,65,14,ES_AUTOHSCROLL
+    GROUPBOX        "Page name",IDC_STATIC,5,0,260,30
+    EDITTEXT        IDC_EDIT1,10,10,250,14,ES_AUTOHSCROLL
+END
+
+IDD_GFX_PROPERTY DIALOGEX 0, 0, 297, 100
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CONTROLPARENT
+CAPTION "Property"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,275,0,20,14,NOT WS_VISIBLE
+    CONTROL         "P",IDC_BT_PIN,"Button",BS_OWNERDRAW,1,1,14,12
+    CONTROL         "I",IDC_BT_HELP,"Button",BS_OWNERDRAW,15,1,14,12
+END
+
+IDD_PAGE_PAGE1 DIALOG DISCARDABLE  0, 0, 221, 81
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Page &name:",IDC_STATIC,5,7,39,8
+    EDITTEXT        IDC_ED_NAME,50,5,165,14,ES_AUTOHSCROLL
+    LTEXT           "&Left margin:",IDC_STATIC,5,30,45,8
+    EDITTEXT        IDC_ED_LEFT,55,30,45,14,ES_AUTOHSCROLL
+    LTEXT           "&Right margin:",IDC_STATIC,5,50,45,8
+    EDITTEXT        IDC_ED_RIGHT,55,50,45,14,ES_AUTOHSCROLL
+    LTEXT           "&Top margin:",IDC_STATIC,110,30,55,8
+    EDITTEXT        IDC_ED_TOP,170,30,45,14,ES_AUTOHSCROLL
+    LTEXT           "&Bottom margin:",IDC_STATIC,110,50,55,8
+    EDITTEXT        IDC_ED_BOTTOM,170,50,45,14,ES_AUTOHSCROLL
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041004B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "PrintFormEditor Applicazione MFC\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "PrintFormEditor\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "PrintFormEditor.EXE\0"
+            VALUE "ProductName", "PrintFormEditor Applicazione\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x410, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 180
+    END
+
+    IDD_PROP_PAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 214
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+
+    IDD_PROP_PAGE2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 214
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+
+    IDD_PROP_PAGE3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 214
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+
+    IDD_PROP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 288
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 93
+    END
+
+    IDD_PAPERSIZE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+
+    IDD_GFX_PROPERTY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 290
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 93
+    END
+
+    IDD_PAGE_PAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 214
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "PrintFormEditor"
+    IDR_PRINTFTYPE          "\nPrintF\nPrintF\nFile PrintF (*.prx)\n.prx\nPrintFormEditor.Document\nPrintF Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "PrintFormEditor"
+    AFX_IDS_IDLEMESSAGE     "Pronto"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EST"
+    ID_INDICATOR_CAPS       "MA"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "BS"
+    ID_INDICATOR_OVR        "SSC"
+    ID_INDICATOR_REC        "REG"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Crea un nuovo documento\nNuovo"
+    ID_FILE_OPEN            "Apre un documento esistente\nApri"
+    ID_FILE_CLOSE           "Chiude il documento attivo\nChiudi"
+    ID_FILE_SAVE            "Salva il documento attivo\nSalva"
+    ID_FILE_SAVE_AS         "Salva il documento attivo con un nuovo nome\nSalva con nome"
+    ID_FILE_PAGE_SETUP      "Modifica le impostazioni di stampa\nImposta pagina"
+    ID_FILE_PRINT_SETUP     "Modifica le impostazioni relative alla stampante e alla stampa\nImposta stampante"
+    ID_FILE_PRINT           "Stampa il documento attivo\nStampa"
+    ID_FILE_PRINT_PREVIEW   "Visualizza le pagine per intero\nAnteprima di stampa"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Visualizza le informazioni sul programma, il numero di versione e le informazioni di copyright\nInformazioni su..."
+    ID_APP_EXIT             "Esce dall'applicazione e chiede di salvare i documenti\nEsci"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Apre questo documento"
+    ID_FILE_MRU_FILE2       "Apre questo documento"
+    ID_FILE_MRU_FILE3       "Apre questo documento"
+    ID_FILE_MRU_FILE4       "Apre questo documento"
+    ID_FILE_MRU_FILE5       "Apre questo documento"
+    ID_FILE_MRU_FILE6       "Apre questo documento"
+    ID_FILE_MRU_FILE7       "Apre questo documento"
+    ID_FILE_MRU_FILE8       "Apre questo documento"
+    ID_FILE_MRU_FILE9       "Apre questo documento"
+    ID_FILE_MRU_FILE10      "Apre questo documento"
+    ID_FILE_MRU_FILE11      "Apre questo documento"
+    ID_FILE_MRU_FILE12      "Apre questo documento"
+    ID_FILE_MRU_FILE13      "Apre questo documento"
+    ID_FILE_MRU_FILE14      "Apre questo documento"
+    ID_FILE_MRU_FILE15      "Apre questo documento"
+    ID_FILE_MRU_FILE16      "Apre questo documento"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Passa al riquadro della finestra successivo\nRiquadro successivo"
+    ID_PREV_PANE            "Ritorna al riquadro della finestra precedente\nRiquadro precedente"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_NEW           "Apre un'altra finestra per il documento attivo\nNuova finestra"
+    ID_WINDOW_ARRANGE       "Dispone le icone nella parte inferiore della finestra\nDisponi icone"
+    ID_WINDOW_CASCADE       "Dispone le finestre sovrapponendole\nSovrapponi finestre"
+    ID_WINDOW_TILE_HORZ     "Dispone le finestre senza sovrapporle\nAffianca finestre"
+    ID_WINDOW_TILE_VERT     "Dispone le finestre senza sovrapporle\nAffianca finestre"
+    ID_WINDOW_SPLIT         "Divide la finestra attiva in riquadri\nDividi"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Cancella la selezione\nCancella"
+    ID_EDIT_CLEAR_ALL       "Cancella tutto\nCancella tutto"
+    ID_EDIT_COPY            "Copia la selezione e la pone negli Appunti\nCopia"
+    ID_EDIT_CUT             "Taglia la selezione e la pone negli Appunti\nTaglia"
+    ID_EDIT_FIND            "Trova il testo specificato\nTrova"
+    ID_EDIT_PASTE           "Inserisce il contenuto degli Appunti\nIncolla"
+    ID_EDIT_REPEAT          "Ripete l'ultima azione\nRipeti"
+    ID_EDIT_REPLACE         "Sostituisce il testo specifico con un testo differente\nSostituisci"
+    ID_EDIT_SELECT_ALL      "Seleziona l'intero documento\nSeleziona tutto"
+    ID_EDIT_UNDO            "Annulla l'ultima azione\nAnnulla"
+    ID_EDIT_REDO            "Ripristina l'azione precedentemente annullata\nRipristina"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Mostra o nasconde la barra degli strumenti\nMostra/nascondi barra degli strumenti"
+    ID_VIEW_STATUS_BAR      "Mostra o nasconde la barra di stato\nMostra/nascondi barra di stato"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Modifica le dimensioni della finestra"
+    AFX_IDS_SCMOVE          "Modifica la posizione della finestra"
+    AFX_IDS_SCMINIMIZE      "Riduce la finestra ad icona"
+    AFX_IDS_SCMAXIMIZE      "Allarga la finestra a tutto schermo"
+    AFX_IDS_SCNEXTWINDOW    "Passa alla finestra successiva del documento "
+    AFX_IDS_SCPREVWINDOW    "Passa alla precedente finestra del documento"
+    AFX_IDS_SCCLOSE         "Chiude la finestra attiva e chiede di salvare i documenti"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Ripristina la finestra alle dimensioni normali"
+    AFX_IDS_SCTASKLIST      "Attiva l'Elenco dei task"
+    AFX_IDS_MDICHILD        "Attiva questa finestra"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Chiude la modalità anteprima di stampa\n Annulla anteprima"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDC_TOOL_STATIC         "Inserisce un'etichetta di testo\nEtichetta di testo"
+    IDC_TOOL_EDIT           "Inserisce un'etichetta di testo\nEtichetta di testo"
+    IDC_TOOL_BORDER         "Inserisce una cornice\nCornice"
+    IDC_TOOL_RADIO          "Inserisce un'etichetta di testo\nEtichetta di testo"
+    IDC_TOOL_CHECK          "Inserisce un'etichetta di testo\nEtichetta di testo"
+    IDC_TOOL_IMAGE          "Inserisce un'immagine\nImmagine"
+    IDC_TOOL_LINE           "Inserisce una linea\nLinea"
+    IDC_TOOL_RECT           "Inserisce un rettangolo\nRettangolo"
+    IDC_TOOL_SOTTOREPORT    "Inserisce un sottoreport\nSottoreport"
+    IDC_TOOL_ARROW          "Selezione standard\nSeleziona"
+    IDC_PROPERTY            "Property\nProperty"
+    IDC_TOOL_VLINE          "Inserisce una linea\nLinea verticale"
+    IDC_TOOL_HLINE          "Inserisce una linea\nLinea orrizzontale"
+    IDC_PAPER_SIZE          "Paper size & margins\nPaper size & margins"
+    IDC_ADD_PAGE            "Add a page\nAdd page"
+    IDC_REMOVE_PAGE         "Remove a page\nRemove page"
+END
+
+#endif    // Italian (Italy) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+#ifdef _WIN32
+LANGUAGE 16, 1
+#pragma code_page(1252)
+#endif
+#include "res\PrintFormEditor.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.ita\afxres.rc"          // Standard components
+#include "l.ita\afxprint.rc"        // printing/print preview resources
+#endif
+#define SEC_NO_TLB
+#include "secres.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.ModelLayer.1 = s 'ModelLayer Class'
+	{
+		CLSID = s '{E1284602-553E-41A3-B0EE-158FB3FDB5FC}'
+	}
+	TY3DCtrl.ModelLayer = s 'ModelLayer Class'
+	{		
+		CurVer = s 'TY3DCtrl.ModelLayer.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E1284602-553E-41A3-B0EE-158FB3FDB5FC} = s 'ModelLayer Class'
+		{
+			ProgID = s 'TY3DCtrl.ModelLayer.1'
+			VersionIndependentProgID = s 'TY3DCtrl.ModelLayer'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{40937355-B66F-40ED-815C-32F09B862F13}'
+			Version = s '1.0'
+		}
+	}
+}

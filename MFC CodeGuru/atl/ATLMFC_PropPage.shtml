@@ -1,0 +1,230 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>COlePropertyPage in ATL server</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">COlePropertyPage in ATL server</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:extraview@netmatters.co.uk">James Hebben</A>.
+
+
+<P>I have been using ATL extensively since it first appeared. Whilst ATL is
+marketed as a lightweight solution of Internet controls, it is also a very
+good tool for developing applications that expose their functionality via
+interfaces.
+
+<P>I wanted to use the flexibility of the MFC classes along with the
+simplicity that ATL lends to writing objects. Specifically, I saw no reason
+to use the ATL property page stuff when MFC contains a perfectly acceptable
+solution (COlePropertyPage) AND also allows me to add message handlers very
+simply using ClassWizard or the WizardBar.
+
+<P>Presented here is my solution to seamlessly add an MFC COlePropertyPage
+derived class to an ATL in-process server (DLL) that is marked as using
+MFC. Not a trivial exercise.
+
+<P>The explanation is lengthy, but the resulting class really very simple to
+use. I only hope my contribution is as useful to others as the information
+I have gleaned from your site.
+
+
+<P>This code has been tested using Visual C++ v5 under Windows NT 4.</P>
+</FONT><P><A HREF="ATLMFC_PropPage.zip">Download the project files (36K)</A></P>
+<P>File required to use this feature</P>
+<P><A HREF="MfcAtlPropertyPage.h">MfcAtlPropertyPage.h (1K)</A><FONT FACE="Arial" SIZE=2> </FONT><A HREF="MfcAtlPropertyPage.rgs">MfcAtlPropertyPage.rgs (1K)</A></P>
+<B><I><FONT FACE="Arial"><P>Warning</P>
+</B></I></FONT><P>This example use undocumented MFC methods and member variables. These may change in a future release of VC++.</P>
+
+<P ALIGN="CENTER"><HR></P>
+<B><I><FONT FACE="Arial"><P><A NAME="Specifics"></A>Specifics</P>
+</B></I></FONT><FONT FACE="Arial" SIZE=2><P>You are using ATL to build and in-process server (DLL) that will expose one or more objects and wish to use the MFC COlePropertyPage class as the base for your property pages. </P>
+<P>You have elected to use MFC as this server is not going anywhere near the internet so you are not concerned about heaving the MFC DLL down a 'phone line.</P>
+<P>You want to use MFC for your property pages as those nice people at Microsoft must have put in a lot of time so you could use their COlePropertyPage class.</P>
+</FONT><P ALIGN="CENTER"><A NAME="Setting_up_the_project"></A><HR></P>
+<B><I><FONT FACE="Arial"><P>Setting up the project</P>
+<OL>
+
+</B></I></FONT><FONT FACE="Arial" SIZE=2><LI>Create a new project (File | New | Project | ATL COM AppWizard). </LI>
+<LI>Enter the project name (I will call it ATLMFC) and make sure <B>Create new workspace </B>is selected. Click OK.</LI>
+<LI>The ATL COM AppWizard is displayed. Select the <B>Dynamic Link Library (DLL) </B>and <B>Support MFC </B>options. Press Finish, then OK.</LI></OL>
+
+</FONT><P ALIGN="CENTER"><A NAME="Problem"></A><HR></P>
+<B><I><FONT FACE="Arial"><P>Problem</P>
+</B></I></FONT><FONT FACE="Arial" SIZE=2><P>ATL uses an object map to manage the creations all of the objects that your server exposes. This is, by default, in a file that has the same name as your project. In this case, the file is called ATLMFC.cpp. The object map starts with the line <B>BEGIN_OBJECT_MAP(ObjectMap)</B> and end with the line <B>END_OBJECT_MAP()</B>.</P>
+<P>In between these two lines go all of your object declarations, in ATL notation. An example might be:</P><DIR>
+<DIR>
+
+<B><P>OBJECT_ENTRY(CLSID_CTest, CTest)</P></DIR>
+</DIR>
+
+</B><P>The macro takes two parameters, the CLSID of your object and the class that will be used by ATL to create an instance of your object (never mind the specifics).</P>
+<P>&nbsp;All classes that go in the object list will be created as <B>CComObject&lt;CYourATLObjectClass&gt;</B>, such as <B>CComObject&lt;CTest&gt;</B>, from the above example (CComObject is an ATL class). This means that only ATL style classes may appear in this list. Specifically, you can not use this method to add your COlePropertyPage derived class directly to the object map. This seemed very restrictive to me, as I wanted to use the ClassWizard to add all of the messages to my property page. I just couldn't be doing with adding everything by hand (the ATL way).</P>
+</FONT><P ALIGN="CENTER"><A NAME="Solution"></A><HR></P>
+<B><I><FONT FACE="Arial"><P>Solution</P>
+</B></I></FONT><FONT FACE="Arial" SIZE=2><P>The solution is to have a lightweight ATL wrapper class that links up with your COlePropertyPage derived class. To do this, several issues must be addressed:</P>
+
+<UL>
+<LI>The final class must be easy to use </LI>
+<LI>Each property page ATL/MFC class must have a unique CLSID </LI>
+<LI>The solution class must be able to register correctly in the system registry</LI></UL>
+
+<P>My solution is to have a template ATL class, a special ATL registry file (.rgs) and to use a typedef to declare the final class that is used.</P>
+</FONT><P ALIGN="CENTER"><A NAME="Template_class"></A><HR></P>
+<B><I><FONT FACE="Arial"><P>Template class</P>
+</B></I></FONT><FONT FACE="Arial" SIZE=2><P>The file </FONT><A HREF="MfcAtlPropertyPage.h">MfcAtlPropertyPage.h</A><FONT FACE="Arial" SIZE=2> defines the template class that implements all of the stuff that ATL requires for the CComObject class and exposes your COlePropertyPage derived class. It also includes code for updating the system registry with the appropriate details.</P>
+<B><P>The following, undocumented, MFC stuff is accessed in the FinalConstruct member function:</P>
+
+<UL>
+</B><LI>EnableAggregation </LI>
+<LI>m_pOuterUnknown </LI>
+<LI>xInnerUnknown</LI></UL>
+
+<P>These are required in order to hook the ATL and MFC objects together properly</P>
+</FONT><P ALIGN="CENTER"><A NAME="Registry_file"></A><HR></P>
+<B><I><FONT FACE="Arial"><P>Registry file</P>
+</B></I></FONT><FONT FACE="Arial" SIZE=2><P>The registry file </FONT><A HREF="MfcAtlPropertyPage.rgs">MfcAtlPropertyPage.rgs</A><FONT FACE="Arial" SIZE=2> contains the details for correct registration of the property page in the system registry. This file is used by CMfcAtlPropertyPage to register each property page that we create.</P>
+</FONT><P ALIGN="CENTER"><A NAME="Creating"></A><HR></P>
+<B><I><FONT FACE="Arial"><P>Creating a COlePropertyPage derived class for use with ATL</P>
+</B></I></FONT><FONT FACE="Arial" SIZE=2><P>This section details, step by step, how to use an MFC COlePropertyPage derived class in your ATL project. These steps also appear in the header file MfcAtlPropertyPage.h.</P>
+
+</FONT><FONT FACE="Arial"><P><A NAME="Step0"></A>Once only for the project</P>
+</FONT><FONT FACE="Arial" SIZE=2><P>Import the resource file MfcAtlPropertyPage.rgs into your project. Give the resource an ID of <B>IDR_MFCATLPPG</B> (This is the name of the resource that CMfcAtlPropertyPage will use. Ensure the correct path is given in the file view for MfcAtlPropertyPage.rgs and change if neccessary.</P>
+<P>Add an include for afxctl.h in the file StdAfx.h</P>
+</FONT><B><FONT SIZE=4><P>Step by step</P>
+
+<UL>
+</B></FONT><FONT FACE="Arial" SIZE=2><LI>From the menu, select Insert | Resource. </LI>
+<LI>Select Import </LI>
+<LI>Change the Files of type to All Files </LI>
+<LI>Locate the file MfcAtlPropertyPage.rgs </LI>
+<LI>Select Import </LI>
+<LI>If prompted, enter the resource type now. Call it REGISTRY </LI>
+<LI>Select the resource in the project window (Resource tab), right-click, select Properties and</FONT> change <FONT FACE="Arial" SIZE=2>the ID of the resource to IDR_MFCATLPPG </LI>
+<LI>Open the file StdAfx.h and add the line #include &lt;afxctl.h&gt; to it</LI></UL>
+
+</FONT><FONT FACE="Arial"><P><A NAME="Step1"></A>1. Update your IDL/ODL file</P>
+</FONT><FONT FACE="Arial" SIZE=2><P>Add a coclass statement to your IDL/ODL file for the new property page and support the interface</FONT> <FONT FACE="Arial" SIZE=2>IUnknown. This must appear within the library section of the file.</P>
+</FONT><U><P>Example</P>
+</U><CODE><P>[</P>
+<P>uuid(E948B670-153F-11d1-8F2D-000000000000),</P>
+<P>helpstring("MFC Property Page")</P>
+<P>]</P>
+<P>coclass PpgTest</P>
+<P>{</P>
+<P>interface IUnknown;</P>
+<P>};</P>
+</CODE><FONT FACE="Arial" SIZE=2><P>Make sure you use the GUIDGEN.EXE utility to generate the CLSID (uuid) for this class (Run GUIDGEN, select registry format then Copy. Paste the resulting text into the uuid entry and remove leading <B>{</B> and trailing <B>}.</B> <B>Do not use the one given in this example</B>.</P>
+</FONT><FONT FACE="Arial"><P><A NAME="Step2"></A>2. Create the property page class</P>
+</FONT><FONT FACE="Arial" SIZE=2><P>Create a property page resource and COlePropertyPage derived class as normal using the dialog editor and ClassWizard. Make the necessary change to the source files, as described below.</P>
+</FONT><B><FONT SIZE=4><P>Step by step</P>
+</FONT><P>Add the Dialog resource</P>
+
+<UL>
+</B><FONT FACE="Arial" SIZE=2><LI>From the menu, select Insert | Resource </LI>
+<LI>Open the Dialog item </LI>
+<LI>Select the IDD_OLE_PROPPAGE_LARGE resource </LI>
+<LI>Select New </LI></UL>
+
+
+<UL>
+<LI>In the Resource view of the project window, ensure the language for the property page is correct (UK</FONT> <FONT FACE="Arial" SIZE=2>versions will by default create the resource as US). To change the language, select the resource in</FONT> <FONT FACE="Arial" SIZE=2>the project window, right-click and select Properties. Change the language to the correct entry. </LI></UL>
+
+
+<UL>
+<LI>Design your property page as you wish</LI></UL>
+
+</FONT><B><P>Add a new class for the property page</P>
+
+<UL>
+</B><FONT FACE="Arial" SIZE=2><LI>Create a new class using ClassWizard (CTRL+W) </LI>
+<LI>Select Create a new class </LI>
+<LI>Give the class a name, I have called the example class CPpgTest </LI>
+<LI>Unfortunately there is no option to derive from COlePropertyPage :-(. Select the next best thing, CPropertyPage </LI>
+<LI>Select OK </LI>
+<LI>Select OK</LI></UL>
+
+</FONT><B><P>Add a new string resource to serve as the caption for the property page</P>
+
+<UL>
+</B><FONT FACE="Arial" SIZE=2><LI>Add the string resource </LI>
+<LI>Enter the text that will appear in the tab for the property page (I have added the resource <B>IDS_PPGTEST</B> with the text Test)</LI></UL>
+
+</FONT><B><P>Alter the source files</P>
+
+<UL>
+</B><FONT FACE="Arial" SIZE=2><LI>Open the header file for your property page (in this case CPpgTest) </LI>
+<LI>Change the single instance of CPropertyPage to COlePropertyPage </LI>
+<LI>Open the source file (in this case CPpgTest.cpp) </LI>
+<LI>Change all instances of CPropertyPage to COlePropertyPage. There should be four of them </LI>
+<LI>Add the line <B>#include "resource.h"</B> after the line <B>#include "stdafx.h"</B>. ClassWizard expects the line #include "<B>&lt;project&gt;</B>.h" (where <B>&lt;project&gt;</B>.h is the main header file for your project) to include resource.h. For ATL projects this is not the case. </LI>
+<LI>Add the second argument to the call to the COlePropertyPage constructor. This is the name of the string resource added above (in this example, <B>IDS_PPGTEST</B>)</LI></UL>
+
+</FONT><FONT FACE="Arial"><P><A NAME="Step3"></A>3. Create a new header file for the class definition</P>
+</FONT><FONT FACE="Arial" SIZE=2><P>Create an empty text file and add the following:</P>
+
+<UL>
+<LI>An include statement for MfcAtlPropertyPage.h</LI>
+<LI>An include statement for your COlePropertyPage derived class header file</LI>
+<LI>A typedef statement for the CmfcAtlPropertyPage template class using your property page. This is required as the ATL OBJECT_ENTRY macro does not accept template class declarations</LI></UL>
+
+<P>Save the file in your project directory</P>
+</FONT><U><P>Example</P>
+</U><CODE><P>// OlePpgTest.h - Declaration of COlePpgTest typedef</P>
+<P>#include "MfcAtlPropertyPage.h"</P>
+<P>// Definition of CPpgTest (COlePropertyPage derived) class</P>
+<P>#include "PpgTest.h"</P>
+<P>// typedef that stops OBJECT_ENTRY macro from crying</P>
+<P>typedef Extraview::CMfcAtlPropertyPage&lt;&amp;CLSID_PpgTest, CPpgTest&gt; COlePpgTest;</P>
+</CODE><FONT FACE="Arial"><P><A NAME="Step4"></A>4. Update the server object map</P>
+</FONT><FONT FACE="Arial" SIZE=2><P>Open the main ATL server source file that contains the server object map. This file typically has the same name as your project, with the cpp extension.</P>
+<P>Add your new include file to the list of includes.&#9;Add your typedef class to the object map by inserting a new OBJECT_ENTRY macro entry.</P>
+</FONT><U><P>Example</P>
+</U><CODE><P>// ATLMFC.cpp : Implementation of DLL Exports.</P>
+<P>// &lt;cut&gt;</P>
+<P>#include "OlePpgTest.h"</P>
+<P>// &lt;cut&gt;</P>
+<P>CComModule _Module;</P>
+<P>BEGIN_OBJECT_MAP(ObjectMap)</P>
+<P>OBJECT_ENTRY(CLSID_PpgTest, COlePpgTest)</P>
+<P>END_OBJECT_MAP()</P>
+</CODE><B><P>ATL will now use your MFC COlePropertyPage derived class as though it were part of ATL!!</P>
+</B><P ALIGN="CENTER"><A NAME="Testing"></A><HR></P>
+<B><I><FONT FACE="Arial"><P>Testing the property page</P>
+</B></I></FONT><FONT FACE="Arial" SIZE=2><P>The workspace includes a project called Test which will display the property page. I have added a simple object to the ATLMFC project called Test (ITest, CLSID_Test) that supports the interface ISpecifyPropertyPages. This returns the details for the property page. The test program itself is a simple console application.</P>
+</FONT><P>&nbsp;</P>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

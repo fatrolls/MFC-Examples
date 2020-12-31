@@ -1,0 +1,414 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (Win95; I) [Netscape]">
+   <TITLE>CListCtrl - Grid List Control</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+
+<CENTER>
+<H3>
+<FONT COLOR="#A0A099">Grid List Control</FONT></H3></CENTER>
+by <A HREF="mailto:rex@surfutah.com">Rex Myer</A>
+<HR WIDTH="100%">
+<BR>This article illustrates how to use the new (v4.72) common control 
+feature of custom drawn controls in connection with the list control to create
+a grid list control.  This is part of the whole implementation for the grid list control.
+This article covers the custom drawing to indicate the cell with focus and 
+keyboard navigation to cursor that focused cell.
+The other related article, "<A HREF="multiline_edit_subitems.html">Multiline Editable Subitems</A>", 
+covers the editing of the subitems.
+
+<P><IMG SRC="gridlist.gif" BORDER=1>
+<P>
+You can download the full grid list control implementation at the bottom of
+the page. Since it uses the newest common control features, you will need
+to download the <A HREF="http://www.microsoft.com/msdn/downloads/files/40Comupd.htm">common
+control redistributable</A> in order to run the sample. In order to build 
+the sample, you will also
+need the <A HREF="http://www.microsoft.com/msdn/sdk/bldenv.htm">Platform
+SDK build environment</A>.&nbsp; There is also <A HREF="http://www.microsoft.com/msdn/sdk/inetsdk/help/itt/CommCtls/CommCtls.htm#book_cc">documentation</A>
+on the new common control features there as well.&nbsp; All you need from
+the build environment are the CommCtrl.h and the ComCtl32.lib files. Make
+these available to
+your VC++ build environment.&nbsp; I did this by backing up my old files
+(just in case) and copying these two files into my include and lib directories 
+respectively. 
+<BR>In this explanation, I call out certain functions from the grid 
+list control sample which pertain to this article.
+<H4>
+Step 1: Derive a class from CListCtrl</H4>
+I derived CGridListCtrl from the CListCtrl.
+I added a member variable to keep track of the current column
+which the user is interacting with. This variable is the column number
+of the item also called the column order.&nbsp; Keep in mind that this
+may not be the same as the
+subitem when dragging the columns and changing their order.
+<PRE><TT><FONT COLOR="#990000">// Attributes
+public:
+&nbsp;&nbsp;&nbsp; // The current subitem or column number which is order based.&nbsp;
+&nbsp;&nbsp;&nbsp; int m_CurSubItem;</FONT></TT></PRE>
+
+<H4>
+Step 2: Prepare the control for grid usage</H4>
+We must be sure that the list control is in report view and that the
+edit sublabel is turned off (this is for the editing subitem implementation).  
+We also want full row select and to drag and drop columns.
+This function should be called by the parent of the grid list control in its
+initialize function (i.e. OnInitDialog).  The reason this block of code is not 
+in PreCreate is that the exended list view styles must be set after a control 
+is created.  
+<PRE><TT><FONT COLOR="#990000">BOOL CGridListCtrl::PrepareControl()
+    {
+    ASSERT( m_hWnd );
+    DWORD dwStyle = GetWindowLong(m_hWnd, GWL_STYLE); 
+    dwStyle &= ~(LVS_TYPEMASK);
+    dwStyle &= ~(LVS_EDITLABELS);
+ 
+    // Make sure we have report view.
+    SetWindowLong( m_hWnd, GWL_STYLE, dwStyle | LVS_REPORT );
+
+    // Enable the full row selection and the drag drop of headers.
+    DWORD styles = LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP ;
+    // Use macro since this is new and not in MFC.
+    ListView_SetExtendedListViewStyleEx(m_hWnd, styles, styles );
+    return TRUE;
+    }
+</PRE></TT></FONT>
+
+<H4>
+Step 2: Enable user navigation</H4>
+The user can navigate the focused cell through the
+mouse or keyboard.&nbsp; As previously mentioned we keep track of the 
+current column number or column order.  The user navigation simply updates
+this member variable and invalidates the item.  
+<p>For more information on the cell navigation with the mouse see the article, 
+"Grid List Control." For keyboard navigation, the user can use the right and 
+left arrow to move the cell cursor.  We can do this in the PreTranslateMessage 
+override method.  We only handle the messages if the grid list control has the 
+focus.  The pretranslated messages may also be for the subitem while it is being 
+edited, and we don't want to interfere with its operation.
+<p>
+MakeColumnVisible is called to make sure that the focused cell is fully exposed
+by scrolling as necessary. Its implementation follows.  The Header_OrderToIndex macro
+is called to translate the order based m_CurSubItem to an index.
+The up and down arrows are already handled sufficiently by the list control itself.
+This also includes the nondestructive edit activation via F2.
+<p>The value of -1 for m_CurSubItem indicates that there is no current subitem 
+focus.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CGridListCtrl::PreTranslateMessage(MSG* pMsg) 
+    {
+    if(pMsg->message == WM_KEYDOWN)
+        {
+        // Handle the keystrokes for the left and right keys
+        // to move the cell selection left and right.
+        // Handle F2 to commence edit mode from the keyboard.
+        // Only handle these if the grid control has the focus.
+        // (Messages also come through here for the edit control
+        // and we don't want them.
+        if( this == GetFocus() )
+            {
+            switch( pMsg->wParam )
+                {
+                case VK_LEFT:
+                    {
+                    // Decrement the order number.
+                    m_CurSubItem--;
+                    if( m_CurSubItem < -1 ) 
+                        {
+                        // This indicates that the whole row is selected and F2 means nothing.
+                        m_CurSubItem = -1;
+                        }
+                    else
+                        {
+                        CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+                        // Make the column visible.
+                        // We have to take into account that the header
+                        // may be reordered.
+                        MakeColumnVisible( Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem ) );
+                        // Invalidate the item.
+                        int iItem = GetNextItem( -1, LVNI_FOCUSED );
+                        if( iItem != -1 )
+                            {
+                            CRect rcBounds;
+                            GetItemRect(iItem, rcBounds, LVIR_BOUNDS);
+                            InvalidateRect( &rcBounds );
+                            }
+                        }
+                    }
+                    return TRUE;
+                case VK_RIGHT:
+                    {
+                    // Increment the order number.
+                    m_CurSubItem++;
+                    CHeaderCtrl* pHeader = (CHeaderCtrl*) GetDlgItem(0);
+                    int nColumnCount = pHeader->GetItemCount();
+                    // Don't go beyond the last column.
+                    if( m_CurSubItem > nColumnCount -1 ) 
+                        {
+                        m_CurSubItem = nColumnCount-1;
+                        }
+                    else
+                        {
+                        // We have to take into account that the header
+                        // may be reordered.
+                        MakeColumnVisible( Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem ) );
+                        int iItem = GetNextItem( -1, LVNI_FOCUSED );
+                        // Invalidate the item.
+                        if( iItem != -1 )
+                            {
+                            CRect rcBounds;
+                            GetItemRect(iItem, rcBounds, LVIR_BOUNDS);
+                            InvalidateRect( &rcBounds );
+                            }
+                        }
+                    }
+                    return TRUE;
+                case VK_F2: // Enter nondestructive edit mode.
+                    {
+                    int iItem = GetNextItem( -1, LVNI_FOCUSED );
+                    if( m_CurSubItem != -1 && iItem != -1 )
+                        {
+                        // Send Notification to parent of ListView ctrl
+                        CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+                        CString str;
+                        // We have to take into account that the header
+                        // may be reordered.
+                        str = GetItemText( iItem, Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem ) );
+                        LV_DISPINFO dispinfo;
+                        dispinfo.hdr.hwndFrom = m_hWnd;
+                        dispinfo.hdr.idFrom = GetDlgCtrlID();
+                        dispinfo.hdr.code = LVN_BEGINLABELEDIT;
+                        
+                        dispinfo.item.mask = LVIF_TEXT;
+                        dispinfo.item.iItem = iItem;
+                        // We have to take into account that the header
+                        // may be reordered.
+                        dispinfo.item.iSubItem = Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem );
+                        dispinfo.item.pszText = (LPTSTR)((LPCTSTR)str);
+                        dispinfo.item.cchTextMax = str.GetLength();
+                        // Send message to the parent that we are ready to edit.
+                        GetParent()->SendMessage( WM_NOTIFY, GetDlgCtrlID(), 
+                            (LPARAM)&dispinfo );
+                        }
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    
+    return CListCtrl::PreTranslateMessage(pMsg);
+    }
+
+void CGridListCtrl::MakeColumnVisible(int nCol)
+    {
+    if( nCol < 0 )
+        return;
+    // Get the order array to total the column offset.
+    CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+    int colcount = pHeader->GetItemCount();
+    ASSERT( nCol < colcount );
+    int *orderarray = new int[ colcount ];
+    Header_GetOrderArray( pHeader->m_hWnd, colcount, orderarray );
+    // Get the column offset
+    int offset = 0;
+    for( int i = 0; orderarray[i] != nCol; i++ )
+        offset += GetColumnWidth( orderarray[i] );
+    int colwidth = GetColumnWidth( nCol );
+    delete[] orderarray;
+    
+    CRect rect;
+    GetItemRect( 0, &rect, LVIR_BOUNDS );
+    
+    // Now scroll if we need to expose the column
+    CRect rcClient;
+    GetClientRect( &rcClient );
+    if( offset + rect.left < 0 || offset + colwidth + rect.left > rcClient.right )
+        {
+        CSize size;
+        size.cx = offset + rect.left;
+        size.cy = 0;
+        Scroll( size );
+        rect.left -= size.cx;
+        }
+    }
+</FONT></TT></PRE>
+
+
+<H4>
+Step 3: Implement custom draw</H4>
+
+Since this new message is not in VC++'s Class Wizard, you will need to add the message map
+and definition yourself.  Be sure to add them outside of the Class Wizard fences. If you do not, when 
+Class Wizard updates your source file, it will be lost.  The other message maps are included 
+to clarify where you would add it yourself.
+<PRE><TT><FONT COLOR="#990000">BEGIN_MESSAGE_MAP(CGridListCtrl, CListCtrl)
+	//{{AFX_MSG_MAP(CGridListCtrl)
+	ON_WM_LBUTTONDOWN()
+	ON_WM_HSCROLL()
+	ON_WM_VSCROLL()
+	//}}AFX_MSG_MAP
+	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
+END_MESSAGE_MAP()
+</PRE></TT></FONT>
+Further you will also need to add the member function declaration as follows also outside 
+the Class Wizard fences:
+<PRE><TT><FONT COLOR="#990000">protected:
+	//{{AFX_MSG(CGridListCtrl)
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	//}}AFX_MSG
+	afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
+</PRE></TT></FONT>
+
+Now the fun begins.  We all like to draw, right?
+<P>
+The new custom control custom draw is a staged process.  The same message 
+is sent at different drawing stages of the control.  If you tell it that 
+the control can handle the rest of the stages, it will not send any more 
+custom drawing messages for that drawing session. The control
+will always send the NM_CUSTOMDRAW message just before commencing a drawing session.
+If you want to handle the drawing of the control (any of it), the return value 
+from this message must indicate it.  In this implementation, we only want to 
+override the drawing of the subitem which has the focus.  The rest of the drawing
+can be done by the control.
+<P>
+There are four stages outlined as follows:
+<OL>
+<LI>The control asks if we want to handle drawing of the control. Respond that we want 
+to handle the drawing at the item level. (The response is achieved by the return value.)
+<LI>The control responds when it is about to paint a given item. If the item has focus,
+respond that we want to handle drawing at the subitem level.  Otherwise, respond that 
+the control can draw the whole item.
+<LI>The control responds before painting a given subitem which was fowarded from 
+stage two. Respond that we want to be notified after painting the subitem.
+<LI>The control responds after painting the subitem from stage three. If the subitem
+is the focused subitem, do the special drawing, and respond that we handled the 
+drawing so the control will not do any more drawing on the subitem.  Otherwise, respond 
+that the list control should finish the subitem drawing. (Actually it is probably not
+going to do anymore drawing anyway, but it is good form.)
+</OL>
+
+You might think that I could have performed the drawing from stage four in stage three.
+If I had I would have also had to worry about indentation, state icon drawing, and item/subitem
+icon drawing.  This way, I let the list control draw those and I just draw on top of the label
+after it is done.
+
+<PRE><TT><FONT COLOR="#990000">void CGridListCtrl::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult) 
+    {
+    // This function is called by the control in different 
+    // stages during the control drawing process.
+
+    NMLVCUSTOMDRAW *pCD = (NMLVCUSTOMDRAW*)pNMHDR;
+    // By default set the return value to do the default behavior.
+    *pResult = 0;
+
+    switch( pCD->nmcd.dwDrawStage )
+        {
+        case  CDDS_PREPAINT:  // First stage (for the whole control)
+            // Tell the control we want to receive drawing messages  
+            // for drawing items.
+            *pResult = CDRF_NOTIFYITEMDRAW;
+            // The next stage is handled in the default:
+            break;
+        default: // Stage two handled here. (called for each item)
+            if( !(pCD->nmcd.uItemState & CDIS_FOCUS) )
+                {
+                // If this item does not have focus, let the 
+                // control draw the whole item.
+                *pResult = CDRF_DODEFAULT;
+                }
+            else
+                {
+                // If this item has focus, tell the control we want
+                // to handle subitem drawing.
+                *pResult = CDRF_NOTIFYSUBITEMDRAW;
+                }
+            break;
+        case CDDS_ITEMPREPAINT | CDDS_SUBITEM: // Stage three (called for each subitem of the focused item)
+            {
+            // We don't want to draw anything here, but we need to respond 
+            // of DODEFAULT will be the next stage.
+            // Tell the control we want to handle drawing after the subitem 
+            // is drawn.
+            *pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NOTIFYPOSTPAINT;
+            }
+            break;
+        case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM: // Stage four (called for each subitem of the focused item)
+            {
+            // We do the drawing here (well maybe).
+            // This is actually after the control has done its drawing
+            // on the subitem.  Since drawing a cell is near instantaneous
+            // the user won't notice.
+            int subitem = pCD->iSubItem;
+            // Only do our own drawing if this subitem has focus at the item level.
+            if( (pCD->nmcd.uItemState & CDIS_FOCUS) )
+                {
+                // If this subitem is the subitem with the current focus,
+                // draw it.  Otherwise let the control draw it.  
+                CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+                // We have to take into account the possibility that the 
+                // columns may be reordered.
+                if( subitem == Header_OrderToIndex( pHeader->m_hWnd,  m_CurSubItem ) )
+                    {
+                    // POSTERASE
+                    CDC* pDC = CDC::FromHandle(pCD->nmcd.hdc);
+                    // Calculate the offset of the text from the right and left of the cell.
+                    int offset = pDC->GetTextExtent(_T(" "), 1 ).cx*2;
+                    // The rect for the cell gives correct left and right values.
+                    CRect rect = pCD->nmcd.rc;
+                    CRect bounds;
+                    GetItemRect( pCD->nmcd.dwItemSpec, &bounds, LVIR_BOUNDS );
+                    // Get the top and bottom from the item itself.
+                    rect.top = bounds.top;
+                    rect.bottom = bounds.bottom;
+                    // Adjust rectangle for horizontal scroll and first column label
+                    {
+                    if( subitem == 0 )
+                        {
+                        CRect lrect;
+                        GetItemRect( pCD->nmcd.dwItemSpec, &lrect, LVIR_LABEL );
+                        rect.left = lrect.left;
+                        rect.right = lrect.right;
+                        }
+                    else
+                        {
+                        rect.right += bounds.left;
+                        rect.left  += bounds.left;
+                        }
+                    }
+                    // Clear the background with button face color
+                    pDC->FillRect(rect, &CBrush(::GetSysColor(COLOR_3DFACE)));
+                    // PREPAINT
+                    CString str;
+                    str = GetItemText( pCD->nmcd.dwItemSpec, pCD->iSubItem );
+                    // Deflate the rect by the horizontal offset.
+                    rect.DeflateRect( offset, 0 );
+                    // You could also make this column alignment sensitive here.
+                    pDC->DrawText( str, rect, 
+                        DT_SINGLELINE|DT_NOPREFIX|DT_LEFT|DT_VCENTER|DT_END_ELLIPSIS);
+                    // POSTPAINT
+                    // Draw rounded edge
+                    rect.InflateRect( offset, 0 );
+                    pDC->Draw3dRect( &rect, ::GetSysColor(COLOR_3DSHADOW), ::GetSysColor(COLOR_3DFACE) );
+                    rect.DeflateRect( 1, 1 );
+                    pDC->Draw3dRect( &rect, ::GetSysColor(COLOR_3DDKSHADOW), ::GetSysColor(COLOR_3DHILIGHT) );
+                    // Tell the control that we handled the drawing for this subitem.
+                    *pResult = CDRF_SKIPDEFAULT;
+                    }
+                }
+            }
+            break;
+        }
+    }
+</FONT></TT></PRE>
+<P>
+<A HREF="GridList.zip">Download Sample/Code,<A>(95k)
+<HR>
+</BODY>
+</HTML>

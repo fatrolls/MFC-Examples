@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Visual C++ Tips - Handle any category of messages using Class Wizard</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Handle any category of messages using Class Wizard</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+Very often the Class Wizard will not list the messages you want to handle. In such situations you have to add the message map entry yourself. One common situation where this happens is when you derive from a class which itself has been derived from an MFC class. For example, if CListViewEx is derived from CListView and then you derive CMyListView from CListViewEx, then you would be unable to handle any of the list view control messages in the CMyListView class using the Class Wizard.
+
+<P>Here's what you can do to continue using the Class Wizard. At the top of your implementation file (cpp file) will the the message map which begins with a line like
+<PRE><TT><FONT COLOR="#990000">BEGIN_MESSAGE_MAP(CMyListView, CListViewEx)
+</FONT></TT></PRE>
+
+Class Wizard uses the second argument in this macro to decide whether it needs to display more messages. Since class wizard doesn't recognize the CListViewEx class it does not show any of the list view control messages. What you can do is change the line to 
+<PRE><TT><FONT COLOR="#990000">#define CListView CListViewEx
+BEGIN_MESSAGE_MAP(CMyListView, CListView)
+#undef CListView
+</FONT></TT></PRE>
+<P>This will now allow you to add message handlers for the CListView class.
+
+<p>Thanks to Gert Rijs from Netherlands for suggesting the use of the #define directive. It fools the Class Wizard 
+parser but provides the right code to the compiler.
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

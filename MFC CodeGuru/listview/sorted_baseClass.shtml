@@ -1,0 +1,357 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>ListView - CSortedListCtrl reusable base class </TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+CSortedListCtrl reusable base class
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:Christian.Staffe@swn.sni.be">Staffe Christian</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+Download the <A HREF="sorted_baseClass.zip">source and example.</A></p>
+
+<!-- The article... -->
+<p>
+I found several articles about sorting a CListCtrl, adding visual feedback
+in the header... on the codeguru page and I have encapsulated this into a
+reusable base class CSortedListCtrl that encapsulates code from several
+other articles. With this class, the user doesn't have to care about all
+this sorting stuff, header control, sorting callback... He just has to
+override some virtual routines to implement its sorting algorithm. The
+Zip file contains a Word 97 DOC for the documentation (<i>ed. which is duplicated here</i>), the
+SortedListCtrl project encapsulating all the code from previous articles and
+a project (TestListCtrl) showing how to use the CSortedListCtrl class. 
+
+It has been compiled with Visual Studio 97.
+
+I hope this will be useful to other programmers just like the articles on
+the CodeGuru page were for me.
+
+<hr>
+
+<h3>Introduction</h3>
+
+<p> This is a reusable CSortedListCtrl class based on several articles
+from the ListView Control section of CodeGuru :
+<ul>
+  <li>"Indicating sort order in header control - Zafir Anjum"
+  <li>"Sorting the list when user clicks on column header - Zafir Anjum"
+  <li>"Vertical lines for column borders - Zafir Anjum"
+</ul>
+
+<h3>How to use the class</h3>
+
+<p> A compilable test project is available and I will only use some
+extracts here to explain the code. There is no explanation on the code
+from the other articles, just go there and read them if you are
+interested.
+
+<p>
+I have put all the CSortedListCtrl stuff in a separate library file so
+I can use it from all my projects. To use the class, you need the
+"SortedListCtrl" project which will produce a library. Insert this
+project into your project (in the sample, I have used a Dialog based
+app called TestListCtrl) that will be using the CSortedListCtrl and
+set a dependency so it will recompile automatically.
+
+<p>
+CSortedListCtrl acts as a base class like CDialog. So you will need to
+derive your own class : let's say CMyListCtrl. You can make it using
+Class Wizard : you drop a CListCtrl on your dialog box, set it in
+report mode and add a class CMyListCtrl setting CListCtrl as a base
+class but you will have to change CListCtrl into CSortedListCtrl in
+Wizard generated code (in .h and message map) You will also need to
+#include "SortedListCtrl.h", add an additional include directory
+(the SortedListCtrl directory) in the project settings, define a
+variable for your list control (m_ListCtrl in the example) and set its
+type to CMyListCtrl (not CListCtrl).
+
+<p> I use a ListCtrl with two columns and no image. Let's say a column
+Name of type string and a column Number of type integer to illustrate
+the sorting routine with two different types. You need to build the
+list columns in the OnInitDialog routine. To clearly show the code
+added, this is done in an ExtraInit function called from OnInitDialog
+:
+
+<pre><tt><font COLOR="#990000">
+void CTestListCtrlDlg::ExtraInit()
+{
+	CRect Rect1;
+	m_ListCtrl.GetWindowRect(Rect1);
+	int cx = (Rect1.Width() - 4) >> 1;
+
+	m_ListCtrl.InsertColumn(0, "Name", LVCFMT_LEFT, cx);
+	m_ListCtrl.InsertColumn(1, "Number", LVCFMT_LEFT, cx);
+
+	FillList();
+
+	// Add full row selection to listctrl
+	m_ListCtrl.SetFullRowSel(TRUE);
+
+	// Sort the list according to the Name column
+            m_ListCtrl.SortColumn(0, TRUE);
+}
+
+</font></tt></pre>
+
+<p> SetFullRowSel is a method of CSortedListCtrl that allows to select
+the entire line, not only the first column while the SortColumn method
+allows you to sort the list on a given column and choosing ascending
+or descending order (sorting mechanism is explained later).
+
+<p>
+Now let's have a look at the FillList routine : 
+
+<pre><tt><font COLOR="#990000">
+void CTestListCtrlDlg::FillList()
+{
+    CMyItemInfo *pItemInfo;
+     int iItem = 0;
+    CString Name;
+    int Number;
+
+    Name = "Sharon Stone";
+    Number = -1;
+
+    m_ListCtrl.InsertItem(iItem, LPSTR_TEXTCALLBACK);    
+    pItemInfo = new CMyItemInfo (iItem, Name, Number);
+    m_ListCtrl.SetItemData(iItem, (DWORD)pItemInfo);
+
+    m_ListCtrl.SetItemText(iItem, 1, LPSTR_TEXTCALLBACK);
+
+    iItem++;	
+
+    Name = "Julia Roberts";
+    Number = 1;
+
+    m_ListCtrl.InsertItem(iItem, LPSTR_TEXTCALLBACK);    
+    pItemInfo = new CMyItemInfo (iItem, Name, Number);
+    m_ListCtrl.SetItemData(iItem, (DWORD)pItemInfo);
+
+    m_ListCtrl.SetItemText(iItem, 1, LPSTR_TEXTCALLBACK);
+}
+
+</font></tt></pre>
+
+<p> It just fills the list with two items but won't compile yet
+because it needs another class used by the sorting mechanism. Sorting
+the list using the standard mechanism provided by CListCtrl requires
+that you attach some item data to your items because what will be
+given to you in the compare routine (see later) will be pointers to
+these item data. In order to hide the callback mechanism used by
+CListCtrl and be able to use polymorphism, the data attached to the
+item is encapsulated in a class. I give you a base class CitemInfo
+from which you can derive your own class, let's say CMyItemInfo. You
+can do this with class wizard, specifying a generic class deriving
+publicly from CItemInfo (ItemInfo.h is provided in the SortedListCtrl
+project). You will have to do some #includes with ItemInfo.h and
+MyItemInfo.h.
+
+Now, you can just add some class members, constructor and methods to
+your MyItemInfo class to set and retrieve easily information. To make
+it easy, I have put everything in the MyItemInfo.h file :
+
+<pre><tt><font COLOR="#990000">
+#include "ItemInfo.h"
+
+class CMyItemInfo : public CItemInfo  
+{
+public:
+
+    CMyItemInfo(int iItem, CString& Name, int Number) :
+		CItemInfo(iItem),
+		m_Name(Name),
+		m_Number(Number) {m_NumberAsString.Format("%d",Number); };
+
+    virtual ~CMyItemInfo() {};
+
+    CString& GetName() {return m_Name;}
+    int GetNumber() {return m_Number;}
+    CString& GetNumberAsString() {return m_NumberAsString;}
+
+private:
+
+    CMyItemInfo();
+
+    CString m_Name;
+    CString m_NumberAsString;
+    int m_Number;
+
+};
+
+
+</font></tt></pre>
+
+<p>
+The basic idea for the sort to work is to put the data inside the
+MyItemInfo class which will be passed to the comparison routine. In
+order not to duplicate data (it's a time/space compromise choice
+here), the LPSTR_TEXTCALLBACK is used. To make it work, you must add
+the following line in MyListCtrl.h :
+
+<pre><tt><font COLOR="#990000">
+afx_msg void OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult);
+
+</font></tt></pre>
+<p>
+and the following one in the message map of MyListCtrl.cpp : 
+
+<pre><tt><font COLOR="#990000">
+ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetDispInfo)
+
+</font></tt></pre>
+<p>
+Then, you have to implement the OnGetDispInfo routine : 
+
+<pre><tt><font COLOR="#990000">
+void CMyListCtrl::OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
+
+	if (pDispInfo->item.mask & LVIF_TEXT) {
+
+		CMyItemInfo* pAppItem = reinterpret_cast<CMyItemInfo*>(pDispInfo->item.lParam);
+
+		switch (pDispInfo->item.iSubItem) {
+
+		case 0 :
+			lstrcpy (pDispInfo->item.pszText, pAppItem->GetName());
+			break;
+		case 1 :
+			lstrcpy (pDispInfo->item.pszText, pAppItem->GetNumberAsString());
+			break;
+		}
+	}
+	*pResult = 0;
+}
+
+</font></tt></pre>
+
+<p>
+It's not finished yet ! You have to give a
+correct constructor for the CMyListCtrl class :
+
+<pre><tt><font COLOR="#990000">
+CMyListCtrl::CMyListCtrl() : CSortedListCtrl(TRUE, TRUE)
+{
+}
+
+</font></tt></pre>
+
+<p> The first constructor parameter tells the base class if you want
+to sort the column (it's normally what you want here !) and the second
+parameter informs the base class to handle the deletion of the item
+data itself. In fact, if you remember the code in FillList, we
+allocate objects of type CMyItemInfo on the heap to attach to the list
+items. When elements of the list are deleted, these MyItemInfo must be
+also deleted and the base class can do it for you. This is possible
+because CMyItemInfo derives from ItemInfo and the CItemInfo destructor
+is virtual.
+
+<p> Now, we must still provide a comparison routine : this is done by
+overridding a virtual function from CSortedListCtrl that is used to
+sort the elements in the list. This is just an OO translation of the
+callback mechanism used by the standard control that's now hidden in
+the base class.
+
+<p>
+Just add the following method declaration in your MyListCtrl.h file : 
+
+<pre><tt><font COLOR="#990000">
+int CompareItems(CItemInfo *pItemInfo1, CItemInfo *pItemInfo2);
+
+</font></tt></pre>
+<p>
+and the following definition in the MyListCtrl.cpp file :
+
+<pre><tt><font COLOR="#990000">
+int CMyListCtrl::CompareItems(CItemInfo *pItemInfo1, CItemInfo *pItemInfo2)
+{
+	CMyItemInfo *pInfo1 = static_cast<CMyItemInfo*>(pItemInfo1);
+	CMyItemInfo *pInfo2 = static_cast<CMyItemInfo*>(pItemInfo2);
+	int nResult;
+
+	switch (GetSortedColumn()) 
+	{
+	case 0 : // Sort on column 'Name'
+		nResult = pInfo1->GetName().CompareNoCase(pInfo2->GetName());
+		break;
+	case 1 : // Sort on column 'Number'
+	{
+		int Number1 = pInfo1->GetNumber();
+		int Number2 = pInfo2->GetNumber();
+
+		if (Number1 < Number2)
+		{
+			nResult = -1;
+		}
+		else 
+		{
+			nResult = (Number1 != Number2);
+		}
+		break;
+	}
+	default :
+		nResult = 0;
+		break;
+	}
+	return IsAscSorted() ? nResult : -nResult;
+}
+
+</font></tt></pre>
+
+<p> In fact, this function will be called for each pair of item in the
+list that must be compared and you receive as parameters, the item
+data attached to each of the element (I will describe below how to
+attach these ItemInfo to the list items). In this function, you are
+likely to use two functions from the base class : GetSortedColumn and
+IsAscSorted which are telling you respectively the column to be sorted
+and the sort order (ascending or descending). The return value has the
+same semantic as the callback routine from CListCtrl or the strcmp
+functions (-1, 0 or 1). Note also the safe static_cast here because
+CMyItemInfo inherits from CItemInfo.
+
+<p>
+That's all folks !
+
+
+<!-- Remember to update this -->
+<p>Last updated: 6 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,30 @@
+
+import "unknwn.idl";
+
+#define MaxWordLength 32
+
+[
+    object, 
+    uuid(54BF6568-1007-11D1-B0AA-444553540000),
+    pointer_default(unique)
+] 
+interface IDictionary : IUnknown
+{   
+	HRESULT Initialize();
+	HRESULT LoadLibrary([in, string] WCHAR *pFilename);
+	HRESULT InsertWord([in, string] WCHAR *pWord, [in, string] WCHAR *pWordUsingOtherLang);
+	HRESULT DeleteWord([in, string] WCHAR *pWord);
+	HRESULT LookupWord([in, string] WCHAR *pWord, [out] WCHAR pWordOut[MaxWordLength]);
+	HRESULT RestoreLibrary([in, string] WCHAR *pFilename);
+	HRESULT FreeLibrary();
+};
+
+[
+    object, 
+    uuid(54BF6569-1007-11D1-B0AA-444553540000),
+    pointer_default(unique)
+] 
+interface ISpellCheck : IUnknown
+{   
+	HRESULT CheckWord([in, string] WCHAR *pWord, [out] WCHAR pWordOut[MaxWordLength]);
+};

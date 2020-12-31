@@ -1,0 +1,178 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Ludovic CHARRIER">
+   <TITLE>C++ & MFC - Template class to manipulate bits of undefined type</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Template class to manipulate bits of undefined type
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:l.charrier@hol.fr"><!-- Author Name -->Ludovic CHARRIER</A>.
+
+<!-- Sample image - gif or jpg -->
+
+
+<!-- Text / source code -->
+<p>This template class is for manipulation bits of undefined type. It's
+usually for unsigned type but you can use it with signed type.
+
+<p>Most of the methods are inline for speed.
+
+<p>The method "print", in case of decimal value, formats only unsigned
+value. With signed type, the signe is lost (formally not lost but it
+won't be printed).
+
+<p>I didn't try it with floating number, I think it will give unexpected
+result.
+
+<p>I made a zip file where the CBit class ( cpp & h ) is ready to compile
+in a project.
+
+<p>If you have any remarks or any improvment to do or if this class works
+fine send me a mail
+
+<p>On a suggestion of  Dave Montgomery &lt;dmont@tradeit.com&gt; from Canada, I 
+integrate an optimization in inline method SetBit0 and SetBit1 and add a 
+new method SetBit. 
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+In the header file
+// I didn't find useful to derive this class from CObject because in this
+// case Run-time class information, Dynamic creation, Persistence
+// (serialization), Run-time object diagnostics is heavy where the initial
+// design goal was lightness, speed, speed and only speed.
+template&lt;class T&gt; class CBit
+{
+    T m_TVar;
+
+    public:
+        CBit(T l_TVar) { m_TVar = (T)l_TVar;}
+        ~CBit() {};
+
+        T Get() { return m_TVar;}; //Get the value
+        T Set(T l_TVar) { m_TVar = (T)l_TVar;};//Set a new value
+
+        int GetMaxBits(void) {return (sizeof(T)*8); }; //give the maximum number of bits of the type
+
+    enum BitFormat
+    {
+        Decimal,
+        Hexa,
+        Octal,
+        Binary,
+        All
+    };
+
+    CString print (CBit&lt;T&gt;::BitFormat l_eBitFormat); //prints the value in various way, have a look on file bit.cpp 
+
+    //rank is zero based working with bit
+    void SetBit1(unsigned int nRang) { 
+        ASSERT(nRang &lt; (sizeof(T)*8)); //rank overflow
+		T mask = 1; m_TVar |= (mask &lt;&lt; nRang); 
+    };
+
+    void SetBit0(unsigned int nRang) { 
+        ASSERT(nRang &lt; (sizeof(T)*8)); //rank overflow
+		T mask = 1; m_TVar &= ~(mask &lt;&lt; nRang);
+    };
+
+	void SetBit(unsigned int nRang, unsigned int val) { 
+		(val) ? SetBit1 (nRang) : SetBit0 (nRang); 
+	}; 
+
+    int GetBit(unsigned int nRang){ 
+        ASSERT(nRang &lt; (sizeof(T)*8));//rank overflow
+        return ( (m_TVar &gt;&gt; nRang) & 0x1); 
+    };
+};
+
+Example of using
+void yourFunction ()
+{
+     CBit&lt; unsigned int &gt; var(0x330);
+     TRACE(_T("Variable %s\n"),var.print(CBit&lt;unsigned int&gt;::All));
+     var.SetBit1(0);
+     var.SetBit0(4);
+     var.SetBit0(9);
+     var.SetBit1(31);
+
+     TRACE(_T("Variable %s\n"),var.print(CBit&lt;unsigned int&gt;::All));
+     int value0 = var.GetBit(0);
+     int value4 = var.GetBit(4);
+     int value5 = var.GetBit(5);
+     int value6 = var.GetBit(6);
+     int value7 = var.GetBit(7);
+     int value8 = var.GetBit(8);
+     int value9 = var.GetBit(9);
+     int value31 = var.GetBit(31);
+     TRACE(_T("value0=%d value4=%d; value5=%d value6=%d; value7=%d
+               value8=%d; value9=%d value31=%d\n"),value0 ,value4, value5,value6,
+               value7,value8, value9,value31 );
+} //end of yourFunction ()
+
+Result in TRACE Window
+
+Variable 0000 0000 0000 0000 0000 0011 0011 0000 0x330 816 01460
+Variable 1000 0000 0000 0000 0000 0001 0010 0001 0x80000121 2147483937
+020000000441
+value0=1 value4=0; value5=1 value6=0; value7=0 value8=1; value9=0
+value31=1
+
+End of Result in TRACE Window
+
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="bit_manipulation_undef_type_source.zip">Download source - 3KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->5/4/98
+<br>Last Updated: <!-- date here -->5/12/98
+<br>Posted by: <A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

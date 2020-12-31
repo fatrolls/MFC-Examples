@@ -1,0 +1,42 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/12|256color_bitmap.shtml||Bitmap & Palette - Displaying a 256 color bitmap|
+1998/04/12|bitmap_from_bmp.shtml||Bitmap & Palette - Creating a bitmap object from a BMP file|
+1998/04/12|bitmap_picture.shtml||Bitmap & Palette - An auto-sizing bitmap picture control|Chris Maunder
+1998/04/12|bitmap_to_file.shtml||Bitmap & Palette - Writing a bitmap to a BMP file|
+1998/04/12|copy_to_clipboard.shtml||Bitmap & Palette - Copying a bitmap to clipboard|
+1998/04/12|ddb_to_dib.shtml||Bitmap & Palette - Converting DDB to DIB|
+1998/04/12|dib_to_ddb.shtml||Bitmap & Palette - Converting DIB to DDB|
+1998/04/12|dibsection_from_bmp.shtml||Bitmap & Palette - Creating a DIB section from a BMP file|
+1998/04/12|dimensions.shtml||Bitmap & Palette - Getting the dimensions of a bitmap|
+1998/04/12|dither_blt.shtml||Bitmap & Palette - Draw bitmap with grayed 3D effect|Jean-Edouard Lachand-Robert
+1998/04/12|draw_bitmap.shtml||Bitmap & Palette - Drawing a bitmap|
+1998/04/12|draw_bmp.shtml||Bitmap & Palette - Drawing a bitmap from a BMP file|
+1998/04/12|emboss.shtml||Bitmap & Palette - Emboss text and other shape on your bitmap|
+1998/04/12|emboss_pattern.shtml||Bitmap & Palette - Apply a 3D bitmap pattern on text or other shapes|
+1998/04/12|fadein.shtml||Bitmap & Palette - Fade in / Fade out Images using Palette animation|
+1998/04/12|formview_background.shtml||Painting the background for a CFormView derived class|Adrian Roman
+1998/04/12|grayscale.shtml||Bitmap & Palette - Drawing an image in grayscale|
+1998/04/12|grayscale_fadein.shtml||Bitmap & Palette - Fading from color to grayscale and vice-versa|
+1998/04/12|invert_bitmap.shtml||Bitmap & Palette - Invert (mirror) a bitmap|
+1998/04/12|invert_bitmap_inplace.shtml||Bitmap & Palette - Invert (mirror) a bitmap in-place|Roger Onslow
+1998/04/12|logo_bitmap_in_client.shtml||Bitmap & Palette - A logo bitmap inside client frame|Adrian Roman
+1998/04/12|rotate_bitmap.shtml||Bitmap & Palette - Rotate a bitmap image|
+1998/04/12|shade_image.shtml||Bitmap & Palette - Shade images to look like an active icon|
+1998/04/12|transparent_bitmap.shtml||Bitmap & Palette - Drawing a bitmap transparently|
+1998/04/12|window_to_file.shtml||Bitmap & Palette - Writing a window image to a BMP file|
+1998/04/12|bmp_in_mdiclient.shtml||Bitmap background in MDI Client|Neil A. Van Note
+1998/04/12|bmp_in_mdiclient2.shtml||Bitmap background in MDI Client (2)|David Simpson

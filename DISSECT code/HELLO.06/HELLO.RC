@@ -1,0 +1,27 @@
+// hello.rc
+#include "resource.h"
+#include "afxres.h"
+
+JJHouRIcon         ICON  DISCARDABLE  "JJHOUR.ICO"
+AFX_IDI_STD_FRAME  ICON  DISCARDABLE  "JJHOUR.ICO"
+
+MainMenu MENU DISCARDABLE
+{
+    POPUP "&Help"
+    {
+      MENUITEM "&About HelloMFC...", IDM_ABOUT
+    }
+}
+
+AboutBox DIALOG DISCARDABLE  34, 22, 147, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Hello"
+{
+  ICON          "JJHouRIcon",IDC_STATIC,11,17,18,20
+  LTEXT         "Hello MFC 4.0",IDC_STATIC,40,10,52,8
+  LTEXT         "Copyright 1996 Top Studio",IDC_STATIC,40,25,100,8
+  LTEXT         "J.J.Hou",IDC_STATIC,40,40,100,8
+  DEFPUSHBUTTON "OK",IDOK,105,7,32,14,WS_GROUP
+}
+
+

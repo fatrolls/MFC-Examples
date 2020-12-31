@@ -1,0 +1,242 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - Using ON_UPDATE_COMMAND_UI with dialogs</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using ON_UPDATE_COMMAND_UI with dialogs</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:extraview@netmatters.co.uk">James Hebben</A>.
+
+
+<P><B>Warning: The class presented in this article uses the undocumented MFC
+member function CCmdUI::DoUpdate</B></P>
+<P><A HREF="ccmduidialog.zip">Example project with dialog using this technique</A></P>
+<P></P>
+<P>You will have used the <B>ON_UPDATE_COMMAND_UI </B>macro in MFC with your
+various menu commands. This macros is used to implement the message handler for
+the <B>UPDATE_COMMAND_UI </B>&quot;message&quot; sent by the MFC framework.
+This message allows you to set the state (enabled/disabled, checked/unchecked
+etc) of your menu and toolbar items by calling the various OnUpdateXXX functions
+that you supply.</P>
+<P>Quite often, it would be useful to use this same &quot;auto-update&quot;
+facility with the controls of a dialog box. Unfortunately, MFC does not provide
+this functionality for you. In this article, I present a dialog class, derived
+from CDialog, that allows you to use the familiar <B>ON_UPDATE_COMMAND_UI </B>macros
+with any control on a dialog box. </P>
+<P>This approach has the advantage of centralising your dialog controls state
+logic and is very useful for complicated dialogs where the state of many
+controls is determined by the state of other controls on the dialog.</P>
+<P>The class, CCmdUIDialog, implements the necessary code to call your
+OnUpdateXXX functions. You simply derive your dialog class from CCmndUIDialog
+instead of CDialog, and manually add the <B>ON_UPDATE_COMMAND_UI </B>macros to
+your class.</P>
+<H4>Class declaration:</H4>
+<PRE><TT><FONT COLOR="#990000">#if !defined(AFX_CMDUIDIALOG_H__7D35F4B8_7531_11D1_8FA7_000000000000__INCLUDED_)
+#define AFX_CMDUIDIALOG_H__7D35F4B8_7531_11D1_8FA7_000000000000__INCLUDED_
+
+#if _MSC_VER &gt;= 1000
+#pragma once
+#endif // _MSC_VER &gt;= 1000
+// CmdUIDialog.h : header file
+// 
+
+/////////////////////////////////////////////////////////////////////////////
+// CCmdUIDialog dialog
+
+class CCmdUIDialog : public CDialog
+{
+// Construction
+public:
+	CCmdUIDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL);
+	CCmdUIDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
+	CCmdUIDialog();
+	BOOL ContinueModal();
+
+// Implementation
+protected:
+
+	// Generated message map functions
+	//{{AFX_MSG(CCmdUIDialog)
+	// NOTE: the ClassWizard will add member functions here
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_CMDUIDIALOG_H__7D35F4B8_7531_11D1_8FA7_000000000000__INCLUDED_)
+
+</FONT></TT></PRE>
+<H4>Class Implementation:</H4>
+<PRE><TT><FONT COLOR="#990000">// CmdUIDialog.cpp : implementation file
+//
+
+#include &quot;stdafx.h&quot;
+#include &quot;delme.h&quot;
+#include &quot;CmdUIDialog.h&quot;
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CCmdUIDialog dialog
+
+
+CCmdUIDialog::CCmdUIDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd)
+	: CDialog(lpszTemplateName, pParentWnd)
+{
+}
+
+CCmdUIDialog::CCmdUIDialog(UINT nIDTemplate, CWnd* pParentWnd)
+	: CDialog(nIDTemplate, pParentWnd)
+{
+}
+
+CCmdUIDialog::CCmdUIDialog()
+{
+}
+
+
+BOOL CCmdUIDialog::ContinueModal()
+{
+	// Iterate all child windows and instruct to update themselves
+	CWnd* pWndChild=GetWindow(GW_CHILD);
+	int iIndex=0;
+	while (NULL!=pWndChild)
+	{
+
+		CCmdUI state;
+		state.m_nID=::GetWindowLong(*pWndChild, GWL_ID);
+		state.m_nIndex=iIndex++;
+		state.m_pOther=pWndChild;
+
+		// ***CCmdUI::DoUpdate is undocumented MFC***
+		state.DoUpdate(this, FALSE);
+
+		pWndChild=pWndChild-&gt;GetWindow(GW_HWNDNEXT);
+	}
+
+	// Must call the base class
+	return CDialog::ContinueModal();
+}
+
+BEGIN_MESSAGE_MAP(CCmdUIDialog, CDialog)
+	//{{AFX_MSG_MAP(CCmdUIDialog)
+		// NOTE: the ClassWizard will add message map macros here
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CCmdUIDialog message handlers
+
+
+
+</FONT></TT></PRE>
+<H4>To use the class and update handlers</H4>
+<P>First, derive your dialog class from CCmdUIDialog instead of CDialog. Next,
+add update command handlers for each control you require this feature for, using
+the following technique:</P>
+<P><B>Enter the name of the update function in the protected section of your
+dialog header file</B></P>
+<P>Each update function has the signature <B>void OnUpdate<I>XXX</I>(CCmdUI*
+pCmdUI);
+</B>where <B><I>XXX </I></B>might describe the control for this handler. These
+update functions should be places immediatley <B>after </B>the <B>//}}AFX_MSG
+</B>comment in your header file. This will ensure that all of the command
+handlers are grouped together.</P>
+<P><B>Add a ON_UPDATE_COMMAND_UI macro in your dialog source (.cpp) file.</B></P>
+<P>This macro takes the resource ID of the dialog control and the name if the
+update function to call. For a dialog control called <B>IDC_CHECK1 </B>with a
+handler function called <B>OnUpdateCheck1 </B>, the macro entry would read</P>
+<PRE><TT><FONT COLOR="#990000">	ON_UPDATE_COMMAND_UI(IDC_CHECK1, OnUpdateCheck1)</FONT></TT></PRE>
+<P>This handler should appear between the <B>BEGIN_MESSAGE_MAP </B>and <B>END_MESSAGE_MAP
+</B>macros and after the <B>//}}AFX_MSG_MAP </B>entry.</P>
+<P><B>Implement the update function</B></P>
+<P>Implement the logic you require in your update function, using the passed
+<B>CCmdUI </B>pointer to update your dialog control. The passed <B>CCmdUI </B>pointer
+is based on the dialog control that this habdler is called for.</P>
+<P>The attached example application displays a dialog that used the technique
+described here and also shows how to update more than one control using the same
+handler function.</P>
+
+
+
+
+<H4>Update</H4>
+
+<P>Thanks go to <A HREF="mailto:JMarino@bn.com">Jeff Marino</A> for pointing out this better
+approach.
+
+<P>Jeff Marino has pointed out an MFC function that handles
+ON_UPDATE_COMMAND_UI with dialogs and does not require the derived dialog
+class to call any undocumented MFC stuff. The function is
+CWnd::UpdateDialogControls.
+
+<P>This just goes to show how large MFC is and that there is a wealth of
+functionality if only you can find it and how useful your resource is.
+
+<P>To use the UpdateControls function, overload ONE of the PreTranslateMessage
+or ContinueModal functions like this:
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL <CDialog Derivitive>::PreTranslateMessage( MSG* pMsg )
+{
+UpdateDialogControls( this, TRUE );
+return CDialog::PreTranslateMessage( pMsg );
+}
+</FONT></TT></PRE>
+
+or
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL <CDialog Derivitive>::ContinueModal( )
+{
+UpdateDialogControls( this, TRUE );
+return CDialog::ContinueModal( );
+}
+</FONT></TT></PRE>
+
+<P>One should bear in mind that ContinueModal is called about four to five
+times as often as PreTranslateMessage.
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,391 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<meta NAME="GENERATOR" CONTENT="Microsoft FrontPage 3.0">
+<title>Regexp - An alternative Regular Expression Class</title>
+</head>
+
+<body>
+<font FACE="Arial" SIZE="4"><b>
+
+<p>Regexp &#150; An alternative Regular Expression Class</p>
+</b></font>
+
+<p>This article was contributed by <a href="mailto:guy@wyrdrune.com">Guy Gascoigne -
+Piggford</a></p>
+
+<p>This is another regular expression library. Like Zafir's it is based upon the work of
+Henry Spencer. I started using this a long time ago and called my class <tt>Regexp</tt>
+(rather than <tt>CRegExp</tt>). Actually I prefer Zafir's name but I have too much code
+using the other name to want to change it, so right now my class is called <tt>Regexp</tt>
+(change it if you like).</p>
+
+<p>So why put up another version? I hear you ask. Well the two classes took the same base
+code and then developed to solve different problems. <tt>CRegExp</tt> is geared to Search
+and Replace operations whereas <tt>Regexp</tt> was written to simplify tokenisation. I
+wanted a class that could be given a 'program' and from that, return specific substrings
+from it's input. Regular expressions may not be the fastest way to parse input (though
+with careful anchoring they can be made so that they fail quickly if they are going to)
+but once you have a working library they do allow for fairly rapid coding. On the whole
+this is good enough, worry about making it faster once you have it working and actually
+know that your optimization effort isn't going unnoticed.<font SIZE="2"></p>
+
+<p></font>For example:</p>
+
+<pre><tt>Regexp re( &quot;^[\t ]*(.*)[\t ]*\\((.*)\\)&quot; );
+CString str( &quot;wyrdrune.com!kelly (Kelly)\n&quot; );
+CString name, addr;
+
+if ( re.Match( str ) &amp;&amp; re.SubStrings() == 2 )
+{
+	name = re[2];
+	addr = re[1];
+}</pre>
+</tt>
+
+<p><tt>Will give:</tt></p>
+
+<p><tt>name == &quot;Kelly&quot; and addr == &quot;wyrdrune.com!kelly&quot;</tt></p>
+
+<p>If you decompose the regular expression you get:<font SIZE="2"></p>
+</font>
+
+<table BORDER="1" CELLSPACING="1" CELLPADDING="7" WIDTH="100%">
+  <tr>
+    <td WIDTH="77" VALIGN="TOP"><font face="Courier"><tt>^</tt></font></td>
+    <td WIDTH="509" VALIGN="TOP">Beginning of line anchor.</td>
+  </tr>
+  <tr>
+    <td WIDTH="77" VALIGN="TOP"><font face="Courier"><tt>[\t ]*</tt></font></td>
+    <td WIDTH="509" VALIGN="TOP">Any amount (that is zero or more characters) of tabs or
+    spaces.</td>
+  </tr>
+  <tr>
+    <td WIDTH="77" VALIGN="TOP"><font face="Courier"><tt>(.*)</tt></font></td>
+    <td WIDTH="509" VALIGN="TOP">Field 1: A tagged expression matching any string of
+    characters &#150; this will be the longest string that will still allow the rest of the
+    pattern to match.</td>
+  </tr>
+  <tr>
+    <td WIDTH="77" VALIGN="TOP"><font face="Courier"><tt>[\t ]*</tt></font></td>
+    <td WIDTH="509" VALIGN="TOP">Any amount of tabs or spaces.</td>
+  </tr>
+  <tr>
+    <td WIDTH="77" VALIGN="TOP"><font face="Courier"><tt>\\(</tt></font></td>
+    <td WIDTH="509" VALIGN="TOP">An escaped open parenthesis. The double slash is a C/C++
+    convention since this is the escape character and we want a literal slash to be passed
+    through to the regular expression code. If the user were typing this sort of thing into
+    your program they would only enter one slash. We escape the parenthesis so that it
+    doesn&#146;t get interpreted as a regular expression special character.</td>
+  </tr>
+  <tr>
+    <td WIDTH="77" VALIGN="TOP"><font face="Courier"><tt>(.*)</tt></font></td>
+    <td WIDTH="509" VALIGN="TOP">Field 2: A tagged expression matching any string of
+    characters.</td>
+  </tr>
+  <tr>
+    <td WIDTH="77" VALIGN="TOP"><font face="Courier"><tt>\\)</tt></font></td>
+    <td WIDTH="509" VALIGN="TOP">An escaped closing parenthesis.</td>
+  </tr>
+</table>
+<font SIZE="2">
+
+<p></font>BTW: the phrase <i>tagged regular expression</i> refers to any part of the
+regular expression that is, because it was surrounded by parenthesis, accessible after a
+match has been made as a separate substring.&nbsp; See <a
+href="#Regular Expression Syntax">here</a> for more information about Regular Expression
+syntax.</p>
+
+<p>In English, we are looking for two fields. The first will be all characters from the
+start of the line through to the second field (without any surrounding white space), and
+the second will be all characters within parenthesis following the first field.</p>
+<font FACE="Arial" SIZE="4"><b><a name="The Class">
+
+<p>The Class</a></b></font> </p>
+
+<p>The library itself comes as two source files, Regexp.cpp and Regexp.h. The header
+defines the <tt>Regexp</tt> class with the following members:</p>
+
+<p><strong><tt>Regexp::NSUBEXP </tt></strong></p>
+
+<blockquote>
+  <p>A constant defining how many subexpressions that the library will support (usually 10),
+  attempting to use a regular expression with more than this number will generate an error.</p>
+</blockquote>
+
+<p><strong><tt>Regexp::Regexp() </tt></strong></p>
+
+<blockquote>
+  <p>A boring constructor, this must be initialized by assignment before anything useful can
+  be done with it.</p>
+</blockquote>
+
+<p><strong><tt>Regexp::Regexp( TCHAR * exp, BOOL iCase = 0 ) </tt></strong></p>
+
+<blockquote>
+  <p><tt>exp</tt> : </p>
+</blockquote>
+
+<blockquote>
+  <p>The regular expression itself, this format of which is defined later. The success or
+  failure of the compilation can be discovered by using either <tt>GetErrorString()</tt> or <tt>CompiledOK()</tt>.</p>
+</blockquote>
+
+<blockquote>
+  <p><tt>iCase</tt>:</p>
+</blockquote>
+
+<blockquote>
+  <p>If <tt>TRUE</tt> the regular expression is compiled so that differences in case are
+  ignored when matching.</p>
+</blockquote>
+
+<p><strong><tt>Regexp::Regexp( const Regexp &amp;r ) </tt></strong></p>
+
+<blockquote>
+  <p>Construct a new regular expression taking the compiled form from another <tt>Regexp</tt>.
+  </p>
+</blockquote>
+
+<p><strong><tt>const Regexp::Regexp &amp; operator=( const Regexp &amp; r );</tt></strong></p>
+
+<blockquote>
+  <p>Assign <tt>Regexp r</tt> to the current object.</p>
+</blockquote>
+
+<p><strong><tt>bool Regexp::Match( const TCHAR * s ); </tt></strong></p>
+
+<blockquote>
+  <p>Examine the <tt>TCHAR</tt> array s with this regular expression, returning true if
+  there is a match. This match updates the state of this Regexp object so that the
+  substrings of the match can be obtained. The 0th substring is the substring of string that
+  matched the whole regular expression. The others are those substrings that matched
+  parenthesized expressions within the regular expression, with parenthesized expressions
+  numbered in left-to-right order of their opening parentheses. If a parenthesized
+  expression does not participate in the match at all, its length is 0. It is an error if
+  this <tt>Regexp</tt> has not been successfully initialized.</p>
+</blockquote>
+
+<p><strong><tt>int Regexp::SubStrings() const; </tt></strong></p>
+
+<blockquote>
+  <p>Return the number of substrings found after a successful <tt>Match()</tt>.</p>
+</blockquote>
+
+<p><strong><tt>const CString Regexp::operator[]( unsigned int i ) const; </tt></strong></p>
+
+<blockquote>
+  <p>Return the <tt>i</tt>th matched substring after a successful <tt>Match()</tt>.</p>
+</blockquote>
+
+<p><strong><tt>int Regexp::SubStart( unsigned int i ) const; </tt></strong></p>
+
+<blockquote>
+  <p>Return the starting offset of the <tt>i</tt>th matched substring from the beginning of
+  the <tt>TCHAR </tt>array used in <tt>Match()</tt>.</p>
+</blockquote>
+
+<p><strong><tt>int Regexp::SubLength( unsigned int i ) const; </tt></strong></p>
+
+<blockquote>
+  <p>Return the length of the <tt>i</tt>th matched substring</p>
+</blockquote>
+
+<blockquote>
+  <p>Using the same example Regexp as before:</p>
+  <pre><tt>Regexp re( &quot;^[\t ]*(.*)[\t ]*\\((.*)\\)&quot; );
+CString str( &quot;wyrdrune.com!kelly (Kelly)\n&quot; );
+if ( re.Match( str ) &amp;&amp; re.SubStrings() == 2 )
+{
+	ASSERT( re.SubStart(0) == 0 );
+	ASSERT( re.SubLength(0) == 26 );
+
+	ASSERT( re.SubStart(1) == 0 );
+	ASSERT( re.SubLength(1) == 19 );
+
+	ASSERT( re.SubStart(2) == 20 );
+	ASSERT( re.SubLength(2) == 5 );
+}
+</tt></pre>
+</blockquote>
+
+<p><strong><tt>CString Regexp::GetReplaceString( LPCTSTR source ) const; </tt></strong></p>
+
+<blockquote>
+  <p>After a successful Match you can retrieve a replacement string as an alternative to
+  building up the various substrings by hand. </p>
+  <p>Each character in the source string will be copied to the return value except for the
+  following special characters:</p>
+  <table border="0" width="690">
+    <tr>
+      <td width="88">&amp;&nbsp;&nbsp; </td>
+      <td width="594">The complete matched string (sub-string 0).</td>
+    </tr>
+    <tr>
+      <td width="88">\1&nbsp; </td>
+      <td width="594">Sub-string 1</td>
+    </tr>
+    <tr>
+      <td width="88">...</td>
+      <td width="594">and so on until...</td>
+    </tr>
+    <tr>
+      <td width="88">\9</td>
+      <td width="594">Sub-string 9</td>
+    </tr>
+  </table>
+  <p>So, taking the now ubiquitous example:</p>
+  <p><tt>CString repl = re.GetReplacementString( &quot;\2 == \1&quot; );</tt></p>
+</blockquote>
+
+<blockquote>
+  <p>Will give:</p>
+</blockquote>
+
+<blockquote>
+  <p><tt>repl == &quot;Kelly == wyrdrune.com!kelly&quot;; </tt></p>
+</blockquote>
+
+<blockquote>
+  <p>As an implementation note: the <tt>CRegExp</tt> version of a similarly named function
+  returned a newly allocated pointer array. Whilst this is efficient, it puts the onus upon
+  the user of the class to delete it (correctly, with <tt>delete []</tt> ) after it&#146;s
+  done with. Considering how the reference counting is implemented in the MFC <tt>CString</tt>
+  class, passing <tt>CStrings</tt> around on the stack isn&#146;t that expensive, the
+  allocation only happens when the string data is initially allocated, with the ownership of
+  the actual string data being handed from one <tt>CString</tt> instance to another as
+  needed. Finally when the <tt>CString</tt> goes out of scope the data is deleted. This is
+  efficient, and much more robust than having to keep track of which functions are
+  allocators and which ones are not.</p>
+</blockquote>
+
+<p><strong><tt>CString Regexp::GetErrorString() const; </tt></strong></p>
+
+<blockquote>
+  <p>Return a description of the most recent error caused on this <tt>Regexp</tt>. Errors
+  include, but are not limited to, various forms of compilation errors, usually syntax
+  errors, and calling <tt>Match</tt> when the <tt>Regexp</tt> hasn&#146;t been initialized
+  correctly (or at all). There are a fair number of these that should never occur if all of
+  the <tt>Regexp</tt> use comes from your code, but where the user can type in regular
+  expressions that you then have to compile, checking this can be very important.</p>
+</blockquote>
+
+<p><strong><tt>bool Regexp::CompiledOK() const; </tt></strong>
+
+<dir>
+  <dir>
+    <p>Return the status of the last regular expression compilation.</p>
+  </dir>
+</dir>
+<font FACE="Arial" SIZE="4"><b><a name="Regular Expression Syntax">
+
+<p>Regular Expression Syntax</a></b></font> </p>
+
+<p>A regular expression is zero or more branches, separated by '<strong><font
+color="#FF0000">|</font></strong>'. It matches anything that matches one of the branches.</p>
+
+<p>A branch is zero or more pieces, concatenated. It matches a match for the first,
+followed by a match for the second, etc.</p>
+
+<p>A piece is an atom possibly followed by '<strong><font color="#FF0000">*</font></strong>',
+'<strong><font color="#FF0000">+</font></strong>', or '<strong><font color="#FF0000">?</font></strong>'.
+An atom followed by '<strong><font color="#FF0000">*</font></strong>' matches a sequence
+of 0 or more matches of the atom. An atom followed by '<strong><font color="#FF0000">+</font></strong>'
+matches a sequence of 1 or more matches of the atom. An atom followed by '<strong><font
+color="#FF0000">?</font></strong>' matches a match of the atom, or the null string.</p>
+
+<p>An atom is a regular expression in parentheses (matching a match for the regular
+expression), a range (see below), '<strong><font color="#FF0000">.</font></strong>'
+(matching any single character), '<strong><font color="#FF0000">^</font></strong>'
+(matching the null string at the beginning of the input string), '<strong><font
+color="#FF0000">$</font></strong>' (matching the null string at the end of the input
+string), a '<strong><font color="#FF0000">\</font></strong>' followed by a single
+character (matching that character), or a single character with no other significance
+(matching that character).</p>
+
+<p>A range is a sequence of characters enclosed in '<strong><font color="#FF0000">[]</font></strong>'.
+It normally matches any single character from the sequence. If the sequence begins with '<strong><font
+color="#FF0000">^</font></strong>', it matches any single character not from the rest of
+the sequence. If two characters in the sequence are separated by '<strong><font
+color="#FF0000">-</font></strong>', this is shorthand for the full list of ASCII
+characters between them (e.g. '<strong><font color="#FF0000">[0-9]</font></strong>'
+matches any decimal digit). To include a literal '<strong><font color="#FF0000">]</font></strong>'
+in the sequence, make it the first character (following a possible '<strong><font
+color="#FF0000">^</font></strong>'). To include a literal '<strong><font color="#FF0000">-</font></strong>',
+make it the first or last character.</p>
+<font FACE="Arial" SIZE="4"><b><a name="Ambiguity">
+
+<p>Ambiguity</a></b></font> </p>
+
+<p>If a regular expression could match two different parts of the input string, it will
+match the one which begins earliest. If both begin in the same place but match different
+lengths, or match the same length in different ways, life gets messier, as follows. </p>
+
+<p>In general, the possibilities in a list of branches are considered in left-to-right
+order, the possibilities for '<strong><font color="#FF0000">*</font></strong>', '<strong><font
+color="#FF0000">+</font></strong>', and '<strong><font color="#FF0000">?</font></strong>'
+are considered longest-first, nested constructs are considered from the outermost in, and
+concatenated constructs are considered leftmost-first. The match that will be chosen is
+the one that uses the earliest possibility in the first choice that has to be made. If
+there is more than one choice, the next will be made in the same manner (earliest
+possibility) subject to the decision on the first choice. And so forth.</p>
+
+<p>For example, '<strong><font color="#FF0000">(ab|a)b*c</font></strong>' could match '<strong><font
+color="#FF0000">abc</font></strong>' in one of two ways. The first choice is between '<strong><font
+color="#FF0000">ab</font></strong>' and '<strong><font color="#FF0000">a</font></strong>';
+since '<strong><font color="#FF0000">ab</font></strong>' is earlier, and does lead to a
+successful overall match, it is chosen. Since the '<strong><font color="#FF0000">b</font></strong>'
+is already spoken for, the '<strong><font color="#FF0000">b*</font></strong>' must match
+its last possibility--the empty string--since it must respect the earlier choice.</p>
+
+<p>In the particular case where the regular expression does not use `<strong><font
+color="#FF0000">|</font></strong>' and does not apply `<strong><font color="#FF0000">*</font></strong>',
+`<strong><font color="#FF0000">+</font></strong>', or `<strong><font color="#FF0000">?</font></strong>'
+to parenthesized subexpressions, the net effect is that the longest possible match will be
+chosen. So `<strong><font color="#FF0000">ab*</font></strong>', presented with `<strong><font
+color="#FF0000">xabbbby</font></strong>', will match `<strong><font color="#FF0000">abbbb</font></strong>'.
+Note that if `<strong><font color="#FF0000">ab*</font></strong>' is tried against `<strong><font
+color="#FF0000">xabyabbbz</font></strong>', it will match `<strong><font color="#FF0000">ab</font></strong>'
+just after `<strong><font color="#FF0000">x</font></strong>', due to the begins-earliest
+rule. (In effect, the decision on where to start the match is the first choice to be made,
+hence subsequent choices must respect it even if this leads them to less-preferred
+alternatives.)</p>
+<font FACE="Arial" SIZE="4"><b><a name="The Source">
+
+<p>The Source</a></b></font> </p>
+
+<p>The accompanying archive contains the regexp library, as well as two separate test
+programs.</p>
+
+<p>The first (originally enough called Test1) is a C++ port of the original test program
+that came with the C code. I&#146;ve updated it to use the C++ constructs that the new
+library exposes. It acts as a useful sanity check and regression test when I&#146;ve been
+modifying the source.</p>
+
+<p>The second test is much simpler and uses the libraries substring extraction function to
+chop fields out of an email header, this is less of a test program and more of a simple
+sample.</p>
+
+<p><a href="regexp_source.zip">Download Source.</a></p>
+<font FACE="Arial" SIZE="3"><b><a name="A Note about Character Size">
+
+<p>A Note about Character Size</a></b></font> </p>
+
+<p>This code (and the samples) work and have been tested pretty thoroughly under Single
+Byte Character Sets (SBCS) and UNICODE. It will NOT work under Multi Byte Character Sets
+(MBCS), though it will compile which is very misleading. The problem (for anyone
+interested in fixing it) is that the internal representation of the &#145;program&#146;
+requires a fixed size character, it manipulates this using <tt>memcpy()</tt> and <tt>memmove()</tt>
+without any knowledge of whether a particular element in it&#146;s array is some internal
+code or a character. Making this use variable width characters would be a real pain since
+much more of the code would have to decode the program itself in order to determine
+whether a specific point in the program was looking at a operator or part of a character.
+Certainly this is doable, but it is more work than I want right now. The code works under
+UNICODE and that&#146;s good enough for me. BTW even if the code is compiled with <tt>_MBCS</tt>
+it will only fail when it&#146;s actually presented with multi-byte text, it&#146;ll work
+just fine with 8-bit ASCII.</p>
+
+<p>&nbsp;</p>
+</body>
+</html>

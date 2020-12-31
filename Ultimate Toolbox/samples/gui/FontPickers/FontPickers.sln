@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontPickers", "FontPickers.vcproj", "{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release_Shared|Win32 = Release_Shared|Win32
+		Release|Win32 = Release|Win32
+		Unicode_Debug|Win32 = Unicode_Debug|Win32
+		Unicode_Release|Win32 = Unicode_Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Debug|Win32.Build.0 = Debug|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Release_Shared|Win32.ActiveCfg = Release_Shared|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Release_Shared|Win32.Build.0 = Release_Shared|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Release|Win32.ActiveCfg = Release|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Release|Win32.Build.0 = Release|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
+		{D2C3AECC-A887-4D24-8E36-3A8D15D84B5C}.Unicode_Release|Win32.Build.0 = Unicode_Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

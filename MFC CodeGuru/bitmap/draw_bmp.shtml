@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Drawing a bitmap from a BMP file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Drawing a bitmap from a BMP file</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+The BMP file has four sections. The first is BITMAPFILEHEADER. This contains the bitmap file signature, the size of the bitmap and the offset to the array of bits that define the bitmap image. The next section is the BITMAPINFOHEADER. This contains information such as the height and widht of the bitmap and the number of colors used. This section is followed by the color table. The color table contains two or more RGBQUAD structures The final section is the actual bits that define the bitmap image.
+
+<p>By the way, the BMP file holds a device independent bitmap and sometimes the extension used is DIB.
+
+<p>The steps outlined below is valid for both Windows 95 and Windows NT. On Windows 95, you can also use the LoadImage() function to load a bitmap from a file. Although Windows NT also supports this function, it does not support the LR_LOADFROMFILE flag.
+
+<h4>Step 1: Load the bitmap</h4>
+To draw the bitmap we need the information in the last 3 sections of the file. That is, the BITMAPINFOHEADER onwards. We allocate enough memory to hold this information and then read in from the bitmap file. Based on this information, a logical palette is also created.
+
+<PRE><TT><FONT COLOR="#990000">// LoadBMP		- Loads a BMP file and creates a logical palette for it.
+// Returns		- TRUE for success
+// sBMPFile		- Full path of the BMP file
+// phDIB		- Pointer to a HGLOBAL variable to hold the loaded bitmap
+//			  Memory is allocated by this function but should be 
+//			  released by the caller.
+// pPal			- Will hold the logical palette
+BOOL LoadBMP( LPCTSTR sBMPFile, HGLOBAL *phDIB, CPalette *pPal )
+{
+	CFile file;
+	if( !file.Open( sBMPFile, CFile::modeRead) )
+		return FALSE;
+
+	BITMAPFILEHEADER bmfHeader;
+	long nFileLen;
+
+	nFileLen = file.GetLength();
+
+
+	// Read file header
+	if (file.Read((LPSTR)&bmfHeader, sizeof(bmfHeader)) != sizeof(bmfHeader))
+		return FALSE;
+
+	// File type should be 'BM'
+	if (bmfHeader.bfType != ((WORD) ('M' << 8) | 'B'))
+		return FALSE;
+
+	HGLOBAL hDIB = ::GlobalAlloc(GMEM_FIXED, nFileLen);
+	if (hDIB == 0)
+		return FALSE;
+
+	// Read the remainder of the bitmap file.
+	if (file.ReadHuge((LPSTR)hDIB, nFileLen - sizeof(BITMAPFILEHEADER)) !=
+		nFileLen - sizeof(BITMAPFILEHEADER) )
+	{
+		::GlobalFree(hDIB);
+		return FALSE;
+	}
+
+
+	
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+						1 << bmInfo.bmiHeader.biBitCount;
+
+	// Create the palette
+	if( nColors <= 256 )
+	{
+		UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+		LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+		pLP->palVersion = 0x300;
+		pLP->palNumEntries = nColors;
+
+		for( int i=0; i < nColors; i++)
+		{
+			pLP->palPalEntry[i].peRed = bmInfo.bmiColors[i].rgbRed;
+			pLP->palPalEntry[i].peGreen = bmInfo.bmiColors[i].rgbGreen;
+			pLP->palPalEntry[i].peBlue = bmInfo.bmiColors[i].rgbBlue;
+			pLP->palPalEntry[i].peFlags = 0;
+		}
+
+		pPal->CreatePalette( pLP );
+
+		delete[] pLP;
+	}
+
+	*phDIB = hDIB;
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<h4>Step 2: Draw the bitmap</h4>
+The function given below is just an example of how to use the loaded bitmap to draw on the screen. It uses the function SetDIBitsToDevice() for this purpose. When using this function, you should be aware that the BMP file is arranged such that the first scan line (first row of pixels) is the bottom most scan line. So if you want only the top half of the bitmap drawn then the nStartScan value should be half of  nNumScans.
+
+<p>You can also use the StretchDIBits() to render the bitmap data onto a device. The StretchDIBits() function is more versatile in that it allows the bitmap to be streched or compressed and it can use various raster operations to generate the image.
+<PRE><TT><FONT COLOR="#990000">void DrawDIB( CDC* pDC, HGLOBAL hDIB, CPalette *pPal )
+{
+	LPVOID	lpDIBBits;		// Pointer to DIB bits
+	BOOL	bSuccess=FALSE; 	// Success/fail flag
+
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+						1 << bmInfo.bmiHeader.biBitCount;
+
+	if( bmInfo.bmiHeader.biBitCount > 8 )
+		lpDIBBits = (LPVOID)((LPDWORD)(bmInfo.bmiColors +
+			bmInfo.bmiHeader.biClrUsed) +
+			((bmInfo.bmiHeader.biCompression == BI_BITFIELDS) ? 3 : 0));
+	else
+		lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+	
+	if( pPal && (pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE) )
+	{
+		pDC->SelectPalette(pPal, FALSE);
+		pDC->RealizePalette();
+	}
+
+	::SetDIBitsToDevice(pDC->m_hDC, 				// hDC
+				   0,					// DestX
+				   0,					// DestY
+				   bmInfo.bmiHeader.biWidth,		// nDestWidth
+				   bmInfo.bmiHeader.biHeight,		// nDestHeight
+				   0,					// SrcX
+				   0,					// SrcY
+				   0,					// nStartScan
+				   bmInfo.bmiHeader.biHeight,		// nNumScans
+				   lpDIBBits,				// lpBits
+				   (LPBITMAPINFO)hDIB,			// lpBitsInfo
+				   DIB_RGB_COLORS); 			// wUsage
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

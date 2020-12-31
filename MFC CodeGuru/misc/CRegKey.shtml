@@ -1,0 +1,90 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - CRegKey Registry Class</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->CRegKey Registry Class
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:rhollis@keypoint.demon.co.uk"><!-- Author Name -->Richard Hollis</A>.
+
+<!-- Sample image - gif or jpg -->
+<!- No image for article as of 5/9/98 -->
+<P><!-IMG SRC="******" -->
+
+
+<!-- Text / source code -->
+<P>When trying to add registry functionality to a MFC application that I was developing, I looked up CReg* in the Win32 helpfile and sure enough found a CRegKey class. Great! Until you try and use this class in a non ATL (Active Template Library) application, as this code &quot;depends&quot; upon it.</P>
+
+<P>So I went looking at the original source code to see what could possibly be</P>
+<P>ATL dependant about the CRegKey registry class, and the answer was- nothing!</P>
+
+<P>So where does the CRegKey class live?</P>
+
+<P>Answer:</P>
+
+<P>Header file:</P>
+<P>..\vc\atl\include\atlbase.h</P>
+<P>Source file:</P>
+<P>..\vc\atl\include\atlimpl.cpp</P>
+
+<P>After removing just the CRegKey code from both the source code and header file, I was able to add the class to my own projects and use it without problem.</P>
+
+<P>The only "advantage" of this code is that it has already been written by Microsoft, so hopefully debugging it would not be an option (I did say hopefully ;-) ). So far it seems to work perfectly without any problems, and let’s face it, it’s not a huge stack of code.</P>
+
+<P>I have posted this discovery because after looking at several newsnet articles, different people had different ideas about how to get the CRegKey class working, but nobody actually suggested just cutting away the code that does the hard work. However, I do fully appreciate that other people may have already written their own classes that may have more functionality.</P>
+<!-- start a block of source code -->
+
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="CRegKey.zip">Download source - 2KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 09 May 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+
+
+

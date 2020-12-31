@@ -1,0 +1,49 @@
+//
+// Server.idl - IDL source for Server.dll
+//
+// MIDL generates proxy/stub code and a type library from this file.
+//
+
+//
+// Interface descriptions
+//
+import "unknwn.idl" ; 
+
+// Interface IX
+[
+	object,
+	uuid(32BB8327-B41B-11CF-A6BB-0080C7B2D682),
+	helpstring("IX Interface"),
+	pointer_default(unique)
+]
+interface IX : IUnknown 
+{
+	HRESULT Tick() ;
+	HRESULT SetStartCount([in] long NewCount) ;
+	HRESULT GetCurrentCount([out, retval] long* pCurrentCount) ;
+} ;
+
+//
+// Component description
+//
+[
+	uuid(D3011EE2-B997-11CF-A6BB-0080C7B2D682),
+	version(1.0),
+	helpstring("Inside Com, Chapter 12 Ex 1 1.0 Type Library")
+]
+library ServerLib
+{
+	importlib("stdole32.tlb") ;
+
+	// Component
+	[
+		uuid(0C092C2D-882C-11CF-A6BB-0080C7B2D682),
+		helpstring("Component Class")
+	]
+	coclass Component
+	{
+		[default] interface IX ;
+	} ;
+} ;
+
+  

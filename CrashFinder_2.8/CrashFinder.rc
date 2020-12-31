@@ -1,0 +1,496 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BINARYPROPERTIES DIALOG  0, 0, 193, 87
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Properties for : "
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Hexadecimal load address",IDC_STATIC,7,8,87,9
+    EDITTEXT        IDC_LOADADDREDIT,106,7,80,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,44,66,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,105,66,50,14
+    LTEXT           "Please note that changing the load address is only for the life of the current CrashFinder Project.  The load address is always initiallly set to that of the binary image when the CrashFinder Project is first loaded.",IDC_STATIC,7,27,179,35
+END
+
+IDD_APPOPTIONS DIALOG  0, 0, 187, 110
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "CrashFinder Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Show full paths in project tree controls",IDC_SHOWFULLPATHS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,11,173,10
+    CONTROL         "Confirm deletions from projects",IDC_CONFIRMDELETIONS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,25,173,10
+    CONTROL         "Show source and function displacements",IDC_SHOWDISPLACEMENTS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,39,173,10
+    CONTROL         "One line result text in Find panel",IDC_ONELINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,53,173,10
+    DEFPUSHBUTTON   "OK",IDOK,35,89,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,101,89,50,14
+    CONTROL         "Append new searches in Find panel",IDC_INSERTTEXT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,66,173,10
+END
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 229, 229
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About CrashFinder"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_BIGICON,7,7,20,20
+    RTEXT           "John Robbins",IDC_STATIC,5,62,100,9
+    LTEXT           "www.wintellect.com",IDC_HYPERLINK,113,62,111,9,SS_NOTIFY
+    CTEXT           "Debugging Applications for Microsoft .NET and Microsoft Windows\r\nCopyright  © 1997-2008",IDC_STATIC,4,74,222,19
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,7,93,215,1
+    DEFPUSHBUTTON   "OK",IDOK,89,211,50,14
+    CTEXT           "CrashFinder\r\n2.8",IDC_APPNAME,62,2,151,60
+    EDITTEXT        IDC_HINTS,7,98,215,108,ES_MULTILINE | ES_READONLY | WS_VSCROLL
+END
+
+IDD_FIND_FORM DIALOG  0, 0, 225, 126
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Hexadecimal Address(es):",IDC_STATIC,7,7,97,10
+    EDITTEXT        IDC_HEXEDIT,7,18,118,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Find",IDC_FIND,135,17,83,14
+    PUSHBUTTON      "Clear",IDC_CLEAR,7,34,211,14
+    EDITTEXT        IDC_DETAILS,7,54,211,64,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "A",            ID_EDIT_ADD_IMAGE,      VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "F",            ID_EDIT_FIND_CRASH,     VIRTKEY, CONTROL
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "R",            ID_EDIT_REMOVE_IMAGE,   VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_GOODITEM            BITMAP                  "GoodItem.bmp"
+IDB_BADITEM             BITMAP                  "BadItem.bmp"
+IDR_MAINFRAME           BITMAP                  "Toolbar.bmp"
+IDB_INFOITEM            BITMAP                  "InfoItem.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HINTDATA
+//
+
+IDR_HINTDATA            HINTDATA                "Hint.DAT"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "CrashFinder.ico"
+IDR_CRASHFTYPE          ICON                    "CrashFinderDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM SEPARATOR
+        MENUITEM "&Options",                    ID_VIEW_OPTIONS
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About CrashFinder...",       ID_APP_ABOUT
+    END
+END
+
+IDR_CRASHFTYPE MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "&Find Crash\tCtrl+F",         ID_EDIT_FIND_CRASH
+        MENUITEM SEPARATOR
+        MENUITEM "&Add Image\tCtrl+A",          ID_EDIT_ADD_IMAGE
+        MENUITEM "&Remove Image\tCtrl+R",       ID_EDIT_REMOVE_IMAGE
+        MENUITEM "&Image Properties",           ID_EDIT_IMAGE_PROPERTIES
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM SEPARATOR
+        MENUITEM "&Options",                    ID_VIEW_OPTIONS
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About CrashFinder...",       ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_COPY
+    SEPARATOR
+    BUTTON      ID_EDIT_FIND_CRASH
+    SEPARATOR
+    BUTTON      ID_EDIT_ADD_IMAGE
+    BUTTON      ID_EDIT_REMOVE_IMAGE
+    BUTTON      ID_EDIT_IMAGE_PROPERTIES
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,8,0,0
+ PRODUCTVERSION 2,8,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comment", " Scott Bloom, Ching Ming Kwok, Jeff Shanholtz, Rich Peters, Pablo Presedo,  Julian Onions, and Ken Gladstone did very cool things on this version!"
+            VALUE "CompanyName", "Wintellect"
+            VALUE "FileDescription", "CrashFinder Application"
+            VALUE "FileVersion", "2.8.000"
+            VALUE "InternalName", "CrashFinder"
+            VALUE "LegalCopyright", "Copyright © 1997-2008  by John Robbins/Wintellect"
+            VALUE "OriginalFilename", "CrashFinder.EXE"
+            VALUE "ProductName", "CrashFinder Application"
+            VALUE "ProductVersion", "2.8.000"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_BINARYPROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 186
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 80
+    END
+
+    IDD_APPOPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        RIGHTMARGIN, 221
+    END
+
+    IDD_FIND_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+IDR_MANIFEST            RT_MANIFEST             "CrashFinder.exe.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "CrashFinder"
+    IDR_CRASHFTYPE          "\n\nCrashFinder Project\nCrashFinder Project (*.cfp)\n.cfp\nCrashFinderProject.Document\nCrashFinder Project"
+    IDS_VERSIONREGKEY       "Version 2.8"
+    IDS_ADDFILTER           "Binary Images (*.exe, *.dll, *.ocx, *.sys)|*.exe;*.dll;*.ocx;*.sys|All Files (*.*)|*.*||"
+    IDS_ADDTITLE            "Add Binary Image"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "CrashFinder"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number, copyright, and some really helpful hints!\nAbout and Hints"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_FIND_CRASH      "Find a crash address\nFind a crash address"
+    ID_EDIT_ADD_IMAGE       "Add a binary image to the project\nAdd Binary"
+    ID_EDIT_REMOVE_IMAGE    "Remove the selected binary image from the project\nRemove Binary"
+    ID_EDIT_IMAGE_PROPERTIES 
+                            "Set the properties for the selected binary image for this CrashFinder project instance\nBinary Properties"
+    ID_VIEW_OPTIONS         "Set CrashFinder options"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DUPLICATEFILE       "The binary image,\r\n%1,\r\nis already in the project."
+    IDS_FILENOTFOUND        "The binary image,\r\n%1,\r\ndoes not exist."
+    IDS_DUPLICATELOADADDR   "The binary image,\r\n%1, \r\nconflicts with the load address for\r\n%2.\r\nWould you like to change the load address CrashFinder uses?"
+    IDS_DUPLICATELOADADDRFINAL 
+                            "The load address for\r\n%1\r\nstill conflicts with\r\n%2\r\n so the symbols cannot be loaded."
+    IDS_NOTPEIMAGE          "The binary image,\r\n%1,\r\ndoes not appear to be a PE image."
+    IDS_EXEALREADYINPROJECT "The binary image,\r\n%1,\r\nis an EXE and the project already has an EXE,\r\n%2."
+    IDS_CONFIRMREMOVE       "Do you want to remove\r\n%1\r\nfrom the project?"
+    IDS_LOADADDRBADCONVERSION 
+                            "Unable to convert %1 into a valid hexadecimal address."
+    IDS_CATASTROPHICFAILURE "There was a catastrophic failure in the program!"
+    IDS_SYMMODULENOTLOADED  "The binary image, %1, is not loaded in the symbol engine."
+    IDS_FUNCNOTFOUND        "No function at that address"
+    IDS_LINENOTFOUND        "No source information at that address"
+    IDS_DISPLACEMENTFMT     " + %08X"
+    IDS_WEAKIMAGHLP         "Your version of IMAGEHLP.DLL does not support the source and line functionality.\nGet the IMAGEHLP.DLL off the November Platform SDK if you would like to see source and line information."
+    IDS_NOMODULESLOADED     "No modules have been loaded."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MODNOTFOUND         "No module at that address"
+    IDS_LINEFMT             " line %d "
+    IDS_IMAGEBASE64         "Image base   : 0x%p"
+    IDS_TIMESTAMP           "Time stamp   : %s"
+    IDS_SYMBOLTYPE          "Symbol type  : "
+    IDS_IMAGENAME           "Image name   : %s"
+    IDS_LOADEDIMAGE         "Loaded image : %s"
+    IDS_ERR_NOTFOUND        "%1 could not be found or does not exist"
+    IDS_ERR_LOADCONFLICT    "%1's load address conflicts with another module"
+    IDS_ERR_NOSYMBOLS       "%1's debugging symbols could not be found"
+    IDS_ERR_NOPDBSYMBOLS    "%1 does not have PDB symbols"
+    IDS_ERR_NOTAPEFILE      "%1 is not a PE binary file"
+    IDS_ERR_UNKNOWNERROR    "An unknown error occurred!"
+    IDS_IMAGEBASE32         "Image base   : 0x%p"
+    IDS_ERR_WRONGMACHINE    "%1 is the wrong machine type for this build of CrashFinder"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

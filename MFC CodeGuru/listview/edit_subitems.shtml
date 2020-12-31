@@ -1,0 +1,508 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Editable subitems</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Editable subitems</FONT></H3></CENTER>
+
+<HR WIDTH="100%">The default implementation of the ListView control allows
+editing of the first column label only. You have to create your own edit
+control to allow editing of subitems.
+<p><img src="edit_subitems.gif" border="1" width="276"
+height="78"></p>
+
+<H4>Step 1: Derive a class from CListCtrl</H4>
+In the code below, CMyListCtrl is the name used for the derived class.
+You can also derive a class from CListView if you need this functionality
+in a CView rather than in a control. If you are already working with a
+sub-class of CListCtrl, you can make the modifications to that class.
+
+<H4>Step 2: Define HitTestEx()</H4>
+Define an extended HitTest function for the CMyListCtrl class. This function
+will determine the row index that the point falls over and also determine
+the column. The HitTestEx() has already been listed and explained in an 
+earlier section and is listed here again for completeness.
+We need this function if the user interface to initiate the edit is a mouse
+click or a double click. See the section "<A HREF="col_index.shtml">Detecting
+column index of the item clicked</A>".
+
+<PRE><TT><FONT COLOR="#990000">// HitTestEx	- Determine the row index and column index for a point
+// Returns	- the row index or -1 if point is not over a row
+// point	- point to be tested.
+// col		- to hold the column index
+int CMyListCtrl::HitTestEx(CPoint &point, int *col) const
+{
+	int colnum = 0;
+	int row = HitTest( point, NULL );
+	
+	if( col ) *col = 0;
+
+	// Make sure that the ListView is in LVS_REPORT
+	if( (GetWindowLong(m_hWnd, GWL_STYLE) & LVS_TYPEMASK) != LVS_REPORT )
+		return row;
+
+	// Get the top and bottom row visible
+	row = GetTopIndex();
+	int bottom = row + GetCountPerPage();
+	if( bottom > GetItemCount() )
+		bottom = GetItemCount();
+	
+	// Get the number of columns
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+	int nColumnCount = pHeader->GetItemCount();
+
+	// Loop through the visible rows
+	for( ;row <=bottom;row++)
+	{
+		// Get bounding rect of item and check whether point falls in it.
+		CRect rect;
+		GetItemRect( row, &rect, LVIR_BOUNDS );
+		if( rect.PtInRect(point) )
+		{
+			// Now find the column
+			for( colnum = 0; colnum < nColumnCount; colnum++ )
+			{
+				int colwidth = GetColumnWidth(colnum);
+				if( point.x >= rect.left 
+					&& point.x <= (rect.left + colwidth ) )
+				{
+					if( col ) *col = colnum;
+					return row;
+				}
+				rect.left += colwidth;
+			}
+		}
+	}
+	return -1;
+}
+</FONT></TT></PRE>
+
+<H4>Step 3: Add function to initiate the edit</H4>
+The user interface to initiate an edit for a sub item may be click on an
+already selected row, a double click or even a push button. We define a
+helper function to set up the edit control. The helper function takes only
+the row and column index of the subitem. EditSubLabel() ensures that the
+row as well as the column is visible before it creates the edit control.
+It then creates the edit control of the right size and with the proper
+text justification. The edit control created is of the class CInPlaceEdit
+which we will define later.
+<BR>
+<PRE><TT><FONT COLOR="#990000">
+// EditSubLabel		- Start edit of a sub item label
+// Returns		- Temporary pointer to the new edit control
+// nItem		- The row index of the item to edit
+// nCol			- The column of the sub item.
+CEdit* CMyListCtrl::EditSubLabel( int nItem, int nCol )
+{
+	// The returned pointer should not be saved
+
+	// Make sure that the item is visible
+	if( !EnsureVisible( nItem, TRUE ) ) return NULL;
+
+	// Make sure that nCol is valid
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+	int nColumnCount = pHeader->GetItemCount();
+	if( nCol >= nColumnCount || GetColumnWidth(nCol) &lt; 5 )
+		return NULL;
+
+	// Get the column offset
+	int offset = 0;
+	for( int i = 0; i &lt; nCol; i++ )
+		offset += GetColumnWidth( i );
+
+	CRect rect;
+	GetItemRect( nItem, &amp;rect, LVIR_BOUNDS );
+
+	// Now scroll if we need to expose the column
+	CRect rcClient;
+	GetClientRect( &amp;rcClient );
+	if( offset + rect.left &lt; 0 || offset + rect.left > rcClient.right )
+	{
+		CSize size;
+		size.cx = offset + rect.left;
+		size.cy = 0;
+		Scroll( size );
+		rect.left -= size.cx;
+	}
+
+	// Get Column alignment
+	LV_COLUMN lvcol;
+	lvcol.mask = LVCF_FMT;
+	GetColumn( nCol, &amp;lvcol );
+	DWORD dwStyle ;
+	if((lvcol.fmt&amp;LVCFMT_JUSTIFYMASK) == LVCFMT_LEFT)
+		dwStyle = ES_LEFT;
+	else if((lvcol.fmt&amp;LVCFMT_JUSTIFYMASK) == LVCFMT_RIGHT)
+		dwStyle = ES_RIGHT;
+	else dwStyle = ES_CENTER;
+
+	rect.left += offset+4;
+	rect.right = rect.left + GetColumnWidth( nCol ) - 3 ;
+	if( rect.right > rcClient.right) rect.right = rcClient.right;
+
+	dwStyle |= WS_BORDER|WS_CHILD|WS_VISIBLE|ES_AUTOHSCROLL;
+	CEdit *pEdit = new CInPlaceEdit(nItem, nCol, GetItemText( nItem, nCol ));
+	pEdit->Create( dwStyle, rect, this, IDC_IPEDIT );
+
+
+	return pEdit;
+}</FONT></TT></PRE>
+
+<H4>
+Step 4: Handle the scroll messages</H4>
+The CInPlaceEdit class is designed to destroy the edit control and delete
+the object when it loses focus. Clicking on the scrollbars of the ListView
+control does not take away the focus from the edit control. We therefore
+add handlers for the scrollbar messages which force focus away from the
+edit control by setting the focus to the list view control itself.
+<BR>
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	if( GetFocus() != this ) SetFocus();
+	CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+void CMyListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	if( GetFocus() != this ) SetFocus();
+	CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
+}</FONT></TT></PRE>
+
+<H4>
+Step 5: Handle EndLabelEdit</H4>
+Like the built in edit control for the first column, our edit control also
+sends the LVN_ENDLABELEDIT notification when the edit is completed. If
+this notification message isn’t already being handled, add a handler so
+that any changes made with the edit control can be accepted.
+<PRE><TT><FONT COLOR="#990000">
+void CMyListCtrl::OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LV_DISPINFO *plvDispInfo = (LV_DISPINFO *)pNMHDR;
+	LV_ITEM	*plvItem = &amp;plvDispInfo->item;
+
+	if (plvItem->pszText != NULL)
+	{
+		SetItemText(plvItem->iItem, plvItem->iSubItem, plvItem->pszText);
+	}
+	*pResult = FALSE;
+}</FONT></TT></PRE>
+
+<H4>
+Step 6: Add means for the user to initiate the edit</H4>
+A suggested method for starting an edit of a subitem is to click on a subitem
+when the item already has the focus. You may choose to provide a different
+method. The code below is the handler for the WM_LBUTTONDOWN message. An
+edit control is created to edit a subitem if the subitem is clicked after
+the item already has the focus. The code checks for the LVS_EDITLABELS
+style before creating the edit control. It also does not activate the edit
+control for the first column since editing of the first column is already
+supported by the list view control.
+<BR>
+<BR>
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	int index;
+	CListCtrl::OnLButtonDown(nFlags, point);
+
+	int colnum;
+	if( ( index = HitTestEx( point, &amp;colnum )) != -1 )
+	{
+		UINT flag = LVIS_FOCUSED;
+		if( (GetItemState( index, flag ) &amp; flag) == flag &amp;&amp; colnum > 0)
+		{
+			// Add check for LVS_EDITLABELS
+			if( GetWindowLong(m_hWnd, GWL_STYLE) &amp; LVS_EDITLABELS )
+				EditSubLabel( index, colnum );
+		}
+		else
+			SetItemState( index, LVIS_SELECTED | LVIS_FOCUSED ,
+				&nbsp;&nbsp;&nbsp;&nbsp;	LVIS_SELECTED | LVIS_FOCUSED);&nbsp;
+	}
+}</FONT></TT></PRE>
+
+<H4>
+Step 7: Subclass the CEdit class</H4>
+We need to subclass the CEdit class to provide for our special requirement.
+The main requirements placed on this class is that
+<UL>
+<LI>
+It should send the LVN_ENDLABELEDIT message when edit is complete</LI>
+
+<LI>
+It should expand to accommodate the text</LI>
+
+<LI>
+It should destroy itself when the edit is complete</LI>
+
+<LI>
+The edit should be terminated when the user presses the Escape or the Enter
+key or when the edit control loses focus.</LI>
+</UL>
+The listing of the header file precedes that of the implementation file.
+The CInPlaceEdit declares four private variables. These are used when the
+control sends the LVN_ENDLABELEDIT notification.
+<PRE><TT><FONT COLOR="#990000">// InPlaceEdit.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CInPlaceEdit window
+
+class CInPlaceEdit : public CEdit
+{
+// Construction
+public:
+	CInPlaceEdit(int iItem, int iSubItem, CString sInitText);
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CInPlaceEdit)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CInPlaceEdit();
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CInPlaceEdit)
+	afx_msg void OnKillFocus(CWnd* pNewWnd);
+	afx_msg void OnNcDestroy();
+	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+private:
+	int m_iItem;
+	int m_iSubItem;
+	CString m_sInitText;
+	BOOL&nbsp;&nbsp;&nbsp; m_bESC;	&nbsp;	// To indicate whether ESC key was pressed
+};
+
+/////////////////////////////////////////////////////////////////////////////</FONT></TT></PRE>
+The listing of the implementation file now follows. The CInPlaceEdit constructor
+simply saves the values passed through its arguments and initializes m_bESC
+to false. The overridden PreTranslateMessage() is to ascertain that certain
+key strokes do make it to the edit control. The escape key and the enter
+key are normally pre-translated by the CDialog or the CFormView object,
+we therefore specifically check for these and pass it on to the edit control.
+The check for GetKeyState( VK_CONTROL) makes sure that key combinations
+such as Ctrl-C, Ctrl-V and Ctrl-X get forwarded to the edit control.
+
+<P>OnKillFocus() sends of the LVN_ENDLABELEDIT notification and destroys
+the edit control. The notification is sent to the parent of the list view
+control and not to the list view control itself. When sending the notification,
+the m_bESC member variable is used to determine whether to send a NULL
+string.
+
+<P>The OnNcDestroy() function is the appropriate place to destroy the C++
+object.
+
+<P>The OnChar() function ends the edit if the Escape or the Enter key is
+pressed. It does this by setting focus to the list view control which force
+the OnKillFocus() of the edit control to be called. For any other character,
+the OnChar() function lets the base class function take care of it before
+it tries to determine if the control needs to be resized. The function
+first gets the extent of the new string using the proper font and then
+compares it to the current dimension of the edit control. If the string
+is too long to fit within the edit control, it resizes the edit control
+after checking the parent window ( the list view control ) to determine
+if there is space for the edit control to grow.
+
+<P>The OnCreate() function creates the edit control and initializes it
+with the proper values.
+<BR>
+<BR>
+<PRE><TT><FONT COLOR="#990000">// InPlaceEdit.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "InPlaceEdit.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CInPlaceEdit
+
+CInPlaceEdit::CInPlaceEdit(int iItem, int iSubItem, CString sInitText)
+:m_sInitText( sInitText )
+{
+	m_iItem = iItem;
+	m_iSubItem = iSubItem;
+	m_bESC = FALSE;
+}
+
+CInPlaceEdit::~CInPlaceEdit()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CInPlaceEdit, CEdit)
+	//{{AFX_MSG_MAP(CInPlaceEdit)
+	ON_WM_KILLFOCUS()
+	ON_WM_NCDESTROY()
+	ON_WM_CHAR()
+	ON_WM_CREATE()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CInPlaceEdit message handlers
+
+BOOL CInPlaceEdit::PreTranslateMessage(MSG* pMsg)
+{
+	if( pMsg->message == WM_KEYDOWN )
+	{
+		if(pMsg->wParam == VK_RETURN
+				|| pMsg->wParam == VK_DELETE
+				|| pMsg->wParam == VK_ESCAPE
+				|| GetKeyState( VK_CONTROL)
+				)
+		{
+			::TranslateMessage(pMsg);
+			::DispatchMessage(pMsg);
+			return TRUE;		&nbsp;&nbsp;&nbsp;&nbsp;	// DO NOT process further
+		}
+	}
+
+	return CEdit::PreTranslateMessage(pMsg);
+}
+
+
+void CInPlaceEdit::OnKillFocus(CWnd* pNewWnd)
+{
+	CEdit::OnKillFocus(pNewWnd);
+
+	CString str;
+	GetWindowText(str);
+
+	// Send Notification to parent of ListView ctrl
+	LV_DISPINFO dispinfo;
+	dispinfo.hdr.hwndFrom = GetParent()->m_hWnd;
+	dispinfo.hdr.idFrom = GetDlgCtrlID();
+	dispinfo.hdr.code = LVN_ENDLABELEDIT;
+
+	dispinfo.item.mask = LVIF_TEXT;
+	dispinfo.item.iItem = m_iItem;
+	dispinfo.item.iSubItem = m_iSubItem;
+	dispinfo.item.pszText = m_bESC ? NULL : LPTSTR((LPCTSTR)str);
+	dispinfo.item.cchTextMax = str.GetLength();
+
+	GetParent()->GetParent()->SendMessage( WM_NOTIFY, GetParent()->GetDlgCtrlID(), 
+					(LPARAM)&amp;dispinfo );
+
+	DestroyWindow();
+}
+
+void CInPlaceEdit::OnNcDestroy()
+{
+	CEdit::OnNcDestroy();
+
+	delete this;
+}
+
+
+void CInPlaceEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	if( nChar == VK_ESCAPE || nChar == VK_RETURN)
+	{
+		if( nChar == VK_ESCAPE )
+			m_bESC = TRUE;
+		GetParent()->SetFocus();
+		return;
+	}
+
+
+	CEdit::OnChar(nChar, nRepCnt, nFlags);
+
+	// Resize edit control if needed
+
+	// Get text extent
+	CString str;
+
+	GetWindowText( str );
+	CWindowDC dc(this);
+	CFont *pFont = GetParent()->GetFont();
+	CFont *pFontDC = dc.SelectObject( pFont );
+	CSize size = dc.GetTextExtent( str );
+	dc.SelectObject( pFontDC );
+	size.cx += 5;			&nbsp;&nbsp;&nbsp;	// add some extra buffer
+
+	// Get client rect
+	CRect rect, parentrect;
+	GetClientRect( &amp;rect );
+	GetParent()->GetClientRect( &amp;parentrect );
+
+	// Transform rect to parent coordinates
+	ClientToScreen( &amp;rect );
+	GetParent()->ScreenToClient( &amp;rect );
+
+	// Check whether control needs to be resized
+	// and whether there is space to grow
+	if( size.cx > rect.Width() )
+	{
+		if( size.cx + rect.left &lt; parentrect.right )
+			rect.right = rect.left + size.cx;
+		else
+			rect.right = parentrect.right;
+		MoveWindow( &amp;rect );
+	}
+}
+
+int CInPlaceEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CEdit::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// Set the proper font
+	CFont* font = GetParent()->GetFont();
+	SetFont(font);
+
+	SetWindowText( m_sInitText );
+	SetFocus();
+	SetSel( 0, -1 );
+	return 0;
+}</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

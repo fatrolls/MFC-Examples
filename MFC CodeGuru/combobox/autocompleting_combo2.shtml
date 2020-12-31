@@ -1,0 +1,187 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Auto-completion ComboBox (2)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Auto-completion ComboBox (2)</FONT></H3></CENTER>
+<HR>
+
+This sample was contributed by <A HREF="mailto:caroline@kornflake.demon.co.uk ">Caroline Price</A>.
+
+
+
+
+
+<H4>Background</H4>
+
+I've been writing a very simple accounts program to replace the spreadsheet
+based accounts system that I've been using for a few years now. In the 
+application I had a requirement for a few combo boxes. Some were of the 
+drop-list style where a predefined list of entries is displayed which gives
+the user the option to select one, but not edit, or create new entries.
+
+<P>Some were of the drop-down style where a list of predefined entries is 
+displayed but the user may also add a new entry if the one he wants is not 
+there.
+
+<P>MFC provides good functionality for both of these styles. The drop-list style
+also has basic type ahead functionality. If the user presses a key and an
+item beginning with that letter is in the list, it will be automatically
+highlighted. However the drop-down style does not have this functionality
+at all. What I wanted for my drop-down combo box is the kind of type ahead
+functionality found in Microsoft Excell.
+
+<P>When the user presses a key in the combo box the first item beginning with
+that letter is highlighted. However as the user continues to type, a string 
+is formed, upon each key press, this string is checked against existing
+entires in the combo box and if one begings with the string then it is 
+highlighted. What will happen is that if the user starts to type an entry that
+already exists, only a few key presses will be required to select it. If he
+types to the point where the string typed no longer matching an existing entry,
+a new one is automatically created. 
+
+<H4>How I did It</H4>
+
+I'm sure there are several ways to do this kind of thing with MFC but I 
+opted for the window subclassing method (probably because I'd just learnt
+about subclassing!). Subclassing allows the programmer to modify one of
+the Windows controls to provide the required functionality. A bit like 
+inheritance really.
+
+<H4>Subclassing An Ordinary Control</H4>
+
+Lets say you wanted to subclass an ordinary control such as an edit box.
+I did this to create an edit box that would only allows numbers, the '.',
+delete and backspace keys. I used this for the input of monetary values.
+To subclass an edit control you create a new class derived from CEdit and
+create a control of this new class in your application. Assuming it is
+on a dialog box, you would add the following line to your dialog class'
+declaration:
+
+<PRE><TT><FONT COLOR="#990000">
+	CNumericEdit	m_xAmount;
+</FONT></TT></PRE>
+
+And in the OnInitDialog() function:
+
+<PRE><TT><FONT COLOR="#990000">
+	m_xAmount.SubclassDlgItem(IDC_AMOUNT, this);
+</FONT></TT></PRE>
+
+Where IDC_AMOUNT is the ID of the control you placed on the dialog form
+in the resource editor.
+
+<H4>Subclassing a Combo Box</H4>
+
+Subclassing a simple control is fairly straightforward. Unfortunately a combo
+box is made up of a list box and an edit box. To change the way the edit 
+portion works, we need to actually subclass the edit portion of the combo
+box. 
+
+<P>I've created a class called CTypeAheadCombo derived from CComboBox and a class 
+called CComboEdit derived from CEdit. It's the edit class that does all the 
+work. The only reason we need to subclass the combo box itself is to allow
+us to use the subclassed edit control in place of the ordinary one.
+
+<P>In the subclassed combo, we made a member variable of our subclassed edit 
+control:
+
+<PRE><TT><FONT COLOR="#990000">
+	CComboEdit	m_xEdit;
+</FONT></TT></PRE>
+
+And then we override PreSubclassWindow() as follows:
+
+<PRE><TT><FONT COLOR="#990000">
+	void CTypeAheadCombo::PreSubclassWindow() 
+	{
+		m_xEdit.SubclassDlgItem(1001, this);	
+		CComboBox::PreSubclassWindow();
+	}
+</FONT></TT></PRE>
+
+Notice the 1001 used in place of a resource ID. Luckily for us, the edit
+portion of a combo box is always allocated the resource ID of 1001 which is 
+quite handy. 
+
+<P>Now onto the edit control itself...
+
+<P>The most obvious function to override is OnChar(). By trapping the characters
+types I can build up a search string to use when searching through the list
+of entries. I've used a CString for my search string and I've made it a member
+variable. In this way as long as the control is in existence (which will be
+for the life of the dialog) I can muck about with the search string to my
+hearts content but it gets reset when the combo box is recreated.
+
+<P>The basics of what I wanted to do it to trap the key that the user pressed,
+add it to the search string and then do a FindString() on the combo box
+to see if an entry exists. To get to the combo control I've just used a 
+pointer to the parent of the edit control.
+
+<H4>Difficulties </H4>
+
+The basic building up of a search string and finding it within the list of
+entries was quite easy. What was not so easy was handling other keys. 
+For example, if the user used the cursor keys to step back through his
+selection and type something, OnChar would only trap the new character typed
+but of course this character has now been placed into a different part of the
+string.
+
+<P>When the user presses backspace, parts of the string are deleted. the problem
+here is that I need to allow the user to delete his selection if required.
+The way I've done this is to say that if the user presses backspace or
+delete while a selection is currently highlighted, to unhighlight the selection
+and blank out the edit box.
+
+<P>OnKeyDown was needed to trap the cursor keys and the delete keys.
+
+<P>Other problems I encountered were with the caret. If I trapped the delete and
+cursor keys I had to ensure that the base class was called to actually
+process the key. My problem was with positioning the caret in the correct place.
+I had to set up a few bool variables to keep track of the original caret
+position, whether the delete or backspace keys were pressed and if a selection
+was highlighted.
+
+<P>The code itself is well-commented I think and should be enough to step you 
+through how it's done.
+
+<P>If you have any comments, criticisms, suggestions etc then please e-mail me!
+
+<BR>Caroline Price
+<BR>caroline@kornflake.demon.co.uk 
+
+
+<P><A HREF="autocompleting_combo2.zip">Download file</A>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

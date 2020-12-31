@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mfccalc", "mfccalc.vcxproj", "{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		Unicode Debug|Win32 = Unicode Debug|Win32
+		Unicode Release|Win32 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}.Debug|Win32.Build.0 = Debug|Win32
+		{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}.Release|Win32.ActiveCfg = Release|Win32
+		{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}.Release|Win32.Build.0 = Release|Win32
+		{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{D8778F6C-F6F2-C57B-20CA-9BAE40E75F82}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

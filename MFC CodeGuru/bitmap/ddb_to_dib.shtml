@@ -1,0 +1,199 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Converting DDB to DIB</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Converting DDB to DIB</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+A device-dependent bitmap (DDB) is structured in such a way that it matches very closely the form in which the bitmap is finally displayed by the device driver. For this reason the DDB is unlikely to be compatible with other display devices. A device-independent bitmap (DIB) on the other hand has a logical layout and can be decifered by any device driver. The disadvantage with DIB though is that it is much slower to render onto the device as compared to a DDB.
+
+<p>One situation where we need to convert a DDB to a DIB is when we want to save the bitmap to a file. The BMP files are infact just composed of a short header followed by information in a DIB.
+
+<p>The steps involved in creating the DIB are:
+<ol>
+<li>Initialize a BITMAPINFOHEADER data structure. We use information in the bitmap to determine the widht, height and the bit count. The compression field is set based on the argument passed into the function. It's best to use the BI_RGB compression for greater portability and faster rendering.</li>
+<li>Select and realize the logical palette associated with the bitmap. This is passed in as the last argument to the function. If a palette is not provided use the default palette.</li>
+<li>Determine the number of bytes required for the bitmap bits. First allocate enough memory for BITMAPINFOHEADER and the color table and then call GetDIBits() to size. Supplying a NULL for the lpBits parameter instructs GetDIBits() to biSizeImage field in the bitmapinfoheader. Sometimes, this does not work (depending on the device driver) in which case we make our own estimate. We can compute this since we already know the width, height, the number of bits per pixel and the fact that each row of pixels will occupy a multiple of 4 bytes (32 bits).</li>
+<li>Given the final size of the bitmap bits, reallocate the memory block to hold the bitmapinfoheader, the color table and the bitmap bits.</li>
+<li>Finally call the GetDIBits() again to get the bitmap bits.</li>
+</ol>
+<PRE><TT><FONT COLOR="#990000">// DDBToDIB		- Creates a DIB from a DDB
+// bitmap		- Device dependent bitmap
+// dwCompression	- Type of compression - see BITMAPINFOHEADER
+// pPal			- Logical palette
+HANDLE DDBToDIB( CBitmap& bitmap, DWORD dwCompression, CPalette* pPal ) 
+{
+	BITMAP			bm;
+	BITMAPINFOHEADER	bi;
+	LPBITMAPINFOHEADER 	lpbi;
+	DWORD			dwLen;
+	HANDLE			hDIB;
+	HANDLE			handle;
+	HDC 			hDC;
+	HPALETTE		hPal;
+
+
+	ASSERT( bitmap.GetSafeHandle() );
+
+	// The function has no arg for bitfields
+	if( dwCompression == BI_BITFIELDS )
+		return NULL;
+
+	// If a palette has not been supplied use defaul palette
+	hPal = (HPALETTE) pPal->GetSafeHandle();
+	if (hPal==NULL)
+		hPal = (HPALETTE) GetStockObject(DEFAULT_PALETTE);
+
+	// Get bitmap information
+	bitmap.GetObject(sizeof(bm),(LPSTR)&bm);
+
+	// Initialize the bitmapinfoheader
+	bi.biSize		= sizeof(BITMAPINFOHEADER);
+	bi.biWidth		= bm.bmWidth;
+	bi.biHeight 		= bm.bmHeight;
+	bi.biPlanes 		= 1;
+	bi.biBitCount		= bm.bmPlanes * bm.bmBitsPixel;
+	bi.biCompression	= dwCompression;
+	bi.biSizeImage		= 0;
+	bi.biXPelsPerMeter	= 0;
+	bi.biYPelsPerMeter	= 0;
+	bi.biClrUsed		= 0;
+	bi.biClrImportant	= 0;
+
+	// Compute the size of the  infoheader and the color table
+	int nColors = (1 << bi.biBitCount);
+	if( nColors > 256 ) 
+		nColors = 0;
+	dwLen  = bi.biSize + nColors * sizeof(RGBQUAD);
+
+	// We need a device context to get the DIB from
+	hDC = GetDC(NULL);
+	hPal = SelectPalette(hDC,hPal,FALSE);
+	RealizePalette(hDC);
+
+	// Allocate enough memory to hold bitmapinfoheader and color table
+	hDIB = GlobalAlloc(GMEM_FIXED,dwLen);
+
+	if (!hDIB){
+		SelectPalette(hDC,hPal,FALSE);
+		ReleaseDC(NULL,hDC);
+		return NULL;
+	}
+
+	lpbi = (LPBITMAPINFOHEADER)hDIB;
+
+	*lpbi = bi;
+
+	// Call GetDIBits with a NULL lpBits param, so the device driver 
+	// will calculate the biSizeImage field 
+	GetDIBits(hDC, (HBITMAP)bitmap.GetSafeHandle(), 0L, (DWORD)bi.biHeight,
+			(LPBYTE)NULL, (LPBITMAPINFO)lpbi, (DWORD)DIB_RGB_COLORS);
+
+	bi = *lpbi;
+
+	// If the driver did not fill in the biSizeImage field, then compute it
+	// Each scan line of the image is aligned on a DWORD (32bit) boundary
+	if (bi.biSizeImage == 0){
+		bi.biSizeImage = ((((bi.biWidth * bi.biBitCount) + 31) & ~31) / 8) 
+						* bi.biHeight;
+
+		// If a compression scheme is used the result may infact be larger
+		// Increase the size to account for this.
+		if (dwCompression != BI_RGB)
+			bi.biSizeImage = (bi.biSizeImage * 3) / 2;
+	}
+
+	// Realloc the buffer so that it can hold all the bits
+	dwLen += bi.biSizeImage;
+	if (handle = GlobalReAlloc(hDIB, dwLen, GMEM_MOVEABLE))
+		hDIB = handle;
+	else{
+		GlobalFree(hDIB);
+
+		// Reselect the original palette
+		SelectPalette(hDC,hPal,FALSE);
+		ReleaseDC(NULL,hDC);
+		return NULL;
+	}
+
+	// Get the bitmap bits
+	lpbi = (LPBITMAPINFOHEADER)hDIB;
+
+	// FINALLY get the DIB
+	BOOL bGotBits = GetDIBits( hDC, (HBITMAP)bitmap.GetSafeHandle(),
+				0L,				// Start scan line
+				(DWORD)bi.biHeight,		// # of scan lines
+				(LPBYTE)lpbi 			// address for bitmap bits
+				+ (bi.biSize + nColors * sizeof(RGBQUAD)),
+				(LPBITMAPINFO)lpbi,		// address of bitmapinfo
+				(DWORD)DIB_RGB_COLORS);		// Use RGB for color table
+
+	if( !bGotBits )
+	{
+		GlobalFree(hDIB);
+		
+		SelectPalette(hDC,hPal,FALSE);
+		ReleaseDC(NULL,hDC);
+		return NULL;
+	}
+
+	SelectPalette(hDC,hPal,FALSE);
+	ReleaseDC(NULL,hDC);
+	return hDIB;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

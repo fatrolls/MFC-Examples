@@ -1,0 +1,23 @@
+HKCR
+{
+	CTAddIn.CTAddIn.1 = s 'CTAddIn Class'
+	{
+		CLSID = s '{9EDADF70-C069-11D1-A446-0000E8D2CD0A}'
+	}
+	CTAddIn.CTAddIn = s 'CTAddIn Class'
+	{
+		CurVer = s 'CTAddIn.CTAddIn.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {9EDADF70-C069-11D1-A446-0000E8D2CD0A} = s 'CTAddIn Class'
+		{
+			ProgID = s 'CTAddIn.CTAddIn.1'
+			VersionIndependentProgID = s 'CTAddIn.CTAddIn'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s ''
+			}
+		}
+	}
+}

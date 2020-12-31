@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+<title>Visual C++ Tips - Opening a File</title>
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000" bgproperties="fixed">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<h3 align="center"><font COLOR="#AOAO99">Opening a File</font></h3>
+
+<hr align="center">
+
+<p>This tip was contributed by <a HREF="mailto:bmackay@foxboro.com">Brian MacKay</a>
+
+<!-- start -->
+<p>You can open a file either:</p>
+
+<ul>  
+<li>by typing the name in the normal "find" combo-box on the toolbar, or</li>
+<li>by selecting the filename as text within an edited document,<br>
+and pressing &lt;Ctrl&gt;+&lt;Shift&gt;+G.  If the file exists in the project or is "findable" using the normal include path mechanisms, the file will open for editing inside the IDE.</li>
+</ul>
+
+<!-- end -->
+<p>Posted on: April 11, 98. </p>
+
+<hr>
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font>
+    </td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+</font>
+</body>
+</html>

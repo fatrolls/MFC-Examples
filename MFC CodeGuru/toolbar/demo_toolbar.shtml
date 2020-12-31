@@ -1,0 +1,271 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<!-- add your name in the CONTENT field below -->
+<meta NAME="Author" CONTENT="Kirk Stowell">
+<title>Toolbar - Demo Flat Toolbar Project</title>
+</head>
+<!-- Set background properties -->
+
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+<!-- A word from our sponsors... -->
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td align="center"><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<h3 align="center"><font COLOR="#AOAO99"><!-- Article Title -->Demo Flat Toolbar Project </font></h3>
+
+<hr>
+<!-- Author and contact details -->
+
+<p>This article was contributed by <!-- Author Email --> <a HREF="mailto:kstowel@sprynet.com"><!-- Author Name --> Kirk Stowell</a>.<br>
+If you are interested in other articles that I have written, you can <a
+href="http://www.geocities.com/SiliconValley/Haven/8230/index.html"><b>surf here</b></a>.</p>
+<!-- Text / source code -->
+
+<p>This project uses the library <b>mfcxlib10.dll</b>. I decided to implement all of the
+classes that I have written into a single library that you can link to. This made using
+the classes with new or existing projects a no brain-er, not to mention the man hours that
+was saved in maintaining and updating the source code! If you are interested in the source
+for this library, <a href="../advancedui/mfcxlib10_src.zip">follow this link (147 KB</a>).</p>
+
+<p>This library subclasses the common MFC controls, so with three lines of code, you have
+access to the entire library. No need for additional include statements, changing CToolbar
+to CCoolBar, or adding extra files to your project!</p>
+
+<p><font size="5"><b>Linking to MFCXLib.dll:</b></font><br>
+In you stdafx.h header file, add the following three lines of code, and make sure that you
+are using MFC in a shared DLL. Add &quot;<b>..\Include</b>&quot; as an additional include
+directory, add &quot;<b>..\Lib</b>&quot; as an additional library path, and build your
+executable to &quot;<b>..\Lib</b>&quot; as well.</p>
+<!-- start a block of source code -->
+
+<pre><tt><font color="#990000">
+#define MFCX_PROJ
+#define AUTO_SUBCLASS
+#include &lt;mfcxlib10.h&gt;
+</font></tt></pre>
+<!-- end the block of source code -->
+
+<p>This code was written for version 4.7 of comctl32.dll. <a
+href="http://www.microsoft.com/msdn/downloads/files/40Comupd.htm">Follow this link if you
+have an older version of comctl32.dll.</a></p>
+
+<p><b>CMFCXToolBar()</b> - ( MFCXToolBar.cpp and MFCXToolBar.h ) This is the
+implementation class I wrote for the flat toolbar with gripper. There are a lot of
+implementations out there for the flat toolbar, this is only one of them. Once you have
+linked to mfcxlib, you need do nothing more, CMFCXToolBar becomes CToolBar!</p>
+
+<p><font size="5"><b>Flatbar with gripper...</b></font><br>
+Nothing more needs to be done!</p>
+
+<p><img src="demo_toolbar_a.gif" width="224" height="32"><br>
+</p>
+<!-- Sample image - gif or jpg -->
+<font size="5"><b><a name="bookmark_1">
+
+<p>Adding Controls...</a></b></font><br>
+In your toolbar resource create an empty tool button for each control you wish to add, in
+this example, I added one called '<b>IDC_COMBO</b>', and one called '<b>IDC_EDIT</b>'. </p>
+
+<p><img src="demo_toolbar_b.gif" width="375" height="32"></p>
+<!-- Sample image - gif or jpg -->
+
+<p>In the OnCreate method in the MainFrm.cpp file, add the following code at the end of
+the method ( that is after the toolbar has been created and docked ). The <b>InsertControl(
+CRuntimeClass* pClass, CString strTitle, CRect&amp; pRect, UINT nID, DWORD dwStyle )</b>
+method can be used to insert CComboBox, CEdit and CButton, and returns a pointer to the
+newly added control.</p>
+<!-- start a block of source code -->
+
+<pre><tt><font color="#990000">
+// insert the CEdit control
+m_edit = (CEdit*)m_wndToolBar.InsertControl(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RUNTIME_CLASS(CEdit), _T(&quot;&quot;), CRect(-35, -22, 0, 0), IDC_EDIT,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ES_AUTOHSCROLL | WS_BORDER | WS_TABSTOP);
+
+// insert the CComboBox control
+m_combo = (CComboBox*)m_wndToolBar.InsertControl(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RUNTIME_CLASS(CComboBox), _T(&quot;&quot;), CRect(-100, -200, 0, 0), IDC_COMBO,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WS_CHILD | CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | WS_VSCROLL | 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CBS_HASSTRINGS);
+</font></tt></pre>
+<!-- end the block of source code -->
+
+<p>Once you have added all of your controls, you can add your message handlers for these
+controls to CMainFrame. I added <b>OnSelEndOk()</b> for the combo box as an example. </p>
+
+<p><b><font size="5"><a name="bookmark_2">Adding drop arrow...</a></font><br>
+</b>First you will need to create a popup menu in your resource editor, I created <b>IDR_POPUP</b>,
+and used the <b>ID_FILE_MRU_FILE1</b> for the recent file list.</p>
+
+<p><img src="demo_toolbar_c.gif" width="389" height="32"></p>
+<!-- Sample image - gif or jpg -->
+
+<p>Next, add the following method to CMainFrame class. If you are using more than one drow
+down menu, you can insert a switch statement and switch on pnmtb-&gt;iItem to load the
+appropriate menu:</p>
+<!-- start a block of source code -->
+
+<pre><tt><font color="#990000">
+void CMainFrame::OnToolbarDropDown(NMTOOLBAR* pnmtb, LRESULT *plr)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// load and display popup menu
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMenu menu;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menu.LoadMenu(IDR_POPUP);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMenu* pPopup = menu.GetSubMenu(0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSERT(pPopup);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CRect rc;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_wndToolBar.SendMessage(TB_GETRECT, pnmtb-&gt;iItem, (LPARAM)&amp;rc);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_wndToolBar.ClientToScreen(&amp;rc);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pPopup-&gt;TrackPopupMenu( TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_VERTICAL,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rc.left, rc.bottom, this, &amp;rc);
+}
+</font></tt></pre>
+<!-- end the block of source code -->
+
+<p>Next, you will need to add the following to CMainFrame::OnCreate, and pass the resource
+id of the button you want to have associated with the popup menu. if you are using
+controls in your toolbar, insert this line, before you add controls:</p>
+<!-- start a block of source code -->
+
+<pre><tt><font color="#990000">
+// set button to dropdown list
+m_wndToolBar.SetButtonDropDown( ID_FILE_OPEN );
+</font></tt></pre>
+<!-- end the block of source code -->
+
+<p><b><font size="5"><a name="bookmark_3">Docking...</a></font><br>
+</b></p>
+
+<p><img src="demo_toolbar_d.gif" width="495" height="32"></p>
+<!-- Sample image - gif or jpg -->
+
+<p>Docking toolbars so they, are placed on the same row, can be achieved by adding the
+following method to your CMainFrame class:</p>
+<!-- start a block of source code -->
+
+<pre><tt><font color="#990000">
+void CMainFrame::DockControlBarLeftOf(CToolBar* Bar, CToolBar* LeftOf)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CRect rect;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DWORD dw;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UINT n;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// get MFC to adjust the dimensions of all docked ToolBars
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// so that GetWindowRect will be accurate
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RecalcLayout(TRUE);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LeftOf-&gt;GetWindowRect(&amp;rect);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rect.OffsetRect(1,0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dw=LeftOf-&gt;GetBarStyle();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n = (dw&amp;CBRS_ALIGN_TOP) ? AFX_IDW_DOCKBAR_TOP : n;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n = (dw&amp;CBRS_ALIGN_BOTTOM &amp;&amp; n==0) ? AFX_IDW_DOCKBAR_BOTTOM : n;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n = (dw&amp;CBRS_ALIGN_LEFT &amp;&amp; n==0) ? AFX_IDW_DOCKBAR_LEFT : n;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n = (dw&amp;CBRS_ALIGN_RIGHT &amp;&amp; n==0) ? AFX_IDW_DOCKBAR_RIGHT : n;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// When we take the default parameters on rect, DockControlBar will dock
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// each Toolbar on a seperate line. By calculating a rectangle, we
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// are simulating a Toolbar being dragged to that location and docked.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DockControlBar(Bar,n,&amp;rect);
+}
+
+</font></tt></pre>
+<!-- end the block of source code -->
+
+<p>Now, in your CMainFrame::OnCreate, instead of adding DockControlBar, use
+DockControlBarLeftOf:</p>
+<!-- start a block of source code -->
+
+<pre><tt><font color="#990000">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// TODO: Delete these three lines if you don't want the toolbar to
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// be dockable
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_winToolBar.EnableDocking(CBRS_ALIGN_ANY);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EnableDocking(CBRS_ALIGN_ANY);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DockControlBar(&amp;m_wndToolBar);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>DockControlBarLeftOf(&amp;m_winToolBar,&amp;m_wndToolBar);</b>
+</font></tt></pre>
+<!-- end the block of source code -->
+<b><font size="5"><a name="bookmark_4">
+
+<p>IE4 Style Toolbar...</a></font> ( grayscale to color on mouseover ) uses 24-bit color<br>
+</b>To implement the IE4 style menu, first you will need to create two bitmap files, one
+color, and one grayscale. Make sure they match the original pixel layout of the original
+toolbar bitmap.</p>
+
+<p><img src="demo_toolbar_e.gif" width="266" height="50"></p>
+<!-- Sample image - gif or jpg -->
+
+<p>Next add the following code to CMainFrame::OnCreate. This will create the image list
+associated with the two bitmaps you just created.</p>
+<!-- start a block of source code -->
+
+<pre><tt><font color="#990000">
+&nbsp;&nbsp;&nbsp; LPSTR lpText[] = {&quot;Back&quot;,&quot;Forward&quot;,&quot;Stop&quot;,&quot;Refresh&quot;,&quot;Home&quot;};
+
+&nbsp;&nbsp;&nbsp; // Create and initialize image list used for child toolbar
+&nbsp;&nbsp;&nbsp; CBitmap bmp;
+&nbsp;&nbsp;&nbsp; bmp.LoadBitmap( IDB_COLOR_IMAGELIST );
+&nbsp;&nbsp;&nbsp; m_pImageColor.Create( 21,20,ILC_COLORDDB|ILC_MASK,5,1);
+&nbsp;&nbsp;&nbsp; m_pImageColor.Add( &amp;bmp, RGB(191,191,191) );
+
+&nbsp;&nbsp;&nbsp; // Create and initialize hot image list used for child toolbar
+&nbsp;&nbsp;&nbsp; CBitmap hotBmp;
+&nbsp;&nbsp;&nbsp; hotBmp.LoadBitmap( IDB_GRAY_IMAGELIST );
+&nbsp;&nbsp;&nbsp; m_pImageNoColor.Create( 21,20,ILC_COLORDDB|ILC_MASK,5,1);
+&nbsp;&nbsp;&nbsp; m_pImageNoColor.Add( &amp;hotBmp, RGB(191,191,191) );
+
+&nbsp;&nbsp;&nbsp; // Set toolbar image lists
+&nbsp;&nbsp;&nbsp; m_hotToolBar.SetImageList( &amp;m_pImageNoColor, TB_SETIMAGELIST );
+&nbsp;&nbsp;&nbsp; m_hotToolBar.SetImageList( &amp;m_pImageColor, TB_SETHOTIMAGELIST );
+
+&nbsp;&nbsp;&nbsp; // Add text to toolbar buttons.
+&nbsp;&nbsp;&nbsp; for( int i = ID_BACK, x = 0; i &lt;= ID_HOME; i++, x++ )
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_hotToolBar.SetButtonText(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_hotToolBar.CommandToIndex( i ), lpText[x] );
+&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp; // set button to dropdown list
+&nbsp;&nbsp;&nbsp; m_wndToolBar.SetButtonDropDown( ID_FILE_OPEN );
+&nbsp;&nbsp;&nbsp; m_hotToolBar.SetButtonDropDown( ID_BACK );
+&nbsp;&nbsp;&nbsp; m_hotToolBar.SetButtonDropDown( ID_FORWARD );
+</font></tt></pre>
+<!-- end the block of source code -->
+
+<p>The methods <b>SetImageList( CImageList * )</b> and <b>SetHotImageList(CImageList * )</b>
+associate the image lists to the toolbar, SetHotImageList is for the color bitmap, and
+SetImageList is for the grayscale one. You can also add text and a drop down menu as shown
+here!</p>
+<!-- demo project -->
+
+<p><!-- first the filename (zip files) --> <a HREF="demo_toolbar_prj.zip">Download demo project - 167KB</a> <br>
+<!-- Zipped source --><!-- first the filename (zip files) <A HREF="******">Download source - ??KB</A> --><!-- Posted / Update  date mm/dd/yy - add to the list --></p>
+
+<p>Date Posted: 23 June 1998<!-- date here --> </p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+</body>
+</html>

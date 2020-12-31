@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ORDER date="20010501" time="100534">
+<ITEM id="6754a">
+<NAME>carrots</NAME>
+<QTY>1</QTY>
+<PRICE unit = "1 lb">.98</PRICE>
+</ITEM>
+<ITEM>
+<NAME>onions</NAME>
+<QTY>1</QTY>
+<PRICE unit="3 lb bag">1.10</PRICE>
+<SUPPLIER>Hanover</SUPPLIER>
+</ITEM>
+<COUPON>
+<SN>4368724387343</SN>
+<ITEMNAME>onions</ITEMNAME>
+<PRICE unit="3 lb bag">.50</PRICE>
+</COUPON>
+</ORDER>

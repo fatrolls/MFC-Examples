@@ -1,0 +1,129 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Wizard Property Sheets and Pages</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Wizard Property Sheets and Pages</FONT></H3></CENTER>
+<HR>
+
+
+<p>This code was contributed by <a href="mailto:Lennart.Steinke@uidesign.se">Lennart Steinke</a>. </p>
+
+
+
+
+<P>
+I made these two classes to add an often used feature to
+the property sheets/pages provided by the MFC. The new
+classes allow you, to easily skip certain pages when
+viewing the tabbed dialog. This is very usefull for
+installation or assistent wizards.<P>
+You can now also access the the property sheet from
+every page using the <TT>m_pPropSheet</TT> protected
+member.<P>
+
+<H1>Using the Classes</H1>
+These classes work only in wizard mode, which is set by default, so
+there's no need to set it by hand.
+<B>There's no way to use the extra functionlity of these classes
+while not in Wizard mode</B>.
+<P>
+To use the CWizPropertyPage, just implement your pages as decendents
+of CPropertyPage and then use the replace functionality of the editor
+to exchange every CPropertyPage with CWizPropertyPage.<P>
+To skip pages, you can either disable these page
+directly, or tell the WizPropertySheet to disable a whole
+range:<BR>
+
+<PRE><TT><FONT COLOR="#990000">
+	// I'm assuming that CPage1 - CPage3 are derived from
+	// CWizPropertyPage
+	CPage1 page1;
+	CPage2 page2;
+	CPage3 page3;
+	CWizPropertySheet sheet;
+	
+	sheet.Add(page1);
+	sheet.Add(page2);
+	sheet.Add(page3);
+	
+	// Disable page 1 and 2
+	page1.Enable(FALSE);	
+	page2.Enable(FALSE);
+	
+	// Enable them via the sheet
+	sheet.EnablePages(TRUE,1,2);	// <B>NOTE:</B> zero based index
+</FONT></TT></PRE>
+
+<H1>CWizPropertySheet</H1>
+This class is derived from CPropertySheet and does add a single method:<BR>
+<UL>
+<TT><B>void</B> EnablePages(BOOL bEnable, <B>int</B> nStart, <B>int</B> nEnd = -1);</TT><BR>
+</UL>
+<UL>
+<LI>If <TT>bEnable</TT> is TRUE the pages get enabled, if FALSE they will be disabled
+<LI><TT>nStart</TT> specifies the first page to enable or disable.
+<LI><TT>nEnd</TT> specifies the last page to enable/ disable. If omitted, only the page
+with the index <TT>nStart</TT> will be changed.
+</UL>
+All constructors are changed to set wizard mode, Add() sets a protected varible
+within CWizPropertyPage, so the pages know to which sheet they belong.
+
+<P><BR>
+
+<H1>CWizPropertyPage</h1>
+This class is derived from CPropertyPage, and adds these methods:<BR>
+<PRE><TT><FONT COLOR="#990000">
+	BOOL Enable(BOOL bEnable=TRUE);
+	BOOL IsEnabled(<B>void</B>);
+	<B>virtual</B> LRESULT GetNextPage(BOOL forward = TRUE); <I>// protected</I>
+</FONT></TT></PRE>
+and these data members:<BR>
+<PRE><TT><FONT COLOR="#990000"><UL>
+	BOOL m_bEnabled; <I>// protected</I>
+	CWizPropertySheet *m_pPropSheet;<I>// protected</I>
+</FONT></TT></PRE>
+
+
+Use Enable() to enable a page, and Enable(FALSE) to disable a page.<BR>
+IsEnabled() returns the TRUE if the pages is enabled, else FALSE is returned.<P>
+m_pPropSheet allows you to access the sheet the page got added to.<P><BR>
+
+<H1>In closing</H1>
+Guess that's it. If you've questions, critique or if you want to thank me :), feel
+free to <A Href="mailto:Lennart.Steinke@uidesign.se">mail me</A>.<P>
+
+
+
+<P><A HREF="wizprop.zip">Download source</A>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

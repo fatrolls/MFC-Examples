@@ -1,0 +1,6 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: LAUNCH.RC
+//
+AppIcon ICON launch.ico
+

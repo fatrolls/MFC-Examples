@@ -1,0 +1,180 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Misc - Parsing the Portable Executable File Format</TITLE>
+</HEAD>
+
+<!-- Set article properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Parsing the Portable Executable File Format
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:fforest@cyberenet.net">Fred Forester</A>.
+
+<!-- Sample image and source code/demo project -->
+<P><A HREF="winpe.zip">Download Source Code and Example</A></p>
+<br>
+
+<!-- The article... -->
+
+<P>The WINPE project is basically a conversion of Matt Pietrek’s PEDUMP
+Program from a DOS based application to an Windows MFC based app. It 
+demonstrates Parsing PE files and displaying each section in a seperate view.</P>
+
+<P>A WIN32 PE file or better know as a .EXE or .DLL file is broken up into sections.
+WINPE handles these sections in it’s own separate view. The views are
+Dynamically switched depending on the View option selected.  WINPE also
+Provides Printing and Print Preview and since the font selection has a lot to do
+With how the print will look the app also provides for font selection on both the 
+Display and printout. Print Preview was required in order to allow the user to 
+Find and select the page range for printing so that the entire EXE or DLL does
+Not have to be printed. </P>
+
+<P>WINPE is implemented as a SDI app. The Document class however does not use
+The serialize function since the actual file is not read, it is loaded as a memory mapped
+File by the document class and a pointer to the memory mapped file can be returned
+To the view on request.  Each View contains the code to process the PE section data
+that is to be displayed. WINPE by default provides a HEXDUMP of the file upon 
+opening. The HEXDUMP will work on any file type, however if the file is not a 
+EXE or DLL all other view options are disabled via CmdUI interface. </P>
+
+<P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CmainFrame</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Handles most of menu messages. The OnViewChange function Determines which view was requested and dynamically switches The Documents current View. The OnFrameView function is A message handler that allows the document class to ensure That the CDumpXView is always the default View.</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CwinpeDoc</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Memory maps the PE file (or any other file). The OnOpenDocument Function determines what kind of file is being processed and then Either enables or disables the View options.</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CdebugDirView</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Displays the data associated with the PE files Debug Directory.</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CDumpXView</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>The HEXDUMP View.</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CExportView</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Displays the data associated  with the PE files Export section.The Export section contains the names of the Functions that This DLL or EXE exports. For example, to see the names of the
+Functions exported by ICMP.DLL.</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CImportView</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Displays the data associated with the PE files Import section.The Import section contains the names of the DLL’s and their Correspnding functions that are used or Imported into this DLL or EXE.</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CHeaderView</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Displays the PE file Header.</P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CResourceView</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Displays the Names and resource ID’s and their types. Example. The names and ID’s of all the Bitmaps that Were compiled into this EXE or DLL.</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CSectionTblView</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Displays the PE Section Table.</P>
+</FONT></TD>
+</TR>
+</TABLE>
+
+<P>The WINPE program was written to make life a little easier. When writing 
+The Nettools program I found myself having to constantly go back into 
+DOS and run DUMPBIN or PEDUMP to see what functions were available
+In the ICMP and INETMIB1 DLL and to see what DLL’s were being used
+By PING,TRACERT and NETSTAT. In order to print the data  I had to 
+Redirect the output to a file then use WordPad to print the pages I was interested
+In studying. This is how I gathered some of the info required to write Nettools.</P>
+
+<P>Of Course WINPE does not support ALL of the PEDUMP and DUMPBIN
+Options but it does support the ones I use most. </P>
+
+<h4>Known Problems</h4>
+<ul>
+<li>The CscrolView does not work on Win95.
+<li>Due to CScrollView limits on WIN95 only 32k of data will display in the hexdump. 
+   (all other views will work correctly I was too lazy to write the scrolling code 
+    in a CView.
+</ul>
+<p>Tested on NT4.0 with MS/VC++ 4.2.
+
+<h4>Reference Materials Used.</h4>
+
+<P>See Microsoft Systems Journal at <A HREF="http://www.microsoft.com/msj">http://www.microsoft.com/msj</A>
+for more info on the following. I believe the source code to HEXDUMP and PEDUMP can 
+also be obtained there.</P>
+
+<P>
+<PRE>
+Programming Windows 95 with MFC by Prosise.
+    The HEXDUMP example was used to create the DumpXView.
+
+WIN95 Systems Programming Secrets by Matt Pietrek. 
+	The best book ever written on WIN95 and WIN32 internals. 
+	Contains the source to PEDUMP.
+
+Developing Pro apps for NT and 95 using MFC 
+<A HREF="http://www.iftech.com/mfc">http://www.iftech.com/mfc</A>
+	The Print and Preview sections were very helpful.
+
+Microsoft also provides some samples and documentation.
+
+The Portable Executable File Format from Top to Bottom
+<A HREF="http://www.microsoft.com/win32dev/base/pefile.htm">http://www.microsoft.com/win32dev/base/pefile.htm</A></P>
+
+Managing Memory-Mapped Files in Win32
+<A HREF="http://www.microsoft.com/win32dev/base/mmfile.htm">http://www.microsoft.com/win32dev/base/mmfile.htm</A></P>
+</PRE>
+
+<!-- Remember to update this -->
+<p>Last updated: 14 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

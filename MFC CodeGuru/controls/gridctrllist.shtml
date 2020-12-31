@@ -1,0 +1,123 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - MFC Grid control with drop down lists</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+MFC Grid control with drop down lists
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:korpro@actcom.co.il">Motty Cohen</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG SRC="gridctrllist.gif" WIDTH=390 HEIGHT=234 HSPACE=12>
+&nbsp;Download <A HREF="gridctrllist.zip">Source code</a> and 
+<A HREF="gridctrllistdemo.zip">demo project</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>This is a previous version  of Chris Maunder’s <a href="gridctrl.shtml">MFC Grid control
+</a> (version 1.03) with a minor bug fix and several improvements.</P>
+
+<p>First a bug fix:
+
+<li>In some situations I have managed to edit cells in fixed column, so I added a line in 
+OnEditCell() Event handler to prevent it:
+
+<FONT COLOR="#990000"><TT><PRE>	if ((nRow &lt; m_nFixedRows)||(nCol &lt; m_nFixedCols)) return;
+</tt></PRE></FONT>
+
+<br><br>
+<p>And the improvements:
+
+<ul>
+<LI>I had the need to delete all rows but without the fixed rows and all the column 
+attributes (see section 3), so I add function DeleteAllRows().</li><br><br>
+
+<LI>I added an UINT array: <FONT COLOR="#990000"><TT><PRE>m_arColType</tt></PRE></FONT>
+This array holds the Edit Type for each column. This Edit Type can take one of these 
+values:<BR>
+
+<ul>
+<li>GVET_NOEDIT (0x0000) – cells in this column are not editable.<br>
+<li>GVET_EDITBOX(0x0001) – cells in this column are editable in the old way (i.e. inplace Editbox is opened for the cell).<BR>
+<li>GVET_LISTBOX (0x0002) – cells in this column are editable in the way that an inplace Listbox is opened for the user to select value for this cell.<BR>
+</ul>
+
+<p>There are more styles (GVET_COMBOBOX, GVET_CHECKBOX) that are not implemented for now.
+(maybe someone would take the challenge to implement those styles before I do 
+<FONT FACE="Wingdings">&#74;</FONT>).</li><br><br>
+
+<LI>To set the Column Edit type I’ve changed the InsertColumn() function to set this 
+attribute as well:
+
+<FONT COLOR="#990000"><TT><PRE>	int  InsertColumn(LPCTSTR strHeading, UINT nFormat = DT_CENTER|DT_VCENTER|DT_SINGLELINE, int nColumn = -1, int nType = GVET_NOEDIT);
+</tt></PRE></FONT>
+
+<p>and I added the function:
+
+<FONT COLOR="#990000"><TT><PRE>	BOOL SetColumnType(int nCol, int nType);
+</tt></PRE></FONT>
+
+<LI>To let the programmer to fill the inplace Listboxes I’ve added virtual function:
+
+<FONT COLOR="#990000"><TT><PRE>	virtual void FillListItems(int nCol, LPARAM cltList);
+</tt></PRE></FONT>
+</ul>
+
+<p>To use the Listbox cells attribute, you have to inherit your class from the 
+CGridCtrl and override the function : FillListItems. This function is called before
+any inplace listbox is opened in order to fill it’s items by AddString. You can set 
+the user-defined data for each listbox item. This data is attached to the Grid item’s 
+user-defined data. (This is useful for lookup lists in the grid).
+
+
+<br><br>
+<P>I would like to thank all the guys who contribute articles and code to this site and especially for Zafir Anjum and all the others who keeps this site so useful. I know I gain a lot of knowledge and save a lot of time by constantly visiting here.
+<B><P>&nbsp;</P></B></BODY>
+
+<!-- Remember to update this -->
+<p>Last updated: 17 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

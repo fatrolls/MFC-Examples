@@ -1,0 +1,297 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "AccessControlServerDemo"=".\Server\SDK\AccessControlServerDemo\AccessControlServerDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/Server/SDK/AccessControlServerDemo", XNMEAAAA
+    .\server\sdk\accesscontrolserverdemo
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DNS client"=".\Client\SDK\DNS\DNSClient.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "FTP client"=".\Client\SDK\Ftp\FTPClient.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Finger Client"=".\Client\SDK\Finger\FingerClient.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "HTTP client"=".\Client\SDK\Http\HTTPClient.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "HTTP_s"=".\Server\SDK\Http\HTTP_s.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/Server/SDK/Http", VFQCAAAA
+    .\server\sdk\http
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IMAPClient"=".\Client\MFC\Imap4\IMAPClient.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/Client/MFC/Imap4", YFQCAAAA
+    .\client\mfc\imap4
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "MX client"=".\Client\SDK\MX Lookup\MXLookup.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Mail"=".\Client\SDK\Mail\test.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Monitor"=".\Client\SDK\UDP\Monitor\Monitor.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "NNTPclient"=".\Client\MFC\Nntp\NNTPclient.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Ping_c"=".\Client\SDK\Ping\Ping_c.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Sample_S"=".\Server\MFC\SampleServer\Sample_S.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/Server/MFC/SampleServer", XFQCAAAA
+    .\server\mfc\sampleserver
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Service"=".\service\Service.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/service", VCLEAAAA
+    .\service
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Trace"=".\Client\SDK\UDP\Trace\Trace.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "fing_s"=".\Server\SDK\Finger\fing_s.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/Server/SDK/Finger", TFQCAAAA
+    .\server\sdk\finger
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ftp_s"=".\Server\SDK\Ftp\ftp_s.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/Server/SDK/Ftp", UFQCAAAA
+    .\server\sdk\ftp
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "log"=".\Client\SDK\History\log.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/Client/SDK/History", BHQCAAAA
+    .\client\sdk\history
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "server"=".\Server\SDK\Mail\server.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/Examples/Server/SDK/Mail", WFQCAAAA
+    .\server\sdk\mail
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "svrtest"=".\svrtest\SVRTest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 3.0/Working/Code/Examples/svrtest", PQOCAAAA
+    .\svrtest
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

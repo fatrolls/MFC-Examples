@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Misc - Safe file name comparison</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Safe file name comparison</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This article was sent by <A HREF="mailto:Joerg.Koenig@rhein-neckar.de">&nbsp;J&ouml;rg</A>
+
+<P>Did you ever need to know, wether two given filenames point to the
+same file in the filesystem or not ?
+<BR>Since Microsoft provides UNC paths, every file may have
+two valid names: a short (traditional) and a long file name.
+OK - one could convert the long file name into a short one and
+compare these two names; but that
+will lead to two problems:
+<P>o How does one determine which of the two names is the short
+one and which is the long ?
+<BR>o There is no API-function that will convert a long file name into
+a short one. There are (of course) some descriptions of how one can do
+this, but that's it.
+<p>Fortunataly there is another solution. The Win95/NT shell deals
+with PIDLs (pointers to item identifier lists)
+instead. Every file in the filesystem has one unique PIDL, so the idea
+of comparing to file names is to compare their PIDLs.
+<BR>The bad point is, that this requires some knowledge of the (sucking)
+COM interface mechanism...
+<P>Here is the way it does:
+<PRE><TT><FONT COLOR="#990000">
+#include "stdafx.h"
+#include &lt;shlobj.h>
+
+// this function compares the PIDLs of two file names.
+// NOTE that you cannot compare the names directly (strcmp() for
+// instance), because one of the names might appear in
+// long file name format and the other in short file name
+// format.
+// The function returns TRUE, if &lt;pszPath1> and &lt;pszPath2>
+// name the same file in the filesystem, otherwise FALSE.
+//
+// &lt;pszPath1> and &lt;pszPath2> shall be absolute pathnames ...
+BOOL CompareFilenames( LPCSTR pszPath1, LPCSTR pszPath2 ) {
+	VERIFY(pszPath1 != 0);
+	VERIFY(pszPath2 != 0);
+
+	CoInitialize(0) ;
+
+	BOOL bRet = FALSE;
+
+	LPSHELLFOLDER pDesktopFolder;
+
+	if( SUCCEEDED( SHGetDesktopFolder(&pDesktopFolder)) ) {
+		// COM-interface always needs unicode strings ...
+		OLECHAR	olePath1[MAX_PATH], olePath2[MAX_PATH];
+		MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pszPath1, -1, olePath1, MAX_PATH);
+		MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pszPath2, -1, olePath2, MAX_PATH);
+
+		// retrieve PIDLs
+		LPITEMIDLIST pidl1, pidl2;
+		DWORD dwAttr;
+		DWORD dummy;
+		if( SUCCEEDED(pDesktopFolder->ParseDisplayName(0, 0, olePath1, &dummy, &pidl1, &dwAttr)) &&
+			SUCCEEDED(pDesktopFolder->ParseDisplayName(0, 0, olePath2, &dummy, &pidl2, &dwAttr)) ) {
+
+			// now we can compare the PIDLs
+			HRESULT hRes = pDesktopFolder->CompareIDs(0, pidl1, pidl2);
+			if( HRESULT_CODE(hRes) == 0 )
+				bRet = TRUE;
+
+			// free the PIDLs (do not forget this !) ...
+			LPMALLOC pMalloc;
+			SHGetMalloc(&pMalloc);
+			pMalloc->Free((void *)pidl1);
+			pMalloc->Free((void *)pidl2);
+			pMalloc->Release();
+		}
+		pDesktopFolder->Release();
+	}
+
+	CoUninitialize();
+
+	return bRet;
+}
+
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Menu - Table of Contents</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Menu</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+This section is maintained by <a href="mailto:warch@tin.it">Iuri Apollonio</a>.
+
+<hr>
+
+<UL>
+<LI> Bitmapped menus </LI>
+	<ul>
+	<li><A HREF="owner_drawn_menu.shtml">Owner Drawn Menu with Icons - Girish Bharadwaj</A></li>
+	<LI><A HREF="owner_drawn_menu2.shtml">Owner Drawn Menu with Icons (2) - Ben Ashley</A></LI>
+	<LI><A HREF="owner_drawn_menu_2b.shtml">Update for Owner Drawn Menu with Icons (2) - Jaroslav "Jerry" Pisk</A></LI>
+	<LI><A HREF="owner_drawn_menu3.shtml">Owner Drawn Menu with Icons (3) (uses toolbar res) - Brent Corkum</A></LI>
+	<LI><A HREF="owner_drawn_menu4.shtml">Owner Drawn Menu with Icons (4) (automatically uses toolbar res) - Iuri Apollonio</A></LI>
+	</ul>
+<LI> Miscellaneous </LI>
+	<ul>
+	<LI><A HREF="submenu_sdi.shtml">Inserting submenus in an existing SDI menu - Jim Johnson</A></LI>
+	<LI><A HREF="track_popup.shtml">Using CMenu::TrackPopupMenu as an Immediate Function - Randy More</A></LI>
+	<LI><A HREF="mru_on_submenu.shtml">Using MRU on submenu - Lewis Haupt</A></LI>
+	<LI><A HREF="titledmenu.shtml">Creating Popup Menus with Titles - Mark E. Pennell</A></LI>
+	<LI><A HREF="findpos.shtml">Finding a menuitem from command id - Jochen Ruhland</A></LI>
+	</ul>
+<LI> Alternative menu </LI>
+	<ul>
+	<LI><A HREF="contentmenu.shtml">A Cool Looking Menu For Easier Navigation - Shekar Narayanan</A></LI>
+	<LI><A HREF="freemenu.shtml">Owner Drawn Menu With Free Color &amp; Font - ShiGui Lu</A></LI>
+	<li><a HREF="http://www.codeguru.com/toolbar/VCMenu.shtml">Visual Studio/Office 97 style Flat Toolbar and Dockable Menu bar - Tony Hoyle (from Toolbar section)</a></li>
+	</ul>
+</UL>
+
+
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

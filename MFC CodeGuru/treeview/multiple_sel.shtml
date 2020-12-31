@@ -1,0 +1,301 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Allowing multiple selection</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Allowing multiple selection</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+The tree view control has very limited support for multiple selection. It provides a message to set and retrieve the selection state of an item. On the other hand it does not allow setting focus to a particular item without also selecting it. The side effect of this is that previous item is deselected. This causes a little bit of complication as you will see.
+
+<P>Before we go on I'd like to point to a couple of other sources 
+available to help implement multiple selection. The October 1996 
+issue of MS Journal has an article by Paul DiLascia which gets you 
+started on implementing multiple selection. Another source code 
+availabe is from Bendik Engebretsen from his web site at 
+<A HREF="http://www.techsoft.no/bendik/">http://www.techsoft.no/bendik/</A>.
+He has provided a more full featured implementation and you may 
+wish to study his code too before you implement this in your application. 
+
+<H4>Step 1: Add member variable to track first item in selection set</H4>
+To emulate the shift selection in a listbox and a list view control, we need to track the first item in the selection set. This is useful when the user changes the selection set further. Add a protected member in your class declaration and initialize it to NULL in the constructor.
+<PRE><TT><FONT COLOR="#990000">
+protected:
+	HTREEITEM m_hItemFirstSel;		// Init to NULL in constructor
+</FONT></TT></PRE>
+<BR>
+<H4>Step 2: Add code to WM_LBUTTONDOWN handler</H4>
+We will add code to the WM_LBUTTONDOWN to handle multiple selection. There are a few things about the  tree view control that you should be aware of. When you call the the SelectItem() or when the control selects an item in response to a mouse click, the previous item is deselected. For our purposes we often have to reselect the previous item. Using SetItemState() does not have this side effect. You may ask why not use SetItemState() instead of using SelectItem() or letting the control handle the mouse click. The answer is that SetItemState() does not set focus to the item whereas the other alternatives do. Unlike the list view control, the tree view control does not have the counterpart of LVIS_FOCUSED to set focus to an item. 
+
+<P>The second issue is drag and drop. If the control does not receive the WM_LBUTTONDOWN message, it will not initiate a drag operation. So if you want to support control drag-drop or shift drag-drop you could either let the control participate in the WM_LBUTTONDOWN handling or you could initiate the drag-drop in your own WM_MOUSEMOVE handler. I chose to take the former approach.
+
+<P>The final issue is because of the decision to let WM_LBUTTONDOWN message pass on to the control. The built in handling causes a visible and momentary deselection of the previous item and if we use SetRedraw(FALSE), the control overrides it and causes the whole control to flicker. We could overcome this by calling the SetRedraw() function for the parent window but this can cause a redraw problem with the titletip. A titletip is the window that comes up when we move the cursor over an item that does not fit within the controls width. Its easier to let the momentary deselection remain.
+
+<P>Our decision to pass on the message causes yet another. Clicking on an item that is already selected initiates an edit. This one is easily solved, we deselect the item before passing the message on.
+
+<P>There are three different conditions we check for in this function. Let's cover them one by one. The first condition we check for is whether the control key is down. The usual behaviour of a control click is to toggle the selection state of the item. Before we try toggling the selection state we ascertain that the click is indeed on an item. We then determine the state of the item that will get the focus and the item that will lose the focus and set the appropriate state after calling the base class version of OnLButtonDown().
+
+<P>The shift-click always results in one block of adjoining items being selected. We need to track the starting item of a shift-selected block. This helps when there is further activity with shift-click or shift-arrow keys. The SelectItems() is a helper function that goes through all the items in the tree control and selects the items that belong within the selection block and deselects the rest.
+
+<P>Then there is the normal click with neither the control nor the shift key down. This is the simplest. We just clear any selection and let the default control behaviour do the job.
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+	// Set focus to control if key strokes are needed.
+	// Focus is not automatically given to control on lbuttondown
+
+	m_dwDragStart = GetTickCount();
+
+	if(nFlags & MK_CONTROL ) 
+	{
+		// Control key is down
+		UINT flag;
+		HTREEITEM hItem = HitTest( point, &flag );
+		if( hItem )
+		{
+			// Toggle selection state
+			UINT uNewSelState = 
+				GetItemState(hItem, TVIS_SELECTED) & TVIS_SELECTED ? 
+							0 : TVIS_SELECTED;
+            
+			// Get old selected (focus) item and state
+			HTREEITEM hItemOld = GetSelectedItem();
+			UINT uOldSelState  = hItemOld ? 
+					GetItemState(hItemOld, TVIS_SELECTED) : 0;
+            
+			// Select new item
+			if( GetSelectedItem() == hItem )
+				SelectItem( NULL );		// to prevent edit
+			CTreeCtrl::OnLButtonDown(nFlags, point);
+
+			// Set proper selection (highlight) state for new item
+			SetItemState(hItem, uNewSelState,  TVIS_SELECTED);
+
+			// Restore state of old selected item
+			if (hItemOld && hItemOld != hItem)
+				SetItemState(hItemOld, uOldSelState, TVIS_SELECTED);
+
+			m_hItemFirstSel = NULL;
+
+			return;
+		}
+	} 
+	else if(nFlags & MK_SHIFT)
+	{
+		// Shift key is down
+		UINT flag;
+		HTREEITEM hItem = HitTest( point, &flag );
+
+		// Initialize the reference item if this is the first shift selection
+		if( !m_hItemFirstSel )
+			m_hItemFirstSel = GetSelectedItem();
+
+		// Select new item
+		if( GetSelectedItem() == hItem )
+			SelectItem( NULL );			// to prevent edit
+		CTreeCtrl::OnLButtonDown(nFlags, point);
+
+		if( m_hItemFirstSel )
+		{
+			SelectItems( m_hItemFirstSel, hItem );
+			return;
+		}
+	}
+	else
+	{
+		// Normal - remove all selection and let default 
+		// handler do the rest
+		ClearSelection();
+		m_hItemFirstSel = NULL;
+	}
+
+   CTreeCtrl::OnLButtonDown(nFlags, point);
+}
+</FONT></TT></PRE>
+<BR>
+<H4>Step 3: Add code to the WM_KEYDOWN handler</H4>
+The code in OnKeyDown will allow user to use the shift-up arrow and the shift-down arrow keys to create and modify the selection. If the key pressed is any other non control character, then the selection is cleared.
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+{
+	if ( (nChar==VK_UP || nChar==VK_DOWN) && GetKeyState( VK_SHIFT )&0x8000)
+	{
+		// Initialize the reference item if this is the first shift selection
+		if( !m_hItemFirstSel )
+		{
+			m_hItemFirstSel = GetSelectedItem();
+			ClearSelection();
+		}
+
+		// Find which item is currently selected
+		HTREEITEM hItemPrevSel = GetSelectedItem();
+
+		HTREEITEM hItemNext;
+		if ( nChar==VK_UP )
+			hItemNext = GetPrevVisibleItem( hItemPrevSel );
+		else
+			hItemNext = GetNextVisibleItem( hItemPrevSel );
+
+		if ( hItemNext )
+		{
+			// Determine if we need to reselect previously selected item
+			BOOL bReselect = 
+				!( GetItemState( hItemNext, TVIS_SELECTED ) & TVIS_SELECTED );
+
+			// Select the next item - this will also deselect the previous item
+			SelectItem( hItemNext );
+
+			// Reselect the previously selected item
+			if ( bReselect )
+				SetItemState( hItemPrevSel, TVIS_SELECTED, TVIS_SELECTED );
+		}
+		return;
+	}
+	else if( nChar >= VK_SPACE )
+	{
+		m_hItemFirstSel = NULL;
+		ClearSelection();
+	}
+	CTreeCtrl::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+</FONT></TT>
+</PRE>
+<BR>
+<H4>Step 4: Add helper function to clear the selection</H4>
+This function is called very often. Every time a user clicks on the tree view control without the shift or the control key pressed, this function gets called. The function as given below is very simple. It scans through all the items in the tree view control and deselects them individually. If the tree holds a lot of items, then this function can prove to be too slow. The <A HREF="get_next.shtml">GetNextItem()</A> function used below is an overloaded function and has been defined in a previous section.
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::ClearSelection()
+{
+	// This can be time consuming for very large trees 
+	// and is called every time the user does a normal selection
+	// If performance is an issue, it may be better to maintain 
+	// a list of selected items
+	for ( HTREEITEM hItem=GetRootItem(); hItem!=NULL; hItem=GetNextItem( hItem ) )
+		if ( GetItemState( hItem, TVIS_SELECTED ) & TVIS_SELECTED )
+			SetItemState( hItem, 0, TVIS_SELECTED );
+}
+</FONT></TT></PRE>
+<BR>
+
+<H4>Step 5: Add helper function to select a range of items</H4>
+This helper function is used when the user shift-clicks on an item. It takes care of removing selection from items not within the range and selects the items inside the range.
+
+<PRE><TT><FONT COLOR="#990000">
+// SelectItems	- Selects items from hItemFrom to hItemTo. Does not
+//		- select child item if parent is collapsed. Removes
+//		- selection from all other items
+// hItemFrom	- item to start selecting from
+// hItemTo	- item to end selection at.
+BOOL CTreeCtrlX::SelectItems(HTREEITEM hItemFrom, HTREEITEM hItemTo)
+{
+	HTREEITEM hItem = GetRootItem();
+
+	// Clear selection upto the first item
+	while ( hItem && hItem!=hItemFrom && hItem!=hItemTo )
+	{
+		hItem = GetNextVisibleItem( hItem );
+		SetItemState( hItem, 0, TVIS_SELECTED );
+	}
+
+	if ( !hItem )
+		return FALSE;	// Item is not visible
+
+	SelectItem( hItemTo );
+
+	// Rearrange hItemFrom and hItemTo so that hItemFirst is at top
+	if( hItem == hItemTo )
+	{
+		hItemTo = hItemFrom;
+		hItemFrom = hItem;
+	}
+
+
+	// Go through remaining visible items
+	BOOL bSelect = TRUE;
+	while ( hItem )
+	{
+		// Select or remove selection depending on whether item
+		// is still within the range.
+		SetItemState( hItem, bSelect ? TVIS_SELECTED : 0, TVIS_SELECTED );
+
+		// Do we need to start removing items from selection
+		if( hItem == hItemTo ) 
+			bSelect = FALSE;
+
+		hItem = GetNextVisibleItem( hItem );
+	}
+
+	return TRUE;
+}
+</FONT></TT></PRE>
+<BR>
+
+<H4>Step 6: Add utility functions</H4>
+Provide utility functions to query on the first selected item and to traverse the list of selected items in either the forward direction or the reverse direction. Again, like the ClearSelection() function, these functions can be time consuming for large trees. 
+
+<PRE><TT><FONT COLOR="#990000">
+HTREEITEM CTreeCtrlX::GetFirstSelectedItem()
+{
+	for ( HTREEITEM hItem = GetRootItem(); hItem!=NULL; hItem = GetNextItem( hItem ) )
+		if ( GetItemState( hItem, TVIS_SELECTED ) & TVIS_SELECTED )
+			return hItem;
+
+	return NULL;
+}
+
+HTREEITEM CTreeCtrlX::GetNextSelectedItem( HTREEITEM hItem )
+{
+	for ( hItem = GetNextItem( hItem ); hItem!=NULL; hItem = GetNextItem( hItem ) )
+		if ( GetItemState( hItem, TVIS_SELECTED ) & TVIS_SELECTED )
+			return hItem;
+
+	return NULL;
+}
+
+HTREEITEM CTreeCtrlX::GetPrevSelectedItem( HTREEITEM hItem )
+{
+	for ( hItem = GetPrevItem( hItem ); hItem!=NULL; hItem = GetPrevItem( hItem ) )
+		if ( GetItemState( hItem, TVIS_SELECTED ) & TVIS_SELECTED )
+			return hItem;
+
+	return NULL;
+}
+</FONT></TT></PRE>
+<BR>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

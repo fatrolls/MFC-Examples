@@ -1,0 +1,150 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - PushButton with bitmap & text</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">PushButton with bitmap & text</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:msantoro@telerama.lm.com">Michael Santoro</A>.
+
+
+<P>The class CSXButton is a simple replacement for the MFC CButton class that enables you to put both an image and text onto the same button.  MFC CButton only allows an image or text, but not both.  The dialog below is quite overwhelming with unnecessary graphics (except maybe for the big button on the right), but it gives you an idea of what you can do with CSXButton.  
+
+<P><img src="bitmap_text_button1.jpg">
+
+
+<H4>Technical Background</H4>
+
+CSXButton is an owner draw button that takes care of the following:
+
+<H4>1. Loading an icon or bitmap from a resource.</H4>
+
+For an icon, this is done with the often overlooked ::LoadImage function.  ::LoadImage adds one necessary feature which the standard CWinApp::LoadIcon does not have.  When loading the image from a resource, ::LoadImage will resize the icon to any width and height dimensions that you specify.  CWinApp::LoadIcon will only load an icon to the sizes specified in the system metrics, which is usually 32x32.  NOTE: The "View" and "Super View" icons above come from one 32x32 icon.
+
+<P>For a bitmap, the image is loaded with ::CreateMappedBitmap.  Using this function allows CSXButton to give the bitmaps a transparent quality, mapping one color which you specify, to the system button face color, retrieved from GetSysColor( COLOR_BTNFACE ).  If you use a bitmap with a mask, a disabled image is also created mapping the masked color to white, RGB(255, 255, 255).  This will allow the windows embossing drawing effect (the effect used to create the 'disabled' look) to give the illusion of ignoring the masked area.
+
+<H4>2. Drawing the image in normal and disabled state.</H4>
+<H4>3. Drawing the text in normal and disabled state.</H4>
+
+	Both of these are done by another function that I feel is often overlooked, the CDC::DrawState function.  Using this function, CSXButton doesn't have to worry about 'embossing' the disabled icon and text, CDC::DrawState is simply told that the item being drawn is disabled and it takes care of the 'embossing'.  CDC::DrawState also supports the drawing of the mnemonic character which is the underlined character used as the accelerator shortcut for the button.  Not all text drawing functions support this.
+
+<H4>4. Drawing the special 'default button'.</H4>
+
+	One unfortunate consequence of using an owner draw button is that you can no longer make an owner draw button the 'default button'.  This is why CSXButton has a member function SetDefaultButton().  This function does two things.  It will tell CSXButton to draw the extra default button border, and it will use the CDialog::SetDefID() function to tell the dialog that owns the button to make it the default item on the dialog.
+
+<H4>5. Drawing the focus rectangle.</H4>
+
+	The one and only DrawFocusRect() is used here.
+
+
+<H3>How to use it</H3>
+
+To use CSXButton, follow the steps below:
+
+<P>1. Add the source files to your project.
+
+<P>2. Create a button on your dialog, and make sure you turn on the "Owner Draw" property as shown below:
+
+<P><img src="bitmap_text_button2.jpg">
+
+<P>3. Create the button member variable.
+
+<P>Option 1: Add a member variable for the button in the ClassWizard, and specify the variable type to be CSXButton as shown below.  NOTE: Since you did not create the CSXButton class through the ClassWizard, you will have to rebuild the .clw ClassWizard file for your project.  For instructions on how to do this, search the VC++ documentation for "Rebuilding the ClassWizard (.CLW) File".
+
+<P><img src="bitmap_text_button3.jpg">
+
+<P>Option 2: Create you own member variable in your dialog of type CSXButton, and subclass the variable.  For example: 
+
+<PRE><TT><FONT COLOR="#990000">	
+	// In Dialog Class Header File
+	CSXButton	m_brock; 
+
+	// In Dialog OnInitDialog()
+	m_brock.SubclassDlgItem( IDC_BUTTON_ROCK, this /*parent*/ );
+</FONT></TT></PRE>
+
+
+<P>4. Call any one of the following functions to attach an image to the button, and note that the nWidth and nHeight do NOT have to be the actual size of the image, the image will be scaled to the size you specify.  You can only use bitmaps with 16-colors or less, and icons with 256 colors or less.  Use caution on the images you select because the colors may not be displayed correctly on machines that do not support the color palette in your images.
+
+<PRE><TT><FONT COLOR="#990000">
+CSXButton::SetIcon( nID, nWidth, nHeight );
+CSXButton::SetBitmap( nID, nWidth, nHeight );
+CSXButton::SetMaskedBitmap( nID, nWidth, nHeight, crTransparentMask );
+</FONT></TT></PRE>
+
+<P>	Examples:
+<PRE><TT><FONT COLOR="#990000">
+	m_brock.SetIcon( IDI_ROCK, 40, 150 );
+	m_bhelp.SetIcon( IDI_HELP, 16, 16 );
+	m_brock.SetBitmap( IDB_ROCK, 40, 150 );
+	m_brock.SetBitmap( IDB_ROCK, 12, 67 );
+
+	// Use the bitmap IDB_ROCK, and replace any instance of 
+	// RGB( 255, 0, 0 ) (bright red), with the system
+	// color of the button face.
+	m_brock.SetMaskedBitmap( IDB_ROCK, 40, 150, RGB( 255, 0, 0 ) );
+</FONT></TT></PRE>
+
+<P>5. If it is the default button, call CSXButton::SetDefaultButton() to make it the default button.  If you need to de-activate, or switch default buttons, call CSXButton::SetDefaultButton( FALSE );
+
+<P>	Example:
+<PRE><TT><FONT COLOR="#990000">
+	m_bok.SetDefaultButton( FALSE );	// Deactivate
+	m_brock.SetDefaultButton(); 		// Activate
+</FONT></TT></PRE>
+
+<P>6. Set the positioning of the image and text.  Default positioning is the image offset 4 pixels from the left border, and the text is offset 8 pixels from the right of the image.  Both image and text are centered vertically.  The buttons in the above sample, except for "This Space For Rent", use this default positioning.  You can change these offsets with CSXButton::SetImageOffset( int nPixelsFromLeftofBorder ), and CSXButton::SetTextOffset( nPixelsFromLeftOfImage ).  
+
+<P>For added flexibility, you can use CSXButton::SetTextPos( CPoint p), and CSXButton::SetImagePos( CPoint p ), with (0,0) being the upper left corner of the button.  You can also use the #define SXBUTTTON_CENTER for either the x or y in the CPoint to automatically center the text or image.  The "This Space For Rent" button in the above example uses this method.
+
+<P>	Examples:
+<PRE><TT><FONT COLOR="#990000">
+	m_bplanet.SetIcon( IDI_PLANET, 32, 32 );
+	m_bplanet.SetImagePos( CPoint( SXBUTTON_CENTER, 6 ) );
+	m_bplanet.SetTextPos( CPoint( SXBUTTON_CENTER, 42 ) );
+</FONT></TT></PRE>
+
+
+<H4>Enhancements</H4>
+
+The following is a list of some items that could be added to the CSXButton class, as I am sure there are many more.  If you would like to add these enhancements, or any others you can think of, submit them to this site so others can share from your work. And as always, please try your hardest to maintain compatibility with any previous versions of CSXButton.
+
+<P>1.	multi-line text.
+<br>2.	Use of default image sizes.
+<br>3.	State images like CBitmapButton.
+
+
+<P>Special thanks to Mark Findlay originally asking for such a button in the CodeGuru's message area, and for later on becoming the guinea pig. 
+
+
+<P><A HREF="bitmap_text_button.zip">Download source</A>
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

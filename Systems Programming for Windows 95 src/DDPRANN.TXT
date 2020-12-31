@@ -1,0 +1,532 @@
+AEP:
+You may get AEP_UNCONFIG_DCB calls for DCBs you never saw during 
+AEP_CONFIG_DCB. You need to check the DCB to see if it's yours 
+before doing anything with it.
+
+
+SGD:
+Notwithstanding what this entry says, SG_buff_ptr is *always* a 
+physical address.
+
+Don't confuse this structure with the _Blockdev_Scatter_Gather 
+structure used by IOS clients. IOR_buffer_ptr will be the linear 
+address of a zero-terminated array of _Blockdev_Scatter_Gather 
+structures if the client has also set the IORF_SCATTER_GATHER 
+flag. If the port driver asserted the DCB_dmd_phys_sgd demand, 
+IOR_sgd_lin_phys will be the linear address of an array of SGD 
+structures.
+
+
+IOR:
+See the annotation under the heading SGD for an important note 
+about the data structures in scatter/gather requests.
+
+
+Calldowns:
+Wrong!! You get from one callback entry to the next by CHAINING, 
+not by ADDING a constant! E.g.:
+
+mov eax, [ebx+IOP_calldown_ptr]
+mov eax, [eax+DCB_cd_next]
+mov [ebx+IOP_calldown_ptr], eax
+push ebx
+call [eax+DCB_cd_io_address]
+add esp, 4
+
+
+Messages:
+CONFIG_PRESHUTDOWN is missing from the list. It gets sent during 
+system shutdown, then devices and enumerators get CONFIG_REMOVE 
+requests, then system shuts down.
+
+
+CONFIG_PREREMOVE2:
+Unlike CONFIG_REMOVE, this message goes only to the driver and 
+not also to its enumerator.
+
+
+Introduction:
+Note that a property page provider DLL is a 16-bit DLL.
+
+
+CONFIG_PREREMOVE:
+Unlike CONFIG_REMOVE, this message goes only to the driver and 
+not also to its enumerator.
+
+
+CONFIGMG_CallBack_Enumerator:
+This causes a callback only for each DEVNODE that has the specified 
+function as its enumerator. You might think from the wording that 
+you'd get a callback for each child node created by the enumerator, 
+but such is not the case.
+
+
+CONFIGMG_Register_DevLoader:
+This description doesn't indicate how limited the purpose of this 
+service really is. If you have a statically loaded VxD that happens 
+to be specified as somebody's DevLoader (e.g., VMOUSE), you'll get 
+a PNP_New_Devnode during CONFIGMG's Device_Init. If you initialize 
+after CONFIGMG, this is probably too early for you. Therefore, 
+return CR_DEVLOADER_NOT_READY from the early PNP_New_Devnode. Then 
+call this service during your Device_Init and you'll get another 
+PNP_New_Devnode within which you can do your device loading stuff.
+
+
+VDMAD_Lock_DMA_Region:
+Use the undocumented VDMAD_Get_Max_Phys_Page service (new with 
+Win 95) to get the maximum usable physical address.
+
+
+Xlat_API_Return_Ptr:
+This script operation uses Map_Lin_To_VM_Addr to create the 
+returned far pointer, thereby permanently consuming a selector 
+in the calling VM.
+
+
+Xlat_API_Fixed_Len:
+This script operation copies data from protected mode to real 
+mode before executing the real-mode interrupt and copies data 
+back to protected mode afterwards. It also saves and restores 
+the affected client registers.
+
+
+_SHELL_PostMessage:
+This is not an asynchronous service. Too bad: it would be a lot 
+more useful if it were.
+
+
+Xlat_API_Calc_Len:
+This script operation copies data from protected mode to real 
+mode before executing the real-mode interrupt and copies data 
+back to protected mode afterwards. It also saves and restores 
+the affected client registers.
+
+
+_SHELL_LocalAllocEx:
+There is an additional flag named LMEM_OEM2ANSI that you can 
+use if you've specified LMEM_STRING. This translates the string 
+from the OEM character set (used by ring-0) to ANSI (used by 
+most Windows APIs).
+
+
+VPICD_Phys_EOI:
+This service actually unmasks the physical IRQ rather than 
+sending an EOI command to the PIC. When VPICD fields an 
+interrupt, it masks it and then sends a specific EOI command 
+to the PIC.
+
+
+_VWIN32_CloseVxDHandle:
+Note that OpenVxDHandle is a ring-3 API exported by KERNEL32 
+(but not in the import library).
+
+
+_VWIN32_ResetWin32Event
+Note that OpenVxDHandle is a ring-3 API exported by KERNEL32 
+(but not in the import library).
+
+
+VPICD_Force_Default_Owner:
+OR the optional flag bits directly into EAX rather than 
+setting AX and shifting EAX left by 16. The bits are defined 
+as 00010000h and 00020000h, so they've already been shifted 
+into the high-order word.
+
+You can also supply EBX = -1 to force reflection of a global 
+IRQ into the current VM regardless of whether someone owns 
+the critical section. If you use this undocumented feature, 
+be aware that the FAVOR_FOCUS flag will be ignored (so you 
+can't force the interrupt into the execution focus VM 
+regardless of critical section ownership).
+
+
+VID_Mask_Change_Proc:
+In reality, the Mask argument is nonzero if the interrupt is 
+being masked (so that it can't occur) and zero if it's being 
+unmasked (so that it can occur).
+
+
+Xlat_API_Var_Len:
+This script operation copies data from protected mode to real 
+mode before executing the real-mode interrupt and copies data 
+back to protected mode afterwards. It also saves and restores 
+the affected client registers.
+
+
+VPICD_IRQ_Descriptor:
+The timeout is on the priority boost VPICD gives the VM that 
+handles the interrupt. If the timeout expires before the 
+virtual ISR returns, VPICD unboosts the VM anyway.
+
+
+_VWIN32_PulseWin32Event:
+Note that OpenVxDHandle is a ring-3 API exported by KERNEL32 
+(but not in the import library).
+
+
+_VWIN32_WaitMultipleObjects:
+Note that OpenVxDHandle is a ring-3 API exported by KERNEL32 
+(but not in the import library).
+
+
+VDMAD_Scatter_Lock:
+This service calls _LinPageLock, which will in turn claim the 
+critical section, even if the pages in question are already 
+locked. A deadlock can ensue unless you're calling this service 
+under circumstances where you know it's safe to claim the 
+critical section.
+
+Reported by Don Matthews
+
+
+_VWIN32_WaitSingleObject:
+Note that OpenVxDHandle is a ring-3 API exported by KERNEL32 
+(but not in the import library).
+
+
+VID_Hw_Int_Proc:
+A typical hardware interrupt procedure would EITHER do a 
+VPICD_Set_Int_Request to set an interrupt request for a VM 
+OR handle the interrupt itself and end with a VPICD_Phys_EOI. 
+It's almost surely wrong to handle the interrupt and EOI it 
+and then send the interrupt into a VM, which will try to handle 
+the interrupt and send its own EOI.
+
+You can also count on EBX holding the current VM handle and EDI 
+holding the current thread handle. Moreover, EDX will hold the 
+reference data (if any) from the the VID structure you passed 
+to VPICD_Virtualize_IRQ.
+
+There's no such service as Schedule_Call_Global_Event. 
+Presumably, the author of this entry had Call_Restricted_Event 
+in mind.
+
+
+Xlat_API_ASCIIZ:
+This script operation saves and restores the affected client 
+registers. There is another (undocumented) script opcode named 
+Xlat_API_ASCIIZ_InOut that copies the string back to protected 
+mode. That service isn't of much use unless you first set the 
+buffer to contain a string having the maximum length you expect 
+back, since it only restores as many bytes as you pass down.
+
+
+_VWIN32_QueueUserApc:
+The Win32 procedure you call with this service should be 
+declared void __stdcall (DWORD). The single argument is the 
+"dwParam" you supply to this service.
+
+The easiest way to derive the right thread handle for this 
+call is to have the ring-3 thread that will be doing the 
+alertable wait call you (via DeviceIoControl) to give you 
+the address of the APC callback routine. Just call 
+Get_Cur_Thread_Handle and save the result.
+
+
+_VWIN32_SetWin32Event:
+Note that OpenVxDHandle is a ring-3 API exported by KERNEL32 
+(but not in the import library).
+
+
+OpenVxDHandle:
+This function is no longer in the import library for KERNEL32 
+in the SDK, so you need to resolve it dynamically with a call 
+like the following:
+
+typedef DWORD (WINAPI * OPENVXDHANDLE) (HANDLE);
+
+OPENVXDHANDLE OpenVxDHandle = (OPENVXDHANDLE) GetProcAddress 
+    (GetModuleHandle ("KERNEL32"), "OpenVxDHandle");
+
+
+PortSetup:
+Either (or both) of the queue addresses can be NULL, which means 
+the port driver should allocate a buffer with the specified size. 
+The port driver should also set flags to indicate which buffers 
+it's allocated so it can release the memory when the port closes 
+later on.
+
+
+PortSetReadCallback:
+The client can also cause CN_RECEIVE notifications every 100 ms 
+regardless of whether the threshold has been reached by using 
+the ENABLETIMERLOGIC escape.
+
+
+_VCOMM_SetCommEventMask:
+If you supply your own event word, be sure to initialize it 
+first. You might hope that VCOMM or a port driver would copy 
+the current event word as part of implementing this API, but 
+such is sadly not the case.
+
+
+PortGetEventMask:
+The dwEvents argument has nothing to do with the event word the 
+port driver is using to keep track of events! This is just where 
+to put the events that are being retrieved. Note also that you 
+retrieve ALL current events and then mask the event word using 
+dwMask. It's not optional either: the port driver will copy the 
+current event word there without checking the pointer.
+
+In other words, this function copies the current event word to 
+*dwEvents (which cannot be NULL) and then clears the dwMask 
+events in the current event word. Unless dwEvents happens to 
+fortuitously point to the current event word setup by the last 
+call to PortSetEventMask, *dwEvents will contain *all* of the 
+current events and not just the ones selected by dwMask.
+
+
+
+VCOMM_PM_API_SetMSRShadow:
+Be sure to initialize your shadow byte before calling this 
+service, because your byte won't be changed until the next MSR 
+interrupt from the serial port.
+
+
+_VCOMM_Release_Port:
+If you supplied -1 as the HVM argument to _VCOMM_Acquire_Port, 
+do so here too.
+
+
+VCOMM_PM_API_cevt:
+If you supply your own event word (the poorly named "mymask" 
+variable mentioned in the help file), be sure to initialize it 
+first. You might hope that VCOMM or a port driver would copy the 
+current event word as part of implementing this API, but such is 
+sadly not the case.
+
+
+Contention Management by Contention Managers:
+The name of the system control message VCOMM sends to find the 
+contention function is really GET_CONTENTION_HANDLER.
+
+
+_VCOMM_Acquire_Port:
+This entry is just about totally wrong! There are five arguments 
+(not four), as follows:
+    HANDLE hPort - VCOMM port handle for the port (i.e., address of 
+    PortData structure by which VCOMM knows the port)
+
+    DWORD lPortNum - Port number. 1 means COM1, etc. Alternatively, 
+    use the base I/O address here and set bit 1 of the flags argument.
+
+    HVM hVM - Handle of the VM that will own the port. Use -1 if you 
+    intend to assign ownership to your VxD instead of to a VM, but you 
+    then need to either disable global trapping for the ports or take 
+    over virtualization from VCD. See the comments at the head of 
+    VCD_Acquire_Port in VCD.ASM.
+
+    DWORD lFlags - Flags. Bit 0 means "steal the port even if someone 
+    else owns it", which is what you usually want because VMs that 
+    just touch the port end up owning it. Bit 1 means "lPortNum is the 
+    base I/O address instead of the port number".
+
+    char *name - Name of your VxD in case you supply -1 for the VM 
+    handle argument. Unused otherwise.
+
+
+DriverControl:
+There are three errors in this entry. The return value is a boolean 
+value indicating whether the driver control procedure succeeded in 
+performing its tasks, such as adding a port via VCOMM_Add_Port. 
+This return value ends up as the return value from 
+VCOMM_Register_Port_Driver.
+
+The one-and-only function is really spelled DC_Initialize.
+
+The variable arguments to DC_Initialize are really in the order 
+AllocIOBase, AllocIrq, and Name.
+
+
+_PortData:
+Despite the implication otherwise, a port driver isn't supposed to 
+use dwClientEventMask. It should rely instead on whatever gets 
+passed to its SetEventMask function.
+
+lpClientEventNotify, lpClientReadNotify, lpClientWriteNotify, and 
+dwClientRefData are solely for use by VCOMM. A port driver needs 
+to have its own variables for recording callback function addresses 
+and reference data values.
+
+LossByte isn't really reserved. A port driver is expected to use it 
+to keep track of contention callbacks.
+
+VCOMM does not, in fact, modify the buffering parameters (QInGet, 
+QOutGet, etc.) Microsoft expects that you'll use these structure 
+members to implement a ring buffer for input and output, but you're 
+free to do your own thing here.
+
+Don't use dwLastReceivedTime for its apparent purpose. Instead, keep 
+your own PDWORD that you initialize to the address of this field. 
+The PDWORD can be changed by a SETUPDATETIMEADDR escape.
+
+
+Install_IO_Handler:
+You can remove an I/O trap in Win 95 by calling Remove_IO_Handler. 
+This should be mentioned in the See Also, of course.
+
+
+_Allocate_Global_V86_Data_Area:
+This service isn't available until after Sys_Critical_Init.
+
+
+_CallRing3:
+This service only works right in a limited number of circumstances. 
+It's really better to do as Microsoft suggests and use an AppyTime 
+callback instead.
+
+
+_LinPageLock:
+If you use the PAGEMAPGLOBAL flag in the call to this service, you 
+must also use it in the matching call to _LinPageUnlock to avoid a 
+memory leak.
+
+Reported by Bob Rhoades and  Mark Gruetzner
+
+
+_Assign_Device_V86_Pages:
+Before assigning a page, obtain a copy of the current assignment 
+map by calling _Get_Device_V86_Pages_Array and inspecting the bit 
+for the page.
+
+
+Hook_Device_Service:
+Note that the macro used in the example is really named 
+GetVxDServiceOrdinal. In addition, you can set EDI to the address 
+of an 8-byte, blank-padded, case-sensitive device name if it uses 
+Undefined_Device_ID.
+
+
+End_Nest_Exec:
+May change the direction flag. At least, there's code in IFSMGR 
+that does a CLD after calling End_Nest_Exece bit for the page.
+
+
+Exec_PM_Int:
+This is like Exec_VxD_Int except that the register images for the 
+interrupt are taken from the current client registers instead of 
+the actual ring-0 registers. It appears to be mostly useful for 
+executing an interrupt on behalf of a Win32 caller (who can't do 
+the interrupt directly because VMM thinks all apps in the System 
+VM are 16 bit).
+
+
+_PageCommitPhys:
+It emphatically IS okay to touch memory committed with this 
+service at interrupt time, provided you have called _LinPageLock 
+to lock the memory block. The statement at the end of this entry 
+to the contrary is incorrect.
+
+
+Dispatch_Byte_IO
+This entry is misleading when it says it "ignores" input or output 
+operations if you use the Fall_Through keyword. The keyword causes 
+the macro to fall through to the next instruction in the case(s) 
+where you use it. Thus, Dispatch_Byte_IO bytein, Fall_Through 
+would be followed directly by the BYTE_OUTPUT handler.
+
+
+_LinPageUnlock:
+To avoid a memory leak, you must specify the PAGEMAPGLOBAL flag in 
+the call to this service if you specified it in the matching call 
+to _LinPageLock.
+
+Reported by Bob Rhoades and Mark Gruetzner
+
+
+Locate_Byte_In_ROM:
+This is a very special purpose service whose only actual use is 
+to find the 63h in the middle of a "copyright" string in the BIOS. 
+Windows uses that byte as the ARPL instruction for implementing 
+V86 breakpoints.
+
+
+Exec_VxD_Int:
+You may have read that this service is useless due to a bug in 
+Begin_Nest_Exec. The reported bug has to do with a failure to 
+properly set the execution mode of a VM that doesn't have a 
+protected-mode application. 
+
+This is not a problem in Win 95.
+
+In Win 3.1, if you called Exec_VxD_Int at a time when there was 
+no protected-mode app in the VM and if someone then did a 
+Begin_Nest_Exec (not very usual -- you'd usually do a 
+Begin_Nest_V86_Exec to pass an interrupt down to real mode), 
+you would crash the System VM and, hence, Windows. This problem 
+has been corrected in Win 95.
+
+
+Hook_VMM_Fault:
+The purpose of this service is to provide a handler for a fault 
+that occurs while running ring-0 code. Very few VxDs need to do 
+this, because VMM already does an adequate job. You might want 
+to use _Assert_Range to validate addresses before you use them 
+and/or Install_Exception_Handler to guard against bad pointer 
+references in a section of your own VxD.
+
+The mysterious "VMM re-entrant stack frame" to which EBP points 
+when the fault handler gets control is nothing more than a 
+standard 32-bit fault frame (EFLAGS, CS, EIP, error code) plus 
+PUSHAD registers. You could use the client register structure 
+to examine this much of the stack, but you obviously don't want 
+to reference fields past Client_EFlags.
+
+There's no legal way for the fault handler to alter any of the 
+segment registers (besides CS, that is) that will be reloaded 
+when VMM redispatches. You *could* reverse engineer the stack 
+VMM passes the fault handler, but I wouldn't recommend doing so.
+
+
+Begin_Nest_Exec:
+This service switches to the locked stack even if the execution 
+mode of the VM doesn't change, unless the VM is already using 
+the locked stack.
+
+In contrast to Win 3.1, it is safe to call this service nested 
+within an Exec_VxD_Int call even if the VM has no protected-mode 
+app. (In 3.1, doing this would cause a crash when you then 
+called Resume_Exec.)
+
+
+_AllocateThreadDataSlot:
+The point about initialization doesn't have enough emphasis here. 
+Any time you allocate a thread data slot, you need to scan through 
+all existing thread control blocks to initialize your newly 
+allocated slot, and you also need to handle Thread_Init in order 
+to initialize your slot for new threads.
+
+
+_PageAllocate:
+It sounds pedantic to point this out, but you don't have to 
+actually receive and process Init_Complete to use PAGELOCKEDIFDP. 
+A dynamically loaded driver can use this flag too, provided that 
+Init_Complete has already occurred. You can use 
+VMM_GetSystemInitState to find out if the message has occurred yet.
+
+
+Unhook_Device_Service:
+Note that the macro used in the example is really named 
+GetVxDServiceOrdinal.
+
+
+VM_Critical_Init:
+In fact, interrupts are enabled when this message is sent. You 
+can't execute code in the VM (Exec_Int, etc.), but you certainly 
+can call services that enable interrupts.
+
+
+_Allocate_Temp_V86_Data_Area:
+This service is only available during Device_Init and Init_Complete.
+
+
+Device_Init:
+The EDX register also holds the reference data value supplied by 
+the real-mode initialization routine, just as is true with 
+Sys_Critical_Init.
+
+
+Init_Complete:
+The EDX register also holds the reference data value supplied by 
+the real-mode initialization routine, just as is true with 
+Sys_Critical_Init.

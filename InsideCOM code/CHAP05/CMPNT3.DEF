@@ -1,0 +1,9 @@
+;
+; Cmpnt3 module-definition file
+;
+
+LIBRARY         Cmpnt3.dll
+DESCRIPTION     '(c)1996-1997 Dale E. Rogerson'
+
+EXPORTS
+                CreateInstance @1	PRIVATE

@@ -1,0 +1,148 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Class with full row highlighting, dragable headers, sorting</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Class with full row highlighting, dragable headers, sorting</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+<p>This article was contributed by <a
+href="mailto:jschub@gator.net">James Schubert</a>. </p>
+
+<p>Information above the divider pertains to the update of
+6/13/98. I have redone the sorting. It should be much improved
+now. I have tested this sorting, and it will work much more
+reliably than the old stuff. Also I added support for sorting by
+float. There is now no need to check the Owner Draw Fixed box in
+the dialog editor. ListCtrlEx will automatically set
+LVS_OWNERDRAWFIXED if row hilighting is enabled.</p>
+
+<hr>
+
+<p>I needed to add some functionality to my list controls, so of
+course, I came to the Code Guru for help. I found several very
+good articles on extending the CListCtrl class, but none that
+included all of the features I needed. By combining the code from
+three of these articles and adding some features of my own, I
+have created an easy to use extended list control class.
+CListCtrlEx extends CListCtrl by adding full row highlighting,
+column header drag and drop, and column sorting. Columns can be
+sorted by string(case or no case), number, or date/time. All,
+none or any combination of these features can be enabled.</p>
+
+<p>I would like to thank the authors of the following articles:<br>
+<a href="http://www.codeguru.com/listview/sel_row.shtml">Selection
+highlighting of entire row</a> <br>
+<a href="http://www.codeguru.com/listview/drag_col.shtml">Dragging
+columns to rearrange column sequence</a> </p>
+
+<p><a href="listclass1.zip">Download Source</a> (CListCtrlEx.h, and
+CListCtrlEx.cpp) 8Kb</p>
+
+<p><strong>To use CListCtrlEx:</strong></p>
+
+<p>1. Add the header to your dialog box header file or StdAfx.h:<br>
+<font color="#800000">#include &quot;CListCtrlEx.h&quot;</font><font
+color="#990000"><tt>&nbsp;</tt></font></p>
+
+<p>2. Add a CListCtrlEx to your dialog box class where you would
+add CListCtrl:<br>
+<font color="#800000">CListCtrlEx m_List;</font><font
+color="#990000"><tt>&nbsp;</tt></font></p>
+
+<p>3. Initialize the list control in the dialog box OnInitDialog
+function to enable the features you want:</p>
+
+<pre><font color="#800000" size="3" face="Times New Roman">BOOL CListDlg::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+		
+	//set the column types and enable sorting
+	if(m_List.SetColumnTypes(_gnLogColTypes, NUM_LOGCOLUMNS))
+		m_List.EnableSort();	</font></pre>
+
+<pre><font color="#800000" size="3" face="Times New Roman">	//set the type of row highlighting
+	m_List.SetHighlightType(HIGHLIGHT_ROW);</font></pre>
+
+<pre><font color="#800000" size="3" face="Times New Roman">	//enable drag and drop headers
+	m_List.EnableHeaderDrag();</font></pre>
+
+<pre><font color="#800000" size="3" face="Times New Roman">	//set the base time for sorting on a 24 hour clock
+	m_List.SetBaseTime(&quot;21:04:00&quot;);</font></pre>
+
+<pre><font color="#800000" size="3" face="Times New Roman">	return TRUE;  
+}</font></pre>
+
+<p><font size="3"><strong>Notes:</strong></font></p>
+
+<p><font face="Times New Roman">_gnLogColTypes and NUM_LOGCOLUMNS
+are globally defined as follows:</font></p>
+
+<pre><font color="#800000" size="3" face="Times New Roman">#define NUM_LOGCOLUMNS	4</font></pre>
+
+<pre><font color="#800000" size="3" face="Times New Roman">static unsigned char _gnLogColTypes[NUM_LOGCOLUMNS] = 
+{
+	LVEX_NUM, LVEX_CASE, LVEX_TIME, LVEX_NOCASE
+};</font></pre>
+
+<p>If you do not call SetColumnTypes() but you enable sorting,
+all columns will be sorted as case sensitive strings. The sorting
+types are defined as:</p>
+
+<p>LVEX_NUM: Sort as an integer number<br>
+LVEX_CASE: Sort as a string (case sensitive)<br>
+LVEX_NOCASE: Sort as a string (not case sensitive)<br>
+LVEX_TIME: Sort as a date/time<br>
+LVEX_NOSORT: Do not sort this column<br>
+LVEX_NUM_FLOAT: Sort by floating point number<br>
+LVEX_TIME_BASE: Sort as 24 hour time with a starting time (see
+below, will probably never use)</p>
+
+<p>The row highlighting types are defined as:</p>
+
+<p>HIGHLIGHT_NORMAL: Highlight the first column only (default
+CListCtrl behavior)<br>
+HIGHLIGHT_ALLCOLUMNS: Highlight all columns but not unused space<br>
+HIGHLIGHT_ROW: Highlight the entire row including unused space</p>
+
+<p>I added the base clock time feature to fit a very specific
+need I had. Most people will probably not have to use it. The
+records I display commonly have 24 hour clock times (no date)
+beginning in early evening and running to morning (ie: 23:00:00
+to 05:00:00) and I needed to sort the time from the starting time
+(23:00:00) not by the lowest time. If you do not call
+SetBaseTime(), the date/time will be sorted by absolute time.</p>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

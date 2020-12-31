@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Retrieving selected items</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Retrieving selected items</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+To retrieve the index of the first selected item use GetNextItem(). As its name implies, you can use also use the GetNextItem() function to retrieve the index of the next selected item. The code below prints out the indices of all selected items to the debug window.
+
+<PRE><TT><FONT COLOR="#990000">// This code prints out the indices of selected items to debug win
+ int i = GetNextItem( -1, LVNI_ALL | LVNI_SELECTED);
+ while( i != -1 )
+ {
+	TRACE("%d\n", i );
+	i = GetNextItem( i, LVNI_ALL | LVNI_SELECTED);
+ }
+</FONT></TT></PRE>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

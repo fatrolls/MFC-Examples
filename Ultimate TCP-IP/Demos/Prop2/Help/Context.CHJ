@@ -1,0 +1,21 @@
+[PROJECT]
+Primary File=C:\Prop2.exe
+Help File To Build=DSITools.HLP
+Database File=Context.DBF
+Run Command=C:\Prop2.exe
+Help Project File=DSITools.HPJ
+DefaultTopicFile=Context.DTO
+HelpMapFile=Context.HH
+ExeTime=263690240, 29300810
+
+[DATA]
+ProjectType=0
+RHAttached=1
+StartMapNum=10000
+VBFormBorder=0
+NextTopicNum=93
+ControlCount=93
+TopicIdPrefix=IDH_
+DefaultText=0
+UpdRemind=1
+RHRtfSaved=1

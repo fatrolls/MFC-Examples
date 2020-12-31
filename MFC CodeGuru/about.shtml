@@ -1,0 +1,72 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>MFC Programmer's SourceBook</TITLE>
+   </HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td><img src="mfc_sourcebook.jpg" ALT="MFC Programmer's SourceBook"><td>
+<td valign=bottom><FONT size="+3" color="#a0a0ff"><b>About</b></font></td>
+</tr>
+</table>
+<HR>
+
+CodeGuru is maintained with the help of a number of people. Here's a list of people in no particular order.
+Chris Maunder, Guy Gascoigne - Piggford, 
+Rama Krishna, Raul Ciotescu, Subramani Jagadeesan, Pat Laplante, Jaroslav Pisk, Michael Hejselbak,
+Nikolay Sokratov, Jason Wylie, Nikolay Sokratov, Rob Manderson, Michael D. Buck, Shilpa Shamapant,
+Scott Miller, Mikael Aronsson, Iuri Apollonio, Robbert E. Peters, Wael. S. A., 
+Dominik Gunkel, Leif Terje Fonnes, Nick Lewis, Jason Coene, Thomas Moor, Asif Rasheed, Lee Emmert,
+Hugo Bernier, Benjamin G Renzi, Juergen Kraus, Christoph Huhn, Keith Willis.
+
+<p>There are also a number of people working on translating this site to various languages. The list of people
+working on this is still growing, so I'll list their names after a couple of weeks.
+
+<p>The homepage layout was designed by Kirk Stowell and he also created the background and the logo.
+
+<P>This site started out as a solo effort by Zafir Anjum but 
+within a week of its creation people started sending in code that they thought
+would be useful to other programmers. Initially I was actually hesitant to accept
+articles from other people as I thought it would take time away from my own work.
+
+
+<P>I started this web site because I wanted to write a book (I have now given up on the idea). 
+My idea for the book was simple. I wasn't going to try to teach the 
+basics or even the advanced topics but instead focus on saving the programmers some
+coding time by giving actual code for tasks that often need to be implemented. Since I 
+wasn't confident that I would have enough time to complete the book or even that I 
+would get a publisher to publish the book, I wanted to share the material so that my
+effort wouldn't go waste. 
+
+<P>I am a Microsoft Certified Solution Developer (MFC, OLE, VB & Access). 
+The tests were quite easy since I was working with the related technology. 
+I am also a Sun Certified Java Programmer. This test required a weekend of preparation and the format of the 
+test was much tougher than that of the MS tests. 
+
+<p>The first page was created on the 26th of June, 97 at http://www.dsp.com/zafir. 
+The trafic to the site increased beyond the restrictions imposed by the ISP so I had to move it to 
+a web hosting service and got my own domain name in the process. Soon the site outgrew that too and
+now it is hosted on its own server at a co-location service. The server is a Pentium 166 with 128MB
+RAM running Linux and Apache. 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2><!--#exec cgi="cgi/counters/counter.cgi"--></FONT></CENTER>
+</BODY>
+</HTML>

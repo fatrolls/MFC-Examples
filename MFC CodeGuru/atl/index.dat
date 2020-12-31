@@ -1,0 +1,22 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/12|ATLMFC_PropPage.shtml||COlePropertyPage in ATL server|James Hebben
+1998/04/12|activex_script_hosting.shtml||ActiveX script hosting|Andrew Garbuzov
+1998/04/12|classview_system_interfaces.shtml||Displaying System Interfaces in ClassView|James Hebben
+1998/04/12|dcom_timeout.shtml||HOWTO Configure DCOM Timeouts|Chris Kohlhepp
+1998/04/12|mfcatl.shtml||Add ATL to MFC Project|Daniel Ilkanayev
+1998/04/12|windowless.shtml||Control container supporting windowless activation|Klaus Gütter
+1998/04/15|activex_script_hosting_2.shtml||ActiveX script hosting - 2|Andrew Garbuzov

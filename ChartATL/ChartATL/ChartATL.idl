@@ -1,0 +1,88 @@
+// ChartATL.idl : IDL source for ChartATL
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ChartATL.tlb) and marshalling code.
+
+#include "olectl.h"
+import "oaidl.idl";
+import "ocidl.idl";
+
+//Line Fill Style
+	typedef enum
+	{
+		L_SOLID      = 0, 
+		L_DASH       = 1, 
+		L_DOT        = 2, 
+		L_DASHDOT    = 3,
+		L_DASHDOTDOT = 4,
+		L_EMPTY      = 5,
+		L_INSIDEFRAME= 6,
+		L_USERSTYLE  = 7,
+	}PenStyle;
+
+	//Brush Fill Style
+	typedef enum
+	{
+		B_SOLID			=	0,        
+		B_EMPTY			=	1,   
+		B_HOLLOW        =	2,
+		B_HATCHED		=	3,
+		B_PATTERN		=	4,	
+		B_INDEXED		=	5,
+		B_DIBPATTERN	=	6,
+		B_DIBPATTERNPT	=	7,
+		B_PATTERN8X8	=	8,
+		B_DIBPATTERN8X8	=	9,
+		B_MONOPATTERN	=	10
+	}BrushStyle;
+[
+	object,
+	uuid(1DE9333C-3301-4EF4-8F44-01559B4195E3),
+	dual,
+	nonextensible,
+	helpstring("IChartCtrl Interface"),
+	pointer_default(unique)
+]
+interface IChartCtrl : IDispatch{
+		[propget, id(1), helpstring("property BackColor")] HRESULT BackColor([out, retval] OLE_COLOR* pVal);
+		[propput, id(1), helpstring("property BackColor")] HRESULT BackColor([in] OLE_COLOR newVal);
+		[propget, id(2), helpstring("property VerticalLineStyle")] HRESULT VerticalLineStyle([out, retval] PenStyle* pVal);
+		[propput, id(2), helpstring("property VerticalLineStyle")] HRESULT VerticalLineStyle([in] PenStyle newVal);
+		[propget, id(4), helpstring("property VerticalLineColor")] HRESULT VerticalLineColor([out, retval] OLE_COLOR* pVal);
+		[propput, id(4), helpstring("property VerticalLineColor")] HRESULT VerticalLineColor([in] OLE_COLOR newVal);
+		[propget, id(5), helpstring("property HorizontalLineColor")] HRESULT HorizontalLineColor([out, retval] OLE_COLOR* pVal);
+		[propput, id(5), helpstring("property HorizontalLineColor")] HRESULT HorizontalLineColor([in] OLE_COLOR newVal);
+		[propget, id(6), helpstring("property ChartColor_1")] HRESULT ChartColor_1([out, retval] OLE_COLOR* pVal);
+		[propput, id(6), helpstring("property ChartColor_1")] HRESULT ChartColor_1([in] OLE_COLOR newVal);
+		[propget, id(7), helpstring("property ChartColor_2")] HRESULT ChartColor_2([out, retval] OLE_COLOR* pVal);
+		[propput, id(7), helpstring("property ChartColor_2")] HRESULT ChartColor_2([in] OLE_COLOR newVal);
+		[propget, id(8), helpstring("property ChartFillStyle_1")] HRESULT ChartFillStyle_1([out, retval] BrushStyle* pVal);
+		[propput, id(8), helpstring("property ChartFillStyle_1")] HRESULT ChartFillStyle_1([in] BrushStyle newVal);
+		[propget, id(9), helpstring("property ChartFillStyle_2")] HRESULT ChartFillStyle_2([out, retval] BrushStyle* pVal);
+		[propput, id(9), helpstring("property ChartFillStyle_2")] HRESULT ChartFillStyle_2([in] BrushStyle newVal);
+		[id(11), helpstring("method UpdateChart")] HRESULT UpdateChart([in] USHORT ChartValue1, USHORT ChartValue2);
+		[propget, id(12), helpstring("property HorizontalLineStyle")] HRESULT HorizontalLineStyle([out, retval] PenStyle* pVal);
+		[propput, id(12), helpstring("property HorizontalLineStyle")] HRESULT HorizontalLineStyle([in] PenStyle newVal);
+		[propget, id(13), helpstring("property RefreshSpeed")] HRESULT RefreshSpeed([out, retval] USHORT* pVal);
+		[propput, id(13), helpstring("property RefreshSpeed")] HRESULT RefreshSpeed([in] USHORT newVal);
+};
+
+[
+	uuid(CAF8C33E-910B-45DE-9061-E00B57BA2E22),
+	version(1.0),
+	helpstring("ChartATL 1.0 Type Library")
+]
+library ChartATLLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(F3758FB2-1605-4A41-BBC5-E918DB0F7E36),
+		control,
+		helpstring("ChartCtrl Class")
+	]
+	coclass ChartCtrl
+	{
+		[default] interface IChartCtrl;
+	};
+};

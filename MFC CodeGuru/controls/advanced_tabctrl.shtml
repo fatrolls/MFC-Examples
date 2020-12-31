@@ -1,0 +1,117 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - An Advanced TabCtrl</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+An Advanced TabCtrl
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:MarkJ@on-line.de">Mark Jacob</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="advanced_tabctrl.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<P>The aim for this project was to control the colors of the TabCtrl. In MFC you are not able to
+configure your own color combinations for the TabCtrl. With this TabCtrlAdvanced you can choose your 
+own colors for the background, the display area and the TabCtrl items.</P>
+
+<P>Normally the OnCtlColor function is called in response to a message, so I use a SendMessage to 
+get the color, although it is now also implemented as a virtual function. The message call is then 
+mapped to the OnCtlColor in the WindowProc. I thought that this is a nice way to map a range of 
+messages to one (or if you want more) function(s). 
+
+<p>Get your desired color by calling:</p>
+ 
+<FONT COLOR="#990000"><TT><PRE>
+SendMessage(WM_CTLCOLOR_XXX, (WPARAM)CDC*, (LPARAM)LPDRAWITEMSTRUCT)</P>
+</tt></PRE></FONT>
+
+<P>WM_CTLCOLOR_XXX can be one of:</P>
+<ul>
+<li><FONT COLOR="#990000"><TT>WM_CTLCOLOR_BKGND&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></FONT>For the Background, behind the Items</li>
+<li><FONT COLOR="#990000"><TT>WM_CTLCOLOR_TABITEM&nbsp;&nbsp;&nbsp;</tt></FONT>For the Item</li>
+<li><FONT COLOR="#990000"><TT>WM_CTLCOLOR_DISPLAY&nbsp;&nbsp;&nbsp;</tt></FONT>For the client area of the selected Item</li>
+</ul>
+
+<P>The return value is a CBrush*.Note: You only have to give the LPDRAWITEMSTRUCT if you want to have
+ the background color for an Item.</P>
+
+<P>I changed the original second parameter of OnCtlColor, to get all the information of the item, so you 
+can give every item its own color! OK this can be a bit too much color, but if you want to point out one
+ item more than the others than it might be useful for your users.</P>
+
+<P>To get the full control of the appearance of the items I had to draw them on my own. I like it when 
+they are bit round at the corners and so I used the createRoundedRectRgn function to create the region
+ for every item. I used Region because I can easily add them to the clipping region of the Drawing-Process 
+ and I can fill them with a CBrush. Try a pattern-Bitmap for the background - under NT 4.0 it will look 
+great! Unfortunately Win95 can only handle 8x8 sized bitmaps, but there may be someone who is able to 
+make Win95 use larger sized bitmaps or implement a fast function to fill a region with larger tiled-Bitmaps.</P>
+
+<P>Now after I decided to work with Regions I recognize another problem, how to draw the shadows? I 
+solved this problem by creating two regions, one for the outer border, and one for the inner one. The
+ difference between these two Regions is the Border. The light is always coming from the Left-Top and 
+ so everything above a diagonal from the Left-Bottom to the Right-Top must be drawn with the 3D-Highlight 
+ color and the other side has to be drawn with the 3D-Shadow color.</P>
+
+<P>Now to the drawing process: first of all I draw the selected Item, it is larger than the other ones 
+and its border will overlap its neighbors, if it is drawn later. The remaining item will be drawn line 
+by line from the bottom to the top. By drawing it this way I can always clip out the region for drawn 
+items. This avoids flickering and in case of the selected item it assures that this item looks like 
+placed above the others.</P>
+
+<P>To add more information to every Item you can use the lParam of the TC_ITEM Structure. It is a 32-bit
+ value and so it can hold a pointer to a structure, or what I prefer to a class. I prefer using classes 
+ for this kind of parameters because I can check whether they have the correct RUNTIME_CLASS or not.</P>
+
+<P>In my sample I keep the color information and the Title in my additional parameter, but you can expand 
+this information class for whatever you need. You can see the result in the <A HREF="advanced_tabctrl.zip">
+sample</A> project. You can control the colors, the appearance of every item and it IS almost flicker-free!</P>
+
+<!-- Remember to update this -->
+<p>Last updated: 4 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

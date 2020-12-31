@@ -1,0 +1,189 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Combobox Color Picker</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+<td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Button Color Picker</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:bdufort@softkit.com">Benoit Dufort</A>.
+
+
+<p>I recently wanted to allow certain color selection in one of my 16 bits projects like Excel offers in it's toolbar. 
+The following code acomplishes exactly that. My projet is a 16 bits application so the exemple is in 16 bits build with MSVC 1.52, 
+but I sure you can recompile it in 32 bits.
+</p>
+
+<P>Just include the ComboBtn.h and ComboBtn.cpp files in your project and create a control 
+member variable. Here's a preview of the button and the implementation in a toolbar.
+</p>
+
+<p><img src="button_color_picker.jpg"></p>
+
+<A HREF="button_color_picker.zip">Download sample and source</A> 85KB
+
+<p>
+<PRE><TT><FONT COLOR="#990000">
+// mainfrm.h : interface of the CMainFrame class
+//
+/////////////////////////////////////////////////////////////////////////////
+#include "combobtn.h"
+
+class CMainFrame : public CMDIFrameWnd
+{
+	DECLARE_DYNAMIC(CMainFrame)
+public:
+	CMainFrame();
+
+// Attributes
+public:
+	CButtonCombo m_colorBtn;
+	CButtonCombo m_bitmapBtn;
+
+// Operations
+public:
+
+// Implementation
+public:
+	virtual ~CMainFrame();
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+
+protected:  // control bar embedded members
+	CStatusBar  m_wndStatusBar;
+	CToolBar    m_wndToolBar;
+
+// Generated message map functions
+protected:
+	//{{AFX_MSG(CMainFrame)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+		// NOTE - the ClassWizard will add and remove member functions here.
+		//    DO NOT EDIT what you see in these blocks of generated code!
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+// in mainfrm.cpp
+
+// toolbar buttons - IDs are command buttons
+static UINT BASED_CODE buttons[] =
+{
+	// same order as in the bitmap 'toolbar.bmp'
+	ID_FILE_NEW,
+	ID_FILE_OPEN,
+	ID_FILE_SAVE,
+		ID_SEPARATOR,
+	ID_EDIT_CUT,
+	ID_EDIT_COPY,
+	ID_EDIT_PASTE,
+		ID_SEPARATOR,
+		ID_SEPARATOR,	// Color Button
+		ID_SEPARATOR,
+		ID_SEPARATOR,	// Bitmap Button
+		ID_SEPARATOR,
+	ID_FILE_PRINT,
+	ID_APP_ABOUT,
+};
+
+static UINT BASED_CODE indicators[] =
+{
+	ID_SEPARATOR,           // status line indicator
+	ID_INDICATOR_CAPS,
+	ID_INDICATOR_NUM,
+	ID_INDICATOR_SCRL,
+};
+
+#define IDC_BTNCOLOR	1000
+#define IDC_BTNBITMAP	1001
+
+/////////////////////////////////////////////////////////////////////////////
+// CMainFrame construction/destruction
+
+CMainFrame::CMainFrame()
+{
+	// TODO: add member initialization code here
+}
+
+CMainFrame::~CMainFrame()
+{
+}
+
+int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	if (!m_wndToolBar.Create(this) ||
+		!m_wndToolBar.LoadBitmap(IDR_MAINFRAME) ||
+		!m_wndToolBar.SetButtons(buttons,
+		  sizeof(buttons)/sizeof(UINT)))
+	{
+		TRACE("Failed to create toolbar\n");
+		return -1;      // fail to create
+	}
+
+	m_wndToolBar.SetButtonInfo(8, IDC_BTNCOLOR, TBBS_SEPARATOR, 48 );
+	m_wndToolBar.SetButtonInfo(10, IDC_BTNBITMAP, TBBS_SEPARATOR, 48 );
+	
+	m_wndToolBar.SetButtonInfo(9, ID_SEPARATOR, TBBS_SEPARATOR, 12 );
+	m_wndToolBar.SetButtonInfo(11, ID_SEPARATOR, TBBS_SEPARATOR, 12 );
+	CRect rect;
+	m_wndToolBar.GetItemRect(8, &rect);
+
+	CString sText = ""; 
+	char buffer[5];
+	for (int i = 0; i < 72; i++)
+		sText += "Color " + CString(itoa(i, buffer, 10)) + ((i < 71)? ";" : "");
+
+	m_colorBtn.Create(rect, CSize(8, 6), CSize(16, 15), &m_wndToolBar, IDC_BTNCOLOR);
+//	If you want the text for each color use this line 
+//	m_colorBtn.Create(rect, CSize(8, 6), CSize(16, 15), &m_wndToolBar, IDC_BTNCOLOR, sText);
+
+	sText.LoadString(IDS_STRINGCHART);	
+	m_wndToolBar.GetItemRect(10, &rect);
+	m_bitmapBtn.Create(rect, CSize(4, 4), IDB_CHART, 14, &m_wndToolBar, IDC_BTNBITMAP, sText);
+
+	if (!m_wndStatusBar.Create(this) ||
+		!m_wndStatusBar.SetIndicators(indicators,
+		  sizeof(indicators)/sizeof(UINT)))
+	{
+		TRACE("Failed to create status bar\n");
+		return -1;      // fail to create
+	}
+
+	return 0;
+}
+</FONT></TT></PRE>
+</p>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@dsp.net">zafir@dsp.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

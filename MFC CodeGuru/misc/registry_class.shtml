@@ -1,0 +1,94 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Zafir Anjum">
+<title>Miscellaneous - Registry Entry Class</title>
+</head>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink=
+"#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+ 
+
+<h3 align="center"><font color="#808080">Misc. MFC Topics - Registry Entry Class</font></h3>
+
+<hr align="center">
+
+<p>This tip was contributed by <a href="mailto:klen@bellatlantic.net">Ken C. Len</a>.</p>
+
+<p>Here is another <a href="registry_calss.zip">class for handling the Registry</a>.<br>
+<br>
+I took this from the &quot;Visual C++ 4.0 How-to&quot; book and added new functionality.<br>
+Functionalities added are keys enumeration and value enumerations.<br>
+<br>
+<br>
+Here are some examples on using this class.</p>
+
+<p>&nbsp;</p>
+
+<pre><font COLOR="#990000"><tt>+++++++ Example 1 +++++++++
+
+// normal read and write
+CString strDefault;
+CString strDriver;
+CRegKey regKey;
+
+
+if (regKey.Open(HKEY_LOCAL_MACHINE, &quot;SOFTWARE\\ODBC\\ODBCINST.INI\\Microsoft Access
+    Driver (*.mdb)&quot;) == ERROR_SUCCESS)
+
+	{
+	    regKey.Read(&quot;&quot;, strDefault); // read default value
+	    regKey.Read(&quot;Driver&quot;, strDriver);
+	    regkey.Write(&quot;test&quot;, strDriver);
+	    regKey.Close();
+
+	}</tt></pre>
+</font>
+
+<pre><font COLOR="#990000"><tt>
+
++++++++ Example 2 +++++++++
+
+// enumerating keys
+CStringArray strArray;
+CRegKey regKey;
+
+
+regKey.GetEnumKeys(HKEY_LOCAL_MACHINE, &quot;SOFTWARE\\ODBC\\ODBCINST.INI&quot;,
+                   strArray);
+
+</tt></pre>
+</font>
+
+<pre><font COLOR="#990000"><tt>+++++++ Example 3 +++++++++
+
+// enumerating values
+CStringArray strArray;
+CRegKey regKey;
+
+
+regKey.GetEnumKeys(HKEY_LOCAL_MACHINE, &quot;SOFTWARE\\ODBC\\ODBCINST.INI\\ODBC
+                   Drivers&quot;, strArray);</tt></pre>
+</font>
+
+<p><tt><font COLOR="#990000"><br>
+</font></tt>Posted on: 4/2/98 </p>
+
+<hr>
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+</body>
+</html>

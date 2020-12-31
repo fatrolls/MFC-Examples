@@ -1,0 +1,83 @@
+//
+// MRCEXT.RC2 - resources Microsoft Visual C++ does not edit directly
+//
+/////////////////////////////////////////////////////////////////////
+// $Revision:   1.1  $
+// $Date:   25 Jul 1997 16:42:44  $
+// $Author:   BUILD  $
+/////////////////////////////////////////////////////////////////////
+
+#ifdef APSTUDIO_INVOKED
+	#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+
+/////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version - moved to non-AppStudio version so can get SOOTYVRN
+//
+
+#include "winver.h"
+
+ VS_VERSION_INFO VERSIONINFO
+
+// Binary file version number (not used)
+ FILEVERSION 0,0,0,0
+
+// Binary product version number (not used)
+ PRODUCTVERSION 0,0,0,0
+
+// Mask to control file flags
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+
+// File characteristics: VS_FF_DEBUG, VS_FF_PATCHED, VS_FF_PRERELEASE, VS_FF_PRIVATEBUILD, VS_FF_SPECIALBUILD
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+
+// Target operating environment
+ FILEOS VOS__WINDOWS32
+
+// Type of file: VFT_APP, VFT_DLL
+ FILETYPE VFT_DLL
+
+// Extra information. Not usually required
+ FILESUBTYPE VFT2_UNKNOWN
+
+// String information block
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        // Language info: U.S.English, ASCII     
+        BLOCK "04090000"
+        BEGIN
+            VALUE "Comments","None"
+            VALUE "CompanyName", "COMPANY_NAME\0"
+            VALUE "FileDescription", "Visual Object COBOL MFC Extensions\0"
+            VALUE "FileVersion", "COMPONENT_VER_LAB\0"
+            VALUE "InternalName", "MRCEXT\0"
+            VALUE "LegalTrademarks",  "TRADEMARK_STRING\0"
+            VALUE "LegalCopyright", "COPYRIGHT_STRING\0"
+            VALUE "OriginalFilename", "MRCEXT.DLL\0"
+            VALUE "ProductName", "PRODUCT_NAME\0"
+            VALUE "ProductVersion", "a.b.cc\0"
+//          Only required if VS_FF_PRIVATEBUILD is specified in FILEFLAGS above
+//          VALUE "PrivateBuild","E.G. Built by ??? for their use only"
+//          Only required if VS_FF_SPECIALBUILD is specified in FILEFLAGS above
+//          VALUE "SpecialBuild","E.G. Fixes a bug for customer X"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        // Language info: U.S.English, ASCII     
+        VALUE "Translation", 0x409, 0
+    END
+END
+

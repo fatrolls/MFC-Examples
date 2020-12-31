@@ -1,0 +1,75 @@
+<HTML>
+<!-- $Revision: 2 $ -->
+<H1>Release 31</H1>
+<H2>Bug Fixes/Enhancements</H2>
+<B>In General</B> - Alexander Kiesl [Alexander.Kiesl@mch.sni.de] found
+a bug in <B><A HREF="serial.htm">CSerialFile</A>::ConfigurationDialog()</B>.
+The Win32 API <B>CommConfigDialog<B>() is defined as BOOL but was
+not returning TRUE or FALSE. Upon closer examination of the documentation
+for <B>CommConfigDialog</B>(), it says it will return zero on failure
+and non-zero on success. This is nice <B>BUT IT AIN'T BOOLEAN!</B>
+I had to reverse my logic for detecting failure from
+<CODE>return_value != TRUE</CODE> to <CODE>return_value == FALSE</CODE>
+whenever I called <B>ANY</B> Win32 API anywhere in WFC. For the moment,
+it looks like Microsoft's definition of BOOL is &quot;zero or something
+else.&quot; Interestingly, this definition applies to all non-void
+functions. In short, TRUE is not a valid return value from any Win32
+API call and should never be used in any conditional expression.
+Only FALSE is valid. WFC now only checks for FALSE being
+returned from a BOOL function. However, you are guaranteed that any
+WFC function of type BOOL will return only TRUE or FALSE. Unlike the
+author of <B>CommConfigDialog</B>(), I understand the difference
+between BOOL and int.<P>
+<B>In General 2</B> - WFC is now UNICODE correct! Well, almost. The
+socket classes are still not correct but they will be RSN (real
+soon now). WFC uses the gender neutral versions of string functions.
+For example, <CODE>sprintf()</CODE> becomes <CODE>_stprintf()</CODE>.
+This was a lot of work. Like
+<A HREF="http://www.i-cafe.net/donc/" TARGET="_parent">John Wayne</A>
+said, &quot;Life is tough. It's tougher if you're stupid.&quot; Converting
+to UNICODE was pretty darned tough. I had to edit every method of
+every class in WFC.<P>
+<B>In General 3</B> - All sample applications have been converted to
+Visual C++ 5.0.<P>
+<B>CDeviceControlBlock</B> - The <B>Dump</B>() method present only
+in the debug build, now breaks out the meanings of the data members
+(i.e. breaks the bit fields out to text).<P>
+<B><A HREF="registry.htm">CRegistry</A></B> - Paul Ostrowski (postrowski@xantel.com)
+found many many places where I was not UNICODE correct. This caused
+me to review <I>all</I> of WFC for UNICODE correctness. It took an
+enormous amount of time. I was stupid not to have done this since
+the beginning. Oh well, live and learn.<P>
+<B><A HREF="ServiceConfiguration.htm">CServiceConfiguration</A></B> - 
+Ullrich Pollaehne (Ullrich_Pollaehne@ka2.maus.de) found a bug where
+I was handling double-NULL terminated strings in a silly manner.
+<B><A HREF="CSvcMgr.htm">CServiceControlManager</B></B> - 
+Ullrich Pollaehne (Ullrich_Pollaehne@ka2.maus.de) has done a
+magnificent job of finding my laziness in the <B>EnumerateStatus</B>()
+method. It will now enumerate more than 128 entries (which you can
+easily get by enumerating all services). 
+<B><A HREF="SOCKETS.htm">CSimpleSocket</A></B> - Angelini Fabio (fabioang@iol.it)
+uncovered my stupidity in not handling a zero-bytes-read condition on the
+<B>Read</B>() method.<P>
+<B><A HREF="CSystemTime.htm">CSystemTime</A></B> - Has new <B>Get</B>()
+and <B>Set</B>()
+methods that get the time from the computer and set the time on the
+computer.<P>
+<B>CWfcTrace</B> - I was catching some flak about the amount of debugging
+messages that WFC spits out. I modified the class (don't worry, your code
+won't change) so it supports 32 independent levels of debugging messages. By default,
+only debugging messages from your application will be sent to the debug
+window. If you want to see WFC's debugging statements, you must call
+WFCTRACELEVELON( 31 ), which will turn on level 31's messages.<P>
+<H2>New Classes</H2>
+<B><A HREF="CFileTransferProtocol.htm">CFileTransferProtocol</A></B> - Makes
+it a little easier to play with ftp. It retrieves directory listings
+or files. Easier to use than the MFC counterparts.<P>
+<B><A HREF="wfc_am_i_administrator.htm">wfc_am_i_administrator</A></B> - C Function
+that returns TRUE if you have Administrator priveleges.<P>
+<HR>
+<A HREF="Release30.htm">Release 30 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS>Internet: wfc@pobox.com</ADDRESS>
+<A HREF="http://ourworld.compuserve.com/homepages/Sam_Blackburn" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

@@ -1,0 +1,5 @@
+LIBRARY     	AGTESTDLL
+EXPORTS
+    TestFunction
+    
+

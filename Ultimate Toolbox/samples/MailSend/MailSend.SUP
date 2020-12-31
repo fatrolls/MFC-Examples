@@ -1,0 +1,6 @@
+//SUPPRESSIONPROJ:MailSend
+//VERSION:5.00
+//ENABLE:Yes
+!include Mfc.sup
+!include Rtl.sup
+

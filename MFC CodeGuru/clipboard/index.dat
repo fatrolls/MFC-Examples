@@ -1,0 +1,22 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/12|adv_copypaste.shtml||Advanced Copy/Paste &amp; Drag/Drop Support|Keith Rule
+1998/04/12|bitmap_to_clipboard.shtml||Place a bitmap image on the clipboard|Randy More
+1998/04/12|copypaste_dragdrop.shtml||Basic Copy/Paste & Drag/Drop Support|Keith Rule
+1998/04/12|emf_to_clipboard.shtml||Place a enhanced metafile on the clipboard|Randy More
+1998/04/12|text_tofrom_clipboard.shtml||Read/Write text on clipboard|Randy More
+1998/04/03|rtf_clipboard.shtml||RTF Streaming and the clipboard|Gary Kuehn
+1998/04/13|copy_graphics.shtml||Copying Graphical Data via Enhanced Meta File|Oliver Eichler

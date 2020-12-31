@@ -1,0 +1,32 @@
+<html>
+<head><title>Inside Visual C++ HTML Form 1</title>
+</head>
+<body>
+<h1><center>Welcome to CyberPizza</center></h1>
+<p> Enter your order.
+<form action="scripts/ex31a.dll?ProcessPizzaForm" method=POST>
+	<p> Your Name: <input type="text" name="name" value="">
+	<p> Your Address: <input type="text" name="address" value="">
+	<p> Number of Pies: <input type="text" name="quantity" value=1>
+	<p>Pizza Size:
+	  <menu>
+		<li><input type="radio" name="size" value=8>8-inch
+		<li><input type="radio" name="size" value=10>10-inch
+		<li><input type="radio" name="size" value=12 checked>12-inch
+		<li><input type="radio" name="size" value=14>14-inch
+	  </menu>
+	<p> Toppings:
+	<p>
+	  <input type="checkbox" name="top1" value="Pepperoni" checked> Pepperoni
+	  <input type="checkbox" name="top2" value="Onions"> Onions
+	  <input type="checkbox" name="top3" value="Mushrooms"> Mushrooms
+	  <input type="checkbox" name="top4" value="Sausage"> Sausage
+	<p>
+	  <em>(you can select multiple toppings)</em>
+
+	<p><input type="submit" value="Submit Order Now"><input type="reset">
+</form>
+
+</body></html>
+
+

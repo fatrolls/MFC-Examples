@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IMAPClient", "IMAPClient.vcproj", "{203A869B-8B52-43B9-AD32-AFEE8DC68F16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{203A869B-8B52-43B9-AD32-AFEE8DC68F16}.Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{203A869B-8B52-43B9-AD32-AFEE8DC68F16}.Debug|Win32.Build.0 = Unicode Debug|Win32
+		{203A869B-8B52-43B9-AD32-AFEE8DC68F16}.Release|Win32.ActiveCfg = Release|Win32
+		{203A869B-8B52-43B9-AD32-AFEE8DC68F16}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

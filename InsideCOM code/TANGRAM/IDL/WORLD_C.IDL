@@ -1,0 +1,69 @@
+///////////////////////////////////////////////////////////
+//
+//
+// World_C.idl - TypeLibrary for TangramGdiWorld
+//
+//
+///////////////////////////////////////////////////////////
+//
+// Imports
+//
+import "unknwn.idl" ; 
+
+
+// ITangramModelEvent 
+import "event_i.idl" ;
+
+// ITangramCanvas
+import "canvas_i.idl" ;
+
+// ITangram*Visual
+import "visual_i.idl" ;
+
+// ITangram*World
+import "world_i.idl" ;
+
+
+///////////////////////////////////////////////////////////
+//
+//
+// Component descriptions
+//
+[
+	uuid(b53313c8-20c4-11d0-9c6c-00a0c90a632c),
+	version(1.0),
+	helpstring("TangramWorld 1.0 Type Library")
+]
+library TangramWorldLib
+{
+	importlib("stdole32.tlb");
+
+	//
+	// TangramGdiWorld
+	//
+	[
+		uuid(b53313cd-20c4-11d0-9c6c-00a0c90a632c),
+		helpstring("TangramGdiWorld Class")
+	]
+	coclass TangramGdiWorld
+	{
+		[default] interface ITangramGdiWorld;
+		interface ITangramWorld;
+		interface ITangramCanvas ;
+	};
+
+
+	//
+	// TangramGdiVisual
+	//
+	[
+		uuid(b53313c9-20c4-11d0-9c6c-00a0c90a632c),
+		helpstring("TangramGdiVisual Class")
+	]
+	coclass TangramGdiVisual
+	{
+		[default] interface ITangramGdiVisual;
+		interface ITangramVisual ;
+		interface ITangramModelEvent ;
+	};
+};

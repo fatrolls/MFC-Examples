@@ -1,0 +1,421 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ActiveX script hosting</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">ActiveX script hosting</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:andrew@kms.donetsk.ua">Andrew Garbuzov</A>.
+
+<P>In this article will be described a way of implementing of an
+ActiveX script host with MFC.
+
+<P>An ActiveX script host is an application that can run some code written
+in other language (VBScript, VBA, Java script) and can expose the
+application's internal COM to the script being runned.
+
+<P>The Micrososft's Internet Explorer, Excel, Word, Access - are
+ActiveX script hosts. The first one use VBScript and the other ones
+use VBA.
+
+<P>Most of the code concerning the idea how to implement a host
+was taken from the "Axscript" example which is located on
+your Developer Studio CD. The example was implemented with
+WIN32 API. I have prepared three projects to describe the
+implementation of an ActiveX script with MFC.
+
+<P>STEP1 - an example how to make your MFC program run VBScript code.
+<br>STEP2 - exposing internal automation objects to the VBScript engine.
+<br>STEP3 - adding ability to handle events fired in C++ code
+by the VBScript code.
+
+<P>To see how the program works, compile the projects one after another
+and run. Having run the program, select the menu item "VBScript->
+Load script file". You will be proposed to select a file with
+the script. Select the "TestProgram.txt" file which is located
+in the directory of the project. Then select the "VBScript->Run"
+menu item to run the script.
+
+<P>The first example would display a message box. The second one
+would draw several rectangular sprites. The third one would
+allow you to drag sprites with the mouse.
+
+<P>Note. If you make your project settings to place the results of
+all the projects in the same folder, do not forget to use
+the "Rebuild All" menu item when switching to another project.
+Otherwise the program will not work properly.
+
+<P>To understand clearly how an ActiveX scripting engine works see
+help in the Developer Studio. The information is available at
+"Platform, SDK and DDK -> ActiveX SDK ->ActiveX scripting".
+
+
+<H4>Step1</H4>
+
+To make your program run VBScript code (or other script) you have
+to deal with the script engine which can be available through
+IActiveScript and IActiveScriptParse interfaces. Also your
+program must expose an object with IActiveScriptSite and optionaly
+IActiveScriptSiteWindow interfaces.
+
+<P>The "Step1" example has the CMainFrame object which supports both
+IActiveScript and IActiveScriptParse interfaces.
+
+<P>Most of the IActiveScript methods in this example were not implemented.
+To understand how to implement OLE interfaces with MFC see the technical
+note number 38.
+
+
+<H4>Step2</H4>
+
+In this step there were two automation objects created with ClassWizard.
+The first object is the CAXHostDoc was derived from CDocument. The second
+one is the CAXSprite object was derived from CCmdTarget. CAXHostDoc has an
+object called Animation which can manage sprites. CAXSprite is an OLE
+wrapper for a rectangular sprite. Sprites can be added to the Animation
+object, removed, moved, changed, ... but Animation does nothing until
+you ask it to render an image to a particular DC. Do not care about how it
+was implemented.
+
+<P>Your program can add to the scripting engine some top level item names,
+which will be available in the script. This item names should be
+associated with some COM objects in your application. Usualy i use the
+"Application" object as top level item. But in this example, which is an SDI
+application, the CAXHostApp object has a member m_pDoc to hold a pointer
+to the document. In the CMainFrame::CreateScriptEngine method the
+"Document" item name has been added to the script engine.
+
+<PRE><TT><FONT COLOR="#990000">
+const TCHAR* szItemName=_T("Document");
+
+USES_CONVERSION;
+LPCOLESTR	lpostrApp = T2COLE(szItemName);
+hr=m_pIActiveScript->AddNamedItem(lpostrApp, SCRIPTITEM_ISVISIBLE);
+</FONT></TT></PRE>
+
+
+
+The association between the item name added and the COM object is made
+in the IActiveScriptSite::GetItemInfo method.
+
+<PRE><TT><FONT COLOR="#990000">
+STDMETHODIMP CMainFrame::XScriptSite::GetItemInfo
+(
+  LPCOLESTR   pstrName,
+  DWORD       dwReturnMask,
+  IUnknown**  ppunkItemOut,
+  ITypeInfo** pptinfoOut
+)
+{
+	//HRESULT hr;
+	METHOD_PROLOGUE(CMainFrame, ScriptSite)
+
+	USES_CONVERSION;
+
+	LPCTSTR lpstrApplication=szItemName;
+    
+	if (dwReturnMask & SCRIPTINFO_ITYPEINFO)
+	{
+		if (!pptinfoOut)
+			return E_INVALIDARG;
+		*pptinfoOut = NULL;
+	}
+
+	if (dwReturnMask & SCRIPTINFO_IUNKNOWN)
+	{
+		if (!ppunkItemOut)
+			return E_INVALIDARG;
+		
+		*ppunkItemOut = NULL;
+
+		LPTSTR lpszName = OLE2T(pstrName);
+
+//Look here, please /////////////    
+		if(!_tcsicmp(lpstrApplication, lpszName))
+		{
+			*ppunkItemOut = theApp.m_pDoc->GetIDispatch(TRUE);
+			return S_OK;
+////////////////////////////
+		}		
+    }
+	
+
+	return TYPE_E_ELEMENTNOTFOUND;
+}
+</FONT></TT></PRE>
+
+As soon as the association has been made, you can use the Documents
+methods and properties. If there are some methods which return
+interfaces to other COM objects in your application, you can
+use their methods and properties without AddNamedItem function.
+They are not top level objects. They was obtained from the Document
+object (in this example there is just one such object - CAXSprite).
+
+
+<H4>Step 3</H4>
+
+In this example we make our program able to fire some events which
+can be handled by the VBScript engine. First of all we will need to
+provide ITypeInfo information to the script engine. The application
+object has some members to hold this information (you can use global
+variables).
+
+<PRE><TT><FONT COLOR="#990000">
+ITypeLib*	pITypeLib;    //library AXHost
+ITypeInfo*	ptinfoClsDoc; //coclass Document
+ITypeInfo*	ptinfoIntDoc; //dispinterface IAXHost
+
+ITypeInfo*	ptinfoClsSprite; //coclass Sprite
+ITypeInfo*	ptinfoIntSprite;	//dispinterface IAXSprite
+</FONT></TT></PRE>
+
+<P>To make your object fire events you need to create another interface
+to your object's events. Modify your ODL file.
+
+<P>Example:
+
+<PRE><TT><FONT COLOR="#990000">
+	[uuid(B6032E41-636A-11d1-8F0B-F54176DCF130)]
+	dispinterface  IAXHostEvents
+	{
+		properties:
+		methods: // Events
+		[id(1)]  void OnMouseDown([in] short x, [in] short y);
+		[id(2)]  void OnMouseMove([in] short x, [in] short y);
+		[id(3)]  void OnMouseUp([in] short x, [in] short y);
+		[id(4)]  void OnMouseDblClk([in] short x, [in] short y);
+	}
+
+	//  Class information for CAXHostDoc
+	
+	[ uuid(34E25943-6314-11D1-8F0B-F54176DCF130) ]
+	coclass Document
+	{
+		[default] dispinterface IAXHost;
+		[default, source]  dispinterface IAXHostEvents;
+	};
+</FONT></TT></PRE>
+
+
+
+<P>In the CAXHostApp::InitInstance() method the type information was loaded
+
+<PRE><TT><FONT COLOR="#990000">
+// ##### BEGIN ACTIVEX SCRIPTING SUPPORT #####
+const TCHAR* lpstrTLB=_T("AXHost.tlb");
+if(S_OK!=LoadTypeInfo(lpstrTLB,0,1,0,0,IID_LIBAXHost,IID_IAXHostClass,IID_IAXHost,FALSE,&pITypeLib,&ptinfoClsDoc,&ptinfoIntDoc))
+	return FALSE;
+
+if(S_OK!=LoadTypeInfo(lpstrTLB,0,1,0,0,IID_LIBAXHost,IID_IAXSpriteClass,IID_IAXSprite,FALSE,&pITypeLib,&ptinfoClsSprite,&ptinfoIntSprite))
+	return FALSE;
+// #####  END  ACTIVEX SCRIPTING SUPPORT #####
+</FONT></TT></PRE>
+
+
+<P>In the MainFrm.module:
+
+<P>The AddNamedItem was called with the SCRIPTITEM_ISSOURCE flag.
+
+<PRE><TT><FONT COLOR="#990000">
+pThis->m_pIActiveScript->AddNamedItem(lpszT, SCRIPTITEM_ISVISIBLE|SCRIPTITEM_ISSOURCE);
+</FONT></TT></PRE>
+
+
+<P>In the IActiveScriptSite::GetItemInfo ITypeInfo interface to the Document
+CLASS object has been provided to the scripting engine.
+
+<PRE><TT><FONT COLOR="#990000">
+STDMETHODIMP CMainFrame::XScriptSite::GetItemInfo
+(
+  LPCOLESTR   pstrName,
+  DWORD       dwReturnMask,
+  IUnknown**  ppunkItemOut,
+  ITypeInfo** pptinfoOut
+)
+{
+	//HRESULT hr;
+	METHOD_PROLOGUE(CMainFrame, ScriptSite)
+
+	USES_CONVERSION;
+
+	LPCTSTR lpstrApplication=szItemName;
+    
+	if (dwReturnMask & SCRIPTINFO_ITYPEINFO)
+	{
+		if (!pptinfoOut)
+			return E_INVALIDARG;
+		*pptinfoOut = NULL;
+
+//Attention, please
+		LPTSTR lpszName = OLE2T(pstrName);
+
+		if(!_tcsicmp(lpstrApplication, lpszName))
+		{
+			*pptinfoOut=theApp.ptinfoClsDoc;
+			return S_OK;
+		}
+////////////////////
+	}
+
+	if (dwReturnMask & SCRIPTINFO_IUNKNOWN)
+	{
+		if (!ppunkItemOut)
+			return E_INVALIDARG;
+		
+		*ppunkItemOut = NULL;
+
+//Attention, please
+		LPTSTR lpszName = OLE2T(pstrName);
+    
+		if(!_tcsicmp(lpstrApplication, lpszName))
+		{
+			*ppunkItemOut = theApp.m_pDoc->GetIDispatch(TRUE);
+			return S_OK;
+		}		
+///////////////////
+    }
+	
+
+	return TYPE_E_ELEMENTNOTFOUND;
+}
+
+
+Also the IActiveScriptSite::RequestTypeLibs method was implemented.
+
+//---------------------------------------------------------------------------
+// 
+//---------------------------------------------------------------------------
+STDMETHODIMP CMainFrame::XScriptSite::RequestTypeLibs(void)
+{
+	METHOD_PROLOGUE(CMainFrame,ScriptSite);
+	HRESULT hr=pThis->m_pIActiveScript->AddTypeLib(IID_LIBAXHost, 1, 0, 0);
+	return hr;
+}
+</FONT></TT></PRE>
+
+
+<P>If you want your object support events, it must support IConnectionPointContainer
+interface and IProvideTypeInfo interface. See the article about
+CConnectionPoint MFC object. See how it was implemented with the
+CAXHostDoc object.
+
+
+<P>If you implement all the interfaces correctly, the scripting engine will
+establish a connection to your object and you will be able to fire events
+with help of a small function.
+
+<PRE><TT><FONT COLOR="#990000">
+void CAXHostDoc::FireEvent(int iEvNum,VARIANTARG* pVar,int nParameters)
+{
+	const CPtrArray* pConnections = m_xConnPt.GetConnections();
+    ASSERT(pConnections != NULL);
+
+    int cConnections = pConnections->GetSize();
+    IDispatch* pSink;
+    for (int i = 0; i < cConnections; i++)
+    {
+        pSink = (IDispatch*)(pConnections->GetAt(i));
+        ASSERT(pSink != NULL);
+		InvokeEvent(pSink, iEvNum, pVar, nParameters);
+    }
+}
+</FONT></TT></PRE>
+
+<P>The iEvNum must be the same as in the ODL file. To fire the MouseDown
+event, for instance, i have to use iEvNum to be equal 1. Because
+[id(1)]  void OnMouseDown([in] short x, [in] short y);
+
+<P>I should have made constants like IDEVENT_MOUSEDOWN and use them both
+in the ODL file and in my C++ code.
+
+<P>Example:
+
+<PRE><TT><FONT COLOR="#990000">
+void CAXHostView::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+	// TODO: Add your message handler code here and/or call default
+	SetCapture();
+	VARIANTARG  var[2];
+
+	VariantInit(&var[1]);
+	var[1].vt = VT_I2;
+	var[1].iVal = (short)point.x;
+	VariantInit(&var[0]);
+	var[0].vt = VT_I2;
+	var[0].iVal = (short)point.y;
+
+	GetDocument()->FireEvent(1,var,2);
+	
+	CView::OnLButtonDown(nFlags, point);
+}
+</FONT></TT></PRE>
+
+<P>Observe the sequence of passing parameters to the variant array.
+
+<P>I am not sure that in this small description i have written all
+the tips to make your program work, but i send you the code which
+you can investigate. And you should alse see the "Axscript" example
+which does a little bit more. It provides a way how to make
+subclassing with VBScript. See the BuildTypeInfo function in the
+example to see how it has been done there.
+
+<P>If you have any questions, you can send me a message and i will try
+to answer. But i must confess that i am a novice in COM. COM is
+not difficult to understand but there are so many different objects
+and interfaces. And one must know how to use them in one's programs.
+The same can be said about the C++ language itself.
+
+<P>I also would like to get some examples on this matter if you have them.
+For example, i don't know how to implement debugging features (they
+say that Microsoft has already made a debugger fo VBScript), how
+to interrupt a running script (i think i should create an another
+thread and use an appropriate function), i tried to implement DUAL
+interfaces to my objects but the VBScript used just the IDispatch
+interfaces and i thought that VBScript did not support DUAL interfaces.
+
+<P>If you have any clues concerning this technology, please send them to
+me. I would like also your opinion whether this feature is interesting,
+for i can send some more examples. I mean not this sprites but a way
+of using this technology in business applications. For example, my
+program use special kinds of objects to work with SQL server databases
+and Access databases such as "recordsets", "idsets, "caches", "reports", 
+"views" and others.
+
+
+<P><A HREF="axhost.exe">Download file</A>. This is a compressed executable. It will 
+the three directories for the three steps. Size: 109KB
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

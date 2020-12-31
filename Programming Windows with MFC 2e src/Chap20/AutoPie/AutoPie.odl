@@ -1,0 +1,136 @@
+// AutoPie.odl : type library source for AutoPie.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (AutoPie.tlb).
+
+[ uuid(3B5BA307-3B72-11D2-AC82-006008A8274D), version(1.0) ]
+library AutoPie
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+	//  Primary dispatch interface for CAutoPieDoc
+	
+	[ uuid(3B5BA308-3B72-11D2-AC82-006008A8274D) ]
+	dispinterface IAutoPie
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CAutoPieDoc)
+			[id(1)] IDispatch* Chart;
+			[id(2)] IDispatch* Window;
+			[id(3)] IDispatch* Toolbar;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CAutoPieDoc)
+			[id(4)] void Quit();
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CAutoPieDoc
+	
+	[ uuid(3B5BA306-3B72-11D2-AC82-006008A8274D) ]
+	coclass Application
+	{
+		[default] dispinterface IAutoPie;
+	};
+
+
+	//  Primary dispatch interface for CAutoChart
+	
+	[ uuid(3B5BA31D-3B72-11D2-AC82-006008A8274D) ]
+	dispinterface IAutoChart
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CAutoChart)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CAutoChart)
+			[id(1)] boolean Save(BSTR pszPath);
+			[id(2), propget] long Revenue(short nQuarter);
+			[id(2), propput] void Revenue(short nQuarter, long nNewValue);
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CAutoChart
+
+	[ uuid(3B5BA31F-3B72-11D2-AC82-006008A8274D) ]
+	coclass AutoChart
+	{
+		[default] dispinterface IAutoChart;
+	};
+
+
+	//  Primary dispatch interface for CAutoWindow
+	
+	[ uuid(3B5BA320-3B72-11D2-AC82-006008A8274D) ]
+	dispinterface IAutoWindow
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CAutoWindow)
+			[id(1)] boolean Visible;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CAutoWindow)
+			[id(2)] void Refresh();
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CAutoWindow
+
+	[ uuid(3B5BA322-3B72-11D2-AC82-006008A8274D) ]
+	coclass AutoWindow
+	{
+		[default] dispinterface IAutoWindow;
+	};
+
+
+	//  Primary dispatch interface for CAutoToolbar
+	
+	[ uuid(3B5BA323-3B72-11D2-AC82-006008A8274D) ]
+	dispinterface IAutoToolbar
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CAutoToolbar)
+			[id(1)] boolean Visible;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CAutoToolbar)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CAutoToolbar
+
+	[ uuid(3B5BA325-3B72-11D2-AC82-006008A8274D) ]
+	coclass AutoToolbar
+	{
+		[default] dispinterface IAutoToolbar;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

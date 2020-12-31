@@ -1,0 +1,39 @@
+// Communicator.odl : type library source for Communicator.exe
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (Communicator.tlb).
+
+[ uuid(F44C48E1-6DD7-11CF-8508-00AA0021F02C), version(1.0) ]
+library Communicator
+{
+	importlib("stdole32.tlb");
+	
+	//  Primary dispatch interface for CCommunicatorDoc
+	
+	[ uuid(F44C48E2-6DD7-11CF-8508-00AA0021F02C) ]
+	dispinterface IComm
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CCommunicatorDoc)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CCommunicatorDoc)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CCommunicatorDoc
+	
+	[ uuid(F44C48E0-6DD7-11CF-8508-00AA0021F02C) ]
+	coclass CCommunicatorDoc
+	{
+		[default] dispinterface IComm;
+	};
+
+	//{{AFX_APPEND_ODL}}
+};

@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PiSvr", "PiSvr.vcxproj", "{95716DAB-BAC3-4E88-A106-F742C13E88CB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PiSvrPS", "PiSvrPS.vcxproj", "{CF2DD602-2E6F-4FC7-9719-7B3187F08660}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95716DAB-BAC3-4E88-A106-F742C13E88CB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{95716DAB-BAC3-4E88-A106-F742C13E88CB}.Debug|Win32.Build.0 = Debug|Win32
+		{95716DAB-BAC3-4E88-A106-F742C13E88CB}.Release|Win32.ActiveCfg = Release|Win32
+		{95716DAB-BAC3-4E88-A106-F742C13E88CB}.Release|Win32.Build.0 = Release|Win32
+		{CF2DD602-2E6F-4FC7-9719-7B3187F08660}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CF2DD602-2E6F-4FC7-9719-7B3187F08660}.Release|Win32.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

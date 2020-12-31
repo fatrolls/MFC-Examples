@@ -1,0 +1,180 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - HOWTO: MFC user defined message maps</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">HOWTO: MFC user defined message maps</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:kohlhepp@iosphere.net">Chris Kohlhepp</A>. 
+This article describes how to manually add MFC
+message handlers for user defined window messages.
+
+<p>We will add the user defined message WM_FIND, identified by the string
+literal "MYMESSAGE",  to a Document/View MFC application. First of
+all, the message can only be posted to objects of class CWnd or
+classes derived from CWnd, i.e. actual windows. This makes sense; only
+windows can receive window messages. Also note, that the class wizard
+CANNOT be used to introduce message maps for user defined messages.
+This task must be completed manually.
+
+<h4>IN THE VIEW CLASS HEADER FILE</h4>
+<p>Add the prototype for the function to which the message is to be
+mapped. This function will be named "On" + (Second half of message
+name), here: "OnFind()".  Further, the function declaration will be
+preceded by the term "afx_msg". We will define this function to be of
+type LRESULT (32 bit identifier) , and take the parameters (WPARAM
+wParam, LPARAM lParam), the standard window messaging parameters. The
+reason for this lies in the macro expansion of the AFX message map. If
+your function is not declared in compliance with the AFX message map
+macro, you will get error C2642.
+
+<p>Look for a section of code like this:
+
+<PRE><TT><FONT COLOR="#990000">	// Generated message map functions
+	protected:
+	//{{AFX_MSG(CMyView)
+	afx_msg void OnFileConfig();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+<p>Add the following line to the above list of function declarations:
+
+<PRE><TT><FONT COLOR="#990000">	afx_msg LRESULT OnFind(WPARAM wParam, LPARAM lParam);
+</FONT></TT></PRE>
+
+<h4>IN THE VIEW CLASS BODY FILE</h4>
+Register the new window message. The string literal will later be used
+to retrieve the number allocated to WM_FIND.
+
+<p>Add the following line somewhere at the top of the file:
+
+<PRE><TT><FONT COLOR="#990000">	int WM_FIND = RegisterWindowMessage ("MYMESSAGE");
+</FONT></TT></PRE>
+
+<p>Map the message onto a member function. The AFX message map entry must
+use the key word ON_REGISTERED_MESSAGE, and associate the message
+number with the function name.
+
+<p>Look for a section of code like this:
+
+<PRE><TT><FONT COLOR="#990000">	BEGIN_MESSAGE_MAP(CMyView, CListView)
+	//{{AFX_MSG_MAP(CMyView)
+	ON_COMMAND(ID_FILE_CONFIG, OnFileConfig)
+	//}}AFX_MSG_MAP
+	END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+<p>Add the following line to the above list of  message maps:
+
+<PRE><TT><FONT COLOR="#990000">	ON_REGISTERED_MESSAGE(WM_FIND, OnFind)
+</FONT></TT></PRE>
+
+<p>Add a message handler function to the class. Replace
+   "CMyView" with the class name of the view class in your
+   application:
+
+<PRE><TT><FONT COLOR="#990000">LRESULT CMyView::OnFind(WPARAM wParam, LPARAM lParam)
+{
+	// do something useful
+
+	return (LRESULT) MyReturnValue;
+};
+</FONT></TT></PRE>
+
+
+<h4>IN THE DOCUMENT CLASS HEADER FILE</h4>
+
+Provide the document class that is to post the message with scope to
+the view class window handle.
+
+<p>Add a member to hold a window handle.
+
+<PRE><TT><FONT COLOR="#990000">	HWND PostToView;
+</FONT></TT></PRE>
+
+
+<h4>IN THE VIEW CLASS BODY FILE</h4>
+Obtain a reference to the document associated with the view and 
+initialize the document's member variable (above) with the handle to
+the view's window.
+
+<p>Add the lines shown below to a member function that will be
+executed
+   before the user message is posted to the view. Replace <b>"CMyDoc"</b>
+   with the class name of your document class. This assignment cannot
+   take place in the view's constructor. The OnCreate() member,
+   however, would be a great place.
+
+<PRE><TT><FONT COLOR="#990000">	"CMyDoc"* DocPtr = GetDocument();
+	DocPtr->PostToView = this->m_hWnd;
+</FONT></TT></PRE>
+
+
+<h4>IN THE DOCUMENT CLASS BODY FILE</h4>
+
+Where you want to post the message, retrieve the reference to WM_FIND,
+the user defined message and then post the message...
+
+<p>A second call to RegisterWindowMessage() with the same string literal
+as an argument will retrieve the previously assigned ID for WM_FIND.
+
+
+<p>Add the code shown below in a function member of the document class
+
+   from which you wish to post a message. Substitute the question
+   marks for your actual parameters.
+
+<PRE><TT><FONT COLOR="#990000">	int WM_FIND = RegisterWindowMessage ("MYMESSAGE");
+
+	PostMessage(PostToView,   // handle to view window
+	WM_FIND,                  // message to post
+	(WPARAM) "?",             // window message parameter
+	(LPARAM) "?");            // window message parameter
+</FONT></TT></PRE>
+
+<p>Alternatively, you can use SendMessage(). In contrast to PostMessage,
+which  sends the message `spiraling' through the Windows messaging
+system and returns control to the calling thread before the message is
+actually processed, SendMessage will invoke the target message handler
+before returning  execution control to the caller of SendMessage. The
+first is appropriate for asynchronous, de-coupled processing, the
+latter for synchronous processing.
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

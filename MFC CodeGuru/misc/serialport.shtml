@@ -1,0 +1,157 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>A communication class for serail port</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">A communication class for serail port</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:remon.spekreijse@ict.nl">Remon Spekreijse</A>.
+<br>First posted: Feb,27,98
+
+
+<H4>Background:</H4>
+
+I've searched for a good communication class for a while and could not find one.
+That's when I decided to write my own and it should be one that's easy to use.
+
+<P>In the newgroups there are many questions about serial communication so I thought:
+make it public! It's freeware. The only thing I expect from users is that they drop me a mail.
+All modifications on this class are free, but please let me know if it solves a bug
+or adds some good features. Also comment your code and don't let me solve your bugs!
+
+<H4>Target:</H4>
+
+The class is not intended to use as a baseclass for modemcommunication but
+more for driving hardware or reading hardware via the serial port. 
+
+<P>From the classes included there is only one class important: CSerialPort.
+The other classes are only there to illustrate the use of this class.
+
+<H4>Usage:</H4>
+
+In your software you only need to create an instance of the CSerialPort class
+and call InitPort.
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CSerialPort::InitPort(CWnd* pPortOwner,		// the owner (CWnd) of the port (receives message)
+				   UINT  portnr,			// portnumber (1..4)
+				   UINT  baud,				// baudrate
+				   char  parity,			// parity 
+				   UINT  databits,			// databits 
+				   UINT  stopbits,			// stopbits 
+				   DWORD dwCommEvents,		// EV_RXCHAR, EV_CTS etc
+				   UINT  writebuffersize)	// size of the writebuffer
+</FONT></TT></PRE>
+
+
+<P>The dwCommEvents flag can be used for communication with the owner of this class.
+
+<P>The flags can be one of the following (or combined with |):
+
+<PRE><TT><FONT COLOR="#990000">
+WM_COMM_BREAK_DETECTED	A break was detected on input.
+WM_COMM_CTS_DETECTED		The CTS (clear-to-send) signal changed state. 
+WM_COMM_DSR_DETECTED		The DSR (data-set-ready) signal changed state. 
+WM_COMM_ERR_DETECTED		A line-status error occurred. Line-status errors are  CE_FRAME, CE_OVERRUN, and CE_RXPARITY. 
+WM_COMM_RING_DETECTED		A ring indicator was detected. 
+WM_COMM_RLSD_DETECTED		The RLSD (receive-line-signal-detect) signal changed state. 
+WM_COMM_RXCHAR			A character was received and placed in the input buffer. 
+WM_COMM_RXFLAG_DETECTED	The event character was received and placed in the input buffer.  
+</FONT></TT></PRE>
+
+
+<P>Accept the first parameter all parameters are optional. The standard values are:
+
+<PRE><TT><FONT COLOR="#990000">
+portnr		= 1
+baud		= 19200
+parity		= 'N'
+databits		= 8, 
+stopsbits	= 1, 
+dwCommEvents	= EV_RXCHAR | EV_CTS,
+nBufferSize	= 512);
+</FONT></TT></PRE>
+
+<P>So the follwing code is enough to make communication possible:
+
+<P>in the header of the owner:
+<PRE><TT><FONT COLOR="#990000">
+	CSerialPort	m_Serial;
+</FONT></TT></PRE>
+
+<P>in the code:
+<PRE><TT><FONT COLOR="#990000">
+	m_Serial.InitPort(this);
+	m_Serial.StartMonitoring();
+</FONT></TT></PRE>
+
+<P>Then the tread that watches the port is started and all events on the port are send to
+the owner. The receive a character the owner needs a messageentry in the messagemap:
+
+<PRE><TT><FONT COLOR="#990000">
+BEGIN_MESSAGE_MAP(CCommtestDlg, CDialog)
+	//{{AFX_MSG_MAP(CCommtestDlg)
+	ON_MESSAGE(WM_COMM_RXCHAR, OnCommunication)
+	ON_MESSAGE(WM_COMM_CTS_DETECTED, OnCTSDetected)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+and they must be handled:
+
+<PRE><TT><FONT COLOR="#990000">
+LONG CCommtestDlg::OnCommunication(WPARAM ch, LPARAM port)
+{
+	// do something with the received character
+
+	return 0;
+}
+</FONT></TT></PRE>
+
+<P>This is it for reading. Writing can be done with WriteChar or WriteToPort
+
+
+
+
+
+
+
+
+
+
+
+<P><A HREF="commtest.zip">Download sample project</A> 66K
+
+
+
+ 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,429 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - E-Mail file attachment using MIME</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">E-Mail file attachment using MIME</FONT></H3></CENTER>
+<HR>
+
+<p>This article was contributed by <a
+href="mailto:clyburnw@enmu.edu">Wes Clyburn</a></p>
+
+<p>The classes presented in this article extend those described
+in &quot;SMTP MFC Classes&quot; to handle messages using the
+Multipurpose Internet Mail Extensions (MIME) protocol. MIME is an
+e-mail message protocol (described in RFCs 1521 and 1522) that
+allows messages to incorporate non-text content while still
+remaining compliant with RFC 822.</p>
+
+<p>This non-text content could be embedded audio or video, an
+&quot;external&quot; message (meaning the content is not stored
+in the message itself, but at an external location), or one or
+more binary file attachments. Not all of these content types are
+supported by the classes in this article, but you can easily
+extend them to do so.</p>
+
+<h2>How MIME Works</h2>
+
+<p>RFC 822 describes a generic message format, and specifies some
+standard header information. It says almost nothing about the
+body of the messages, except that it is a chunk of ASCII text.</p>
+
+<p>MIME takes advantage of that by superimposing a format for the
+body text, and it also defines some header lines of its own. The
+neat thing is that since the body is still just a chunk of text,
+it doesn't break any rules established by RFC 822. This means
+that any RFC 822-compliant transport system can handle MIME
+messages without modification. The transport system expects a
+message to have a chunk of 7-bit text, and MIME messages happily
+oblige them. The transport system neither knows, nor has reason
+to care, that lines 50 through 700 of the text chunk actually
+represent an executable file. For that matter, it doesn't care
+that the chunk of text in a non-MIME message represents the
+English sentence &quot;Attack at dawn&quot;. As far as a mail
+server transporting the message is concerned, it's all just a
+bunch of 7-bit characters to send up the chain.</p>
+
+<p>Of course, the receiving clients of the message <em>do</em>
+care because that chunk of text has to be converted back into a
+binary file. They can do this only if they know about the format
+of the message, i.e., only if they are MIME-compliant mail
+readers. </p>
+
+<h3 align="center">MIME Headers</h3>
+
+<p>MIME defines five additional header lines that inform the
+receiving client about how the body should be interpreted.</p>
+<div align="center"><center>
+
+<table border="0" cellpadding="2" cellspacing="3" width="100%">
+    <tr>
+        <th bgcolor="#008080"><font color="#FFFFFF">Header</font></th>
+        <th bgcolor="#008080"><font color="#FFFFFF">Meaning</font></th>
+    </tr>
+    <tr>
+        <td bgcolor="#C0C0C0" nowrap><p align="left"><strong>Content-Type</strong></p>
+        </td>
+        <td bgcolor="#C0C0C0"><font size="2">Specifies the type
+        of data contained in the message</font></td>
+    </tr>
+    <tr>
+        <td nowrap><strong>Content-Transfer-Encoding</strong></td>
+        <td><font size="2">Specifies how the data is converted
+        into 7-bit text</font></td>
+    </tr>
+    <tr>
+        <td bgcolor="#C0C0C0" nowrap><strong>MIME-Version</strong></td>
+        <td bgcolor="#C0C0C0"><font size="2">Indicates the MIME
+        compliance level to which the message is encoded.</font></td>
+    </tr>
+    <tr>
+        <td nowrap><strong>Content-ID</strong></td>
+        <td><font size="2">Uniquely identifies the body. This is
+        used for splitting the contents of large messages into
+        smaller messages.</font></td>
+    </tr>
+    <tr>
+        <td bgcolor="#C0C0C0" nowrap><strong>Content-Description</strong></td>
+        <td bgcolor="#C0C0C0"><font size="2">Ignored by MIME
+        applications. Gives a human reader an indication of the
+        content.</font></td>
+    </tr>
+</table>
+</center></div>
+
+<p>The <strong>Content-Type</strong> header tells decoders what
+kind of data is contained in the body, giving both a broad data
+type (such as &quot;image&quot;), and a specific type (such as
+&quot;GIF&quot;) separated by a forward slash (&quot;/&quot;).
+Following the type information, the Content-Type header may
+include additional parameters in <em>name=value</em> pairs, each
+separated by a semi-colon (&quot;;&quot;). What these additional
+parameters are depends on the type of data.</p>
+
+<p>Everyone, and their mothers, and their mothers' dogs, are
+proposing new content types (along with their parameters) all the
+time, so you'll have to go swimming in an ocean of standards
+documents to discover them all.</p>
+
+<p>Example:</p>
+
+<pre>Content-Type: text/plain; charset=&quot;iso-8859-1&quot;</pre>
+
+<p>The more content types your mail reader can handle, the more
+capable it is. Outlook supports <em>text/html</em>, so it can
+display HTML messages to the user directly. It supports <em>image/jpeg</em>,
+so it can show you pictures right there in the message.</p>
+
+<p>Any content type that the mail reader can't support itself
+should be saved to disk so that the user can open it with
+something that knows how to handle it.</p>
+
+<p>In other words, there's no such thing as a &quot;file
+attachment&quot;; there are only content types that are encoded
+and decoded. What you do after decoding is up to you. Do you
+support <em>application/zip</em>? Then unzip the binary block. If
+not, save it to disk and let someone think of it as a &quot;file
+attachment&quot;.</p>
+
+<p>What most people think of as a file attachment is usually a
+body of type <em>application/octet-stream</em>. That signifies a
+chunk of 8-bit bytes... but that could be anything! Without more
+concrete information about the data, there's really nothing the
+mail reader can do except save it to disk.</p>
+
+<p>The <strong>Content-Transfer-Encoding</strong> header
+identifies the mechanism a decoder should use in order to convert
+the message body back into its original form. </p>
+
+<p>The biggies are <em>7bit, 8bit, Binary, Quoted-Printable,</em>
+and <em>Base64. </em>Regardless of what content types your mail
+reader supports, you need to be able to decode the message in the
+first place. You don't have to support <em>image/gif</em>, but
+you need to be able to turn the body into a GIF file that you can
+save to disk. Your program can't do this unless it handles all
+encoding mechanisms (you can't control how someone else's program
+encoded it, so you need to handle them all). You can get away
+with supporting only <em>text/plain</em> because you can just
+dump other types of data to disk, but you can't do anything if
+you can't read the data to begin with.</p>
+
+<p>Luckily, only Base64 encoding could be considered even
+slightly difficult to implement.</p>
+
+<h3 align="center">Multi-Part Messages</h3>
+
+<p>MIME completes the illusion of file attachments by allowing
+the message body to be divided into distinct parts, each with
+their own headers. The content type <em>multipart/mixed</em>
+means that the content of the body is divided into blocks
+separated by &quot;--&quot; + a unique string guaranteed to not
+be found anywhere else in the message. If you say that your
+boundary string is &quot;MyBoundaryString&quot;, then all
+occurrences of that string will be treated as a boundary. So it
+better not be in the message the user typed or it won't be
+decoded correctly.</p>
+
+<p>The boundary string is specified as a parameter to the
+Content-Type header:</p>
+
+<pre>Content-Type: multipart/mixed; boundary=&quot;MyBoundaryString&quot;</pre>
+
+<p>Do not include the preceding &quot;--&quot; in the value. The
+parts should then be separated with this:</p>
+
+<pre>--MyBoundaryString</pre>
+
+<p>And the end of the entire message will be indicated with a
+trailing &quot;--&quot; as well:</p>
+
+<pre>--MyBoundaryString--</pre>
+
+<p>Text before the first boundary and after the end-of-message
+boundary is ignored by decoders, but since a non-MIME reader will
+simply display the whole thing as text, these areas can be used
+to tell the user to get a better mail reader.</p>
+
+<pre>From: me@here.com
+To: you@there.com
+Subject: In One Ear and Out Your Mother
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=&quot;MyBoundaryString&quot;</pre>
+
+<pre>This is a MIME message. If the next few lines look like gibberish,
+then your mail reader sucks.</pre>
+
+<pre>If you are using a MIME reader, then you aren't even seeing this.</pre>
+
+<pre>--MyBoundaryString
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit</pre>
+
+<pre>The charset= parameter is omitted and will default to US-ASCII.
+In fact, I could have had a blank line as my header and it would have
+defaulted to exactly what I specified on those header lines.</pre>
+
+<pre>--MyBoundaryString
+Content-Type: application/octet-stream; file=&quot;ATTACHMENT.EXE&quot;
+Content-Transfer-Encoding: base64</pre>
+
+<pre>AxfhfujropadladnggnfjgwsaiubvnmkadiuhterqHJSFfuAjkfhrqpeorLAkFn
+jNfhgt7Fjd9dfkliodf==</pre>
+
+<pre>--MyBoundaryString--</pre>
+
+<pre>This text is ignored.</pre>
+
+<p>Note that each part of the message conforms to RFC 822,
+including the &quot;sub&quot; headers.</p>
+
+<hr>
+
+<h2>The MIME Classes</h2>
+
+<p>At the application level, these classes are simple to use:</p>
+
+<ol>
+    <li>Create a message object of type CMIMEMessage</li>
+    <li>Populate it</li>
+    <li>Call AddMIMEPart() passing the path to a file you want to
+        attach (one call per file).</li>
+    <li>Create a CSMTP object and connect to a server</li>
+    <li>Call the CSMTP object's SendMessage(), giving it the
+        message object.</li>
+    <li>Disconnect from the server</li>
+</ol>
+
+<p>As is, you can send text messages with one or more reasonably
+sized file attachments. But since MIME is constantly evolving,
+and you may need to support various character sets, you may need
+to extend these classes at some point. So here's how it all
+works.</p>
+
+<p><strong>CMIMEMessage</strong></p>
+
+<p>This is where all the action takes place. It is derived from
+CMailMessage and works closely with its base class. Conceptually,
+CMailMessage represents a message that conforms to RFC 822, and
+since MIME merely adds some headers and formats the body,
+CMIMEMessage should only do the same. CMailMessage does what it
+needs to do to make the message RFC 822-compliant; CMIMEMessage
+only tacks on additional information to make the message
+MIME-compliant.</p>
+
+<p>CMIMEMessages are themselves made up of distinct parts-- each
+with their own content types, parameters and encoding. Instead of
+a monolithic class that handles all content types, I decided that
+it should know nothing about content types at all. In its
+constructor, it registers as many content &quot;agents&quot; as
+required. Each agent is identified with a code. Message-parts are
+added individually to an internal list along with the code of the
+agent that knows how to handle them. When CMIMEMessage needs to
+build its body, it asks the appropriate agent to actually
+incorporate the part into the body. In this way, whenever I need
+to handle a new MIME content type, I create an agent by deriving
+from CMIMEContentAgent, and register the agent object in the
+constructor of a CMIMEMessage-derived class.</p>
+
+<p>There are two content agents in this package: <strong>CAppOctetStream</strong>
+and <strong>CTextPlain</strong>. These classes (both derived from
+CMIMEContentAgent) know how to handle the
+&quot;application/octet-stream&quot; and &quot;text/plain&quot;
+content types, respectively.</p>
+
+<p>The message-parts and agents are kept in sync with a unique
+code. Agent objects are given their code when constructed. When
+message-parts are added to the message, this same code is used.
+The codes are defined as a public enum, <strong>CMIMEMessage::eMIMETypeCode</strong>.
+Because the message class controls the codes, it's very easy to
+keep things in sync. Note the final item,
+&quot;NEXT_FREE_MIME_CODE&quot;. When you derive a message class
+(and agents) to handle other content types, begin your new codes
+with this one. When you register your new agents, give them one
+of your new codes.</p>
+
+<p><em>Example</em>:</p>
+
+<p>Say you want to create a message class that handles the
+&quot;application/zip&quot; content type.</p>
+
+<p>You'd first derive a CMIMEContentAgent class that does the
+useful work. Then you'd derive a message class from CMIMEMessage
+and create the appropriate code like this:</p>
+
+<pre>class CEnhancedMIMEMessage::CMIMEMessage
+{
+public:
+	enum eMIMETypeCode
+	{
+		APP_ZIP = CMIMEMessage::NEXT_FREE_MIME_CODE,
+		NEXT_FREE_MIME_CODE  // Ready to use by 4th-generation class.
+	};
+};</pre>
+
+<p>In the constructor, you'd create the new agent using this code
+and register it. You would also use this new code when you add
+message-parts.</p>
+
+<p>You can continue this indefinitely-- each sub-class adding the
+ability to handle more content types.</p>
+
+<p>The internal class <strong>CMIMETypeManager</strong>, manages
+the agents. It's job is to cough up an appropriate agent for a
+given content type and to delete the agent objects.</p>
+
+<p><strong>CMailMessage::FormatMessage()</strong> is what gets
+the ball rolling. (It is called by CSMTP::SendMessage(), but you
+you can call it yourself whenever you want.) There is some
+dancing back and forth between base class and derived class
+that's not obvious, and you should be aware of it. <strong>CMailMessage::prepare_header()</strong>
+is virtual, so FormatMessage() will call the derived class's
+version. <em>The first thing the derived class's version does is
+call the base class's version</em> so that it can do whatever it
+is supposed to do to the header. In this way each class only
+worries about its own header lines. (Classes derived from
+CMIMEMessage don't need to override prepare_header() because they
+<em>are</em> CMIMEMessages, and that class knows how to prepare
+its headers.)</p>
+
+<p><strong>CMIMEMessage::AddMIMEPart() </strong>adds
+message-parts to the list of parts used to construct the body. It
+takes the code of the agent, a <em>suggested</em> encoding type,
+the actual content, and a flag argument that indicated whether
+the content should be treated as a path or as actual content. The
+default parameters supplied are sufficient to attach a file.</p>
+
+<pre>msg.AddMIMEPart( &quot;C:\AUTOEXEC.BAT&quot; ); // Send someone my autoexec file	</pre>
+
+<p>It's not only for files, but for any message-part (including
+what's normally thought of as the &quot;body&quot;). Indeed, if
+you assign the m_sBody member directly (which is perfectly
+acceptable), it will get converted into a message-part to be
+processed along with the others. Eventually, m_sBody will be a
+long string of text incorporating everything in the message.</p>
+
+<h3 align="center">Limitations and Warnings</h3>
+
+<p align="left">CMIMEMessage class doesn't support message
+splitting. So if your mail server has a size limit, and doesn't
+break apart messages itself, you'll need to derive a class to
+handle this. This will involve deriving from CSMTP as well.</p>
+
+<p align="left">CMIMEMessage builds the message body in memory.
+If you attach a 100-meg file, it will consume 100 megs of memory,
+plus overhead while processing (and I use CStrings extensively). </p>
+
+<p align="left">These two limitations mean that there is an
+undefinable size limit for file attachments (undefinable because
+it depends on your server and the memory manager used by your
+OS).</p>
+
+<p align="left">One of the first enhancements I did was to
+override CSMTP::SendMessage() to poll a
+CMailMessage::FormatMessage()-like function that returned a
+status code to indicate its next course of action. CREATE_NEW
+indicated that the CSMTP object should tell the server it's done
+with this message and is going to send another one. Also, the
+function accepted a buffer and the message was built, one line
+per call, into that buffer instead of into m_sHeader and m_sBody.
+I can think of 3 other ways to handle this situation, and I'm
+sure you can too. Heck, you could even break encapsulation and
+just pass a pointer to the CSocket the SMTP object is using. Let
+the message object pump its own data to the mail server. </p>
+
+<h3 align="center">Using the Classes in Your Projects</h3>
+
+<p>I know some of you are using the classes from &quot;SMTP MFC
+Classes&quot; in your applications. The implementations of those
+classes have changed, but the public interfaces are the same. So,
+you won't need to redo your source code at all. You will just
+need to compile it with the new source code from this package
+instead.</p>
+
+<p>Use folder names when you extract the package. You'll find a
+folder called \SMTP that contains component files (.OGX) that can
+be inserted right into your project.</p>
+
+<p>If you have suggestions, find any bugs, or improve these
+classes, feel free to <a href="mailto:clyburnw@enmu.edu">contact
+me</a> . In particular, if you develop new content type agents,
+I'd love to get my grubby hands on them. </p>
+
+<p><a href="ZapMail.zip">Download</a> the project</p>
+
+
+
+
+
+
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

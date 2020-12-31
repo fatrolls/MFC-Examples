@@ -1,0 +1,81 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Help - MFC HTML-Help classes</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+MFC HTML-Help classes.
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:dunkel@mediagreen.de">Andreas Dunkel</A>.
+
+<!-- The article... -->
+
+<p>As extension for the IE enviroment, Microsoft&#153; has introduced a new HTML-based
+help system. This works using HTML help files, including Java and Javascript. The best
+part is that it work without problems when using large and colorful pictures, including
+animated gifs.</p>
+
+<p>For help with this system consult the HTML help SDK at 
+<a href="http://www.microsoft.com/workshop/author/htmlhelp/">
+http://www.microsoft.com/workshop/author/htmlhelp/</a></p>
+
+<p>The SDK includes samples, but unfortunately they are not the best, and are written
+using only straight C.</p>
+
+<p>With my classes you can include the HTML-Help in an easy way for all MFC-Projects. The
+sample project shows how you can do this. It includes a full HTML-help project with
+images for your applications (you can delete the old win31 pictures from your
+help system!) and shows how you can include the help system in a property page (see
+the accompanying image). The implementation is very simple.</p>
+
+<p><img src="html_help.gif" width="427" height="414" alt="html_help.gif (9630 Bytes)"><br>
+
+<p>Download the <a href="html_help.zip">full sample project (188k)</a> </p>
+
+<p>Sorry, but I havn't time to translate the helpfile. It's an incomplete german version.
+I must delete the client specific code. I hope you understand. </p>
+
+<!-- Remember to update this -->
+<p>Last updated: 2 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

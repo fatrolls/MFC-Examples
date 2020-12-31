@@ -1,0 +1,236 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\ToolTipEx.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""UTSampleAbout.rc""\r\n"
+    "#include ""OXBitmapButton.rc""\r\n"
+    "#include ""OXPopupBarCtrl.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ToolTipEx.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TOOLTIPEX_DIALOG DIALOGEX 0, 0, 290, 202
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "CToolTipCtrlEx Demo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT1,7,22,71,23,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL
+    CONTROL         "Static Text",IDC_TEXT1,"Static",SS_LEFTNOWORDWRAP | SS_CENTERIMAGE | WS_GROUP,7,49,71,11,WS_EX_STATICEDGE
+    COMBOBOX        IDC_COMBO1,7,65,71,60,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Check box",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,7,85,72,10
+    CONTROL         "Radio button",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | BS_LEFTTEXT | BS_LEFT,7,99,71,10
+    LISTBOX         IDC_LIST1,99,32,61,73,LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_MULTICOLUMN | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    CONTROL         "Tree1",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_TABSTOP,167,32,115,74
+    PUSHBUTTON      "Change Text Font and Color...",IDC_BUTTON_TEXT_FONT_COLOR,7,143,112,15,0,WS_EX_NOPARENTNOTIFY
+    CONTROL         "",IDC_BUTTON_COLOR_BACKGROUND,"Button",BS_OWNERDRAW | WS_TABSTOP,57,167,62,15
+    CONTROL         "Set maximum width of a tool window",IDC_CHECK_SET_MAX_WIDTH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,123,169,129,10
+    EDITTEXT        IDC_EDIT_MAX_WIDTH,255,167,27,13,ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "Close",IDCANCEL,232,7,50,14
+    LTEXT           "Customize tool tip appearance",IDC_SEPARATOR_CUSTOMIZE,7,130,275,9,SS_SUNKEN
+    LTEXT           "",IDC_STATIC_TEXT_FONT_COLOR,124,143,158,14,SS_CENTERIMAGE | SS_SUNKEN
+    LTEXT           "Background color",IDC_STATIC,7,166,40,15
+    LTEXT           "Controls with extended tool tip support",IDC_SEPARATOR_SAMPLES,7,9,220,9,SS_SUNKEN
+    LTEXT           "List box",IDC_STATIC,99,21,25,8
+    LTEXT           "Tree",IDC_STATIC,169,21,16,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "ToolTipEx MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "ToolTipEx"
+            VALUE "LegalCopyright", "Copyright (C) 1998"
+            VALUE "OriginalFilename", "ToolTipEx.EXE"
+            VALUE "ProductName", "ToolTipEx Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_TOOLTIPEX_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 282
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 195
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_TOOLTIPEX_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 6, 0
+0x6144, 0x6174, 0x0031, 
+    IDC_COMBO1, 0x403, 6, 0
+0x6144, 0x6174, 0x0032, 
+    IDC_COMBO1, 0x403, 6, 0
+0x6144, 0x6174, 0x0033, 
+    IDC_COMBO1, 0x403, 6, 0
+0x6144, 0x6174, 0x0034, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ToolTipEx..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDCANCEL                "Close button\rClose button extended text"
+END
+
+STRINGTABLE 
+BEGIN
+    IDC_LIST1               "List Control\rYou can add strings here"
+    ID_DESCRIPTION_FILE     "ToolTipExInfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Extended Tool Tip Control"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\ToolTipEx.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "UTSampleAbout.rc"
+#include "OXBitmapButton.rc"
+#include "OXPopupBarCtrl.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,90 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Hugo Bernier">
+   <TITLE>Tools - RewriteFiles Utility</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<BODY background=/fancyhome/back.gif bgColor=#ffffff><!-- A word from our sponsors... -->
+<TABLE width=100%>
+<TR WIDTH = 100%><TD align=middle><!--#exec cgi="/cgi/ads.cgi"--><TD></TD></TR>
+</TABLE>
+
+
+
+<CENTER><H3><FONT color=#a0a099>
+RewriteFiles 
+Utility 
+</FONT></H3></CENTER>
+<HR>
+<!-- Author and contact details -->This article was contributed by <!-- Author Email --><A href="mailto:csa@mail.jubii.dk">Christian Skovdal Andersen</A>.<!-- Text / source code -->
+<P>
+
+<P><STRONG><FONT face=Arial>The Problem</FONT></STRONG></P>
+<P>This small commandline utility will solve a problem often 
+found when moving Visual C++ projects between computers.</P>
+<P>Often I need to take MSVC5 projects with me between 
+different computers. But sometimes, when a project has been moved from one 
+computer to another, strange thing will happen , when you try to compile it.<BR>When the program has been compiled, and you try to execute 
+it&nbsp; - or for some reasons hit that ol' Build-button, the whole project will 
+recompile, like every file has been changed. This will happen every time you try 
+to compile, even if you do not change a single characte in your sourcefiles.</P>
+<P>The problem has something to do with the filedates, that 
+are improperly changed in some way.</P>
+<P><FONT face=Arial><STRONG>The Solution<BR></STRONG></FONT>I have written a 
+small commandline utility, that solves the problem. The only thing this program 
+will do is to open all the original files, move them to another folder, and 
+rewrite them in their original location.</P>
+<P>I have not provided the sourcecode for this project, for 
+two reasons: 
+<UL>
+<LI>The project is not a typical MFC program, eventhough 
+    classes and functions from MFC was used. 
+<LI>The sourcecode is really messy, and uncommented, and 
+    many of the functions are in small utillity files, I have collected for 
+    everyday tasks. </LI></UL>
+<P>If, however, anybody should be interested in the 
+sourcecode, please mail me, and I will send you a copy.</P>
+<P><FONT face=Arial><STRONG>Usage<BR></STRONG></FONT>Rewritefiles.exe is 
+extremely easy to use:</P>
+<P>Fire up a DOS-Window or a NT-commandline, go to the 
+directory with the project giving the problems, and write</P><PRE>Rewritefiles *.* c:\myprojects\project
+Rewritefiles *.* c:\myprojects\project\res</PRE>
+<P>Assuming, that your project is located in 
+c:\myprojects\project, and you have some resource files in the subdirectory 
+&quot;res&quot;.</P>
+<P>There are some other commandline options, that will be 
+shown if you just write RewriteFiles on the commandline, without any 
+parameters.</P>
+<P><A href="rewritefiles.zip">Download 
+File - 83KB</A><!-- Posted / Update  date mm/dd/yy - add to the list -->
+<P>Date Posted: 05/21/98
+
+
+
+<P><HR>
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH=100%>
+<TR>
+<TD width=33%><FONT size=-1><A href="http://www.codeguru.com">Goto 
+            HomePage</A></FONT></TD>
+
+<TD width=33%>
+<CENTER><FONT size=-2>&copy; 
+            1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD width=34%>
+<DIV align=right><FONT size=-1>Contact me: <A href="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE><!-- Counter -->
+
+
+
+</BODY>
+</HTML>

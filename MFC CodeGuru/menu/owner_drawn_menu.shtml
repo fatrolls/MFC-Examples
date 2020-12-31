@@ -1,0 +1,458 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Menu - Owner Drawn Menu with Icons</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Owner Drawn Menu with Icons</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:Girish_Bharadwaj@smtpnotes.pictel.com">Girish Bharadwaj</A>.
+
+
+<p><b>CCustomMenu:</b> This class is the owner drawn version of the CMenu. You will
+be able to
+<ol>
+<li>Set the Text Color.
+<li>Set the highlight color
+<li>Set the Highlight Style.
+<li>Set the selected and normal  Icon for the Menu item.
+<li>Set the Icon size.
+</ol>
+
+<p>In order to use it, you need to create MENUDATA stuctrure and fill it with
+the text and the selected and normal Icon IDs for each menu item. Then, you
+have to pass the pointer to that structure via the LPCTSTR argument of the
+AppendMenu or the InsertMenu. This is how the code snippet using this looks
+like. The following are declared as the class members so that they can stay till
+the class is present.
+
+<p>In the .H file of the containing class
+
+<PRE><TT><FONT COLOR="#990000">	CCustomMenu m_cCustomMenu;
+	MENUDATA menuData [8];	// as many menu items are present , You should be able to use 
+				//new and do the same
+</FONT></TT></PRE>
+
+<p>In the .CPP file of the class where you want to use the menu
+
+<PRE><TT><FONT COLOR="#990000">	m_customMenu.CreateMenu ();
+
+
+	m_customMenu.SetIconSize (25,25);	//This is to set the size of the Icon. 
+						// This should be used only once for any menu
+	// in order to resize it, destroy and create the menu again with  different size.
+
+	m_customMenu.SetHighlightStyle (Normal); //Or TextOnly, if you want the
+	// background color to remain the same
+	// and the Text color to change to the Highlight color.
+</FONT></TT></PRE>
+
+<p>The following setXXXColor sets the menu colors. If you dont want to
+change any, Dont call these member functions.
+
+<PRE><TT><FONT COLOR="#990000">	m_customMenu.SetTextColor (RGB (255,0,0));
+	m_customMenu.SetBackColor (RGB (255,255,255));
+	m_customMenu.SetHighlightColor (RGB (0,0,255));
+
+	lstrcpy (menuData[0].menuText , "text1");
+	menuData[0].menuIconNormal= IDI_ICON1;
+	m_customMenu.AppendMenu (MF_OWNERDRAW,3,(LPCTSTR)menuData);
+</FONT></TT></PRE>
+
+<p>Do this for each menu item. For the Popup menu items, this will not work
+since, the 2nd argument of AppendMenu is actually a HMENU instead of the
+ID. So, for that particular case, Store the HMENU which you pass in the 2
+argument and Handle OnMeasureItem for the main window class and do the
+following:
+
+<PRE><TT><FONT COLOR="#990000">void CMyView::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	if ( lpMeasureItemStruct->CtlType == ODT_MENU &&
+			IsMenu((HMENU)lpMeasureItemStruct->itemID) &&
+			(lpMeasureItemStruct->itemID == (UINT)m_hMenuSub) )
+	{
+		m_customMenu.MeasureItem (lpMeasureItemStruct);
+	}
+	else
+		// let MFC's self-drawing handle it
+		CView::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
+}
+</FONT></TT></PRE>
+
+The following are the member functions you can use to customize your Menu:
+(names are pretty self explanatory).
+
+<PRE><TT><FONT COLOR="#990000">	void SetTextColor (COLORREF );
+	void SetBackColor (COLORREF);
+	void SetHighlightColor (COLORREF);
+	void SetIconSize (int, int);
+	void SetHighlightStyle (HIGHLIGHTSTYLE ); // HIGHLIGHTSTYLE : enum {Normal, TextOnly}
+	void SetHighlightTextColor (COLORREF);
+
+
+
+
+//*************************************************************************
+// CustomMenu.h : header file
+//
+
+#if
+!defined(AFX_CUSTOMMENU_H__FE5B01C3_1E02_11D1_B87A_0060979CDF6D__INCLUDED_)
+#define AFX_CUSTOMMENU_H__FE5B01C3_1E02_11D1_B87A_0060979CDF6D__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+class MENUDATA
+{
+public:
+	MENUDATA () { menuIconNormal = -1; menuIconSelected = -1;};
+	char  menuText[32];
+	UINT menuIconNormal;
+	UINT menuIconSelected;
+};
+
+
+typedef enum {Normal,TextOnly} HIGHLIGHTSTYLE;
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CCustomMenu window
+
+class CCustomMenu : public CMenu
+{
+// Construction
+public:
+	CCustomMenu();
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CCustomMenu)
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CCustomMenu();
+	virtual void DrawItem( LPDRAWITEMSTRUCT);
+	virtual void MeasureItem( LPMEASUREITEMSTRUCT );
+	void SetTextColor (COLORREF );
+	void SetBackColor (COLORREF);
+	void SetHighlightColor (COLORREF);
+	void SetIconSize (int, int);
+	void SetHighlightStyle (HIGHLIGHTSTYLE );
+	void SetHighlightTextColor (COLORREF);
+
+	// Generated message map functions
+protected:
+	COLORREF m_crText;
+	COLORREF m_clrBack;
+	COLORREF m_clrText;
+	COLORREF m_clrHilight;
+	COLORREF m_clrHilightText;
+	LOGFONT m_lf;
+	CFont m_fontMenu;
+	UINT m_iMenuHeight;
+	BOOL m_bLBtnDown;
+	CBrush m_brBackground,m_brSelect;
+	CPen m_penBack;
+	int m_iconX,m_iconY;
+	HIGHLIGHTSTYLE m_hilightStyle;
+
+	//{{AFX_MSG(CCustomMenu)
+		// NOTE - the ClassWizard will add and remove member functions here.
+	//}}AFX_MSG
+};
+
+///////////////////////////////////////////////////////////////////////////
+//
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif //!defined(AFX_CUSTOMMENU_H__FE5B01C3_1E02_11D1_B87A_0060979CDF6D__INCLUDED_)
+
+//*************************************************************************
+// CustomMenu.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "CustomMenu.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CCustomMenu
+
+CCustomMenu::CCustomMenu()
+{
+	m_clrText =  GetSysColor (COLOR_MENUTEXT);
+	m_clrBack = GetSysColor (COLOR_MENU);
+	m_brBackground.CreateSolidBrush (m_clrBack);
+	m_penBack.CreatePen (PS_SOLID,0,m_clrBack);
+	m_crText = m_clrText;
+	m_bLBtnDown = FALSE;
+	m_iconX =		GetSystemMetrics ( SM_CXMENUCHECK);
+	m_iconY =		GetSystemMetrics (SM_CYMENUCHECK );
+
+	m_clrHilight = GetSysColor (COLOR_HIGHLIGHT);
+	m_brSelect.CreateSolidBrush (m_clrHilight);
+	m_clrHilightText = GetSysColor (COLOR_HIGHLIGHTTEXT);
+
+	ZeroMemory ((PVOID) &m_lf,sizeof (LOGFONT));
+	NONCLIENTMETRICS nm;
+	nm.cbSize = sizeof (NONCLIENTMETRICS);
+
+	//Get the system metrics for the Captionfromhere
+	VERIFY (SystemParametersInfo (SPI_GETNONCLIENTMETRICS,0,&nm,0)); 
+
+	m_lf =  nm.lfMenuFont;
+	m_iMenuHeight = nm.iMenuHeight;
+	m_fontMenu.CreateFontIndirect (&m_lf);
+}
+
+CCustomMenu::~CCustomMenu()
+{
+	if ((HBRUSH) m_brBackground != NULL)
+		m_brBackground.DeleteObject ();
+	if ((HFONT)m_fontMenu !=NULL)
+		m_fontMenu.DeleteObject ();
+	if ((HBRUSH)m_brSelect != NULL)
+		 m_brSelect.DeleteObject ();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CCustomMenu message handlers
+
+
+void CCustomMenu::DrawItem (LPDRAWITEMSTRUCT lpDIS)
+{
+	ASSERT(lpDIS != NULL);
+
+	CDC* pDC = CDC::FromHandle(lpDIS->hDC);
+	CRect rect;
+	HICON hIcon;
+	COLORREF crText = m_crText;
+	// draw the colored rectangle portion
+	rect.CopyRect(&lpDIS->rcItem);
+
+	// draw the up/down/focused/disabled state
+
+	UINT action = lpDIS->itemAction;
+	UINT state = lpDIS->itemState;
+	CString strText;
+	LOGFONT lf;
+	lf = m_lf;
+
+	CFont dispFont;
+	CFont *pFont;
+	//GetWindowText(strText);
+	if (lpDIS->itemData != NULL)
+	{
+		strText = (((MENUDATA*) (lpDIS->itemData))->menuText);
+		if ((((MENUDATA *)(lpDIS->itemData))->menuIconNormal) == -1)
+			hIcon = NULL;
+		else if (state & ODS_SELECTED)
+		{
+			if ((((MENUDATA *)(lpDIS->itemData))->menuIconSelected) != -1)
+				hIcon = AfxGetApp ()->LoadIcon (((MENUDATA *)(lpDIS->itemData))->menuIconSelected);
+			else
+				hIcon = AfxGetApp()->LoadIcon (((MENUDATA*)(lpDIS->itemData))->menuIconNormal);
+		}
+		else
+			hIcon = AfxGetApp()->LoadIcon (((MENUDATA*)(lpDIS->itemData))->menuIconNormal);
+
+		TRACE1 ("Draw for %s\n", strText);
+	}
+	else
+	{
+		strText.Empty();
+		hIcon = NULL;
+	}
+
+	if ( (state & ODS_SELECTED) )
+	{
+		// draw the down edges
+
+		CPen *pOldPen = pDC->SelectObject (&m_penBack);
+
+		//You need only Text highlight and thats what you get
+		if (m_hilightStyle != Normal)
+		{
+			pDC->FillRect (rect,&m_brBackground);
+		}
+		else
+		{
+			pDC->FillRect (rect,&m_brSelect);
+		}
+
+		pDC->SelectObject (pOldPen);
+		pDC->Draw3dRect (rect,GetSysColor (COLOR_3DHILIGHT),GetSysColor(COLOR_3DSHADOW));
+		lf.lfWeight = FW_BOLD;
+		if ((HFONT)dispFont != NULL)
+			dispFont.DeleteObject ();
+		dispFont.CreateFontIndirect (&lf);
+		crText = m_clrHilightText;
+
+		//While selected move the text a bit
+		TRACE0 ("SELECT,SELECTED\n");
+	}
+	else
+	{
+		CPen *pOldPen = pDC->SelectObject (&m_penBack);
+		pDC->FillRect (rect,&m_brBackground);
+		pDC->SelectObject (pOldPen);
+		// draw the up edges
+		pDC->Draw3dRect (rect,m_clrBack,m_clrBack);
+		if ((HFONT)dispFont != NULL)
+			dispFont.DeleteObject ();
+		dispFont.CreateFontIndirect (&lf); //Normal
+
+		TRACE0 ("SELECT, NORMAL\n");
+	}
+
+	// draw the text if there is any
+	//We have to paint the text only if the image is nonexistant
+	if (hIcon != NULL)
+	{
+		if(DrawIconEx (pDC->GetSafeHdc(),rect.left,rect.top,hIcon,
+			(m_iconX)?m_iconX:32,(m_iconY)?m_iconY:32,0,NULL,DI_NORMAL))
+			TRACE0("Wrote the icon successfully\n");
+		else
+			TRACE0 ("SORRY.NOGO\n");
+	}
+	//This is needed always so that we can have the space for check marks
+	rect.left = rect.left +((m_iconX)?m_iconX:32); 
+
+	if ( !strText.IsEmpty())
+	{
+		//		pFont->GetLogFont (&lf);
+
+		int		  iOldMode = pDC->GetBkMode();
+
+		pDC->SetBkMode( TRANSPARENT);
+
+		pDC->SetTextColor( crText);
+
+		pFont = pDC->SelectObject (&dispFont);
+		TRACE1( "About To DrawText %s\n",strText);
+		pDC->DrawText (strText,rect,DT_LEFT|DT_SINGLELINE|DT_VCENTER);
+		TRACE0("Done\n");
+		pDC->SetBkMode( iOldMode );
+		pDC->SelectObject (pFont); //set it to the old font
+	}
+	dispFont.DeleteObject ();
+}
+
+void CCustomMenu::MeasureItem( LPMEASUREITEMSTRUCT lpMIS )
+{
+	CDC *pDC = AfxGetApp()->m_pMainWnd->GetDC();
+	CFont* pFont = pDC->SelectObject (&m_fontMenu);
+	int iconX = 0,iconY= 0;
+	TEXTMETRIC tm;
+	pDC->GetTextMetrics (&tm);
+	pDC->SelectObject (pFont);
+	AfxGetApp()->m_pMainWnd->ReleaseDC (pDC);
+
+	if (m_iconX)
+		iconX = m_iconX;
+	if (m_iconY)
+		iconY = m_iconY;
+
+	lpMIS->itemWidth = iconX + tm.tmAveCharWidth *  lstrlen(((MENUDATA*)(lpMIS->itemData))->menuText) +10;
+	lpMIS->itemHeight = (iconY > (m_iMenuHeight+1))?iconY:m_iMenuHeight + 1;
+}
+
+void CCustomMenu::SetIconSize (int width, int height)
+{
+	m_iconX = width;
+	m_iconY = height;
+}
+
+void CCustomMenu::SetTextColor (COLORREF clrText)
+{
+	m_crText = clrText;
+}
+
+void CCustomMenu::SetBackColor (COLORREF clrBack)
+{
+	m_clrBack = clrBack;
+	if ((HBRUSH)m_brBackground != NULL)
+		m_brBackground.DeleteObject ();
+	m_brBackground.CreateSolidBrush (clrBack);
+}
+
+void CCustomMenu::SetHighlightColor (COLORREF clrHilight)
+{
+	m_clrHilight = clrHilight;
+	if ((HBRUSH)m_brSelect != NULL)
+			m_brSelect.DeleteObject ();
+	m_brSelect.CreateSolidBrush (clrHilight);
+}
+
+void CCustomMenu::SetHighlightTextColor (COLORREF clrHilightText)
+{
+	m_clrHilightText = clrHilightText;
+}
+
+
+void CCustomMenu::SetHighlightStyle (HIGHLIGHTSTYLE hilightStyle)
+{
+	m_hilightStyle = hilightStyle;
+}
+//*************************************************************************
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

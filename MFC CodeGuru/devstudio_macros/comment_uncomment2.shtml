@@ -1,0 +1,255 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DevStudio Macros - Comment / Uncomment and other macros </TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Comment / Uncomment and other macros</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+These macros were contributed by <A HREF="mailto:adam@solesby.com">Adam Solesby</A>
+
+<P>Here are some macros that I find very useful and that may be useful for
+others as well. The most useful macro for me is the comment/uncomment macro.
+Assign this macro to a key (ctrl-/) and then use it to toggle comments on a
+single line of code or a block of code. For single lines, the indention
+level remains, for blocks of code, the comment is placed at the beginning of
+the line. I think this comment macro is a little more powerful than the
+existing one on the site. Hope some people find them useful.
+
+
+
+<PRE><TT><FONT COLOR="#990000">
+'------------------------------------------------------------------------------
+'FILE DESCRIPTION: These are useful macros by Adam Solesby <adam@solesby.com>
+'------------------------------------------------------------------------------
+
+' This routine has many uses if you are trying to determine the type of source file.
+' This has been modified from the one included with DevStudio
+' Return value:  0 Unknown file type
+'               1 C-related file, this includes .c, .cpp, .cxx, .h, .hpp, .hxx
+'               2 Java-related file, this includes .jav, .java
+'               3 ODL-style file, .odl, .idl
+'               4 VBS-style file, .dsm
+'               5 VBS-style file, .asp
+'               6 HTML-style file, this includes .html, and .htm
+'               7 Resource file, .rc, .rc2
+'               8 Def-style file, .def
+' USE: Pass this function the document that you wish to get information for.
+Function FileType (ByVal doc)
+	ext = doc.Name
+	FileType = 0
+	pos = Instr(ext, ".")
+	if pos > 0 then
+		Do While pos <> 1
+			ext = Mid(ext, pos, Len(ext) - pos + 1)
+			pos = Instr(ext, ".")
+		Loop
+		ext = LCase(ext)
+	End If
+
+	If ext = ".rc" Or ext = ".rc2" Then
+		FileType = 7
+	ElseIf doc.Language = dsCPP Then
+		FileType = 1
+	ElseIf doc.Language = dsJava Then
+		FileType = 2
+	ElseIf doc.Language = dsIDL Then
+		FileType = 3
+	ElseIf doc.Language = dsVBSMacro Then
+		FileType = 4  
+	ElseIf ext = ".asp" Then
+		FileType = 5
+	ElseIf doc.Language = dsHTML_IE3 Or doc.Language = dsHTML_RFC1866 Then
+		FileType = 6  
+	ElseIf ext = ".def" Then
+		FileType = 7
+	Else 
+		FileType = 0
+	End If 
+
+	'MsgBox "Ext:" + vbTab + ext + vbLf + "Lang:" + vbTab + doc.Language + vbLf + "Type:" + vbTab + CStr(FileType)
+End Function
+
+' Counts the lines in the document passed
+Function FLOC (ByVal doc)
+		doc.Selection.SetBookmark	' Mark place
+
+		doc.Selection.SelectAll
+		StartLine = doc.Selection.TopLine
+		EndLine = doc.Selection.BottomLine
+		If EndLine < StartLine Then
+			Temp = StartLine
+			StartLine = EndLine
+			EndLine = Temp
+		End If
+
+		doc.Selection.PreviousBookmark	' Return to current line
+		doc.ClearBookmarks
+		FLOC = EndLine
+End Function
+
+
+
+Sub LOC ()
+'DESCRIPTION: Counts total lines in all open documents
+	'msg = "Total Line Count" + vbLf + vbLf
+	tloc = 0
+	For i = 1 to Documents.Count
+	TypeOfFile = FileType(Documents.Item(i))
+		If TypeOfFile = 1 Then	' C or C++ source file
+			dloc = FLOC(Documents.Item(i))
+			tloc =  tloc + dloc
+			msg = msg & Documents.Item(i).Name & ":" & vbTab  & dloc & vbLf
+		End If
+	Next
+	msg = msg & "------------------------------------------" & vbLf & "Total:" & vbTab & vbTab & tloc
+	MsgBox msg , ,"Total Line Count"
+End Sub
+
+
+' This will comment/uncomment out single lines or blocks. Single lines are commented 
+' with the same indention level. Blocks are commented at the beginning of the line.
+' Assign this to a key (e.g. ctrl-/) and it will toggle the current line/block of code.
+' This will handle both "//" and "'" style comments
+Sub CustomCommentOut ()
+'DESCRIPTION: Comments out a selected block of text.
+	Dim win
+	set win = ActiveWindow
+	If win.type <> "Text" Then
+	  MsgBox "This macro can only be run when a text editor window is active."
+	Else
+		TypeOfFile = FileType(ActiveDocument)
+		'	MsgBox "Type: " + CStr(TypeOfFile)
+		If TypeOfFile > 0 And TypeOfFile < 6 Then
+			If TypeOfFile > 3 Then
+				CommentType = "'"	' VBShit
+				CommentWidth = 1
+			Else
+				CommentType = "//"	' C++ and java style comments
+				CommentWidth = 2
+			End If
+		 
+			StartLine = ActiveDocument.Selection.TopLine
+			EndLine = ActiveDocument.Selection.BottomLine
+			If EndLine < StartLine Then
+				Temp = StartLine
+				StartLine = EndLine
+				EndLine = Temp
+			End If
+
+			' Single line -- comment at start of text
+			'   have to check for comments at start of line and start of text
+			If EndLine = StartLine Then
+
+				ActiveDocument.Selection.StartOfLine dsFirstColumn
+				ActiveDocument.Selection.CharRight dsExtend, CommentWidth
+
+				If ActiveDocument.Selection = CommentType Then
+					ActiveDocument.Selection.Delete
+				Else
+					ActiveDocument.Selection.StartOfLine dsFirstText
+					ActiveDocument.Selection.CharRight dsExtend, CommentWidth
+
+					If ActiveDocument.Selection = CommentType Then
+						ActiveDocument.Selection.CharRight dsExtend
+						ActiveDocument.Selection.Delete
+					Else
+						ActiveDocument.Selection.StartOfLine dsFirstText
+						ActiveDocument.Selection = CommentType + vbTab + ActiveDocument.Selection
+					End If
+				End If
+
+			' Multi-line -- comment at start of line
+			Else
+				For i = StartLine To EndLine
+					ActiveDocument.Selection.GoToLine i
+
+					CommentLoc = dsFirstColumn
+
+					ActiveDocument.Selection.StartOfLine CommentLoc
+					ActiveDocument.Selection.CharRight dsExtend, CommentWidth
+
+					If ActiveDocument.Selection = CommentType Then
+						ActiveDocument.Selection.Delete
+					Else
+						ActiveDocument.Selection.StartOfLine CommentLoc
+						ActiveDocument.Selection = CommentType + ActiveDocument.Selection
+					End If
+
+				Next
+			End If
+		Else
+			MsgBox("Unable to comment out the highlighted text" + vbLf + _
+				"because the file type was unrecognized." + vbLf + _
+				"If the file has not yet been saved, " + vbLf + _
+				"please save it and try again.")
+		End If
+	End If
+End Sub
+
+
+Sub Duplicate()
+'DESCRIPTION: Duplicates the current selected line
+
+	ActiveDocument.Selection.Copy
+	ActiveDocument.Selection.CharRight
+	ActiveDocument.Selection.Paste
+End Sub
+
+Sub RemoveLineFeed()
+'DESCRIPTION: Go to end of line and delete line feed
+
+	ActiveDocument.Selection.EndOfLine
+	ActiveDocument.Selection.Delete
+	ActiveDocument.Selection.LineDown
+End Sub
+
+Sub EndOfLinePaste()
+'DESCRIPTION: This macro pastes the contents of the clipboard at the end of the line and then goes to the next line.
+
+	ActiveDocument.Selection.EndOfLine
+	ActiveDocument.Selection.Paste
+	ActiveDocument.Selection.LineDown
+	ActiveDocument.Selection.EndOfLine
+End Sub
+
+Sub StartOfLinePaste()
+'DESCRIPTION: This macro pastes the contents of the clipboard at the start of the line and then goes to the next line.
+
+	ActiveDocument.Selection.StartOfLine dsFirstText
+	ActiveDocument.Selection.Paste
+	ActiveDocument.Selection.LineDown
+	ActiveDocument.Selection.StartOfLine dsFirstText
+End Sub
+</FONT></TT></PRE>
+
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

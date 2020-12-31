@@ -1,0 +1,35 @@
+HKCR
+{ 
+	UTFingerServ.FingerServ.1 = s 'Dundas Finger Server Control 3.0'
+	{
+		CLSID = s '{00BDA8B4-EE5A-11D2-A444-0080C858F182}'
+		'Insertable'
+	}
+	UTFingerServ.FingerServ = s 'Dundas Finger Server Control 3.0'
+	{
+		CLSID = s '{00BDA8B4-EE5A-11D2-A444-0080C858F182}'
+		CurVer = s 'UTFingerServ.FingerServ.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {00BDA8B4-EE5A-11D2-A444-0080C858F182} = s 'Dundas Finger Server Control 3.0'
+		{
+			ProgID = s 'UTFingerServ.FingerServ.1'
+			VersionIndependentProgID = s 'UTFingerServ.FingerServ'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '132497'
+			}
+			'TypeLib' = s '{1D8EC240-1E9E-11D3-A487-0080C858F182}'
+			'Version' = s '1.0'
+		}
+	}
+}

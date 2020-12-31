@@ -1,0 +1,162 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Samples - Runtime Monitoring Agent</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Runtime Monitoring Agent</FONT></H3></CENTER>
+
+<HR>
+
+
+
+<P>Designed and developed by <A HREF="mailto:codor@eunet.yu">Zoran M.Todorovic</A>
+and <A HREF="mailto:micko@eunet.yu">Miodrag D.Stojadinovic</A>.
+
+<P>Often while developing an application, programmer needs an information
+about a value of specific variable, time needed to execute a piece of code
+or just plain info that some function/module has been entered/exited. Most
+of these information can be collected using a debugger but, debugger interrupts
+normal program execution (critical for communication programs) and doesn't
+give any time related info (for example, how long does it take to execute
+an SQL statement or what is the time difference between sending a command
+and receiving a response from a device connected to a serial port). Also,
+once you build a release version, you lose any debugging capabilities unless
+they are hard-coded into the program.
+
+<P>Most often, programmers use dump to file as a way to collect info but
+it has several limitations. You cannot view info while program is running,
+you lose some or all data if program crashes and it's very difficult to
+find something in a mass of data collected in this way.
+
+<P>That's were <B>Runtime Monitoring Agent</B> (plain Agent in further
+text) comes in !!!
+
+<P><B>Agent</B> is a separate, stand-alone process which uses Win32 inter
+process communication facilities to receive programmer defined messages
+coming from a client process via an Agent DLL loaded into the client process.
+Agent has an Explorer like user interface. One of the requirements we set
+for the Agent was that it can be used with programming environments other
+then C++ (for example, Delphi). This is the reason why the Agent is statically
+linked with MFC and C++ runtime library (programmer doesn't need anything
+else but the Agent itself to run it on a target computer). <B>Agent DLL</B>
+is a non-MFC DLL with a very small footprint. It is used for programming
+environments like Delphi. For convenience and for Visual C++ projects,
+there is also a C++ <B>Agent LIB</B> library which takes care of dynamically
+loading the Agent DLL. It is also very small and will enable a process
+to work even if Agent DLL is not found or Agent is not running.
+
+<P>Agent monitors a <B>System</B> -- set of executable modules which are
+part of a project programmer is working on. Module is either an executable
+file or a DLL. Within a System, programmer defines processes. <B>Process</B>
+is equivalent to a module (executable or DLL). Process can also be a part
+of a module if it is convenient for a programmer (for example a special
+worker thread). Each process contains one or more fibers. <B>Fiber</B>
+is related to one function, algorithm or any other piece of code programmer
+can think of. Each fiber contains one or more messages. <B>Message</B>
+is at the lowest level and contains a user defined text (usually built
+with a sprintf or CString in order to contain current values of program
+variables) and optionally a Win32 error code. It can also contain a source
+code file name and a line number from which a message is sent. Agent DLL
+automatically adds a timestamp when the message is sent.
+
+<P>Some of the features of the Agent are:
+<DL>
+<LI>
+Agent can be removed from the screen and left on a taskbar.</LI>
+
+<LI>
+Stand-alone process – requires neither MFC nor C++ runtime&nbsp; library
+DLLs.</LI>
+
+<LI>
+Monitored session can be saved to disk and loaded later for analysis.</LI>
+
+<LI>
+Agent can monitor complex projects containing several executables and DLLs.</LI>
+
+<LI>
+User can select a combination of fibers to watch.</LI>
+
+<LI>
+Within a list of messages, user can hide a selection of messages.</LI>
+
+<LI>
+Win32 error codes are automatically expanded by Agent to their symbolic
+names.</LI>
+</DL>
+We found Agent very useful for a variety of purposes. Some very difficult
+bugs (related to background worker threads, serial communications and time
+related problems with SQL Server) were eliminated with the help of an Agent.
+We are planning to add new features listed below:
+<DL>
+<LI>
+Find a message containing line number, (sub)string or error code.</LI>
+
+<LI>
+Automatically calculate time difference between two selected messages.</LI>
+
+<LI>
+Automatically start the Agent when a client program starts.</LI>
+
+<LI>
+Auto save feature.</LI>
+</DL>
+Take it and try it. If you find it useful or if you have any suggestions
+or if you found a bug, please let us know. Agent started as a small utility
+to solve debugging related problems in a multithreaded communication program
+but it behaved so well that we redesigned a user interface and added some
+new features and this is the final result.
+
+<P>Zip file (Agent.zip) contains the following:
+<DL>
+<LI>
+AGENT.EXE</LI>
+
+<LI>
+AGENT.DLL</LI>
+
+<LI>
+Source code for an Agent.lib</LI>
+
+<LI>
+Demo projects for an EXE and a DLL.</LI>
+
+<LI>
+Manual in HTML format</LI>
+
+<DT>
+&nbsp;</DT>
+
+<p><a href="../cgi/redirect.cgi?url=http://www.codeguru.com/samples/RuntimeMonitoringAgent.zip">Download Files</a> The zip file is 248K.
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

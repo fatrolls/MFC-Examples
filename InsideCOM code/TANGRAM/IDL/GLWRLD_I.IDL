@@ -1,0 +1,39 @@
+///////////////////////////////////////////////////////////
+//
+// Interface descriptions
+//
+
+//
+// Forwards
+//
+interface ITangramModel ;
+interface ITangramVisual ;
+
+// Graphic Definitions
+import "tantype.idl" ;
+
+// TangramModel
+import "model_i.idl" ;
+
+// ITangramGLVisual
+import "glvisl_i.idl" ;
+
+// ITangramWorld
+import "world_i.idl" ;
+
+//
+// Interface ITangramGdiWorld
+//
+[
+	object,
+	uuid(b53313d1-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramGLWorld Interface"),
+	pointer_default(unique)
+]
+interface ITangramGLWorld : ITangramWorld 
+{
+	import "unknwn.idl" ; 
+
+   HRESULT ModelToDevice([in] TangramPoint2d pptIn, [out] TangramPoint2d* pptOut) ;
+};
+

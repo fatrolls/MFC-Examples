@@ -1,0 +1,620 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - Print Mailing Labels</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Print Mailing Labels</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+
+<p>This article was contributed by <a href="mailto:fd003@vnet.net">Larry Hansen</a>. 
+
+
+
+<P>This article will explain how to print mailing labels using an ODBC
+database, OnPrint, and OnDraw.  I used VC++ version 5 with service patch 2
+installed, but it should work with any version of VC++.  
+To get my mailing labels printed I first used Crystal Reports.  While this
+worked, I was not happy with the output of the label.  There was too much
+seperation between fields, and trying to get them to look right was going
+to be a major programming project in itself. 
+
+<P>In starting to do my own labels, I needed a font other than the default
+one.  So, first was to add two variables in the CView header file:
+
+<PRE><TT><FONT COLOR="#990000">
+	CFont cfSmall;
+	CFont *pOldFont;
+</FONT></TT></PRE>
+
+<P>Next, in the OnDraw function I needed to know where to print each label. 
+The first label starts about a half inch down from the top and a quarter of
+an inch over to the right.  Time for some more variables.  This time they
+are local to On Draw:
+
+<PRE><TT><FONT COLOR="#990000">
+	int xstart,ystart;
+	int labelheight,labelwidth;
+</FONT></TT></PRE>
+
+<P>The TWIPS mapping mode give dimensions in inches.  According to the help
+for CDC::SetMapMode: "Each logical unit is converted 1/20 of a point.  (Because a point is 1/72
+inch, a twip is 1/1440 inch.)  Positive x is to the right; positive y is
+up."
+
+<P>Therefore, I coded:
+<PRE><TT><FONT COLOR="#990000">
+	xstart = 1440 / 4;
+	ystart = 1440 / 2;
+	labelheight = 1440;
+	labelwidth = 1440 * 2.5;
+</FONT></TT></PRE>
+
+<P>OnDraw receives a pointer the the CDC.  One of the functions is
+IsPrinting().  I put a check in my function and coded the following:
+
+<PRE><TT><FONT COLOR="#990000">
+if(pDC->IsPrinting())
+{
+	if(m_nCurPage == 0l)
+		m_pSet->MoveFirst();
+	else
+		m_pSet->SetAbsolutePosition((long)((m_nCurPage * 30)+1l)));
+	
+	
+	iOldMode = pDC->SetMapMode(MM_TWIPS);
+	
+	cfSmall.CreateFont(200,0,0,0,
+		FW_NORMAL,FALSE,FALSE,
+		ANSI_CHARSET,OUT_TT_PRECIS,0,
+		PROOF_QUALITY,DEFAULT_PITCH,FF_DONTCARE,"Arial");
+	pOldFont = pDC->SelectObject(&cfSmall);
+	
+	GetClientRect(&r);
+	
+	s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	textsize = pDC->GetTextExtent(s);
+	lx = r.left + xstart;
+	ly = r.top - ystart;
+	for(a = 0;a < 10;a++)
+	{
+		for(b = 0;b < 3;b++)
+		{
+			x = lx;
+			y = ly;
+			if(!m_pSet->IsEOF())
+			{
+				m_pSet->m_FirstName.TrimRight();
+				m_pSet->m_LastName.TrimRight();
+				csOut = m_pSet->m_FirstName; 
+				csOut += " ";
+				csOut += m_pSet->m_LastName; 
+				pDC->TextOut(x,y,csOut);
+				
+				y -= textsize.cy;
+				m_pSet->m_FirstAddr.TrimRight();
+				pDC->TextOut(x,y,m_pSet->m_FirstAddr);
+				
+				y -= textsize.cy;
+				m_pSet->m_SecondAddr.TrimRight();
+				pDC->TextOut(x,y,m_pSet->m_SecondAddr);
+				
+				y -= textsize.cy;
+				m_pSet->m_City.TrimRight();
+				m_pSet->m_State.TrimRight();
+				m_pSet->m_ZipCode.TrimRight();
+				csOut = m_pSet->m_City;
+				csOut += ", ";
+				csOut += m_pSet->m_State;
+				csOut += " ";
+				csOut += m_pSet->m_ZipCode;
+				pDC->TextOut(x,y,csOut);
+				m_pSet->MoveNext();
+			}
+			
+			lx += labelwidth;
+		}
+		ly -= labelheight;
+		lx = r.left + xstart;
+		
+	}
+	
+	pDC->SelectObject(pOldFont);
+	cfSmall.DeleteObject();
+	pDC->SetMapMode(iOldMode);
+	
+}
+</FONT></TT></PRE>
+
+
+<P>The whole view file and header is included.  I tried putting a while
+(!m_pSet->IsEof()) as a part of the controlling loop, then doing the
+counting for each label.  This didn't work because pages will be printed
+one on top of the other.  The key to keeping up with where in the database
+you are, and where to start printing is current page.  The print engine in
+MFC starts counting current pages at 1, so in your OnPrint override you
+have this:
+
+<PRE><TT><FONT COLOR="#990000">
+	m_nCurPage = pInfo->m_nCurPage;
+	m_nCurPage -= 1;
+	OnDraw(pDC); 
+	CView::OnPrint(pDC, pInfo);
+</FONT></TT></PRE>
+
+<P>m_nCurPage is part of your CView, subtract one, then each time your on draw
+gets called you multiply by 30.  Why 30?  3 labels accross, 10 down. 
+Adjust if you only have two accross.
+
+<P>You will also have to determine how many pages you have to print.  This
+gets done in OnPreparePrinting():
+
+<PRE><TT><FONT COLOR="#990000">
+	LONG lNumRecs;
+	int iNumPages;
+	int iExtra;
+	lNumRecs = m_pSet->GetRecordCount();
+	iNumPages = (int)(lNumRecs / 30l);
+	iExtra = (int)(lNumRecs % 30l);
+	if(iExtra > 0)
+	iNumPages++;
+	pInfo->SetMaxPage(iNumPages);
+	return DoPreparePrinting(pInfo);
+</FONT></TT></PRE>
+
+<P>You get the number of records in your dataset, divide that number by the
+number of labels per sheet.  Because there might be more labels left over
+than can print on a sheet, you do a mod on the number records.  This will
+tell you if there are any remaining on a partial sheet, if so, add one to
+the page count.  Then set your page count by callint SetMaxPage().
+
+<P>The y is always decremented using the TWIPS map mode because the bottom of
+the page is 0.  For each page, you have to reinitialize the font and map
+mode--the printer will not remember those things between pages, that's why
+you delete your objects and reinitialize them each time your OnDraw is
+called.
+
+<P>That's about it.  You've got print preview, and printing for your labels.
+
+
+<P>The CView .cpp file:
+
+<PRE><TT><FONT COLOR="#990000">
+// mlabelView.cpp : implementation of the CMlabelView class
+//
+
+#include "stdafx.h"
+#include "mlabel.h"
+#include "MlistSet.h"
+#include "mlabelDoc.h"
+#include "mlabelView.h"
+
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+////////////////////////////////////////////////////////////////////////////
+// CMlabelView
+
+IMPLEMENT_DYNCREATE(CMlabelView, CView)
+
+BEGIN_MESSAGE_MAP(CMlabelView, CView)
+	//{{AFX_MSG_MAP(CMlabelView)
+	// NOTE - the ClassWizard will add and remove mapping macros here.
+	//    DO NOT EDIT what you see in these blocks of generated code!
+	//}}AFX_MSG_MAP
+	// Standard printing commands
+	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
+END_MESSAGE_MAP()
+
+////////////////////////////////////////////////////////////////////////////
+
+
+// CMlabelView construction/destruction
+
+CMlabelView::CMlabelView()
+{
+	// TODO: add construction code here
+	m_pSet = NULL;
+	
+}
+
+CMlabelView::~CMlabelView()
+{
+}
+
+BOOL CMlabelView::PreCreateWindow(CREATESTRUCT& cs)
+{
+	// TODO: Modify the Window class or styles here by modifying
+	//  the CREATESTRUCT cs
+	
+	return CView::PreCreateWindow(cs);
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+/
+// CMlabelView drawing
+
+void CMlabelView::OnDraw(CDC* pDC)
+{
+	CMlabelDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	int xstart,ystart;
+	int lx,ly;
+	int x,y;
+	int a,b;
+	int labelheight,labelwidth;
+	RECT r;
+	CSize textsize;
+	
+	xstart = 1440 / 4;
+	ystart = 1440 / 2;
+	labelheight = 1440;
+	labelwidth = 1440 * 2.5;
+	CString csOut;
+	CString s;
+	
+	if(pDC->IsPrinting())
+	{
+		if(m_nCurPage == 0l)
+			m_pSet->MoveFirst();
+		else
+			m_pSet->SetAbsolutePosition((long)((m_nCurPage * 30)+1l));
+		
+		iOldMode = pDC->SetMapMode(MM_TWIPS);
+		
+		cfSmall.CreateFont(200,0,0,0,
+			FW_NORMAL,FALSE,FALSE,
+			ANSI_CHARSET,OUT_TT_PRECIS,0,
+			PROOF_QUALITY,DEFAULT_PITCH,FF_DONTCARE,"Arial");
+		pOldFont = pDC->SelectObject(&cfSmall);
+		
+		GetClientRect(&r);
+		
+		s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		textsize = pDC->GetTextExtent(s);
+		lx = r.left + xstart;
+		ly = r.top - ystart;
+		for(a = 0;a < 10;a++)
+		{
+			for(b = 0;b < 3;b++)
+			{
+				x = lx;
+				y = ly;
+				if(!m_pSet->IsEOF())
+				{
+					m_pSet->m_FirstName.TrimRight();
+					m_pSet->m_LastName.TrimRight();
+					csOut = m_pSet->m_FirstName; 
+					csOut += " ";
+					csOut += m_pSet->m_LastName; 
+					pDC->TextOut(x,y,csOut);
+					
+					y -= textsize.cy;
+					m_pSet->m_FirstAddr.TrimRight();
+					pDC->TextOut(x,y,m_pSet->m_FirstAddr);
+					
+					y -= textsize.cy;
+					m_pSet->m_SecondAddr.TrimRight();
+					pDC->TextOut(x,y,m_pSet->m_SecondAddr);
+					
+					y -= textsize.cy;
+					m_pSet->m_City.TrimRight();
+					m_pSet->m_State.TrimRight();
+					m_pSet->m_ZipCode.TrimRight();
+					csOut = m_pSet->m_City;
+					csOut += ", ";
+					csOut += m_pSet->m_State;
+					csOut += " ";
+					csOut += m_pSet->m_ZipCode;
+					pDC->TextOut(x,y,csOut);
+					m_pSet->MoveNext();
+				}
+				
+				lx += labelwidth;
+			}
+			
+			ly -= labelheight;
+			lx = r.left + xstart;
+			
+		}
+		
+		pDC->SelectObject(pOldFont);
+		cfSmall.DeleteObject();
+		pDC->SetMapMode(iOldMode);
+	}
+	else
+	{
+		iOldMode = pDC->SetMapMode(MM_TWIPS);
+		
+		cfSmall.CreateFont(200,0,0,0,
+			FW_NORMAL,FALSE,FALSE,
+			ANSI_CHARSET,OUT_TT_PRECIS,0,
+			PROOF_QUALITY,DEFAULT_PITCH,FF_DONTCARE,"Arial");
+		pOldFont = pDC->SelectObject(&cfSmall);
+		
+		GetClientRect(&r);
+		
+		s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		textsize = pDC->GetTextExtent(s);
+		lx = r.left + xstart;
+		ly = r.top - ystart;
+		
+		m_pSet->MoveFirst();
+		while(!m_pSet->IsEOF())
+		{
+			
+			for(b = 0;b < 3;b++)
+			{
+				x = lx;
+				y = ly;
+				if(!m_pSet->IsEOF())
+				{
+					m_pSet->m_FirstName.TrimRight();
+					m_pSet->m_LastName.TrimRight();
+					csOut = m_pSet->m_FirstName; 
+					csOut += " ";
+					csOut += m_pSet->m_LastName; 
+					pDC->TextOut(x,y,csOut);
+					
+					y -= textsize.cy;
+					m_pSet->m_FirstAddr.TrimRight();
+					pDC->TextOut(x,y,m_pSet->m_FirstAddr);
+					
+					y -= textsize.cy;
+					m_pSet->m_SecondAddr.TrimRight();
+					pDC->TextOut(x,y,m_pSet->m_SecondAddr);
+					
+					y -= textsize.cy;
+					m_pSet->m_City.TrimRight();
+					m_pSet->m_State.TrimRight();
+					m_pSet->m_ZipCode.TrimRight();
+					csOut = m_pSet->m_City;
+					csOut += ", ";
+					csOut += m_pSet->m_State;
+					csOut += " ";
+					csOut += m_pSet->m_ZipCode;
+					pDC->TextOut(x,y,csOut);
+					m_pSet->MoveNext();
+				}
+				
+				lx += labelwidth;
+			}
+			ly -= labelheight;
+			lx = r.left + xstart;
+			
+		}
+		pDC->SelectObject(pOldFont);
+		cfSmall.DeleteObject();
+		pDC->SetMapMode(iOldMode);
+		
+	}
+	
+	// TODO: add draw code for native data here
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+/
+// CMlabelView printing
+
+BOOL CMlabelView::OnPreparePrinting(CPrintInfo* pInfo)
+{
+	// default preparation
+	LONG lNumRecs;
+	int iNumPages;
+	int iExtra;
+	lNumRecs = m_pSet->GetRecordCount();
+	iNumPages = (int)(lNumRecs / 30l);
+	iExtra = (int)(lNumRecs % 30l);
+	if(iExtra > 0)
+		iNumPages++;
+	pInfo->SetMaxPage(iNumPages);
+	return DoPreparePrinting(pInfo);
+}
+
+void CMlabelView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+{
+	// TODO: add extra initialization before printing
+	
+}
+
+void CMlabelView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+{
+	// TODO: add cleanup after printing
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+/
+// CMlabelView diagnostics
+
+#ifdef _DEBUG
+void CMlabelView::AssertValid() const
+{
+	CView::AssertValid();
+}
+
+void CMlabelView::Dump(CDumpContext& dc) const
+{
+	CView::Dump(dc);
+}
+
+CMlabelDoc* CMlabelView::GetDocument() // non-debug version is inline
+{
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CMlabelDoc)));
+	return (CMlabelDoc*)m_pDocument;
+}
+#endif //_DEBUG
+
+////////////////////////////////////////////////////////////////////////////
+
+/
+// CMlabelView message handlers
+
+void CMlabelView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	iOldMode = pDC->SetMapMode(MM_TWIPS);
+	
+	CView::OnPrepareDC(pDC, pInfo);
+}
+
+
+void CMlabelView::OnInitialUpdate() 
+{
+	CView::OnInitialUpdate();
+	//CDatabase *d = new CDatabase;
+	m_pSet = &GetDocument()->m_mlistSet;
+	m_pSet->m_strSort = "LastName,FirstName";
+	//d->Open("DSN=c:\\mlabel\\mlist.mdb",FALSE,TRUE,"ODBC;");
+	//m_pSet->m_pDatabase = d;
+	m_pSet->Open();
+	// TODO: Add your specialized code here and/or call the base class
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+/
+// CMlistView database support
+CRecordset* CMlabelView::OnGetRecordset()
+{
+	return m_pSet;
+}
+
+void CMlabelView::OnPrint(CDC* pDC, CPrintInfo* pInfo) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	m_nCurPage = pInfo->m_nCurPage;
+	m_nCurPage -= 1;
+	OnDraw(pDC); 
+	CView::OnPrint(pDC, pInfo);
+}
+
+
+The header file for the view:
+
+// mlabelView.h : interface of the CMlabelView class
+//
+////////////////////////////////////////////////////////////////////////////
+
+/
+
+#if
+!defined(AFX_MLABELVIEW_H__EA05E9CE_7612_11D1_A4FD_006097160A38__INCLUDED_)
+#define AFX_MLABELVIEW_H__EA05E9CE_7612_11D1_A4FD_006097160A38__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+class CMlistSet;
+
+class CMlabelView : public CView
+{
+protected: // create from serialization only
+	CMlabelView();
+	DECLARE_DYNCREATE(CMlabelView)
+		CFont cfSmall;
+	CFont *pOldFont;
+	int iOldMode;
+	int m_nCurPage;
+	// Attributes
+public:
+	CMlabelDoc* GetDocument();
+	CMlistSet* m_pSet;
+	
+	// Operations
+public:
+	
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	virtual CRecordset* OnGetRecordset();
+	//{{AFX_VIRTUAL(CMlabelView)
+public:
+	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo = NULL);
+	virtual void OnInitialUpdate();
+protected:
+	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
+	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnPrint(CDC* pDC, CPrintInfo* pInfo);
+	//}}AFX_VIRTUAL
+	
+	// Implementation
+public:
+	virtual ~CMlabelView();
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+	
+protected:
+	
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CMlabelView)
+	// NOTE - the ClassWizard will add and remove member functions here.
+	//    DO NOT EDIT what you see in these blocks of generated code !
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+#ifndef _DEBUG  // debug version in mlabelView.cpp
+inline CMlabelDoc* CMlabelView::GetDocument()
+   { return (CMlabelDoc*)m_pDocument; }
+#endif
+
+////////////////////////////////////////////////////////////////////////////
+
+/
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations
+immediately before the previous line.
+
+#endif //
+!defined(AFX_MLABELVIEW_H__EA05E9CE_7612_11D1_A4FD_006097160A38__INCLUDED_)
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

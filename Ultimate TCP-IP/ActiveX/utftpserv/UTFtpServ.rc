@@ -1,0 +1,183 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""UTFtpServ.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 4,0,0,1
+ PRODUCTVERSION 4,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "FTP Server ( RFC 959)\0"
+            VALUE "CompanyName", "The Ultimate Toolbox\0"
+            VALUE "FileDescription", "UTFtpServ Module\0"
+            VALUE "FileVersion", "4, 0, 0, 1\0"
+            VALUE "InternalName", "UTFtpServ\0"
+            VALUE "LegalCopyright", "Copyright 1995-2007\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OLESelfRegister", "\0"
+            VALUE "OriginalFilename", "UTFtpServ.DLL\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Ultimate TCP-IP v4.2\0"
+            VALUE "ProductVersion", "4, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_FTPSERVER           BITMAP  DISCARDABLE     "ftpserve.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_FTPSERV             REGISTRY DISCARDABLE    "FtpServer.rgs"
+IDR_FTPSERVPROPPAGE     REGISTRY DISCARDABLE    "FtpSercPropPage.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTDLG DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About FTP Server ActiveX Control"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,62,76,50,14
+    CTEXT           "Copyright © The Ultimate Toolbox 1995-2007\r\nwww.theultimatetoolbox.com\r\nAll rights reserved.",
+                    IDC_STATIC,5,40,175,30
+    CTEXT           "FTP Server ActiveX Control",IDC_STATIC,5,10,175,11
+    CTEXT           "Version 4.0.",IDC_VERSION_TEXT,5,22,175,18
+END
+
+IDD_FTPSERVPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 105
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Port number:",IDC_STATIC,0,8,75,9
+    EDITTEXT        IDC_PORT,80,5,40,14,ES_AUTOHSCROLL
+    RTEXT           "Max. connections:",IDC_STATIC,5,23,70,10
+    EDITTEXT        IDC_MAX_CONNECTIONS,80,20,40,14,ES_AUTOHSCROLL
+    RTEXT           "Max. time-out:",IDC_STATIC,0,38,75,8
+    EDITTEXT        IDC_EDIT_MAX_TIME_OUT,80,35,40,14,ES_AUTOHSCROLL
+    RTEXT           "Root path:",IDC_STATIC,0,53,75,10
+    EDITTEXT        IDC_PATH,80,50,185,14,ES_AUTOHSCROLL
+    RTEXT           "Welcome message:",IDC_STATIC,5,65,70,10
+    EDITTEXT        IDC_WELCOME,80,65,185,35,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_WANTRETURN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_FTPSERV        ICON    DISCARDABLE     "icon_fin.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "UTFtpServ"
+    IDS_TITLEFtpServPropPage "FTP properties"
+    IDS_HELPFILEFtpServPropPage "FTP properties"
+    IDS_DOCSTRINGFtpServPropPage "FTP properties"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "UTFtpServ.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

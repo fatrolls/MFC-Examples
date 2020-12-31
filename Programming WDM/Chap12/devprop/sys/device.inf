@@ -1,0 +1,72 @@
+[Version]
+Signature=$CHICAGO$
+Class=sample
+ClassGuid={894A7460-A033-11D2-821E-444553540000}
+Provider=%MFGNAME%
+
+[Manufacturer]
+%MFGNAME%=DeviceList
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+
+[SourceDisksFiles]
+devprop.sys=1
+
+[SourceDisksNames]
+1=%INSTDISK%,,,objchk\i386
+
+[DeviceList]
+%DESCRIPTION%=DriverInstall,*WCO1203
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.NT]
+CopyFiles=DriverCopyFiles
+
+[DriverCopyFiles]
+devprop.sys,,,2
+
+[DriverInstall.NT.Services]
+AddService=DEVPROP,2,DriverService
+
+[DriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\devprop.sys
+
+[DriverInstall.nt.hw]
+AddReg=DriverHwAddReg
+
+[DriverHwAddReg]
+HKR,,SampleInfo,,"%wdmbook%\chap12\devprop\devprop.htm"
+HKR,,FriendlyName,,%FRIENDLYNAME%
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall]
+AddReg=DriverAddReg
+CopyFiles=DriverCopyFiles
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,devprop.sys
+						
+[DriverInstall.hw]
+AddReg=DriverHwAddReg
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Walter Oney Software"
+INSTDISK="WDM Book Companion Disc"
+DESCRIPTION="DEVPROP Sample"
+FRIENDLYNAME="Device Property Sample"
+

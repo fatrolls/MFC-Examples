@@ -1,0 +1,250 @@
+<BODY>
+
+<CENTER><H3><FONT COLOR="#a0a099">
+  
+     Fully owner drawn tab control. 
+</FONT></H3>
+<HR style="LEFT: 10px; TOP: 60px">
+</CENTER>
+
+
+<!-- Author and contact details --><p>This article was contributed by <A
+ href="mailto:oleglb@mail.ru">Oleg Lobach</A>. <!-- Sample image - gif or jpg --> 
+</p>
+
+<!-- Environment eg NT 4.0 SP3, VC6.0 SP1 -->
+
+<p ><u>Environment:</u> The code was compiled with VC6 SP2, Win98 and tested with Win95 SP2, Win98 and NT4 SP3. 
+</p>
+
+
+<!-- Text / source code --> 
+
+<p>      
+ I think that default look of common CTabCtrl is not cool enough (for the 
+year 2000), when control is used with scrolling tabs:</p>
+<p><IMG src="oldtab_inline_demo.gif" ></p>
+<p> The CLBTabCtrl class uses my CLBSpinButtonCtrl class 
+(see <A href="http://www.codeproject.com/miscctrl/lbspin.asp">"Owner drawn spin button control with autodisabling 
+arrow buttons"</A> article) and completly draw itself to look like this:</p>
+<p><IMG src="lbtab_inline_demo.gif" ></p>
+<p>Beside that, my CLBTabCtrl class has "autoraising items" feature. It means, that when mouse is over inactive item, that item is drawn higher then other inactive items and its right border became darker. This feature also persist when tab control is used in stacked mode:</p>
+<p><IMG src="lbtab_stacked_demo.gif" ></p>
+<H3>How to use CLBTabCtrl</H3>
+<OL>
+    <LI>
+    <DIV >Add LBTabCtrl.h and 
+    LBTabCtrl.cpp to your project.</DIV>
+  <LI>
+  <DIV >Create new class derived from CPropertySheet and add it to 
+  project.</DIV>
+    <LI>
+    <DIV >Include LBTabCtrl.h file in the header file of 
+    just created CPropertySheet-derived class.</DIV>
+    <DIV > <PRE><FONT color=#990000><TT>#include "LBTabCtrl.h"; </TT></FONT></PRE></DIV>
+    <DIV ></DIV>
+    <LI>
+    <DIV >   Add a member variable 
+    to that CPropertySheet-derived class. </DIV>
+    <DIV > <PRE><FONT color=#990000><TT> CLBTabCtrl m_LBTabCtrl; </TT></FONT></PRE></DIV>
+    <LI>
+    <DIV > Subclass the common tab control&nbsp;to CLBTabCtrl. 
+  The good place to do this - in the virtual member function OnInitDialog() of CPropertySheet-derived 
+    class: </DIV>
+    <DIV > <PRE><FONT color=#990000><TT>   
+BOOL CLBTabDemoPropSheet::OnInitDialog() 
+{
+	BOOL bResult =CPropertySheet::OnInitDialog(); 
+	
+	//Subclass default CTabCtrl to CLBTabCtrl
+	CTabCtrl *pTab =GetTabControl();
+	m_LBTabCtrl.SubclassWindow(pTab-&gt;m_hWnd);
+
+	return bResult;
+}
+  </TT></FONT></PRE></DIV>
+<P >
+<DIV > After that yo can use that CPropertySheet-derived class everywhere as usual CPropertySheet. For instance:
+<DIV > <PRE><FONT color=#990000><TT>
+CLBTabDemoPropSheet sheet("Any Title");
+CPropertyPage page1(IDD_PROPPAGE1),page2(IDD_PROPPAGE2),page3(IDD_PROPPAGE3);
+
+sheet.AddPage(&amp;page1);
+sheet.AddPage(&amp;page2);
+sheet.AddPage(&amp;page3);
+
+// The following line is required if you wish to switch on 
+// the scrolling mode,since stacked mode is default 
+// for tab controls.
+sheet.EnableStackedTabs(FALSE); 
+
+sheet.DoModal();
+</TT></FONT></PRE></DIV>
+<P><U><STRONG>Note:</STRONG></U> Certainly you also can subclass any tab control, which does not lives within CPropertySheet. 
+</P>
+</DIV></LI></OL>
+<H3>How it works</H3>
+<H4 >
+<H4 >1. Overview</H4></H4>
+<P>
+<P > The CLBTabCtrl is owner drawn tab control. To make its job this control handles the following messages:</P>
+<DIV >
+<UL>
+	<LI>WM_MOUSEMOVE
+	<LI>WM_MOUSELEAVE
+	<LI>TCN_SELCHANGING
+	<LI>TCN_SELCHANGE
+	<LI>TCM_SETCURSEL
+	<LI>WM_HSCROLL
+	<LI>WM_PAINT
+	<LI>WM_ERASEBKGND
+	<LI>WM_KILLFOCUS
+	<LI>WM_SETFOCUS
+</LI></UL></DIV>
+<DIV >It also overrides virtual member functions 
+of CTabCtrl:</DIV>
+<DIV >
+<UL>
+    <LI>PreSubclassWindow
+    <LI>WindowProc</LI></UL></DIV>
+<P >
+<U><STRONG>Note:</STRONG></U> There is a possibility to switch off /on the "autoraising items" feature of CLBTabCtrl, using its public member function [bool SetAutoRaising(bool bOn)]. 
+</P>
+
+<H4 >2. How autoraising items work</H4>
+<DIV >
+<DIV>Only handling of WM_MOUSEMOVE and WM_MOUSELEAVE does the trick.</DIV>
+When the mouse enters the CLBTabCtrl it receive WM_MOUSEMOVE message and in that moment I use _TrackMouseEvent API to be notified with WM_MOUSELEAVE message, when the mouse leaves tab control.
+<DIV>This API,declared in "Commctrl.h", tries to use the window manager's implementation of TrackMouseEvent if it is present(for Win98/NT), otherwise it emulates (for Win95).</DIV>
+ </DIV>
+<DIV > <PRE><FONT color=#990000><TT> 
+TRACKMOUSEEVENT stTRACKMOUSEEVENT;
+stTRACKMOUSEEVENT.cbSize = sizeof(stTRACKMOUSEEVENT);
+stTRACKMOUSEEVENT.hwndTrack=m_hWnd;
+stTRACKMOUSEEVENT.dwFlags=TME_LEAVE;
+_TrackMouseEvent(&amp;stTRACKMOUSEEVENT);
+</TT></FONT></PRE></DIV>
+<P></P>
+<DIV >
+After that used approach is straightforward:
+<UL>
+    <LI> In WM_MOUSEMOVE handler I invalidate the item which is under mouse to draw it as raised
+     and also invalidate item which was raised before as normal (unraised).
+    <LI>In WM_MOUSELEAVE handler I invalidate item which was raised before
+     mouse leaved CLBTabCtrl, to draw it as normal (unraised).
+    </LI></UL></DIV>
+
+<DIV >
+<H4 >3. How CLBSpinButtonCtrl is involved</H4>
+<P> CLBSpinButtonCtrl substitutes the common up-down control which used within CTabCtrl
+in scrolling mode.
+<DIV>It is done in the virtual member function PreSubclassWindow() of CLBTabCtrl.
+	There I look for msctls_updown32 control and if it is present, modify its size,
+	position and subclass it to CLBSpinButtonCtrl, which have autodisabling	arrow buttons.
+	 <PRE><FONT color=#990000><TT> 
+	CWnd* pWnd = GetWindow(GW_CHILD);
+	while(pWnd)
+	{
+	 char buf[]="msctls_updown32";
+	 intnRet= ::GetClassName(pWnd-&gt;m_hWnd,
+	 buf,sizeof(buf)/sizeof(buf[0]));
+	 if(nRet&amp;&amp;strcmp(buf,"msctls_updown32"))
+	  {
+	   pWnd=pWnd-&gt;GetWindow(GW_HWNDNEXT);
+	  }
+	 else
+	  { 
+	   //The msctls_updown32 control isfound.
+	   //
+	   pWnd-&gt;GetWindowRect(&amp;m_rectUpDn);
+	   ScreenToClient(&amp;m_rectUpDn);
+	   //Update size and position of msctls_updown32 control
+	   m_rectUpDn.DeflateRect(3,2);
+	   m_rectUpDn.OffsetRect(3,5);
+		
+	   pWnd-&gt;MoveWindow(&amp;m_rectUpDn); 
+	   //Subclass common msctls_updown32 control to
+	   //my CLBSpinButtonCtrl, which have autodisabling arrow
+	   buttons.m_Spin.SubclassWindow(pWnd-&gt;m_hWnd);
+	   pWnd=0;
+	 }
+	}
+</TT></FONT></PRE></DIV>
+<P></P>
+<H4 >4. Handling of TCN_SELCHANGING and TCN_SELCHANGE messages</H4>
+<P>
+	These messages are handled as reflected notification messages. After my handlers do the job, the parent window also
+	get a chance to handle it.
+	<DIV>
+	After CLBTabCtrl control (and its parent) handles TCN_SELCHANGING message,  
+	the system will  send to it WM_PAINT/WM_ERASEBKGND messages.
+	Since at that moment I still don't know which item has become active,
+	and can not properly draw items, I have to avoid these 
+	WM_PAINT/WM_ERASEBKGND messages to get rid of flickering.
+	<DIV></DIV>
+	Since up-down control do not receive WM_PAINT/WM_ERASEBKGND messages 
+	if it is invisible, so I temporary  set the appropriate visible bits off
+    and the control thinks it is visible even though it is not.
+	<PRE><FONT color=#990000><TT> 
+DWORD dwStyle = ::GetWindowLong(m_hWnd,GWL_STYLE);
+if (dwStyle &amp; WS_VISIBLE)
+  ::SetWindowLong(m_hWnd, GWL_STYLE, (dwStyle &amp; ~ WS_VISIBLE));//switch off WS_VISIBLE
+</TT></FONT></PRE></DIV>
+<DIV>
+I set visible bits back on in TCN_SELCHANGE handler, 
+when it is good time to redraw CLBTabCtrl. 
+<P></P>
+<H4 >5. Handling of WM_PAINT message </H4>
+<P >a.) First of all to get rid of flickering I'm 
+drawing to memory DC (dc). So I have to create compatible memory DC and 
+select bitmap into it. </P>
+    <DIV > <PRE><FONT color=#990000><TT> 	CPaintDC RealDC(this);
+	CDC dc;
+	CBitmap bmpMem,*pOldMemBmp;
+	rctPnt=dcReal.m_ps.rcPaint;
+	dc.CreateCompatibleDC(&amp;RealDC);
+	bmpMem.CreateCompatibleBitmap(&amp;RealDC,
+		rctPaint.Width(),rctPaint.Height());
+	pOldMemBmp=dc.SelectObject(&amp;bmpMem);
+	
+	// Since we are bypassing WM_ERASEBCKGND, by returning TRUE from its 
+	//handler - let's do its job here 
+	dc.FillSolidRect(&amp;rctPaint,::GetSysColor(COLOR_BTNFACE));
+     </TT></FONT> </PRE> </DIV>
+ <P >
+ b.) After that I check if current repaint has happened due to autoraised item.
+ If so, I repaint only raised item.
+ <DIV> Otherwise I repaint parts of border of CLBTabCtr which 
+ overlapped by update region. After that I draw all inactive items which 
+ intersects the update region. And in the last turn the active item is drawn, in case if it
+ also intersects the update region.</DIV>
+ <DIV>For drawing of items I've used virtual member function DrawItem of CTabCtrl and virtual member
+ function DrawItemRect, added to CLBTabCtrl. </DIV>
+<P></P><P>
+c.) At the final step I copy the resulting 
+bitmap from memory DC to the screen, using BitBlt with SRCCOPY ROP.</P></DIV>
+<P>
+<P><h3>Standard Disclaimer</h3>
+<P></P>
+<P >These files may be redistributed unmodified 
+by any means <U>providing</U> it is not sold for profit 
+without the authors written consent, and providing that the authors name 
+and all copyright notices remains intact. This code may be used in compiled form 
+in any way you wish with the following conditions: </P>
+<P >If the source code is used in any commercial 
+product then a statement along the lines of "Portions Copyright (C) 1999 
+Oleg Lobach" must be included in the startup banner, "About" 
+box or printed documentation. The source code may not be compiled into a 
+standalone library and sold for profit. In any other cases the code is free to 
+whoever wants it anyway!</P>
+<P >      
+ This software is provided "as is" without express or implied warranty.The author accepts 
+no liability for any damages to your computer or data these products may 
+cause.</P>
+<P></P>
+
+<h3>History</h3>
+<P >Date Posted: January 28, 2000</P>
+<BR><!--#include virtual="footer.shtml" -->
+</DIV>
+</BODY></HTML>

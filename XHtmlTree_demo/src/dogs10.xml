@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<root name="&lt;font color=&quot;dodgerblue&quot;&gt;Dogs of the World&lt;/font&gt;">
+	<category name="Sight Hounds" checked="0" enabled="1" image="1">
+		<breed name="Hortaya Borzaya (Chortaj)" checked="0" enabled="1">
+		</breed>
+		<breed name="Irish Wolfhound" checked="0" enabled="1">
+		</breed>
+		<breed name="Italian Greyhound" checked="0" enabled="0">
+		</breed>
+		<breed name="Kanni" checked="0" enabled="0">
+		</breed>
+		<breed name="Lurcher (Mixed Breed)" checked="0" enabled="1">
+		</breed>
+		<breed name="Magyar Agar (Hungarian Greyhound)" checked="0" enabled="0">
+		</breed>
+		<breed name="Mudhol Hound" checked="0" enabled="1">
+		</breed>
+		<breed name="Rajapalayam" checked="0" enabled="1">
+			<breed name="Rampur Greyhound" checked="0" enabled="1">
+				<breed name="Saluki" checked="0" enabled="1">
+				</breed>
+			</breed>
+		</breed>
+	</category>
+	<category name="Herding Dogs" checked="0" enabled="1" image="2">
+		<breed name="Collies" checked="0" enabled="1">
+			<breed_sublist name="Border Collie" checked="1" enabled="1"/>
+			<breed_sublist name="Bearded Collie" checked="0" enabled="1"/>
+			<breed_sublist name="Smooth Collie" checked="0" enabled="1"/>
+			<breed_sublist name="Rough Collie" checked="0" enabled="1"/>
+		</breed>
+		<breed name="Australian Cattle Dog" checked="0" enabled="1">
+		</breed>
+		<breed name="Australian Shepherd" checked="0" enabled="1">
+		</breed>
+		<breed name="Australian Kelpie" checked="0" enabled="1">
+		</breed>
+		<breed name="Basque Shepherd Dog" checked="0" enabled="1">
+		</breed>
+		<breed name="Belgian Shepherd Dog (Groenendael, Laekenois, Tervueren, and Malinois)" checked="0" enabled="1">
+		</breed>
+	</category>
+	<category name="Scent Hounds" checked="0" enabled="1" image="3">
+		<breed name="Beagle" checked="0" enabled="1">
+		</breed>
+		<breed name="Bloodhound" checked="0" enabled="1">
+		</breed>
+		<breed name="Brachet" checked="0" enabled="1">
+		</breed>
+		<breed name="Coonhounds" checked="0" enabled="1">
+			<breed_sublist name="Black and Tan Coonhound" checked="0" enabled="1"/>
+			<breed_sublist name="Redbone Coonhound" checked="0" enabled="1"/>
+			<breed_sublist name="Bluetick Coonhound" checked="0" enabled="1"/>
+			<breed_sublist name="English Coonhound" checked="0" enabled="1"/>
+			<breed_sublist name="Treeing Walker Coonhound" checked="0" enabled="1"/>
+			<breed_sublist name="Plott Hound" checked="0" enabled="1"/>
+		</breed>
+	</category>
+	<category name="Gun Dogs" checked="0" enabled="1" image="4">
+		<breed name="Bracco Italiano" checked="0" enabled="1">
+		</breed>
+		<breed name="Braque du Bourbonnais" checked="0" enabled="1">
+		</breed>
+		<breed name="Brittany" checked="0" enabled="1">
+		</breed>
+		<breed name="Cesky Fousek" checked="0" enabled="1">
+		</breed>
+		<breed name="German Longhaired Pointer" checked="0" enabled="1">
+		</breed>
+		<breed name="German Shorthaired Pointer" checked="0" enabled="1">
+		</breed>
+		<breed name="German Wirehaired Pointer" checked="0" enabled="1">
+		</breed>
+		<breed name="Hungarian Vizsla" checked="0" enabled="1">
+		</breed>
+		<breed name="Hungarian Wirehaired Vizsla" checked="0" enabled="1">
+		</breed>
+		<breed name="Italian Spinone" checked="0" enabled="1">
+		</breed>
+	</category>
+	<category name="Terriers" checked="0" enabled="1" image="5">
+		<breed name="American Pitbull Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Airedale Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Australian Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Bedlington Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Black Russian Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Brazilian Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Border Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Boston Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Bull Terrier" checked="0" enabled="1">
+		</breed>
+		<breed name="Bull Terrier (Miniature)" checked="0" enabled="1">
+		</breed>
+	</category>
+	<category name="Spitz" checked="0" enabled="1" image="6">
+		<breed name="Akita Inu " checked="0" enabled="1">
+		</breed>
+		<breed name="Alaskan Husky " checked="0" enabled="1">
+		</breed>
+		<breed name="Alaskan Klee Kai" checked="0" enabled="1">
+		</breed>
+		<breed name="Alaskan Malamute" checked="0" enabled="1">
+		</breed>
+		<breed name="American Eskimo Dog " checked="0" enabled="1">
+		</breed>
+		<breed name="Canadian Eskimo Dog " checked="0" enabled="1">
+		</breed>
+		<breed name="Chinese Foo Dog" checked="0" enabled="1">
+		</breed>
+		<breed name="Chinook " checked="0" enabled="1">
+		</breed>
+		<breed name="Chow Chow " checked="0" enabled="1">
+		</breed>
+		<breed name="East Siberian Laika" checked="0" enabled="1">
+		</breed>
+	</category>
+	<category name="Guard Dogs" checked="0" enabled="1" image="7">
+		<breed name="Doberman" checked="0" enabled="1">
+		</breed>
+		<breed name="German Shepherd" checked="0" enabled="1">
+		</breed>
+		<breed name="Rottweiler" checked="0" enabled="1">
+		</breed>
+		<breed name="Kangal Dog" checked="0" enabled="1">
+		</breed>
+		<breed name="Bullmastiff" checked="0" enabled="1">
+		</breed>
+		<breed name="American Bulldog" checked="0" enabled="1">
+		</breed>
+		<breed name="Pit bull" checked="0" enabled="1">
+		</breed>
+		<breed name="Kunming Dog (in Asian nations)" checked="0" enabled="1">
+		</breed>
+		<breed name="Kunming Dog (in Asian nations)" checked="0" enabled="1">
+		</breed>
+		<breed name="Kunming Dog (in Asian nations)" checked="0" enabled="1">
+		</breed>
+	</category>
+	<category name="Toy Dogs" checked="0" enabled="1" image="8">
+		<breed name="Chihuahua (Long Coat)" checked="0" enabled="1">
+		</breed>
+		<breed name="Chihuahua (Smooth Coat)" checked="0" enabled="1">
+		</breed>
+		<breed name="Chinese Crested Dog" checked="0" enabled="1">
+		</breed>
+		<breed name="Coton de Tulear" checked="0" enabled="1">
+		</breed>
+		<breed name="English Toy Terrier (Black &amp; Tan)" checked="0" enabled="1">
+		</breed>
+		<breed name="Griffon Bruxellois" checked="0" enabled="1">
+		</breed>
+		<breed name="Havanese" checked="0" enabled="1">
+		</breed>
+		<breed name="Italian Greyhound" checked="0" enabled="1">
+		</breed>
+		<breed name="Japanese Chin" checked="0" enabled="1">
+		</breed>
+		<breed name="King Charles Spaniel" checked="0" enabled="1">
+		</breed>
+	</category>
+</root>

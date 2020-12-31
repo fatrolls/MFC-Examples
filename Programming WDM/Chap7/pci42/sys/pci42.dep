@@ -1,0 +1,44 @@
+# Microsoft Developer Studio Generated Dependency File, included by pci42.mak
+
+.\DriverEntry.cpp : \
+	"..\..\..\..\generic\generic.h"\
+	".\Driver.h"\
+	".\stddcls.h"\
+	"e:\nt5ddk\inc\alpharef.h"\
+	"e:\nt5ddk\inc\basetsd.h"\
+	"e:\nt5ddk\inc\bugcodes.h"\
+	"e:\nt5ddk\inc\guiddef.h"\
+	"e:\nt5ddk\inc\ia64reg.h"\
+	"e:\nt5ddk\inc\ntdef.h"\
+	"e:\nt5ddk\inc\ntiologc.h"\
+	"e:\nt5ddk\inc\ntstatus.h"\
+	"e:\nt5ddk\inc\wdm.h"\
+	
+
+.\ReadWrite.cpp : \
+	"..\..\..\..\generic\generic.h"\
+	".\Driver.h"\
+	".\stddcls.h"\
+	"e:\nt5ddk\inc\alpharef.h"\
+	"e:\nt5ddk\inc\basetsd.h"\
+	"e:\nt5ddk\inc\bugcodes.h"\
+	"e:\nt5ddk\inc\guiddef.h"\
+	"e:\nt5ddk\inc\ia64reg.h"\
+	"e:\nt5ddk\inc\ntdef.h"\
+	"e:\nt5ddk\inc\ntiologc.h"\
+	"e:\nt5ddk\inc\ntstatus.h"\
+	"e:\nt5ddk\inc\wdm.h"\
+	
+
+.\stddcls.cpp : \
+	".\stddcls.h"\
+	"e:\nt5ddk\inc\alpharef.h"\
+	"e:\nt5ddk\inc\basetsd.h"\
+	"e:\nt5ddk\inc\bugcodes.h"\
+	"e:\nt5ddk\inc\guiddef.h"\
+	"e:\nt5ddk\inc\ia64reg.h"\
+	"e:\nt5ddk\inc\ntdef.h"\
+	"e:\nt5ddk\inc\ntiologc.h"\
+	"e:\nt5ddk\inc\ntstatus.h"\
+	"e:\nt5ddk\inc\wdm.h"\
+	

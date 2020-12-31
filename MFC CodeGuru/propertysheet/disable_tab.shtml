@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Disable Tab</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Disable Tab</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:klussier@redcreek.com">Kevin Lussier</A>.
+
+
+<P>This class provides enabling and disabling of items in a
+tab control. The main
+purpose of the class is to provide this functionality for property
+sheets, but I think it may
+work for tab controls in general (I have not tested this).
+
+<P>Anyway, to use the class, just include the source and header file into
+your project. Create
+a member variable of type CTabCtrlEx in your property sheet derived
+class. Then, in the
+OnInitDialog function of your property sheet class call the CTabCtrlEx
+install function:
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMyPropertySheet::OnInitDialog()
+{
+    BOOL bResult = CPropertySheet::OnInitDialog();
+
+    // TODO: Add your specialized code here
+    ...
+    m_tab.Install( this );
+}
+</FONT></TT></PRE>
+
+<P>To enable or disable items, call the EnableItem() function:
+
+<PRE><TT><FONT COLOR="#990000">
+    m_tab.EnableItem( 0, FALSE );
+</FONT></TT></PRE>
+
+<P>I have not had time to thoroughly test this class, but the code is
+fairly well commented, so
+following it should not be very difficult if you have problems. Please
+send me any comments,
+feedback bug fixes, etc. Enjoy!
+
+
+<P><A HREF="disable_tab.zip">Download source files</A> 7KB
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

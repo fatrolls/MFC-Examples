@@ -1,0 +1,18 @@
+#include "wpp.h"
+
+/* By calling the ICON "APPICON", it is automatically
+   used as the application's icon. 
+*/
+APPICON ICON hello.ico
+
+/* By calling the MENU "APPMENU", it is automatically
+   used as the application's main menu.
+*/
+APPMENU MENU { 
+	MENUITEM "E&xit!", WPIDM_EXIT
+}
+
+APPACCEL ACCELERATORS
+BEGIN
+    "^X", WPIDM_EXIT
+END

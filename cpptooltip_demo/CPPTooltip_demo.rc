@@ -1,0 +1,1037 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\CPPTooltip_demo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_ATTENTION      ICON    DISCARDABLE     "res\\1.ico"
+IDI_ICON_STOP           ICON    DISCARDABLE     "res\\2.ico"
+IDI_ICON_QUESTION       ICON    DISCARDABLE     "res\\58.ico"
+IDI_ICON_INFORMATION    ICON    DISCARDABLE     "res\\59.ico"
+IDI_MAIL_ME             ICON    DISCARDABLE     "res\\0095 - Mail.ico"
+IDI_BLANK_BLACK         ICON    DISCARDABLE     "res\\blank1.ico"
+IDI_CLOSE_APP           ICON    DISCARDABLE     "res\\close_app.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_CODEPROJECT         BITMAP  DISCARDABLE     "res\\codeproject.bmp"
+IDB_SMILES              BITMAP  DISCARDABLE     "res\\smiles.bmp"
+IDB_MAP                 BITMAP  DISCARDABLE     "res\\map.BMP"
+IDB_GLOBE               BITMAP  DISCARDABLE     "res\\globe.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DEMO_DIALOG DIALOG DISCARDABLE  0, 0, 415, 237
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "CPPTooltip demo dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_PPTOOLTIP_OPTIONS DIALOG DISCARDABLE  0, 0, 399, 292
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Customize CPPTooltip"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_STATIC1,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,7,
+                    150,385,135
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,146,383,1
+    CONTROL         "",IDC_STATIC3,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,7,
+                    7,385,135
+END
+
+IDD_PAGE_COLORS DIALOGEX 0, 0, 380, 119
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Colors && Themes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Background's effect :",IDC_STATIC,7,9,68,8
+    COMBOBOX        IDC_COMBO1,78,7,65,122,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    GROUPBOX        "Color theme",IDC_STATIC,7,23,97,89
+    LTEXT           "Type :",IDC_STATIC,14,36,21,8
+    COMBOBOX        IDC_COMBO2,40,34,60,91,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Colors",IDC_STATIC,15,52,20,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,38,54,59,1
+    LTEXT           "Start :",IDC_STATIC,14,65,20,8
+    PUSHBUTTON      "",IDC_BUTTON1,40,62,59,14
+    LTEXT           "Mid :",IDC_STATIC,14,81,16,8
+    PUSHBUTTON      "",IDC_BUTTON2,40,78,59,14
+    LTEXT           "End :",IDC_STATIC,14,97,18,8
+    PUSHBUTTON      "",IDC_BUTTON3,40,94,59,14
+    LTEXT           "Granularity :",IDC_STATIC,111,37,38,8
+    EDITTEXT        IDC_EDIT1,152,35,21,12,ES_AUTOHSCROLL
+    GROUPBOX        "Border",IDC_STATIC,209,7,164,105
+    CONTROL         "Show Border",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,215,19,57,10
+    CONTROL         "End Color from the Color Theme",IDC_RADIO1,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,215,39,116,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,217,34,145,1
+    CONTROL         "Custom color",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,
+                    215,52,57,10
+    PUSHBUTTON      "",IDC_BUTTON4,273,49,59,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,217,68,145,1
+    LTEXT           "Width :",IDC_STATIC1,217,75,24,8
+    EDITTEXT        IDC_EDIT5,245,73,27,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Height :",IDC_STATIC2,217,89,26,8
+    EDITTEXT        IDC_EDIT6,245,87,27,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Transparency :",IDC_STATIC,110,55,48,8
+    EDITTEXT        IDC_EDIT7,161,53,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "%",IDC_STATIC,184,55,8,8
+END
+
+IDD_PAGE_BEHAVIOUR DIALOG DISCARDABLE  0, 0, 380, 119
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Behaviours"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Multiple tooltip's show for the one control",IDC_CHECK1,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,143,10
+    CONTROL         "To hide a tooltip when mouse left a control only",
+                    IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,19,
+                    164,10
+    CONTROL         "Don't hide a tooltip if mouse is over him",IDC_CHECK3,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,32,138,10
+    CONTROL         "Disables to hide a tooltip by timer",IDC_CHECK4,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,45,119,10
+    CONTROL         "Tracking a tooltip for the mouse",IDC_CHECK5,"Button",
+                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,58,115,
+                    10
+    GROUPBOX        "Timers",IDC_STATIC,195,7,117,83
+    LTEXT           "Show a tooltip after",IDC_STATIC,203,20,62,8
+    LTEXT           "Hide a tooltip after",IDC_STATIC,203,33,58,8
+    EDITTEXT        IDC_EDIT1,267,18,28,12,ES_MULTILINE | ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,267,31,28,12,ES_MULTILINE | ES_AUTOHSCROLL
+    LTEXT           "ms",IDC_STATIC,297,20,10,8
+    LTEXT           "ms",IDC_STATIC,297,34,10,8
+    LTEXT           "Fade In",IDC_STATIC,203,46,25,8
+    EDITTEXT        IDC_EDIT9,267,43,28,12,ES_MULTILINE | ES_AUTOHSCROLL
+    LTEXT           "ms",IDC_STATIC,297,46,10,8
+    LTEXT           "Fade Out",IDC_STATIC,203,58,30,8
+    EDITTEXT        IDC_EDIT10,267,56,28,12,ES_MULTILINE | ES_AUTOHSCROLL
+    LTEXT           "ms",IDC_STATIC,297,59,10,8
+    CONTROL         "Debug Mode",IDC_DEBUG_MODE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,102,57,10
+    LTEXT           "Animation's step",IDC_STATIC,203,71,52,8
+    EDITTEXT        IDC_EDIT11,267,68,28,12,ES_MULTILINE | ES_AUTOHSCROLL
+    LTEXT           "ms",IDC_STATIC,297,71,10,8
+END
+
+IDD_PAGE_SIZES DIALOGEX 0, 0, 380, 119
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Sizes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "The horizontal margin tip's area",IDC_STATIC,7,9,98,8
+    EDITTEXT        IDC_EDIT1,145,7,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,171,9,20,8
+    LTEXT           "The vertical margin tip's area",IDC_STATIC,7,23,91,8
+    EDITTEXT        IDC_EDIT3,145,21,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,171,23,20,8
+    LTEXT           "The width of the ellipse to rounded corner",IDC_STATIC,
+                    7,37,132,8
+    EDITTEXT        IDC_EDIT4,145,35,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,171,37,20,8
+    LTEXT           "The height of the ellipse to rounded corner",IDC_STATIC,
+                    7,51,134,8
+    EDITTEXT        IDC_EDIT5,145,49,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,171,51,20,8
+    LTEXT           "The width of the anchor",IDC_STATIC,7,65,76,8
+    EDITTEXT        IDC_EDIT6,145,63,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,171,65,20,8
+    LTEXT           "The height of the anchor",IDC_STATIC,7,79,79,8
+    EDITTEXT        IDC_EDIT7,145,77,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,171,79,20,8
+    LTEXT           "The offset of the anchor",IDC_STATIC,7,93,77,8
+    EDITTEXT        IDC_EDIT8,145,91,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,171,93,20,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,194,7,1,105
+    LTEXT           "The horizontal offset from the mouse",IDC_STATIC,199,10,
+                    115,8
+    EDITTEXT        IDC_EDIT11,327,7,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,353,10,20,8
+    LTEXT           "The vertical offset from the mouse",IDC_STATIC,199,23,
+                    108,8
+    EDITTEXT        IDC_EDIT12,327,21,23,12,ES_AUTOHSCROLL
+    LTEXT           "points",IDC_STATIC,353,24,20,8
+END
+
+IDD_PAGE_STYLES DIALOGEX 0, 0, 380, 119
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Styles && Direction"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Anchor's placement",IDC_STATIC,7,7,136,82
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,29,30,91,42
+    CONTROL         "",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | BS_LEFTTEXT | 
+                    BS_LEFT | WS_GROUP,11,34,16,8
+    CONTROL         "",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | BS_LEFTTEXT | 
+                    BS_LEFT,11,47,16,8
+    CONTROL         "",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | BS_LEFTTEXT | 
+                    BS_LEFT,11,60,16,8
+    CONTROL         "",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON | BS_LEFT,123,
+                    34,16,8
+    CONTROL         "",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON | BS_LEFT,123,
+                    47,16,8
+    CONTROL         "",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON | BS_LEFT,123,
+                    60,16,8
+    CONTROL         "",IDC_RADIO7,"Button",BS_AUTORADIOBUTTON | BS_LEFT,35,
+                    20,16,8
+    CONTROL         "",IDC_RADIO8,"Button",BS_AUTORADIOBUTTON | BS_LEFT,71,
+                    20,16,8
+    CONTROL         "",IDC_RADIO9,"Button",BS_AUTORADIOBUTTON | BS_LEFT,107,
+                    20,16,8
+    CONTROL         "",IDC_RADIO10,"Button",BS_AUTORADIOBUTTON | BS_LEFT,35,
+                    75,16,8
+    CONTROL         "",IDC_RADIO11,"Button",BS_AUTORADIOBUTTON | BS_LEFT,71,
+                    75,16,8
+    CONTROL         "",IDC_RADIO12,"Button",BS_AUTORADIOBUTTON | BS_LEFT,107,
+                    75,16,8
+    CTEXT           "Body of tooltip",IDC_STATIC,33,34,83,34,SS_CENTERIMAGE,
+                    WS_EX_DLGMODALFRAME
+END
+
+IDD_PAGE_CSS_STYLES DIALOG DISCARDABLE  0, 0, 380, 118
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "CSS Styles"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT1,7,7,366,73,ES_MULTILINE | ES_WANTRETURN | 
+                    WS_VSCROLL
+    PUSHBUTTON      "Apply",IDC_BUTTON1,317,80,56,13
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,95,366,1
+    EDITTEXT        IDC_EDIT2,27,98,28,12,ES_LOWERCASE | ES_AUTOHSCROLL
+    LTEXT           "Tag :",IDC_STATIC,7,99,18,8
+    EDITTEXT        IDC_EDIT9,85,98,227,12,ES_LOWERCASE | ES_AUTOHSCROLL
+    LTEXT           "Style :",IDC_STATIC,63,99,20,8
+    PUSHBUTTON      "Set",IDC_BUTTON2,317,97,56,13
+END
+
+IDD_PAGETEST_GENERAL DIALOG DISCARDABLE  0, 0, 380, 118
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Testing tooltip",IDC_STATIC,7,7,97,61
+    PUSHBUTTON      "Look tooltip",IDC_LOOK_TOOLTIP,14,21,84,23
+    CONTROL         "Disables a button",IDC_DISABLE_LOOK_BTN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,49,71,10
+    EDITTEXT        IDC_TOOLTIP_STRING,110,7,263,86,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_WANTRETURN | WS_VSCROLL
+    GROUPBOX        "Help Tooltip",IDC_STATIC,7,73,98,38
+    PUSHBUTTON      "One",IDC_BUTTON1,13,86,39,18
+    PUSHBUTTON      "Two",IDC_BUTTON2,59,86,39,18
+    CONTROL         "Don't ignore escape sequences",IDC_CHECK1,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,110,101,116,10
+    COMBOBOX        IDC_COMBO1,268,98,105,30,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_PAGETEST_HYPERLINKS DIALOG DISCARDABLE  0, 0, 380, 118
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Hyperlinks"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Open URL",IDC_BUTTON1,21,20,60,15
+    PUSHBUTTON      "Send E-mail",IDC_BUTTON2,21,38,60,15
+    PUSHBUTTON      "Notify",IDC_BUTTON3,22,56,60,15
+    PUSHBUTTON      "Hot areas",IDC_BUTTON4,22,75,60,15
+END
+
+IDD_PAGETEST_IMAGES DIALOG DISCARDABLE  0, 0, 380, 118
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Images"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Bitmaps with mask",IDC_BUTTON1,19,17,80,14
+    PUSHBUTTON      "Icons",IDC_BUTTON3,19,53,80,14
+    PUSHBUTTON      "Image List",IDC_BUTTON4,19,71,80,14
+    PUSHBUTTON      "Bitmaps without mask",IDC_BUTTON2,19,35,80,14
+    PUSHBUTTON      "Animation",IDC_BUTTON7,104,17,80,14
+END
+
+IDD_PAGETEST_TABLE DIALOGEX 0, 0, 380, 118
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Tables"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Simple Table",IDC_BUTTON1,19,20,83,14
+    PUSHBUTTON      "Columns && Rows span",IDC_BUTTON2,19,39,83,14
+    PUSHBUTTON      "Table inside of Table",IDC_BUTTON3,19,57,83,14
+    PUSHBUTTON      "Background",IDC_BUTTON5,19,76,83,14
+    PUSHBUTTON      "Borders",IDC_BUTTON6,114,20,83,14
+    PUSHBUTTON      "Border colors",IDC_BUTTON4,114,38,83,14
+    PUSHBUTTON      "Pseudo Menu",IDC_BUTTON7,114,57,83,14
+END
+
+IDD_PAGETEST_LIST_TREE DIALOG DISCARDABLE  0, 0, 380, 118
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "TitleTip"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | 
+                    WS_BORDER | WS_TABSTOP,7,16,84,81
+    LTEXT           "CListCtrl :",IDC_STATIC,7,7,30,8
+    LTEXT           "CListBox :",IDC_STATIC,94,7,32,8
+    LISTBOX         IDC_LIST2,95,16,84,81,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "CTreeCtrl",IDC_STATIC,182,7,30,8
+    CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_NOTOOLTIPS | 
+                    WS_BORDER | WS_TABSTOP,182,16,84,81
+    CONTROL         "In-place",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,277,19,41,10
+    CONTROL         "Below of the control",IDC_RADIO2,"Button",
+                    BS_AUTORADIOBUTTON,277,30,79,10
+    GROUPBOX        "TitleTip Placement",IDC_STATIC,271,7,102,37
+    GROUPBOX        "Type of TitleTip",IDC_STATIC,271,49,102,28
+    CONTROL         "Balloon",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,278,63,39,10
+    LTEXT           "ComboBox :",IDC_STATIC,272,86,39,8
+    COMBOBOX        IDC_COMBO1,314,84,59,95,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_PAGETEST_MISC DIALOG DISCARDABLE  0, 0, 380, 118
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Miscellaneous"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Runtime resize",IDC_STATIC,7,7,105,44
+    PUSHBUTTON      "Click me!",IDC_BUTTON1,16,20,54,16
+    GROUPBOX        "Child window",IDC_STATIC,7,54,105,37
+    COMBOBOX        IDC_COMBO1,15,68,90,30,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Dynamic created",IDC_STATIC,116,7,105,44
+    CONTROL         "",IDC_STATIC1,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,
+                    123,20,90,23
+    GROUPBOX        "Wrapped text",IDC_STATIC,116,54,105,44
+    PUSHBUTTON      "Test",IDC_BUTTON3,123,68,31,14
+    CONTROL         "Wrap text",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,124,84,47,10
+    LTEXT           "Width:",IDC_STATIC,161,70,22,8
+    EDITTEXT        IDC_EDIT1,185,68,28,12,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+IDD_PAGE_SHADOW DIALOG DISCARDABLE  0, 0, 380, 118
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Shadow"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Tooltip",IDC_STATIC,7,7,180,104
+    LTEXT           "Darken colors :",IDC_STATIC,14,21,49,8
+    EDITTEXT        IDC_EDIT1,66,19,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "%",IDC_STATIC,89,21,8,8
+    LTEXT           "Offset shadow - X :",IDC_STATIC,15,37,61,8
+    EDITTEXT        IDC_EDIT3,77,35,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Y :",IDC_STATIC,103,36,10,8
+    EDITTEXT        IDC_EDIT4,113,35,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Gradient Shadow",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,52,71,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,13,65,167,1
+    LTEXT           "Depth shadow - X :",IDC_STATIC,16,73,62,8
+    EDITTEXT        IDC_EDIT6,78,71,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Y :",IDC_STATIC,104,72,10,8
+    EDITTEXT        IDC_EDIT7,114,71,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "Image",IDC_STATIC,193,7,180,104
+    LTEXT           "Darken colors :",IDC_STATIC,200,21,49,8
+    EDITTEXT        IDC_EDIT2,252,19,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "%",IDC_STATIC,275,21,8,8
+    LTEXT           "Offset shadow - X :",IDC_STATIC,201,37,61,8
+    EDITTEXT        IDC_EDIT9,263,35,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Y :",IDC_STATIC,289,36,10,8
+    EDITTEXT        IDC_EDIT10,299,35,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Gradient Shadow",IDC_CHECK6,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,201,52,71,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,199,65,166,1
+    LTEXT           "Depth shadow - X :",IDC_STATIC,202,73,62,8
+    EDITTEXT        IDC_EDIT12,264,71,21,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Y :",IDC_STATIC,290,72,10,8
+    EDITTEXT        IDC_EDIT13,300,71,21,12,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 408
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 230
+    END
+
+    IDD_PPTOOLTIP_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 392
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 285
+    END
+
+    IDD_PAGE_COLORS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_PAGE_BEHAVIOUR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_PAGE_SIZES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_PAGE_STYLES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_PAGE_CSS_STYLES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_PAGETEST_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_PAGETEST_HYPERLINKS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_PAGETEST_IMAGES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_PAGETEST_TABLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_PAGETEST_LIST_TREE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 110
+    END
+
+    IDD_PAGETEST_MISC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_PAGE_SHADOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_PAGE_COLORS DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 6, 0
+0x4f53, 0x494c, 0x0044, 
+    IDC_COMBO1, 0x403, 10, 0
+0x4748, 0x4152, 0x4944, 0x4e45, 0x0054, 
+    IDC_COMBO1, 0x403, 10, 0
+0x4756, 0x4152, 0x4944, 0x4e45, 0x0054, 
+    IDC_COMBO1, 0x403, 11, 0
+0x4348, 0x5247, 0x4441, 0x4549, 0x544e, "\000" 
+    IDC_COMBO1, 0x403, 11, 0
+0x5648, 0x5247, 0x4441, 0x4549, 0x544e, "\000" 
+    IDC_COMBO1, 0x403, 11, 0
+0x4833, 0x5247, 0x4441, 0x4549, 0x544e, "\000" 
+    IDC_COMBO1, 0x403, 11, 0
+0x5633, 0x5247, 0x4441, 0x4549, 0x544e, "\000" 
+    IDC_COMBO1, 0x403, 6, 0
+0x4f4e, 0x5349, 0x0045, 
+    IDC_COMBO1, 0x403, 10, 0
+0x4944, 0x4741, 0x4853, 0x4441, 0x0045, 
+    IDC_COMBO1, 0x403, 7, 0
+0x5348, 0x4148, 0x4544, "\000" 
+    IDC_COMBO1, 0x403, 7, 0
+0x5356, 0x4148, 0x4544, "\000" 
+    IDC_COMBO1, 0x403, 6, 0
+0x4248, 0x4d55, 0x0050, 
+    IDC_COMBO1, 0x403, 6, 0
+0x4256, 0x4d55, 0x0050, 
+    IDC_COMBO1, 0x403, 9, 0
+0x4f53, 0x5446, 0x5542, 0x504d, "\000" 
+    IDC_COMBO1, 0x403, 9, 0
+0x4148, 0x4452, 0x5542, 0x504d, "\000" 
+    IDC_COMBO1, 0x403, 6, 0
+0x454d, 0x4154, 0x004c, 
+    IDC_COMBO2, 0x403, 9, 0
+0x7453, 0x6e61, 0x6164, 0x6472, "\000" 
+    IDC_COMBO2, 0x403, 7, 0
+0x6953, 0x766c, 0x7265, "\000" 
+    IDC_COMBO2, 0x403, 7, 0
+0x7542, 0x7474, 0x6e6f, "\000" 
+    IDC_COMBO2, 0x403, 7, 0
+0x7845, 0x746f, 0x6369, "\000" 
+    IDC_COMBO2, 0x403, 5, 0
+0x7141, 0x6175, "\000" 
+    IDC_COMBO2, 0x403, 7, 0
+0x6843, 0x6f72, 0x656d, "\000" 
+    IDC_COMBO2, 0x403, 5, 0
+0x6f47, 0x646c, "\000" 
+    IDC_COMBO2, 0x403, 6, 0
+0x7553, 0x6e6e, 0x0079, 
+    IDC_COMBO2, 0x403, 7, 0
+0x754a, 0x676e, 0x656c, "\000" 
+    IDC_COMBO2, 0x403, 4, 0
+0x6b53, 0x0079, 
+    IDC_COMBO2, 0x403, 5, 0
+0x6946, 0x6572, "\000" 
+    0
+END
+
+IDD_PAGETEST_GENERAL DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 6, 0
+0x6946, 0x7372, 0x0074, 
+    0
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\CPPTooltip_demo.ico"
+IDR_CPPTOOTYPE          ICON    DISCARDABLE     "res\\CPPTooltip_demoDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_DEMO_DIALOG
+    SEPARATOR
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        , GRAYED
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Tooltip"
+    BEGIN
+        MENUITEM "&Tooltip Demo Dialog",        ID_DEMO_DIALOG
+        MENUITEM SEPARATOR
+        POPUP "&Align"
+        BEGIN
+            MENUITEM "Left",                        ID_LEFT_MENUTIP
+            MENUITEM "Center",                      ID_CENTER_MENUTIP
+            MENUITEM "Right",                       ID_RIGHT_MENUTIP
+            MENUITEM "",                            1
+            MENUITEM "Top",                         ID_TOP_MENUTIP
+            MENUITEM "VCenter",                     ID_VCENTER_MENUTIP
+            MENUITEM "Bottom",                      ID_BOTTOM_MENUTIP
+        END
+        POPUP "&Anchor's position"
+        BEGIN
+            MENUITEM "&Left of Top edge",           ID_ANCHOR_TOPEDGE_LEFT
+            MENUITEM "&Center of Top edge",         ID_ANCHOR_TOPEDGE_CENTER
+            MENUITEM "&Right of Top edge",          ID_ANCHOR_TOPEDGE_RIGHT
+            MENUITEM SEPARATOR
+            MENUITEM "&Left of Bottom edge",        ID_ANCHOR_BOTTOMEDGE_LEFT
+
+            MENUITEM "&Center of Bottom edge",      ID_ANCHOR_BOTTOMEDGE_CENTER
+
+            MENUITEM "&Right of Bottom edge",       ID_ANCHOR_BOTTOMEDGE_RIGHT
+
+            MENUITEM SEPARATOR
+            MENUITEM "&Top of Left edge",           ID_ANCHOR_LEFTEDGE_TOP
+            MENUITEM "&VCenter of Left edge",       ID_ANCHOR_LEFTEDGE_VCENTER
+
+            MENUITEM "&Bottom of Left edge",        ID_ANCHOR_LEFTEDGE_BOTTOM
+
+            MENUITEM SEPARATOR
+            MENUITEM "&Top of Right edge",          ID_ANCHOR_RIGHTEDGE_TOP
+            MENUITEM "&VCenter of Right edge",      ID_ANCHOR_RIGHTEDGE_VCENTER
+
+            MENUITEM "&Bottom of Right edge",       ID_ANCHOR_RIGHTEDGE_BOTTOM
+
+        END
+        MENUITEM "Balloon Tooltip",             ID_TOOLTIP_BALLOON
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About CPPTooltip_demo...",   ID_APP_ABOUT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy",                       ID_EDIT_COPY
+        MENUITEM "Cu&t",                        ID_EDIT_CUT
+        MENUITEM "&Paste",                      ID_EDIT_PASTE, GRAYED
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About CPPTooltip_demo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "CPPTooltip_demo Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2003",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "CPPTooltip_demo MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "CPPTooltip_demo\0"
+            VALUE "LegalCopyright", "Copyright (C) 2003\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "CPPTooltip_demo.EXE\0"
+            VALUE "ProductName", "CPPTooltip_demo Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "CPPTooltip_demo\n\nCPPToo\n\n\nCPPTooltipdemo.Document\nCPPToo Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "CPPTooltip_demo"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview\nI don't know why this disabled"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut\nCut was disabled"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste\nPaste was disabled"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DEMO_DIALOG          "Show Demo Dialog\nDemo Dialog"
+    ID_TOP_MENUTIP          "Vertical align by <b>top</b> edge of the menu item"
+    ID_VCENTER_MENUTIP      "Vertical align by <b>center</b> of the menu item"
+    ID_BOTTOM_MENUTIP       "Vertical align by <b>bottom</b> edge of the menu item"
+    ID_LEFT_MENUTIP         "Horizontal align by <b>left</b> edge of the menu item"
+    ID_CENTER_MENUTIP       "Horizontal align by <b>center</b> of the menu item"
+    ID_RIGHT_MENUTIP        "Horizontal align by <b>right</b> edge of the menu item"
+    ID_ANCHOR_RIGHTEDGE_TOP "Tooltip's anchor in the top of the right edge"
+    ID_ANCHOR_RIGHTEDGE_VCENTER 
+                            "Tooltip's anchor in the center of the right edge"
+    ID_ANCHOR_RIGHTEDGE_BOTTOM 
+                            "Tooltip's anchor in the bottom of the right edge"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_ANCHOR_BOTTOMEDGE_LEFT 
+                            "Tooltip's anchor in the left of the bottom edge"
+    ID_ANCHOR_BOTTOMEDGE_CENTER 
+                            "Tooltip's anchor in the center of the bottom edge"
+    ID_ANCHOR_BOTTOMEDGE_RIGHT 
+                            "Tooltip's anchor in the right of the bottom edge"
+    ID_ANCHOR_TOPEDGE_LEFT  "Tooltip's anchor in the left of the top edge"
+    ID_ANCHOR_TOPEDGE_CENTER "Tooltip's anchor in the center of the top edge"
+    ID_ANCHOR_TOPEDGE_RIGHT "Tooltip's anchor in the right of the top edge"
+    ID_ANCHOR_LEFTEDGE_TOP  "Tooltip's anchor in the top of the left edge"
+    ID_ANCHOR_LEFTEDGE_VCENTER 
+                            "Tooltip's anchor in the center of the left edge"
+    ID_ANCHOR_LEFTEDGE_BOTTOM 
+                            "Tooltip's anchor in the bottom of the left edge"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\CPPTooltip_demo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

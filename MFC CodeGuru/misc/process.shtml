@@ -1,0 +1,182 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Starting, Managing and Switching Processes</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Starting, Managing and Switching Processes</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:Joerg.Koenig@rhein-neckar.de">Joerg
+Koenig</A>.
+
+<P>In a few of my projects I have to deal with processes. Processhandling
+is not a funny part of windows programming (especially on NT). To protect
+me from implementing all of the hard bits again and again, I developed
+the class CProcessMgr, which I think is general enough to be shared by
+all you code gurus :-)
+
+<P>CProcessMgr has the following member functions (description follows
+below):
+
+<PRE><TT><FONT COLOR="#990000">// split a command string
+BOOL	ParseCommand(
+			const CString &amp; CmdLine,
+			CString &amp; Directory,
+			CString &amp; Cmd,
+			CString &amp; Args
+		);
+
+// execute a command
+DWORD	Execute(
+			const CString &amp; strCmd,
+			const CString &amp; strArgs,
+			const CString &amp; strDir = "",
+			BOOL bWait = FALSE
+);
+DWORD	Execute(
+			const CString &amp; strCmdLine,
+			BOOL bWait = FALSE
+		);
+
+// wait for another process
+DWORD	Wait( DWORD PID ) const;
+
+// check wether a program is running
+DWORD	IsProgramRunning(const CString &amp; FileName) const;
+DWORD	IsProgramRunning(DWORD PID) const;
+
+// switch to another running application
+BOOL	SwitchProcessIntoForeground(DWORD PID) const;
+BOOL	SwitchProcessIntoForeground( const CString &amp; FileName ) const;
+
+// get informations about a shell-link (known as "shortcut")
+BOOL	GetLinkInfo(const CString &amp; LinkName, CString &amp; Path) const;
+
+// check wether two filenames reference the same physical file
+BOOL	CompareFilenames(LPCSTR Path1, LPCSTR Path2) const;
+
+// handle an error
+virtual void OnExecError( int nErrorCode, const CString &amp; strCommand );</FONT></TT></PRE>
+
+<P>One of the main goals of this class is, that it understands complex
+command strings. This is very useful since one can store such a command
+string in the registry at once. The syntax of such a command string is
+as follows (BNF-notation):
+
+<PRE><TT><FONT COLOR="#3333FF">CmdLine	: command
+	| command arguments
+	| 'cd' directory ';' command
+	| 'cd' directory ';' command arguments
+
+command	: string
+
+arguments: string
+	| arguments string
+
+directory: string		/* shall consist of a full path ! */
+
+string	: '[^ \t]+'		/* string without blanks/tabs */
+	| '"' '[^"]*' '"'	/* quoted string can 
+				   contain any character
+				   except " itself */</FONT></TT></PRE>
+
+<P>OK - not all of you are familiar with BNF, so let me give some examples:
+
+<PRE><TT><FONT COLOR="#3333FF">cmd
+cmd /c dir
+cd C:\windows ; cmd /c dir
+cd "C:\Program Files\Informix" ; cmd /c dir
+cd "C:\Program Files\Pictures" ; "\\picard\Software\Graphic Utilities\PSP\psp.exe" Title.jpg</FONT></TT></PRE>
+
+<P>All of these are valid command strings. Note that these samples are
+not in C/C++ notation !
+
+<P>The Parse() function splits such a command string into its components
+"directory", "command" and "arguments". Any special tokens are stripped
+off, so if you parse the last sample, it would give you <FONT COLOR="#3333FF">C:\Program
+Files\Pictures</FONT> as the directory, <FONT COLOR="#3333FF">\\picard\Software\Graphic
+Utilities\PSP\psp.exe</FONT> as the command and <FONT COLOR="#3333FF">Title.jpg</FONT>
+as the argument to the command. You can pass a complete command string
+to the Execute() method. If the command part of the string is not an executable
+file, then Execute() searches for the associated executable. The return
+value of Execute() depends on the &lt;bWait> parameter. If &lt;bWait> is
+TRUE, then it returns the exit code of the execution, otherwise a process-ID
+(PID) will return.
+<BR>With the Wait() method you can explicitly wait
+for a spawned process (give Wait() the return value from Execute()).
+
+<P>To check whether a special program is currently
+running, you can use the IsProgramRunning() method. If you pass the name
+of an executable file, this method checks the process table and gives you
+the PID of the process or 0 (zero) if that program is currently not running.
+If you're developing an application, that does not provide a window, but
+this program must run only once per machine, you cannot use FindWindow()
+to determine, whether the application is already running. The use of mutexes
+or similar resources might be an inacceptable overhead too. In such a case,
+one can simply use the following code:
+
+<PRE><TT><FONT COLOR="#990000">BOOL CSampleApp::InitInstance()
+{
+	CProcessMgr PMan;
+	TCHAR szName[1024];
+	GetModuleFileName(0, szName, 1023);
+	if( PMan.IsProgramRunning(szName) != DWORD(getpid()) ) {
+		// the application is already running on this machine
+		return FALSE;
+	}
+	// ...
+}</FONT></TT></PRE>
+
+<P>The code above works correctly, because a newly
+created process appears <B>after</B> a previously created process in the
+process table, so the method finds the other application first.
+
+<P>At last: the SwitchProcessIntoForeground() switches
+a process into the foreground; i.e. makes that process the active process.
+If the main window of that process is minimized, then it will be restored
+to its previous state. If IsProgramRunning() indicates that a certain Process
+is running and SwitchProcessIntoForeground() says
+"I cannot switch to that process", then the process
+is possibly a DDE/OLE server that has currently hidden windows only.
+
+<P>Have a look into the header file ProcessMan.h
+for further information about its member functions.
+
+<P>CProcessMgr consists of two files
+<BR>ProcessMgr.h
+<BR>ProcessMgr.cpp
+
+<P><A HREF="process_source.zip">Download source</A> 10K
+
+
+
+ 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

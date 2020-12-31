@@ -1,0 +1,257 @@
+//Microsoft Developer Studio generated resource script.
+//
+#ifndef _OXSerCom_RC__
+#define _OXSerCom_RC__
+
+#include "OXRSERCM.H"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "OXRSERCM.H\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COMMSETUP DIALOG DISCARDABLE  0, 0, 163, 107
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Serial Comm Setup"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "&Port:",-1,6,9,17,8
+    COMBOBOX        IDC_PORT,45,7,48,50,CBS_DROPDOWNLIST | CBS_HASSTRINGS | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Baud Rate:",-1,6,24,38,8,NOT WS_GROUP
+    COMBOBOX        IDC_BAUDRATE,45,22,48,84,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Data Bits:",-1,6,39,34,8,NOT WS_GROUP
+    COMBOBOX        IDC_DATABIT,45,37,48,57,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "P&arity:",-1,6,54,22,8,NOT WS_GROUP
+    COMBOBOX        IDC_PARITY,45,52,48,57,CBS_DROPDOWNLIST | CBS_HASSTRINGS | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Stop Bits:",-1,6,69,33,8,NOT WS_GROUP
+    COMBOBOX        IDC_STOPBIT,45,67,48,33,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&Ok",IDOK,107,6,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,107,23,50,14
+    LTEXT           "&Flow Ctrl:",-1,6,84,33,8,NOT WS_GROUP
+    COMBOBOX        IDC_FLOWCONTROL,45,82,48,42,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_COMMSETUP DLGINIT
+BEGIN
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0031, 
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0032, 
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0033, 
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0034, 
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0035, 
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0036, 
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0037, 
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0038, 
+    IDC_PORT, 0x403, 6, 0
+0x6f43, 0x206d, 0x0039, 
+    IDC_BAUDRATE, 0x403, 4, 0
+0x3131, 0x0030, 
+    IDC_BAUDRATE, 0x403, 4, 0
+0x3033, 0x0030, 
+    IDC_BAUDRATE, 0x403, 4, 0
+0x3036, 0x0030, 
+    IDC_BAUDRATE, 0x403, 5, 0
+0x3231, 0x3030, "\000" 
+    IDC_BAUDRATE, 0x403, 5, 0
+0x3432, 0x3030, "\000" 
+    IDC_BAUDRATE, 0x403, 5, 0
+0x3834, 0x3030, "\000" 
+    IDC_BAUDRATE, 0x403, 5, 0
+0x3639, 0x3030, "\000" 
+    IDC_BAUDRATE, 0x403, 6, 0
+0x3431, 0x3034, 0x0030, 
+    IDC_BAUDRATE, 0x403, 6, 0
+0x3931, 0x3032, 0x0030, 
+    IDC_BAUDRATE, 0x403, 6, 0
+0x3833, 0x3034, 0x0030, 
+    IDC_BAUDRATE, 0x403, 6, 0
+0x3735, 0x3036, 0x0030, 
+    IDC_BAUDRATE, 0x403, 7, 0
+0x3131, 0x3235, 0x3030, "\000" 
+    IDC_DATABIT, 0x403, 2, 0
+0x0034, 
+    IDC_DATABIT, 0x403, 2, 0
+0x0035, 
+    IDC_DATABIT, 0x403, 2, 0
+0x0036, 
+    IDC_DATABIT, 0x403, 2, 0
+0x0037, 
+    IDC_DATABIT, 0x403, 2, 0
+0x0038, 
+    IDC_PARITY, 0x403, 5, 0
+0x7645, 0x6e65, "\000" 
+    IDC_PARITY, 0x403, 4, 0
+0x644f, 0x0064, 
+    IDC_PARITY, 0x403, 10, 0
+0x6f4e, 0x5020, 0x7261, 0x7469, 0x0079, 
+    IDC_PARITY, 0x403, 5, 0
+0x614d, 0x6b72, "\000" 
+    IDC_PARITY, 0x403, 6, 0
+0x7053, 0x6361, 0x0065, 
+    IDC_STOPBIT, 0x403, 2, 0
+0x0031, 
+    IDC_STOPBIT, 0x403, 2, 0
+0x0032, 
+    IDC_FLOWCONTROL, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_FLOWCONTROL, 0x403, 9, 0
+0x6148, 0x6472, 0x6177, 0x6572, "\000" 
+    IDC_FLOWCONTROL, 0x403, 11, 0
+0x6f58, 0x206e, 0x202f, 0x6f58, 0x6666, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEFAULT_TITLE       "General Purpose Comm. Handler"
+    IDS_MSG_DEFAULT_CONFIG  "%s:\nConfiguration file not found.\nDefault Parameters Assumed."
+    IDS_MSG_BAD_CONFIG      "%s:\nError loading the parameters file.\nDefault Parameters Assumed."
+    IDS_MSG_NO_SAVE         "%s:\nError saving the parameters file."
+    IDS_MSG_NO_PORT_AVAILABLE 
+                            "The selected COM port is either not supported\nor is being used by another application.\nPlease select another port."
+    IDS_MSG_PORT_UNAVAILABLE 
+                            "%s:\nFailed to open the communication device.\nThe configurated COM port is either not supported\nor is being used by another application."
+    IDS_SERIAL_NONAME       "Unknown Name"
+    IDS_SERIAL_NONE         "No Error"
+    IDS_SERIAL_NOT_AVAILABLE 
+                            "%1:\nThe selected COM port is either not supported\nor is being used by another application.\nPlease select another port."
+    IDS_SERIAL_BREAK_DETECT "%1:\nBreak Detect !"
+    IDS_SERIAL_RX_TIMEOUT   "%1:\nRx Timeout !"
+    IDS_SERIAL_CTS_TIMEOUT  "%1:\nClear To Send Timeout !"
+    IDS_SERIAL_DSR_TIMEOUT  "%1:\nData Set Ready Timeout !"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SERIAL_CD_TIMEOUT   "%1:\nCarrier Detect Timeout !"
+    IDS_SERIAL_FRAME_ERROR  "%1:\nFrame Error !"
+    IDS_SERIAL_PARITY_ERROR "%1:\nParity Error !"
+    IDS_SERIAL_OVERRUN_ERROR "%1:\nOverrun Error !"
+    IDS_SERIAL_RX_QUEUE_OVERFLOW "%1:\nRx Buffer Overflow !"
+    IDS_SERIAL_TX_QUEUE_FULL "%1:\nTx Buffer Full !"
+    IDS_SERIAL_WM_QUIT_RECEIVED "%1:\nUnexpected WM_QUIT received !"
+    IDS_SERIAL_IO_ERROR     "%1:\nI/O Error !"
+    IDS_SERIAL_MODE_ERROR   "%1:\nMode Error ! (request mode not supported)"
+    IDS_SERIAL_UNKNOWN_ERROR "%1:\nUnknown Error !"
+    IDS_SERIAL_LOST_MESSAGES 
+                            "FATAL ERROR!\nThe Windows message queue is full!\nSerial Comm messages lost!\nIncrease the message queue depth."
+    IDS_DEFAULTFILE         "unknown.cfg"
+    IDS_110                 "110"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_300                 "300"
+    IDS_600                 "600"
+    IDS_1200                "1200"
+    IDS_2400                "2400"
+    IDS_4800                "4800"
+    IDS_9600                "9600"
+    IDS_14400               "14400"
+    IDS_19200               "19200"
+    IDS_38400               "38400"
+    IDS_56000               "56000"
+    IDS_128000              "128000"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_256000              "256000"
+    IDS_EVEN                "Even"
+    IDS_ODD                 "Odd"
+    IDS_NOPARITY            "No Parity"
+    IDS_MARK                "Mark"
+    IDS_SPACE               "Space"
+    IDS_NONE                "None"
+    IDS_HARDWARE            "Hardware"
+    IDS_XONXOFF             "Xon / Xoff"
+    IDS_NOTIMER_AVAIL       "RS232 Driver Internal Error:\nNo timer available to handle the timeout function.\nSolution: close some other application and then restart this one."
+    IDS_57600               "57600"
+    IDS_115200              "115200"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+#endif //_OXSerCom_RC__

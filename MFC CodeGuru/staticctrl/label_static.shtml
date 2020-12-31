@@ -1,0 +1,161 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Static Controls - Extended Use of CStatic Class - CLabel</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Extended Use of CStatic Class - CLabel
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:nalmond@hotmail.com">Norm Almond</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG SRC="label_static.gif" width="330" height="450" alt="CLabel image">&nbsp;<A HREF="label_static.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+
+<p>Every wanted a static control that behaved like a Visual Basic(yuk!)
+label control? Well this could be just the thing you might be looking for. The first cut
+version of this MFC extension class will allow you to change the text, font attributes
+(weight, underline, size, name), text color, background color and border style.</p>
+
+<p>I've called the simple class CLabel and is simple to use in dialog
+boxes, just follow this simple instructions.
+
+<ol>
+  <li>Design the dialog box in the normal why.</li>
+  <li>Create a OnInitDialog function using the class wizard.</li>
+  <li>Add Label.cpp and Label.h to your project.</li>
+  <li>#Include &lt;label.h&gt; in your dialog .cpp file.</li>
+  <li>Any static controls that need enhancing, give each control a unique ID.</li>
+  <li>Assign a member control (CLabel) to each ID using the class wizard.</li>
+  <li>In OnInitDialog change a static controls appearing the functions
+    provided. (See Label.h)</li>
+</ol>
+
+<p><strong><u>API of CLabel</u></strong></p>
+
+<table width="100%">
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetBkColor(COLORREF crBkgnd)</FONT></td>
+    <td width="50%">Set the background colour of the control</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetText(const CString&amp; strText)</FONT></td>
+    <td width="50%">Sets the text of the controls</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetTextColor(COLORREF crText)</FONT></td>
+    <td width="50%">Sets the text colour of the control</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetFontBold(BOOL bBold)</FONT></td>
+    <td width="50%">Toggles the state of the bold attribute of the text in the
+    control</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetFontName(const CString&amp; strFont)</FONT></td>
+    <td width="50%">The the fonts face name in the control</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetFontUnderline(BOOL bSet)</FONT></td>
+    <td width="50%">Toggles the state of the underline font attribute of the
+    control</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetFontItalic(BOOL bSet)</FONT></td>
+    <td width="50%">Toggles the state of the italic font attribute of the control</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetFontSize(int nSize)</FONT></td>
+    <td width="50%">Sets the fonts size in points.</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetSunken(BOOL bSet)</FONT></td>
+    <td width="50%">Toggles the state of the sunken attribue of the control</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetBorder(BOOL bSet)</FONT></td>
+    <td width="50%">Toggles the state of the borders attribute</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; FlashText(BOOL bSet)</FONT></td>
+    <td width="50%">Toggles the state of the text flashing attribute</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; FlashBackground(BOOL bSet)</FONT></td>
+    <td width="50%">Toggles the state of the text flashing attribute</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetLink(BOOL bLink)</FONT></td>
+    <td width="50%">Toggles the state of the link attribute (allows label to
+    become internet link)</td>
+  </tr>
+  <tr>
+    <td width="50%"><FONT COLOR="#990000"><TT>CLabel&amp; SetLinkCursor(HCURSOR hCursor)</FONT></td>
+    <td width="50%">Sets the cursor for the link.</td>
+  </tr>
+</table>
+
+<p><strong><u>Example of CLabel</u></strong></p>
+
+<FONT COLOR="#990000"><TT><PRE>
+&nbsp;&nbsp;&nbsp; m_fname.SetFontName(&quot;System&quot;);
+&nbsp;&nbsp;&nbsp; m_fsize.SetFontSize(14);
+&nbsp;&nbsp;&nbsp; m_uline.SetFontUnderline(TRUE);
+&nbsp;&nbsp;&nbsp; m_tcolor.SetTextColor(RGB(255,0,0));
+&nbsp;&nbsp;&nbsp; m_bcolor.SetBkColor(RGB(0,255,255));
+&nbsp;&nbsp;&nbsp; m_italics.SetFontItalic(TRUE);
+&nbsp;&nbsp;&nbsp; m_bold.SetFontBold(TRUE);
+&nbsp;&nbsp;&nbsp; m_border.SetBorder(TRUE);
+&nbsp;&nbsp;&nbsp; m_sunken.SetSunken(TRUE);
+
+&nbsp;&nbsp;&nbsp; m_monty.SetFontName(&quot;Arial&quot;);
+&nbsp;&nbsp;&nbsp; m_monty.SetFontSize(12);
+&nbsp;&nbsp;&nbsp; m_monty.SetTextColor(RGB(255,255,0));
+&nbsp;&nbsp;&nbsp; m_monty.SetFontUnderline(TRUE);
+&nbsp;&nbsp;&nbsp; m_monty.SetBkColor(RGB(0,0,0));
+&nbsp;&nbsp;&nbsp; m_monty.SetFontItalic(TRUE);
+&nbsp;&nbsp;&nbsp; m_monty.SetFontBold(TRUE);
+&nbsp;&nbsp;&nbsp; m_monty.SetBorder(TRUE);
+&nbsp;&nbsp;&nbsp; m_monty.SetSunken(TRUE);
+</tt></PRE></FONT>
+
+<p>Last Updated: May 30 1998
+
+<hr>
+
+<!-- Codeguru contact details -->
+
+<table border="0" width="100%">
+  <tr>
+    <td width="33%"><a href="http://www.codeguru.com"><font size="2">Goto HomePage</font></a></td>
+    <td width="33%"><p align="center"><font size="1">© 1997 Zafir Anjum</font>&nbsp; </td>
+    <td width="34%"><p align="right"><font size="2">Contact me: <a
+    href="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+</font>
+</body>
+</html>

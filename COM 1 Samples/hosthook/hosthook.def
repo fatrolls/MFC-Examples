@@ -1,0 +1,6 @@
+LIBRARY HOSTHOOK
+EXPORTS
+    DllGetClassObject       private
+    DllCanUnloadNow         private
+    DllRegisterServer       private
+    DllUnregisterServer     private

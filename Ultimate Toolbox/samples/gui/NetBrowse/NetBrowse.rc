@@ -1,0 +1,229 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "NETBROWSE MFC EX Demo Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "NETBROWSE"
+            VALUE "LegalCopyright", "Copyright © 1998 Dundas Software Ltd."
+            VALUE "OriginalFilename", "NETBROWSE.EXE"
+            VALUE "ProductName", "NETBROWSE Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About NetBrowse..."
+    ID_DESCRIPTION_FILE     "netbrowseinfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "NetBrowse Demo"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_NETBROWSE_DIALOG DIALOGEX 0, 0, 305, 233
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Net Browse Demo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Create settings",IDC_STATIC,7,7,291,60
+    CONTROL         "Show &Comment names",IDC_COMMENT_NAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,17,85,10
+    CONTROL         "Show &Disks",IDC_DISKS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,29,51,10
+    CONTROL         "Show &Printers",IDC_PRINTERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,41,57,10
+    LTEXT           "Max numbers of levels",IDC_STATIC,105,53,72,8
+    EDITTEXT        IDC_MAX_LEVELS,180,51,26,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_MAX_LEVELS_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,207,51,11,12
+    LTEXT           "Initially &Expand level",IDC_STATIC,105,37,65,8
+    EDITTEXT        IDC_EXPAND_LEVEL,180,35,26,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_EXPAND_LEVEL_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,206,35,11,12
+    CONTROL         "Report E&rrors",IDC_REPORT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,53,56,10
+    PUSHBUTTON      "&Re-initialize",IDC_REINITIALIZE,241,34,50,14
+    CONTROL         "Tree1",IDC_NET_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,75,125,125
+    LTEXT           "Scope",IDC_STATIC,139,75,21,8
+    EDITTEXT        IDC_SCOPE,188,73,110,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Type",IDC_STATIC,139,91,17,8
+    EDITTEXT        IDC_TYPE,188,89,110,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Display Type",IDC_STATIC,139,107,42,8
+    EDITTEXT        IDC_DISPLAY_TYPE,188,105,110,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Usage",IDC_STATIC,139,123,22,8
+    EDITTEXT        IDC_USAGE,188,121,110,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Local Name",IDC_STATIC,139,139,41,8
+    EDITTEXT        IDC_LOCAL_NAME,188,137,110,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Remote Name",IDC_STATIC,139,155,45,8
+    EDITTEXT        IDC_REMOTE_NAME,188,153,110,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Comment",IDC_STATIC,139,171,30,8
+    EDITTEXT        IDC_COMMENT,188,169,110,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Provider",IDC_STATIC,139,187,27,8
+    EDITTEXT        IDC_PROVIDER,188,185,110,12,ES_AUTOHSCROLL | ES_READONLY
+    DEFPUSHBUTTON   "&Close",IDOK,127,212,50,14
+    COMBOBOX        IDC_SCOPE_LIST,105,16,187,45,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_NETBROWSE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 298
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 226
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\NetBrowse.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXNetBrowseTree.rc"" // Net browse resource\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\NetBrowse.ico"
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\NetBrowse.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXNetBrowseTree.rc" // Net browse resource
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

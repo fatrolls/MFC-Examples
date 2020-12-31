@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ToolBar - Place Controls on ToolBars</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Place Controls on ToolBars</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+
+
+<p>It is very easy (once you see how it is done) to place combo-boxes, edit boxes,
+progress controls, etc. into toolbars. Below are two examples of this, in the first a
+ComboBox is placed on a toolbar, and in the second a cluster of checkboxes is added. In
+both cases the technique is the same:</p>
+
+<p align="center"><b><font size="+3"><img src="ctrls_in_tb1.gif" x-sas-useimagewidth x-sas-useimageheight align="bottom" width="365" height="24"></font></b> </p>
+
+<p align="center"><b><font size="+3"><img src="ctrls_in_tb2.gif" x-sas-useimagewidth x-sas-useimageheight align="bottom" width="410" height="24"></font></b> </p>
+
+<p><b>Step 1</b>: Place a button on the toolbar in the spot where you want the control(s)
+to eventually be. YOU MUST place a seperator on either side of the button!. Give the
+button an easily remembered resource name such as IDP_PLACEHOLDER2 in the example below.</p>
+
+<p><img src="ctrls_in_tb3.gif" x-sas-useimagewidth x-sas-useimageheight align="bottom" width="306" height="151"></p>
+
+<p><b>Step 2</b>: Derive a class from CToolBar and give it a member variable for the
+control you will be creating. For the ComboBox example that class looks like this. No
+extra methods are required, just a place for the instance of the control to live.</p>
+
+<PRE><TT><FONT COLOR="#990000">
+class CMainToolBar : public CToolBar 
+{
+public:
+&nbsp;&nbsp;&nbsp; CComboBox m_wndSnap;
+};
+</FONT></TT></PRE>
+
+
+<p><b>Step 3:</b> In your main frame's .h file replace the instance of the CToolBar with
+you new class. Be sure to add an include statement for the class definition created in
+step 1.<br>
+</p>
+
+<p><font size="2" color="#990000"><big>protected: // control bar embedded members<br>
+&nbsp;&nbsp;&nbsp; CStatusBar m_wndStatusBar;<br>
+&nbsp;&nbsp;&nbsp; CMainToolBar m_wndToolBar;<br>
+</big></font></p>
+
+<p><b>Step 4:</b> At the end of your main frame's OnCreate method you replace the
+placeholder button with your control as follows:<br>
+</p>
+
+<PRE><TT><FONT COLOR="#990000">
+int SMCMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+    /////////////////////////////////////////
+    //Body of On Create goes here
+
+    #define SNAP_WIDTH 80 //the width of the combo box
+
+    //set up the ComboBox control as a snap mode select box
+    //
+    //First get the index of the placeholder's position in the toolbar
+    index = 0;
+    while(m_wndToolBar.GetItemID(index)!=IDP_PLACEHOLDER2) index++;
+    //next convert that button to a seperator and get its position
+    m_wndToolBar.SetButtonInfo(index, IDP_PLACEHOLDER2, 
+    TBBS_SEPARATOR, SNAP_WIDTH);
+    m_wndToolBar.GetItemRect(index, &rect);
+    //expand the rectangle to allow the combo box room to drop down
+    rect.top+=2;
+    rect.bottom += 200;
+    // then .Create the combo box and show it
+    if (!m_wndToolBar.m_wndSnap.Create(
+        WS_CHILD|WS_VISIBLE | CBS_AUTOHSCROLL | 
+        CBS_DROPDOWNLIST | CBS_HASSTRINGS ,
+        rect, &m_wndToolBar, IDC_SNAP_COMBO))
+    {
+        TRACE0("Failed to create combo-box\n");
+        return FALSE;
+    }
+    m_wndToolBar.m_wndSnap.ShowWindow(SW_SHOW);
+    //fill the combo box
+    m_wndToolBar.m_wndSnap.AddString("SNAP OFF");
+    m_wndToolBar.m_wndSnap.AddString("SNAP GRID");
+    m_wndToolBar.m_wndSnap.AddString("SNAP RASTER");
+    m_wndToolBar.m_wndSnap.AddString("SNAP VERTEX");
+    m_wndToolBar.m_wndSnap.AddString("SNAP LINE");
+    m_wndToolBar.m_wndSnap.SetCurSel(0);
+}
+</FONT></TT></PRE>
+
+
+
+<p>The result looks like this:<br>
+<img src="ctrls_in_tb1.gif" x-sas-useimagewidth x-sas-useimageheight align="bottom" width="365" height="24"><br>
+<br>
+<br>
+</p>
+
+<p><b><font size="+2">Here is one that is a little trickier. </font></b></p>
+
+<p><font size="+1">Four check boxes are placed in the toolbar</font>. In addition to
+adding multiple controls in place of a single button this example shows how to change the
+font of the checkboxes.<font size="+1"><br>
+</font><br>
+<img src="ctrls_in_tb2.gif" x-sas-useimagewidth x-sas-useimageheight align="bottom" width="410" height="24"></p>
+
+<p>(1) Derive the new toolbar class and add it to the main frame. Also add a CFont called
+gSmallFont to the Main Frame.<br>
+
+
+<p><font size="3" color="#990000"><tt><tt><tt>class CCoupleToolBar : public
+CToolBar<br>
+{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp; CButton m_wndCenter;<br>
+&nbsp;&nbsp;&nbsp; CButton m_wndEdge;<br>
+&nbsp;&nbsp;&nbsp; CButton m_wndTrack;<br>
+&nbsp;&nbsp;&nbsp; CButton m_wndZoom<br>
+};<br>
+</tt></font><font size="-1" color="#990000"><br>
+</tt></tt></font></p>
+
+<p>(2) Place a placeholder button on the toolbar resource MAKING SURE to leave a space on
+either side. This is done just as in the first example.</p>
+
+<p>(3) At the end of OnCreate in the main frame, first set up the font we are going to
+use, then replace the placeholder button with the new controls.<br>
+</p>
+
+<PRE><TT><FONT COLOR="#990000">
+int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+
+    ////////////////////////////////
+    // Body of OnCreate here
+
+    //set up the small font to use for the button text
+    // remember to declare CFont gSmallFont in the .h file
+    //font for tool bar use
+    CClientDC DC(GetDesktopWindow());
+    long logical_pixels = DC.GetDeviceCaps(LOGPIXELSX);
+    if(logical_pixels < 100)
+    {
+        gSmallFont.CreatePointFont(67,"DEFAULT",NULL); 
+    }
+    else
+    {
+        gSmallFont.CreatePointFont(50,"DEFAULT",NULL); 
+    }
+    //create the four check boxes
+    #define CHECK_WIDTH 94
+    int index;
+    CRect rect;
+    CRect safe_rect;
+    index = 0;
+    while(m_wndViewBar.GetItemID(index)!=IDP_PLACHOLDER) index++;
+    // Create the "CENTER" check box
+    m_wndViewBar.SetButtonInfo(index, IDP_PLACHOLDER, TBBS_SEPARATOR, CHECK_WIDTH);
+    m_wndViewBar.GetItemRect(index, &rect);
+    safe_rect = rect;
+    rect.left += 2;
+    rect.right = rect.left + ((CHECK_WIDTH / 2)-4);
+    rect.top = 2;
+    rect.bottom = rect.top + 10;
+    if (!m_wndViewBar.m_wndCenter.Create("CNTR",BS_CHECKBOX|WS_CHILD|WS_VISIBLE,rect, &m_wndViewBar, IDM_COUPLE))
+    {
+        TRACE0("Failed to create CENTER check-box\n");
+        return FALSE;
+    }
+    m_wndViewBar.m_wndCenter.SendMessage(WM_SETFONT,(WPARAM)HFONT(gSmallFont),TRUE);
+    rect.top = rect.bottom += 2;
+    rect.bottom = rect.top + 10;
+    if (!m_wndViewBar.m_wndEdge.Create("EDGE",BS_CHECKBOX|WS_CHILD|WS_VISIBLE,rect, &m_wndViewBar, IDM_COUPLE_EDGE))
+    {
+        TRACE0("Failed to create EDGE check-box\n");
+        return FALSE;
+    }
+    m_wndViewBar.m_wndEdge.SendMessage(WM_SETFONT,(WPARAM)HFONT(gSmallFont),TRUE);
+    rect = safe_rect;
+    rect.left += ((CHECK_WIDTH / 2)+4);
+    rect.top = 2;
+    rect.bottom = rect.top + 10;
+    if (!m_wndViewBar.m_wndZoom.Create("ZOOM",BS_CHECKBOX|WS_CHILD|WS_VISIBLE,rect, &m_wndViewBar, IDM_LOCK_ZOOMS))
+    {
+        TRACE0("Failed to create ZOOM check-box\n");
+        return FALSE;
+    }
+    m_wndViewBar.m_wndZoom.SendMessage(WM_SETFONT,(WPARAM)HFONT(gSmallFont),TRUE);
+    rect.top = rect.bottom += 2;
+    rect.bottom = rect.top + 10;
+    if (!m_wndViewBar.m_wndTrack.Create("TRKR",BS_CHECKBOX|WS_CHILD|WS_VISIBLE,rect, &m_wndViewBar, IDM_SHOW_TRACKING))
+    {
+        TRACE0("Failed to create EDGE check-box\n");
+        return FALSE;
+    }
+    m_wndViewBar.m_wndTrack.SendMessage(WM_SETFONT,(WPARAM)HFONT(gSmallFont),TRUE);
+} 
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

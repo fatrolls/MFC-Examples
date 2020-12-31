@@ -1,0 +1,22 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|cstring_ext.shtml||CString Extension|
+1998/03/28|fixed_len_string.shtml||Fixed Length Strings|Poul Costinsky
+1998/03/28|reg_ex.shtml||Using Regular Expressions for Search/Replace|
+1998/03/28|std_string.shtml||CString like class using STL|Joe O'Leary
+1998/04/11|regexp.shtml||An alternative Regular Expression Class|
+1998/04/11|cstring_ext_num.shtml||CString Extension for numerical IO|Michael A. Barnhart
+1998/05/08|xstring.shtml||Extended Strings|Joachim Raidl

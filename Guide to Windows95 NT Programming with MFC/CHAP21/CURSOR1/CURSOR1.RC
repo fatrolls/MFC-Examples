@@ -1,0 +1,12 @@
+/////////////////////////////////////////////////////////////////////////////
+// CURSOR1 resource script
+
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// The four hand cursors
+
+IDR_CURSORLEFT   CURSOR   DISCARDABLE  "left.cur"
+IDR_CURSORRIGHT  CURSOR   DISCARDABLE  "right.cur"
+IDR_CURSORUP     CURSOR   DISCARDABLE  "up.cur"
+IDR_CURSORDOWN   CURSOR   DISCARDABLE  "down.cur"

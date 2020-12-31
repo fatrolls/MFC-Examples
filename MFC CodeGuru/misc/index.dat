@@ -1,0 +1,60 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|3d_text.shtml||3D Text|Roger Onslow
+1998/03/28|child_popup.shtml||Change from child window to popup window (and back)|Bing Hou
+1998/03/28|color_edit.shtml||Keyword coloring Edit control|Keith Rule
+1998/03/28|color_in_disabled_combo.shtml||Showing disabled combo text in black|Moshe Stolar
+1998/03/28|comctl32_version.shtml||Determine COMCTL32 version|Roger Onslow
+1998/03/28|compare_filename.shtml||Safe file name comparison|
+1998/03/28|console.shtml||CConsole: A wrapper for Console APIs|Girish Bharadwaj
+1998/03/28|date_time_picker.shtml||Use the Date/Time Picker common control (IE3+)|Tim Gilman
+1998/03/28|date_time_picker2.shtml||Use the Date/Time Picker common control (2)|Salvatore Mosaico
+1998/03/28|disable_alt_tab.shtml||Disable ALT-TAB etc|Kevin Bentley
+1998/03/28|flat_buttons.shtml||Flat Owner Drawn Buttons|Girish Bharadwaj
+1998/03/28|flicker_free_drawing.shtml||Flicker free drawing using memory DC|Keith Rule
+1998/03/28|flicker_free_drawing2.shtml||Flicker free drawing (2)|Andreas Leitner
+1998/03/28|font_selection_combo.shtml||Owner Drawn Font Selection ComboBox|Girish Bharadwaj
+1998/03/28|graded_caption.shtml||Gradient color caption bar|Brent Corkum
+1998/03/28|hooks.shtml||Hooks|Yun Li
+1998/03/28|intellimouse_msg.shtml||Getting messages from the IntelliMouse|Randy More
+1998/05/02|ip_addr_masked_edit.shtml||IP Address Masked Edit|Joseph A. Dziedzic
+1998/03/28|memory_api_wrappers.shtml||C++ & MFC - Memory API Wrappers|Poul Costinsky
+1998/03/28|no_window_list.shtml||Getting rid of Window List from MDI applications|Sushil Saxena
+1998/03/28|nt-service.shtml||A Class For Building An NT Service|
+1998/03/28|ping.shtml||C++ & MFC - Ping a computer using TCP stacks|Les Jordan
+1998/03/28|process.shtml||Starting, Managing and Switching Processes|
+1998/03/28|registry.shtml||A Class For Handling The Registry|Joerg Koenig
+1998/03/28|save_restore.shtml||Save and Restore|Roger Onslow
+1998/03/28|serialport.shtml||A communication class for serail port|Remon Spekreijse
+1998/03/28|undo_redo_cdocument.shtml||Add Undo - Redo support to CDocument|Keith Rule
+1998/03/28|userdef_message_map_entry.shtml||HOWTO: MFC user defined message maps|Chris Kohlhepp
+1998/03/28|version_info_from_resource.shtml||Get VersionInfo from resource file|Roberto Rocco
+1998/03/28|microsecond_delay.shtml||Microsecond delay|Hans Wedemeyer
+1998/03/28|play_wav.shtml||Play Wav resource|Anthony Petruso
+1998/03/28|error_message.shtml||Class for displaying system error messages|Gert Rijs
+1998/04/14|TrackMouseEvent.shtml||Using TrackMouseEvent to find out when the mouse leaves your window|
+1998/03/28|stringlist_to_reg.shtml||Serializing CStringList in the registry|Mario Contestabile
+1998/03/28|realtime_plot.shtml||Real-time plot|Jan Vidar Berger
+1998/03/28|excel_automation.shtml||Doing Excel Automation witch MSVC| Thomas Blenkers
+1998/04/18|thread_manager.shtml||Thread manager|Simon Coghlan
+1998/03/28|tapi_dialout.shtml||TAPI to place out-bound calls|M. Shams Mukhtar
+1998/04/13|nettools.shtml||Net Tools|Fred Forester
+1998/04/03|html_help.shtml||MFC HTML-Help classes|Andreas Dunkel
+1998/04/05|version_info_from_resource_2.shtml||Retrieving version information from module resources (2)|Manuel Laflamme 
+1998/04/18|registry_class.shtml||Registry Entry Class|Ken C. Len
+1998/04/13|winpe.shtml||Parsing the Portable Executable File Format|Fred Forester
+1998/04/18|registry_ult.shtml||Another Registry Class|Shane Martin
+1998/04/19|mow.shtml||Motif Option Widget|Suhas Kelkar

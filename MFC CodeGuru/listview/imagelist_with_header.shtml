@@ -1,0 +1,239 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Using an imagelist with the header control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using an imagelist with the header control</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+
+Although we can use a bitmap with the header control and specify a bitmap for each item in the header individually, there are two benefits of using an image list instead. The first is that the images can be drawn transparently ( and a few other effects ) and the second is that you can manage all the images in a single bitmap or you can use icons. An image in the header can be useful when there isn't enough space to display the complete column header label or even otherwise it can convey some application state.
+
+<p><img src="imagelist_with_header.gif" border="1"
+width="227" height="35"></p>
+
+<p>Since the header control does not support an image list, we have to provide the support in a CHeaderCtrl derived class. The class uses the owner draw feature of the header control to display the image in the image list.
+
+<h4>Step 1: Derive class from CHeaderCtrl</h4>
+If you don't have a class derived from CHeaderCtrl, derive one now. You can use the Class Wizard to create one for you. I used the name CMyHeaderCtrl for the derived class.
+<h4>Step 2: Add member variables</h4>
+Add member variables in CMyHeaderCtrl to hold the image list and and information about which image should be displayed with which column. These variables are declared as protected members and we will provide a function to set them. The m_mapImageIndex object will store the column number and the associated image number.
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	CImageList* m_pImageList;
+	CMap<int, int, int, int> m_mapImageIndex;
+</FONT></TT></PRE>
+
+<h4>Step 3: Initialize the variables in the constructor</h4>
+Initialize the m_pImageList variable to NULL in the constructor. This indicates that an image list has not been set.
+
+<PRE><TT><FONT COLOR="#990000">CMyHeaderCtrl:: CMyHeaderCtrl() 
+{
+	m_pImageList = NULL;
+}
+</FONT></TT></PRE>
+
+<h4>Step 4: Add acess functions in CMyHeaderCtrl</h4>
+We need to provide a function to set the image list, another to set the image item and while we are at it, lets provide another function to retrieve the item image.
+
+<p>The SetImageList() function simply updates the member variable and returns the previous image list. The GetItemImage() function returns the image associated with a particular header item. It will return -1 if the item does not have any image associated with it.
+
+<p>The SetItemImage() sets up the image mapping and changes the header item to owner drawn. This will ensure that the DrawItem() function gets called. The function then invalidates the header control so that any change is displayed.
+
+<PRE><TT><FONT COLOR="#990000">CImageList* CMyHeaderCtrl::SetImageList( CImageList* pImageList )
+{
+	CImageList *pPrevList = m_pImageList;
+	m_pImageList = pImageList;
+	return pPrevList;
+}
+
+int CMyHeaderCtrl::GetItemImage( int nItem )
+{
+	int imageIndex;
+	if( m_mapImageIndex.Lookup( nItem, imageIndex ) )
+		return imageIndex;
+	return -1;
+}
+
+void CMyHeaderCtrl::SetItemImage( int nItem, int nImage )
+{
+	// Save the image index
+	m_mapImageIndex[nItem] = nImage;
+
+	// Change the item to ownder drawn
+	HD_ITEM hditem;
+
+	hditem.mask = HDI_FORMAT;
+	GetItem( nItem, &hditem );
+	hditem.fmt |= HDF_OWNERDRAW;
+	SetItem( nItem, &hditem );
+
+	// Invalidate header control so that it gets redrawn
+	Invalidate();
+}
+</FONT></TT></PRE>
+
+<h4>Step 5: Override DrawItem()</h4>
+The DrawItem() function is called for each item in the header control that has the HDF_OWNERDRAW format. This where we add the code to display the image from the image list. If an image is drawn, the column label is moved to the right so that it does not overwrite the image.
+
+
+<p>These are the step we take in the DrawItem() function to draw the image and the column:
+<ol>
+<li>Attach the device context handle passed in through the argument to a CDC object for easier device context handling. The handle is detached from the CDC object before the function returns. If we did not detach the handle then the DC would be released when the CDC object is destroyed.</li>
+<li>We save the DC and change the clipping region so that all the updates are contrained within the header item for which the DrawItem() function is called. The device context is restored before the function returns.</li>
+<li>We compute the offset used when drawing the image and the label. The offset is used to leave a margin around the label and is equal to twice the width of a space character.</li>
+<li>We draw the image if one is specified for the header item. The CImageList::Draw() serves us well. We then adjust the rectangle for the item label so that it does not overlap the image we have just drawn.</li>
+<li>We determine the format to be used when drawing the column label. Since the column label can be aligned left, center or right, we have to choose an appropriate format for the DrawText() function. You will also notice the flag DT_END_ELLIPSIS. This tells the DrawText() function that if the text doesn't fit with the rectangle specified, then the text should be shortened and three dots appended to the text so that the result fits within the rectangle.</li>
+<li>We next adjust the rectangle within which the label will be drawn and then draw the lable using DrawText().</li>
+</ol>
+
+<PRE><TT><FONT COLOR="#990000">void CMyHeaderCtrl::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
+{
+	CDC dc;
+
+	dc.Attach( lpDrawItemStruct->hDC );
+
+	// Get the column rect
+	CRect rcLabel( lpDrawItemStruct->rcItem );
+
+	// Save DC
+	int nSavedDC = dc.SaveDC();
+
+	// Set clipping region to limit drawing within column
+	CRgn rgn;
+	rgn.CreateRectRgnIndirect( &rcLabel );
+	dc.SelectObject( &rgn );
+	rgn.DeleteObject();
+
+	// Labels are offset by a certain amount  
+	// This offset is related to the width of a space character
+	int offset = dc.GetTextExtent(_T(" "), 1 ).cx*2;
+
+
+	// Draw image from image list
+	int imageIndex;
+	if (m_pImageList && 
+		m_mapImageIndex.Lookup( lpDrawItemStruct->itemID, imageIndex ) )
+	{
+		if( imageIndex != -1 )
+		{
+			m_pImageList->Draw(&dc, imageIndex, 
+						CPoint( rcLabel.left + offset,offset/3 ),
+						ILD_TRANSPARENT );
+
+			// Now adjust the label rectangle
+			IMAGEINFO imageinfo;
+			if( m_pImageList->GetImageInfo( imageIndex, &imageinfo ) )
+			{
+				rcLabel.left += offset/2 + 
+					imageinfo.rcImage.right - imageinfo.rcImage.left;
+			}
+		}
+	}
+
+	// Get the column text and format
+	TCHAR buf[256];
+	HD_ITEM hditem;
+	
+	hditem.mask = HDI_TEXT | HDI_FORMAT;
+	hditem.pszText = buf;
+	hditem.cchTextMax = 255;
+
+	GetItem( lpDrawItemStruct->itemID, &hditem );
+
+	// Determine format for drawing column label
+	UINT uFormat = DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
+						| DT_VCENTER | DT_END_ELLIPSIS ;
+
+	if( hditem.fmt & HDF_CENTER)
+		uFormat |= DT_CENTER;
+	else if( hditem.fmt & HDF_RIGHT)
+		uFormat |= DT_RIGHT;
+	else
+		uFormat |= DT_LEFT;
+
+	// Adjust the rect if the mouse button is pressed on it
+	if( lpDrawItemStruct->itemState == ODS_SELECTED )
+	{
+		rcLabel.left++;
+		rcLabel.top += 2;
+		rcLabel.right++;
+	}
+
+	rcLabel.left += offset;
+	rcLabel.right -= offset;
+
+	// Draw column label
+	if( rcLabel.left < rcLabel.right )
+		dc.DrawText(buf,-1,rcLabel, uFormat);
+
+	// Restore dc
+	dc.RestoreDC( nSavedDC );
+
+	// Detach the dc before returning
+	dc.Detach();
+}
+</FONT></TT></PRE>
+
+<h4>Step 6: Add member variable for header control in list view class</h4>
+Now that we are done with the CMyHeaderCtrl class, we have to add a member to the CListCtrl or the CListView derived class so that we can access the extended functionality. Add a protected member.
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	CMyHeaderCtrl	m_headerctrl;
+</FONT></TT></PRE>
+
+<h4>Step 7: Subclass the header control</h4>
+We have to sub-class the header control so that the DrawItem() function in CMyHeaderCtrl can get called. If you are using a CListView derived class, you can place the sub-classing code in OnInitialUpdate(). If you are using a CListCtrl derived class, then put the code in PreSubclassWindow(). In either case, make sure you call the base class version of the function before subclassing the header control.
+If the listview control was not created in the report view mode, then you have to change the style of control before trying the subclass the control. You can use ModifyStyle() for this. The reason why we need to change the style to the report view mode is that the header control is created only when the control first taken to the report view mode.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::PreSubclassWindow() 
+{
+	CListCtrl::PreSubclassWindow();
+
+	// Add initialization code
+	m_headerctrl.SubclassWindow( ::GetDlgItem(m_hWnd,0) );
+}
+</FONT></TT></PRE>
+
+<h4>Step 8: Use SetImageList() and SetItemImage()</h4>
+Before we use SetItemImage() to choose an image for a column, we should first initialize an image list and call SetImageList() to inform the header control about which image list to use. If you want to remove all images from the header, you can call SetImageList() with a NULL argument. To remove an image from a single column, use SetItemImage() and specify -1 for the image index.
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

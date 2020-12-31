@@ -1,0 +1,314 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SHORTCUTBAR_DIALOG DIALOGEX 0, 0, 366, 281
+STYLE DS_SETFONT | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ShortcutBar"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Static",IDC_SHORTCUT_BAR,7,7,102,267
+    CTEXT           "Static",IDC_DESCRIPTION,124,15,230,26
+    CONTROL         "Disable drag item (SHBS_DISABLEDRAGITEM)",IDC_DISABLEDRAGITEM,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,56,167,10
+    CONTROL         "Disable drag'n'drop header (SHBS_DISABLEDRAGDROPHEADER)",IDC_DISABLEDDRAGDROPHEADER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,78,229,10
+    CONTROL         "Edit Items (SHBS_EDITITEMS)",IDC_EDITITEMS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,89,115,10
+    CONTROL         "Edit Headers (SHBS_EDITHEADERS)",IDC_EDITHEADERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,100,137,10
+    CONTROL         "Info tips (SHBS_INFOTIP)",IDC_INFOTIP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,111,98,10
+    CONTROL         "No scroll (SHBS_NOSCROLL)",IDC_NOSCROLL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,122,111,10
+    CONTROL         "Bold Expanded Group (SHBS_BOLDEXPANDEDGROUP)",IDC_BOLDEXPANDEDGROUP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,133,199,10
+    CONTROL         "Underline hot item (SHBS_UNDERLINEHOTITEM)",IDC_UNDERLINEHOTITEM,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,144,177,10
+    CONTROL         "Show Active Always (SHBS_SHOWACTIVEALWAYS)",IDC_SHOWACTIVEALWAYS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,155,187,10
+    CONTROL         "Draw Header Drag Image (SHBS_DRAWHEADERDRAGIMAGE)",IDC_DRAWHEADERDRAGIMAGE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,166,222,10
+    CONTROL         "Draw Item Drag Image (SHBS_DRAWITEMDRAGIMAGE)",IDC_DRAWITEMDRAGIMAGE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,177,199,10
+    CONTROL         "Auto scrolling (SHBS_AUTOSCROLL)",IDC_AUTOSCROLL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,188,135,10
+    CONTROL         "Animate group expansion (SHBS_ANIMATEEXPAND)",IDC_ANIMATEEXPAND,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,199,186,10
+    CONTROL         "Autoexpand group after delay (SHBS_AUTOEXPAND)",IDC_AUTOEXPAND,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,211,187,10
+    CONTROL         "No sorting",IDC_NO_SORT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,123,240,48,10
+    CONTROL         "Ascending",IDC_ASCENDING,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,123,251,48,10
+    CONTROL         "Descending",IDC_DESCENDING,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,123,262,54,10
+    CONTROL         "Display TRACE messages on all notifications",IDC_HANDLENOTIFICATIONS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,203,233,156,10
+    DEFPUSHBUTTON   "Close",IDOK,309,260,50,14
+    GROUPBOX        "Description",IDC_STATIC,118,7,241,38
+    GROUPBOX        "Styles",IDC_STATIC,118,47,241,178
+    GROUPBOX        "Group Sorting",IDC_STATIC,118,230,65,44
+    CONTROL         "Disable drop item (SHBS_DISABLEDROPITEM)",IDC_DISABLEDROPITEM,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,125,67,167,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "ShortcutBar MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "ShortcutBar"
+            VALUE "LegalCopyright", "Copyright (C) 1998"
+            VALUE "OriginalFilename", "ShortcutBar.EXE"
+            VALUE "ProductName", "ShortcutBar Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_SHORTCUTBAR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 359
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 274
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ShortcutBar..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "ShortcutBar"
+    ID_DESCRIPTION_FILE     "ShortcutBarInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SHBPROPERTIES_DIALOG DIALOGEX 0, 0, 280, 146
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ShortcutBar properties"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CLRBACK,"Button",BS_OWNERDRAW | WS_TABSTOP,87,16,55,14
+    CONTROL         "",IDC_HDRCLRBACK,"Button",BS_OWNERDRAW | WS_TABSTOP,87,33,55,14
+    PUSHBUTTON      "Text...",IDC_TEXTFONT,13,68,39,13
+    PUSHBUTTON      "Header...",IDC_HDRFONT,13,85,39,13
+    EDITTEXT        IDC_EDIT_HDRHEIGHT,61,108,27,12,ES_AUTOHSCROLL
+    CONTROL         "Apply to expanded group only",IDC_CHECK_APPLYTOEXPANDED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,126,109,10
+    EDITTEXT        IDC_EDIT_GRPMARGIN,242,18,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_LEFTMARGIN,183,50,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TOPMARGIN,242,50,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_RIGHTMARGIN,183,66,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_BOTTOMMARGIN,242,66,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SCROLLBTNWIDTH,183,101,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SCROLLBTNHEIGHT,242,101,26,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,154,125,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,223,125,50,14
+    GROUPBOX        "Colors",IDC_STATIC,7,7,141,44
+    LTEXT           "Background",IDC_STATIC,14,19,40,8
+    LTEXT           "Header Background",IDC_STATIC,14,36,65,8
+    GROUPBOX        "Fonts",IDC_STATIC,7,56,141,48
+    CONTROL         "Static",IDC_NAMETEXTFONT,"Static",SS_LEFTNOWORDWRAP | SS_CENTERIMAGE | SS_SUNKEN | WS_GROUP,61,68,81,12,WS_EX_STATICEDGE
+    CONTROL         "Static",IDC_NAMEHDRFONT,"Static",SS_LEFTNOWORDWRAP | SS_CENTERIMAGE | SS_SUNKEN | WS_GROUP,61,85,81,12,WS_EX_STATICEDGE
+    GROUPBOX        "Static",IDC_STATIC,154,7,119,112
+    LTEXT           "Margin between groups",IDC_STATIC,161,20,75,8
+    LTEXT           "Child Window Margins",IDC_STATIC,161,38,71,8
+    LTEXT           "Left",IDC_STATIC,161,52,13,8
+    LTEXT           "Top",IDC_STATIC,216,52,14,8
+    LTEXT           "Right",IDC_STATIC,161,68,18,8
+    LTEXT           "Bottom",IDC_STATIC,216,68,23,8
+    LTEXT           "Scroll Button Size",IDC_STATIC,160,90,56,8
+    LTEXT           "Width",IDC_STATIC,161,103,20,8
+    LTEXT           "Height",IDC_STATIC,216,103,22,8
+    LTEXT           "Header Height",IDC_STATIC,7,111,47,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_SHBPROPERTIES_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 273
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""UTSampleAbout.rc"" \r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\ShortcutBar.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXShortcutBar.rc""\r\n"
+    "#include ""OXBitmapButton.rc""\r\n"
+    "#include ""OXPopupBarCtrl.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ShortcutBar.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LARGE               BITMAP                  "res\\large.bmp"
+IDB_SMALL               BITMAP                  "res\\small.bmp"
+IDB_TREE                BITMAP                  "res\\TreeImages.bmp"
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "UTSampleAbout.rc" 
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\ShortcutBar.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXShortcutBar.rc"
+#include "OXBitmapButton.rc"
+#include "OXPopupBarCtrl.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

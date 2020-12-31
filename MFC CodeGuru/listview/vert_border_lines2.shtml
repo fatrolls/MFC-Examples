@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Shilpa Shamapant">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Fix resizing problem on vertical line for column borders</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Fix resizing problem on vertical column borders</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This code was contributed by <A HREF="mailto:Serge.Wautier@technotrade.be">Serge Wautier</A>.
+This code is based on the article "Vertical lines for Column Borders" so read that 
+article for more information.
+In the previous code everything's fine as long as the visible part of the list is full 
+the items are displayed up to the bottom of the control's window.If the list is not full,
+there is a problem when you resize a column header to make it wider. The original line is
+not erased in the empty part of the list. So we get an  unwanted bar-code like pattern.
+
+<PRE><TT><FONT COLOR="#990000">
+Override CListCtrl::OnNotify as follows :
+
+BOOL CMyListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT*pResult) 
+{
+  HD_NOTIFY *pHD = (HD_NOTIFY*)lParam;
+
+  if ((pHD->hdr.code == HDN_ITEMCHANGINGA || pHD->hdr.code == HDN_ITEMCHANGINGW) && (GetStyle() & LVS_TYPEMASK) == LVS_REPORT)
+  { // Invalidate empty bottom part of control to force erase the previous position of column
+    int nBottom,nLastItem=GetItemCount()-1;
+    if (nLastItem<0)
+      nBottom=0; // List is empty : invalidate whole client rect
+    else
+    { // Get Y position of bottom of list (last item)
+      RECT ItemRect;
+      GetItemRect(nLastItem,&ItemRect,LVIR_BOUNDS);
+      nBottom=ItemRect.bottom;
+    }
+    
+    RECT rect;
+    GetClientRect(&rect);
+    if (nBottom&lt;rect.bottom)
+    { // Set top of rect as bottom of list (last item) : rect = empty part of list
+      rect.top=nBottom;
+      InvalidateRect(&rect);
+    }
+
+    // NB: We must to on with default processing.
+  }
+
+  *pResult = 0;
+  return CListCtrl::OnNotify(wParam, lParam, pResult);
+}
+
+Simply adding a HDN_ITEMCHANGING or HDN_TRACK handler with
+ClassWizarddoesn't work. These handlers are not called. Why ???
+I noticed that class wizard places an ON_NOTIFY_REFLECT(...) entry for
+these notifications. I'd rather put an ON_NOTIFY(...) since the
+notification comes from the header control to its parent (the listctrl).
+But Spy++ shows that the CtrlID of the header is 0. repplacing the
+ON_NOTIFY_REFLECT entry by ON_NOTIFY(HDN_xxx,0,f) didn't solve the
+problem. That's why I chose to override OnNotify()
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

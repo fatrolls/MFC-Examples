@@ -1,0 +1,59 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Moving the Standard Buttons</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Moving the Standard Buttons</FONT>
+<HR></H3></CENTER>
+We've already discussed moving of the standard buttons in the topic about resizing the property sheet. The standard buttons can be treated like any other window once you gets its window handle or a CWnd object to manipulate it. The code below shows how to move the standard buttons to the right and resize the property sheet appropriately.
+<PRE><TT><FONT COLOR="#990000">
+	CRect rectWnd, rectBtn;
+	GetDlgItem(IDOK)->GetWindowRect(rectBtn);
+	GetWindowRect(rectWnd);
+	int btnwidth = rectBtn. rectBtn.Width();
+	int btnheight = rectBtn.Height();
+	int offset = rectWnd.bottom - rectBtn.bottom;
+	int btnleft = rectWnd.right-rectWnd.left;
+	rectWnd.bottom = rectBtn.top;
+	rectWnd.right += btnwidth + offset;
+	MoveWindow(rectWnd);
+	
+	int ids[] = { IDOK, IDCANCEL, ID_APPLY_NOW };
+	rectBtn.left = btnleft;
+	rectBtn.right = btnleft + btnwidth;
+	for( int i =0; i < sizeof(ids)/sizeof(ids[0]); i++)
+	{
+		rectBtn.top = offset + i * (offset+btnheight);
+		rectBtn.bottom = rectBtn.top + btnheight;
+		GetDlgItem(ids[i])->MoveWindow(rectBtn);
+	}
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

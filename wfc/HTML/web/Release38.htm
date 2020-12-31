@@ -1,0 +1,52 @@
+<HTML>
+<!-- $Revision: 2 $ -->
+<H1>Release 38</H1>
+
+<H2>Editorial</H2>
+
+This release is maintenance release. It fixes a ton of
+bugs and adds very little new capability. Most of the 
+work has been focused on the
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+classes. I've also added the ability to statically link
+with WFC.
+
+<H2>What's New</H2>
+
+<B><A HREF="CSharedMemoryObject.htm">CSharedMemoryObject</A></B> - Let's
+you create shared memory segments.
+
+<H2>Bug Fixes/Enhancements</H2>
+
+<B><A HREF="CBitArray.htm">CBitArray</A></B> -
+Got rid of floating point code. Fixed numerous nit noid bugs.
+Changed the spelling of the Complement() method.
+
+<P>
+
+<B><A HREF="CXMLD.htm">CExtensibleMarkupLanguageDocument</A></B> -
+I've added write options and parsing options. This allows you
+to customize the output as well as slop up the parser.
+
+<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> -
+Multiple bugs fixed here.
+
+<UL>
+<LI>CDATA sections not properly terminated.
+<LI>CDATA sections not properly parsing ']' characters. Found and fixed by ME!
+<LI>Attributes delimited by single quote&#39;s are properly handled
+<LI>Automatic addition of entity tags
+<LI>Missing XML declarations are now handled correctly
+</UL>
+
+<P>
+
+<HR>
+<A HREF="Release37.htm">Release 37 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS><A HREF="mailto:wfc@pobox.com">wfc@pobox.com</A></ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

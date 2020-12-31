@@ -1,0 +1,164 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Filename Class</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Filename Handling Class
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:UltraMaroon@email.msn.com"><!-- Author Name -->Rob Manderson</A>.
+
+<!-- Text / source code -->
+<p>I got tired of constantly coding something like this...
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+	char 	drive[_MAX_DRIVE],
+           	path[_MAX_PATH],
+           	fileName[_MAX_FNAME),
+           	ext[_MAX_EXT);
+	CString newPath;
+ 
+    	_splitpath(fullpathname,  drive, path, fileName, ext):
+	.
+	.
+	.
+	newPath = drive;
+	newPath += path + fileName;
+	newPath += differentExtension;
+	.
+	.
+	.
+	//	etc
+		
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+<p>I just added zip creation and self extracting exe functionality to my app and found myself coding this stuff 
+yet again and thought - there has to be a better way.  Then I remembered all the other places in my code that
+have similar lines - license checking,  history files,  and decided it's time I had a filespec class.
+ 
+<p>Herewith CFileSpec
+ 
+<p>This class can take a full or partial path name and will split it into the appropriate parts.
+You can change any part of the path and when you reference the whole object what comes back is a full filespec
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+class CFileSpec
+{
+public:
+	enum FS_BUILTINS
+	{
+		FS_EMPTY,		// Nothing
+		FS_APP,			// Full application path and name
+		FS_APPDIR,		// Application folder
+		FS_WINDIR,		// Windows folder
+		FS_SYSDIR,		// System folder
+		FS_TMPDIR,		// Temporary folder
+		FS_DESKTOP,		// Desktop folder
+		FS_FAVOURITES,		// Favourites folder
+		FS_TEMPNAME		// Create a temporary name
+	};
+
+				CFileSpec(FS_BUILTINS spec = FS_EMPTY);
+				CFileSpec(LPCTSTR spec);
+
+//	Operations
+	BOOL			Exists();
+
+//	Access functions
+	CString&		Drive()				{ return m_drive; }
+	CString&		Path()				{ return m_path; }
+	CString&		FileName()			{ return m_fileName; }
+	CString&		Extension()			{ return m_ext; }
+	CString			FullPathNoExtension();
+
+				operator LPCTSTR()		{ return GetFullSpec(); }          // as a C string
+
+	CString			GetFullSpec();
+	void			SetFullSpec(LPCTSTR spec);
+	void			SetFullSpec(FS_BUILTINS spec = FS_EMPTY);
+	
+	CString			GetFileNameEx();
+	void			SetFileNameEx(LPCTSTR spec);
+
+private:
+	void			Initialise();
+	void			Initialise(FS_BUILTINS spec);
+	void			UnLock();
+	void			GetShellFolder(LPCTSTR folder);
+
+	CString			m_drive,
+				m_path,
+				m_fileName,
+				m_ext;
+};
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+<p>Each part of a full file spec is independently accessible via reference so you can code something like
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+	CFileSpec fs(CFileSpec::FS_APP);
+	CFile	  file;
+
+	fs.Extension = ".lic";
+	file.Open(fs, CFile::modeRead | CFile::typeBinary);
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+<p>which initialises the filespec to the applications full path including drive letter and then changes the extension to
+.lic   As you can see the dot isn't implicit - you do need to supply it.
+<p>There is an operator to return a LPCTSTR so that the CFileSpec object can be used in calls just like a CString object can.
+<p>There are two constructors.  One takes an existing path name and the other takes an enumerated constant.  The constants
+allow you to easily specify certain predefined paths.  The list is documented in the class header file.
+<p>Note that you need to be careful when passing a path to the object.  If you want to assign a path such as c:\winnt\system32 
+it is necessary to append a \ otherwise the class will assume the last name in the path is actually the filename.
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="misc_filespec.zip">Download source - 2KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->09 May 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

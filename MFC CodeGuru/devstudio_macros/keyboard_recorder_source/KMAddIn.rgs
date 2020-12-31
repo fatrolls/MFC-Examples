@@ -1,0 +1,23 @@
+HKCR
+{
+	KbdMac.KMAddIn.1 = s 'KMAddIn Class'
+	{
+		CLSID = s '{CF6847F3-AE24-11D1-AE27-00A0C91BA903}'
+	}
+	KbdMac.KMAddIn = s 'KMAddIn Class'
+	{
+		CurVer = s 'KbdMac.KMAddIn.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CF6847F3-AE24-11D1-AE27-00A0C91BA903} = s 'KMAddIn Class'
+		{
+			ProgID = s 'KbdMac.KMAddIn.1'
+			VersionIndependentProgID = s 'KbdMac.KMAddIn'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s ''
+			}
+		}
+	}
+}

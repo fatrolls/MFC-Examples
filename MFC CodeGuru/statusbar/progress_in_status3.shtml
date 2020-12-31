@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>StatusBar - Showing progress bar in a status bar pane (3)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Showing progress bar in a status bar pane (3)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:FarkasL@interscope.ro">Levente Farkas</A>. 
+
+<P>Assuming that most of the time when you are about to start a long
+operation, you want to show a short text in the leftmost plain-vanilla
+text pane, and immediately next to it a progress bar, a nice solution
+would be not to disturb the content of the status bar, create a progress
+control, initialize and advance it until operation is complete, then
+return the status bar to its initial state (idle text). This way, you do
+not have to add/remove panes in the status bar neither to resize or
+otherwise alter the panes, because usually all panes on a status bar are
+grouped rightmost, and the remaining space is used for regular text
+messages.
+
+<P>This can be best achieved by deriving a class from CStatusBar and adding
+a CProgressCtrl child in it. We can then add members to the new
+CStatusBarWithProgress to hide/show and control the progress bar.
+
+<P>All these prepared, you can now open up your frame class' header, and
+simply change CStatusBar with our new CStatusBarWithProgress. That's
+all.
+
+<P><A HREF="StatusBarWithProgress.Hpp">Header file</A>
+<P><A HREF="StatusBarWithProgress.Cpp">Implementation file</A>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

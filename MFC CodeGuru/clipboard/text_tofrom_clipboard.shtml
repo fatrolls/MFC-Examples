@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Clipboard - Read/Write text on clipboard</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Read/Write text on clipboard</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+This article was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+<H4>How to place text on the clipboard</H4>
+<PRE><TT><FONT COLOR="#990000">
+	CString source; 
+	//put your text in source
+	if(OpenClipboard())
+	{
+		HGLOBAL clipbuffer;
+		char * buffer;
+		EmptyClipboard();
+		clipbuffer = GlobalAlloc(GMEM_DDESHARE, source.GetLength()+1);
+		buffer = (char*)GlobalLock(clipbuffer);
+		strcpy(buffer, LPCSTR(source));
+		GlobalUnlock(clipbuffer);
+		SetClipboardData(CF_TEXT,clipbuffer);
+		CloseClipboard();
+	}
+</FONT></TT></PRE>
+
+ 
+
+<H4>How to get text off of the clipboard</H4>
+
+This is easy really but here it is for completeness
+
+<PRE><TT><FONT COLOR="#990000">
+	char * buffer;
+	if(OpenClipboard())
+	{
+		
+		buffer = (char*)GetClipboardData(CF_TEXT);
+		//do something with buffer here 
+		//before it goes out of scope
+		
+	}
+
+	CloseClipboard(); 
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

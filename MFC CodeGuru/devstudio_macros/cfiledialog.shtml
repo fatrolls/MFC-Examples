@@ -1,0 +1,231 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Jaroslav Pisk">
+   <TITLE>DevStudio Macros - CFileDialog code generator</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">File Dialog Macro</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This macro was contributed by <A href="mailto:csa@jubii.dk">Christian Skovdal Andersen</A>
+
+<p>To often I have found my self in a situation where i needed to save or open a file through 
+the standard common dialogs. The MFC implementation of the common dialog is quite elegant, 
+but it involves alot of parameters, which are often hard to remember.</p>
+
+<p>This macro will take you through a few steps, in a wizard like mode, and create the right 
+code for you.</p>
+
+<p><font face="Arial"><strong>FileDialogHandler</strong></font></p>
+
+<PRE><TT><FONT COLOR="#990000">
+Sub FileDialogHandler()
+'DESCRIPTION: Automatically inserts the statements needed for a file-open/file-save dialog
+
+    dim strExt
+    
+    writeln &quot; {// BLOCK - inserted by CFileDialog macro&quot;
+
+    ' Ask for the type of dialog
+    dim bSaveDialog
+    bSaveDialog = 1
+    bAnswer = MsgBox(&quot;Do you want to make a save dialog (Yes) or an open dialog (No)&quot;, vbYesNo)
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = &quot; CFileDialog dlg(&quot;
+    if bAnswer = vbYes then
+    ActiveDocument.Selection = &quot;FALSE&quot;
+    else
+    ActiveDocument.Selection = &quot;TRUE&quot;
+    bSaveDialog = 0
+    end if
+
+    ' The extension of the file
+    strExt = InputBox(&quot;What is the extension of the filetype?&quot;, &quot;Extension&quot;, &quot;txt&quot;)
+    ' The name of the file
+    strName = InputBox(&quot;What is the name of the filetype?&quot;, &quot;Name&quot;, &quot;Text File&quot;)
+
+    ' Only apply a default extension if it is a save-as dialog
+    if bAnswer = vbYes then
+        ActiveDocument.Selection = &quot;,&quot;&quot;*.&quot; &amp; strExt &amp; &quot;&quot;&quot;&quot;
+    else
+        ActiveDocument.Selection = &quot;, &quot;&quot;&quot;&quot;&quot;
+    end if 
+
+    ActiveDocument.Selection = &quot;, &quot;
+
+    ' Only  if it is a save-as dialog should a default filename be provided
+    dim strDefaultName
+    if bAnswer = vbYes then
+    strDefaultName = &quot;Untitled.&quot; &amp; strExt
+        strDefName = InputBox(&quot;What is the default filename?&quot;, &quot;Default Filename&quot;, strDefaultName)
+        ActiveDocument.Selection = &quot;&quot;&quot;&quot; &amp; strDefaultName &amp; &quot;&quot;&quot;, &quot;
+    else
+        ActiveDocument.Selection = &quot;&quot;&quot;&quot;&quot;, &quot;
+    end if 
+
+    dim flags
+    dim filebuffer
+    dim bMultiSelectDlg
+    bMultiSelectDlg = 0
+    filebuffer = &quot;none&quot;
+    if bSaveDialog = 0 then
+        ' Spørg om dialog typen
+        bAnswer = MsgBox(&quot;Do you want a multiple selection dialog?&quot;, vbYesNo)
+
+        if bAnswer = vbYes then
+            bMultiSelectDlg = 1
+            flags = &quot;|OFN_ALLOWMULTISELECT&quot;
+            filebuffer = InputBox(&quot;How big should the selection buffer be?&quot;, &quot;Multiple Selection&quot;, &quot;10240&quot;)
+        else
+            flags = &quot;&quot;
+        end if
+    end if
+
+    ActiveDocument.Selection.NewLine
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = &quot; OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT&quot; &amp; flags &amp; &quot;, &quot;
+    ActiveDocument.Selection.NewLine
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = &quot; &quot;&quot;&quot; &amp; strName &amp; &quot; (*.&quot; &amp; strExt &amp; &quot;)|*.&quot; &amp; strExt &amp; &quot;|All Files (*.*)|*.*||&quot;&quot;, this);&quot;
+    ActiveDocument.Selection.NewLine
+    ActiveDocument.Selection.NewLine
+
+    if filebuffer &lt;&gt; &quot;none&quot; then
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; char cbBuffer[&quot; &amp; filebuffer &amp; &quot;];&quot;
+        ActiveDocument.Selection.NewLine
+
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; dlg.m_ofn.nMaxFile = &quot; &amp; filebuffer &amp; &quot;;&quot;
+        ActiveDocument.Selection.NewLine
+
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; dlg.m_ofn.lpstrFile = cbBuffer;&quot;
+        ActiveDocument.Selection.NewLine
+
+    end if
+
+    ' If you want to use a special caption for your dialog
+    dim caption
+    if bSaveDialog = 1 then
+        szDefCaption = &quot;Save As&quot;
+    else
+        szDefCaption = &quot;Open&quot;
+    end if
+    caption = InputBox(&quot;What should the caption of the dialog be? (cancel = default)&quot;, &quot;Dialog Caption&quot;, szDefCaption)
+    if caption &lt;&gt; &quot;&quot; then
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; dlg.m_ofn.lpstrTitle = &quot; &amp; caption &amp; &quot;;&quot;
+        ActiveDocument.Selection.NewLine        
+    end if
+
+    ' Initial directory to look in
+    if bSaveDialog = 1 then
+        szDefCaption = &quot;Save As&quot;
+    else
+        szDefCaption = &quot;Open&quot;
+    end if
+    caption = InputBox(&quot;Initial directory to search for files (cancel = default)? If you're using a string in stead of a variable put the string in quotation marks&quot;, &quot;Dialog Caption&quot;, &quot;&quot;)
+    if caption &lt;&gt; &quot;&quot; then
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; dlg.m_ofn.lpstrInitialDir = &quot; &amp; caption &amp; &quot;;&quot;
+        ActiveDocument.Selection.NewLine        
+    end if
+
+    ActiveDocument.Selection.NewLine
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = &quot; if (dlg.DoModal() == IDOK)&quot;
+    ActiveDocument.Selection.NewLine
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = &quot; {&quot;
+    ActiveDocument.Selection.NewLine
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = &quot; // Insert your code here...&quot;
+    ActiveDocument.Selection.NewLine
+
+    if bMultiSelectDlg = 1 then 
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; // Insert your code here...&quot;
+        ActiveDocument.Selection.NewLine
+
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; POSITION pos;&quot;
+        ActiveDocument.Selection.NewLine
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; for (pos = dlg.GetStartPosition() ; pos != NULL ; )&quot;
+        ActiveDocument.Selection.NewLine
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; {&quot;
+        ActiveDocument.Selection.NewLine
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; // Use dlg.GetNextPathName(pos); to extract filename (including path)&quot;
+        ActiveDocument.Selection.NewLine
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; {&quot;
+        ActiveDocument.Selection.NewLine
+    else
+        ActiveDocument.Selection.StartOfLine dsFirstText
+        ActiveDocument.Selection = &quot; // Use dlg.GetPathName() to extract filename (including path);&quot;
+        ActiveDocument.Selection.NewLine
+    end if
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = &quot; }&quot;
+    ActiveDocument.Selection.NewLine
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = &quot; } // End block&quot;
+    ActiveDocument.Selection.NewLine
+
+    ActiveDocument.Selection.StartOfLine dsFirstText
+
+'End Recording
+End Sub
+
+</FONT></TT></PRE>
+
+<p><strong><font face="Arial">A note about WriteLn</font></strong></p>
+
+<p>Because of compatibility reasons (I dont want people to have to copy one macro to use
+another), I have not used the function below to write text. However it is pretty handy,
+and will make your code look alot better. It does the same as WriteLn from pascal. <br>
+<em>This function is not meant to be called by the user, but only from other scripts.</em></p>
+
+<PRE><TT><FONT COLOR="#990000">
+sub writeln(line)
+    ActiveDocument.Selection.StartOfLine dsFirstText
+    ActiveDocument.Selection = line
+    ActiveDocument.Selection.NewLine
+end sub
+
+</FONT></TT></PRE>
+
+<P>Posted on: May 13, 1998.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

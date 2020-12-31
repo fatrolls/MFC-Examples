@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Samples - Win32 hooks with MFC</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Win32 hooks with MFC</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This sample was contributed by <A HREF="mailto:dkremer@netvision.net.il">Dror Kremer</A>.
+
+
+<P>I've recently needed to use Win32 Hooks and it took me a couple of days
+until I got everything right. I've searched the net for a complete working
+sample of how to use it and couldn't find any sample (even in C, let alone
+MFC), so I dug out a sample from VC 2 that used hooks, and borrowed pieces
+of code from it. 
+
+<P>Anyway, I'm sending the code over, if you like it, post it.
+There are a few limitations to the code - but it meets my needs, I can
+customize it if the need arises :)
+The code includes the hooks server - a small dll that windows will inject
+into every monitored process address space, and will send messages to the
+client.
+
+<P>To use the server simply do the following :
+<ol>
+<li>Include HooksClient.h and .cpp in the project.
+<li>Add CHooksClient to the list of classes your class (the one you want to
+process hook messages) derives from. (i.e. class CMySpyWnd : public CWnd,
+public CHooksClient   or class CMySpyApp : public CWinApp, public
+CHooksClient).
+<li>Derive the constructor of CHooksClient in the constructor(s) of the class.
+<li>Add a function to the class : void ProcessHookMessage(HWND hwnd, UINT
+nMessage, WPARAM wParam, LPARAM lParam); 
+This function will be called for each message sent or posted to the window.
+This function is declared as pure virtual in CHooksClient so you _must_
+implement it.
+</ol>
+
+<P>To start spying on a window call InstallWindowHook(HWND hwnd) and pass the
+handle of the window you want to spy on, or call InstallSystemHook() to spy
+on all windows. When you call InstallWindowHook to spy on a window, you
+will actually get messages back on all windows in that thread, that's
+beacause windows can install a hook for a thread not a window.
+
+<P>NOTICE: When you call InstallSystemHook() and run the program in the
+debugger, it may cause MSDEV to crash (or even the whole system) the reason
+for this is that when you install a system-wide hook, you monitor MSDEV as
+well, and when it tries to break, and "suspend" your program's execution it
+can't because the hooks server continues to send messages about stuff
+that's happening in MSDEV - that's my guess anyway, because I have no way
+of debugging this besides installing a debugging hook and I don't wanna :)
+
+
+<P>BTW: Copy the hooks dll to the debug or release directory of the test
+program (or anywhere in the path) otherwise it won't work.
+
+<p><a href="../cgi/redirect.cgi?url=http://www.codeguru.com/samples/MFC_Hooks_Sample.zip">Download Files</a> The zip file is 37K.
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

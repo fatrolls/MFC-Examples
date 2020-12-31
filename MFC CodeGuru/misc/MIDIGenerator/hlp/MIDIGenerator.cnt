@@ -1,0 +1,9 @@
+:Base MIDIGenerator.hlp
+1 Menüs
+2 Menü Datei=menu_file
+2 Menü Bearbeiten=menu_edit
+2 Menü Ansicht=menu_view
+2 Menü Fenster=menu_window
+2 Menü Hilfe=menu_help
+1 <<add your application-specific topics here>>
+2 <<add your topic jumps here>>=main_index

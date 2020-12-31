@@ -1,0 +1,101 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Creating MIDI Files</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Creating MIDI Files - Demonstration of polymorphy and inheritance 
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <a href="mailto:Jaeger-Geitersdorf@t-online.de">Andreas
+Jäger</a>.
+
+<p><br>
+The class library I wrote illustrates the structure of MIDI-Files.<br>
+There is a class CMidiFile, which consists of some header information<br>
+and a collection of Tracks, objects of class CMidiTrack. Each track itself <br>
+is a collection of Events, with some header information, too. Events are<br>
+such as NoteOn, NoteOff or Meta-Events like SetTempo, TrackName or Copyright.<br>
+A collection is polymorph, i.e. I can declare CMidiTrack as a collection<br>
+of CMidiEventCommand's. CMidiEvent is a base class, and for each type of <br>
+Event there is a special class. The overridden methods are the constructor, <br>
+the GetLength()-method and the WriteToFile(ostream&amp; )-method, more is not <br>
+neccasary.<br>
+CMidiTrack has some methods to simplify some operations. The most impor-<br>
+tant member-function is the PlayString function, which takes a string you<br>
+know from the BASIC-PLAY-function. Then these few lines are enough to<br>
+create your own MIDI-file:<br>
+<font color="#990000"><tt><br>
+CMidiFile midifile(96);<br>
+CMidiTrack* miditrack = new CMidiTrack;<br>
+miditrack-&gt;Copyright(_T(&quot;Copyright (C) 1997 Andreas&nbsp; Jaeger&quot;));<br>
+miditrack-&gt;TimeSignature(0x04, 0x02, 0x18, 0x08);<br>
+miditrack-&gt;Tempo(120);<br>
+miditrack-&gt;Insert<br>
+<font color="#990000">&nbsp;&nbsp; (new CMidiEventCommandProgramChange (MIDI_CHANNEL_2, 0,
+70));<br>
+miditrack-&gt;PlayString(MIDI_CHANNEL_2, &quot;MBT120O3T120l8dl4gl8bd&quot;<br>
+&quot;l4gl8bgl4al8a.l16al4aP8l8bO4l4cl8ccdcO3bal4bl8g.l16gl4gP8l8g&quot;<br>
+&quot;O4c.l16cl8ccl4ecO3l8bbgbO4l4dO3l8bgl4dl8f#aO4l4cO3l8af#l4ggg&quot;<br>
+&quot;P8l8gO4c.l16cl8ccl4ecO3l8bbgbO4l4dO3l8bgl4dl8f#aO4l4cO3l8af#l4gggP8&quot;);<br>
+miditrack-&gt;EndOfTrack();<br>
+midifile.Insert(miditrack);<br>
+midifile.WriteToFile(_T(&quot;Frühtau.mid&quot;));<br>
+</tt></font></font></p>
+<!-- Remember to update this -->
+
+<p>You see you do not have to deal with Events, only with tracks.<br>
+</p>
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="MIDIGenerator.zip">Download demo project - 606KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 09 June 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

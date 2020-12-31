@@ -1,0 +1,8 @@
+LIBRARY         Cmpnt2.dll
+DESCRIPTION     'Chapter 8, Example 2 COM Component (c)1996-1997 Dale Rogerson'
+
+EXPORTS
+                DllGetClassObject   @2	PRIVATE
+                DllCanUnloadNow     @3	PRIVATE
+                DllRegisterServer   @4	PRIVATE
+                DllUnregisterServer @5	PRIVATE

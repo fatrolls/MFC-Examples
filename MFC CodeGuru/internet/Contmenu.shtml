@@ -1,0 +1,132 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Rob Manderson">
+   <TITLE>Extending the IE Context
+Menu in your App using the Registry </TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Extending the IE Context
+Menu in your App using the Registry </FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:ssram@rocketmail.com">sriram</A>.
+
+<P>The sample code given is compiled using Visual c++ 5.0, Windows 95
+
+<p>Internet Explorer 4.0 uses OLE Activex control and Active
+Document interfaces to connect components.I will just briefly
+talk about the Internet Explorer's architecture. Mainly Internet
+Explorer is just a small application which uses the internet
+explorer 4.0 components for favourites maintenance,history
+maintaenance and so on.  This executable directly hosts the
+SHDOCVW.DLL which is nothing but the web browser control.
+SHDOCVW.DLL in turn hosts the MSHTML.DLL. Implementing the
+webbrowser control is little bit difficult than implementing the
+MSHTML.DLL.</p>
+
+<p>MSHTML.DLL performs the HTML parsing and rendering in Internet
+Explorer 4.0 and also exposes the HTML document through the
+Dynamic HTML Object Model. This DLL hosts the scripting engines,
+Java VM, ActiveX Controls, Plug_Ins, and the other components
+that may be referenced in the HTML Document that is loaded. This
+DLL implements the Active Document Server interfaces which allows
+users to host this DLL using standard COM interfaces.</p>
+
+<p>But if we host MSHTML.DLL then we should implement some of the
+features which are already in the webbrowser control.  I stop with
+this and go on to explain our topic of this article.  If any body
+wants to study more about the internet explorer 4.0 architecture
+and how to explore it then install INETSDK which is available for
+download in the <a href="http://www.microsoft.com">http://www.microsoft.com</a>
+or install it from the MSDN CD Pack.</p>
+
+<p>If we write an application using WebBrowser Control. To learn
+how to use WebBrowser Control refer to the article by Daniel
+Harth <a
+href="http://www.codeguru.com/internet/webbrowser_control.shtml">http://www.codeguru.com/internet/webbrowser_control.shtml</a>
+Then if we right click on the window the webbrowser control will
+display the default internet explorer's context menu. But if we
+want to modify it then what should we do? The answer is simple
+just go to the windows registry and add a new menu item. Going
+Crazy!! Just wait a moment I will explain.  We can also control
+the context menu programmaticallly which at present I am
+exploring. I will update that later.</p>
+
+<p>Menu Items can be added to the existing context menus of the
+WebBrowser by placing entries in the registry and linking these
+to URLs that execute what you want. To add additional items to
+the standard WebBrowser context menus, open the following key.
+Dont panic if you don't have one just create it right there.</p>
+
+<pre><font color="#990000"><tt>
+</tt></font><font size="2" face="Courier"> HKEY_CURRENT_USER
+    Software
+        Microsoft
+            Internet Explorer
+                MenuExt</font></pre>
+
+<p>&nbsp;</p>
+
+<P>Under this key create another key which contains the text to be displayed in the menu.
+
+<P>The default value of this key will contain the URL which will be executed when the user selects this menu item.
+
+<p>The key name can include the '&amp;' character, which will
+cause the character immediately following the '&amp;' to be
+underlined. The URL will be loaded inside of a hidden HTML dialog
+box, all of the script will be executed, and the dialog will be
+closed. The hidden HTML dialog's <font size="4"><strong>external.menuArguments</strong></font>
+property contains the <font size="4"><strong>window</strong></font>
+object of the window on which the context menu item was executed.
+</p>
+
+<p>The following registry entry will add an item with the title
+&quot;Home&quot; to the WebBrowser context menu and will execute
+the URL <strong>&quot;http://www.microsoft.com&quot;</strong></p>
+
+<pre><font size="2" face="Courier">HKEY_CURRENT_USER
+    Software
+        Microsoft
+            Internet Explorer
+                MenuExt
+                    Home = </font><a
+href="http://www.microsoft.com"><font size="2" face="Courier">&quot;http://www.microsoft.com&quot;</font></a></pre>
+
+<p>&nbsp;</p>
+
+The sample application hosts the WebBrowser control. Just add these entries in your windows registry and then run the sample application.In the application window right click and see the context menu &quot;home&quot; menu will be displayed.
+
+<p>If you find any bugs in this article or any comments feel free to mail me.
+
+<P><A href="browser.zip">Download Sample</a> (27 kb)</p>
+
+<p>Article added on June 21 1998
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

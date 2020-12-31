@@ -1,0 +1,83 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/11|add_checkbox.shtml||Add checkboxes|Eran Yariv
+1998/03/28|add_column.shtml||Adding a column|
+1998/03/28|allow_edits.shtml||Allowing items to be edited|
+1998/03/28|auto_resort.shtml||Automatically resorting after an edit|
+1998/03/28|autosize_col.shtml||Autosize a column to fit its content|Roger Onslow
+1998/03/28|background_image.shtml||Use a bitmap as a background image|
+1998/03/28|cell_focus.shtml||Set focus on a cell|Shilpa Shamapant
+1998/03/28|cell_tooltip.shtml||Tooltip for individual cells|
+1998/03/28|change_row_height.shtml||Changing row height in owner drawn control|
+1998/03/28|clistctrlex_ie4.shtml||Class for using new features in listview control|Rui Santos
+1998/03/28|col_color.shtml||Change the background color of individual columns|
+1998/03/28|col_index.shtml||Detecting column index of the item clicked|
+1998/03/28|ctrl_color.shtml||Change background color|
+1998/05/02|ctrl_vs_view.shtml||How do I use a derived CListCtrl with a CListView?|
+1998/03/28|ctrl_vs_view_undoc.shtml||Using derived CListCtrl in CListView - Undocumented|
+1998/03/28|drag_col.shtml||Dragging columns to rearrange column sequence|
+1998/03/28|drag_rows.shtml||Dragging Items to Rearrange Rows|
+1998/03/28|drop_down_list.shtml||Using a drop down list to change a subitem|
+1998/03/28|edit_programmatically.shtml||Editing item programmatically|
+1998/03/28|edit_subitems.shtml||Editable subitems|
+1998/03/28|fullrow_and_titletips.shtml||Full row selection and title tips|
+1998/03/28|get_selected.shtml||Retrieving selected items|
+1998/03/28|grid_lines.shtml||Drawing horizontal and vertical gridlines|
+1998/03/28|grid_list_control.shtml||Grid List Control|Rex Myer
+1998/03/28|header_col_tooltip.shtml||Tooltip for individual column header|
+1998/03/28|header_ctrl.shtml||The Header Control|
+1998/03/28|header_right_click.shtml||Determining right click on the header control|
+1998/03/28|header_tooltip.shtml||Tooltip for the header|
+1998/03/28|image_in_header.shtml||Displaying an image in the header|
+1998/03/28|imagelist_with_header.shtml||Using an imagelist with the header control|
+1998/03/28|indicating_sort_order.shtml||Indicating sort order in header control|
+1998/03/28|init_image_list.shtml||Initializing the image list|
+1998/03/28|late_binding_of_image.shtml||Late binding of image - I_IMAGECALLBACK|
+1998/03/28|listclass1.shtml||Class with full row highlighting, dragable headers, sorting|
+1998/03/28|min_col_width.shtml||How to force a minimum column width|
+1998/03/28|multiline_edit_subitems.shtml||Multiline Editable Subitems|Rex Myer
+1998/03/28|no_col_resize.shtml||Prevent CListCtrl column resizing|
+1998/03/28|no_col_resize2.shtml||Prevent CListCtrl column resizing (2)|
+1998/03/28|no_flicker.shtml||Stopping flicker during updates|Roger Onslow
+1998/03/28|non_report_subitem.shtml||Using sub-stings in non report view|Carsten Witte
+1998/03/28|num_cols.shtml||Getting the number of columns in report view|
+1998/03/28|owner_drawn_ctrl.shtml||Owner drawn control|
+1998/03/28|print.shtml||Print the contents of the list control|Ravi Reddy
+1998/03/28|print_ctrl.shtml||Printing the control|Philippe Carret
+1998/03/28|row_color.shtml||Change background color of individual rows|
+1998/03/28|sel_item_click_not_col1.shtml||Select an item even if click is not on left most column|
+1998/03/28|sel_item_range.shtml||Selecting and deselecting a range of rows|
+1998/03/28|sel_row.shtml||Selection Highlighting of Entire Row|
+1998/03/28|select_item.shtml||Select item programmatically|
+1998/03/28|set_item_image.shtml||Setting or removing an image for an item|
+1998/03/28|set_non_standard_image.shtml||Setting a non-standard size image|
+1998/03/28|sort_generic_callback.shtml||Sort list (numeric/text) using callback|Iuri Apollonio
+1998/03/28|sort_on_col.shtml||Sorting the list based on text in any column|
+1998/03/28|sort_on_col_click.shtml||Sorting the list when user clicks on column header|
+1998/03/28|sort_on_col_generic.shtml||Sort list based on text/numeric/date-time in any column|Tal J. Rosen
+1998/03/28|sort_on_col_image.shtml||Sort columns by the image index of the column|
+1998/05/01|sort_on_numeric_col.shtml||Sorting list on Numeric Column|Todd D. Degani
+1998/03/28|stationary_col.shtml||Stationary Columns|Laura Michaels
+1998/03/28|switch_views.shtml||Switching Views|
+1998/03/28|text_callback.shtml||Using text callbacks|Chris Maunder
+1998/03/28|titletip.shtml||Titletip for individual cells|
+1998/03/28|vert_border_lines.shtml||Vertical lines for column borders|
+1998/03/28|sort_generic_callback1.shtml||Sort list (numeric/text/float/date) using callback|Max Poliashenko
+1998/04/14|col_noclick.shtml||Disable clicking on selected report view columns|Petr Novotny
+1998/04/30|ListView_sorting.shtml||<!-- Section Title -->ListView Sorting - <!-- Article Title -->ListView Sorting|<!-- Author Name -->Eric Vella
+1998/04/30|listview_sorting.shtml||<!-- Section Title -->ListView Sorting - <!-- Article Title -->ListView Sorting|<!-- Author Name -->Eric Vella
+1998/05/01|simple_sort_on_integer_col.shtml||Simple list Sorting on Integer Column|Eric Vella
+1998/05/01|attach_system_image_list.shtml||Attacing System ImageList to ListControl|Matt Esterly

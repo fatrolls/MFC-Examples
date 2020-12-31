@@ -1,0 +1,51 @@
+Public Class Members for Transparent CSlider Class.
+By Nic Wilson (C) 2002  nicw@bigpond.net.au
+
+/*-------------------------------------------------------------------------------------------------------------
+CMySliderControl::SetThumbColors
+This function is optional.  If not supplied the colours of the thumbs will be windows standard colour defined
+as COLOR_3DFACE when not selected and COLOR_3DHIGHLIGHT when selected.
+
+void SetThumbColors(
+COLORREF face, 
+COLORREF highlight)
+
+PARAMETERS
+
+face  
+A COLORREF variable that supplies the colour of the thumb when not selected.  The RGB macro can be used to 
+supply this parameter.  For example for medium red,  RGB(196, 0, 0);
+
+highlight
+A COLORREF variable that supplies the colour of the thumb when selected. The RGB macro can be used to 
+supply this parameter.  For example for bright red,  RGB(255, 0, 0);
+
+
+RETURN VALUE
+
+none
+
+SEE ALSO
+--------------------------------------------------------------------------------------------------------------*/
+
+/*-------------------------------------------------------------------------------------------------------------
+CMySliderControl::DrawTransparent
+This function is optional.  It is used to redraw the slider when the background has changed, so that the new
+background is added to the rect area of the slider.
+
+void DrawTransparent(
+BOOL bRepaint)
+
+PARAMETERS
+
+bRepaint
+
+A boolean variable.  If TRUE the slider is redrawn immediately, if false it is not.
+
+RETURN VALUE
+
+none
+
+SEE ALSO
+--------------------------------------------------------------------------------------------------------------*/
+

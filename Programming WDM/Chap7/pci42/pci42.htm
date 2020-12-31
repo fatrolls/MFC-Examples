@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The PCI42 Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The PCI42 Sample</H2>
+<P>The PCI42 Sample accompanies Chapter 7 and illustrates how to write a driver for a programmed I/O (PIO) PCI device.</P>
+<P>The sample includes four components:</P>
+
+<UL>
+<LI>PCI42.SYS (SYS subdirectory) is a WDM driver for a simulated device based on the AMCC S5933 chip. </LI>
+<LI>S5933DK1.SYS (S5933DK1 subdirectory) is a WDM driver for the ISA card that comes with the development kit for the AMCC S5933 chip. </LI>
+<LI>ADDONSIM.EXE (ADDONSIM subdirectory) is a Win32 console program that interacts with the S5933DK1 ISA card as part of the test procedure. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console program that interacts with the PCI42 device to perform a test.</LI></UL>
+
+<H3>Building PCI42</H3>
+<P>To build PCI42.SYS or S5933DK1.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project files are named PCI42.DSP in the SYS subdirectory and S5933DK1.DSP in the S5933DK1 subdirectory, respectively.</P>
+<P>To build ADDONSIM.EXE or TEST.EXE, follow <A HREF="../../wdmbook.htm#usermodebuild">the general instructions for building user-mode programs</A>. The Microsoft Visual C++ project files are named ADDONSIM.DSP in the ADDONSIM subdirectory and TEST.DSP in the TEST subdirectory, respectively.</P>
+<H3><A NAME="pci42test"></A>Testing PCI42</H3>
+<P>To test this sample, you’ll need the S5933DK1 development kit from <A HREF="http://www.amcc.com/">Applied Micro Circuits Corporation</A> (AMCC). The kit includes a PCI card and an ISA card that connects to the PCI card via a ribbon cable. You’ll obviously need a computer with a free PCI slot and a free ISA slot to install both these components.</P>
+<P>First install the S5933DK1 driver (only). Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named DEVICE.INF and is in the S5933DK1 subdirectory. The ISA card requires I/O port addresses 300-33F and 718-71F. If you have other hardware at these addresses, you’ll need to disable or remove that hardware.</P>
+<P>After installing the ISA card driver, you’ll need to restart the computer. Take the opportunity to power down so you can install both cards. <B><FONT COLOR="#ff0000">Remove J4 from the PCI card to force the card to identify itself using default values (Vendor 10E8, Device 4750).</B></FONT> During restart, the PnP Manager will detect the PCI card and prompt you for a driver. You want to direct the installer to the SYS subdirectory for this sample, where DEVICE.INF provides instructions for installing the PCI42 driver.</P>
+<I><P>If you want to test PCI42 after running some other driver on the development board, use the Device Manager to update the driver and point it specifically to the PCI42\SYS subdirectory.</P>
+</I><P>Open two command prompts and execute the TEST.EXE and ADDONSIM.EXE programs from the TEST\DEBUG and ADDONSIM\DEBUG subdirectories simultaneously. It doesn’t matter which one you start first. ADDONSIM will write some data to the ISA card, and TEST will read the same data from the PCI card.</P>
+<I><P>Testing Note for Windows 98:I found that Windows 98, Second Edition, keeps removing the ISA card from the configuration when I restart. This behavior is wrong, of course, and seems to occur because of a conflict between the I/O addresses needed by the ISA card and a sound card on the computer. To test in this environment, I therefore found it necessary to use the Add New Hardware wizard to reinstall the S5933DK1 driver in each new session <B>and to ignore the direction to reboot the computer</B> at the end of the reinstallation process.</P></I></BODY>
+</HTML>

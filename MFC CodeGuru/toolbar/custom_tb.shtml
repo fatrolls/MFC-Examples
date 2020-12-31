@@ -1,0 +1,99 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>ToolBar - Customizable Toolbar (2)</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Customizable Toolbar (2)
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:stas@iet.co.il">Stas Levin</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<center>
+<IMG SRC="custom_tb.jpg" ALT="Toolbar customisation" BORDER=0 ALIGN=BOTTOM></center>
+Download the <A HREF="custom_tb_source.zip">source</A>.
+
+<!-- The article... -->
+
+<p>
+The next version (number 10000 :-)!) of the flat toolbar. However, my toolbar is fully customisable! The source code is based on the MFC sample "OLDBARS" (VC 1.x control bars). The main idea of the customisation is the sharing of two image lists (standard - read only and user - editable) between ALL application toolbars, so, in the run-time user may copy or move buttons everywhere (like in MS Office or Visual Studio).
+
+<p>
+To use the customisable toolbar you should make the following changes in your source code:
+
+<ul>
+  <li>Add BCGControlBar project into your workspace and add BCGControlBar directory to INCLUDE path 
+  <li>Make sure, that you call AfxOleInit in your application InitInstance() 
+  <li>Add #include "bcgtoolbar.h" and #include "BCGToolBarImages.h" to the Mainframe.h
+  <li>Change CToolbar to CBCGToolBar 
+  <li>Add two embedded CBCGToolBarImages objects to the CMainFrame
+class: standard and user-defined images (user-defined images object is
+not required if you don't wish to add user-defined commands).
+  <li>In the CMainFrame::OnCreate() method add the toolbar images
+initialisation before toolbar initialisation. If you use the standard
+LoadToolbar method, be sure that you use the same resource image ID as
+in the "standard" image.
+</ul>
+
+The BCGControlBar class list:
+<ul>
+  <li>CBCGToolBar alternative, user-customisable, flat toolbar
+  <li>CBCGToolbarButton standard (image + text label) toolbar
+button. Base class for the following additional buttons:
+  <li>CBCGToolbarComboBoxButton combobox control
+  <li>CBCGToolbarMenuButton menu button
+  <li>CBCGToolbarCustomize toolbar customisation dialog. Usually
+called from the "View | Customize" command handler.
+</ul>
+
+CBCGToolBar toolbar sends the following notifications to your CMainFrame window:
+<ul>
+  <li>BCGM_CUSTOMIZETOOLBAR start/finish toolbar customisation mode. 
+  <li>BCGM_TOOLBARMENU toolbar requires context popup menu
+
+</ul>
+To learn more about my toolbar control, please see the example code.
+ 
+
+<!-- Remember to update this -->
+<p>Last updated: 18 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+</BODY>
+</HTML>

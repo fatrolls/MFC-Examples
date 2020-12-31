@@ -1,0 +1,99 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - Winsock API Wrapper Classes</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Winsock API Wrapper Classes</FONT></H3></CENTER>
+<HR>
+
+
+<p>This sample was contributed by <a href="mailto:poul@wizsoft.com">Poul A Costinski</a></p>
+
+<P>Creating multithreaded TCP/IP server - one like WWW server -:)
+for NT becomes frequent task novadays. MFC supplies several socket
+classes, but, from my experience, they are just unusable for this purpose.
+They fail all the time, and several 1000s (!) times slower than raw Winsock
+interface.
+
+<P>Facing the challenge, I wrote my own thin wrapper classes around socket API,
+together with template for server, and it was surprisingly simple.
+
+<P>The complete example project is in file RawSocketServerExample.ZIP.
+
+<P>Several notes for class usage:
+
+<P>Server's thread dispatcher for client-server environment.
+
+<H4>Class CWizThreadDispatcher.</H4>
+
+Uses pure virtual helper class CWizMultiThreadedWorker.
+Serves regular situation when requests come from many clients to the
+server.
+<P>Dispatcher starts to serve the client in the separate thread and continues to
+wait for requests. The number of parallel threads is limited for
+effectiveness. The actual work (whatever it is)  made in the class derived
+from CWizMultiThreadedWorker.
+<P>Files ThreadDispatcher.CPP and ThreadDispatcher.H .
+
+<H4>Class CWizSyncSocket.</H4>
+It's simple and somewhere limited encapsulation of
+the SOCKET handle for WinSock. It works in synchronous mode (which is
+suitable for multithreading program), but it can be made alertable (see
+CWizRawSocketListener).
+<P>Derived class CWizReadWriteSocket implements read/write via socket.
+<P>Functions ReadString and WriteString implement character string I/O and
+translate UNICODE to ANSI if needed.
+<P>Files RawSocket.CPP and RawSocket.H .
+
+
+<H4>Class CWizRawSocketListener</H4>
+derived from CWizMultiThreadedWorker to
+work with CWizThreadDispatcher and it uses CWizSyncSocket.
+For real application you should derive your class from it and
+implement method
+
+<P>BOOL ReadWrite (CWizReadWriteSocket& socket).
+
+<P>Files RawSocketServerWorker.CPP and RawSocketServerWorker.H .
+
+<P>Example of the server and the client are at RawSocketServerExample.ZIP.
+
+<P>Note: the class was made alertable by installing hook function via
+WSASetBlockingHook() - see file RawSocketServerWorker.CPP. The same
+solution can be recommended for any use of CWizSyncSocket.
+
+
+
+<p><a href="../cgi/redirect.cgi?url=http://www.codeguru.com/internet/RawSocketServerExample.ZIP">Download
+Files</a> 
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

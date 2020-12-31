@@ -1,0 +1,382 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""UTSampleAbout.rc"" \r\n"
+    "#include ""OXNetBrowseTree.rc"" // Net browse resource\r\n"
+    "#include ""OXBitmapButton.rc""\r\n"
+    "#include ""OXCalendarPopup.rc""\r\n"
+    "#include ""OXShortcutBar.rc""\r\n"
+    "#include ""OXSysinfo.rc""\r\n"
+    "#include ""OXProcess.rc""\r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\SystemStateInfo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\SystemStateInfo.ico"
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "SystemStateInfo MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "SystemStateInfo\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998\0"
+            VALUE "OriginalFilename", "SystemStateInfo.EXE\0"
+            VALUE "ProductName", "SystemStateInfo Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_TRAYICON_POPUPMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "&Restore",                    IDM_RESTORE
+        MENUITEM "&Exit",                       IDM_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "&About ...",                  IDM_ABOUTBOX
+    END
+END
+
+IDR_APPLICATION_POPUPMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "Switch to...",                IDM_APP_SWITCHTO
+        MENUITEM "Bring to front",              IDM_APP_BRINGTOFRONT
+        MENUITEM SEPARATOR
+        MENUITEM "Minimize",                    IDM_APP_MINIMIZE
+        MENUITEM "Restore",                     IDM_APP_RESTORE
+        MENUITEM "Maximize",                    IDM_APP_MAXIMIZE
+        MENUITEM SEPARATOR
+        MENUITEM "Close",                       IDM_APP_CLOSE
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SSI_DIALOG DIALOGEX 0, 0, 410, 230
+STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CLIPCHILDREN | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "System State Info (Dundas Software)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Static",IDC_TOPIC,97,7,286,13,SS_NOTIFY | SS_SUNKEN,
+                    WS_EX_TRANSPARENT
+    LTEXT           "",IDC_BOTTOMSEPARATOR,96,218,307,8,SS_NOTIFY | 
+                    SS_SUNKEN,WS_EX_TRANSPARENT
+    LTEXT           "",IDC_SHB_TOPICS,7,7,84,216,WS_BORDER
+    CONTROL         "\nRefresh",IDC_BUTTON_REFRESH,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,388,6,15,14
+END
+
+IDD_SYSINFO_DIALOG DIALOGEX 0, 0, 231, 215
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_TREE_ITEMS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_OWNERDRAWFIXED | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,0,0,231,197,WS_EX_CLIENTEDGE
+    CONTROL         "Expand &Level",IDC_RADIO_EXPANDLEVEL,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,1,203,59,10
+    CONTROL         "Expand &All",IDC_RADIO_EXPANDALL,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,107,203,49,10
+    EDITTEXT        IDC_EDIT_EXPANDLEVEL,61,202,26,12,ES_RIGHT | 
+                    ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RTLREADING
+    CONTROL         "Spin1",IDC_SPIN_EXPANDLEVEL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,87,201,11,12
+    CONTROL         "&Show printers",IDC_SHOWPRINTERS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,171,203,59,10
+END
+
+IDD_NETWORKRESOURCES_DIALOG DIALOGEX 0, 0, 256, 221
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Tree1",IDC_RESOURCES_TREE,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_SHOWSELALWAYS | WS_TABSTOP,0,0,255,107,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "List1",IDC_LIST_DETAILS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_EDITLABELS | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,0,113,138,107
+    COMBOBOX        IDC_COMBO_SCOPE,144,113,111,68,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Show &comment names",IDC_CHECK_COMMENTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,144,135,87,10
+    CONTROL         "Show &disks",IDC_CHECK_DISKS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,144,147,52,10
+    CONTROL         "Show &printers",IDC_CHECK_PRINTERS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,144,159,59,10
+    CONTROL         "Report &errors",IDC_CHECK_REPORT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,144,171,59,10
+    EDITTEXT        IDC_EDIT_INITIALLEVEL,216,191,29,12
+    CONTROL         "Spin1",IDC_SPIN_INITIALLEVEL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,245,191,11,13
+    EDITTEXT        IDC_EDIT_MAXLEVEL,216,208,29,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_MAXLEVEL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,245,208,11,13
+    LTEXT           "",IDC_SEPARATOR1,144,127,111,8,SS_SUNKEN
+    LTEXT           "&Initial expland level",IDC_STATIC_INITIALLEVEL,144,193,
+                    60,8
+    LTEXT           "",IDC_SEPARATOR2,144,182,111,8,SS_SUNKEN
+    LTEXT           "&Max number of levels",IDC_STATIC_MAXLEVEL,144,209,68,8
+END
+
+IDD_SERVICES_DIALOG DIALOGEX 0, 0, 231, 214
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_TREE_SERVICES,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | 
+                    WS_TABSTOP,0,0,231,197,WS_EX_CLIENTEDGE
+    CONTROL         "Expand &Level",IDC_RADIO_EXPANDLEVEL,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,1,203,59,10
+    CONTROL         "Expand &All",IDC_RADIO_EXPANDALL,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,107,203,49,10
+    EDITTEXT        IDC_EDIT_EXPANDLEVEL,61,202,26,12,ES_RIGHT | 
+                    ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RTLREADING
+    CONTROL         "Spin1",IDC_SPIN_EXPANDLEVEL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,87,201,11,12
+END
+
+IDD_APPLICATIONS_DIALOG DIALOGEX 0, 0, 231, 214
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_TREE_APPLICATIONS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | 
+                    WS_TABSTOP,0,0,231,197,WS_EX_CLIENTEDGE
+    CONTROL         "Expand &Level",IDC_RADIO_EXPANDLEVEL,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,1,203,59,10
+    CONTROL         "Expand &All",IDC_RADIO_EXPANDALL,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,107,203,49,10
+    EDITTEXT        IDC_EDIT_EXPANDLEVEL,61,202,26,12,ES_RIGHT | 
+                    ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RTLREADING
+    CONTROL         "Spin1",IDC_SPIN_EXPANDLEVEL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,87,201,11,12
+END
+
+IDD_PROCESSES_DIALOG DIALOGEX 0, 0, 231, 214
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_TREE_PROCESSES,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | 
+                    WS_TABSTOP,0,0,231,197,WS_EX_CLIENTEDGE
+    CONTROL         "Expand &Level",IDC_RADIO_EXPANDLEVEL,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,1,203,59,10
+    CONTROL         "Expand &All",IDC_RADIO_EXPANDALL,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,107,203,49,10
+    EDITTEXT        IDC_EDIT_EXPANDLEVEL,61,202,26,12,ES_RIGHT | 
+                    ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RTLREADING
+    CONTROL         "Spin1",IDC_SPIN_EXPANDLEVEL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,87,201,11,12
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO MOVEABLE PURE 
+BEGIN
+    IDD_SSI_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 403
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SHB_LARGE           BITMAP  MOVEABLE PURE   "res\\shb_larg.bmp"
+IDB_SHB_SMALL           BITMAP  MOVEABLE PURE   "res\\shb_smal.bmp"
+IDB_SYSINFO_TREE_IMAGE  BITMAP  MOVEABLE PURE   "res\\sysinfo_.bmp"
+IDB_SERVICES_TREE_IMAGE BITMAP  MOVEABLE PURE   "res\\services.bmp"
+IDB_PROCESSES_TREE_IMAGE BITMAP  MOVEABLE PURE   "res\\processe.bmp"
+IDB_LOGO                BITMAP  MOVEABLE PURE   "res\\Logo.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About SystemStateInfo..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "System State Info"
+    ID_DESCRIPTION_FILE     "SystemStateInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_REFRESH      BITMAP  MOVEABLE PURE   "res\\bitmap_r.bmp"
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "UTSampleAbout.rc" 
+#include "OXNetBrowseTree.rc" // Net browse resource
+#include "OXBitmapButton.rc"
+#include "OXCalendarPopup.rc"
+#include "OXShortcutBar.rc"
+#include "OXSysinfo.rc"
+#include "OXProcess.rc"
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\SystemStateInfo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

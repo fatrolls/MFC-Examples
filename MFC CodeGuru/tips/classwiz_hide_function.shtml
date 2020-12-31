@@ -1,0 +1,72 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Visual C++ Tips - Hide a function or variable from the Class View</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Hide a function or variable from the Class View</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+The Class View displays all the functions defined in a class (even global functions)  but it does not provide any means of organizing them. With more and more functions in a class the Class View becomes less and less useful. With too many functions listed you need to scroll more often and it takes a while longer to find the function. We can alleviate the situation by hiding trivial function from the Class View. Functions such as the trivial OnUpdateXXXX functions are ideal candidates.
+
+<p>The Class View (and the Class Wizard and the Wizard Bar) does not support hiding of functions. 
+It, however, preprocess the file and we use use this knowledge to fool it into not recognizing a function. 
+To achieve this we declare a couple of macros to camouflage the parentheses. 
+If there is more than one class that you want to hide functions in, you may want 
+to declare the macros in stdafx.h, otherwise declaring it in the header file for the class is OK.
+
+<P>Make sure you document this in each header file you modify, otherwise your code is going to be 
+a big headache for the next person seeing it.
+
+<PRE><TT><FONT COLOR="#990000">
+#define HIDE____ (
+#define ____HIDE );
+</FONT></TT></PRE>
+
+<P>The first macro is used for the starting paren and the second macro for the ending parent and the semi colon.
+
+<p>Here's how you would hide a function
+<br>Change
+<PRE><TT><FONT COLOR="#990000">	afx_msg void OnUpdateFunction(CCmdUI* pCmdUI);
+</FONT></TT></PRE>
+To
+<PRE><TT><FONT COLOR="#990000">	afx_msg void OnUpdateFunction HIDE___ CCmdUI* pCmdUI ___HIDE
+</FONT></TT></PRE>
+
+<P>Note that there is no ending semi-colon. That's taken care of by the macro.
+
+<p>To hide a variable, define a macro to substitute for the semi-colon. Use this macro to end the 
+statement
+
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

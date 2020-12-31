@@ -1,0 +1,26 @@
+HKCR
+{
+	LayerInfo.1 = s 'LayerInfo Class'
+	{
+		CLSID = s '{2661E09B-AB1B-41D1-A06A-3439394C73E9}'
+	}
+	LayerInfo = s 'LayerInfo Class'
+	{		
+		CurVer = s 'LayerInfo.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {2661E09B-AB1B-41D1-A06A-3439394C73E9} = s 'LayerInfo Class'
+		{
+			ProgID = s 'TY3DCtrl.LayerInfo.1'
+			VersionIndependentProgID = s 'LayerInfo'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{0F12A734-4D76-4E8F-B7B3-A2ECDC7CCC93}'
+			Version = s '1.0'
+		}
+	}
+}

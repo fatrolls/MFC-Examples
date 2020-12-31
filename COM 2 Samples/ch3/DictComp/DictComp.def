@@ -1,0 +1,11 @@
+; DictComp.def : Declares the module parameters for the DLL.
+
+LIBRARY      "DictComp"
+DESCRIPTION  'Dictionary Component Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+	DllGetClassObject @1 PRIVATE
+	DllRegisterServer @2 PRIVATE
+	DllUnregisterServer @3 PRIVATE
+	DllCanUnloadNow   @4 PRIVATE

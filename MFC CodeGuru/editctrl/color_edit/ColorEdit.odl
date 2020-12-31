@@ -1,0 +1,41 @@
+// ColorEdit.odl : type library source for ColorEdit.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (ColorEdit.tlb).
+
+[ uuid(F6898244-462B-11D1-B99D-00A0C9763A0A), version(1.0) ]
+library ColorEdit
+{
+	importlib("stdole32.tlb");
+	
+
+	//  Primary dispatch interface for CColorEditDoc
+	
+	[ uuid(F6898245-462B-11D1-B99D-00A0C9763A0A) ]
+	dispinterface IColorEdit
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CColorEditDoc)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CColorEditDoc)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CColorEditDoc
+	
+	[ uuid(F6898243-462B-11D1-B99D-00A0C9763A0A) ]
+	coclass ColorEditID
+	{
+		[default] dispinterface IColorEdit;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

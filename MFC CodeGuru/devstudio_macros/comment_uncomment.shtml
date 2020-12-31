@@ -1,0 +1,116 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DevStudio Macros - Comment / Uncomment macros</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Comment / Uncomment macros</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+These macros were contributed by <A HREF="mailto:ggp@mail.easystreet.com">Guy Gascoigne - Piggford</A>
+
+<P>Here are a couple of macros that I find very useful, they allow you to
+comment or uncomment out the current line or selection.  CommentOut is
+based upon a similar macro that was shipped with Visual Studio but trimmed
+to suit my needs better, the UnCommentOut function will reverse it's effects.
+
+<P>To use: take these two definitions and paste them into your current macro
+file, and save.  For ease of use I bind these to a pair of keys, in my case
+I bind Ctrl+/ to CommentOut and Ctrl+. to UnCommentOut.
+
+<PRE><TT><FONT COLOR="#990000">
+Sub CommentOut ()
+	'DESCRIPTION: Comments out a selected block of text.
+	Dim win
+	set win = ActiveWindow
+	if win.type <> "Text" Then
+	  MsgBox "This macro can only be run when a text editor window is active."
+	else
+		CommentType = "//"
+
+		StartLine = ActiveDocument.Selection.TopLine
+		EndLine = ActiveDocument.Selection.BottomLine
+		If EndLine < StartLine Then
+			Temp = StartLine
+			StartLine = EndLine
+			EndLine = Temp
+		End If
+
+		If EndLine = StartLine Then
+			ActiveDocument.Selection = CommentType + ActiveDocument.Selection
+		Else 
+			For i = StartLine To EndLine
+				ActiveDocument.Selection.GoToLine i
+				ActiveDocument.Selection.SelectLine
+				ActiveDocument.Selection = CommentType + _
+				ActiveDocument.Selection
+			Next
+		End If
+	End If
+End Sub
+
+
+Sub UnCommentOut ()
+'DESCRIPTION: Uncomments a selected block of text.
+	Dim win
+	set win = ActiveWindow
+	if win.type <> "Text" Then
+	  MsgBox "This macro can only be run when a text editor window is active."
+	else
+		StartLine = ActiveDocument.Selection.TopLine
+		EndLine = ActiveDocument.Selection.BottomLine
+		If EndLine < StartLine Then
+			Temp = StartLine
+			StartLine = EndLine
+			EndLine = Temp
+		End If
+
+		For i = StartLine To EndLine
+			TmpBlock = ""
+
+			ActiveDocument.Selection.GoToLine i
+			ActiveDocument.Selection.SelectLine
+			CmtBlock = ActiveDocument.Selection
+
+			Trim(CmtBlock)
+
+			If Instr(CmtBlock,"//") <> 0 Then 
+				TmpBlock = TmpBlock + Left (CmtBlock, Instr (CmtBlock,"//") - 1)
+				CmtBlock = Right(CmtBlock, (Len(CmtBlock) - (Instr(CmtBlock, "//") + 1)))
+				CmtBlock = TmpBlock + CmtBlock
+			End If
+
+			ActiveDocument.Selection = CmtBlock
+		Next
+
+	End If
+End Sub
+</FONT></TT></PRE>
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

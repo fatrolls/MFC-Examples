@@ -1,0 +1,438 @@
+<HTML>
+
+<HEAD>
+
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+   <META NAME="Author" CONTENT="Scott Miller">
+
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (WinNT; I) [Netscape]">
+
+   <TITLE>Miscellaneous - A Class For Building An NT Service</TITLE>
+
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+
+
+<CENTER>
+
+<H3>
+
+<FONT COLOR="#000099">A Class For Building An NT Service</FONT></H3></CENTER>
+
+
+
+<HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:Joerg.Koenig@rhein-neckar.de">Joerg
+
+Koenig</A>.
+
+<P><A HREF="#build">Building a Service</A>
+
+<BR><A HREF="#rev2">Changes to revision 2</A>
+
+<BR><A HREF="#MFC">NT Service Using MFC</A>
+
+<BR><A HREF="#download">Download</A>
+
+
+
+<P>Ever tried to write an NT service ? :->
+
+<BR>One of my very latest projects was to develop a CORBA server running
+
+as an NT service. Since one of my next projects will be an NT service too,
+
+I let my brain work a little harder to get it ready for as many programs
+
+as needed. The result of this was the CNTService class, that I want to
+
+share with the codegurus :-)
+
+<BR>With this class it is very simple to create an NT service. Just derive
+
+your own class and override the "Run()" and "Stop()" pure virtual members.
+
+All of the hard bits are done by the class.
+
+
+
+<P>There are several virtuals to overload (multi-threading, pausable services
+
+and more).
+
+
+
+<P>The class accepts a set of command-line parameters. For instance you
+
+can pass the -d switch to let it run as a console process. This makes debugging
+
+much easier.
+
+<BR>Furthermore the class has abilities to (de)install the service. This
+
+is usually a command-line switch too (but one can customize this :-).
+
+
+
+<P>CNTService compiles with and without UNICODE settings.
+
+<BR>&nbsp;
+
+<H4>
+
+<A NAME="build"></A><B><FONT SIZE=+1>Building a Service</FONT></B></H4>
+
+Now lets have a closer look at how you can build your own service.
+
+<BR>Follow these steps (assuming you're using VC++ 5.0):
+
+<OL>
+
+<LI>
+
+create a new project workspace of type "console application"</LI>
+
+
+
+<LI>
+
+copy the files of the NTService package into the directory of your new
+
+project</LI>
+
+
+
+<LI>
+
+insert "NTService.cpp" and "NTServiceEventLogMsg.mc" into your project</LI>
+
+
+
+<LI>
+
+open the <B>Project->Settings ...</B> dialog and fill it out. See the image
+
+below. It says more than I could write :-)</LI>
+
+
+
+<LI>
+
+compile the file "NTServiceEventLogMsg.mc". This will produce the files
+
+"NTServiceEventLogMsg.h" and "NTServiceEventLogMsg.rc".</LI>
+
+
+
+<LI>
+
+insert the generated RC file into your project.</LI>
+
+
+
+<LI>
+
+derive your own class from CNTService and override at least the two methods
+
+"Run()" and "Stop()"</LI>
+
+
+
+<LI>
+
+write a simple "main()" to start up your program's functionality :) (You
+
+can use the sample project for a good starting point)</LI>
+
+
+
+<LI>
+
+Once your project compiles without errors, you can immediately start it.
+
+To do so, you should open the <B>Project->Settings ...</B> dialog once
+
+again. Select <B>All Configurations</B> and than check the line with the
+
+name of your project. Activate the tab <B>Debug</B> and insert the <B>-d
+
+</B>switch in the field <B>Program arguments:</B></LI>
+
+
+
+<BR>Now you should be able to run and debug your service as a console program.
+
+You can use either Ctrl-C or Ctrl-Break to stop the service (that would
+
+simulate a <I>Stop</I> request from the service control manager)</OL>
+
+<IMG SRC="ntservice_settings.gif" HEIGHT=372 WIDTH=577>
+
+<BR><FONT SIZE=-1>How to fill out the settings of the file NTServiceEventLogMsg.mc</FONT>
+
+
+
+<P>Now lets try to start the service as a real NT service (assuming you
+
+use the sample project):
+
+<OL>
+
+<LI>
+
+Log on as an administrator, if your account isn't in the administrators
+
+group (this will make life somewhat easier)</LI>
+
+
+
+<LI>
+
+Start the program with the switch <B>-i</B>. This will install your service.</LI>
+
+
+
+<LI>
+
+If the last step completes successfully, you can open the control panel
+
+and start the <B>Services</B> applet. Search for the display name of your
+
+service and select it (<I>Very Simple Service</I> if you try the sample).</LI>
+
+
+
+<LI>
+
+Press the <B>Startup ...</B> button. Have a look at the <B>Log On As:</B>
+
+box. For now you can let the check at <B>System Account</B>. If you try
+
+the sample, make sure you check the <B>Interact With The Desktop</B> box.
+
+This is necessary, since the sample uses the MessageBox() function (which
+
+interacts with the desktop). If you don't check this box, the sample will
+
+not run properly and will hang up itself; thus you're unable to stop the
+
+service again ! With a little bit of experience one can enhance the sample,
+
+so that it will install the service with this box already checked, but
+
+I wanted to keep the sample as simple as possible, so I leave it to you
+
+to implement that. :-)</LI>
+
+</OL>
+
+The sample project implements a very simple service. The derived class
+
+(declaration and implementation) and the main() function are all in the
+
+same file (main.cpp). This file is less than 100 lines long (strip off
+
+all the comments and it will fit on one page of printing !)
+
+<BR>The service only pops up a message-box every 10 seconds.
+
+
+
+<P>For more information have a look at CNTService.h and - of course - the
+
+sample. I think it is well commented (let <A HREF="mailto:Joerg.Koenig@rhein-neckar.de">me</A>
+
+know, if you don't think so)
+
+<BR>&nbsp;
+
+<H4>
+
+<A NAME="rev2"></A>Changes to revision 2</H4>
+
+
+
+<UL>
+
+<LI>
+
+Added two more switches to handle command line arguments: -e will force
+
+a running service to stop (corresponding method in this class: virtual
+
+BOOL EndService();) and -s will force the service to start, if it is not
+
+already running (method: virtual BOOL StartupService())</LI>
+
+
+
+<LI>
+
+<A HREF="mailto:todd@mediatec.com">Todd C. Wilson</A> added support for
+
+Win95. This enables you to create a service like application for Windows
+
+95 (a socalled "Faceless Application"). Like a service, such an application
+
+will be started automatically by the system and will survive a user's logoff.
+
+My own experience with this kind of applications are not very great: Yes
+
+I could logoff, but the system hung when I tried to logon again. Furthermore
+
+BoundsChecker 5 (yes - I always test my software with this great tool :-)
+
+said, that the following sentence returns an invalid pointer (exactly "returned
+
+pointer is not a pointer to a function"):</LI>
+
+
+
+<BR>&nbsp;<TT><FONT COLOR="#990000">typedef DWORD (WINAPI *fp_RegServProc)(DWORD
+
+dwProcessId,DWORD dwType);</FONT></TT>
+
+<BR><TT><FONT COLOR="#990000">&nbsp;fp_RegServProc fncptr=NULL;</FONT></TT>
+
+<BR><TT><FONT COLOR="#990000">// ...</FONT></TT>
+
+<BR><TT><FONT COLOR="#990000">HMODULE hModule = ::GetModuleHandle(TEXT("kernel32.dll"));</FONT></TT>
+
+<BR><TT><FONT COLOR="#990000">fncptr=(fp_RegServProc)::GetProcAddress(hModule,
+
+"RegisterServiceProcess");</FONT></TT>
+
+<BR><TT><FONT COLOR="#990000">if (fncptr!=NULL)</FONT></TT>
+
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; (*fncptr)(0, RSP_SIMPLE_SERVICE);</FONT></TT>
+
+<BR><FONT COLOR="#000000">If the last line is reached, BoundsChecker warns,
+
+that </FONT><TT><FONT COLOR="#990000">fncptr</FONT></TT><FONT COLOR="#000000">
+
+does not point to a function. However, the sample program continues execution
+
+without an (serious) error.</FONT>
+
+<BR><FONT COLOR="#000000">You should keep this problem in mind, if you
+
+plan to develop a faceless application for windows 95.</FONT>
+
+<BR><FONT COLOR="#000000">The sample project offers a configuration "Win32
+
+Win95 Debug", that you can use to try this new feature.</FONT>
+
+<BR>&nbsp;
+
+<BR>&nbsp;</UL>
+
+
+
+<H4>
+
+<A NAME="MFC"></A>NTService Using MFC</H4>
+
+Microsoft recommends to write an NT service as a console application .
+
+However, it is possible to write such a service using MFC, too. To do so,
+
+it isn't necessary to create an&nbsp; MFC Wizard Application (although
+
+it is possible of course, but you have to
+
+<BR>remove a lot of code, because normally you don't need the doc/view
+
+concept), but a simple Win32 application is just enough. Make sure you
+
+select <B>Using MFC in a shared DLL</B> from the <B>General</B> tab of
+
+the <B>Settings</B> dialog of your project. Furthermore, you have to select
+
+<B>Multithreaded DLL</B> / <B>Debug Multithreaded DLL</B> in the <B>C/C++
+
+</B>tab, section <B>Code Generation </B>field <B>Use run-time Library</B>.
+
+<BR>If you're using a precompiled header, make sure you don't&nbsp; <FONT COLOR="#990000">#define
+
+VC_EXTRALEAN</FONT>, because the MFC based service needs parts of the "rarely
+
+used stuff", that this macro would exclude from the windows headers!
+
+<BR>I've added a new project <B>MFCService </B>as part of the workspace
+
+of the sample service to demonstrate this. Just try it out and/or use it
+
+as a starting point for a more complex service. The service (installation/removal
+
+etc). works exactly as described in the sections above.
+
+
+
+<P><A NAME="download"></A>CNTService consists of three files:
+
+<BR>NTService.h
+
+<BR>NTService.cpp
+
+<BR>NTServiceEventLogMsg.mc
+
+<BR><A HREF="ntservice_source.zip">Download Source</A> 14KB
+
+<BR><A HREF="ntservice_sample_project.zip">Download Sample Project</A>
+
+23KB
+
+
+
+<P>Note that the file NTServiceEventLogMsg.mc&nbsp; is copyrighted by Telic
+
+Software International B.V. Many thanks to Telic for providing it in the
+
+public domain!
+
+
+
+<P>
+
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%" >
+
+<TR>
+
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+
+
+<TD WIDTH="33%">
+
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+
+</TD>
+
+
+
+<TD WIDTH="34%">
+
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@dsp.net">zafir@dsp.com</A>&nbsp;</FONT></DIV>
+
+</TD>
+
+</TR>
+
+</TABLE>
+
+
+
+<CENTER><FONT SIZE=-2>404</FONT></CENTER>
+
+
+
+</BODY>
+
+</HTML>
+

@@ -1,0 +1,279 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\RoundedButton.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXBitmapButton.rc""\r\n"
+    "#include ""OXpopupBarCtrl.rc""\r\n"
+    "\r\n"
+    "#include ""UTSampleAbout.rc"" \r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\RoundedButton.ico"
+IDI_ICON_EARTH          ICON                    "res\\earth.ico"
+IDI_ICON_JUPITER        ICON                    "res\\jupiter.ico"
+IDI_ICON_MOON           ICON                    "res\\moon.ico"
+IDI_ICON_INFO           ICON                    "res\\info.ico"
+IDI_ICON_EXCLAMATION    ICON                    "res\\exclamation.ico"
+IDI_ICON_QUESTION       ICON                    "res\\question.ico"
+IDI_ICON_CHECK          ICON                    "res\\check_mark.ico"
+IDI_ICON_OFF            ICON                    "res\\icon1.ico"
+IDI_ICON_ON             ICON                    "res\\icon_off.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ROUNDEDBUTTON_CUSTOMIZE_DIALOG DIALOGEX 0, 0, 340, 170
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Customize Rounded Button"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Rounded Button",IDC_BUTTON_ROUND,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,12,12,91,33
+    CONTROL         "\nChoose button color",IDC_BUTTON_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,23,80,56,16
+    EDITTEXT        IDC_EDIT_RADIUS_EXT,24,117,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_RADIUS_EXT,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,65,117,11,12
+    EDITTEXT        IDC_EDIT_RADIUS_INT,24,150,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_RADIUS_INT,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,65,150,11,12
+    CONTROL         "\nChoose light color",IDC_LIGHT_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,117,80,56,16
+    EDITTEXT        IDC_EDIT_THETTA,117,116,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_THETTA,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,159,116,11,12
+    EDITTEXT        IDC_EDIT_PHI,117,150,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_PHI,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,159,150,11,12
+    EDITTEXT        IDC_EDIT_LIGHT_INTENSITY,211,81,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_LIGHT_INTENSITY,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,253,81,11,12
+    EDITTEXT        IDC_EDIT_PHONG,211,116,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_PHONG,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,253,116,11,12
+    EDITTEXT        IDC_EDIT_MIRROR,211,150,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_MIRROR,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,253,150,11,12
+    EDITTEXT        IDC_EDIT_DIFFUSE,276,81,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_DIFFUSE,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,318,81,11,12
+    EDITTEXT        IDC_EDIT_AMBIENT,277,116,41,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_AMBIENT,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,319,116,11,12
+    LTEXT           "External Radius",IDC_STATIC,23,105,50,8
+    LTEXT           "Vertical angle",IDC_STATIC,118,105,44,8
+    LTEXT           "Light intensity",IDC_STATIC,211,69,44,8
+    LTEXT           "Spot size",IDC_STATIC,211,105,30,8
+    LTEXT           "Spot intensity",IDC_STATIC,211,139,43,8
+    LTEXT           "Diffuse lighting",IDC_STATIC,276,69,47,8
+    LTEXT           "Ambient lighting",IDC_STATIC,277,105,50,8
+    LTEXT           "Button color",IDC_STATIC,23,68,39,8
+    LTEXT           "Light source color",IDC_STATIC,117,68,57,8
+    LTEXT           "Internal Radius",IDC_STATIC,23,139,48,8
+    LTEXT           "Play with button settings to get the best results for different button colors applied. In general, default settings are appropriate while displaying most colors, but for too bright or too light colors you might would like to use different set of values",IDC_STATIC,112,13,221,33
+    RTEXT           "Button settings",IDC_STATIC_BUTTON_SETTINGS,7,68,12,95,SS_SUNKEN
+    LTEXT           "",IDC_STATIC_SEPARATOR,112,48,221,8,SS_SUNKEN
+    RTEXT           "Light source",IDC_STATIC_LIGHTSOURCE_SETTINGS,101,68,12,95,SS_SUNKEN
+    LTEXT           "Horizontal angle",IDC_STATIC,118,139,52,8
+    RTEXT           "Surface settings",IDC_STATIC_SURFACE_SETTINGS,195,68,12,95,SS_SUNKEN
+END
+
+IDD_ROUNDEDBUTTON_SAMPLES_DIALOG DIALOGEX 0, 0, 340, 170
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Rounded Button Samples"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "1",IDC_BUTTON_ROUND_1,"Button",BS_OWNERDRAW | BS_CENTER | BS_VCENTER | WS_TABSTOP,7,17,25,22
+    CONTROL         "2",IDC_BUTTON_ROUND_2,"Button",BS_OWNERDRAW | BS_CENTER | BS_VCENTER | WS_TABSTOP,37,17,25,22
+    CONTROL         "3",IDC_BUTTON_ROUND_3,"Button",BS_OWNERDRAW | BS_CENTER | BS_VCENTER | WS_TABSTOP,67,17,25,22
+    CONTROL         "4",IDC_BUTTON_ROUND_4,"Button",BS_OWNERDRAW | BS_CENTER | BS_VCENTER | WS_TABSTOP,97,17,25,22
+    CONTROL         "5",IDC_BUTTON_ROUND_5,"Button",BS_OWNERDRAW | BS_CENTER | BS_VCENTER | WS_TABSTOP,127,17,25,22
+    CONTROL         "Left",IDC_BUTTON_WITH_TEXT_1,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,188,17,44,23
+    CONTROL         "Centered",IDC_BUTTON_WITH_TEXT_3,"Button",BS_OWNERDRAW | BS_CENTER | BS_VCENTER | WS_TABSTOP,236,17,48,23
+    CONTROL         "Right",IDC_BUTTON_WITH_TEXT_2,"Button",BS_OWNERDRAW | BS_RIGHT | BS_VCENTER | WS_TABSTOP,289,17,44,23
+    CONTROL         "Multiline text with custom font and text color",IDC_BUTTON_WITH_TEXT_MULTILINE_CUSTOM,
+                    "Button",BS_OWNERDRAW | BS_CENTER | BS_VCENTER | BS_MULTILINE | WS_TABSTOP,188,44,145,41
+    CONTROL         "Earth",IDC_BUTTON_WITH_IMAGE_1,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,7,62,68,33
+    CONTROL         "Moon",IDC_BUTTON_WITH_IMAGE_2,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,7,96,68,33
+    CONTROL         "Jupiter",IDC_BUTTON_WITH_IMAGE_3,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,7,129,68,33
+    CONTROL         "",IDC_BUTTON_WITH_IMAGE_4,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,80,63,34,30
+    CONTROL         "",IDC_BUTTON_WITH_IMAGE_5,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,118,85,34,30
+    CONTROL         "",IDC_BUTTON_WITH_IMAGE_6,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,79,107,34,30
+    CONTROL         "",IDC_BUTTON_WITH_IMAGE_7,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,118,130,34,30
+    CONTROL         "Option 1",IDC_BUTTON_TOGGLE_1,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,188,105,65,23
+    CONTROL         "Option 2",IDC_BUTTON_TOGGLE_2,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,268,105,65,23
+    CONTROL         "Option 3",IDC_BUTTON_TOGGLE_3,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,188,132,65,23
+    CONTROL         "Option 3",IDC_BUTTON_TOGGLE_4,"Button",BS_OWNERDRAW | BS_LEFT | BS_VCENTER | WS_TABSTOP,268,132,65,23
+    LTEXT           "Round buttons",IDC_STATIC_ROUND_BUTTONS,7,7,145,9,SS_SUNKEN
+    LTEXT           "Buttons with text",IDC_STATIC_BUTTONS_WITH_TEXT,188,7,145,9,SS_SUNKEN
+    LTEXT           "Buttons with images",IDC_STATIC_BUTTONS_WITH_IMAGES,7,51,145,9,SS_SUNKEN
+    LTEXT           "Toggle buttons",IDC_STATIC_BUTTONS_TOGGLE,188,93,145,9,SS_SUNKEN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "RoundedButton MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "RoundedButton"
+            VALUE "LegalCopyright", "Copyright (C) 1999"
+            VALUE "OriginalFilename", "RoundedButton.EXE"
+            VALUE "ProductName", "RoundedButton Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ROUNDEDBUTTON_CUSTOMIZE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 333
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
+
+    IDD_ROUNDEDBUTTON_SAMPLES_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 333
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 162
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About RoundedButton..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Rounded Button Demo"
+    ID_DESCRIPTION_FILE     "RoundedButtonInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\RoundedButton.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXBitmapButton.rc"
+#include "OXpopupBarCtrl.rc"
+
+#include "UTSampleAbout.rc" 
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

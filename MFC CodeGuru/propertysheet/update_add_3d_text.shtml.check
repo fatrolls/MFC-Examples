@@ -1,0 +1,94 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Robbert E. Peters">
+<title>Section - Title</title>
+</head>
+
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Update: Placing a 3D Logo Text In the PropertySheet Button Area
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+The original article was contributed by <A HREF="mailto:nikolay@citilink.com">Nikolay Sokratov</A>.<br>
+This update was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<p>I read the article published by Nikolay Sokratov and i found it very interesting but limited to a property sheet. I made a little modification of that code to provide the same functionality to a wizard.
+In the property sheet two thing are always present: <br><br>
+Button Ok (IDOK)<br>
+Tab Control</p>
+
+<p>When the property sheet is in wizard mode, this two objects are not present and so the application crashes in OnPaint 
+while trying to get the dimensions of that two objects.<br><br> 
+My correction is the following</p>
+<p>1. In OnPaint, get the current style of property sheet<br>
+2. If it's in wizard mode, get the dimension of dialog instead of the dimension of tab and the one of the NEXT button instead of the Ok button</p>
+
+<p>The code is:<tt><font COLOR="#990000"></p><br>
+void CPropertySheetWithLogoDlg::OnPaint<br>
+{<br> 
+&nbsp;&nbsp;&nbsp; CPaintDC dc(this); // device context for painting<br>
+&nbsp;&nbsp;&nbsp; BOOL bWizMode;<br>
+<br>
+&nbsp;&nbsp;&nbsp; // Get the current style<br>
+&nbsp;&nbsp;&nbsp; // From PROPSHEETHEADER structure<br>
+<br>
+&nbsp;&nbsp;&nbsp; if( m_psh.dwFlags & PSH_WIZARD )<br>
+&nbsp;&nbsp;&nbsp;&nbsp; bWizMode = TRUE; // It's in wizard mode<br>
+&nbsp;&nbsp;&nbsp; else<br> 
+&nbsp;&nbsp;&nbsp;&nbsp; bWizMode = FALSE; // It's in property sheet mode<br>
+<br>
+&nbsp;&nbsp;&nbsp; if(m_LogoText.IsEmpty())<br>
+&nbsp;&nbsp;&nbsp;&nbsp; return;<br>
+<br>
+CRect rectTabCtrl;<br>
+/* If this is a Wizard, cannot retrieve the tab<br>
+** control dimension. so Get the Dialog's Window Rect<br>
+*/<br>
+&nbsp;&nbsp;&nbsp; if( bWizMode )<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp; GetWindowRect(rectTabCtrl);<br>
+&nbsp;&nbsp;&nbsp;&nbsp; /* A little correction */<br>
+&nbsp;&nbsp;&nbsp;&nbsp; rectTabCtrl.OffsetRect(14,0);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp; GetTabControl()->GetWindowRect(rectTabCtrl);<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; ScreenToClient(rectTabCtrl);<br>
+</font></tt><br>
+<p> The rest of code did not change.</p>
+
+
+<p>Date Posted: 06/17/98
+
+<P><HR>
+
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

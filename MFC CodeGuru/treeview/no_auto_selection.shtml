@@ -1,0 +1,254 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CTreeCtrl - Stop auto-selection of item</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Stop auto-selection of item</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This article was contributed by <a href="mailto:justing@stingsoft.com">Justin Rudd</a>.
+
+
+<p>I've been playing around with the new common controls that are
+distributed with IE 4.0 and one of the neat features is the new style
+TVS_TRACKSELECT.  Basically what it does is underline the current item
+and then select it if you leave it there long enough.  Now to me this is
+annoying.  I don't mind it telling me where I am but selecting it
+automatically for me I don't like ( mainly because most trees I've seen
+do something when an item is selected ).  So I implemented hot tracking
+in a CTreeCtrl derived class.  Hot tracking is basically underlining the
+item you are on, but not selecting it.  
+
+<p>I was going to implement a state and then stick it in the LPARAM, but I
+decided to use a state flag instead.  So I defined this flag...
+
+<PRE><TT><FONT COLOR="#990000">#define TVIS_UNDERLINE 0x0001
+</FONT></TT></PRE>
+
+<p>Now you might be wondering why I used 0x0001, believe it or not, this is
+the only available state flag left to the tree control.  It might be
+used internally, but I have seen no side effects.
+
+<p>The first thing that must be done is setting the state of the item...we
+do that in OnMouseMove...shown here...
+
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlEx::OnMouseMove(UINT nFlags, CPoint point) 
+{
+        TV_HITTESTINFO hit;
+        ::ZeroMemory(&hit,sizeof(hit));
+        
+        hit.pt = point;
+        HitTest( &hit );
+
+        //Did we hit an item??
+        if( hit.hItem )
+        {
+                //Yep...now check to make sure we hit on the item not beside it
+                if( hit.flags & TVHT_ONITEM )
+                        //Yep...underline it...
+                        SetItemState( hit.hItem, TVIS_UNDERLINE, TVIS_UNDERLINE );
+                else
+                        //Nope we sure didn't...since we might have
+			//moved the mouse to left or right after
+                        //underlining it previously...go ahead and undo
+			//the underlining
+                        SetItemState( hit.hItem, 0, TVIS_UNDERLINE );
+        }
+
+        //Must unconditionally check the last item or underline will stay around
+        // after we move off the last underlined item...
+        if( m_htiLast != hit.hItem )
+        {
+                SetItemState( m_htiLast, 0, TVIS_UNDERLINE );
+        }
+
+        //Cache the last item hit...
+        m_htiLast = hit.hItem;
+
+        UINT uID = SetTimer( MOUSE_MOVE, 55, NULL );
+        ASSERT( uID == MOUSE_MOVE );
+
+        CTreeCtrl::OnMouseMove(nFlags, point);
+}
+</FONT></TT></PRE>
+
+<p>There ya go...item is now ready to be underlined.  Now...you might be
+asking...what happens if the first visible item ( which I define as
+being right at the top of the control )is underlined and my user moves
+the mouse out of the client area?  Won't the item still be underlined?
+The answer - yes it will...unless you tell it not to :-)
+
+<p>There are 2 ways you can tell it not to hilight the last item
+underlined...
+<p>1) handle WM_NCMOUSEMOVE and undo the underlining of the the item if you
+move over NC area.
+<p>2) Start a timer in WM_MOUSEMOVE ( I actually did both.  You know...just
+to make sure...) and check the point of the message.  If it is in the
+rect...do nothing.  If it isn't in the rect...loop through the visible
+items and setting the underline state flag to 0.  Here is my
+implementation of both WM_NCMOUSEMOVE and WM_TIMER.
+
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlEx::OnTimer(UINT nIDEvent) 
+{
+        if( nIDEvent == MOUSE_MOVE )
+        {
+                KillTimer(MOUSE_MOVE);          
+                
+                CPoint pt(::GetMessagePos());
+                CRect rc;
+                GetWindowRect(&rc);
+
+                if( rc.PtInRect(pt) == FALSE )
+                {
+                        HTREEITEM hti = GetFirstVisibleItem();
+
+                        while( hti != NULL )
+                        {
+                                if( GetItemState( hti, TVIS_UNDERLINE ) & TVIS_UNDERLINE )
+                                        SetItemState( hti, 0, TVIS_UNDERLINE );
+                                hti = GetNextVisibleItem( hti );
+                        }
+                }
+                return;
+        }
+
+        CTreeCtrl::OnTimer(nIDEvent);
+}
+
+void CTreeCtrlEx::OnNcMouseMove(UINT nHitTest, CPoint point) 
+{
+        //Since most tree controls have that nice client edge border.
+	//If the user moves the mouse from
+        //bottom to top, after passing over the first visible item will
+	//leave the underline.  So we have to 
+        //handle WM_NCMOUSEMOVE for when it goes over the border of the
+	//tree control...
+        if( nHitTest == HTBORDER )
+        {
+                HTREEITEM hti = GetFirstVisibleItem();
+                if( GetItemState( hti, TVIS_UNDERLINE) & TVIS_UNDERLINE )
+                        SetItemState( hti, 0, TVIS_UNDERLINE );
+        }
+
+        CTreeCtrl::OnNcMouseMove(nHitTest, point);
+}
+</FONT></TT></PRE>
+
+<p>In the above code, I could unconditionally set the item state, but
+SetItem ( which is called internally by SetItemState ) triggers an
+invalidate, and there is no reason to redraw if we don't have to.
+
+<p>Now that we are setting the state properly...how do we go about drawing
+the underline?  Simple...do it the same way that another sample does it.
+That sample that I based my drawing code on is - Setting Color and Font
+Attributes for individual items.
+
+<p>Here is my WM_PAINT handler...
+
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlEx::OnPaint() 
+{
+        CPaintDC paintDC(this);
+
+        CRect clientRect(-1,-1,-1,-1);
+        GetClientRect(&clientRect);
+
+        CDC memDC;
+        memDC.CreateCompatibleDC( &paintDC );
+
+        CBitmap canvas, *pOldCanvas = NULL;
+        canvas.CreateCompatibleBitmap( &paintDC, clientRect.Width(), clientRect.Height() );
+        pOldCanvas = memDC.SelectObject( &canvas );
+
+        CRect clipBox(-1,-1,-1,-1);
+        paintDC.GetClipBox(&clipBox);
+
+        CRgn clipRgn;
+        clipRgn.CreateRectRgnIndirect(&clipBox);
+        memDC.SelectClipRgn( &clipRgn );
+
+        CWnd::DefWindowProc( WM_PAINT, (WPARAM)memDC.m_hDC, 0 );
+
+        HTREEITEM hti = GetFirstVisibleItem();
+        
+        int iVizCount = GetVisibleCount() + 1;
+        while( hti && iVizCount-- )
+        {
+                BOOL bUnderline = !!(GetItemState( hti, TVIS_UNDERLINE ) & TVIS_UNDERLINE);
+
+                UINT flags = TVIS_SELECTED|TVIS_DROPHILITED;
+                if( (GetItemState( hti, flags ) & flags) == 0 )
+                {
+                        CFont* pTreeFont = GetFont();
+                        if( pTreeFont == NULL )
+                                pTreeFont = CFont::FromHandle( (HFONT)::GetStockObject(DEFAULT_GUI_FONT) );
+                        ASSERT_VALID(pTreeFont);
+
+                        LOGFONT lfTree;
+                        ::ZeroMemory(&lfTree, sizeof(lfTree));
+
+                        pTreeFont->GetLogFont(&lfTree);
+
+                        if( bUnderline )
+                                lfTree.lfUnderline = TRUE;
+
+                        CFont font;
+                        font.CreateFontIndirect(&lfTree);
+                        CFont* pOldFont = memDC.SelectObject(&font);
+
+                        CString sItemText = GetItemText( hti );
+
+                        CRect itemRect(-1,-1,-1,-1);
+                        GetItemRect( hti, itemRect, TRUE );
+
+                        COLORREF clrOld = 0;
+                        if( bUnderline )
+                                clrOld = memDC.SetTextColor( ::GetSysColor(COLOR_GRAYTEXT) );
+                        
+                        memDC.TextOut( itemRect.left + 2, itemRect.top + 1, sItemText );
+                        
+                        if( bUnderline )
+                                clrOld = memDC.SetTextColor( clrOld );
+
+                        memDC.SelectObject( pOldFont );
+                }
+
+                hti = GetNextVisibleItem( hti );
+        }
+
+        paintDC.BitBlt( clipBox.left, clipBox.top, clipBox.Width(),
+			clipBox.Height(), &memDC, clipBox.left, clipBox.top, SRCCOPY );
+        
+        memDC.SelectObject( pOldCanvas );
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

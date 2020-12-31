@@ -1,0 +1,173 @@
+#
+# Chapter 10 - Makefile
+#
+# Builds both in-proc and out-of-proc (local server)
+#    versions of component
+# Use OUTPROC=1 to build out-of-proc version.
+#
+#
+!IF "$(OUTPROC)" == ""
+!MESSAGE Building in-proc server.
+SERVER =
+TARGETS = Server.dll
+DIR_SERVER = InProc
+!ELSE
+!MESSAGE Building local/remote server.
+SERVER=/D_OUTPROC_SERVER_
+TARGETS = Server.exe Proxy.dll
+DIR_SERVER = OutProc
+!ENDIF 
+
+#
+# Flags - Always compiles debug.
+#
+CPP_FLAGS = /c /MTd /Zi /Od /D_DEBUG 
+EXE_LINK_FLAGS = /NOD /DEBUG
+DLL_LINK_FLAGS = /NOD /DLL /DEBUG
+
+LIBS = kernel32.lib uuid.lib advapi32.lib ole32.lib
+
+#################################################
+#
+# Targets
+#
+
+all : Client.exe $(TARGETS)
+
+#################################################
+#
+# Proxy source files
+#
+iface.h server.tlb proxy.c guids.c dlldata.c : server.idl
+	midl /h iface.h /iid guids.c /proxy proxy.c server.idl 
+
+!IF "$(OUTPROC)" != ""
+dlldata.obj : dlldata.c 
+	cl /c /DWIN32 /DREGISTER_PROXY_DLL dlldata.c
+
+proxy.obj : proxy.c 
+	cl /c /DWIN32 /DREGISTER_PROXY_DLL proxy.c
+
+PROXYSTUBOBJS = dlldata.obj   \
+                proxy.obj     \
+                guids.obj
+
+PROXYSTUBLIBS = kernel32.lib  \
+                rpcndr.lib    \
+                rpcns4.lib    \
+                rpcrt4.lib    \
+                uuid.lib 
+
+proxy.dll : $(PROXYSTUBOBJS) proxy.def
+	link /dll /out:proxy.dll /def:proxy.def   \
+		$(PROXYSTUBOBJS) $(PROXYSTUBLIBS)
+	regsvr32 /s proxy.dll
+
+!ENDIF 
+
+#################################################
+#
+# Shared source files
+#
+
+guids.obj : guids.c
+		cl /c /DWIN32 /DREGISTER_PROXY_DLL guids.c
+
+#################################################
+#
+# Component/server source files
+#
+
+$(DIR_SERVER)\server.obj : server.cpp cunknown.h cfactory.h iface.h
+	cl $(CPP_FLAGS)  /Fo"$*.obj" server.cpp
+
+$(DIR_SERVER)\cmpnt1.obj : cmpnt1.cpp cmpnt1.h iface.h registry.h   \
+		CUnknown.h
+	cl $(CPP_FLAGS) /Fo"$*.obj" cmpnt1.cpp
+
+$(DIR_SERVER)\cmpnt2.obj : cmpnt2.cpp cmpnt2.h iface.h registry.h   \
+		CUnknown.h
+	cl $(CPP_FLAGS) /Fo"$*.obj" cmpnt2.cpp
+
+$(DIR_SERVER)\cmpnt3.obj : cmpnt3.cpp cmpnt3.h iface.h registry.h   \
+		CUnknown.h
+	cl $(CPP_FLAGS) /Fo"$*.obj" cmpnt3.cpp
+
+#
+# Helper classes
+#
+
+$(DIR_SERVER)\CUnknown.obj : CUnknown.cpp CUnknown.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" CUnknown.cpp
+
+$(DIR_SERVER)\CFactory.obj : CFactory.cpp CFactory.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" CFactory.cpp
+
+$(DIR_SERVER)\registry.obj : registry.cpp registry.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" registry.cpp
+
+# util.cpp compiled for server.
+$(DIR_SERVER)\util.obj : util.cpp util.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" util.cpp 
+
+!IF "$(OUTPROC)" != ""
+$(DIR_SERVER)\outproc.obj : outproc.cpp CFactory.h CUnknown.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" outproc.cpp
+
+server.res : server.rc 
+	rc /l 0x409 server.rc
+!ENDIF
+
+
+#################################################
+#
+# Client source files
+#
+
+Client.obj : Client.cpp Iface.h Util.h
+	cl $(CPP_FLAGS) Client.cpp
+
+# Util.cpp compiled for the client.
+Util.obj : Util.cpp Util.h
+	cl $(CPP_FLAGS) Util.cpp 
+
+#################################################
+#
+# Link components - Automatically register components.
+#
+
+SERVER_OBJS = $(DIR_SERVER)\Server.obj     \
+              $(DIR_SERVER)\Cmpnt1.obj     \
+              $(DIR_SERVER)\Cmpnt2.obj     \
+              $(DIR_SERVER)\Cmpnt3.obj     \
+              $(DIR_SERVER)\Registry.obj   \
+              $(DIR_SERVER)\Cfactory.obj   \
+              $(DIR_SERVER)\Cunknown.obj   \
+              $(DIR_SERVER)\Util.obj       \
+              Guids.obj	
+
+!IF "$(OUTPROC)" == ""
+Server.dll:  $(SERVER_OBJS) Server.def 
+	link $(DLL_LINK_FLAGS) $(SERVER_OBJS) libcmtd.lib   \
+		libcimtd.lib $(LIBS) /DEF:Server.def 
+	regsvr32 -s Server.dll
+
+!ELSE
+Server.exe:  $(SERVER_OBJS) $(DIR_SERVER)\outproc.obj Server.res 
+	link $(EXE_LINK_FLAGS) $(SERVER_OBJS)	               \
+		$(DIR_SERVER)\Outproc.obj Server.res libcmtd.lib   \
+		libcimtd.lib $(LIBS) user32.lib gdi32.lib
+	server /RegServer
+!ENDIF
+
+
+#################################################
+#
+# Link client.
+#
+
+Client.exe : Client.obj Guids.obj Util.obj
+	link $(EXE_LINK_FLAGS) Client.obj Guids.obj Util.obj   \
+		libcmtd.lib libcimtd.lib $(LIBS) 
+
+

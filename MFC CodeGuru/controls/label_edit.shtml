@@ -1,0 +1,75 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Editable Labels</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Editable Labels
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:mihai@transart.ro">Mihai Filimon</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="label_edit.zip">Download Source Code</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>LabelEdit and LabelComboBox are controls which looks like a CStatic, but when
+the user clicks on the control, an edit control or combobox appears which allows
+the user write (select) new value.
+
+<p><b>Steps:</b>
+<ol>
+<li>In Resource Designer, put one or more custom controls. In the "Class" edit
+box in the "Properties" dialog for the custom control, specify "TLabelEdit" (no quotes).
+<li>In InitInstance of the main application, you must call CTLabelEdit::RegClassLabelEdit()
+in order to register the window class TLabelEdit.
+<li>Declare in Dialog or CFormView a member of the type which you want to
+use: CTLabelEdit or CTLabelComboBox
+<li>In InitDialog (or OnInitalUpdate) you must subclass custom controls with
+the new members added in step 3.
+<li>For controls of type CTLabelComboBox there must be an existing
+combobox control which the CTLabelComboBox will be attached. In step 4 you must attach 
+the combobox to the custom control with the function CTLabelList::Attach(...).
+</ol>
+
+<p>This custom controls can be extended to use listbox, etc.
+
+<!-- Remember to update this -->
+<p>Last updated: 30 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

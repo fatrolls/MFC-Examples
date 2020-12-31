@@ -1,0 +1,50 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>String - Fixed Length Strings</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Fixed Length Strings</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:Poul@wizsoft.com">Poul Costinsky</A>. You can also
+find this and other articles at his web site at <A HREF="http://www.wizsoft.com/~poul/srs/">http://www.wizsoft.com/~poul/srs/</A>
+
+<P>
+      <li>CWizCharString - template class to hold a <b>string</b> of <b>fixed maximum size</b>.<br>
+        Much faster then those with <tt>new</tt> and <tt>delete</tt>. <br>
+        File <a href="CHAR_STR.H">CHAR_STR.H</a> . </li>
+      <li>Class CWizConstantStringArray - obviously class implements <b>array of constant strings</b>.
+        Implements copy constructor and operator, adding strings and RemoveAll.<br>
+        Files <a href="ConstantStringArray.cpp">ConstantStringArray.cpp</a>and <a
+        href="ConstantStringArray.h">ConstantStringArray.h</a>.</li>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

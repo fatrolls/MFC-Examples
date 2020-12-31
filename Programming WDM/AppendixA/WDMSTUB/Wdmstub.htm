@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The WDMSTUB Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The WDMSTUB Sample</H2>
+<P>The WDMSTUB Sample accompanies Appendix A and illustrates how to supply stubs for kernel-mode support functions that would otherwise be missing from Windows 98.</P>
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>WDMSTUB.VXD is a static virtual device driver for Windows 98.</LI></UL>
+
+<H3>Building WDMSTUB</H3>
+<P>To build WDMSTUB.VXD, open the Microsoft Visual C++ project file named WDMSTUB.DSP and select the Build command from the Build menu. The build script depends on your having set the 98DDK environment variable to the directory where you installed the Windows 98 DDK. Depending on which version of the DDK you have, you may need to adjust the include or library paths in the project settings.</P>
+<H3>Testing WDMSTUB</H3>
+<P>Edit the SYSTEM.INI file in the Windows 98 directory to add a line to the [386enh] section reading as follows:</P>
+<CODE><P>[386enh]<BR>
+device=wdmstub.vxd</P>
+</CODE><P>The setup program for the book samples automatically copies the WDMSTUB.VXD file to the Windows 98 System directory, but you may copy this file by hand from the DEBUG subdirectory if necessary.</P>
+<P>Now reboot your computer to allow the system to load WDMSTUB.</P>
+<P>Your Windows 98 system now exports the kernel-mode subroutines that WDMSTUB implements. You’ll be able to load WDM drivers that refer to these routines from now on.</P>
+<H3>Redistributing WDMSTUB</H3>
+<P>WDMSTUB is an exception to the blanket license to use the sample programs for this book. The author will grant a royalty-free license to anyone to redistribute WDMSTUB as part of a WDM driver package. The license will, however, include conditions designed to insure the consistency and quality of WDMSTUB on end user machines. Send e-mail to <A HREF="mailto:waltoney@oneysoft.com">waltoney@oneysoft.com</A> for information about obtaining this conditional license.</P></BODY>
+</HTML>

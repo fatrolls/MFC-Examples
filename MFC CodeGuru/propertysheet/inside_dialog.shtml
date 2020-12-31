@@ -1,0 +1,97 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Creating a Property Sheet Inside a Dialog</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Creating a Property Sheet Inside a Dialog</FONT>
+<HR></H3></CENTER>
+
+
+Although you can resize the property sheet and place other controls in it, sometimes its just easier to create a dialog with all the controls in place and then create a property sheet inside the dialog. You can layout the controls at design time and also the property sheet need not be on the left top side of the dialog.
+
+<p><img src="inside_dialog.gif" width="585" height="348"></p>
+
+<h4>Step 1: Create a dialog template with space for the property sheet</h4>
+When a property sheet is created, it is automatically sized so that the tallest as well as the widest page fits in it. Therefore, when designing the dialog in the resource editor, you can use a picture box as a place holder for the property sheet. The size of the picture box will need some tweaking so that it matches the size of the property sheet at run time. 
+
+<p>Here is a suggestion on how you can get an appropriate size for the picture box. In the resource editor, open up the tallest property page that will be included in the property sheet. Draw a picture box in it so that the picture completely fills it. Pull the middle grips outwards to make sure that the picture is the same size as the client area of the property page. Since the property sheet displays the tab above the property page extend the top edge of the picture to the top edge of the page caption. You can do this by dragging the top middle grip point while holding the Alt key down. Cut the picture to the clipboard (Ctrl-X) and then paste it in the dialog in which we want to create the property sheet. Change the ID of the picture to something like IDC_PROPSHEET.
+
+<p>Now open the resource file in text mode. The resource file has the same name as the project and the extension 'rc'. You can either open the resource file in notepad or in DevStudio by specifying 'Open as Text' in the Open dialog. Search for the widest property page. You will encounter a line like
+
+<PRE><TT><FONT COLOR="#990000">IDD_FONTPAGE DIALOG DISCARDABLE  13, 54, 264, 133
+</FONT></TT></PRE>
+
+<p>The third numeric value (264) is the width of the property page. Now search for the IDC_PROPSHEET and set its width to 3 more than the width of the property page and increase its height by 3. The height is the last number on the line. We increase the width and height by 3 because the property sheet adds a margin around the property page and this increase should account for that. Now the picture box is about the same size as the property sheet when it displays. Place the picture box where you want the property sheet to display.
+
+<h4>Step 2: Add variable for Property Sheet and Property Pages</h4>
+Add member variables to the CDialog derived class for the property sheet and all the property pages that it will contain. Although the sampe code uses plain variables, you may want to use pointer variables and use 'new' to allocate the object when its needed.
+
+<p>Note that the sample code uses a generic property sheet object and three custom property page objects. This is dependent on your applications needs.
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	CPropertySheet m_dlgPropSheet;
+	CStylePage m_stylePage;
+	CColorPage m_colorPage;
+	CFontPage m_fontPage;
+</FONT></TT></PRE>
+
+<h4>Step 3: Create the property sheet in OnInitDialog()</h4>
+Override the OnInitDialog() function and add the code to create the property sheet. We use the position of the picture box - IDC_PROPSHEET - to position the property sheet at the proper place.
+
+<p>After creating the property sheet, this function changes the style of the property sheet by adding the WS_EX_CONTROLPARENT flag. This is needed by the dialog so that it can avoid an endless loop when searching for the next tab item. The WS_EX_CONTROLPARENT flag for the property sheet tells the dialog that it should look at the it should look at the children controls of the property sheet as well when searching for the control with focus. We also set a tab stop to the property sheet so that the user can tab to the property sheet. 
+
+<p>Note that the call to SetWindowPos() subtracts 7 from the x as well as the y position. This is again to account for the margin that the property sheet uses. The value 7 works fine for the default font used by the resource editor. If you use a different font, then this value would have to be adjusted accordingly.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyDlg::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	m_dlgPropSheet.AddPage(&m_stylePage);
+	m_dlgPropSheet.AddPage(&m_colorPage);
+	m_dlgPropSheet.AddPage(&m_fontPage);
+
+	m_dlgPropSheet.Create(this, WS_CHILD | WS_VISIBLE, 0);
+	m_dlgPropSheet.ModifyStyleEx (0, WS_EX_CONTROLPARENT);
+	m_dlgPropSheet.ModifyStyle( 0, WS_TABSTOP );
+
+	CRect rcSheet;
+	GetDlgItem( IDC_PROPSHEET )->GetWindowRect( &rcSheet );
+	ScreenToClient( &rcSheet );
+	m_dlgPropSheet.SetWindowPos( NULL, rcSheet.left-7, rcSheet.top-7, 0, 0, 
+			SWP_NOZORDER | SWP_NOSIZE | SWP_NOACTIVATE );
+	
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

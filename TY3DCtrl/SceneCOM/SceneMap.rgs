@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.SceneMap.1 = s 'SceneMap Class'
+	{
+		CLSID = s '{F3FC6D9E-2AEE-4F4D-BF61-46A631EA3761}'
+	}
+	TY3DCtrl.SceneMap = s 'SceneMap Class'
+	{		
+		CurVer = s 'TY3DCtrl.SceneMap.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F3FC6D9E-2AEE-4F4D-BF61-46A631EA3761} = s 'SceneMap Class'
+		{
+			ProgID = s 'TY3DCtrl.SceneMap.1'
+			VersionIndependentProgID = s 'TY3DCtrl.SceneMap'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{0F12A734-4D76-4E8F-B7B3-A2ECDC7CCC93}'
+			Version = s '1.0'
+		}
+	}
+}

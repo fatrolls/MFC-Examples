@@ -1,0 +1,6 @@
+REGEDIT4
+
+# Lists all platforms (Intel, Alpha, PowerPC when creating new projects)
+# Default is not there
+[HKEY_CURRENT_USER\Software\Microsoft\DevStudio\5.0\Build System]
+"Full Platforms"=dword:00000001

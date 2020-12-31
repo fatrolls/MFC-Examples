@@ -1,0 +1,34 @@
+HKCR
+{
+	UTFinger.Finger.1 = s 'Dundas Finger Control 4.0'
+	{
+		CLSID = s '{D4A19882-EBE6-11D2-A440-0080C858F182}'
+		'Insertable'
+	}
+	UTFinger.Finger = s 'Dundas Finger Control 4.0'
+	{
+		CLSID = s '{D4A19882-EBE6-11D2-A440-0080C858F182}'
+		CurVer = s 'UTFinger.Finger.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D4A19882-EBE6-11D2-A440-0080C858F182} = s 'Dundas Finger Control 4.0'
+		{
+			ProgID = s 'UTFinger.Finger.1'
+			VersionIndependentProgID = s 'UTFinger.Finger'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '132497'
+			}
+			'TypeLib' = s '{D4A19873-EBE6-11D2-A440-0080C858F182}'
+			'Version' = s '1.4'
+		}
+	}
+}

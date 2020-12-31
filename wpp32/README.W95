@@ -1,0 +1,32 @@
+Please read the README file, then read this file for instructions
+that supersede README.
+
+If you are using Windows++ with Windows 95, you must have one of the
+following compilers:
+
+Borland C/C++ 5.01 (5.0 should work too)
+Microsoft Visual C++ 4.2 (4.0 should work too)
+
+The Windows 95 version is in the self-expanding archive expwpp95.exe.
+Copy this file to your WPP directory as described in the README file,
+and run it to expand all the files. Do *NOT* run EXPWPP10.EXE or
+EXPWPP20.EXE. Once the files are expanded, type
+
+MAKEBCC (Borland)
+
+or
+
+MAKEMSC (Microsoft)
+
+to cmpile the Windows++ library and sample programs. These batch
+files build the DLL version of the library and samples by default.
+That is, they run
+
+make -f<makefile> DLL=1
+
+where <makefile> is makefile.bcc or makefile.msc. You can use DEBUG=1
+to build debug versions and omit DLL=1 to build a static library. 
+
+Good luck
+
+Paul DiLascia

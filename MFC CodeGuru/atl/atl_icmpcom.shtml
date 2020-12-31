@@ -1,0 +1,153 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>ActiveX / ATL - An ATL project to run PING and TRACERT</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+An ATL project to run PING and TRACERT
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:fforest@cyberenet.net">Fred Forester</A>.
+
+<!-- Sample image and source code/demo project -->
+<P><A HREF="atl_icmpcom.zip">Download Source Code and Example</A></p>
+<br>
+
+<!-- The article... -->
+
+<P>The Icmpcom project is a basic ALT template created by the ATL wizard. 
+The control acts as an interface to the ICMP.DLL . This DLL is supplied by MS to allow     
+PING and TRACERT’s to be run under a dos window.     
+
+<P>The Control can be used by a VB5 app to create a nice list box and series of     
+button and edit boxes to provide a user interface to PING and TRACERT.     
+
+<P>ICMP.DLL is impleted via a Thread which is started when the StartPing method is     
+called. The thread continues to run till the operation finishes or is canceled via     
+a StopPing call. Tracert is implemented automatically when a StartPing request     
+is issued and the tracert option in the parmlist is TRUE.     
+
+<P>The Methods should be invoked in the following order. SetPingVariables and RunPing
+can be called as a request is needed. When the app terminates be sure to call     
+StopPing.</P>
+
+<P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+StartICMP</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+Must be the first call made to the control.
+Loads and initializes the DLL returns an     
+error message thru the event sink if failed</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+SetPingVariables(……)</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+Just That. It accepts most all of the options
+accepted by the Dos Ping. It can support     
+all of them if you want to code them up.</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<P>RunPing()</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+We can finally issue a ping request.     
+</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+StopPing()</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+tries to cancel the operation that is in
+progress </TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+StopICMP</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+Last call to the control. Unloads the DLL
+and cleans up Winsock</TD>
+</TR>
+</TABLE>
+
+<P>The Events will call into the container under 3 possible conditions.     
+<OL>
+
+<LI>When the Ping/Tracert request wants to send back a reply.</LI>
+<LI>When the Ping/Tracert request is completed</LI>
+<LI>When StopICMP is called.</LI></OL>
+
+
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<P>PingMsgEvent(BSTR)</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>Passes back the data returned from the     
+request. The data is pre formatted and ready     
+to display. </TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<P>PingDoneEvent()</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>After each PING request is completed     
+</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<P>PingTerminated()</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>After StopICMP is called     
+</TD>
+</TR>
+
+</TABLE>
+
+<P>The sample VB and MSVC++ app demonstrates how icmpcom works.     
+
+<P>The VC++ container was a little more work than VB. The Event Sinks     
+had to be added by creating a new class in class wizard based from
+CcmdTarget. The functions (sink events) had to be added to the     
+CPP and H files manually after the class was created. Note the     
+BEGIN_DISPATCH_MAP() section in the cpp file.     
+
+<h4>Reference materials.</h4>
+
+<P>Beginning ATL COM programming Wrox Press <A HREF="http://www.wrox.com/">http://www.wrox.com</A><BR>
+Active/X COM control programming   Wrox Press  <A HREF="http://www.wrox.com/">http://www.wrox.com</A><BR>
+The ATL samples from Visual C++ 5.0<BR>
+The WorldOfATL <A HREF="http://www.worldofatl.com/">http://www.worldofatl.com</A><BR>
+MFC CodeGuru  ATL Section  <A HREF="http://www.codeguru.com/">http://www.codeguru.com</A><BR>
+MSJ June 1998  <A HREF="http://www.microsoft.com/msj">http://www.microsoft.com/msj</A><BR>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 22 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

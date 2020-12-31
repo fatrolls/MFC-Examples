@@ -1,0 +1,105 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11D2-821E-444553540000}
+Provider=%MFGNAME%
+
+[Manufacturer]
+%MFGNAME%=DeviceList
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+AutoLaunchCopyFiles=10
+AutoLaunch98CopyFiles=10
+
+[SourceDisksFiles]
+tstlnch.sys=1
+AutoLaunch.exe=1
+alnch98.exe=1
+altest.exe=1
+StartService.dll=1
+
+[SourceDisksNames]
+1=%INSTDISK%,,,objchk\i386
+
+[DeviceList]
+%DESCRIPTION%=DriverInstall,*WCO1204
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.NT]
+CopyFiles=DriverCopyFiles,AutoLaunchCopyFiles
+AddReg=DriverAddReg.NT
+
+[DriverAddReg.NT]
+HKLM,%RUNONCEKEYNAME%,AutoLaunchStart,,"rundll32 StartService,StartService AutoLaunch"
+
+[DriverCopyFiles]
+tstlnch.sys,,,2
+
+[DriverInstall.NT.Services]
+AddService=TSTLNCH,2,DriverService
+AddService=AutoLaunch,,AutoLaunchService
+
+[AutoLaunchCopyFiles]
+AutoLaunch.exe,,,0x60	; replace newer, suppress dialog
+altest.exe,,,0x10	; don't replace
+StartService.dll,,,0x60
+
+[AutoLaunchService]
+ServiceType=16
+StartType=2
+DisplayName="AutoLaunch Service"
+ErrorControl=1
+ServiceBinary=%10%\AutoLaunch.exe
+
+[DriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\tstlnch.sys
+
+[DriverInstall.nt.hw]
+AddReg=DriverHwAddReg
+
+[DriverHwAddReg]
+HKR,,SampleInfo,,"%wdmbook%\chap12\AutoLaunch\AutoLaunch.htm"
+HKR,,FriendlyName,,%FRIENDLYNAME%
+HKR,,AutoLaunch,,%AUTOLAUNCHCOMMAND%
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall]
+AddReg=DriverAddReg
+CopyFiles=DriverCopyFiles,AutoLaunch98CopyFiles
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,tstlnch.sys
+HKLM,%RUNKEYNAME%,"AutoLaunchService",,alnch98.exe
+HKLM,%RUNONCEKEYNAME%,AutoLaunchStart,,"alnch98"
+
+[DriverInstall.HW]
+AddReg=DriverHwAddReg
+
+[AutoLaunch98CopyFiles]
+alnch98.exe,,,0x60
+altest.exe,,,0x10
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Walter Oney Software"
+INSTDISK="Walter Oney Software Installation Disc"
+DESCRIPTION="AutoLaunch Test Device"
+FRIENDLYNAME="AutoLaunch Test Device"
+AUTOLAUNCHCOMMAND="%windir%\altest.exe %s %s"
+RUNKEYNAME="Software\Microsoft\Windows\CurrentVersion\Run"
+RUNONCEKEYNAME="Software\Microsoft\Windows\CurrentVersion\RunOnce"
+

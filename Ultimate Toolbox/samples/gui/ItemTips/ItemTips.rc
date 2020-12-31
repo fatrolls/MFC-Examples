@@ -1,0 +1,222 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""UTSampleAbout.rc"" \r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\ItemTips.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ItemTips.ico"
+IDI_ICONLIST1           ICON                    "res\\icon1.ico"
+IDI_ICONLIST2           ICON                    "res\\icon2.ico"
+IDI_ICONLIST3           ICON                    "res\\icon3.ico"
+IDI_ICONLIST4           ICON                    "res\\icon4.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "ItemTips MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "ItemTips"
+            VALUE "LegalCopyright", "Copyright (C) 1998"
+            VALUE "OriginalFilename", "ItemTips.EXE"
+            VALUE "ProductName", "ItemTips Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_STANDARD DIALOG  0, 0, 298, 189
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Standard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST_STANDARD,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_EDITLABELS | WS_BORDER | WS_TABSTOP,18,18,180,156
+    GROUPBOX        "Item Tip in standard CListCtrl",IDC_STATIC,7,7,284,175
+    CONTROL         "Customize ItemTip",IDC_CHECK_CUSTOMIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,22,80,10
+    GROUPBOX        "",IDC_STATIC,203,40,82,134
+    PUSHBUTTON      "Background Color",IDC_BUTTON_BKCOLOR,211,50,66,16
+    EDITTEXT        IDC_EDIT_BKCOLOR,211,69,66,13,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Text Font",IDC_BUTTON_TEXTFONT,211,101,66,16
+    EDITTEXT        IDC_EDIT_TEXTFONT,211,120,66,13,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "Smart drawing",IDC_CHECK_SMART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,211,158,68,9
+END
+
+IDD_DIALOG_DERIVED DIALOG  0, 0, 298, 189
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Derived"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST_STANDARD,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_EDITLABELS | WS_BORDER | WS_TABSTOP,18,18,180,156
+    GROUPBOX        "Item Tip in CListCtrl-derived control",IDC_STATIC,7,7,284,175
+    CONTROL         "Customize ItemTip",IDC_CHECK_CUSTOMIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,22,80,10
+    GROUPBOX        "",IDC_STATIC,203,40,82,134
+    PUSHBUTTON      "Background Color",IDC_BUTTON_BKCOLOR,211,50,66,16
+    EDITTEXT        IDC_EDIT_BKCOLOR,211,69,66,13,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Text Font",IDC_BUTTON_TEXTFONT,211,101,66,16
+    EDITTEXT        IDC_EDIT_TEXTFONT,211,120,66,13,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "Smart drawing",IDC_CHECK_SMART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,211,158,68,9
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOG_STANDARD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 291
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 182
+    END
+
+    IDD_DIALOG_DERIVED, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 291
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 182
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ItemTips..."
+    ID_DESCRIPTION_FILE     "ItemTipsInfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "ItemTips for CListCtrl"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "UTSampleAbout.rc" 
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\ItemTips.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

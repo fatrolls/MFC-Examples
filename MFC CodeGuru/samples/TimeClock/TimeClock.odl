@@ -1,0 +1,12 @@
+// TimeClock.odl : type library source for TimeClock.exe
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (TimeClock.tlb).
+
+[ uuid(600F0271-D763-11D0-90C3-0060976CDDF4), version(1.0) ]
+library TimeClock
+{
+	importlib("stdole32.tlb");
+	
+	//{{AFX_APPEND_ODL}}
+};

@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Classes for new IE4 controls</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Classes for new IE4 controls</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:lbarreira@ip.pt">Luis Barreira</A>.
+
+
+<P>The zip file contains a set of classes that allow the use of many of the new IE4 controls in any C++ program. The code on these classes is based on the VC++ Technology Preview, the only thing needed from the Technology Preview is the commctrl.h file. Included are classes for:
+
+<ul>
+<li>ComboBoxEx (like normal combo but includes images and allow indents on items)
+<li>DateTime Picker
+<li>Month Calendar
+<li>List control
+<li>ReBar (both ReBar and ReBarCtrl)
+<li>ToolBar (both ToolBar and ToolBar control)
+<li>Tree control
+</ul>
+
+<P>The new classes for the ReBar and the ToolBar also need the new version of CControlBar (also included).
+
+<P>All these classes were built by examinig the old and the new versions and declaring only the differences.
+
+<P>The exceptions are the List and Tree control classes. These were based upon the classes on the DaoView sample. The List control class is virtually identical to the original: it only adds a few methods to make adding and inserting items easier. The Tree control classes include a CTreeNode class that wraps a HTREEITEM and thus makes it much easier to work with Tree controls.
+
+<P><A HREF="IE4Classes.zip">Download Source 40KB</A>
+<P><A HREF="IE4ControlsDemo.zip">Download Demo project 17KB</A>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

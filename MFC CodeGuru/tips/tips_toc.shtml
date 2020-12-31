@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META Name="description" Content="Visual C++ Tips">
+   <META Name="keywords" Content="SOURCE CODE MFC C++ WINDOWS PROGRAMMING PROGRAMMERS TIPS VISUAL HELP CLASS WIZARD 
+   KEYWORDS DEVSTUDIO EDITOR ENHANCED CLASSVIEW">
+   <TITLE>Visual C++ Tips - Table of Contents</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Visual C++ Tips</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+
+<hr>
+
+This section is maintained by the <A HREF="mailto:arasheed@super.net.pk">Asif Rashid </A>
+<UL>
+<LI><A HREF="classwiz_msg_category.shtml">Handle any category of messages using Class Wizard</A></LI>
+<LI><A HREF="classwiz_hide_function.shtml">Hide a function or variable from the Class View</A></LI>
+<LI><A HREF="enhance_help.shtml">Enhance the DevStudio help</A></LI>
+<LI><A HREF="user_def_keywords.shtml">Set syntax coloring for user-defined keywords</A></LI>
+<LI><A HREF="devstudio_tips.shtml">DevStudio Tips</A></LI>
+<LI><A HREF="editor_tips.shtml">Editor Tips</A></LI>
+<LI><A HREF="fileopen.shtml">Opening a File</A></LI>
+<LI><A HREF="visual_studio_full_platforms.shtml">Multiple Platforms in VC++ 5.0 Professional - Matthew Ellis</A></LI>
+<LI><A HREF="infoviewer_assistant.shtml">The InfoViewer Assistant</A></LI>
+
+
+</UL>
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%"><CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT></CENTER>
+</TD>
+
+<TD WIDTH="33%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

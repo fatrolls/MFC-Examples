@@ -1,0 +1,23 @@
+HKCR
+{
+	Rect.Rect.1 = s 'Rect Class'
+	{
+		CLSID = s '{CCA7F360-DAF3-11D0-8C53-0080C73925BA}'
+	}
+	Rect.Rect = s 'Rect Class'
+	{
+		CurVer = s 'Rect.Rect.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CCA7F360-DAF3-11D0-8C53-0080C73925BA} = s 'Rect Class'
+		{
+			ProgID = s 'Rect.Rect.1'
+			VersionIndependentProgID = s 'Rect.Rect'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Free'
+			}
+		}
+	}
+}

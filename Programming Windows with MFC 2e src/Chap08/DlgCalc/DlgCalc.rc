@@ -1,0 +1,231 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\DlgCalc.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\DlgCalc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLGCALC_DIALOG DIALOGEX 0, 0, 108, 133
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "DlgCalc"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDC_DISPLAYRECT,4,12,100,12
+    PUSHBUTTON      "±",IDC_CHGSIGN,4,36,16,12
+    PUSHBUTTON      "Exp",IDC_EXP,24,36,24,12
+    PUSHBUTTON      "Sto",IDC_STO,52,36,24,12
+    PUSHBUTTON      "Rcl",IDC_RCL,80,36,24,12
+    PUSHBUTTON      "Enter",IDC_ENTER,4,52,44,12
+    PUSHBUTTON      "Fix",IDC_FIX,52,52,24,12
+    PUSHBUTTON      "Clx",IDC_CLX,80,52,24,12
+    PUSHBUTTON      "-",IDC_SUBTRACT,4,68,16,12
+    PUSHBUTTON      "7",IDC_7,24,68,24,12
+    PUSHBUTTON      "8",IDC_8,52,68,24,12
+    PUSHBUTTON      "9",IDC_9,80,68,24,12
+    PUSHBUTTON      "+",IDC_ADD,4,84,16,12
+    PUSHBUTTON      "4",IDC_4,24,84,24,12
+    PUSHBUTTON      "5",IDC_5,52,84,24,12
+    PUSHBUTTON      "6",IDC_6,80,84,24,12
+    PUSHBUTTON      "x",IDC_MULTIPLY,4,100,16,12
+    PUSHBUTTON      "1",IDC_1,24,100,24,12
+    PUSHBUTTON      "2",IDC_2,52,100,24,12
+    PUSHBUTTON      "3",IDC_3,80,100,24,12
+    PUSHBUTTON      "÷",IDC_DIVIDE,4,116,16,12
+    PUSHBUTTON      "0",IDC_0,24,116,24,12
+    PUSHBUTTON      ".",IDC_DECIMAL,52,116,24,12
+    PUSHBUTTON      "Del",IDC_DEL,80,116,24,12
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "DlgCalc MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "DlgCalc\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "DlgCalc.EXE\0"
+            VALUE "ProductName", "DlgCalc Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DLGCALC_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 101
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 126
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCEL ACCELERATORS DISCARDABLE 
+BEGIN
+    "*",            IDC_MULTIPLY,           ASCII,  NOINVERT
+    "+",            IDC_ADD,                ASCII,  NOINVERT
+    "-",            IDC_SUBTRACT,           ASCII,  NOINVERT
+    ".",            IDC_DECIMAL,            ASCII,  NOINVERT
+    "/",            IDC_DIVIDE,             ASCII,  NOINVERT
+    "0",            IDC_0,                  ASCII,  NOINVERT
+    "1",            IDC_1,                  ASCII,  NOINVERT
+    "2",            IDC_2,                  ASCII,  NOINVERT
+    "3",            IDC_3,                  ASCII,  NOINVERT
+    "4",            IDC_4,                  ASCII,  NOINVERT
+    "5",            IDC_5,                  ASCII,  NOINVERT
+    "6",            IDC_6,                  ASCII,  NOINVERT
+    "7",            IDC_7,                  ASCII,  NOINVERT
+    "8",            IDC_8,                  ASCII,  NOINVERT
+    "9",            IDC_9,                  ASCII,  NOINVERT
+    "C",            IDC_CLX,                VIRTKEY, NOINVERT
+    "E",            IDC_EXP,                VIRTKEY, NOINVERT
+    "F",            IDC_FIX,                VIRTKEY, NOINVERT
+    "P",            IDC_CHGSIGN,            VIRTKEY, NOINVERT
+    "R",            IDC_RCL,                VIRTKEY, NOINVERT
+    "S",            IDC_STO,                VIRTKEY, NOINVERT
+    VK_BACK,        IDC_DEL,                VIRTKEY, NOINVERT
+    VK_DELETE,      IDC_DEL,                VIRTKEY, NOINVERT
+    VK_RETURN,      IDC_ENTER,              VIRTKEY, NOINVERT
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\DlgCalc.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

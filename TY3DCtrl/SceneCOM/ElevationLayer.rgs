@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.ElevationLayer.1 = s 'ElevationLayer Class'
+	{
+		CLSID = s '{07AF8F1A-7655-432A-A5AA-9C0509B9C47F}'
+	}
+	TY3DCtrl.ElevationLayer = s 'ElevationLayer Class'
+	{		
+		CurVer = s 'TY3DCtrl.ElevationLayer.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {07AF8F1A-7655-432A-A5AA-9C0509B9C47F} = s 'ElevationLayer Class'
+		{
+			ProgID = s 'TY3DCtrl.ElevationLayer.1'
+			VersionIndependentProgID = s 'TY3DCtrl.ElevationLayer'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{40937355-B66F-40ED-815C-32F09B862F13}'
+			Version = s '1.0'
+		}
+	}
+}

@@ -1,0 +1,84 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Lutz Kretzschmar">
+   <TITLE>Doc/View - Intellimouse panning (improved Auto-Panning Windows)</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Intellimouse panning (improved Auto-Panning Windows)
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:lutz@stmuc.com">Lutz Kretzschmar</A>.
+
+
+<!-- The article... -->
+
+<p>This article improves on the code submitted by Umut Alev, <A HREF="autopan.shtml">
+  Auto-Panning Windows</A>.</p>
+
+<p>Ever since I saw the use of this Intellimouse control in the Infoviewer of DevStudio and later in
+  Microsofts Internet Explorer, I've wanted an improved version that didn't strain the eyes and
+  had much finer increments than 1-pixel, 2-pixels etc. Eudora Pro can use Microsofts viewer and
+  since I read a number of newsletters, the scrolling is either too slow or too fast. I also wanted the
+  panning to be simultanoeusly possible both vertically and horizontally.</P>
+
+ <H4>Improvements made</H4>
+ <UL>
+  <LI>Scroll simultaneously in horizontal and vertical directions. I added code to Umuts class
+    to handle scrolling both vertically and horizontally at the same time (you can still have
+    it the old way, it's a BOOL switch). The cursor does not change in this case, it remains
+    the pointer in all four directions.
+  <LI>Scroll with much finer resolution (much smoother) by time and pixel dependant scrolling.
+ </UL>
+
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="intellipan.zip">Download source - 5KB</A>
+
+<P>Download the two source files mfxWhlPan.h and mfxWhlPan.c in <A HREF="intellipan.zip">this ZIP file.</A>
+	  You must download Umats <A HREF="autopan_demo.zip">demo project - 38KB</A> or his
+   <A HREF="autopan_source.zip">source - 4.9KB</A> and replace the two files.
+</P>
+
+<!-- Remember to update this -->
+<p>Date Posted: <!-- date here -->5/22/98
+<br>Posted by: <A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,38 @@
+$$DOC_REGID$$=$$DOC_REGNAME$$
+$$IF(MINI_SERVER || FULL_SERVER || CONTAINER_SERVER)
+$$DOC_REGID$$\protocol=
+$$DOC_REGID$$\protocol\StdFileEditing=
+$$DOC_REGID$$\protocol\StdFileEditing\server=$$CREATOR$$
+$$DOC_REGID$$\protocol\StdFileEditing\verb=
+$$DOC_REGID$$\protocol\StdFileEditing\verb\0=Edit
+$$DOC_REGID$$\Insertable=
+$$DOC_REGID$$\CLSID={$$APP_CLSID_REG$$}
+
+CLSID\{$$APP_CLSID_REG$$}=$$DOC_REGNAME$$
+CLSID\{$$APP_CLSID_REG$$}\DefaultIcon=128
+CLSID\{$$APP_CLSID_REG$$}\LocalServer=$$CREATOR$$
+CLSID\{$$APP_CLSID_REG$$}\ProgID=$$DOC_REGID$$
+CLSID\{$$APP_CLSID_REG$$}\MiscStatus=0
+CLSID\{$$APP_CLSID_REG$$}\AuxUserType=
+CLSID\{$$APP_CLSID_REG$$}\AuxUserType\3=$$Root$$
+CLSID\{$$APP_CLSID_REG$$}\AuxUserType\2=$$DOC_FILENEW$$
+CLSID\{$$APP_CLSID_REG$$}\Insertable=
+CLSID\{$$APP_CLSID_REG$$}\Verb=
+CLSID\{$$APP_CLSID_REG$$}\Verb\1=Open,0,2
+CLSID\{$$APP_CLSID_REG$$}\Verb\0=Edit,0,2
+CLSID\{$$APP_CLSID_REG$$}\InprocHandler=OLE2:Def$DefFSet
+$$ELIF(AUTOMATION)
+$$IF(PROJTYPE_DLG)
+$$Safe_root$$.Application\CLSID={$$APP_CLSID_REG$$}
+
+CLSID\{$$APP_CLSID_REG$$}=$$Safe_root$$ Application
+CLSID\{$$APP_CLSID_REG$$}\ProgID=$$Safe_root$$.Application
+$$ELSE //!DLG
+$$DOC_REGID$$\CLSID={$$APP_CLSID_REG$$}
+
+CLSID\{$$APP_CLSID_REG$$}=$$DOC_REGNAME$$
+CLSID\{$$APP_CLSID_REG$$}\ProgID=$$DOC_REGID$$
+$$ENDIF //DLG
+CLSID\{$$APP_CLSID_REG$$}\LocalServer=$$CREATOR$$
+CLSID\{$$APP_CLSID_REG$$}\InprocHandler=OLE2:Def$DefFSet
+$$ENDIF //SERVERS&AUTOMATION

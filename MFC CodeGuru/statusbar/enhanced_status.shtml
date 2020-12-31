@@ -1,0 +1,75 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>StatusBar -  Enhanced statusbar class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Enhanced statusbar class</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:dougk@axtech.com">Doug Keith</A>. 
+
+
+<P>Displays horizontally scrolling text, vertically scrolling text, changing fonts for 
+each status bar pane, changing font colors for each status bar pane, changing background 
+colors for each status bar pane, displaying a bitmap banner across the status bar.
+
+<P>I was recently involved in a project that required colors along the status bar (basically, an owner-drawn status bar). 
+Although the requirement stopped at colors in certain panes, I went all out and created a class derived from 
+CStatusBar.  My new class (CColorStatusBar) allows for different fonts in each pane, different text colors, 
+different background colors, horizontally scrolling text, vertically scrolling text, diagonally scrolling 
+text (I don't know a use for diagonally scrolling text, but it's fun to watch for a minute), and tiling a bitmap 
+across the status bar - excellent for identifying your software as BETA.  I tried to create the new class to be
+ as close to a drop-in replacement for CStatusBar as possible, but in order to customize each pane, I had to 
+ force a small amount of extra initialization in CMainFrame (or the owner of the status bar).  
+
+
+<P>To exploit the capabilities of the status bar, double-click on a status bar pane to activate the Status 
+Bar Pane Properties. The dialog will allow you to toggle the status bar banner, transparent text, 
+horizontal and vertical scrolling, window pane font, font color, etc. The most remarkable code block is 
+contained in the header file ColorStatusBar.h and implementation file ColorStatusBar.cpp. Contained in 
+these files are the classes CStatusPaneInfo and CColorStatusBar. CStatusPaneInfo contains information 
+specific to a single status bar window pane. Items such as background color, foreground color, horizontal 
+and/or vertical scrolling, pane font, etc. CColorStatusBar keeps an accounting of the status bar window 
+pane information structures through the use of the CObList. Scrolling is accomplished through the use of a 
+timer and a CPoint which remembers the last upper-left position of the previous DrawText call. 
+
+<P>Warning: There is a small amount of additional processing that needs to be accomplished during 
+creation of the status bar in MainFrm.cpp. Basically, the CStatusPaneInfo objects need to be created 
+for use by the OnPaint method in the status bar.
+
+
+<P><a href="statustricks.zip">Download project files</a> 35KB
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

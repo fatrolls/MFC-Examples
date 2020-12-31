@@ -1,0 +1,358 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\AddressBook.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXWabook.rc""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\AddressBook.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About AddressBook"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "AddressBook Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2000",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_ADDRESSBOOK_DIALOG DIALOGEX 0, 0, 278, 263
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "AddressBook"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Exit",IDCANCEL,212,120,50,14
+    PUSHBUTTON      "Find",IDC_BUTTON_FIND,212,33,51,14
+    GROUPBOX        "Address",IDC_STATIC,7,7,263,63
+    CONTROL         "List1",IDC_LIST_RESULTS,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,140,264,116
+    PUSHBUTTON      "Create",IDC_BUTTON_CREATE,155,17,51,14
+    PUSHBUTTON      "Edit",IDC_BUTTON_EDIT,212,17,51,14
+    PUSHBUTTON      "Find dialog",IDC_BUTTON_FINDDIALOG,64,120,51,14
+    EDITTEXT        IDC_EDIT_LDAP,13,90,184,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Search",IDC_BUTTON_LDAP,211,89,51,14
+    PUSHBUTTON      "Delete",IDC_BUTTON_DELETE,155,34,51,14
+    PUSHBUTTON      "Browse",IDC_BUTTON_ADDRESS,7,120,51,14
+    LTEXT           "Name",IDC_STATIC,13,23,23,9
+    LTEXT           "Email",IDC_STATIC,13,38,20,9
+    EDITTEXT        IDC_EDIT_EMAIL,43,35,99,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_NAME,43,20,99,12,ES_AUTOHSCROLL
+    LTEXT           "Search by ",IDC_STATIC,167,53,36,9
+    COMBOBOX        IDC_COMBO_SEARCHBY,212,51,51,51,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "LDAP",IDC_STATIC,7,75,264,37
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "AddressBook MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "AddressBook\0"
+            VALUE "LegalCopyright", "Copyright (C) 2000\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "AddressBook.EXE\0"
+            VALUE "ProductName", "AddressBook Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_ADDRESSBOOK_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 271
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 256
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_ADDRESSBOOK_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_SEARCHBY, 0x403, 6, 0
+0x6d45, 0x6961, 0x006c, 
+    IDC_COMBO_SEARCHBY, 0x403, 5, 0
+0x614e, 0x656d, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About AddressBook..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DESCRIPTION_FILE     "OXWABook.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_BROWSE DIALOGEX 0, 0, 317, 204
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Customize appearence of the Browse dialog"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,260,183,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,207,183,50,14
+    CONTROL         "First",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    22,44,29,10
+    CONTROL         "Second",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,22,99,41,10
+    CONTROL         "Third",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,22,154,32,10
+    COMBOBOX        IDC_COMBO1,63,41,72,46,CBS_DROPDOWNLIST | WS_DISABLED | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Edit boxes",IDC_STATIC,7,7,146,190
+    EDITTEXT        IDC_EDIT_ENTRY,205,38,98,13,ES_AUTOHSCROLL
+    LTEXT           "New Entry",IDC_STATIC,164,42,37,11
+    CONTROL         "Default",IDC_RADIO_DEFAULT,"Button",BS_AUTORADIOBUTTON,
+                    13,17,40,10
+    CONTROL         "Custom",IDC_RADIO_CUSTOM,"Button",BS_AUTORADIOBUTTON,71,
+                    17,41,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,15,31,130,50,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,15,86,130,50,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,15,141,130,50,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Title",IDC_STATIC,21,65,17,11
+    EDITTEXT        IDC_EDIT1,42,63,93,13,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Title",IDC_STATIC,21,120,17,11
+    LTEXT           "Title",IDC_STATIC,21,175,17,11
+    EDITTEXT        IDC_EDIT2,42,118,93,13,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EDIT3,42,173,93,13,ES_AUTOHSCROLL | WS_DISABLED
+    COMBOBOX        IDC_COMBO2,63,96,72,46,CBS_DROPDOWNLIST | WS_DISABLED | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO3,63,151,72,46,CBS_DROPDOWNLIST | WS_DISABLED | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Destination",IDC_STATIC,164,61,37,11
+    LTEXT           "Caption",IDC_STATIC,164,24,31,11
+    EDITTEXT        IDC_EDIT_DEST,205,57,98,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_CAPTION,205,19,98,13,ES_AUTOHSCROLL
+    GROUPBOX        "",IDC_STATIC,157,7,153,74
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG_BROWSE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 197
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DIALOG_BROWSE DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 8, 0
+0x414d, 0x4950, 0x545f, 0x004f, 
+    IDC_COMBO1, 0x403, 8, 0
+0x414d, 0x4950, 0x435f, 0x0043, 
+    IDC_COMBO1, 0x403, 9, 0
+0x414d, 0x4950, 0x425f, 0x4343, "\000" 
+    IDC_COMBO2, 0x403, 8, 0
+0x414d, 0x4950, 0x545f, 0x004f, 
+    IDC_COMBO2, 0x403, 8, 0
+0x414d, 0x4950, 0x435f, 0x0043, 
+    IDC_COMBO2, 0x403, 9, 0
+0x414d, 0x4950, 0x425f, 0x4343, "\000" 
+    IDC_COMBO3, 0x403, 8, 0
+0x414d, 0x4950, 0x545f, 0x004f, 
+    IDC_COMBO3, 0x403, 8, 0
+0x414d, 0x4950, 0x435f, 0x0043, 
+    IDC_COMBO3, 0x403, 9, 0
+0x414d, 0x4950, 0x425f, 0x4343, "\000" 
+    0
+END
+
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\AddressBook.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXWabook.rc"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

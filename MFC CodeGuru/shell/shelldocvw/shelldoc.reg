@@ -1,0 +1,13 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+
+HKEY_CLASSES_ROOT\Shelldoc.Application = Shelldoc Application
+HKEY_CLASSES_ROOT\Shelldoc.Application\CLSID = {A773FE72-4192-11D1-AE13-006097D60BAC}
+
+HKEY_CLASSES_ROOT\CLSID\{A773FE72-4192-11D1-AE13-006097D60BAC} = Shelldoc Application
+HKEY_CLASSES_ROOT\CLSID\{A773FE72-4192-11D1-AE13-006097D60BAC}\ProgId = Shelldoc.Application
+HKEY_CLASSES_ROOT\CLSID\{A773FE72-4192-11D1-AE13-006097D60BAC}\LocalServer32 = SHELLDOC.EXE

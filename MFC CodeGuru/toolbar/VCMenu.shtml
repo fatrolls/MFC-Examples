@@ -1,0 +1,176 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>ToolBar - Visual Studio/Office 97 style Flat Toolbar and Dockable Menu bar</TITLE>
+</HEAD>
+
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Visual Studio/Office 97 style Flat Toolbar and Dockable Menu bar
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This code was contributed by <A HREF="mailto:tmh@netfusion.co.uk">Tony Hoyle</a>
+
+<br><br><IMG SRC="VCMenu.gif"><A HREF="VCMenu.zip">Download source files and Sample project (287 Kb)</a>.
+
+<br><br>
+
+<p>This is a menu/toolbar/dockbar combination which is as close to the VC5/Office style as
+I could get.
+
+<p>This code consists of 9 classes: 
+
+<h4>CNGenericDockBar</h4>
+
+<p>The standard CDockBar overlaps the toolbars by a couple of pixels, which is 
+undesirable if you want a '3d' look as we do. This is just a simple hack to 
+remove the overlap on our toolbars.
+
+<h4>CNGenericMenu</h4>
+
+<p>This is the draggable menu. It creates a toolbar with text items only and 
+TBSTYLE_DROPDOWN style. It attempts to emulate the operation of a VC/Office menu 
+as accurately as possible. When a button is clicked, the menu creates a window 
+of type CNGenericPopup, which draws the menu.  A single menu is created by the
+frame window class.
+
+<h4>CNGenericPopup</h4>
+
+<p>This draws a standard popup menu, but passes keypresses (left/right arrow 
+mainly) to the owner toolbar. At present it doesn't put the icons on the left as 
+in VC5, but this should be trivial to implement. It uses a standard CMenu 
+object, walks each menu item and draws it.
+
+A current limitation of this implementation is that it doesn't support submenus.  
+
+<h4>CNGenericToolBar</h4>
+
+<p>This is based on the code by Roger Onslow, with modifications to allow 
+displaying of text on the buttons, and accelerator keys. This works as a drop 
+in replacement for CToolBar.  
+
+Functions:
+
+<PRE><TT><FONT COLOR="#990000">	BOOL CreateEx(CWnd* pParentWnd, DWORD dwExStyle = TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
+	DWORD dwStyle = WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_SIZE_DYNAMIC,
+	UINT nID = AFX_IDW_TOOLBAR, LPCTSTR szTitle = NULL)
+</PRE></TT></FONT>
+
+Extended create function.
+
+<PRE><TT><FONT COLOR="#990000">	BOOL SetVisualState(BOOL bButtons, BOOL bText)
+</PRE></TT></FONT>
+
+Calling CNGenericToolBar::SetVisualState() allows
+you to set how toolbars are shown (with/without bitmaps or text).  It is usual
+to do this on your CMainFrame::OnCreate.
+
+<PRE><TT><FONT COLOR="#990000">
+	BOOL GetVisualState(BOOL bText)                   Return visibility of text or bitmaps on toolbars.
+	BOOL GenericToolBarModifyStyle(DWORD dwRemove, 
+	                               DWORD dwAdd)       Adds/removes extended toolbar styles
+	                NGTB_NO_SYSMENU                   (Override system menu on undocked toolbars)
+	DWORD GetGenericToolBarStyle()                    Returns current extended toolbar style
+</PRE></TT></FONT>
+
+<h4>CNMDIClient</h4>
+
+<p>A quick hack to handle the change of menu when a document is opened/closed. If 
+anyone has a better way to do this I'd be glad to hear it! 
+
+<h4>CNMDIGenericMenu</h4>
+
+<p>Subclass of CNGenericMenu with an added function to subclass the MDIClient for MDI
+apps.
+
+<h4>CNMDIMenuFrameWnd</h4>
+
+<p>Overrides necessary parts of CMDIFrameWnd, to allow proper hotkey operation of 
+the menu/toolbar and to replace the CDockBar for the frame. Fairly trivial to 
+use - just derive your CMainFrame from this & the menus work automatically. 
+
+<h4>CNMiniDockFrameWnd</h4>
+
+<p>Implements extended style NTGB_NOSYSMENU in toolbar styles (see CNGenericToolBar)
+
+<h4>CNSDIMenuFrameWnd</h4>
+
+<p>Overrides necessary parts of CFrameWnd, to allow proper hotkey operation of 
+the menu/toolbar and to replace the CDockBar for the frame.
+
+
+<h4>Usage:</h4>
+
+<p>Requirements:<br>
+VC++5 with service pack 3.<br>
+commctrl.dll 4.71 or above.<br>
+
+<p>Simple usage:
+
+<p>Create an MDI or SDI app. Add the following to the end of your stdafx.h
+
+<PRE><TT><FONT COLOR="#990000">
+#define AUTO_SUBCLASS
+#include <NGToolbar.h>
+</PRE></TT></FONT>
+
+<p>Complex(!) usage:
+
+<p>Derive your main frame from CNMDIFrameWnd or CNSDIFrameWnd
+Use CNGenericToolBar instead of CToolBar
+You can set the text that appears on the toolbar buttons by
+putting a third 'line' in its associated text (eg. xxx\nyyyy\nzzz).
+To set the startup state of a toolbar call CNGenericToolBar::SetVisualState.
+
+<p>Rebuilding NGTLB10x.DLL:
+
+<p>Requirements:<br>
+VC++5 with service pack 3.<br>
+commctrl.dll 4.71 or above.<br>
+Up to date commctrl.h<br>
+
+<p>Build will create NGTLB10R.DLL for release and NGTLB10D.DLL for debug.
+Library inclusion is automatic (see NGToolbar.h)
+
+
+<p><b>Note:</b> Compilation requires an up to date commctrl.h from Microsoft. 
+There is one at <a href="http://premium.microsoft.com/msdn/library/sdkdoc/c622_7nzn.htm">
+http://premium.microsoft.com/msdn/library/sdkdoc/c622_7nzn.htm</a>.
+
+
+<p>Updated 5 May 1998.
+<P>
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%"><TR>
+
+<TD WIDTH="33%">
+<FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR></TABLE>
+
+<!-- Counter -->
+
+
+</BODY>
+</HTML>

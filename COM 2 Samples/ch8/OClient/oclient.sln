@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "oclient", "oclient.vcxproj", "{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		Unicode Debug|Win32 = Unicode Debug|Win32
+		Unicode Release|Win32 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}.Debug|Win32.Build.0 = Debug|Win32
+		{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}.Release|Win32.ActiveCfg = Release|Win32
+		{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}.Release|Win32.Build.0 = Release|Win32
+		{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{3F3F6B7A-2578-8AAF-1377-691B73BEB68E}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

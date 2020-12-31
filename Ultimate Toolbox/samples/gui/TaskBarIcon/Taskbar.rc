@@ -1,0 +1,221 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Taskbar.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\Taskbar.ico"
+IDI_ICON2               ICON                    "res\\icon1.ico"
+IDI_ICON1               ICON                    "res\\idr_icon.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TASKBAR_DIALOG DIALOGEX 0, 0, 188, 199
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Demo of COXTaskbarIcon"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Check out the new icon that will appear at the right hand side of of the Windows Taskbar ...",IDC_STATIC,7,7,168,19
+    LTEXT           "1. Toggle:",IDC_STATIC,7,31,33,8
+    PUSHBUTTON      "Show",IDC_TOGGLE_SHOW,48,28,55,14
+    LTEXT           "2. Icon:",IDC_STATIC,7,50,25,8
+    CONTROL         "",IDC_ICON1,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,47,51,9,8
+    CONTROL         "",IDC_ICON2,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,97,51,9,8
+    ICON            IDI_ICON1,IDC_STATIC,61,46,21,20,WS_GROUP
+    ICON            IDI_ICON2,IDC_STATIC,113,46,21,20
+    LTEXT           "3. Tooltip Text:",IDC_STATIC,7,71,48,8
+    EDITTEXT        IDC_EDIT_TOOLTIP,61,68,87,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Set",IDC_SET_TOOLTIP,155,68,26,14
+    LTEXT           "4. Route messages to:",IDC_STATIC,7,91,72,8
+    CONTROL         "Me",IDC_ROUTE_TO_ME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,87,91,26,10
+    LTEXT           "COXTaskbarIcon Member Function:",IDC_STATIC,15,110,114,8
+    EDITTEXT        IDC_EDIT_CODES,7,121,173,14,ES_MULTILINE | NOT WS_TABSTOP
+    DEFPUSHBUTTON   "Minimize",IDC_MINIMIZE,41,178,50,14
+    PUSHBUTTON      "Exit",IDCANCEL,97,178,50,14
+    EDITTEXT        IDC_EDIT_MOUSEMSG,7,156,173,14,ES_AUTOHSCROLL
+    LTEXT           "Mouse Messages:",IDC_STATIC,15,145,58,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "TASKBAR MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "TASKBAR"
+            VALUE "LegalCopyright", "Copyright © 1996"
+            VALUE "OriginalFilename", "TASKBAR.EXE"
+            VALUE "ProductName", "TASKBAR Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_TASKBAR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 181
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 192
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_POPUPMENU MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "Open",                        ID_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Mouse Msg",                   ID_POPUP_MOUSEMSG
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "About This"
+    ID_DESCRIPTION_FILE     "taskbarInfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "TaskBarDemo"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Taskbar.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

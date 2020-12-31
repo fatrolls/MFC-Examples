@@ -1,0 +1,414 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="V. Rama Krishna ">
+   <TITLE>ActiveX script hosting - 2</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">ActiveX script hosting - 2</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:andrew@kms.donetsk.ua">Andrew Garbuzov</A>.
+
+<!--  -->
+<p>
+This code represents one of my current experiments with active script
+hosting. I am not sure if the code will be useful for you, i am not even
+sure if the code will be useful for me either. The explanation of my
+uncertainty is in the readme.txt file, packed along with the project.
+I have prepared this article not just to show you an example, but mostly
+to ask you some questions being in hope for receiving some answers.
+
+<p>
+In this experiment i have tried to make a program that would use the
+Microsoft Forms 2.0 designer, along with abilities to control the form,
+created by the designer, with programs written in VBScript.
+
+<p>
+When you run the program open the file "TestForm.frm". This is an
+example of form. You can use the menu item "View|Design mode" to
+edit form's design, and the menu item "View|Edit script" to see
+the VBScript source of the form.
+
+<p>
+I have tested the program under NT 4.0 and Windows 95 (4.00.950).
+Under NT4 everything goes ok, but under Windows 95 i see messages
+during execution in the debug window telling:
+
+<p>
+First-chance exception in MsForm.exe (GDI32.DLL): 0xC0000005: Access Violation.
+
+<p>
+When i try to exit, the program causes a GPF in OLEAUTO.DLL and dies.
+I do not know so far what is wrong with my code.
+
+<p>
+I am not going to describe how to create active script hosts. There are
+some articles in Internet concerning the topic. I have even tried to
+describe it myself. Here i will try to explain how to add the MSForm designer
+to your MFC project, and how to connect the designer to the scripting engine.
+
+<p>
+If you run the "OLE-COM Object Viewer" program and select the menu item
+"File|View TypeLib..." and select the "FM20.DLL" file located
+in your Windows System folder, you will see the coclass "UserForm".
+Observe that the interface to the "UserForm" coclass (_UserForm) has been
+inherited form the interface to the "Frame" colass (IOptionFrame). Having
+noticed this feature, i have made some steps for creating an MFC wrapper
+class for MSForm designer in my project.
+
+
+<ol>
+  <li> In the Developer studio selected  the menu item
+"Project|Add to project|Components and controls".
+
+  <li> In the "Registered ActiveX Controls" folder selected the
+"Microsoft Forms 2.0 Frame" control. The MSDEV created some wrapper
+MFC classes to work with Microsoft controls.
+
+  <li>In all created files replaced the word "OptionFrame" with "UserForm".
+I have changed the names of the "optionframe.cpp" and "optionframe.h" files
+accordingly.
+
+  <li> Modified the CUserForm::Create functions with new ones which use
+CLSID of the "UserForm" coclass.
+
+  <li> Manualy implemented the hidden "DesignMode" property of the form.
+
+</ol>
+
+<p>
+Thus i have created the MFC wrapper class for MSForm control. The name
+of the wrapper class is CUserForm.
+
+<p>
+My next step was creating the four classes CMsFormDoc, CMsFormView,
+CVbscriptView and CMSFormFrame.
+
+<p>
+The CMsFormDoc object almost does nothing except of serializing
+and providing links between FormView and VbscriptView objects.
+
+<p>
+The CVbscriptView is a simple editor to edit a vbscript code for
+a form.
+
+<p>
+The CMSFormFrame provides a way of containing two views - the MsFormView,
+and the CVbscriptView together in a single frame.
+
+<p>
+The CMsFormView object carries on and controls a CUserForm object and
+on user requests switches on and off the design mode of the form.
+
+<p>
+Take a look at the CMsFormView::GetUserFormUnknown() function. If you
+want to obtain the IUnknown interface to an object created by 
+CWnd::CreateControl function, you will not be able to get it by calling
+the GetIDispatch function. CWnd object incapsulates the OLE control
+container features by some undocumented classes which are defined
+in the <occimpl.h> header file located in the MFC source folder.
+
+
+<pre><tt><font COLOR="#990000">
+//The code to obtain the IUnknown interface to the control
+IUnknown* CMsFormView::GetUserFormUnknown()
+{
+	IUnknown* pUnk=m_UserForm.GetControlUnknown();
+	return pUnk;
+}
+
+</font></tt></pre>
+
+<p>
+The two functions - CMsFormView::WriteDesignToFile(LPCTSTR lpstrFileName)
+and CMsFormView::ReadDesignFromFile(LPCTSTR lpstrFileName) implement the
+form control contents writing to and reading from a temporary file.
+
+<p>
+The CMsFormDoc::Serialize(CArchive&amp; ar) function use these functions
+to store and load the design information.
+
+
+<p>
+Connecting the form with the scripting engine is not difficult. In this
+experiment i used the CScriptEngine class provided by .... 
+I have made the CMsFormScriptEngine class derived form CScriptEngine to
+pass the information needed from the form to the scripting engine. An
+instance of the CMsFormScriptEngine is a part of CMsFormView class.
+
+<pre><tt><font COLOR="#990000">
+class CMsFormView : public CView
+{
+	.....
+	CUserForm				m_UserForm;
+	CMsFormScriptEngine		m_ScriptEngine;
+};
+
+</font></tt></pre>
+
+<p>
+The CMsFormView::Run function feeds the scripting engine with named
+items, script code, and switches it to the "connected" state. Here
+there is a problem. A scripting engine can process events from
+objects, referenced by the AddNamedItem function, and their properties
+- objects which can source events by themselves. The information about
+object's properties the scripting engine obtains from the type library.
+Since form designer has undefined set of properties, at the
+moment of compilation of the project, the type library must be
+created dynamicaly. Moreover, the IDispatch interface to such an object
+must support dynamic properties. The example of creating such an object
+and such a typelib is the "Axscript" project, located in the ActiveX SDK
+examples folder. I am not familiar with the ICreateTypeLib, ICreateTypeInfo
+and IProvideMultipleInfo interfaces. I failed to find any documentation
+to these interfaces. When i tried to repeat the code, shown in the example,
+whith MFC, i had not achieved the results i wanted. 
+
+<p>
+I have solved the problem by adding references to all the controls in the
+form to the scripting engine. Observe that the reference to the "Form"
+named item is added with the SCRIPTITEM_GLOBALMEMBERS. All named items are
+added with the SCRIPTITEM_ISVISIBLE|SCRIPTITEM_ISSOURCE flags.
+
+
+<pre><tt><font COLOR="#990000">
+void CMsFormView::Run()
+{
+	if(!m_ScriptEngine.IsCreated())
+		m_ScriptEngine.Create(CLSID_VBScript);
+	else
+	{
+		SCRIPTSTATE ss=m_ScriptEngine.GetScriptState();
+		if(ss==SCRIPTSTATE_CONNECTED)
+			return;
+	}
+
+	CString strScript=GetDocument()-&gt;GetScriptText();
+	if(!strScript.IsEmpty() &amp;&amp; m_UserForm.GetDesignMode()!=-1)
+	{
+		HRESULT		hr;
+		
+		USES_CONVERSION;
+		LPCOLESTR	pstrItemName = T2COLE(_T("Form"));
+		LPCOLESTR	pstrCode = T2COLE(strScript);
+		EXCEPINFO   ei;
+		
+		
+		hr=m_ScriptEngine.AddNamedItem(pstrItemName, SCRIPTITEM_ISVISIBLE|SCRIPTITEM_ISSOURCE|SCRIPTITEM_GLOBALMEMBERS);
+		if(FAILED(hr))
+		{
+			AfxMessageBox(_T("AddNamedItem failed. Item name: &lt;Form&gt;."));
+			return;
+		}
+		
+		//Adding form controls
+		for(long i=0; i&lt;m_UserForm.GetControls().GetCount(); i++)
+		{
+			CString strControlName=m_UserForm.GetControls()._GetItemByIndex(i).GetName();
+
+			LPCOLESTR	pstrControlName;
+			pstrControlName = T2COLE(strControlName);
+			hr=m_ScriptEngine.AddNamedItem(pstrControlName,SCRIPTITEM_ISVISIBLE | SCRIPTITEM_ISSOURCE);
+			if(FAILED(hr))
+			{
+				CString strError=_T("AddNamedItem failed. Item name: &lt;");
+				strError+=strControlName+_T("&gt;");
+				AfxMessageBox(strError);
+				return;
+			}
+		}
+			
+		if(SUCCEEDED(m_ScriptEngine.ParseScriptText(pstrCode, pstrItemName, NULL, NULL, 0, 0, 0L, NULL, &amp;ei)))
+			m_ScriptEngine.Run();
+		else
+			AfxMessageBox(_T("Can't parse script text"));
+	}
+}
+
+</font></tt></pre>
+
+<p>
+The interfaces to the named items are obtained by the scripting engine in the
+CMsFormScriptEngine::OnGetItemInfo function. The CMsFormScriptEngine object
+has a back pointer (m_pView) to the CMsFormView object in which it is
+contained. The technique of obtaining the class information of an object
+i have seen in several examples. I just do not understand why the
+IProvideClassInfo interface to the object is not released. When i tried
+to release the interface, my program caused a GPF.
+
+<pre><tt><font COLOR="#990000">
+IProvideClassInfo* pProvideClassInfo = NULL;
+hr = pUnk-&gt;QueryInterface(IID_IProvideClassInfo, (void**)&amp;pProvideClassInfo);
+			
+// if the object supports IprovideClassInfo ...
+if (SUCCEEDED(hr) &amp;&amp; pProvideClassInfo != NULL)
+{
+	hr = pProvideClassInfo-&gt;GetClassInfo(ppTypeInfo);
+	
+	//The pProvideClassInfo-&gt;Release() should not be called. Why?
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CMsFormScriptEngine message handlers
+HRESULT CMsFormScriptEngine::OnGetItemInfo(
+		/* [in] */ LPCOLESTR   pstrName,
+		/* [in] */ DWORD       dwReturnMask,
+		/* [out]*/ IUnknown**  ppUnknownItem,
+		/* [out]*/ ITypeInfo** ppTypeInfo)
+{
+	USES_CONVERSION;
+
+	HRESULT hr=CScriptEngine::OnGetItemInfo(pstrName,dwReturnMask,ppUnknownItem,ppTypeInfo);
+	if(!m_pView)
+		return hr;
+
+	hr=TYPE_E_ELEMENTNOTFOUND;
+	if (dwReturnMask &amp; SCRIPTINFO_ITYPEINFO)
+	{
+		if (!ppTypeInfo)
+			return E_INVALIDARG;
+		*ppTypeInfo = NULL;
+	}
+
+	if (dwReturnMask &amp; SCRIPTINFO_IUNKNOWN)
+	{
+		if (!ppUnknownItem)
+			return E_INVALIDARG;
+		*ppUnknownItem = NULL;
+	}
+
+
+	TCHAR* lpstrItemName=OLE2T(pstrName);
+	IUnknown* pUnk=0;
+
+	if(!_tcscmp(_T("Form"), lpstrItemName))
+	{
+		pUnk=m_pView-&gt;GetUserFormUnknown();
+	}
+	else
+	{
+		CControls Controls=m_pView-&gt;m_UserForm.GetControls();
+		for(long i=0; i&lt;Controls.GetCount(); i++)
+		{
+			CControl C=Controls._GetItemByIndex(i);
+			CString strControlName=C.GetName();
+			
+			if(strControlName==lpstrItemName)
+			{
+				pUnk=C.m_lpDispatch;
+				break;
+			}	
+			
+		}
+	}
+
+	if(pUnk)
+	{
+		if (dwReturnMask &amp; SCRIPTINFO_ITYPEINFO)
+		{
+			IProvideClassInfo* pProvideClassInfo = NULL;
+			hr = pUnk-&gt;QueryInterface(IID_IProvideClassInfo, (void**)&amp;pProvideClassInfo);
+			
+			// if the object supports IprovideClassInfo ...
+			if (SUCCEEDED(hr) &amp;&amp; pProvideClassInfo != NULL)
+			{
+				hr = pProvideClassInfo-&gt;GetClassInfo(ppTypeInfo);
+			}
+		}
+
+		if (dwReturnMask &amp; SCRIPTINFO_IUNKNOWN)
+		{
+			pUnk-&gt;AddRef();
+			*ppUnknownItem=pUnk;
+			hr=S_OK;
+		}
+	}
+
+	return hr;
+}
+
+</font></tt></pre>
+
+<p>
+To enable standard keyboard handling by forms, i have implemented the
+CMsForm::PreTranslateMessage function. It is alomost the same as
+CFormView::PreTranslateMessage, but i had some problems with typing
+in text boxes, so i had to make some alterations.
+
+<pre><tt><font COLOR="#990000">
+BOOL CMsFormView::PreTranslateMessage(MSG* pMsg) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	// allow tooltip messages to be filtered
+	if (CView::PreTranslateMessage(pMsg))
+		return TRUE;
+
+	// don't translate dialog messages when in Shift+F1 help mode
+	CFrameWnd* pFrameWnd = GetTopLevelFrame();
+	if (pFrameWnd != NULL &amp;&amp; pFrameWnd-&gt;m_bHelpMode)
+		return FALSE;
+
+	// since 'IsDialogMessage' will eat frame window accelerators,
+	//   we call all frame windows' PreTranslateMessage first
+	pFrameWnd = GetParentFrame();   // start with first parent frame
+	while (pFrameWnd != NULL)
+	{
+		// allow owner &amp; frames to translate before IsDialogMessage does
+		if (pFrameWnd-&gt;PreTranslateMessage(pMsg))
+			return TRUE;
+
+		// try parent frames until there are no parent frames
+		pFrameWnd = pFrameWnd-&gt;GetParentFrame();
+	}
+
+	
+	//To allow typing in text boxes
+	if (pMsg-&gt;message == WM_CHAR)
+		return FALSE;
+
+	// filter both messages to dialog and from children
+	return PreTranslateInput(pMsg);
+}
+
+</font></tt></pre>
+
+<p>
+That's all. If you have any information concerning the ActiveX script
+hosting technology or dynamic properties support, please send me a message.
+
+<P>Useful References :-<OL>
+<li><A HREF="http://support.microsoft.com/support/downloads/LNP413.asp?PR=ALL&FR=0&M=S&">Microsoft Support - ActiveX Scripting Download Site</A></li>
+<li><A HREF="http://www.vcdj.com/vcdj/may97/axscrip.htm">Visual C++ Developers's Journal May 97 - Steve Wampler's article on Active X Script Hosting</A></li>
+</OL>
+<P><A HREF="msform.exe">Download file</A>. This is a compressed executable.
+
+<!-- end -->
+
+<P>Posted on: April 15, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

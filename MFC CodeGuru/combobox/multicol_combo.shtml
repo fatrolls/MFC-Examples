@@ -1,0 +1,107 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Multicolumn Combobox</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Multicolumn Combobox</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:jack@alpha.fsec.ucf.edu">Jakawan Ratiwanich</A>.
+
+<P><IMG src="multicol_combo.gif">
+<P><IMG src="multicol_combo1.jpg">			
+<P><IMG src="multicol_combo2.jpg">
+
+<P>If you ever want to put an item into a ComboBox and
+separate the subitem into a column-wise fashion.
+Maybe this CJCombo is a good candidate to serve your need.
+I combined my code with Zafir's CTooltip code, and the 
+derivation of this product is a Multicolumn Combobox.
+
+<P>The pictures that I included in this page should give
+you a pretty good idea what is JCombo about.
+
+
+
+<P>All you have to do is 
+<ol>
+<li>Put an Ownerdraw Combobox on your form.
+<li>Declare the Combobox as JCombo.
+<li>Use CJCombo::AddItem(text,Column,Row) instead of AddString(..)
+to add an item into a list.
+<li>If you need to get a content from a list, use 
+CJCombo::GetLBText(Column,Row,&rString);
+</ol>
+
+
+
+<P>Example: To use my Multicolumn Combobox :
+<PRE><TT><FONT COLOR="#990000">
+        m_MULTICOLUMNCOMBOBOX.FormatList(1,DT_LEFT,FALSE,NORMAL); 
+        // one column setting, no grid lines , show titletip
+  	CString str;
+        for (i=0;i<=10;i++){  
+		str.Format("Item %d",i);
+               	m_MULTICOLUMNCOMBOBOX.AddItem(str,0,i);
+                .
+                .
+        }
+</FONT></TT></PRE>
+
+
+OR multicolumn 
+<PRE><TT><FONT COLOR="#990000">
+	// three columns setting
+        m_MULTICOLUMNCOMBOBOX.FormatList(3,DT_LEFT,FALSE,EDGE);
+
+        for (i=0;i<=20;i++){  
+                str.Format("Item : %d",i);        
+                m_MULTICOLUMNCOMBOBOX.AddItem("TESTING",0,i);
+                m_MULTICOLUMNCOMBOBOX.AddItem(str,1,i);
+                m_MULTICOLUMNCOMBOBOX.AddItem(_T("3rd Column0123456789"),2,i);
+                .
+                .
+</FONT></TT></PRE>
+
+
+<P>If you find any bugs or run into deep deep problem or could not
+get it to work with my JCombo, please e-mail me at jack@fsec.ucf.edu.
+Other than that, Have fun !!!
+
+
+<P><A HREF="multicol_combo_code.zip">Download Zipped Source Files</A>. These files are likely
+to be more current than the ones in the project file.
+<P><A HREF="multicol_combo_proj.zip">Download Zipped Project Files</A>
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

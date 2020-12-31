@@ -1,0 +1,193 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Scrolling credits using CStatic</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Scrolling credits using CStatic</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:pal.k.tonder@matek.sintef.no">Pål K. Tønder</A>
+
+<P><img src="credit_static.gif">
+<br>Download <A HREF="credit_static_src.zip">source</A> file or <A HREF="credit_static_demo.zip">
+demo project</a>. 
+
+
+<P>This static subclass is based on the <A HREF="http://www.codeguru.com/dialog/credits_dialog.shtml">
+Scrolling credits dialog by Mark Findlay.</A> I have made some modifications
+to enable the use of resource strings, and added some functionality to make
+the background look more professional.
+By implementing the functionality through a CStatic subclass it is no
+longer dependant on a dialog and can more
+easily be used in different circumstances.
+
+<P>The control lets you scroll text and bitmaps in an like you see in movies.
+It will continue to loop the text
+for as long as it is active. The speed of the scrolling can be set by the
+programmer. The control has the
+following features:
+
+<ul>
+<li>The text/bitmap sequence can be set using a character string or through
+am ID to a string table entry.
+
+<li>The text/bitmap sequence is formatted with different colours and fonts
+through using special characters in the
+  text. The mapping between the special characters and given colours and
+fonts can be set by the programmer
+  <br><br>NB! The bitmaps are given as quoted bitmap resources (ID as "IDB_BITMAP"
+instead of just IDB_BITMAP).
+
+<li>The background can be given a special colour or a background bitmap can
+be set. 
+
+<br><br>NB! While bitmaps in the
+  text/bitmap sequence are restricted to 16 colours, the background bitmap
+have no such restriction.)
+  <br><br>If a solid colour background is used, it can be given a gradient to black
+or white, left-to-right or vice-versa.
+
+<li>The background of the bitmaps in the text/bitmap sequence can be made
+transparent to allow for non-square
+  shapes. By setting a flag, the parts of the bitmaps that have the
+standard dialog colour (RGB(192,192,192))
+  will be transparent. 
+
+  <br><br>NB! There is a slight difference in how this functionality is implemented
+when using a background image
+  instead of colour. Because of the way the addition of a background image
+is implemented all parts of the
+  text/sequence that have the standard dialog colour will be transparent,
+not only the bitmaps. Also, when
+  the transparent colour is _not_ set, all parts of the text/bitmap
+sequence that match the otherwise
+  not active background colour, will be transparent as well. So, to
+disallow transparency when using a 
+  background image, set the background colour so an unused colour.
+
+  <br><br>NB! Because there is several bitblt's involved when using a background
+image, the scrolling is slowed
+  down considerably. But it does look good!! (If anyone can find ways of
+speeding up this process, please
+  contact me!)
+
+<li>If not scrolling is started, a still picture of the text/bitmap sequence
+is displayed (That's how the
+  figure was created).
+
+<br><br>Beware of the following differences between this implementation and the one
+of Mark Findlay:
+
+<li>Instead of an array of strings, this control uses a single string. This
+is to allow the use of resource strings.
+  <br><br>A delimiter character (standard '|') is given to mark the beginning of a
+new line.
+<li>The special character denoting "normal" text has been removed. A line
+without any special character will be
+  formatted according to the "normal text" rules.
+<li>Several of the default special characters have been changed, This was
+necessary because the string table
+  resources did not understand all the original escape sequences.
+</ul>
+
+<P>To use CCreditStatic a member variable must be added to the dialog: 
+
+<PRE><TT><FONT COLOR="#990000">
+protected:
+CCreditStatic m_static;
+</FONT></TT></PRE>
+
+<P>In OnInitDialog the static control is subclassed and the credit text is
+added. Optionally a background image
+can be added: 
+
+<PRE><TT><FONT COLOR="#990000">
+char *pArrCredit = { "NETBAS FOR WINDOWS NT\t||Copyright (c) 1998|"
+        "Test Data AS|All Rights Reserved||"
+        "BITMAP1^|||"    // this is a quoted bitmap resource 
+        "Project Lead\r||Kjetil Kvamme|||"
+        "Technical Lead\r||Kjetil Kvamme|||"
+        "Engineering Lead\r||Paul K. Tonder|||"
+        "Product Lead\r||Tom Rotting|||"
+        "Engineering\r||Paul K. Tonder,  Rolf T. Wold,  Sigbjorn Helset|"
+        "Reidar Ognedal,  Kjetil Kvamme, Arne Bakken|||"
+        "BITMAP2^|||"  // this is a quoted bitmap resource 
+        "QA\r||Mary Hech,  Sam Bamnm,  Ron Fonn,  Steve Waeve|"
+        "Igor Borisnoff,  FellaB |||"
+        "Documentation\r||"
+        "Arvid Molnvik,  Joanne Hone,  Annette Fune|||"
+        "Technical Program Office\r||Burf Murphy, Foll Roller||||"
+        "Systems Support\r||Bendy Land|||"
+        "Administrative Support\r||Donna Fonna|||"
+        "* * * * * * * * *\t|||"
+        "BITMAP3^||"
+        "Project Manager\r||Dwain Kinghorn|||"
+        "Engineering\r||"
+        "Hank Bank,  Ray Fay,  Bill Sill,  Mark Dark,  Peter Leter|"
+        "Lev Bef|||Quality Assurance\r||"
+        "Biff Bin||||"
+        "BITMAP4^|||||"
+        };
+
+BOOL CMyDialog::OnInitDialog() 
+{
+        CDialog::OnInitDialog();
+        
+        m_static.SubclassDlgItem(IDC_DISPLAY_STATIC,this);
+        m_static.SetCredits(pArrCredit);
+        // m_static.SetCredits(IDS_CREDITS);  // Use with string resource
+        m_static.SetSpeed(DISPLAY_FAST);
+        m_static.SetColor(BACKGROUND_COLOR, RGB(0, 0, 255)); // Background Colour
+        m_static.SetTransparent(); // Set parts of bitmaps with RGB(192,192,192) transparent
+        m_static.SetGradient(GRADIENT_RIGHT_DARK);  // Background goes from blue to black from left to right
+        // m_static.SetBkImage(IDB_BITMAP1); // Background image
+        m_static.StartScrolling();
+        return TRUE;  // return TRUE unless you set the focus to a control
+                      // EXCEPTION: OCX Property Pages should return FALSE
+}
+</FONT></TT></PRE>
+
+
+<P><b>Note: </b>Keith Rule was kind enough to fix a number of resource leaks that can
+bring the App down on Windows95. The fixes have mostly been to select the
+original GDI objects back into the device context.
+
+<p>The <A HREF="credit_static_demo.zip">example project</a> shows one use of the 
+control. A Credits dialog is displayed when the user double-click in the view window.
+In addition to showing the basics for using the control, the project also shows how 
+cycling of background images can be implemented. The background image is periodically 
+switched (every 5 seconds). This background image cycling management is implemented 
+in the dialog box rather than in the control itself. The background image is switched 
+through repeated calls to the BkImage method of the CCreditStatic object.
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

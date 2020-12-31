@@ -1,0 +1,47 @@
+// ATLMFC.idl : IDL source for ATLMFC.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ATLMFC.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(13BC2963-6570-11D1-8F98-000000000000),
+		dual,
+		helpstring("ITest Interface"),
+		pointer_default(unique)
+	]
+	interface ITest : IDispatch
+	{
+	};
+[
+	uuid(13BC2953-6570-11D1-8F98-000000000000),
+	version(1.0),
+	helpstring("ATLMFC 1.0 Type Library")
+]
+library ATLMFCLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(3FEFDE90-657E-11d1-8F98-000000000000),
+		helpstring("MFC Property Page")
+	]
+	coclass PpgTest
+	{
+		interface IUnknown;
+	};
+
+	[
+		uuid(9A461FEE-38EA-11D1-8F4C-000000000000),
+		helpstring("Test Class")
+	]
+	coclass Test
+	{
+		[default] interface ITest;
+	};
+};

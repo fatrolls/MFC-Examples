@@ -1,0 +1,22 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|formatbar.shtml||Rich Edit Control - Providing a Format toolbar|
+1998/03/28|read_only_text.shtml||Rich Edit Control - Setting selected text to read-only|
+1998/03/28|rtf_string_streamin.shtml||Rich Edit Control - Inserting an RTF string using StreamIn|
+1998/03/28|tab_stops.shtml||Rich Edit Control - Changing tab stops|
+1998/03/28|word_wrap.shtml||Rich Edit Control - Changing word wrap mode|
+1998/03/28|show_format_char.shtml||Rich Edit Control - Show format characters|Tom Moor
+1998/04/12|syntax_hilight.shtml||Rich Edit Control - Syntax coloring Editor|Juraj Rojko

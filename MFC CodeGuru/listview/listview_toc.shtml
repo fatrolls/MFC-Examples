@@ -1,0 +1,179 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ListView - Table of Contents</TITLE>
+   <META Name="description" Content="Source codes for listview control">
+   <META Name="keywords" Content="SOURCE CODE LIST LISTVIEW LISTCTRL CListView CListCtrl IMAGE 
+   HEADER VIEWS CONTROL COLUMN INDEX RESIZE MINIMUM AUTO SIZE AUTOSIZE STATIONARY HIGHLIGHT ENTIRE ROW
+   EDIT SUBITEMS DROP DOWN SORT INDICATE ORDER GRID LINES VERTICAL HORIZONTAL TITLETIP TIP TOOLTIP TOOL
+   DRAG DROP COLOR BACKGROUND IMAGE BITMAP ROW COL HEIGHT CALLBACK PRINT">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">ListView Control</FONT></H1>
+</td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--></td>
+</tr>
+</table>
+
+
+<HR>
+
+
+<p>This section is now being maintained by Shilpa Shamapant.
+
+
+<UL>
+<LI>Introduction</LI>
+	<UL>
+	<LI><A HREF="ctrl_vs_view.shtml">How do I use a derived CListCtrl with a CListView? - Zafir Anjum</A></LI>
+	<LI><A HREF="ctrl_vs_view_undoc.shtml">Using derived CListCtrl in CListView - Undocumented - Zafir Anjum</A></LI>
+	<LI><A HREF="text_callback.shtml">Using text callbacks - Chris Maunder</A></LI>
+	</UL>
+
+<LI>Using images</LI>
+	<UL>
+	<LI><A HREF="init_image_list.shtml">Initializing the image list - Zafir Anjum</A></LI>
+	<LI><A HREF="set_item_image.shtml">Setting or removing an image for an item - Zafir Anjum</A></LI>
+	<LI><A HREF="set_non_standard_image.shtml">Setting a non-standard size image - Zafir Anjum</A></LI>
+	<LI><A HREF="late_binding_of_image.shtml">Late binding of image - I_IMAGECALLBACK - Zafir Anjum</A></LI>
+	<LI><A HREF="image_in_header.shtml">Displaying an image in the header - Zafir Anjum</A></LI>
+	<LI><A HREF="imagelist_with_header.shtml">Using an imagelist with the header control - Zafir Anjum</A></LI>
+	<LI><A HREF="attach_system_image_list.shtml">Attaching a system imagelist to a list control - Matt Esterly</A></LI>
+	</UL>
+
+<LI>Views</LI>
+	<UL>
+	<LI>
+	<A HREF="switch_views.shtml">Switching Views - Zafir Anjum</A></LI>
+	</UL>
+
+<LI>Columns</LI>
+	<UL>
+	<LI><A HREF="header_ctrl.shtml">The Header Control - Zafir Anjum</A></LI>
+	<LI><A HREF="header_right_click.shtml">Determining right click on the header control - Zafir Anjum</A></LI>
+	<LI><A HREF="num_cols.shtml">Getting the number of columns in the report view - Zafir Anjum</A></LI>
+	<LI><A HREF="add_column.shtml">Adding a column - Zafir Anjum</A></LI>
+	<LI><A HREF="col_index.shtml">Detecting column index of the item clicked - Zafir Anjum</A></LI>
+	<LI><A HREF="no_col_resize.shtml">Prevent column resizing - Zafir Anjum</A></LI>
+	<LI><A HREF="no_col_resize2.shtml">Prevent column resizing (2) - Charles Herman</A></LI>
+	<LI><A HREF="min_col_width.shtml">How to set a minimum column width - Zafir Anjum</A></LI>
+	<LI><A HREF="autosize_col.shtml">Autosize a column to fit its content - Roger Onslow</A></LI>
+	<LI><A HREF="stationary_col.shtml">Stationary Columns - Laura Michaels</A></LI>
+	<LI><A HREF="col_noclick.shtml">Disable clicking on selected report view columns - Petr Novotny</A></LI>
+	</UL>
+
+<LI>Selection</LI>
+	<UL>
+	<LI><A HREF="select_item.shtml">Select item programmatically - Zafir Anjum</A></LI>
+	<LI><A HREF="sel_item_click_not_col1.shtml">Select an item even if click is not on left most column - Zafir Anjum</A></LI>
+	<LI><A HREF="get_selected.shtml">Retrieving selected items - Zafir Anjum</A></LI>
+	<LI><A HREF="sel_item_range.shtml">Selecting and deselecting a range of rows - Zafir Anjum</A></LI>
+	<LI><A HREF="sel_row.shtml">Selection highlighting of entire row - Zafir Anjum</A></LI>
+	<LI><A HREF="cell_focus.shtml">Set focus on a cell - Shilpa Shamapant</A></LI>
+	<LI><A HREF="grid_list_control.shtml">Grid List Control - Rex Myer</A></LI>
+	</UL>
+
+<LI>Editing items and subitems</LI>
+	<UL>
+	<LI><A HREF="allow_edits.shtml">Allowing items to be edited - Zafir Anjum</A></LI>
+	<LI><A HREF="edit_programmatically.shtml">Editing item programmatically - Zafir Anjum</A></LI>
+	<LI><A HREF="edit_subitems.shtml">Editable subitems - Zafir Anjum</A></LI>
+	<LI><A HREF="drop_down_list.shtml">Using a drop down list to change a subitem - Zafir Anjum</A></LI>
+	<LI><A HREF="multiline_edit_subitems.shtml">Multiline Editable Subitems - Rex Myer</A></LI>
+	</UL>
+
+<LI>Sorting</LI>
+	<UL>
+	<LI><A HREF="sort_on_col.shtml">Sorting the list based on text in any column - Zafir Anjum</A></LI>
+	<LI><A HREF="sort_on_numeric_col.shtml">Sorting list on Numeric Column - Todd D. Degani</A></LI>
+	<LI><A HREF="sort_on_col_generic.shtml">Sort list based on text/numeric/date-time in any column - Tal J. Rosen</A></LI>
+	<LI><A HREF="sort_generic_callback.shtml">Sort list (numeric/text) using callback - Iuri Apollonio</A></LI>
+	<LI><A HREF="sort_generic_callback1.shtml">Sort list (numeric/text/float/date) using callback - Max Poliashenko</A></LI>
+	<LI><A HREF="sort_on_col_image.shtml">Sort columns by the image index of the column - Mark Findlay</A></LI>
+	<LI><A HREF="auto_resort.shtml">Automatically resorting after an edit - Zafir Anjum</A></LI>
+	<LI><A HREF="sort_on_col_click.shtml">Sorting the list when user clicks on column header - Zafir Anjum</A></LI>
+	<LI><A HREF="indicating_sort_order.shtml">Indicating sort order in header control - Zafir Anjum</A></LI>
+	<LI><A HREF="simple_sort_on_integer_col.shtml">Sorting list based on integers in any column - Eric Vella</A></LI>
+	</UL>
+
+<LI>Grid lines</LI>
+	<UL>
+	<LI><A HREF="vert_border_lines.shtml">Vertical lines for column borders - Zafir Anjum</A></LI>
+	<LI><A HREF="vert_border_lines2.shtml">Fix resizing problem in above article - Serge Wautier</A></LI>
+	<LI><A HREF="grid_lines.shtml">Drawing horizontal and vertical gridlines - Zafir Anjum</A></LI>
+	</UL>
+
+<LI>Tooltip &amp; Titletip</LI>
+	<UL>
+	<LI><A HREF="header_tooltip.shtml">Tooltip for the header - Zafir Anjum</A></LI>
+	<LI><A HREF="header_col_tooltip.shtml">Tooltip for individual column header - Zafir Anjum</A></LI>
+	<LI><A HREF="cell_tooltip.shtml">Tooltip for individual cells - Zafir Anjum</A></LI>
+	<LI><A HREF="titletip.shtml">Titletip for individual cells - Zafir Anjum</A></LI>
+	</UL>
+
+<LI>Drag &amp; Drop</LI>
+	<UL>
+	<LI><A HREF="drag_col.shtml">Dragging columns to rearrange column sequence - Zafir Anjum</A></LI>
+	<LI><A HREF="drag_rows.shtml">Dragging Items to Rearrange Rows - Wayne Berthin</A></LI>
+	</UL>
+
+<LI>Background color and image</LI>
+	<UL>
+	<LI><A HREF="ctrl_color.shtml">Change background color - Zafir Anjum</A></LI>
+	<LI><A HREF="row_color.shtml">Change background color of individual rows - Zafir Anjum</A></LI>
+	<LI><A HREF="col_color.shtml">Change the background color of individual columns - Zafir Anjum</A></LI>
+	<LI><A HREF="background_image.shtml">Use a bitmap as a background image - Zafir Anjum</A></LI>
+	</UL>
+
+<li>Advanced</li>
+	<ul>
+	<li><A HREF="owner_drawn_ctrl.shtml">Owner drawn control - Zafir Anjum</A></LI>
+	<li><A HREF="change_row_height.shtml">Changing row height in owner drawn control - Zafir Anjum</A></LI>
+	</ul>
+
+<li>Miscellanious</li>
+	<ul>
+	<li><A HREF="no_flicker.shtml">Stopping flicker during updates - Roger Onslow</A>
+	<li><A HREF="non_report_subitem.shtml">Using sub-stings in non report view - Carsten Witte</A>
+	<li><A HREF="print_ctrl.shtml">Printing the control - Philippe Carret</A>
+	<li><A HREF="print.shtml">Print the contents of the list control - Ravi Reddy</A>
+	<li><A HREF="../treeview/treelist.shtml">TreeList : Multi column tree control - David Lantsman</A>
+	<li><A HREF="../treeview/use_listcontainer.shtml">Connect a list container to a tree/list control - Zoran M.Todorovic</A>
+	<li><A HREF="listclass1.shtml">Class with full row highlighting, dragable headers, sorting - James Schubert</A>
+	<li><A HREF="fullrow_and_titletips.shtml">Full row selection and title tips - Matthew Bells</A>
+	<li><A HREF="ie4_extended_styles_to_a_list_control.shtml">IE4 Extended Styles in a List Control - Garth Tolmie</A>
+	<li><A HREF="sorted_baseClass.shtml">CSortedListCtrl reusable base class - Staffe Christian</A>
+      </ul>
+
+<li>New ListView control (IE 4.0)</li>
+	<ul>
+	<li><A HREF="add_checkbox.shtml">Add checkboxes - Eran Yariv</A></LI>
+	<li><A HREF="clistctrlex_ie4.shtml">Class for using new features in listview control - Rui Santos</A></LI>
+	</ul>
+
+</UL>
+&nbsp;
+<CENTER>
+<HR></CENTER>
+
+<CENTER><TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum&nbsp;</FONT></CENTER>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right>&nbsp; <FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A></FONT></DIV>
+</TD>
+</TR>
+</TABLE></CENTER>
+
+</BODY>
+</HTML>

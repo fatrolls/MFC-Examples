@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<TITLE>Folder Browsing Dialog</TITLE>
+</HEAD>
+
+<h1>Folder Browsing Dialog</h1>
+
+<P><cite>Copyright &copy; 1998, Kenneth M. Reed, All rights reserved.</cite></P>
+
+<h2>Description</h2>
+
+<P><code>CFolderDialog</code> is an MFC based class that encapsulates the Windows Shell function 
+for browsing folders, <code>::ShBrowseForFolder</code>.</P>
+
+<P>To use it, you create an instance of <code>CFolderDialog</code> and call the 
+<code>DoModal</code> method.  
+Upon return, the method <code>GetPathName</code> can be used to retrieve the path to the user 
+selected folder.</P>
+
+<P>The constructor allows you to specify an optional initial folder, flags specific 
+to the shell function (see the description of the <code>ulFlags</code> field of the 
+<code>BROWSEINFO </code>
+structure in the help for Visual Studio or the Windows Shell API) and a pointer to 
+the parent window’s <code>CWnd</code>. All of these arguments are optional.</P>
+
+<P>You may override the two virtual methods <code>OnInitDialog</code> and 
+<code>OnSelChanged</code> in a 
+derived class to customize their behavior. The default behavior of 
+<code>OnInitDialog</code> is 
+to call <code>SetSelection</code> and <code>SetStatusText</code> with the folder 
+name provided in the constructor. 
+The default 
+version of <code>OnSelChanged</code> places the new path into the status text area
+of the dialog.</P>
+
+<P>The class provides utility functions for 1) enabling or disabling the OK button 
+(<code>EnableOK</code>), 2) setting the status text that appears above the folder 
+list box in 
+the browser folder dialog box (<code>SetStatusText</code>) and 3) setting the 
+current selection (<code>SetSelection</code>). 
+
+The file <code>MyFolderDialog.h</code>, included in the zip 
+file, shows an example of a derived class which uses <code>SetStatusText</code>.</P>
+
+<P>For advanced users, the <code>BROWSEINFO</code> structure is available via the 
+<code>m_bi,/code> member 
+variable.  This structure is initialized by the constructor and any changes should 
+be made before the call to <code>DoModal</code>. See the help for Visual Studio or 
+the Windows 
+Shell API for more information on the <code>BROWSEINFO</code> structure. </P>
+
+<h2>Revisions</h2>
+<dl>
+	<dt><strong>April 5, 1998</strong></dt>
+		<dd>Changed the way status text is handled:
+		<ul>
+		<li>The constructor now forces the <code>BIF_STATUSTEXT</code> flag to 
+		be set</li>
+		<li>Changed the base <code>OnInitDialog</code> method to display the initial
+		folder in the status text.</li>
+		<li>Changed the base <code>OnSelChanged</code> method to update the contents
+		of m_strFinalFolderName and display the new folder in the status text area.</li>
+		<li>Removed the <code>MyFolderDialog.h</code> file from the zip.</li>
+		</ul>
+		</dd>
+</dl>
+
+<H2>Bugs and Suggestions</h2>
+
+<P>Please send suggestions and/or bugs to 
+<A HREF="mailto:reedk@daneel.mv.com">reedk@daneel.mv.com</A>.</P>
+
+
+<P>Ken Reed</P>
+
+</BODY>
+</HTML>

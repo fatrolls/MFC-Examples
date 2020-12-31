@@ -1,0 +1,109 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Robbert E. Peters">
+<title>PropertySheet - Placing a 3D Logo Text In the PropertySheet Button Area</title>
+</head>
+
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Placing a 3D Logo Text In the PropertySheet Button Area
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:nikolay@citilink.com">Nikolay Sokratov</A>.
+
+<p>I read Jeremy Davis's article named &quot;Placing a bitmap in the PropertySheet button
+area&quot; and liked the idea a lot, <br>
+but when I tried to implement it I found one small thing, bitmap can not change color if
+background color is not ( for example) gray.</p>
+
+<p>So I made my own program which displays 3d text in PropertySheet button area.</p>
+
+<p><img src="add_3d_text1.jpg" width="515" height="51" alt="sample1.jpg (5019 bytes)"></p>
+
+<p><img src="add_3d_text2.jpg" width="514" height="57" alt="sample2.jpg (4809 bytes)"><br>
+</p>
+
+<p>Here how it's done.<tt><font COLOR="#990000"></p>
+
+<p>void CPropertySheetWithLogoDlg::OnPaint() <br>
+{<br>
+&nbsp;&nbsp;&nbsp; CPaintDC dc(this); // device context for painting<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; if(m_LogoText.IsEmpty())<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;<br>
+<br>
+&nbsp;&nbsp;&nbsp; CRect rectTabCtrl;<br>
+&nbsp;&nbsp;&nbsp; GetTabControl()-&gt;GetWindowRect(rectTabCtrl);<br>
+&nbsp;&nbsp;&nbsp; ScreenToClient(rectTabCtrl);<br>
+<br>
+&nbsp;&nbsp;&nbsp; CRect rectOk;<br>
+&nbsp;&nbsp;&nbsp; GetDlgItem(IDOK)-&gt;GetWindowRect(rectOk);<br>
+&nbsp;&nbsp;&nbsp; ScreenToClient(rectOk);<br>
+<br>
+&nbsp;&nbsp;&nbsp; dc.SetBkMode(TRANSPARENT);<br>
+<br>
+&nbsp;&nbsp;&nbsp; CRect rectText;<br>
+&nbsp;&nbsp;&nbsp; rectText.left = rectTabCtrl.left;<br>
+&nbsp;&nbsp;&nbsp; rectText.top = rectOk.top;<br>
+&nbsp;&nbsp;&nbsp; rectText.bottom = rectOk.bottom;<br>
+&nbsp;&nbsp;&nbsp; rectText.right = rectOk.left;<br>
+<br>
+&nbsp;&nbsp;&nbsp; CFont * OldFont = dc.SelectObject(&amp;m_fontLogo);<br>
+<br>
+&nbsp;&nbsp;&nbsp; // draw text in DC<br>
+&nbsp;&nbsp;&nbsp; COLORREF OldColor = dc.SetTextColor( ::GetSysColor( COLOR_3DHILIGHT));<br>
+<br>
+&nbsp;&nbsp;&nbsp; dc.DrawText( m_LogoText, rectText + CPoint(1,1), DT_SINGLELINE |
+DT_LEFT | DT_VCENTER);<br>
+&nbsp;&nbsp;&nbsp; dc.SetTextColor( ::GetSysColor( COLOR_3DSHADOW));<br>
+&nbsp;&nbsp;&nbsp; dc.DrawText( m_LogoText, rectText, DT_SINGLELINE | DT_LEFT |
+DT_VCENTER);<br>
+<br>
+&nbsp;&nbsp;&nbsp; // restore old text color<br>
+&nbsp;&nbsp;&nbsp; dc.SetTextColor( OldColor);<br>
+&nbsp;&nbsp;&nbsp; // restore old font<br>
+&nbsp;&nbsp;&nbsp; dc.SelectObject(OldFont);<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; // Do not call CPropertySheet::OnPaint() for painting messages<br>
+}. </p>
+</font></tt>
+
+<p>You can play with different combination of DrawText functions and make any appearance
+of the Text</p>
+
+<p><a HREF="add_3d_text.zip">Download Source Code and Example</a> </p>
+
+
+<p>Date Posted: 05/09/98
+
+<P><HR>
+
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+
+
+
+</BODY>
+</HTML>

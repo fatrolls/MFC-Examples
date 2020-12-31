@@ -1,0 +1,12 @@
+// Microsoft Developer Studio generated Help ID include file.
+// Used by CSH.rc
+//
+#define HIDC_BUTTON_HELP                0x806503ec    // IDD_CSH_FORM
+#define HIDC_CHECK1                     0x808303ed    // IDD_SAMPLE_DIALOG
+#define HIDC_CHECK_WITH_INTERNET        0x806503e8    // IDD_CSH_FORM
+#define HIDC_COMBO1                     0x808303ee    // IDD_SAMPLE_DIALOG
+#define HIDC_COMBO_SELECT_SHOP          0x806503eb    // IDD_CSH_FORM
+#define HIDC_LIST1                      0x808303ef    // IDD_SAMPLE_DIALOG
+#define HIDC_RADIO_RADIO                0x806503e9    // IDD_CSH_FORM
+#define HIDC_RADIO_TV                   0x806503ea    // IDD_CSH_FORM
+#define HIDOK                           0x80830001    // IDD_SAMPLE_DIALOG

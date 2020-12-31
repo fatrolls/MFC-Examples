@@ -1,0 +1,265 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\AdvancedTrace.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""UTSampleAbout.rc""\r\n"
+    "#include ""OXBitmapButton.rc"" \r\n"
+    "#include ""OXHyperLinkAction.rc""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\AdvancedTrace.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ADVANCEDTRACE_DIALOG DIALOGEX 0, 0, 320, 277
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "AdvancedTrace"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,7,256,50,14
+    LTEXT           "Edit control",IDC_STATIC,7,164,36,8
+    LTEXT           "This demo uses COXTrace class in order to provide tracing support. COXTrace class allows you to forward trace output into the file. Also it automatically wraps long strings.",
+                    IDC_STATIC,7,7,306,19
+    LTEXT           "But the most interesting functionality of this class includes support for blocks of trace messages.",
+                    IDC_STATIC,7,27,306,9
+    LTEXT           "In this demo we put a lot of TRACE statements. You might try to update the contents of the controls displayed - all your activity will be traced. The output will be saved in the following file:",
+                    IDC_STATIC,7,100,306,19
+    LTEXT           "",IDC_SEPARATOR1,7,89,306,8,SS_SUNKEN
+    CTEXT           "TraceTest.txt",IDC_OUTPUT_FILE1,7,122,94,14,
+                    SS_CENTERIMAGE
+    LTEXT           "This file will be located in the same directory as this demo executable",
+                    IDC_STATIC,7,140,216,8
+    LTEXT           "Change the controls contents!",IDC_SEPARATOR2,7,154,306,
+                    8,SS_SUNKEN
+    EDITTEXT        IDC_EDIT,7,174,56,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Click me!",IDC_BUTTON,79,173,54,14
+    LTEXT           "Button",IDC_STATIC,81,164,22,8
+    COMBOBOX        IDC_COMBO,153,174,73,76,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Combo",IDC_STATIC,153,164,23,8
+    LISTBOX         IDC_LISTBOX,7,202,84,48,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Check box",IDC_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,247,176,66,10
+    LTEXT           "List Box",IDC_STATIC,7,193,26,8
+    CONTROL         "List2",IDC_LISTCTRL,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,105,202,208,48
+    LTEXT           "List Control",IDC_STATIC,107,193,66,8
+    LTEXT           "Check out the TRACE output in the file",IDC_STATIC,106,
+                    257,124,8
+    CTEXT           "TraceTest.txt",IDC_OUTPUT_FILE2,237,257,43,8,
+                    SS_CENTERIMAGE
+    LTEXT           "In order to simplify the process of identifying of such blocks of TRACE messages COXTrace support indention level for every block: whenever start of block is marked the indention is",
+                    IDC_STATIC,7,54,306,16
+    LTEXT           "When you create COXTrace object it automaticaly marks the start of new block and when the object is being destroyed it automatically marks the end of the current block.",
+                    IDC_STATIC,7,35,306,15
+    LTEXT           "increased (by default by 4 symbols) and whenever end of block is marked the indention is decreased.",
+                    IDC_STATIC,7,71,306,16
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "AdvancedTrace MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "AdvancedTrace\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "AdvancedTrace.EXE\0"
+            VALUE "ProductName", "AdvancedTrace Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ADVANCEDTRACE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 270
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_ADVANCEDTRACE_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3120, "\000" 
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3220, "\000" 
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3320, "\000" 
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3420, "\000" 
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3520, "\000" 
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3620, "\000" 
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3720, "\000" 
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3820, "\000" 
+    IDC_COMBO, 0x403, 7, 0
+0x7449, 0x6d65, 0x3920, "\000" 
+    IDC_COMBO, 0x403, 8, 0
+0x7449, 0x6d65, 0x3120, 0x0030, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About AdvancedTrace..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "AdvancedTrace"
+    ID_DESCRIPTION_FILE     "TraceInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\AdvancedTrace.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "UTSampleAbout.rc"
+#include "OXBitmapButton.rc" 
+#include "OXHyperLinkAction.rc"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,18 @@
+// MAKEHELP.BAT generated Help Map file.  Used by MIDIGENERATOR.HPJ. 
+ 
+// Commands (ID_* and IDM_*) 
+HID_BEARBEITEN_MIDIDATEIGENERIEREN      0x18003
+ 
+// Prompts (IDP_*) 
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20080
+HIDR_MIDIGETYPE                         0x20081
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+HIDD_ABOUTBOX_OLD                       0x20065
+HIDD_ABOUTBOX1                          0x20066
+HIDD_INPUTDIALOG                        0x20090
+ 
+// Frame Controls (IDW_*) 

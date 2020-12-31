@@ -1,0 +1,56 @@
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\prsht.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtml.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dimm.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dispex.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtmhst.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\docobj.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\exdisp.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\objsafe.idl";
+
+[
+	object,
+	uuid(8E3ABD67-5075-4C38-BA00-8289E336E7F9),
+	dual,
+	helpstring("ICalcPi Interface"),
+	pointer_default(unique)
+] 
+#line 20 "d:\\vc++\\atlinternals-src\\appendixd\\pisvr\\pisvr\\calcpi.h"
+interface ICalcPi : IDispatch {
+#line 22 "d:\\vc++\\atlinternals-src\\appendixd\\pisvr\\pisvr\\calcpi.h"
+	[propget,id(1),helpstring("property Digits")] HRESULT  Digits([out,retval] LONG *pVal);
+	[propput,id(1),helpstring("property Digits")] HRESULT  Digits([in] LONG newVal);
+	[id(2),helpstring("method CalcPi")] HRESULT  CalcPi([out,retval] BSTR *pbstrPi);
+};
+
+
+[ version(1.0), uuid(5247B726-8CB9-450C-9636-9C5781B69729), helpstring("PiSvr 1.0 Type Library") ]
+library PiSvr
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		uuid(9822AB1A-8031-4914-BD73-3459A91B98A9),
+		helpstring("_ICalcPiEvents Interface")
+	] 
+#line 35 "d:\\vc++\\atlinternals-src\\appendixd\\pisvr\\pisvr\\calcpi.h"
+	dispinterface _ICalcPiEvents {
+	properties:
+
+	methods:
+		[id(1),helpstring("method OnDigit")] void  OnDigit([in] SHORT nIndex, [in] SHORT nDigit);
+	};
+
+	[
+		version(1.0),
+		uuid(A892A09D-98C9-4AD4-98C5-769F7743F204),
+		helpstring("CalcPi Class")
+	] 
+#line 54 "d:\\vc++\\atlinternals-src\\appendixd\\pisvr\\pisvr\\calcpi.h"
+	coclass CCalcPi {
+		[default]	interface ICalcPi;
+		[default, source]	interface _ICalcPiEvents;
+	};
+
+}
+

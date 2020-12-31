@@ -1,0 +1,144 @@
+<HTML>
+<HEAD>
+	<STYLE>
+	Body  { font-family:Arial; font-size:14px; margin-left:3px; margin-top:2px; }
+	Table { font-family:Arial; font-size:14px; }
+	</STYLE>
+</HEAD>
+<BODY bgcolor=#ffeedd>
+<DIV><B><FONT size=6><U>DHtmlEditor</U></FONT> &nbsp; &nbsp; by <A href="http://www.netcult.ch/elmue">Elm&#x00FC;Soft</A></B> 
+<BR>
+<BR><B><FONT color=#ff0000><U>IMPORTANT</U></FONT></B>: 
+<BR>If you get an error LNK2001: <B><FONT color=#ff0000>unresolved external symbol _WinMain@16</FONT></B> click "Rebuild All" in Visual Studio ! 
+<BR>
+<BR>If you get an error C2367: <B><FONT color=#ff0000>'IHTMLControlElement' : redefinition</FONT></B>; different uuid specifiers 
+<BR>You probably have a <FONT color=#9900ff><B>#include &lt;comdef.h&gt;</B></FONT> anywhere in your project. 
+<BR>Replace this with <FONT color=#9900cc><B>#include "VS7\ComDef_VS7.h"</B></FONT> 
+<BR>
+<BR><B><U><FONT color=#ff0000 size=4>Features:</FONT></U></B> 
+<BR>This program is fully <B>Unicode</B> compliant even if compiled as <B>MBCS</B> version: 
+<BR><B><FONT color=#0000cc>&#x03A7;&#x03C1;&#x03B9;&#x03C3;&#x03C4;&#x03BF;&#x03CD;&#x03B3;&#x03B5;&#x03BD;&#x03BD;&#x03B1;&nbsp;&nbsp; &#x0410;&#x0440;&#x0445;&#x0430;&#x043D;&#x0433;&#x0435;&#x043B;&#x043E;&#x0432;&#x0434;&#x0435;&#x043D; </FONT></B>
+<BR>
+<BR>
+<TABLE style="WIDTH: 100%" cellSpacing=2 cellPadding=1 rules=all border=0>
+<TBODY>
+<TR>
+	<TD vAlign=top>
+		<FONT color=#880000 size=5><U><B>Keyboard Shortcuts</B></U></FONT> in Design Mode 
+		<BR><B><FONT color=#ff0000>You can easily modify or expand this behavior 
+		<BR>in cMsieWnd::PreTranslateMessage()</FONT></B> 
+		<TABLE style="WIDTH: 350px" borderColor=#aa5500 cellSpacing=0 cellPadding=2 rules=all border=1>
+		<TBODY>
+		<TR>
+		<TD>SHIFT + 
+		<BR>SPACE</TD>
+		<TD>Insert a non-breaking space (&amp;nbsp;)</TD></TR>
+		<TR>
+		<TD>CTRL A</TD>
+		<TD>Select All</TD></TR>
+		<TR>
+		<TD>CTRL B</TD>
+		<TD>Make selected text bold</TD></TR>
+		<TR>
+		<TD>CTRL C</TD>
+		<TD>Copy selection to clipboard</TD></TR>
+		<TR>
+		<TD>CTRL F</TD>
+		<TD>Find in document</TD></TR>
+		<TR>
+		<TD>CTRL H</TD>
+		<TD>Insert horizontal ruler</TD></TR>
+		<TR>
+		<TD>CTRL I</TD>
+		<TD>Make selected text italic</TD></TR>
+		<TR>
+		<TD>CTRL K</TD>
+		<TD>Insert hyperlink (Any text&nbsp;must be selected)</TD></TR>
+		<TR>
+		<TD>CTRL O</TD>
+		<TD>New table column right of cursor position</TD></TR>
+		<TR>
+		<TD>CTRL P</TD>
+		<TD>Print</TD></TR>
+		<TR>
+		<TD>CTRL R</TD>
+		<TD>New table row below cursor position</TD></TR>
+		<TR>
+		<TD>CTRL S</TD>
+		<TD>Save document</TD></TR>
+		<TR>
+		<TD>CTRL T</TD>
+		<TD>Insert new Table</TD></TR>
+		<TR>
+		<TD>CTRL U</TD>
+		<TD>Underline selected text</TD></TR>
+		<TR>
+		<TD>CTRL V</TD>
+		<TD>Paste from Clipboard</TD></TR>
+		<TR>
+		<TD>CTRL X</TD>
+		<TD>Cut selection to clipboard</TD></TR>
+		<TR>
+		<TD>CTRL Y</TD>
+		<TD>Redo</TD></TR>
+		<TR>
+		<TD>CTRL Z</TD>
+		<TD>Undo </TD></TR>
+		<TR>
+		<TD colSpan=2>Double click: select a word 
+		<BR>Triple click: select a paragraph</TD></TR>
+		</TBODY>
+		</TABLE>
+	</TD>
+	<TD></TD>
+	<TD vAlign=top>
+		<FONT color=#880000 size=5><U><B>Buttons</B></U></FONT> in this demo program 
+		<BR><B><FONT color=#ff0000>You can easily replace the buttons in this 
+		<BR>demo program by a nice toolbar with tooltips</FONT></B> 
+		<TABLE style="WIDTH: 350px" borderColor=#aa5500 cellSpacing=0 cellPadding=2 rules=all border=1>
+		<TBODY>
+		<TR>
+		<TD><NOBR>B</NOBR></TD>
+		<TD>Bold</TD></TR>
+		<TR>
+		<TD>I</TD>
+		<TD>Italic</TD></TR>
+		<TR>
+		<TD>U</TD>
+		<TD>Underline</TD></TR>
+		<TR>
+		<TD>FC</TD>
+		<TD>Forground Color</TD></TR>
+		<TR>
+		<TD>BC</TD>
+		<TD>Background Color</TD></TR>
+		<TR>
+		<TD>X</TD>
+		<TD>Removes the settings of all the above 
+		<BR>buttons resets the font to the default</TD></TR>
+		<TR>
+		<TD>HR</TD>
+		<TD>Inserts a horizontal line</TD></TR>
+		<TR>
+		<TD>HR Prop</TD>
+		<TD>Sets the properties of the horizontal line</TD></TR>
+		<TR>
+		<TD>UL</TD>
+		<TD>Unordered list</TD></TR>
+		<TR>
+		<TD>OL</TD>
+		<TD>Ordered list</TD></TR>
+		<TR>
+		<TD>Img</TD>
+		<TD>Insert Image</TD></TR>
+		<TR>
+		<TD>Link</TD>
+		<TD>Insert Link</TD></TR>
+		</TBODY>
+		</TABLE>
+	</TD>
+	</TR>
+	</TBODY>
+	</TABLE>
+</DIV>
+</BODY></HTML>

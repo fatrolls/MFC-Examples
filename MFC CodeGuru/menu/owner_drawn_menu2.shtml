@@ -1,0 +1,833 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Menu - Owner Drawn Menu with Icons (2)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Owner Drawn Menu with Icons (2)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:BenA@sirplc.co.uk">Ben Ashley</A>.
+
+
+<p>This code is an extension to Girish Bharadwaj's Owner Drawn
+menu. The code he produced does not lack anything, but I thought
+it would be advantageous to the user to be able to load a Menu
+Resource in. Currently, you have to construct the menu yourself,
+item-by-item. This can be very time consuming. Instead, I have
+introduced 4 new functions to the Owner Drawn menu class...</p>
+
+<ol>
+    <li>AppendODMenu(). Appends an Owner-Drawn Item to the menu.
+        You can pass an icon, a selected icon and a disabled
+        icon.</li>
+    <li>ModifyODMenu(), as above but modifies an existing menu
+        given it's command Identifier (Not positional
+        information)</li>
+    <li>LoadMenu(int) &amp; LoadMenu(LPCTSTR). Given a menu
+        resource, these commands (which effectively replace
+        CMenu's LoadMenu()), will load the specified menu
+        resource, creating each item as an owner-drawn item. You
+        may then use the ModifyODMenu() member function to assign
+        icon states to the items. It is not possible at this time
+        to specify icons within the menu resource, although I
+        suspect it is possible by defining a custom resource
+        type. This is something I will be looking in to in the
+        next few weeks.</li>
+</ol>
+
+<p>Some problems the new code does <em>not</em> address, is the
+drawing of separators, checkboxes or the correct placement of the
+shortcut key text. This is also something I will be looking at,
+but of course, anyone else is free to implement it.</p>
+
+<p>As I renamed the menu class TCMenu, just giving you the added
+snippets is probably not enough. It is for this reason that the
+entire code is here. Apart from a few changes to the drawing
+behaviour of the menu, I have only added those functions
+mentioned above. The rest of the code must be credited to Girish
+Bharadwaj.</p>
+
+<h2>The header file.... (TCMenu.h)...</h2>
+
+<p>&nbsp;</p>
+
+<pre><font color="#990000">/*
+===============================================================================
+CMenu
+TCMenu
+--------------- </font></pre>
+
+<pre><font color="#990000">Implements Owner-drawn menu behaviour
+===============================================================================
+*/
+
+</font></pre>
+
+<pre><font color="#990000">#ifndef TCMENU_H
+#define TCMENU_H
+
+</font></pre>
+
+<pre><font color="#990000">// TCMenuData class. Fill this class structure to define a single menu item:
+
+</font></pre>
+
+<pre><font color="#990000">class TCMenuData
+{
+public:
+TCMenuData () { menuIconNormal = -1; menuIconSelected = -1; menuIconDisabled = -1;nID=0;};
+char menuText[32];
+UINT menuIconNormal;
+UINT menuIconSelected;
+UINT menuIconDisabled;
+UINT nID;
+};
+
+
+</font></pre>
+
+<pre><font color="#990000">typedef enum {Normal,TextOnly} HIGHLIGHTSTYLE;
+
+
+</font></pre>
+
+<pre><font color="#990000">class TCMenu : public CMenu	// Derived from CMenu
+{
+// Construction
+public:
+TCMenu(); </font></pre>
+
+<pre><font color="#990000">// Attributes
+protected:
+CTypedPtrArray&lt;CPtrArray, TCMenuData*&gt; m_MenuList;	// Stores list of menu items </font></pre>
+
+<pre><font color="#990000">// When loading an owner-drawn menu using a Resource, TCMenu must keep track of
+// the popup menu's that it creates. Warning, this list *MUST* be destroyed
+// last item first :)
+
+</font></pre>
+
+<pre><font color="#990000">CTypedPtrArray&lt;CPtrArray, TCMenu*&gt;	m_SubMenus;	// Stores list of sub-menus </font></pre>
+
+<pre><font color="#990000">// Operations
+public: </font></pre>
+
+<pre><font color="#990000">// Overrides
+// ClassWizard generated virtual function overrides
+//{{AFX_VIRTUAL(CCustomMenu)
+//}}AFX_VIRTUAL </font></pre>
+
+<pre><font color="#990000">// Implementation
+public:
+virtual ~TCMenu();	// Virtual Destructor </font></pre>
+
+<pre><font color="#990000">// Drawing: </font></pre>
+
+<pre><font color="#990000">virtual void DrawItem( LPDRAWITEMSTRUCT);	// Draw an item
+virtual void MeasureItem( LPMEASUREITEMSTRUCT );	// Measure an item
+
+</font></pre>
+
+<pre><font color="#990000">// Custamizing:
+
+</font></pre>
+
+<pre><font color="#990000">void SetTextColor (COLORREF );	// Set the text color
+void SetBackColor (COLORREF);	// Set background color
+void SetHighlightColor (COLORREF);	// Set highlight Color
+void SetIconSize (int, int);	// Set icon size
+void SetHighlightStyle (HIGHLIGHTSTYLE );	// Set Highlight style
+void SetHighlightTextColor (COLORREF);	// Set Highlight text color
+
+</font></pre>
+
+<pre><font color="#990000">virtual BOOL AppendODMenu(LPCTSTR lpstrText, 
+UINT nFlags = MF_OWNERDRAW,
+UINT nID = 0,
+UINT nIconNormal = -1, 
+UINT nIconSelected = -1,
+UINT nIconDisabled = -1);	// Owner-Drawn Append </font></pre>
+
+<pre><font color="#990000">virtual BOOL ModifyODMenu(LPCTSTR lpstrText,
+UINT	nID = 0,
+UINT	nIconNormal = -1,
+UINT	nIconSelected = -1,
+UINT	nIconDisabled = -1);	// Owner-Drawn Modify </font></pre>
+
+<pre><font color="#990000">virtual BOOL LoadMenu(LPCTSTR lpszResourceName);	// Load a menu
+virtual BOOL LoadMenu(int nResource);	// ... </font></pre>
+
+<pre><font color="#990000">// Destoying:
+
+</font></pre>
+
+<pre><font color="#990000">virtual BOOL DestroyMenu();
+
+</font></pre>
+
+<pre><font color="#990000">// Generated message map functions
+protected:
+COLORREF m_crText;
+COLORREF m_clrBack;
+COLORREF m_clrText;
+COLORREF m_clrHilight;
+COLORREF m_clrHilightText;
+LOGFONT m_lf;
+CFont m_fontMenu;
+UINT m_iMenuHeight;
+BOOL m_bLBtnDown;
+CBrush m_brBackground,m_brSelect;
+CPen m_penBack;
+int m_iconX,m_iconY;
+HIGHLIGHTSTYLE m_hilightStyle; </font></pre>
+
+<pre><font color="#990000">//{{AFX_MSG(CCustomMenu)
+// NOTE - the ClassWizard will add and remove member functions here.
+//}}AFX_MSG
+}; </font></pre>
+
+<pre><font color="#990000">///////////////////////////////////////////////////////////////////////////
+// </font></pre>
+
+<pre><font color="#990000">//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line. </font></pre>
+
+<pre><font color="#990000">#endif // CCUSTOMMENU_H </font></pre>
+
+<h2>The Implementation File (TCMenu.cpp)</h2>
+
+<p>&nbsp;</p>
+
+<pre><font color="#990000">//*************************************************************************</font></pre>
+
+<pre><font color="#990000">// TCMenu.cpp : implementation file
+//
+
+#include &quot;stdafx.h&quot;				// Standard windows header file
+#include &quot;TCMenu.h&quot;				// TCMenu class declaration
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+
+/*
+	=================================================================================
+	TCMenu::TCMenu()
+	TCMeny::~TCMenu()
+	-----------------
+
+	Constructor and Destructor.
+	=================================================================================
+*/
+
+
+TCMenu::TCMenu()
+{
+	m_clrText =  GetSysColor (COLOR_MENUTEXT);				// Default menu text colour
+    m_clrBack = GetSysColor (COLOR_MENU);
+    m_brBackground.CreateSolidBrush (m_clrBack);
+    m_penBack.CreatePen (PS_SOLID,0,m_clrBack);
+    m_crText = m_clrText;
+    m_bLBtnDown = FALSE;
+
+    m_iconX = 16;						// Icon sizes default to 16 x 16
+    m_iconY = 16;						// ...
+
+    m_clrHilight = GetSysColor (COLOR_HIGHLIGHT);			// User Colours...
+    m_brSelect.CreateSolidBrush (m_clrHilight);				// Create a brush
+    m_clrHilightText = GetSysColor (COLOR_HIGHLIGHTTEXT);	// User Colours...
+
+    ZeroMemory ((PVOID) &amp;m_lf,sizeof (LOGFONT));
+    NONCLIENTMETRICS nm;
+    nm.cbSize = sizeof (NONCLIENTMETRICS);
+
+    //Get the system metrics for the Captionfromhere
+
+	VERIFY (SystemParametersInfo (SPI_GETNONCLIENTMETRICS,0,&amp;nm,0)); 
+
+    m_lf =  nm.lfMenuFont;
+    m_iMenuHeight = nm.iMenuHeight;
+    m_fontMenu.CreateFontIndirect (&amp;m_lf);
+}
+
+
+TCMenu::~TCMenu()
+{
+	DestroyMenu();
+}
+
+
+BOOL TCMenu::DestroyMenu()
+{
+	// Destroy Sub menus:
+
+	int m;
+	int numSubMenus = m_SubMenus.GetUpperBound();
+	for(m = numSubMenus; m &gt;= 0; m--)
+		delete(m_SubMenus[m]);
+
+	m_SubMenus.RemoveAll();
+
+
+	// Destroy brushes:
+
+
+    if ((HBRUSH) m_brBackground != NULL)		// Background brush
+        m_brBackground.DeleteObject ();
+    if ((HFONT)m_fontMenu !=NULL)				// Font for the menu
+        m_fontMenu.DeleteObject ();
+    if ((HBRUSH)m_brSelect != NULL)				// Selected background brush
+        m_brSelect.DeleteObject ();
+
+
+	// Destroy menu data
+
+
+	int numItems = m_MenuList.GetUpperBound();
+	for(m = 0; m &lt;= numItems; m++)
+			delete(m_MenuList[m]);
+
+
+	m_MenuList.RemoveAll();
+
+
+	// Call base-class implementation last:
+
+
+	return(CMenu::DestroyMenu());
+};
+
+
+///////////////////////////////////////////////////////////////////////////
+//
+// TCMenu message handlers
+
+
+/*
+	=================================================================================
+	void TCMenu::DrawItem(LPDRAWITEMSTRUCT)
+	---------------------------------------
+
+	Called by the framework when a particular item needs to be drawn.  We overide
+	this to draw the menu item in a custom-fashion, including icons and the 3D
+	rectangle bar.
+	=================================================================================
+*/
+
+
+void TCMenu::DrawItem (LPDRAWITEMSTRUCT lpDIS)
+{
+    ASSERT(lpDIS != NULL);
+
+    CDC* pDC = CDC::FromHandle(lpDIS-&gt;hDC);
+    CRect rect;
+    HICON hIcon;
+    COLORREF crText = m_crText;
+    
+	
+	// draw the colored rectangle portion
+    
+	
+	rect.CopyRect(&amp;lpDIS-&gt;rcItem);
+
+    
+	// draw the up/down/focused/disabled state
+
+    
+    UINT action = lpDIS-&gt;itemAction;
+    UINT state = lpDIS-&gt;itemState;
+    CString strText;
+    LOGFONT lf;
+    lf = m_lf;
+
+    CFont dispFont;
+    CFont *pFont;
+        
+	//GetWindowText(strText);
+    if (lpDIS-&gt;itemData != NULL)
+    {
+		UINT nIconNormal = (((TCMenuData*)(lpDIS-&gt;itemData))-&gt;menuIconNormal);
+		UINT nIconSelected = (((TCMenuData*)(lpDIS-&gt;itemData))-&gt;menuIconSelected);
+		UINT nIconDisabled = (((TCMenuData*)(lpDIS-&gt;itemData))-&gt;menuIconDisabled);
+        strText = (((TCMenuData*) (lpDIS-&gt;itemData))-&gt;menuText);
+
+        if(nIconNormal == -1)
+			hIcon = NULL;
+        else 
+		{
+			hIcon = NULL;
+
+			// Obtain the IDs for the appropriate Icons:
+
+
+			if (state &amp; ODS_SELECTED &amp;&amp; !(state &amp; ODS_GRAYED))		// Selected (but not disabled)
+			{
+                if(nIconSelected != -1)
+					hIcon = AfxGetApp ()-&gt;LoadIcon(nIconSelected);
+			}
+	        else
+			{
+				if(state &amp; ODS_GRAYED)								// Disabled (selected or not)
+					if(nIconDisabled != -1)
+						hIcon = AfxGetApp()-&gt;LoadIcon(nIconDisabled);
+			};
+
+
+			// If we didn't manage to select a specific icon, we'll use the
+			// default (normal) one...
+
+
+			if(hIcon == NULL)
+				hIcon = AfxGetApp()-&gt;LoadIcon(nIconNormal);
+		}
+    }
+    else
+    {
+        strText.Empty();
+        hIcon = NULL;
+    }
+
+    if ( (state &amp; ODS_SELECTED) )
+    {
+        // draw the down edges
+
+        CPen *pOldPen = pDC-&gt;SelectObject (&amp;m_penBack);
+
+
+        // You need only Text highlight and thats what you get
+
+
+        if (m_hilightStyle != Normal)
+            pDC-&gt;FillRect (rect,&amp;m_brBackground);
+        else
+            pDC-&gt;FillRect (rect,&amp;m_brSelect);
+
+        pDC-&gt;SelectObject (pOldPen);
+        //pDC-&gt;Draw3dRect (rect,GetSysColor (COLOR_3DHILIGHT),GetSysColor(COLOR_3DSHADOW));
+
+		// This version provides a black-border:
+
+
+		pDC-&gt;Draw3dRect (rect,GetSysColor (COLOR_3DHILIGHT),RGB(0,0,0));        
+
+		//lf.lfWeight = FW_BOLD;
+        if ((HFONT)dispFont != NULL)
+                dispFont.DeleteObject ();
+        dispFont.CreateFontIndirect (&amp;lf);
+        crText = m_clrHilightText;
+    }
+    else
+    {
+        CPen *pOldPen = pDC-&gt;SelectObject (&amp;m_penBack);
+        pDC-&gt;FillRect (rect,&amp;m_brBackground);
+        pDC-&gt;SelectObject (pOldPen);
+
+
+        // draw the up edges
+
+
+        pDC-&gt;Draw3dRect (rect,m_clrBack,m_clrBack);
+        if ((HFONT)dispFont != NULL)
+                dispFont.DeleteObject ();
+        dispFont.CreateFontIndirect (&amp;lf); //Normal
+
+    }
+
+
+    // draw the text if there is any
+    //We have to paint the text only if the image is nonexistant
+
+
+    if (hIcon != NULL)
+	{
+        DrawIconEx (pDC-&gt;GetSafeHdc(),rect.left,rect.top,hIcon,
+					m_iconX,m_iconY,0,NULL,DI_NORMAL);
+	};
+
+    //This is needed always so that we can have the space for check marks
+
+
+    rect.left = rect.left +((m_iconX)?m_iconX:32) + 2; 
+
+    if ( !strText.IsEmpty())
+    {
+        pFont-&gt;GetLogFont (&amp;lf);
+
+        int iOldMode = pDC-&gt;GetBkMode();
+
+        pDC-&gt;SetBkMode( TRANSPARENT);
+
+
+		// Draw the text in the correct colour:
+
+
+		UINT nFormat = DT_LEFT|DT_SINGLELINE|DT_EXPANDTABS|DT_VCENTER;
+		if(!(lpDIS-&gt;itemState &amp; ODS_GRAYED))
+		{
+			pDC-&gt;SetTextColor(crText);
+	        pDC-&gt;DrawText (strText,rect,nFormat);
+		}
+		else
+		{
+
+			// Draw the slightly lighter greyed text at an offset:
+
+
+			RECT offset = *rect;
+			offset.left+=1;
+			offset.right+=1;
+			offset.top+=1;
+			offset.bottom+=1;
+			pDC-&gt;SetTextColor(GetSysColor(COLOR_BTNHILIGHT));
+			pDC-&gt;DrawText(strText,&amp;offset, nFormat);
+
+
+			// And the standard Grey text:
+
+
+			pDC-&gt;SetTextColor(GetSysColor(COLOR_GRAYTEXT));
+	        pDC-&gt;DrawText(strText,rect, nFormat);
+		};
+        pFont = pDC-&gt;SelectObject (&amp;dispFont);
+        pDC-&gt;SetBkMode( iOldMode );
+        pDC-&gt;SelectObject (pFont); //set it to the old font
+    }
+    dispFont.DeleteObject ();
+}
+
+
+/*
+	=================================================================================
+	void TCMenu::MeasureItem(LPMEASUREITEMSTRUCT)
+	---------------------------------------------
+
+	Called by the framework when it wants to know what the width and height of our
+	item will be.  To accomplish this we provide the width of the icon plus the
+	width of the menu text, and then the height of the icon.
+	=================================================================================
+*/
+
+
+void TCMenu::MeasureItem( LPMEASUREITEMSTRUCT lpMIS )
+{
+	// Obtain the width of the text:
+
+	CWnd *pWnd = AfxGetMainWnd();						// Get main window
+    CDC *pDC = pWnd-&gt;GetDC();							// Get device context
+    CFont* pFont = pDC-&gt;SelectObject (&amp;m_fontMenu);		// Select menu font in...
+	LPCTSTR lpstrText = (((TCMenuData*)(lpMIS-&gt;itemData))-&gt;menuText);	// Get pointer to text
+	SIZE t;
+	GetTextExtentPoint32(pDC-&gt;GetSafeHdc(), lpstrText, strlen(lpstrText), &amp;t); // Width of caption
+    pDC-&gt;SelectObject (pFont);							// Select old font in
+    AfxGetApp()-&gt;m_pMainWnd-&gt;ReleaseDC (pDC);			// Release the DC
+
+	// Set width and height:
+
+    lpMIS-&gt;itemWidth = m_iconX + t.cx + 10;
+	lpMIS-&gt;itemHeight = m_iconY;
+}
+
+void TCMenu::SetIconSize (int width, int height)
+{
+    m_iconX = width;
+    m_iconY = height;
+}
+
+void TCMenu::SetTextColor (COLORREF clrText)
+{
+    m_crText = clrText;
+}
+
+void TCMenu::SetBackColor (COLORREF clrBack)
+{
+    m_clrBack = clrBack;
+    if ((HBRUSH)m_brBackground != NULL)
+		m_brBackground.DeleteObject ();
+
+    m_brBackground.CreateSolidBrush (clrBack);
+}
+
+void TCMenu::SetHighlightColor (COLORREF clrHilight)
+{
+    m_clrHilight = clrHilight;
+    if ((HBRUSH)m_brSelect != NULL)
+                    m_brSelect.DeleteObject ();
+
+    m_brSelect.CreateSolidBrush (clrHilight);
+}
+
+void TCMenu::SetHighlightTextColor (COLORREF clrHilightText)
+{
+    m_clrHilightText = clrHilightText;
+}
+
+
+void TCMenu::SetHighlightStyle (HIGHLIGHTSTYLE hilightStyle)
+{
+    m_hilightStyle = hilightStyle;
+}
+
+
+/*
+	=================================================================================
+	BOOL TCMenu::AppendODMenu(LPCTSTR, UINT, UINT, UINT, UINT)
+	BOOL TCMenu::ModifyODMenu(LPCTSTR, UINT, UINT, UINT, UINT)
+	----------------------------------------------------------
+
+	These 2 functions effectively replace the CMenu::AppendMenu() and CMenu::ModifyMenu()
+	classes, with support for 3 icon states.  When using Owner-drawn menu items,
+	use these functions instead of the usual ones.
+	=================================================================================
+*/
+
+
+BOOL TCMenu::AppendODMenu(LPCTSTR lpstrText,
+						  UINT  nFlags,
+						  UINT	nID,
+						  UINT	nIconNormal,
+						  UINT	nIconSelected,
+						  UINT	nIconDisabled)
+{
+	// Add the MF_OWNERDRAW flag if not specified:
+
+	if(!(nFlags &amp; MF_OWNERDRAW))
+		nFlags |= MF_OWNERDRAW;
+
+	TCMenuData *mdata = new TCMenuData;
+	m_MenuList.Add(mdata);
+	lstrcpy(mdata-&gt;menuText, lpstrText);
+	mdata-&gt;menuIconNormal = nIconNormal;
+	mdata-&gt;menuIconSelected = nIconSelected;
+	mdata-&gt;menuIconDisabled = nIconDisabled;
+	return(CMenu::AppendMenu(nFlags, nID, (LPCTSTR)mdata));
+};
+
+
+BOOL TCMenu::ModifyODMenu(LPCTSTR lpstrText,
+						  UINT	  nID,
+						  UINT	  nIconNormal,
+						  UINT	  nIconSelected,
+						  UINT	  nIconDisabled)
+{
+	// Delete the existing TCMenuData structure associated with this item (if any)
+
+
+	int numMenuItems = m_MenuList.GetUpperBound();
+	TCMenuData *mdata;
+	for(int m = 0; m &lt;= numMenuItems; m++)
+	{
+		if((mdata = m_MenuList[m]) != NULL)
+		{
+			if(mdata-&gt;nID == nID)
+			{
+				delete(mdata);
+				m_MenuList.RemoveAt(m);
+				break;
+			};
+		};
+	};
+
+
+	// Create a new TCMenuData structure:
+
+
+	mdata = new TCMenuData;
+	m_MenuList.Add(mdata);
+	lstrcpy(mdata-&gt;menuText, lpstrText);
+	mdata-&gt;menuIconNormal = nIconNormal;
+	mdata-&gt;menuIconSelected = nIconSelected;
+	mdata-&gt;menuIconDisabled = nIconDisabled;
+	return(CMenu::ModifyMenu(nID, MF_BYCOMMAND | MF_OWNERDRAW, nID, (LPCTSTR)mdata));
+};
+
+
+BOOL TCMenu::LoadMenu(LPCTSTR lpszResourceName)
+{
+	return(TCMenu::LoadMenu(MAKEINTRESOURCE(lpszResourceName)));
+};
+
+BOOL TCMenu::LoadMenu(int nResource)
+{
+
+	// Find the Menu Resource:
+
+
+	DWORD dwSize;
+	WORD wrd = MAKEWORD(nResource, 0);
+	HRSRC hRsrc = FindResource(NULL, (LPCTSTR)wrd, RT_MENU);	// Find the resource
+	if(hRsrc == NULL)
+	{
+		TRACE0(&quot;TCMenu::LoadMenu() - Failed to find Menu Resource\n&quot;);
+		ASSERT(FALSE);
+	};
+
+
+	// Get size of resource:
+
+
+	dwSize = SizeofResource(NULL, hRsrc);
+
+
+	// Load the Menu Resource:
+
+
+	HGLOBAL hGlobal = LoadResource(NULL, hRsrc);
+	if(hGlobal == NULL)
+	{
+		TRACE0(&quot;TCMenu::LoadMenu() - Failed to load Menu Resource\n&quot;);
+		ASSERT(FALSE);
+	};
+
+
+	// Attempt to create us as a menu...
+
+
+	if(!CMenu::CreateMenu())
+	{
+		TRACE0(&quot;TCMenu::LoadMenu() - Failed to create Menu\n&quot;);
+		ASSERT(FALSE);
+	};
+
+
+	// Get Item template Header, and calculate offset of MENUITEMTEMPLATES
+
+
+	MENUITEMTEMPLATEHEADER*	pTpHdr = (MENUITEMTEMPLATEHEADER*)LockResource(hGlobal);
+	BYTE*					pTp   = (BYTE*)pTpHdr + 
+									(sizeof(MENUITEMTEMPLATEHEADER) + pTpHdr-&gt;offset);
+
+
+	// Variables needed during processing of Menu Item Templates:
+
+
+	TCMenuData*	pData = NULL;							// New OD Menu Item Data
+	WORD		dwFlags = 0;							// Flags of the Menu Item
+	WORD		dwID	= 0;							// ID of the Menu Item
+	BOOL		bLastPopup = 0;							// Last popup?
+	UINT		uFlags;									// Actual Flags.
+	char		caption[80];							// Allows up to 80 chars for caption
+	int			nLen   = 0;								// Length of caption
+	CTypedPtrArray&lt;CPtrArray, TCMenu*&gt;	m_Stack;		// Popup menu stack
+	m_Stack.Add(this);									// Add it to this...
+
+	do
+	{
+
+		// Obtain Flags and (if necessary), the ID...
+
+		memcpy(&amp;dwFlags, pTp, sizeof(WORD));pTp+=sizeof(WORD);	// Obtain Flags
+		if(!(dwFlags &amp; MF_POPUP))
+		{
+			memcpy(&amp;dwID, pTp, sizeof(WORD));					// Obtain ID
+			pTp+=sizeof(WORD);
+		}
+		else
+			dwID = 0;
+
+		uFlags = (UINT)dwFlags;			// Remove MF_END from the flags that will
+		if(uFlags &amp; MF_END)				// be passed to the Append(OD)Menu functions.
+			uFlags -= MF_END;
+
+
+		// Obtain Caption (and length)
+
+
+		nLen = 0;
+		char *ch = (char*)pTp;
+		while(*ch != 0)
+		{
+			caption[nLen] = ch[0];
+			nLen++;						// Increment length
+			ch+=2;						// Accounts for UNICODE '0's...
+		};
+		caption[nLen] = 0;				// Zero-terminate the string...
+		pTp+=((nLen+1)*2);				// Increase Pointer...
+
+
+		// Handle popup menus first....
+
+
+		if(dwFlags &amp; MF_POPUP)
+		{
+			if(dwFlags &amp; MF_END)
+				bLastPopup = TRUE;
+
+			TCMenu* pSubMenu = new TCMenu;
+			pSubMenu-&gt;CreatePopupMenu();
+
+			// Append it to the top of the stack:
+
+			m_Stack[m_Stack.GetUpperBound()]-&gt;AppendMenu(uFlags, (UINT)pSubMenu-&gt;m_hMenu, caption);
+			m_Stack.Add(pSubMenu);					// Add to PopupStack
+			m_SubMenus.Add(pSubMenu);				// For deletion...
+		}
+		else
+		{
+			m_Stack[m_Stack.GetUpperBound()]-&gt;AppendODMenu(caption, uFlags, dwID, -1, -1, -1);
+			if(dwFlags &amp; MF_END)
+				m_Stack.RemoveAt(m_Stack.GetUpperBound());	// Remove top of stack
+
+			if(bLastPopup)
+			{
+				bLastPopup = FALSE;
+				m_Stack.RemoveAt(m_Stack.GetUpperBound());	// And again...
+			};
+		};
+
+
+	}while(m_Stack.GetUpperBound() != -1);
+	
+	return(TRUE);
+};
+							
+//*************************************************************************</font></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

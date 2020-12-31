@@ -1,0 +1,739 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Titletip for individual cells</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Titletip for individual cells</FONT></H3></CENTER>
+
+<HR WIDTH="100%">Titletips are somewhat like tooltips. You have already seen it in action in the Developer's Studio ClassView. For listview controls, titletips are used to display text of those cells which are not wide enough to display the text completely. The titletips show up as soon as the mouse moves over the cell.
+<p><img src="titletip.gif" border="1" width="281" height="48"></p>
+
+<p>To implement titletips we define a custom class for the titletip. This class is responsible for displaying the tips when needed. Within the mouse move handler of the listview control we simply call a member function of the CTitleTip object with the cell rectangle and the text to display within it. The CTitleTip object then determines whether the titletip should display. The title tip destroys itself whenever the mouse moves outside of the cell rectangle passed in as an argument or whenever the application loses focus.
+
+<h4>Step 1: Define CTitleTip class</h4>
+The listing for the CTitleTip class is given below. First the header file then the implementation file. This class is very generic and can be used with other controls and in other situations also.
+
+<p>In the constructor of CTitleTip we register the window class if it has not already been registered by another instance of the program. The background brush used for the class is COLOR_INFOBK. This is the same color used by the tooltip.
+
+<p>The Create() function follows the convention of other MFC classes. It is within this function that the window is created. The important thing to notice in this function is the window style. The WS_BORDER style draws a border around the titletip window. The WS_POPUP style is needed because we want the titletip window to be able to extend beyond the boundary of the listview control. If we do not specify this style, the window will be clipped at the control boundary and will not be very useful. The WS_EX_TOOLWINDOW style stops the window from appearing in the task bar. The WS_EX_TOPMOST style makes sure that the titletip is visible.
+
+<p>The Show() function gets repeatedly called by the client control, in this case the listview control. The primary task of Show() is to determine the text extent of the the titletext and display the titletip if the rectangle passed in as an argument is not big enough to display it completely. It also stores a rectangle which is used later to remove the titletip is the mouse moves outside this rectangle.
+
+<p>The handler for WM_MOUSEMOVE - OnMouseMove() - checks whether the mouse is within the cell rectangle that the titletip is being shown for. This rectangle is smaller than the titletip client area rectangle (else there would not have been any need to show the titletip). If the mouse is outside this rectangle, then the titletip is hidden and the WM_MOUSEMOVE or a WM_NCMOUSEMOVE message is passed on to the underlying window.
+
+<p>The tooltip also needs to be dismissed when the user presses a key or a mouse button. We override the PreTranslateMessage() to look for these messages. If any of these messages are received, the titletip is dismissed and an appropriate message passed on to the list view control.
+
+
+<PRE><TT><FONT COLOR="#990000">#if !defined(AFX_TITLETIP_H__FB05F243_E98F_11D0_82A3_20933B000000__INCLUDED_)
+#define AFX_TITLETIP_H__FB05F243_E98F_11D0_82A3_20933B000000__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// TitleTip.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CTitleTip window
+
+#define TITLETIP_CLASSNAME _T("ZTitleTip")
+
+
+class CTitleTip : public CWnd
+{
+// Construction
+public:
+	CTitleTip();
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CTitleTip)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	void Show( CRect rectTitle, LPCTSTR lpszTitleText, int xoffset = 0);
+	virtual BOOL Create( CWnd *pParentWnd);
+	virtual ~CTitleTip();
+
+protected:
+	CWnd *m_pParentWnd;
+	CRect m_rectTitle;
+
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CTitleTip)
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations 
+// immediately before the previous line.
+
+#endif // !defined(AFX_TITLETIP_H__FB05F243_E98F_11D0_82A3_20933B000000__INCLUDED_)
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+// TitleTip.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "TitleTip.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CTitleTip
+
+CTitleTip::CTitleTip()
+{
+	// Register the window class if it has not already been registered.
+	WNDCLASS wndcls;
+	HINSTANCE hInst = AfxGetInstanceHandle();
+	if(!(::GetClassInfo(hInst, TITLETIP_CLASSNAME, &wndcls)))
+	{
+		// otherwise we need to register a new class
+		wndcls.style = CS_SAVEBITS ;
+		wndcls.lpfnWndProc = ::DefWindowProc;
+		wndcls.cbClsExtra = wndcls.cbWndExtra = 0;
+		wndcls.hInstance = hInst;
+		wndcls.hIcon = NULL;
+		wndcls.hCursor = LoadCursor( hInst, IDC_ARROW );
+		wndcls.hbrBackground = (HBRUSH)(COLOR_INFOBK + 1); 
+		wndcls.lpszMenuName = NULL;
+		wndcls.lpszClassName = TITLETIP_CLASSNAME;
+		if (!AfxRegisterClass(&wndcls))
+			AfxThrowResourceException();
+	}
+}
+
+CTitleTip::~CTitleTip()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CTitleTip, CWnd)
+	//{{AFX_MSG_MAP(CTitleTip)
+	ON_WM_MOUSEMOVE()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CTitleTip message handlers
+
+BOOL CTitleTip::Create(CWnd * pParentWnd)
+{
+	ASSERT_VALID(pParentWnd);
+
+	DWORD dwStyle = WS_BORDER | WS_POPUP; 
+	DWORD dwExStyle = WS_EX_TOOLWINDOW | WS_EX_TOPMOST;
+	m_pParentWnd = pParentWnd;
+	return CreateEx( dwExStyle, TITLETIP_CLASSNAME, NULL, dwStyle, 0, 0, 0, 0, 
+		NULL, NULL, NULL );
+}
+
+
+// Show 		- Show the titletip if needed
+// rectTitle		- The rectangle within which the original 
+//			  title is constrained - in client coordinates
+// lpszTitleText	- The text to be displayed
+// xoffset		- Number of pixel that the text is offset from
+//			  left border of the cell
+void CTitleTip::Show(CRect rectTitle, LPCTSTR lpszTitleText, int xoffset /*=0*/)
+{
+	ASSERT( ::IsWindow( m_hWnd ) );
+	ASSERT( !rectTitle.IsRectEmpty() );
+
+	// If titletip is already displayed, don't do anything.
+	if( IsWindowVisible() ) 
+		return;
+
+	// Do not display the titletip is app does not have focus
+	if( GetFocus() == NULL )
+		return;
+
+	// Define the rectangle outside which the titletip will be hidden.
+	// We add a buffer of one pixel around the rectangle
+	m_rectTitle.top = -1;
+	m_rectTitle.left = -xoffset-1;
+	m_rectTitle.right = rectTitle.Width()-xoffset;
+	m_rectTitle.bottom = rectTitle.Height()+1;
+
+	// Determine the width of the text
+	m_pParentWnd->ClientToScreen( rectTitle );
+
+	CClientDC dc(this);
+	CString strTitle(lpszTitleText);
+	CFont *pFont = m_pParentWnd->GetFont(); 	// use same font as ctrl
+	CFont *pFontDC = dc.SelectObject( pFont );
+
+	CRect rectDisplay = rectTitle;
+	CSize size = dc.GetTextExtent( strTitle );
+	rectDisplay.left += xoffset;
+	rectDisplay.right = rectDisplay.left + size.cx + 3;
+
+	// Do not display if the text fits within available space
+	if( rectDisplay.right <= rectTitle.right-xoffset )
+		return;
+
+	// Show the titletip
+	SetWindowPos( &wndTop, rectDisplay.left, rectDisplay.top, 
+			rectDisplay.Width(), rectDisplay.Height(), 
+			SWP_SHOWWINDOW|SWP_NOACTIVATE );
+
+	dc.SetBkMode( TRANSPARENT );
+	dc.TextOut( 0, 0, strTitle );
+	dc.SelectObject( pFontDC );
+
+	SetCapture();
+}
+
+void CTitleTip::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	 if (!m_rectTitle.PtInRect(point)) {
+		  ReleaseCapture();
+		  ShowWindow( SW_HIDE );
+
+		  // Forward the message
+		  ClientToScreen( &point );
+		  CWnd *pWnd = WindowFromPoint( point );
+		  if ( pWnd == this ) 
+			  pWnd = m_pParentWnd;
+		  int hittest = (int)pWnd->SendMessage(WM_NCHITTEST,
+						0,MAKELONG(point.x,point.y));
+		  if (hittest == HTCLIENT) {
+			   pWnd->ScreenToClient( &point );
+			   pWnd->PostMessage( WM_MOUSEMOVE, nFlags, 
+						MAKELONG(point.x,point.y) );
+		  } else {
+			   pWnd->PostMessage( WM_NCMOUSEMOVE, hittest, 
+						MAKELONG(point.x,point.y) );
+		  }
+	 }
+}
+
+BOOL CTitleTip::PreTranslateMessage(MSG* pMsg) 
+{
+	CWnd *pWnd;
+	int hittest ;
+	switch( pMsg->message )
+	{
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+	case WM_MBUTTONDOWN:
+		POINTS pts = MAKEPOINTS( pMsg->lParam );
+		POINT  point;
+		point.x = pts.x;
+		point.y = pts.y;
+		ClientToScreen( &point );
+		pWnd = WindowFromPoint( point );
+		if( pWnd == this ) 
+			pWnd = m_pParentWnd;
+
+		hittest = (int)pWnd->SendMessage(WM_NCHITTEST,
+					0,MAKELONG(point.x,point.y));
+		if (hittest == HTCLIENT) {
+			pWnd->ScreenToClient( &point );
+			pMsg->lParam = MAKELONG(point.x,point.y);
+		} else {
+			switch (pMsg->message) {
+			case WM_LBUTTONDOWN: 
+				pMsg->message = WM_NCLBUTTONDOWN;
+				break;
+			case WM_RBUTTONDOWN: 
+				pMsg->message = WM_NCRBUTTONDOWN;
+				break;
+			case WM_MBUTTONDOWN: 
+				pMsg->message = WM_NCMBUTTONDOWN;
+				break;
+			}
+			pMsg->wParam = hittest;
+			pMsg->lParam = MAKELONG(point.x,point.y);
+		}
+		ReleaseCapture();
+		ShowWindow( SW_HIDE );
+		pWnd->PostMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
+		return TRUE;		
+	case WM_KEYDOWN:
+	case WM_SYSKEYDOWN:
+		ReleaseCapture();
+		ShowWindow( SW_HIDE );
+		m_pParentWnd->PostMessage( pMsg->message, pMsg->wParam, pMsg->lParam );
+		return TRUE;
+	}
+
+	if( GetFocus() == NULL )
+	{
+		ReleaseCapture();
+		ShowWindow( SW_HIDE );
+		return TRUE;
+	}
+
+	return CWnd::PreTranslateMessage(pMsg);
+}
+</FONT></TT></PRE>
+
+<h4>Step 2: Define helper function CellRectFromPoint()</h4>
+This function is primarily used to get the rectangle of the cell under the cursor. It also returns the row index of the cell. The basic strategy that this function uses is to first determine the row that the point falls in. Then it goes through each cell in that row to find which cell the point falls in.
+
+<PRE><TT><FONT COLOR="#990000">// CellRectFromPoint	- Determine the row, col and bounding rect of a cell
+// Returns		- row index on success, -1 otherwise
+// point		- point to be tested.
+// cellrect		- to hold the bounding rect
+// col			- to hold the column index, can be NULL
+int CMyListCtrl::CellRectFromPoint(CPoint & point, RECT * cellrect, int * col) const
+{
+	int colnum;
+
+	// Make sure that the ListView is in LVS_REPORT
+	if( (GetStyle() & LVS_TYPEMASK) != LVS_REPORT )
+		return -1;
+
+	// Get the top and bottom row visible
+	int row = GetTopIndex();
+	int bottom = row + GetCountPerPage();
+	if( bottom > GetItemCount() )
+		bottom = GetItemCount();
+	
+	// Get the number of columns
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+	int nColumnCount = pHeader->GetItemCount();
+
+	// Loop through the visible rows
+	for( ;row <=bottom;row++)
+	{
+		// Get bounding rect of item and check whether point falls in it.
+		CRect rect;
+		GetItemRect( row, &rect, LVIR_BOUNDS );
+		if( rect.PtInRect(point) )
+		{
+			// Now find the column
+			for( colnum = 0; colnum < nColumnCount; colnum++ )
+			{
+				int colwidth = GetColumnWidth(colnum);
+				if( point.x >= rect.left && 
+						point.x <= (rect.left + colwidth ) )
+				{
+					// Found the column
+					RECT rectClient;
+					GetClientRect( &rectClient );
+					if( point.x > rectClient.right )
+						return -1;
+					if( col ) 
+						*col = colnum;
+					rect.right = rect.left + colwidth;
+					if( rect.right > rectClient.right ) 
+						rect.right = rectClient.right;
+					*cellrect = rect;
+					return row;
+				}
+				rect.left += colwidth;
+			}
+		}
+	}
+	return -1;
+}
+</FONT></TT></PRE>
+
+<h4>Step 3: Add handler for WM_MOUSEMOVE</h4>
+The OnMouseMove() code uses the CellRectFromPoint() function to determine the row and column index and the sub-item rectangle. It then passes the rectangle and the item text information to the titletip object. It is the titletip object that decides whether it needs to be displayed.
+
+<p>The label text is always displayed with a small offset from the left edge of the cell. In the case of the first column this offset is equal to the width of one space character from the item image. In the case of other columns, this offset is twice the width of a space character. Of course, if the column is wide enough, the offset could be more depending on the text justification. I have used a hard coded value in the code below. It is better to compute and save this value in a member variable. This variable would have to be updated whenever the font changes.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if( nFlags == 0 )
+	{
+		// To enable Title Tips
+		int row, col;
+		RECT cellrect;
+		row = CellRectFromPoint(point, &cellrect, &col );
+		if( row != -1 )
+		{
+			// offset is equal to TextExtent of 2 space characters.
+			// Make sure you have the right font selected into the
+			// device context before calling GetTextExtent.
+			// You can save this value as a member variable.
+			// offset = pDC->GetTextExtent(_T(" "), 1 ).cx*2;
+			int offset = 6;
+			if( col == 0 ) 
+			{
+				CRect rcLabel;
+				GetItemRect( row, &rcLabel, LVIR_LABEL );
+				offset = rcLabel.left - cellrect.left + offset / 2;
+			}
+			cellrect.top--;
+			m_titletip.Show( cellrect, GetItemText( row, col ), offset-1 );
+		}
+	}
+
+	CListCtrl::OnMouseMove(nFlags, point);
+}
+</FONT></TT></PRE>
+
+<h4>Step 4: Create the titletip object</h4>
+First add a member variable of the type CTitleTip to the class CListView or CListCtrl derived class. If you are using a CListCtrl derived class, override the PreSubclassWindow() function and add the code shown below. If you are using a CListView derived class instead, you can add this code to OnCreate() or OnInitialUpdate().
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::PreSubclassWindow() 
+{
+	CListCtrl::PreSubclassWindow();
+
+	// Add initialization code
+	m_titletip.Create( this );
+}
+</FONT></TT></PRE>
+
+
+
+
+<h3>Update for users of the new control (IE4)</h3>
+The new listview control with IE4 among other things, supports dragging of the 
+columns to rearrange their sequence. If you use that feature, the above code does
+not work. <A HREF="mailto:mfindlay@seanet.com">Mark Findlay</A> ran acroos this
+problem and was kind enough to send us a fix. Here goes -
+
+
+<P>Handling title tips for list controls that support drag and drop
+using "Titletip for individual cells" by Zafir Anjum as a starting point.
+
+<P>The new CListCtrl allows for the drag and drop of columns. While this is
+a cool new feature, it also introduces a little more programmer 
+responsibility to keep track of the column position. Fortunately
+the Column header item helps by maintaining the current column position
+as well as the original column position. 
+
+<P>We will use this information to display title tips for columns which
+have been dragged to a new position. 
+
+<P>Using the "Titletip for individual cells" by Zafir Anjum, we add 2 additional
+functions: 
+<P>                GetTrueItemText() and GetTrueColumnWidth().
+
+
+<P>Add the following function prototypes anywhere they will be accessible to the 
+OnMouseMove() and CellRectFromPoint() functions. 
+
+<P>Note that you might need to modify the implementations of these functions 
+if you place them in a non-CListView derived class as I have coded them.
+<PRE><TT><FONT COLOR="#990000">    
+    CString GetTrueItemText( int row, int col );
+    int GetTrueColumnWidth(int nCurrentPosition);
+</FONT></TT></PRE>
+
+
+
+<P>Add the following function implementations for the prototypes:
+
+<P>First - the GetTrueItemText
+
+<PRE><TT><FONT COLOR="#990000">
+//**************************************************
+CString CMyListView::GetTrueItemText(int row, int col)
+{
+    CListCtrl& ctlList = GetListCtrl();
+
+    // Get the header control 
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)ctlList.GetDlgItem(0);
+    _ASSERTE(pHeader);
+
+    // get the current number of columns 
+    int nCount = pHeader->GetItemCount();
+
+    // find the actual column requested. We will compare
+    // against hi.iOrder
+    for (int x=0; x< nCount; x++)
+    {
+        HD_ITEM hi = {0};
+        hi.mask = HDI_ORDER;
+
+        BOOL bRet = pHeader->GetItem(x,&hi);
+        _ASSERTE(bRet);
+        if (hi.iOrder == col)
+        {
+            // Found it, get the associated text
+            return ctlList.GetItemText(row,x);
+        }
+    }
+
+    _ASSERTE(FALSE);
+    return "We better never fall through to here!";
+
+}
+</FONT></TT></PRE>
+
+
+<P>Next the GetTrueColumnWidth
+
+<PRE><TT><FONT COLOR="#990000">
+//**************************************************************
+int CMyListView::GetTrueColumnWidth(int nCurrentPosition)
+{
+    CListCtrl& ctlList = GetListCtrl();
+
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)ctlList.GetDlgItem(0);
+    _ASSERTE(pHeader);
+
+    int nCount = pHeader->GetItemCount();
+
+    for (int x=0; x< nCount; x++)
+    {
+        HD_ITEM hi = {0};
+        hi.mask = HDI_WIDTH | HDI_ORDER;
+
+        BOOL bRet = pHeader->GetItem(x,&hi);
+        _ASSERTE(bRet);
+        if (hi.iOrder == nCurrentPosition)
+            return hi.cxy;
+    }
+
+    _ASSERTE(FALSE);
+    return 0; // We would never fall through to here!
+
+}
+</FONT></TT></PRE>
+
+
+
+<P>Then all we need to do is 
+
+<P>1) modify the CMyListCtrl::OnMouseMove() function:
+<br>    replace the call to GetItemText() with GetTrueItemText().
+    
+<P>2) modify the CMyListCtrl::OnMouseMove() function:
+<br>    comment out the following code:
+<PRE><TT><FONT COLOR="#990000">
+			/*if( col == 0 ) 
+			{
+				CRect rcLabel;
+				ctlList.GetItemRect( row, &rcLabel, LVIR_LABEL );
+				offset = rcLabel.left - cellrect.left + offset / 2;
+			}*/
+</FONT></TT></PRE>
+
+<P>3) modify the CellRectFromPoint() function:
+<br>    replace the GetColumnWidth() call with GetTrueColumnWidth().
+
+ 
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<H3>Handle double click in TitleTips</H3>
+Here is another enhancement that Mark Findlay sent in.
+
+<P>The TitleTips helper written by Zafir Anjum is a cool tool that allows
+you to show titletips for individual CListCtrl cells. The CTitleTip
+PreTranslateMessage handler traps mouse clicks for tip display
+purposes but this stifles the mouse double-click message since each
+individual mouse click is handled.
+
+<P>With a minor modification the CTitleTips helper can also support 
+mouse double-clicks (WM_LBUTTONDBLCLK) messages.
+
+
+
+<P>To modify the CTitleTips helper:
+
+<P>1) Create a member variable in the CTitleTips header file
+<PRE><TT><FONT COLOR="#990000">
+    DWORD m_dwLastLButtonDown
+</FONT></TT></PRE>
+
+<P>2) In the CTitleTips constructor, initialize m_dwLastLButtonDown to zero.
+
+<P>3) Add the following #define  to the CTitleTip::PreTranslateMessage function:
+<PRE><TT><FONT COLOR="#990000">    #define DBLCLICK_MILLISECONDS 150
+</FONT></TT></PRE>
+
+<P>The DBLCLICK_MILLISECONDS specifies the duration between single mouse clicks 
+that CTitleTips should handle as a double-click instead of 2 single clicks.
+The 150 is a pretty good setting (.15 of a second between clicks will constitute
+a double-click) but you can change this to suit your needs/taste
+
+<P>4) Add the following local variables to the beginning of the 
+CTitleTip::PreTranslateMessage function:
+<PRE><TT><FONT COLOR="#990000">
+    // Used to qualify WM_LBUTTONDOWN messages as double-clicks
+    DWORD dwTick=0;
+    BOOL  bDoubleClick=FALSE;
+</FONT></TT></PRE>
+
+<P>5) Insert the following code for the 1st "case WM_LBUTTONDOWN:" at the 
+beginning of the function:
+
+<PRE><TT><FONT COLOR="#990000">
+    // Get tick count since last LButtonDown
+    dwTick = GetTickCount();
+    bDoubleClick = ((dwTick - m_dwLastLButtonDown) <= DBLCLICK_MILLISECONDS);
+    m_dwLastLButtonDown = dwTick;
+    // NOTE: DO NOT ADD break; STATEMENT HERE! Let code fall through
+</FONT></TT></PRE>
+
+
+<P>6) Just above the case WM_KEYDOWN handler, alter the pWnd->PostMessage
+function:
+
+<PRE><TT><FONT COLOR="#990000">
+        // If this is the 2nd WM_LBUTTONDOWN in x milliseconds,
+        // post a WM_LBUTTONDBLCLK message instead of a single click.
+		pWnd->PostMessage(
+            bDoubleClick ? WM_LBUTTONDBLCLK : pMsg->message,
+            pMsg->wParam,
+            pMsg->lParam);
+
+</FONT></TT></PRE>
+
+That's all there is to it. Below is an example of this.
+
+
+<PRE><TT><FONT COLOR="#990000">
+//************************************************************************
+BOOL CTitleTip::PreTranslateMessage(MSG* pMsg) 
+{
+// Number of elapsed milliseconds between WM_LBUTTONDOWN messages to 
+// qualify as a double-click
+#define DBLCLICK_MILLISECONDS 150
+
+    // Used to qualify WM_LBUTTONDOWN messages as double-clicks
+    DWORD dwTick=0;
+    BOOL  bDoubleClick=FALSE;
+
+	CWnd *pWnd;
+	int hittest ;
+	switch( pMsg->message )
+	{
+
+	case WM_LBUTTONDOWN:
+        // Get tick count since last LButtonDown
+        dwTick = GetTickCount();
+        bDoubleClick = ((dwTick - m_dwLastLButtonDown) <= DBLCLICK_MILLISECONDS);
+        m_dwLastLButtonDown = dwTick;
+        // NOTE: DO NOT ADD break; STATEMENT HERE! Let code fall through
+	case WM_RBUTTONDOWN:
+	case WM_MBUTTONDOWN:
+
+		POINTS pts = MAKEPOINTS( pMsg->lParam );
+		POINT  point;
+		point.x = pts.x;
+		point.y = pts.y;
+		ClientToScreen( &point );
+		pWnd = WindowFromPoint( point );
+		if( pWnd == this ) 
+			pWnd = m_pParentWnd;
+
+		hittest = (int)pWnd->SendMessage(WM_NCHITTEST,
+					0,MAKELONG(point.x,point.y));
+		if (hittest == HTCLIENT) 
+        {
+			pWnd->ScreenToClient( &point );
+			pMsg->lParam = MAKELONG(point.x,point.y);
+		} 
+        else 
+        {
+			switch (pMsg->message) 
+            {
+			case WM_LBUTTONDOWN: 
+				pMsg->message = WM_NCLBUTTONDOWN;
+				break;
+			case WM_RBUTTONDOWN: 
+				pMsg->message = WM_NCRBUTTONDOWN;
+				break;
+			case WM_MBUTTONDOWN: 
+				pMsg->message = WM_NCMBUTTONDOWN;
+				break;
+			}
+			pMsg->wParam = hittest;
+			pMsg->lParam = MAKELONG(point.x,point.y);
+		}
+		ReleaseCapture();
+		ShowWindow( SW_HIDE );
+
+        // If this is the 2nd WM_LBUTTONDOWN in x milliseconds,
+        // post a WM_LBUTTONDBLCLK message instead of a single click.
+		pWnd->PostMessage(
+            bDoubleClick ? WM_LBUTTONDBLCLK : pMsg->message,
+            pMsg->wParam,
+            pMsg->lParam);
+
+		return TRUE;
+        
+	case WM_KEYDOWN:
+	case WM_SYSKEYDOWN:
+		ReleaseCapture();
+		ShowWindow( SW_HIDE );
+		m_pParentWnd->PostMessage( pMsg->message, pMsg->wParam, pMsg->lParam );
+		return TRUE;
+	}
+
+	if( GetFocus() == NULL )
+	{
+		ReleaseCapture();
+		ShowWindow( SW_HIDE );
+		return TRUE;
+	}
+
+	return CWnd::PreTranslateMessage(pMsg);
+}
+</FONT></TT></PRE>
+
+
+
+<BR>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

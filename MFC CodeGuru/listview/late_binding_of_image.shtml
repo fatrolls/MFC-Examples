@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Late binding of image - I_IMAGECALLBACK</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Late binding of image - I_IMAGECALLBACK</FONT></H3></CENTER>
+
+<HR WIDTH="100%">When inserting an item in the list view control, you don’t
+have to specify the image just then. You can delay a decision on the image
+by using a callback item. A callback item is an item that causes the list
+view control to send the LVN_GETDISPINFO notification to its parent whenever
+it needs information to display the item. The LVN_GETDISPINFO notification
+can be handled by the parent window or it can be reflected back to the
+list view control, the latter solution being the more preferred. Here are
+the steps to use message reflection.
+<BR>&nbsp;
+<UL>
+<LI>
+Add a message handler for =LVN_GETDISPINFO in your CListCtrl derived class.
+The ‘=’ sign indicates that it is a reflected message. This adds a line
+in the message map section which looks like</LI>
+</UL>
+
+<UL>
+<PRE><TT><FONT COLOR="#990000">ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetDispInfo)</FONT></TT></PRE>
+</UL>
+
+<UL>
+<LI>
+Implement the message handler. The message handler shown below does not
+show any logic to decide on the image index. The image index would most
+likely be a function of the item index and/or the item’s data (pItem->lParam).</LI>
+</UL>
+
+<UL>
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult)&nbsp;
+{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LV_ITEM *pItem = &amp;((LV_DISPINFO*)pNMHDR)->item;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( pItem->mask &amp; LVIF_IMAGE )&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // GetImageFor() needs to be defined and should return image number&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pItem->iImage = GetImageFor( pItem-> iItem);&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *pResult = 0;&nbsp;
+}</FONT></TT></PRE>
+&nbsp;
+<LI>
+Insert items using the I_IMAGECALLBACK value for image index. E.g.</LI>
+
+<PRE><TT><FONT COLOR="#990000">m_listctrl.InsertItem( nRow, sItemText, I_IMAGECALLBACK );</FONT></TT></PRE>
+</UL>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

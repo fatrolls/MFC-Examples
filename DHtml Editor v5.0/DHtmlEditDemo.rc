@@ -1,0 +1,383 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+HTML_HELP               HTML    MOVEABLE PURE   "res\\Html_Help.htm"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)\r\n"
+    "LANGUAGE 7, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\DHtmlEditDemo.rc2""  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen\r\n"
+    "#include ""afxres.rc""         // Standardkomponenten\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\DHtmlEditDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MAIN_DIALOG DIALOGEX 0, 0, 524, 334
+STYLE DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "DHTML Editor by ElmüSoft VS 7"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Static",IDC_STATIC_EDITOR,7,85,510,242,WS_BORDER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "Html 5",IDC_BUTTON_HTML5,7,7,41,14
+    CONTROL         "Source",IDC_CHECK_SOURCE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,53,7,33,14
+    PUSHBUTTON      "Clear All",IDC_BUTTON_CLEAR,90,7,34,14
+    PUSHBUTTON      "Body BgColor",IDC_BUTTON_BGCOLOR,133,7,49,14
+    PUSHBUTTON      "New Table",IDC_BUTTON_TABLE,192,7,41,14
+    PUSHBUTTON      "New Row above",IDC_BUTTON_ROW_ABOVE,239,7,60,14
+    PUSHBUTTON      "New Row below",IDC_BUTTON_ROW_BELOW,302,7,60,14
+    PUSHBUTTON      "Delete Row",IDC_BUTTON_DELETE_ROW,365,7,50,14
+    PUSHBUTTON      "Combine Cells",IDC_BUTTON_COMBINE,419,7,50,14
+    PUSHBUTTON      "Help",IDC_BUTTON_HELP,7,24,41,14
+    CONTROL         "Design",IDC_CHECK_DESIGN,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,53,24,33,14
+    PUSHBUTTON      "Save",IDC_BUTTON_SAVE,90,24,34,14
+    PUSHBUTTON      "Cell BgColor",IDC_BUTTON_BGCOLOR_CELL,133,24,49,14
+    PUSHBUTTON      "Table Prop",IDC_BUTTON_TABLEPROP,191,24,41,14
+    PUSHBUTTON      "New Col left",IDC_BUTTON_COL_LEFT,239,24,60,14
+    PUSHBUTTON      "New Col right",IDC_BUTTON_COL_RIGHT,302,24,60,14
+    PUSHBUTTON      "Delete Col",IDC_BUTTON_DELETE_COL,365,24,50,14
+    PUSHBUTTON      "Split Cell",IDC_BUTTON_SPLIT,419,24,50,14
+    PUSHBUTTON      "Nobreak",IDC_BUTTON_NOBR,476,15,41,14
+    CONTROL         "B",IDC_CHECK_BOLD,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,45,17,14
+    CONTROL         "I",IDC_CHECK_ITALIC,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,26,45,17,14
+    CONTROL         "U",IDC_CHECK_UNDERLINE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,45,45,17,14
+    COMBOBOX        IDC_COMBO_FONTNAME,65,45,100,262,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "FC",IDC_BUTTON_FORECOLOR,204,45,17,14
+    PUSHBUTTON      "BC",IDC_BUTTON_BACKCOLOR,223,45,17,14
+    PUSHBUTTON      "X",IDC_BUTTON_REMOVEFORMAT,248,45,17,14
+    CONTROL         "Left",IDC_CHECK_LEFTALIGN,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,276,45,23,14
+    CONTROL         "Center",IDC_CHECK_CENTERALIGN,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,302,45,25,14
+    CONTROL         "Right",IDC_CHECK_RIGHTALIGN,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,330,45,25,14
+    CONTROL         "UL",IDC_CHECK_UNORDERLIST,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,365,45,17,14
+    CONTROL         "OL",IDC_CHECK_ORDERLIST,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,385,45,17,14
+    PUSHBUTTON      "HR",IDC_BUTTON_HR,410,45,17,14
+    PUSHBUTTON      "HR Prop",IDC_BUTTON_HRPROP,429,45,34,14
+    PUSHBUTTON      "Img",IDC_BUTTON_IMAGE,470,45,22,14
+    PUSHBUTTON      "Link",IDC_BUTTON_LINK,495,45,22,14
+    GROUPBOX        "",IDC_STATIC,4,38,266,24
+    COMBOBOX        IDC_COMBO_FONTSIZE,168,45,30,223,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_URL,25,66,414,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Load",IDC_BUTTON_LOAD,444,66,34,14
+    LTEXT           "URL",IDC_STATIC_URL,7,68,16,8
+    PUSHBUTTON      "<",IDC_BUTTON_GOBACK,483,66,15,14
+    PUSHBUTTON      ">",IDC_BUTTON_GOFORWARD,502,66,15,14
+END
+
+IDD_TABLE_PROP DIALOG DISCARDABLE  0, 0, 157, 153
+STYLE DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Table Properties"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,53,132,50,14
+    LTEXT           "Border width (pixel)",IDC_STATIC,8,6,64,8
+    EDITTEXT        IDC_EDIT_BorderWidth,7,15,66,12,ES_AUTOHSCROLL
+    LTEXT           "Border Color",IDC_STATIC,85,6,41,8
+    EDITTEXT        IDC_EDIT_BORDERCOLOR,84,15,66,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_RULE,7,35,103,102,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Cell Padding (pixel)",IDC_STATIC,8,52,62,8
+    EDITTEXT        IDC_EDIT_CELLPADDING,7,61,66,12,ES_AUTOHSCROLL
+    LTEXT           "Cell Spacing (pixel)",IDC_STATIC,85,52,61,8
+    EDITTEXT        IDC_EDIT_CELLSPACING,84,61,66,12,ES_AUTOHSCROLL
+    LTEXT           "Width (pixel or %)",IDC_STATIC,8,78,62,8
+    EDITTEXT        IDC_EDIT_WIDTH,7,87,66,12,ES_AUTOHSCROLL
+    LTEXT           "Height (pixel or %)",IDC_STATIC,84,78,61,8
+    EDITTEXT        IDC_EDIT_HEIGHT,83,87,66,12,ES_AUTOHSCROLL
+    LTEXT           "Background Color",IDC_STATIC,47,104,76,8
+    EDITTEXT        IDC_EDIT_BACKGCOLOR,46,113,66,12,ES_AUTOHSCROLL
+END
+
+IDD_HR_PROP DIALOG DISCARDABLE  0, 0, 142, 82
+STYLE DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "HR Properties"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,46,61,50,14
+    EDITTEXT        IDC_EDIT_WIDTH,7,15,61,12,ES_AUTOHSCROLL
+    LTEXT           "Length (Pixel, %)",-1,8,6,57,8
+    EDITTEXT        IDC_EDIT_COLOR,73,38,62,12,ES_AUTOHSCROLL
+    LTEXT           "Color",-1,74,30,18,8
+    EDITTEXT        IDC_EDIT_SIZE,73,15,62,12,ES_AUTOHSCROLL
+    LTEXT           "Height (pixel)",-1,75,7,44,8
+    COMBOBOX        IDC_COMBO_SHADE,7,38,61,76,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040704e4"
+        BEGIN
+            VALUE "CompanyName", "ElmueSoft\0"
+            VALUE "Copyright (C) 2011", "(c) 2011\0"
+            VALUE "FileDescription", "DHTML Editor\0"
+            VALUE "FileVersion", "1.0.0.1\0"
+            VALUE "InternalName", "DHtmlEditDemo.exe\0"
+            VALUE "OriginalFilename", "DHtmlEditDemo.exe\0"
+            VALUE "ProductName", "DHTML Edit Demo\0"
+            VALUE "ProductVersion", "1.0.0.1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x407, 1252
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO MOVEABLE PURE 
+BEGIN
+    IDD_MAIN_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 517
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 327
+    END
+
+    IDD_TABLE_PROP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 150
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 146
+    END
+
+    IDD_HR_PROP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 135
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_HR_PROP DLGINIT
+BEGIN
+    IDC_COMBO_SHADE, 0x403, 6, 0
+0x6853, 0x6461, 0x0065, 
+    IDC_COMBO_SHADE, 0x403, 9, 0
+0x6f4e, 0x5320, 0x6168, 0x6564, "\000" 
+    0
+END
+
+IDD_MAIN_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_FONTSIZE, 0x403, 1, 0
+"\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 2, 0
+0x0035, 
+    IDC_COMBO_FONTSIZE, 0x403, 2, 0
+0x0036, 
+    IDC_COMBO_FONTSIZE, 0x403, 2, 0
+0x0037, 
+    IDC_COMBO_FONTSIZE, 0x403, 2, 0
+0x0038, 
+    IDC_COMBO_FONTSIZE, 0x403, 2, 0
+0x0039, 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3131, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3231, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3331, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3431, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3531, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3731, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3831, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3232, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3432, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3632, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3832, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3033, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3233, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3433, "\000" 
+    IDC_COMBO_FONTSIZE, 0x403, 3, 0
+0x3633, "\000" 
+    0
+END
+
+IDD_TABLE_PROP DLGINIT
+BEGIN
+    IDC_COMBO_RULE, 0x403, 21, 0
+0x6c41, 0x206c, 0x696c, 0x656e, 0x2073, 0x6e61, 0x2064, 0x6f62, 0x6472, 
+0x7265, "\000" 
+    IDC_COMBO_RULE, 0x403, 28, 0
+0x6f48, 0x6972, 0x6f7a, 0x746e, 0x6c61, 0x6c20, 0x6e69, 0x7365, 0x6120, 
+0x646e, 0x6220, 0x726f, 0x6564, 0x0072, 
+    IDC_COMBO_RULE, 0x403, 26, 0
+0x6556, 0x7472, 0x6b69, 0x6c61, 0x6c20, 0x6e69, 0x7365, 0x6120, 0x646e, 
+0x6220, 0x726f, 0x6564, 0x0072, 
+    IDC_COMBO_RULE, 0x403, 12, 0
+0x6e4f, 0x796c, 0x6220, 0x726f, 0x6564, 0x0072, 
+    0
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+LANGUAGE 7, 1
+#pragma code_page(1252)
+#include "res\DHtmlEditDemo.rc2"  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen
+#include "afxres.rc"         // Standardkomponenten
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

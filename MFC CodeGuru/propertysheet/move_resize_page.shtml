@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Moving and Resizing the Property Pages</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Moving and Resizing the Property Pages</FONT>
+<HR></H3></CENTER>
+
+The size and position of a property page is taken care of by the property sheet. The property sheet provides enough space to accommodate the largest property page. In spite of this, sometime we still need to move or resize the property page. One situation I can think of where we need to move the property page is when we change the font used by the tab control. Any move or resize of the property page should be done only after changing the tab control appropriately (and the rest of the property sheet if needed) otherwise the end result can be very unattractive.
+
+<p>There are two situations where the property sheet will restore the property page based on its original size. This happens when the user clicks on the Apply button or when a different page is selected. Our solution has to handle both these events to be complete.
+
+<h4>Step 1: Add CRect variable to track the page size and position</h4>
+Since we need to change the size/position in response to two events, it's a good idea to store the size and position information in a rect variable. Note that we don't have a different variable for the different pages. All the pages should be the same size and position. If you can think of a reason to have different sizes or positions for different pages then you need to declare more variables.
+
+<p>If you don't already have a derived class of CPropertySheet, you will have to derive one so that you can add the member variable and handle a couple of windows messages.
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	m_rectPage;
+</FONT></TT></PRE>
+
+<h4>Step 2: Handle ID_APPLY_NOW in the Property Sheet class</h4>
+The class wizard won't be able to help you out here so you have to add the message map entry yourself and also declare the function in the class declaration. The message map entry looks like this. You probably have this already declared if you enable the Apply Now button somewhere in your application.
+
+<PRE><TT><FONT COLOR="#990000">BEGIN_MESSAGE_MAP(CMyPropertySheet, CPropertySheet)
+	//{{AFX_MSG_MAP(CMyPropertySheet)
+	:
+	:
+	//}}AFX_MSG_MAP
+
+	ON_COMMAND(ID_APPLY_NOW, OnApplyNow)
+END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+<p>The handler function is given below. It simply gets the active page and resizes and repositions it using the stored value in m_rectPage. Of course, don't forget the other application specific code that belongs is OnApplyNow().
+
+<PRE><TT><FONT COLOR="#990000">void CMyPropertySheet::OnApplyNow()
+{
+	Default();
+
+	GetActivePage()->MoveWindow(m_rectPage);
+	
+	// Other OnApplyNow code
+}
+</FONT></TT></PRE>
+
+<h4>Step 3: Handle the TCN_SELCHANGE notification</h4>
+The TCN_SELCHANGE notification is sent by the tab control whenever the selected tab (page) changes. We can handle this notification in the OnNotify() function. When this notification message is received, the new page has not been activated yet. We let the default handler in the control handle the notification before getting the active page and resizing it.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyPropertySheet::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+	NMHDR* pNMHDR = (NMHDR*) lParam;
+
+	BOOL bRet = CPropertySheet::OnNotify(wParam, lParam, pResult);
+	if (TCN_SELCHANGE == pNMHDR->code)
+	{
+		// If the message hasn't been handled yet let the control 
+		// handle it. This will ascertain that the new page
+		// is activated
+		if( !bRet )
+		{
+			LRESULT lRes = Default();
+			if( pResult ) 
+				*pResult = lRes;
+		}
+		GetActivePage()->MoveWindow(m_rectPage);
+		return TRUE;
+	}
+	return bRet;
+}
+</FONT></TT></PRE>
+
+<h4>Step 4: Move / Resize the active property page</h4>
+A good place for the initial move or resize of the property page is in the OnInitDialog() function. This is a virtual function in CPropertySheet class and is called after the property sheet is created. You should resize the active property page only, since there is no guarantee that the other pages have been created. Here is a sampe code that increases the width of the property page. Note that you also need to resize the property sheet and the tab control so that the page appears proper.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyPropertySheet::OnInitDialog()
+{
+	BOOL bResult = CPropertySheet::OnInitDialog();
+
+	// Increase width of the property sheet by 100 pixel
+	CRect rectWnd;
+	GetWindowRect(rectWnd);
+	SetWindowPos(NULL, 0, 0,
+		rectWnd.Width() + 100,
+		rectWnd.Height(),
+		SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+
+	// Increase width of the tab control by 100 pixel
+	GetTabControl()->GetWindowRect(rectWnd);
+	GetTabControl()->SetWindowPos(NULL, 0, 0,
+			rectWnd.Width() + 100,
+			rectWnd.Height(),
+			SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+
+	// Increase the width of the property page by 100 pixels
+	CPropertyPage* pPage = GetActivePage();
+	pPage->GetWindowRect(m_rectPage);
+	ScreenToClient(m_rectPage);
+	m_rectPage.right += 100;
+	pPage->MoveWindow(m_rectPage);
+		
+	return bResult;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

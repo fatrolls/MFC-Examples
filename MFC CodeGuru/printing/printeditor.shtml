@@ -1,0 +1,623 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Printing - Script Print Classes and a PrintFormEditor</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Printing - Script Print Classes and a PrintFormEditor</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:warch@tin.it">Iuri Apollonio</A>. 
+<P>
+<P><A HREF="testprintform.zip">Download script print classes</A> 124K<br>
+<P><A HREF="printformeditor.zip">Download PrintFormEditor beta executable</A> 167K<br>
+<P><A HREF="printformeditor_source.zip">Download PrintFormEditor beta source code (need Stingray Objective Toolkit to compile)</A> 227K<br>
+<br>
+
+<img src="printeditor.gif" width="400" height="263" alt="printeditor.gif (13K)"><br>
+
+<br>
+
+This article shows the usage for a couple of classes, CFormJob and CFormPrinterJob, which can be used to
+parse a ascii script file containing pages layout for printing.<br>
+I provide here a <U>beta</u> version for a visual script editor - the PrintFormEditor - along with its source code 
+(in the hope that someone else will write a better one). The PrintFormEditor uses Stingray Objective Toolkit, 
+and without you will not be able to compile its code, so I provide here a compiled executable.<br>
+<u>In future (but it may take month) I will write a version of PrintFormEditor which works without Stingray's
+and which will fix the tons of bugs that currently lives happily in its code.<br>
+I put it here because I think it may be useful and in the hope that someone will write a similar app
+- since I will give no support for it, but be warned that it has lots of bugs, sometimes crashes and
+sometimes corrupt your script files, the selections system has many troubles as has the property msdev-like
+dialog (but it's implementation is worth a look, I think). And remember that it has be written because
+I quickly need it working, so it's not an example of clear and good programming. Don't look too much at
+it's code for learning.</u><br>
+Read down at <A HREF="#POINT8">point 8</A>. to learn more about the editor.<br>
+Now, let's talk about the script classes.<br><br>
+
+<H4>Index</H4>
+<br><b>
+<A HREF="#POINT1">1. The concept</A><br>
+<A HREF="#POINT2">2. A sample script for single page form</A><br>
+<A HREF="#POINT3">3. The virtual overrideables for single page forms</A><br>
+<A HREF="#POINT4">4. Putting it all in a view</A><br>
+<A HREF="#POINT5">5. A sample script for multi items form</A><br>
+<A HREF="#POINT6">6. Putting it all in a view (2)</A><br>
+<A HREF="#POINT7">7. Printing from a dialog</A><br>
+<A HREF="#POINT8">8. The PrintFormEditor</A><br>
+<A HREF="#POINT9">9. What do I need to use it ?</A><br>
+<A HREF="#POINT10">10. Note about static MFC linking</A><br>
+</b>
+<br>
+<br>
+
+<A NAME="POINT1">
+<H4>1. The concept</H4>
+</A>
+
+This 2 classes provide a way of handling printing using an ascii script file for defining pages layout.
+It can be useful for printing forms with a fixed number of pages or forms with a variable numbers of
+subitems in it (like a form containing a list control).<br>
+In defining a page we can use different items:<br>
+<ul>
+<FONT COLOR="#990000"><li>Static</font> - for label items</li>
+<FONT COLOR="#990000"><li>Edit</font> - for fields items (we'll see how to derive a class from CFormPrinterJob and override a virtual function to obtain the fields values at runtime)</li>
+<FONT COLOR="#990000"><li>Line</font> - for line items</li>
+<FONT COLOR="#990000"><li>Rect</font> - for rect items</li>
+<FONT COLOR="#990000"><li>Image</font> - for custom draw items (like bitmaps, we'll use virtuals as above)</li>
+<FONT COLOR="#990000"><li>HLine</font> - for horizontal lines</li>
+<FONT COLOR="#990000"><li>VLine</font> - for vertical lines</li>
+<FONT COLOR="#990000"><li>SubForm</font> - for subforms items (that means, for example, the items of a list control)</li>
+</ul>
+
+
+<A NAME="POINT2"></A>
+<H4>2. A sample script for single page form</H4>
+</A>
+
+Now, let's start with a sample script:<br>
+
+<FONT COLOR="#000099"><PRE>
+[Form Page Header]
+NumPages=1
+Page 0=testpage
+
+[testpage]
+Rect=100,100,2000,2800
+Static=0,0,1900,150,Test Form Demo,,,bold,italic,,Times New Roman,48,-1,ffffff,000000,000000,0,0,1,37
+Static=0,300,300,400,Field 1:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=350,300,900,400,m_Field1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=0,400,300,500,Field 2:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=350,400,900,500,m_Field2,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=900,300,1200,400,Field 3:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=1250,300,1900,400,m_Field3,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=900,400,1200,500,Field 4:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=1250,400,1900,500,m_Field4,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+HLine=0,150,1900,200,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Image=1600,0,1900,150,m_Image1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+</FONT></PRE>
+<I>(this is the "testform1.prx" provided in the demo)</I><br>
+<br>
+This kind of scripts can be generated by the PrintFormEditor or can written by hand, as you like.<br>
+Now I'll explain the script format:<br>
+<FONT COLOR="#000099">
+<FONT COLOR="#009900">/*this is the header of the file; it is the section which hold the number of pages 
+in the script and their names - that means that you can define more that a page layout in a single script*/</FONT><br>
+[Form Page Header]<br>
+<FONT COLOR="#009900">/*number of pages present in this script*/</FONT><br>
+NumPages=1<br>
+<FONT COLOR="#009900">/*The pages names, like Page 0=the name of first page, Page 1=the name of second page, etc ..*/</FONT><br>
+Page 0=testpage<br>
+<FONT COLOR="#009900">/*after the pages names, there must be an empty line*/</FONT><br><br>
+</FONT>
+<br>
+The header of the file is not needed by the parse classes, but is needed for the PrintFormEditor - so put it.<br>
+<br>
+After that header, we find the pages layout:<br>
+<FONT COLOR="#000099">
+<FONT COLOR="#009900">/*here goes the page name closed in square brackets*/</FONT><br>
+[testpage]<br>
+<FONT COLOR="#009900">/*Then we need to define the rect of the page, using 10th of mm as unit*/</FONT><br>
+Rect=100,100,2000,2800<br>
+</FONT>
+<br>
+Now we start finding the items which compose the page; the format of the items is the following (divided
+by commas). Some of them are not needed, depending by the type:<br>
+
+<FONT COLOR="#000099">
+"itemtype","left of item rect","top","right","bottom","field1","condition","field2","bold","italic",
+"underline","font facename","font size","background type","background color","text color","border color",
+"exinfo value","border type","border size","text alignment"<br></FONT>
+The meaning of that fields is the following:<br>
+<ul>
+<FONT COLOR="#990000"><li>itemtype</font> - means the kind of item; it is a text label and you can use any 
+of the keywords stated abose (Static, Edit, ..)</li><br>
+<FONT COLOR="#990000"><li>left of item rect</font> - means the left position of the rect surronding the
+item; it is in 10th of mm units and is relative to the page left margin (that means that is the page
+rect start at 100 10th/mm and the item left position is 500, it will be draw at 600 10th/mm)</li><br>
+<FONT COLOR="#990000"><li>top</font> - same as above, top position</li><br>
+<FONT COLOR="#990000"><li>right</font> - same as above, right position</li><br>
+<FONT COLOR="#990000"><li>bottom</font> - same as above, bottom position</li><br>
+<FONT COLOR="#990000"><li>field1</font> - this is a text value; its meaning depends from the item type:</li>
+<ul>
+<li>Static - the field1 is the text that the label will display</li><br>
+<li>Edit - the field1 will be passed to a virtual function; you will provide a value for this field at runtime</li><br>
+<li>Image - the field1 will be passed to a virtual function along with item rect and a CDC pointer; you will draw what you want in that
+rect at runtime</li><br>
+<li>Subform - the field1 is the name of another page in the script; the page defined in field1 will be
+used to draw the items of a subform; for example, you can define another small page 
+(for example, size 20 cm width and 0,5 cm height) which describe a list item and provide here the name
+of that page. It will be used to draw the list item inside the subform.</li><br>
+<li>for other items, field1 is ignored</li>
+</ul>
+<br>
+<FONT COLOR="#990000"><li>condition</font> - when a condition is not null (is not ""), it will be
+passed to a virtual function; if you return true, the field2 will be handled instead of field1 (except
+for subform items). In my personal case, I use this because I need to print forms in 2 languages, and
+using condition I can write a single page layout and having the static items change their text defining
+a condition instead of writing 2 page scripts.</li><br>
+<FONT COLOR="#990000"><li>field2</font> - read above (field1 and condition)</li><br>
+<FONT COLOR="#990000"><li>bold</font> - is this value is "bold", a bold font will be used</li><br>
+<FONT COLOR="#990000"><li>italic</font> - is this value is "italic", a bold font will be used</li><br>
+<FONT COLOR="#990000"><li>underline</font> - is this value is "underline", a bold font will be used</li><br>
+<FONT COLOR="#990000"><li>font facename</font> - this will contain the font name (ignored if the item type
+doesn't output text, like the lines)</li><br>
+<FONT COLOR="#990000"><li>font size</font> - the font size, ignored if no font is needed</li><br>
+<FONT COLOR="#990000"><li>background type</font> - this can be -1 (means transparent background) or 0 
+(solid background filled with background color)</li><br>
+<FONT COLOR="#990000"><li>background color</font> - the background color (ignored if background type is -1);
+the format of that color is RGB in hex values (FF0000 means red 255, green 0, blue 0)</li><br>
+<FONT COLOR="#990000"><li>text color</font> - the color used for text or lines, defined as above</li><br>
+<FONT COLOR="#990000"><li>border color</font> - the color of item border, if a border is defined (see border type)</li><br>
+<FONT COLOR="#990000"><li>exinfo value</font> - currently unused</li><br>
+<FONT COLOR="#990000"><li>border type</font> - if 0, no border is draw; if != 0 and item is a Static or an Edit, 
+a border will be draw around it, using a pen of color "border color" and size "border size"</li><br>
+<FONT COLOR="#990000"><li>border size</font> - the border size (in CPen units), if a border is defined</li><br>
+<FONT COLOR="#990000"><li>text alignment</font> - a numeric value for text alignment (if text will be draw);
+this value will be used directly in calls to DrawText; from the WinUser.h:</li><br>
+<ul>
+<li>#define DT_TOP          0x00000000 (0)</li>
+<li>#define DT_LEFT             0x00000000 (0)</li>
+<li>#define DT_CENTER           0x00000001 (1)</li>
+<li>#define DT_RIGHT            0x00000002 (2)</li>
+<li>#define DT_VCENTER          0x00000004 (4) - needs DT_SINGLELINE also to be defined</li>
+<li>#define DT_BOTTOM           0x00000008 (8)</li>
+<li>#define DT_SINGLELINE       0x00000020 (32)</li>
+</ul>
+using the info above, if you need, for example, right-bottom aligned text, you'll do 2+8 = 10 and put 10
+as text alignment value
+</ul>
+<br>
+So, let's go on parsing the script lines:<br>
+<FONT COLOR="#009900">/*That means a label draw in rect(0,0,1900,150) + offset(100,100) as page offset;
+the text "Test Form Demo" will be draw with a Times New Roman bold italic font of size 48 in black 
+color with transparent background and in the middle (both vert and horz) of the rect*/</FONT><br>
+<FONT COLOR="#000099">Static=0,0,1900,150,Test Form Demo,,,bold,italic,,Times New Roman,48,-1,ffffff,000000,000000,0,0,1,37</FONT><br>
+<br>
+<FONT COLOR="#009900">/*That means a label draw in rect(0,300,300,400) + offset(100,100) as page offset;
+the text "Field 1:" will be draw with a Arial bold font of size 8 in black 
+color with transparent background and right aligned in the rect*/</FONT><br>
+<FONT COLOR="#000099">Static=0,300,300,400,Field 1:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2</FONT><br>
+<br>
+<FONT COLOR="#009900">/*That means that the value "m_Field1" will be passed to a virtual function;
+the returned text will be draw in rect(350,300,900,400) + offset(100,100);
+the text "Test Form Demo" will be draw with a Arial bold font of size 8 in black 
+color with transparent background and top-left aligned in the rect*/</FONT><br>
+<FONT COLOR="#000099">Edit=350,300,900,400,m_Field1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0</FONT><br>
+<br>
+...
+<br>
+<FONT COLOR="#009900">/*That means an horizontal line which will be draw from 0,150 to 1900,150 (in horiz lines 
+only the top of the rect is used in drawing and in vert lines only the left of the rect is used) + (100,100) with
+a black pen*/</FONT><br>
+<FONT COLOR="#000099">HLine=0,150,1900,200,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0</FONT><br>
+
+<FONT COLOR="#009900">/*That means that the rect 1600,0,1900,150 + (100,100) will be passed to a virtual
+function with the tag name "m_Image1" and a pDC pointer; in the demo we'll draw a bitmap in this rect*/</FONT><br>
+Image=1600,0,1900,150,m_Image1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+
+<br><br>
+This is how the script above appear in print preview:<br>
+<img src="preview1.gif" width="640" height="179" alt="preview1.gif (4K)"><br>
+<br>
+And this is how it appear in the PrintFormEditor:<br>
+<img src="printeditor1.gif" width="640" height="183" alt="printeditor1.gif (21K)"><br>
+<br>
+
+
+<A NAME="POINT3">
+<H4>3. The virtual overrideables for single page forms</H4>
+</A>
+To provide the values for the edit fields and for the images, you'll need to derive a class from CFormPrinterJob
+(let's say, CSinglePagePrintJob), and override those functions:<br>
+
+<FONT COLOR="#990000"><PRE>
+	virtual void SelectPage(const long lPageId);
+	virtual bool ParseCondition(const char * pTag);
+	virtual void ParseScript(const char * cTag, CString &csValue);
+	virtual void DrawBitmap(const char * cTag, CRect rcBitmap, CDC * pDC);
+</PRE></FONT>
+
+You have to define the pages you want to print before starting the print process, for example
+in the view OnPreparePrinting. To define the pages you need call this function:<br>
+
+<FONT COLOR="#990000"><PRE>
+	cSingleJob.AddPage("testform1.prx", "testpage", 1);
+</PRE></FONT>
+AddPage takes the script filename (and eventually path), the page name as defined in the script and a
+page Id. The virtual function SelectPage will be called when the class in about to print a page giving
+the Id you defined in AddPage. Supposing for example you are printing 3 pages based on 3 database records,
+you can derive the SelectPage function to move the database cursor on the proper record based on the
+given lPageId. The default implementation do nothing.<br><br>
+The ParseCondition function is called when a condition is finded in parsing the script. The condition value
+of the item will be passed to this function and you can return false if you want the field1 to be processed,
+and true if you want the field2 to be processed.<br><br>
+The ParseScript function is called when the field1 or field2 value of an edit item need to be defined.
+The field value will be passed in cTag, and you'll have to return the text value to be displayed in the
+CString &cs. For example, if the cTag is "m_Field1" you can return the first field of the selected database
+record.<br><br>
+The DrawBitmap is called when an image item is find in the script. The field1 value of the item will be
+passed in cTag, rcBitmap will hold the rectangle in which you have to draw and pDC is the printer dc.
+<br><br>
+In the sample, I didn't use database; I simply put a pointer to my form view in the derived CSinglePagePrintJob
+and get the values for the edit items from the edit controls of the view. My overridden functions looks
+like that:<br>
+
+<FONT COLOR="#990000"><PRE>
+<FONT COLOR="#009900">/*In this function, I'll draw the bitmap from resource IDB_BITMAP stretching it in the given rect*/</FONT><br>
+<FONT COLOR="#009900">/*Remember that the mapping mode of the dc is actually MM_LOMETRIC*/</FONT><br>
+void CSinglePagePrintJob::DrawBitmap(const char * cTag, CRect rcBitmap, CDC * pDC)
+{
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BITMAP1);
+	CDC memDc;
+	memDc.CreateCompatibleDC(pDC);
+	CBitmap * obmp = memDc.SelectObject(&bmp);
+	BITMAP bm;
+	bmp.GetBitmap(&bm);
+	pDC->StretchBlt(rcBitmap.left, rcBitmap.top, rcBitmap.Width(), rcBitmap.Height(), &memDc, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+	memDc.SelectObject(obmp);
+}
+
+void CSinglePagePrintJob::ParseScript(const char * cTag, CString &csValue)
+{
+	ASSERT(pView);
+
+	if (!(lstrcmpi(cTag, "m_Field1"))) csValue = pView->csVal1;
+	else if (!(lstrcmpi(cTag, "m_Field2"))) csValue = pView->csVal2;
+	else if (!(lstrcmpi(cTag, "m_Field3"))) csValue = pView->csVal3;
+	else if (!(lstrcmpi(cTag, "m_Field4"))) csValue = pView->csVal4;
+}
+</PRE></FONT>
+
+Now, we'll explore how to implement all this stuff inside a view.
+
+<A NAME="POINT4">
+<H4>4. Putting it all in a view</H4>
+</A>
+
+After we derived the CSinglePagePrintJob, we'll put an instance of it in the view header:<br>
+
+<FONT COLOR="#990000"><PRE>
+#include "SinglePagePrintJob.h"
+
+class CTestPrintFormDoc;
+
+class CTestPrintFormView : public CFormView
+{
+public:
+	CSinglePagePrintJob	cSingleJob;
+...
+}
+</FONT></PRE>
+Then, we can modify our view print functions like that:<br>
+<FONT COLOR="#990000"><PRE>
+
+BOOL CTestPrintFormView::OnPreparePrinting(CPrintInfo* pInfo)
+{
+	UpdateData();
+
+	cSingleJob.Clear();
+	cSingleJob.AddPage("testform1.prx", "testpage", 1);
+
+	if (pInfo->m_bPreview) return DoPreparePrinting(pInfo);
+
+	return cSingleJob.OnPreparePrinting(pInfo);
+}
+
+void CTestPrintFormView::OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo)
+{
+	cSingleJob.OnBeginPrinting(pDC, pInfo);
+}
+
+void CTestPrintFormView::OnEndPrinting(CDC* pDC, CPrintInfo* pInfo)
+{
+	cSingleJob.OnEndPrinting(pDC, pInfo);
+}
+
+void CTestPrintFormView::OnPrint(CDC* pDC, CPrintInfo* pInfo)
+{
+	cSingleJob.OnPrint(pDC, pInfo);
+}
+</FONT></PRE>
+
+Now we'll see how to implement a script able to handling the items of a list control.
+
+<A NAME="POINT5">
+<H4>5. A sample script for multi items form</H4>
+</A>
+
+<FONT COLOR="#000099"><PRE>
+[Form Page Header]
+NumPages=2
+Page 0=testpage
+Page 1=testsubform
+
+[testpage]
+Rect=100,100,2000,2800
+Static=0,0,1900,150,Test Form Demo with subform,,,bold,italic,,Times New Roman,26,-1,ffffff,000000,000000,0,0,1,37
+Static=0,300,300,400,Field 1:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=350,300,900,400,m_Field1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=0,400,300,500,Field 2:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=350,400,900,500,m_Field2,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=900,300,1200,400,Field 3:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=1250,300,1900,400,m_Field3,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=900,400,1200,500,Field 4:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=1250,400,1900,500,m_Field4,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+HLine=0,150,1900,200,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Image=1600,0,1900,150,m_Image1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Subform=94,694,1790,2500,testsubform,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=88,644,398,688,Column 1,,,,,,Arial,8,0,c0c0c0,000000,000000,0,0,1,0
+Static=396,644,1792,688,Column 2,,,,,,Arial,8,0,c0c0c0,000000,000000,0,0,1,0
+HLine=10,2602,1882,2630,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Rect=88,644,1792,688,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Rect=88,692,1792,2498,testsubform,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+
+[testsubform]
+Rect=0,0,1800,53
+Edit=0,0,298,46,m_subfield1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Edit=303,0,1888,46,m_subfield2,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+HLine=0,52,1700,53,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+VLine=299,0,301,53,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+</FONT></PRE>
+<I>(this is the "testform2.prx" provided in the demo)</I><br>
+<br>
+The main differences between this and the other script is that here we have 2 pages defined, "testpage"
+and "testsubform". In the testpage form we have a Subform item with "testsubform" as field value.<br>
+The size of the testsubform page is little, having an height of 0.5 cm. The Subform item in the "testpage"
+page has an height of ~18 cm. That means that we have about 36 items in a page (a bit less since testsubform
+height is 53 and not 50).<br>
+When using multiitem pages, you have to use the AddPage function in another way:<br>
+	
+<FONT COLOR="#990000"><PRE>
+	cMultiJob.AddPage("testform2.prx", "testpage", 1, wndList.GetItemCount());
+</PRE></FONT>
+Here we pass another parameter after the page Id - it's the number of subitems we have for the Subform item.
+<br>
+The class will call another virtual function just before getting info for a subitem:<br>
+<FONT COLOR="#990000"><PRE>
+	virtual void SelectSubItem(const long lPageId, const long lSubItemIndex);
+</PRE></FONT>
+If for example we have 200 items in the list control, the class will call:<br>
+<FONT COLOR="#990000"><PRE>
+Selectpage(1);
+SelectSubItem(1,0);
+SelectSubItem(1,1);
+SelectSubItem(1,2);
+SelectSubItem(1,3);
+...
+SelectSubItem(1,35);
+<FONT COLOR="#009900">// Here we'll have a page change</FONT>
+SelectSubItem(1,36);
+..and so on
+</PRE></FONT>
+
+In the demo, since we are not using database or the like, I simply store the lSubItemIndex every
+time the SelectSubItem function is called, and my derived functions looks like that:<br>
+
+<FONT COLOR="#990000"><PRE>
+void CMultiPagePrintJob::ParseScript(const char * cTag, CString &csValue)
+{
+	ASSERT(pView);
+
+	if (!(lstrcmpi(cTag, "m_Field1"))) csValue = pView->csVal1;
+	else if (!(lstrcmpi(cTag, "m_Field2"))) csValue = pView->csVal2;
+	else if (!(lstrcmpi(cTag, "m_Field3"))) csValue = pView->csVal3;
+	else if (!(lstrcmpi(cTag, "m_Field4"))) csValue = pView->csVal4;
+	else if (!(lstrcmpi(cTag, "m_subfield1"))) csValue = pView->wndList.GetItemText(lSubItem, 0);
+	else if (!(lstrcmpi(cTag, "m_subfield2"))) csValue = pView->wndList.GetItemText(lSubItem, 1);
+}
+
+void CMultiPagePrintJob::SelectSubItem(const long lPageId, const long lSubItemIndex)
+{
+	lSubItem = lSubItemIndex;
+}
+</PRE></FONT>
+
+
+<br><br>
+This is how the script above appear in print preview:<br>
+<img src="preview2.gif" width="640" height="309" alt="preview2.gif (7K)"><br>
+<br>
+This is how "testpage" appear in the PrintFormEditor:<br>
+<img src="printeditor2.gif" width="640" height="254" alt="printeditor2.gif (14K)"><br>
+<br>
+And this is how "testsubform" appear in the PrintFormEditor:<br>
+<img src="printeditor2b.gif" width="640" height="61" alt="printeditor2b.gif (2K)"><br>
+<br>
+
+<A NAME="POINT1">
+<H4>6. Putting it all in a view (2)</H4>
+</A>
+
+After we derived the CMultiPagePrintJob, we'll put an instance of it in the view header:<br>
+
+<FONT COLOR="#990000"><PRE>
+#include "MultiPagePrintJob.h"
+
+class CTestPrintFormDoc;
+
+class CTestPrintFormView : public CFormView
+{
+public:
+	CMultiPagePrintJob	cSingleJob;
+...
+}
+</FONT></PRE>
+
+Then, we can modify our view print functions like that:<br>
+<FONT COLOR="#990000"><PRE>
+
+BOOL CTestPrintFormView::OnPreparePrinting(CPrintInfo* pInfo)
+{
+	UpdateData();
+
+	cMultiJob.Clear();
+	cMultiJob.AddPage("testform2.prx", "testpage", 1, wndList.GetItemCount());
+
+	if (pInfo->m_bPreview) return DoPreparePrinting(pInfo);
+
+	return cMultiJob.OnPreparePrinting(pInfo);
+}
+
+void CTestPrintFormView::OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo)
+{
+	cMultiJob.OnBeginPrinting(pDC, pInfo);
+}
+
+void CTestPrintFormView::OnEndPrinting(CDC* pDC, CPrintInfo* pInfo)
+{
+	cMultiJob.OnEndPrinting(pDC, pInfo);
+}
+
+void CTestPrintFormView::OnPrint(CDC* pDC, CPrintInfo* pInfo)
+{
+	cMultiJob.OnPrint(pDC, pInfo);
+}
+</FONT></PRE>
+
+
+<br><br>
+
+<A NAME="POINT7">
+<H4>7. Printing from a dialog</H4>
+</A>
+
+These classes have been written based on my generic print classes here at codeguru. That means
+that printing from dialogs or from any other place is supported, <I>except</I> for print preview.<br>
+In the demo there is a menu command to launch a dialog which prints from it, printing exactly the
+same as from the view; in that way you can see the difference.<br>
+Basically, all you need to launch the print from somewhere else (you can do it from the view too,
+but you will have no preview) is this:<br>
+
+<FONT COLOR="#990000"><PRE>
+	UpdateData();
+
+	cMultiJob.Clear();
+	<FONT COLOR="#009900">// This is the print job name as it will appear in the system print status</FONT>
+	cMultiJob.strTitle = "Test dialog multiitem pages";
+	cMultiJob.AddPage("testform2.prx", "testpage", 1, wndList.GetItemCount());
+	cMultiJob.OnFilePrint();
+</FONT></PRE>
+
+<A NAME="POINT8">
+<H4>8. The PrintFormEditor</H4>
+</A>
+
+As I stated above, I give no support for this app. Use it at your own risk. You are encouraged,
+if you find that app has something good in it, to improve or rewrite it. If you do, send me your
+code and I will post it here.<br>
+Here there are the basic for working with it (and remember that the app can crash in every moment,
+but - I hope - shouldn't format your HD, at least not at the first time it crashes ..).<br>
+It has 2 windows, the view and a dockable bar. In the dockable bar are shown the pages of the document.<br>
+You can add a page using the menu Pages->Add a page; you can remove a page selecting it in the paper bar
+and using the menu Pages->Remove page.<br>
+With the menu pages->Page size and and margins you can define the page size, margin and name. The
+name can also be defined editing the icons in the paper bar and asking for the property dialog,
+pushing the "pin" button and then clicking on an icon in the paperbar.<br>
+Using the "Strumenti" toolbar you can add the items to the page; the "Align" toolbar permits standard
+alignment function; you are warned that the Align toolbar commands doesn't work very well - they use
+as "base" item the upper/left of the selected items, not the first or the last selected one.<br>
+You can handle an item properties selecting it and using the context menu->Property. Be carefully
+in having more than one item selected when doing this, since the change may be not as you can imagine.<br>
+When you made changes to the properties, if they are not immediatly reflected on the selected item, 
+hit the enter key.<br>
+Some of the features in the property dialog are not currently implemented in the parse classes, as
+the "double border style"; and it doesn't gray out the unused fields (eg. you can select "bold" and
+font's facename even for lines - but it will be ignored).<br>
+The help button in property dialog in here only show how it can be implemented, actually it shows
+an unuseful little help page (in italian!).<br>
+Remember, if you try the print preview command, to close the property dialog before. Exiting the print
+preview is something which sometimes crash the app on my pc - save before!<br>
+<br>
+A last thing; I finded useful to use this app to make drafts of pages, and then manually modify the scripts.<br>
+Don't damn me too much using this thing; remember that is free (an applause for the word "free" ..), that
+I do other thing to live beside this (or I will be starving at this time ..) and I promise that if I will
+won at the lottery I will write a better one.<br>
+
+
+<A NAME="POINT9">
+<H4>9. What do I need to use it ?</H4>
+</A>
+
+You'll need to import (with the standard add component way) the classes:<br>
+<ul>
+<li>CFormJob</li>
+<li>CFormPrinterJob</li>
+<li>CPrintStatus</li>
+</ul>
+Importing the CPrintStatus, which is a dialog, will import the dialog template resource too (IDD_PRINT_STATUS).<br>
+It needs an avi file to be displayed during printing process (I took a sample from Microsoft) named
+IDR_PRINT "AVI" resource (look at demo resource).<br>
+
+<A NAME="POINT10">
+<H4>10. Note about static MFC linking</H4>
+</A>
+Someone has reported me of troubles in compiling the previous printer classes with static MFC library;
+the troubles where in loading the string resource named AFX_.. present in the CFormPrinterJob class.<br>
+I've succesfully compiled and run the classes with static MFC (under VC5 + SP3, NT40 + SP3) .. so I'm sorry, guys, but it's a
+problem of your Os/compiler/dll/lib .. don't damn me!<br>
+<br>
+
+
+That's all. Hope this little thing will make less basic printing questions appear in the discussion
+board! Enjoy ..
+<br>
+<br>
+<i>And if you permits .. I would like to dedicate this work, especially the buggy PrintFormEditor (little vengeange, 
+there's a bug for every tears), to my *sigh* ex-girlfriend Enrica.. I'm soo lonely and sad now .. *sigh*</i>
+
+<br>
+<p>Last updated: 1 July 1998 </p>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

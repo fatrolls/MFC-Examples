@@ -1,0 +1,32 @@
+#include <winver.h>
+#include "version.h"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION	VERMAJOR, VERMINOR, 0, BUILD
+PRODUCTVERSION	VERMAJOR, VERMINOR, 0, BUILD
+FILEFLAGSMASK	VS_FFI_FILEFLAGSMASK
+FILEFLAGS	0
+FILEOS		VOS_DOS_WINDOWS32
+FILETYPE	VFT_VXD
+FILESUBTYPE	0
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+	BLOCK "040904E4"
+	BEGIN
+	    VALUE "CompanyName", "Walter Oney Software\0"
+	    VALUE "FileDescription", "WDM Stubs for Windows 98\0"
+	    VALUE "FileVersion", PRODVER
+	    VALUE "InternalName", "WDMSTUB\0"
+	    VALUE "LegalCopyright", "Copyright (C) 1998 by Walter Oney Software\0"
+	    VALUE "OriginalFilename", "WDMSTUB.VXD\0"
+	    VALUE "ProductName", "WDMSTUB\0"
+	    VALUE "ProductVersion", PRODVER
+	END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+	VALUE "Translation", 0x409, 1252
+    END
+END
+

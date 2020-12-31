@@ -1,0 +1,118 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Gage Renzi">
+   <TITLE>TreeView - A Print Enabled Tree Control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->A Print Enabled Tree Control
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:Michael.5.0.6.3.Wild@dv-ed-sd.zug.ch.siemet.com"><!-- Author Name -->Mike Wild</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="printable_ctreectrl.gif" >
+
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+I realized a lot of developer are interested in code for printing CTreectrl. 
+I was in the same situation and tried a lot of different ways, but every approach had 
+its disadvantage. 
+
+<p>The simplest solution seemed in the call of CWnd::Print(...), but this only prints 
+the visible part of the control, which was not what I wanted. One way to make this 
+approach work was to scroll the TreeCtrl in the printing code from the start to the end of the
+control, calling CWnd::Print(...) after every scroll, which was a little bit wierd for me. 
+Additionally I wanted as much flexibility in my code as possible, which means printing 
+with or without icons, lines, buttons.
+
+<p>That's why I began to implement the whole stuff by myself, following the next few steps:
+
+<H4>Init ImageList:</H4>
+<p>In my opinion and my understanding of OOD the Treecontrol should be able to display itself,
+that's why it should have the imagelist and initialize it.
+
+<H4>Paging:</H4>
+This is also done by hand, like everything else. Iterate through the tree and create an 
+array with the PagingInfos:
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+	struct PagingInfos	
+	{	
+		HTREEITEM	m_hStartItem;	
+		int		m_iNumberOfItems;	
+	};
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+ 
+<H4>DrawTreeCtrl:</H4>
+<p>Iterate through the tree and print every node by code, including lines and buttons.
+
+<H4>Imagelist vs DIB:</H4>
+<p>In an additional step I wanted to print the tree in color. This was easy for text, 
+but not for the icons. I tried a lot to convert the imagelist to DIB, but what I really needed 
+was a method, which gives back the DIB of one icon, not of the whole Imagelist. 
+
+<H4>Bugs and Improvements:</H4>
+<LI>Compiling the release version is now working too.
+<LI>If the convertion to DIB failes the program gives back an errorcode and prints without graphic( see Comment below).
+ 
+<H4>Comment:</H4> 
+<p>After the first release I received some Mails about problems with the example project, which was crashing under some conditions. My problem is, that everytime I tested my code under the described conditions it worked fine. What I've done now, was to extend the project with more errorhandling and it would be nice, if all users which are receiving errorcodes, could report me the following informations:
+<LI>Errorcode
+<LI>OS with servicepack
+<LI>IDE with servicepack
+<LI>Optional: Which convertion failed 
+ 
+Please report all bugs and improvements to me, thanks and enjoy it.
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="http://www.codeguru.com/treeview/printable_ctreectrl.zip">Download demo project - 33KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 05/01/1998
+<p>Updated: 06/06/1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

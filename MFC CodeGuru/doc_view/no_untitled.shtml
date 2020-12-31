@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc/View - How to get rid of "Untitled - MyApp" in MFC</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">How to get rid of "Untitled - MyApp" in MFC</FONT></H3></CENTER>
+
+<HR>
+
+This sample was contributed by <A HREF="mailto:kohlhepp@iosphere.net">Chris Kohlhepp</A>.
+
+
+<P>Microsoft outdid themselves when they designed MFC such that 
+applications are automatically named according to the document
+view paradigm. When you use MFC to create either an SDI or MDI
+application, your main window is probably called something like
+"Untitled - MyApp." If you don't particularly care for the 
+document view paradigm, other than perhaps wishing to benefit 
+from the separation of user interface and program core, 
+then you're left in the dark...
+
+<P>To get rid of the "Untitled" alone, you can override the 
+CDocument virtual function "SetTitle" as shown below.
+
+<PRE><TT><FONT COLOR="#990000">   void CMyDoc::SetTitle(LPCTSTR lpszTitle) 
+     {
+       CDocument::SetTitle("MyTitle");
+     }
+</FONT></TT></PRE>
+
+<P>This will produce a main window title of the type
+"MyTitle - MyApp". But perhaps all you want is "MyApp".
+
+<P>You can set the main window title from just about anywhere 
+in your application using the statement shown below.
+
+<PRE><TT><FONT COLOR="#990000">   (AfxGetMainWnd( ))->SetWindowText("MyApp");
+</FONT></TT></PRE>
+
+<P>The problem with this approach is that MFC in its 
+infinite wisdom will reset your window title to 
+the "Document - App" default as soon as a  
+document object is constructed. If you care to change
+MFC's default behavior ( not advised ) look up WINMDI.CPP;
+it's the culprit.
+
+<P>Finally, you can overwrite the CFrameWnd virtual function
+"OnUpdateFrameTitle" in your apps CMainFrame class. Bud
+Milwood, a friend of mine, pointed out the function's very
+existence when I was loosing my sanity browsing the MFC
+online help. Don't try to look up "OnUpdateFrameTitle" in 
+the Microsoft Developer Studio online help. It's not there.
+So use it merrily, but use it wisely, subsequent versions
+of MFC may not support it. The following code snippet shows
+how...
+
+
+<PRE><TT><FONT COLOR="#990000">   void CMainFrame::OnUpdateFrameTitle(BOOL Nada) 
+    {
+      // get app name from string table resource
+      //----------------------------------------
+      CString csAppName;
+      csAppName.Format(AFX_IDS_APP_TITLE); 
+
+      // Set caption of main frame window
+      //---------------------------------
+      SetWindowText(csAppName);
+    }
+</FONT></TT></PRE>
+
+<P>Another and probably safer method has been
+brought to my attention by Stephen Michael Schimpf at CyberSky.Simplenet.Com. 
+You can modify the window style in 'PreCreateWindow' as follows:
+
+<PRE><TT><FONT COLOR="#990000"> 
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
+{
+    cs.style &= ~(LONG) FWS_ADDTOTITLE;
+   
+    return CFrameWnd::PreCreateWindow(cs);
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

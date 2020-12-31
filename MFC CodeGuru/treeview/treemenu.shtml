@@ -1,0 +1,145 @@
+<HTML>
+
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="B. Gage Renzi">
+   <TITLE>TreeView - TreeMenuFrame 1.0</TITLE>
+</HEAD>
+
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+A Control like IE 4's Favorites/History/Channels View
+</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:raip@csi.com">Rainer Pfitzner</A>.
+
+
+<p>Everyone knows the new menu-like left pane view's in IE4.
+But did you know that this is only a extended TreeView?
+You can do this by using CUSTONDRAW notification in the new from <strong>CTreeCtrl</strong> derived class.
+I called it <strong>CTreeMenu</strong>. To do this is quite easy. See an code extract below.<br>
+But note: This works only with the extended TreeCtrl that comes with IE4.
+You can use my wrapper class or the one from 
+<A HREF="mailto:lbarreira@ip.pt">Luis Barreira</A> IE4 Classes. This should also work, but I didn't test it.
+Also on <A HREF="http://www.codeguru.com">Codeguru's Webpage</A>.
+<br><br>
+I wrote a class, that makes the handling pretty easy. Included are a Button to close the view and some Bevel stuff to be uptodate with the Windows style.
+There is also a self RegisterClass() function to use as a CustomControl on Dialog Templates.
+<br><br>
+The Frame use the <strong>SizingControlBar</strong> from <A HREF="mailto:cristi@gds.ro">Cristi Posea</A>
+also found here on <A HREF="http://www.codeguru.com">Codeguru's Webpage</A>.
+<br><br>
+See more details in code comments.
+</p>
+
+<P><IMG SRC="treemenu.gif" >
+</P>
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeMenu::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+
+	NMTVCUSTOMDRAW *pTVCD = (NMTVCUSTOMDRAW*)pNMHDR;
+	
+	CDC* pDC = CDC::FromHandle(pTVCD->nmcd.hdc);
+
+	// The rect for the cell gives correct left and right values.
+	CRect rect = pTVCD->nmcd.rc;
+	
+	// By default set the return value to do the default behavior.
+	*pResult = 0;
+
+	
+	switch( pTVCD->nmcd.dwDrawStage )
+		{
+		// First stage (for the whole control)
+		case  CDDS_PREPAINT: 
+			{		
+				*pResult = CDRF_NOTIFYITEMDRAW;
+			}
+			break;
+
+		// Stage three (called for each subitem of the focused item)
+		case CDDS_ITEMPREPAINT | CDDS_SUBITEM: 
+			{
+				*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NOTIFYPOSTPAINT;
+			}
+			break;
+
+		// Stage four (called for each subitem of the focused item)
+		case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM: 
+			{
+				*pResult = CDRF_SKIPDEFAULT;	
+			}
+			break;
+		
+		default: 
+			// Stage two handled here. (called for each item)
+			if (pTVCD->nmcd.uItemState & CDIS_HOT)
+			{
+				pDC->Draw3dRect( &rect, m_clr3DHilight, m_clr3DShadow );
+				pDC->SetBkColor(GetBkColor());
+				pDC->SetTextColor(RGB(0,0,255));
+	
+				// Tell the control that to draw it again.
+				*pResult = CDRF_NOTIFYPOSTPAINT;
+
+			}
+
+			if (pTVCD->nmcd.uItemState & CDIS_SELECTED)
+			{
+				*pResult = CDRF_SKIPDEFAULT;
+			}
+
+			if( (pTVCD->nmcd.uItemState & CDIS_FOCUS) )
+			{
+				pDC->Draw3dRect( &rect, m_clr3DShadow, m_clr3DHilight );
+				pDC->SetBkColor(m_clrSelBkColor);
+				pDC->SetTextColor(m_clrSelTextColor);
+	
+				*pResult = CDRF_NOTIFYPOSTPAINT;
+			}	
+			
+			if( (pTVCD->nmcd.uItemState & CDIS_CHECKED) )
+			{
+				*pResult = CDRF_DODEFAULT;
+			}	
+			
+			break;
+		}
+}
+</FONT></TT></PRE>
+
+
+<p><A HREF="TreeMenuDemo.zip">Download demo - 70KB</A>
+<p>P.S: Did everyone has successfull experienced with the new pager control (see latest "commctrl.h"), please send a notice to <A HREF="mailto:raip@csi.com">Rainer Pfitzner</A></p>
+
+<p>Date Posted: 05/13/98
+<P><HR>
+
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<CENTER><FONT SIZE=-2>261</FONT></CENTER>
+
+
+</BODY>
+</HTML>

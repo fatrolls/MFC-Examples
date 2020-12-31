@@ -1,0 +1,221 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Misc - CStatic with bitmap sensitive to change in system colours</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">CStatic with bitmap sensitive to change in system colours</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:pal.k.tonder@matek.sintef.no">Pål K. Tønder</A>
+
+
+<P>If an icon is used in a static control, it is sensitive to changes
+in the system colours. This means that areas of the icon that have
+background colour, is updated with the new background colour etc.
+
+<P>As far as I can see, there is not the same if instead a bitmap is used
+in the static control. Here is a small class that adds this
+functionality for bitmaps. This is useful if for instance you add your
+non-square logo in the About dialog box.
+
+<P>The example figures are from the Database Sample
+(Repeater Frequency Index) by Eric Hoagland.
+
+<P><table>
+	<tr><img src="syscol_static1.jpg"></tr>
+	<tr>Without the CSysColStatic</tr>
+</table>
+
+<P><table>
+	<tr><img src="syscol_static2.jpg"></tr>
+	<tr>With the CSysColStatic</tr>
+</table>
+
+<P>To use the class you add a member variable to you dialog header:
+
+<PRE><TT><FONT COLOR="#990000">
+protected:
+CSysColStatic m_Static;
+</FONT></TT></PRE>
+
+<P>Then you add the following to OnInitDialog:
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMyApp::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	m_Static.SubclassDlgItem(IDC_ARROW_STATIC,this);
+	m_Static.ReloadBitmap(IDB_BITMAP1);
+
+</FONT></TT></PRE>
+
+
+<P>The last statement makes the static control reload the bitmap given by
+IDB_BITMAP1
+with correct system colours.
+
+<P>The implementation of the static subclass is very simple:
+
+<PRE><TT><FONT COLOR="#990000">
+#if !defined(AFX_SYSCOLSTATIC_H__664DE301_4F7B_11D1_9E3D_00A0245800CF__INCLUDED_)
+#define AFX_SYSCOLSTATIC_H__664DE301_4F7B_11D1_9E3D_00A0245800CF__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// SysColStatic.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CSysColStatic window
+
+class CSysColStatic : public CStatic
+{
+// Construction
+public:
+	CSysColStatic();
+	void ReloadBitmap(int nImageID = -1);
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CSysColStatic)
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CSysColStatic();
+
+	// Generated message map functions
+protected:
+	int m_nImageID;
+	//{{AFX_MSG(CSysColStatic)
+	afx_msg void OnSysColorChange();
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_SYSCOLSTATIC_H__664DE301_4F7B_11D1_9E3D_00A0245800CF__INCLUDED_)
+</FONT></TT></PRE>
+
+
+<P>ReloadBitmap reloads the bitmap identified by m_nImageID. ReloadBitmap is
+also used to
+set m_nImageID because I have not found a way to automatically extract the
+bitmap ID
+from the control. By loading the bitmap with LoadImage using the
+LR_LOADMAP3DCOLORS style,
+the colour changes are done automatically.
+
+<P>A handler is added to respond to WM_SYSCOLORCHANGE messages. It simply
+calls ReloadBitmap
+without any arguments.
+
+
+<PRE><TT><FONT COLOR="#990000">
+// SysColStatic.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "myapp.h"
+#include "SysColStatic.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CSysColStatic
+
+CSysColStatic::CSysColStatic()
+{
+	m_nImageID == -1;
+}
+
+CSysColStatic::~CSysColStatic()
+{
+}
+
+void CSysColStatic::ReloadBitmap(int nImageID)
+{
+	if(nImageID != -1)
+		m_nImageID = nImageID;
+
+	if(m_nImageID == -1)
+		return;
+
+	HBITMAP hBmp = (HBITMAP)::LoadImage( AfxGetInstanceHandle(), 
+            MAKEINTRESOURCE(m_nImageID), IMAGE_BITMAP, 0,0, LR_LOADMAP3DCOLORS );
+
+	if( hBmp == NULL )
+		return;
+
+	hBmp = SetBitmap(hBmp);
+	if(hBmp != NULL)
+		::DeleteObject(hBmp);
+}
+
+BEGIN_MESSAGE_MAP(CSysColStatic, CStatic)
+	//{{AFX_MSG_MAP(CSysColStatic)
+	ON_WM_SYSCOLORCHANGE()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CSysColStatic message handlers
+
+void CSysColStatic::OnSysColorChange() 
+{
+	CStatic::OnSysColorChange();
+	
+	ReloadBitmap();	
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

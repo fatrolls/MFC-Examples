@@ -1,0 +1,402 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Fading from color to grayscale and vice-versa</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Fading from color to grayscale and vice-versa</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+
+
+We have already covered how to fade in a bitmap starting from a single color or how to fade out a bitmap to a single color. The code given here extends the idea a little bit further. It either starts with a grayscale image of the bitmap and turns into a full color image or starts from a full color image and turns it into a grayscale image. 
+
+<p>This code has another enhancement over the fade in and fade out code given earlier - it also works on hi color and true color displays. On displays that support a palette, the FadeGrayScaleToColor() and FadeColorToGrayScale() use palette animation for the effect. On displays that don't need a palette, the DIB is repeatedly modified and displayed onto the display device.
+
+<p>Both the functions use the CreateReservedPalette() function described and listed in the previous topic. This function creates a palette with the PC_RESERVED flag set and with at most 236 colors. The PC_RESERVED flag is essential for palette animation to work. We need to reduce the number of colors used to 236 to account for the 20 colors used by the system itself.
+
+<h4>Function 1: Fade from grayscale to color</h4>
+The FadeGrayScaleToColor() draws the device-independent bitmap (DIB) onto the device context as a grayscale image and then slowly changes it to a full color image. The function can display the fading effect only with DIBs with 256 or fewer colors. This function basically handles two very distinct scenarios. The first scenario is that the display device supports logical palettes, in which case we can use palette animation. The second scenario is that the display does not support logical palettes. In this case we have to repeatedly draw a modified DIB to get the desired effect.
+
+<p>When we draw the initial image on a device that supports a palette, we have the problem of retaining the color mapping. Since we start with a grayscale image, if we just selected a grayscale palette into the device context and drew the image onto it, then some of the colors would get remapped to different colors since the color table is different from the colors in the logical palette. If the colors were remapped then original red, blue or green would get mapped to exactly the same color in the grayscale logical palette. Any further palette manipulation will not be able to restore the reds, greens and blues. They would all still remain the same color.
+
+<p>To avoid this problem, we first draw the image onto a memory device context using a color palette. Once the image is on the DC we use palette animation to change only the logical palette. We apply the same palette operations on the physical device context resulting in identical palettes for both the device contexts. Now we can safely BitBlt the image onto the physical device context without getting the colors remapped. Once we have the image in the target device, we simply animate the palette till all the entries in the palette are the colors needed to display the image properly.
+
+<p>Of course, the above applies only if the target device supports palette operations. If the device supports more than 256 colors then it will not support a logical palette. In this case we repeatedly change the color information in the DIB and display it again with the modified color table. This requires lot more processing power than palette animation.
+
+
+<PRE><TT><FONT COLOR="#990000">
+// FadeGrayScaleToColor	- Draws a bitmap in gray scale and slowly turns it to color
+// pDC				- Pointer to target device context
+// hDIB				- Handle of device-independent bitmap
+// xDest			- x-coordinate of upper-left corner of dest. rect. 
+// yDest			- y-coordinate of upper-left corner of dest. rect. 
+// nLoops			- How many loops to fade the image into color
+// nDelay			- Delay in milli-seconds between each loop
+//
+void FadeGrayScaleToColor( CDC *pDC, HANDLE hDIB, int xDest, int yDest, int nLoops, 
+									int nDelay ) 
+{
+	CPalette pal;
+	CPalette *pOldPalette;
+	PALETTEENTRY peAnimate[256];
+	PALETTEENTRY peGray[256];
+	PALETTEENTRY peOriginal[256];
+
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+					1 << bmInfo.bmiHeader.biBitCount;
+	
+	int nReservedColors = nColors > 236 ? 236 : nReservedColors;
+	int nWidth = bmInfo.bmiHeader.biWidth;
+	int nHeight = bmInfo.bmiHeader.biHeight;
+
+	// Create the palette if needed
+	if( pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE && nColors <= 256 )
+	{
+		// The device supports a palette and bitmap has color table
+		
+		HPALETTE hPal = CreateReservedPalette(hDIB);
+		pal.Attach( hPal );
+
+		// Now save the original colors and get the grayscale colors
+		pal.GetPaletteEntries(0, nReservedColors, (LPPALETTEENTRY)&peGray);
+		for( int i=0; i < nReservedColors; i++)
+		{
+			// Save original colors
+			peOriginal[i].peRed =   peGray[i].peRed ;
+			peOriginal[i].peGreen = peGray[i].peGreen;
+			peOriginal[i].peBlue =  peGray[i].peBlue ;
+
+			long lSquareSum = peGray[i].peRed * peGray[i].peRed
+					+ peGray[i].peGreen * peGray[i].peGreen
+					+ peGray[i].peBlue * peGray[i].peBlue;
+			int nGray = (int)sqrt(((double)lSquareSum)/3);
+			
+			peGray[i].peRed = nGray;
+			peGray[i].peGreen = nGray;
+			peGray[i].peBlue = nGray;
+		}
+
+
+		
+		// Select the palette
+		pOldPalette = pDC->SelectPalette(&pal, FALSE);
+		pDC->RealizePalette();
+
+		// We need to draw the image without any color mapping
+		// We use a memory DC to achieve this.
+		CDC memDC;
+		memDC.CreateCompatibleDC( pDC );
+		CBitmap bmp;
+		bmp.CreateCompatibleBitmap( pDC, nWidth, nHeight );
+		CBitmap *pOldBitmap = memDC.SelectObject( &bmp );
+		CPalette *pOldMemPalette = memDC.SelectPalette(&pal, FALSE);
+		memDC.RealizePalette();
+
+		// Draw the image to memDC
+		LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+		
+		::SetDIBitsToDevice(memDC.m_hDC, 0, 0, nWidth, nHeight, 0, 0, 0,
+			nHeight, lpDIBBits, (LPBITMAPINFO)hDIB, DIB_RGB_COLORS);
+
+		// Set the color to grayscale
+		AnimatePalette(hPal, 0, nColors, (LPPALETTEENTRY)&peGray);
+
+		// Now copy the image from the memory DC
+		// Since the palettes in memDC and pDC are the same, no color mapping
+		// takes place. The image will appear in the start color
+		pDC->BitBlt(xDest, yDest, nWidth, nHeight, &memDC,0,0,SRCCOPY );
+
+		// Get the grayscale entries in the animation palette
+		pal.GetPaletteEntries(0, nColors, (LPPALETTEENTRY)&peAnimate);
+
+		// Reselect old objects into mem DC
+		memDC.SelectPalette(pOldMemPalette, FALSE);
+		memDC.SelectObject( pOldBitmap );
+
+		// Now animate palette to bring the image into color
+		for( i=1; i <= nLoops; i++ )
+		{
+			for (int j = 0; j< nColors; j++) 
+			{  
+				peAnimate[j].peRed = peGray[j].peRed - 
+					((peGray[j].peRed -peOriginal[j].peRed)*i)/nLoops;
+				peAnimate[j].peGreen = peGray[j].peGreen - 								((peGray[j].peGreen-peOriginal[j].peGreen)*i)
+						/nLoops;
+				peAnimate[j].peBlue = peGray[j].peBlue  - 
+					((peGray[j].peBlue -peOriginal[j].peBlue)*i)/nLoops;
+				peAnimate[j].peFlags = peGray[j].peFlags;
+			}
+
+			pal.AnimatePalette(0, nColors, (LPPALETTEENTRY)&peAnimate);
+
+			// Delay...
+			Sleep(nDelay);
+		}
+
+		// Select the old palette back
+		pDC->SelectPalette(pOldPalette, FALSE);
+	}
+	else if( (pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE) == 0 && nColors <= 256 )
+	{
+		// Device does not supports palettes but bitmap has a color table
+		// Modify the bitmaps color table directly
+
+		for( int i=0; i < nColors; i++)
+		{
+			// First save original colors
+			peOriginal[i].peRed =   bmInfo.bmiColors[i].rgbRed ;
+			peOriginal[i].peGreen = bmInfo.bmiColors[i].rgbGreen;
+			peOriginal[i].peBlue =  bmInfo.bmiColors[i].rgbBlue ;
+
+			long lSquareSum = bmInfo.bmiColors[i].rgbRed 
+							* bmInfo.bmiColors[i].rgbRed
+							+ bmInfo.bmiColors[i].rgbGreen 
+							* bmInfo.bmiColors[i].rgbGreen
+							+ bmInfo.bmiColors[i].rgbBlue 
+							* bmInfo.bmiColors[i].rgbBlue;
+			int nGray = (int)sqrt(((double)lSquareSum)/3);
+			bmInfo.bmiColors[i].rgbRed = nGray;
+			bmInfo.bmiColors[i].rgbGreen = nGray;
+			bmInfo.bmiColors[i].rgbBlue = nGray;
+
+			// Create a reference color table
+			peGray[i].peRed = nGray;
+			peGray[i].peGreen = nGray;
+			peGray[i].peBlue = nGray;
+
+		}
+
+		// Let's draw the grayscale image
+		LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+		::SetDIBitsToDevice(pDC->m_hDC, xDest, yDest, nWidth, nHeight, 0, 0, 0,
+				nHeight, lpDIBBits, (LPBITMAPINFO)hDIB, DIB_RGB_COLORS);
+
+		// Now color the image
+		for( i=1; i <= nLoops; i++ )
+		{
+			for (int j = 0; j< nColors; j++) 
+			{  
+				bmInfo.bmiColors[j].rgbRed   = peGray[j].peRed  - 
+					((peGray[j].peRed -peOriginal[j].peRed)*i)/nLoops;
+				bmInfo.bmiColors[j].rgbGreen = peGray[j].peGreen - 
+					((peGray[j].peGreen-peOriginal[j].peGreen)*i)/
+						nLoops;
+				bmInfo.bmiColors[j].rgbBlue  = peGray[j].peBlue  - 
+					((peGray[j].peBlue -peOriginal[j].peBlue)*i)/nLoops;
+			}
+
+			// Draw the image again
+			::SetDIBitsToDevice(pDC->m_hDC, xDest, yDest, nWidth, nHeight, 0, 
+				0, 0, nHeight, lpDIBBits, (LPBITMAPINFO)hDIB, 
+				DIB_RGB_COLORS);
+
+			// Delay...
+			Sleep(nDelay);
+		}
+	}
+	else
+	{
+		// Any other scenario, simply draw the image 
+		LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+		::SetDIBitsToDevice(pDC->m_hDC, xDest, yDest, nWidth, nHeight, 0, 0, 0,
+			nHeight, lpDIBBits, (LPBITMAPINFO)hDIB, DIB_RGB_COLORS);
+	}
+}
+</FONT></TT></PRE>
+
+<h4>Function 2: Fade from color to grayscale</h4>
+The FadeColorToGrayScale () draws the device-independent bitmap (DIB) onto the device context as a full color image and then slowly changes it to a grayscale image. Since this function starts by drawing the image with a color palette it doesn't have to worry about two very different colors getting mapped to the same color as can happen if we start with a grayscale palette instead. This, of course, applies only displays that support a palette.
+
+
+<PRE><TT><FONT COLOR="#990000">
+// FadeColorToGrayScale	- Draws a bitmap in color slowly turns it to grayscale
+// pDC				- Pointer to target device context
+// hDIB				- Handle of device-independent bitmap
+// xDest			- x-coordinate of upper-left corner of dest. rect. 
+// yDest			- y-coordinate of upper-left corner of dest. rect. 
+// nLoops			- How many loops to fade the image into color
+// nDelay			- Delay in milli-seconds between each loop
+//
+void FadeColorToGrayScale( CDC *pDC, HANDLE hDIB, int xDest, int yDest, int nLoops, 
+									int nDelay ) 
+{
+	CPalette pal;
+	CPalette *pOldPalette;
+	PALETTEENTRY peAnimate[256];
+	PALETTEENTRY peGray[256];
+	PALETTEENTRY peOriginal[256];
+
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+					1 << bmInfo.bmiHeader.biBitCount;
+	
+	int nReservedColors = nColors > 236 ? 236 : nReservedColors;
+	int nWidth = bmInfo.bmiHeader.biWidth;
+	int nHeight = bmInfo.bmiHeader.biHeight;
+
+	// Create the palette if needed
+	if( pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE && nColors <= 256 )
+	{
+		// The device supports a palette and bitmap has color table
+		
+		HPALETTE hPal = CreateReservedPalette(hDIB);
+		pal.Attach( hPal );
+
+		// Now save the original colors and get the grayscale colors
+		pal.GetPaletteEntries(0, nReservedColors, (LPPALETTEENTRY)&peOriginal);
+		for( int i=0; i < nReservedColors; i++)
+		{
+			long lSquareSum = peOriginal[i].peRed 
+						* peOriginal[i].peRed
+						+ peOriginal[i].peGreen 
+						* peOriginal[i].peGreen
+						+ peOriginal[i].peBlue 
+						* peOriginal[i].peBlue;
+			int nGray = (int)sqrt(((double)lSquareSum)/3);
+			
+			peGray[i].peRed = nGray;
+			peGray[i].peGreen = nGray;
+			peGray[i].peBlue = nGray;
+		}
+
+
+		
+		// Select the palette
+		pOldPalette = pDC->SelectPalette(&pal, FALSE);
+		pDC->RealizePalette();
+
+		// Draw the image 
+		LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+		
+		::SetDIBitsToDevice(pDC->m_hDC, xDest, yDest, nWidth, nHeight, 0, 0, 0,
+			nHeight, lpDIBBits, (LPBITMAPINFO)hDIB, DIB_RGB_COLORS);
+
+		// Now animate palette to set the image to grayscale
+		for( i=1; i <= nLoops; i++ )
+		{
+			for (int j = 0; j< nColors; j++) 
+			{  
+				peAnimate[j].peRed = peOriginal[j].peRed - 
+					((peOriginal[j].peRed -peGray[j].peRed)*i)/nLoops;
+				peAnimate[j].peGreen = peOriginal[j].peGreen - 
+					((peOriginal[j].peGreen-peGray[j].peGreen)*i)
+						/nLoops;
+				peAnimate[j].peBlue = peOriginal[j].peBlue  - 
+					((peOriginal[j].peBlue -peGray[j].peBlue)*i)/nLoops;
+
+				peAnimate[j].peFlags = peOriginal[j].peFlags;
+			}
+
+			pal.AnimatePalette(0, nColors, (LPPALETTEENTRY)&peAnimate);
+
+			// Delay...
+			Sleep(nDelay);
+		}
+
+		// Select the old palette back
+		pDC->SelectPalette(pOldPalette, FALSE);
+	}
+	else if( (pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE) == 0 && nColors <= 256 )
+	{
+		// Device does not supports palettes but bitmap has a color table
+		// Modify the bitmaps color table directly
+
+		// Get the original colors and the grayscale colors
+		for( int i=0; i < nColors; i++)
+		{
+			// First save original colors
+			peOriginal[i].peRed =   bmInfo.bmiColors[i].rgbRed ;
+			peOriginal[i].peGreen = bmInfo.bmiColors[i].rgbGreen;
+			peOriginal[i].peBlue =  bmInfo.bmiColors[i].rgbBlue ;
+
+			long lSquareSum = bmInfo.bmiColors[i].rgbRed 
+							* bmInfo.bmiColors[i].rgbRed
+							+ bmInfo.bmiColors[i].rgbGreen 
+							* bmInfo.bmiColors[i].rgbGreen
+							+ bmInfo.bmiColors[i].rgbBlue 
+							* bmInfo.bmiColors[i].rgbBlue;
+			int nGray = (int)sqrt(((double)lSquareSum)/3);
+
+			// Create a reference color table
+			peGray[i].peRed = nGray;
+			peGray[i].peGreen = nGray;
+			peGray[i].peBlue = nGray;
+
+		}
+
+		// Let's draw the color image
+		LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+		::SetDIBitsToDevice(pDC->m_hDC, xDest, yDest, nWidth, nHeight, 0, 0, 0,
+				nHeight, lpDIBBits, (LPBITMAPINFO)hDIB, DIB_RGB_COLORS);
+
+		// Now change the image to grayscale
+		for( i=1; i <= nLoops; i++ )
+		{
+			for (int j = 0; j< nColors; j++) 
+			{  
+				bmInfo.bmiColors[j].rgbRed   = peOriginal[j].peRed  - 
+					((peOriginal[j].peRed -peGray[j].peRed)*i)/nLoops;
+				bmInfo.bmiColors[j].rgbGreen = peOriginal[j].peGreen - 
+					((peOriginal[j].peGreen-peGray[j].peGreen)*i)/
+						nLoops;
+				bmInfo.bmiColors[j].rgbBlue  = peOriginal[j].peBlue  - 
+					((peOriginal[j].peBlue -peGray[j].peBlue)*i)/nLoops;
+			}
+
+			// Draw the image again
+			::SetDIBitsToDevice(pDC->m_hDC, xDest, yDest, nWidth, nHeight, 0, 
+				0, 0, nHeight, lpDIBBits, (LPBITMAPINFO)hDIB, 
+				DIB_RGB_COLORS);
+
+			// Delay...
+			Sleep(nDelay);
+		}
+	}
+	else
+	{
+		// Any other scenario, simply draw the image 
+		LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+		::SetDIBitsToDevice(pDC->m_hDC, xDest, yDest, nWidth, nHeight, 0, 0, 0,
+			nHeight, lpDIBBits, (LPBITMAPINFO)hDIB, DIB_RGB_COLORS);
+	}
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

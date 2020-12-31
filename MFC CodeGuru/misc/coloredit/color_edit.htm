@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>color_edit</TITLE>
+<META NAME="Template" CONTENT="D:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff">
+
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=624>
+<TR><TD VALIGN="MIDDLE">
+<P ALIGN="CENTER"><A HREF="http://www.codeguru.com/cgi-bin/ads.pl?advert=myad2"><IMG SRC="http://www.codeguru.com/advertise2.gif" BORDER=0 WIDTH=400 HEIGHT=60 ALT=""></A></TD>
+<TD VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+</TR>
+</TABLE>
+
+<FONT COLOR="#808080"><H3 ALIGN="CENTER">Keyword coloring Editor</H3>
+</FONT><P><HR></P>
+<P ALIGN="CENTER">This article was contributed by <A HREF="mailto:keithr@europa.com">Keith Rule</A>. <BR>
+<A HREF="coloredit.zip">Download</A> the project. 238KB. Note that this is still work in progress and Keith is open to suggestions. This project requires VC++ 5.0 or later, don't expect to have an easy time of build this project under VC++ 4.2 or earlier. </P>
+<B><FONT FACE="Arial" SIZE=4><P>About The Project</P>
+</B></FONT><P>This project implements a simple color encoding text editor, which is similar to the editor found in Visual C++ or Visual Basic. It allows the developer to configure the encoding of keywords and comments. This project is an MDI application.</P>
+<P><IMG SRC="Image13.gif" WIDTH=575 HEIGHT=430></P>
+<B><FONT FACE="Arial" SIZE=4><P>Defining the Color Encoding</P>
+</B></FONT><P>The encoding is defined in the constructor for the <I>CDocument</I> derived class <I>CColorEditDoc</I>. The default configuration looks like the following:</P><DIR>
+<DIR>
+
+<FONT COLOR="#ff0000"><PRE>CColorEditDoc::CColorEditDoc() : CUndo(25, 64*1024)
+{
+&#9;m_text.AddComment(_T("/*"), _T("*/"));
+&#9;m_text.AddComment(_T("//"), _T("\n"));
+&#9;m_text.AddKeyword(_T("static"));
+&#9;m_text.AddKeyword(_T("char"));
+&#9;m_text.AddKeyword(_T("short"));
+&#9;m_text.AddKeyword(_T("unsigned"));
+&#9;&#9;.
+&#9;&#9;.
+&#9;&#9;.
+}</PRE></DIR>
+</DIR>
+
+</FONT><P>The definitions for defining a keyword or comment are as follows.</P>
+<PRE>&#9;<FONT COLOR="#ff0000">// Color Coding
+&#9;BOOL AddKeyword(const CString&amp; keyword, COLORREF color = RGB(0, 0, 200));
+&#9;BOOL AddComment(const CString&amp; begin = _T("//"), const CString&amp; end = _T("\n"), COLORREF color = RGB(0, 200, 0)); </PRE>
+</FONT><FONT SIZE=2><P>Notice that you can specify a unique color for every keyword and comment definition.</P>
+</FONT><B><FONT FACE="Arial" SIZE=4><P>Goals of the Project</P>
+</B></FONT><FONT SIZE=2><P>I wrote this project for three reasons. </P>
+<OL>
+
+<LI>I wanted to try out several of the classes found on the </FONT><A HREF="http://www.codeguru.com/"><FONT SIZE=2>www.codeguru.com</FONT></A><FONT SIZE=2> webpage.</LI>
+<LI>I wanted try out a real example of a worker thread.</LI>
+<LI>I wanted to have a Color Encoding Text Editor in my toolbox of royalty free source code.</LI></OL>
+
+<P>However, this project has turned into my toolbox. I've placed many often used techniques in this project such as printing support, cut/copy/paste support, undo/redo, flicker free updates and so forth. I've found myself using the project as a place to pull working code out into other projects. </P>
+</FONT><B><FONT FACE="Arial" SIZE=4><P>New Features</P>
+</B></FONT><FONT SIZE=2><P>Dragging during a selection will now scroll the window. I've fixed several problems and have one know unresolved bug. Color encoding quotes is now supported.</P>
+</FONT><B><FONT FACE="Arial" SIZE=4><P>Known Bugs</P>
+</B></FONT><FONT SIZE=2><P>The editor won't scroll beyond 1500 lines on Win95. I suspect this is due to a limitation in the size of the GDI area in MM_TEXT. If anyone has some ideas for working around this, please let me know.</P>
+</FONT><B><FONT FACE="Arial" SIZE=4><P>Classes Used</P>
+</B></FONT><FONT SIZE=2><P>This project uses the following classes found at www.codeguru.com. </P>
+</FONT><B><I><TT><PRE>
+CUndo</B></I> - Undo/Redo for <I>CDocument</I> derived classes
+<B><I>CMemDC</B></I> - Double buffering class for drawing
+<B><I>CSplash255Wnd</B></I> - 256 color splash screen support
+<B><I>CToolBarEx</B></I> - Flat toolbar support
+<B><I>CRegExp</B></I> - Regular Expression matching
+<B><I>CStringEx</B></I> - Extended <I>Cstring
+<B>CProgressBar </B></I>- A progress indicator on the status bar.
+<B><I>CClockStatusBar</B> </I>- Adds a clock to the status bar.
+<B><I>CCreditStatic </B></I>- Scrolls text in a static text field.</PRE>
+</TT><FONT SIZE=2><P>In addition it defines the class: </P><DIR>
+
+<B><I><P>CColorString</B></I> - </FONT><I><FONT FACE="Courier New" SIZE=2>CString</I> plus rule based color encoding</FONT><FONT SIZE=2> </P></DIR>
+
+<P>I'm open to adding change request to my ToDo list for this application. Feel free to contact me at </FONT><A HREF="mailto:keithr@europa.com"><FONT SIZE=2>keithr@europa.com</FONT></A><FONT SIZE=2> with suggestions, fixes, or questions.</P>
+</FONT><P><HR></P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=624>
+<TR><TD WIDTH="33%" VALIGN="MIDDLE">
+<P><A HREF="http://www.codeguru.com/"><FONT SIZE=2>Goto HomePage</FONT></A></TD>
+<TD WIDTH="33%" VALIGN="MIDDLE">
+<FONT SIZE=1><P ALIGN="CENTER">&copy; 1997 Zafir Anjum</FONT><FONT SIZE=2>&nbsp;</FONT></TD>
+<TD WIDTH="34%" VALIGN="MIDDLE">
+<P><div ALIGN="right"><FONT SIZE=2>Contact me: </FONT><A HREF="mailto:zafir@dsp.net"><FONT SIZE=2>zafir@dsp.com</FONT></A><FONT SIZE=2>&nbsp;</div> </FONT></TD>
+</TR>
+</TABLE>
+
+<FONT SIZE=1><P ALIGN="CENTER">1523</P></FONT></BODY>
+</HTML>

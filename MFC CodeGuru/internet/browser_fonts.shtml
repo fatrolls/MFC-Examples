@@ -1,0 +1,74 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Implementing the "Font" feature like the one in INTERNET EXPLORER</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Implementing the "Font" feature like the one in INTERNET EXPLORER</FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:ssram@rocketmail.com">sriram</A>.
+
+ 
+<P>A sample code to change the fonts in your web browser using webbrowser control. 
+<PRE><TT><FONT COLOR="#990000">
+void CMyBrowser::SetFont(int nFontSize)
+{	m_pDisp = NULL; 			// IDISPATCH pointer
+	LPOLECOMMANDTARGET pCmdTarg = NULL;
+
+	m_pDisp = m_WebBrowser2.GetDocument(); 	// get the idispatch pointer from webbrowser control
+	ASSERT(m_pDisp); 			//check for validity
+	
+	m_pDisp->QueryInterface(IID_IOleCommandTarget, (LPVOID*)&pCmdTarg); //query for IID_IOleCommandTarget interface 
+	ASSERT(pCmdTarg); 			// check for validity
+
+	VARIANT vaFontSize;   			// input argumentsVariantInit(&vaFontSize);
+	V_VT(&vaFontSize) = VT_I4;
+	V_I4(&vaFontSize) = nFontSize;  	//size of the font you want
+	VARIANT vaFontOutput;
+
+	pCmdTarg->Exec(NULL,			// execute just change the font
+		       OLECMDID_ZOOM,
+		       OLECMDEXECOPT_PROMPTUSER,
+		       &vaFontSize,
+		       &vaFontOutput);
+	
+	VariantClear(&vaFontSize); 		//clear the variant variable before freeing its memory
+
+	if (pCmdTarg)   pCmdTarg->Release(); 	// release document's command target
+	if (m_pDisp)   m_pDisp->Release();    	// release document's dispatch interface
+}
+</FONT></TT></PRE>
+<p>Updated on May 18 1998
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

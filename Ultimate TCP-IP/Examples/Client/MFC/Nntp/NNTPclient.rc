@@ -1,0 +1,315 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\NNTPclient.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\NNTPclient.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 250, 105
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About NNTPclient"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,197,7,46,14
+    LTEXT           "Ultimate TCP/IP v 4.0",IDC_STATIC,43,7,84,8
+    LTEXT           "The Ultimate Toolbox.",IDC_STATIC,43,15,70,8
+    LTEXT           "Copyright 1995-2007",IDC_STATIC,43,26,66,8
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,7,47,236,51
+    LTEXT           "Phone:",IDC_STATIC,25,58,24,8
+    LTEXT           "Fax:",IDC_STATIC,25,82,14,8
+    LTEXT           "EMail:",IDC_STATIC,133,58,20,8
+    LTEXT           "WWW:",IDC_STATIC,133,71,25,8
+    LTEXT           "1 (416) 467-5100",IDC_STATIC,54,69,59,8
+    LTEXT           "1 (800) 463 - 1492",IDC_STATIC,54,58,59,8
+    LTEXT           "1 416 422-4801",IDC_STATIC,54,82,59,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,160,58,64,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,166,71,58,8
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
+END
+
+IDD_NNTPCLIENT_DIALOG DIALOGEX 0, 0, 386, 322
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "The Ultimate Toolbox - NNTP client"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Server:",IDC_STATIC,8,7,24,8
+    COMBOBOX        IDC_SERVERS_COMBO,67,7,153,70,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Load Groups from file",IDC_CHECK1,"Button",
+                    BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,226,7,90,12
+    LTEXT           "News Group File:",IDC_STATIC,7,26,54,8
+    EDITTEXT        IDC_GroupFileName,67,23,153,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Save News Grou&ps...",IDC_SAVE_NEWS_GROUPS,226,22,92,14
+    LTEXT           "News Groups:",IDC_STATIC,7,65,46,8
+    LISTBOX         IDC_GROUP_LIST,7,76,372,41,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Articles:",IDC_STATIC,7,120,26,8
+    CONTROL         "List1",IDC_ARTICLES_LIST,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,131,372,72
+    LTEXT           "Number of Attachments",IDC_STATIC,11,209,75,8
+    EDITTEXT        IDC_ATTACH_NUM,99,209,47,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER,WS_EX_STATICEDGE
+    LTEXT           "Attachment files:",IDC_STATIC,169,209,53,11
+    COMBOBOX        IDC_COMBO1,227,209,93,114,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Save attach",IDC_SAVE,329,209,50,14
+    CONTROL         "",IDC_RICHTEXTCTRL1,
+                    "{3B7C8860-D78F-101B-B9B5-04021C009402}",WS_TABSTOP,7,
+                    228,372,67
+    CTEXT           "",IDC_STATUC_STATIC,7,302,186,14,0,WS_EX_STATICEDGE
+    PUSHBUTTON      "&Reply",IDC_REPLY,217,302,50,14
+    PUSHBUTTON      "&Delete Msg",IDC_DLETE,273,302,50,14
+    PUSHBUTTON      "&Post New...",IDC_POST_NEW,329,302,50,14
+    DEFPUSHBUTTON   "Co&nnect",IDC_CONNECT,329,7,50,14
+    PUSHBUTTON      "&Close",IDOK,329,24,50,14,NOT WS_TABSTOP
+    PUSHBUTTON      "Ab&ort",IDCANCEL,329,41,50,14,NOT WS_TABSTOP
+    CONTROL         "Animate1",IDC_ANIMATE,"SysAnimate32",ACS_CENTER | 
+                    ACS_TRANSPARENT | ACS_AUTOPLAY | WS_TABSTOP,72,42,233,28,
+                    WS_EX_STATICEDGE
+END
+
+IDD_POST_ARTICLE_DLG DIALOG DISCARDABLE  0, 0, 233, 218
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Post Article"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Group:",IDC_STATIC,7,7,22,8
+    EDITTEXT        IDC_TARGET_NEWS_GROUPS,35,7,130,14,ES_AUTOHSCROLL
+    LTEXT           "From:",IDC_STATIC,7,24,18,8
+    EDITTEXT        IDC_EDIT1,35,24,130,14,ES_AUTOHSCROLL
+    LTEXT           "Subject:",IDC_STATIC,7,42,27,8
+    EDITTEXT        IDC_EDIT2,35,41,130,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ART_BODY,7,62,221,149,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_OEMCONVERT | ES_WANTRETURN
+    DEFPUSHBUTTON   "&Post",IDOK,176,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,176,24,50,14
+    PUSHBUTTON      "&Attach...",IDC_BUTTON1,176,41,50,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x9L
+#else
+ FILEFLAGS 0x8L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "Demonstration program of Ultimate TCP/IP 3.0\0"
+            VALUE "CompanyName", "The Ultimate Toolbox\0"
+            VALUE "FileDescription", "NNTPclient MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "NNTPclient\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "Ultimate TCP/IP\0"
+            VALUE "OriginalFilename", "NNTPclient.EXE\0"
+            VALUE "PrivateBuild", "Ghazi H. Wadi\0"
+            VALUE "ProductName", "NNTPclient Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 98
+    END
+
+    IDD_NNTPCLIENT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 379
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 315
+    END
+
+    IDD_POST_ARTICLE_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 226
+        VERTGUIDE, 35
+        VERTGUIDE, 165
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_NNTPCLIENT_DIALOG DLGINIT
+BEGIN
+    IDC_SERVERS_COMBO, 0x403, 21, 0
+0x736d, 0x656e, 0x7377, 0x6d2e, 0x6369, 0x6f72, 0x6f73, 0x7466, 0x632e, 
+0x6d6f, "\000" 
+    IDC_SERVERS_COMBO, 0x403, 19, 0
+0x6c63, 0x6569, 0x746e, 0x6e2e, 0x7765, 0x2e73, 0x7370, 0x2e69, 0x6163, 
+"\000" 
+    IDC_RICHTEXTCTRL1, 0x37a, 193, 0
+0x0017, 0x0000, 0x0020, 0x0071, 0x0068, 0x006a, 0x0020, 0x005a, 0x0074, 
+0x0075, 0x0051, 0x0068, 0x0061, 0x003b, 0x006a, 0x0064, 0x0066, 0x006e, 
+0x005b, 0x0069, 0x0061, 0x0065, 0x0074, 0x0072, 0x0020, 0x0023, 0x0000, 
+0x0001, 0x0000, 0x001b, 0x0000, 0x0001, 0x8001, 0x0000, 0x000a, 0x0000, 
+0x001a, 0x0000, 0x0002, 0x8001, 0x0001, 0x0000, 0x2100, 0x3443, 0x0812, 
+0x0000, 0xac00, 0x0039, 0x4400, 0x000b, 0x2100, 0x3443, 0x0112, 0x0600, 
+0x3000, 0x0000, 0x0000, 0xff00, 0x00ff, 0xff00, 0x01ff, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0500, 0x0000, 0x0080, 0x0000, 
+0x0300, 0x0100, 0x0300, 0x0100, 0x0100, 0x0200, 0x0200, 0x0000, 0x0300, 
+0xe352, 0x910b, 0xce8f, 0x9d11, 0x00e3, 0x00aa, 0xb84b, 0x0151, 0x0000, 
+0x9000, 0x9001, 0x015f, 0x0500, 0x7241, 0x6169, "\154" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_CONNECT_AVI         AVI     DISCARDABLE     "res\\Findcomp.avi"
+IDR_COPY_AVI            AVI     DISCARDABLE     "res\\Filecopy.avi"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About Ultimate TCP/IP NNTPclient Demo..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\NNTPclient.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

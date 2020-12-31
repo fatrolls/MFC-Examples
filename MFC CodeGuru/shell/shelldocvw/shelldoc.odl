@@ -1,0 +1,41 @@
+// shelldoc.odl : type library source for shelldoc.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (shelldoc.tlb).
+
+[ uuid(A773FE73-4192-11D1-AE13-006097D60BAC), version(1.0) ]
+library Shelldoc
+{
+	importlib("stdole32.tlb");
+	
+
+	//  Primary dispatch interface for CShelldocDoc
+	
+	[ uuid(A773FE74-4192-11D1-AE13-006097D60BAC) ]
+	dispinterface IShelldoc
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CShelldocDlgAutoProxy)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CShelldocDlgAutoProxy)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CShelldocDoc
+	
+	[ uuid(A773FE72-4192-11D1-AE13-006097D60BAC) ]
+	coclass Shelldoc
+	{
+		[default] dispinterface IShelldoc;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

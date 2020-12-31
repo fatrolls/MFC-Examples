@@ -1,0 +1,7 @@
+; ex21c.def : Declares the module parameters for the DLL.
+
+LIBRARY      "ex21c"
+DESCRIPTION  'ex21c Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here

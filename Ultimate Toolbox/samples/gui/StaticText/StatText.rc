@@ -1,0 +1,298 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""UTSampleAbout.rc""\r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\StatText.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\r\n"
+    "#include ""OXSpinCtrl.rc""         // Spin ctrl resources\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\StatText.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_STATTEXT_DIALOG DIALOGEX 0, 0, 287, 260
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "COXStaText Demo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Left",IDC_RADIO_HORZ_LEFT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,65,174,28,10
+    CONTROL         "Center-H",IDC_RADIO_HORZ_CENTER,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,107,174,44,10
+    CONTROL         "Right",IDC_RADIO_HORZ_RIGHT,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,156,174,33,10
+    CONTROL         "Top",IDC_RADIO_VERT_TOP,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,65,188,28,10
+    CONTROL         "Center-V",IDC_RADIO_VERT_CENTER,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,107,188,43,10
+    CONTROL         "Bottom",IDC_RADIO_VERT_BOTTOM,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,156,188,38,10
+    CONTROL         "Raised",IDC_B_RAISED_RADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,214,38,8
+    CONTROL         "Static",IDC_B_STATIC_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,54,214,34,8
+    CONTROL         "Dotted",IDC_B_DOTTED_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,88,214,37,8
+    CONTROL         "Normal",IDC_B_NORMAL_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,128,214,38,8
+    CONTROL         "Client",IDC_B_CLIENT_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,169,214,38,8
+    CONTROL         "Compatible",IDC_COMPAT_RADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,12,240,51,8
+    CONTROL         "Advanced",IDC_ADVAN_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,72,240,49,8
+    PUSHBUTTON      "Font attributes...",IDC_ATTR_BUTTON,134,232,76,21
+    EDITTEXT        IDC_ANGLE_EDIT,222,28,32,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_ANGLE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,255,28,22,12
+    EDITTEXT        IDC_ORIENT_EDIT,222,64,32,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_ORIENT_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,255,64,22,12
+    EDITTEXT        IDC_EDIT_GAP_WIDTH,235,92,29,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_GAP_WIDTH,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,267,92,11,12
+    EDITTEXT        IDC_EDIT_GAP_HEIGHT,235,107,29,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_GAP_HEIGHT,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,267,107,11,12
+    PUSHBUTTON      "Cancel",IDCANCEL,223,130,50,14
+    CONTROL         "Start",IDC_SCROLL_CHECK,"Button",BS_AUTOCHECKBOX | BS_CENTER | BS_VCENTER | BS_PUSHLIKE | WS_TABSTOP,223,147,50,14
+    EDITTEXT        IDC_SPEED_EDIT,223,193,38,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPEED_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,263,193,11,12
+    EDITTEXT        IDC_DIR_EDIT,223,217,38,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_DIR_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,263,217,11,12
+    PUSHBUTTON      "Restore pos.",IDC_RESTORE_BUTTON,223,232,51,14
+    GROUPBOX        "Border Style",IDC_STATIC,7,203,203,24
+    GROUPBOX        "Graphics Mode",IDC_STATIC,7,229,119,24,WS_GROUP
+    LTEXT           "Escapement (degrees)",IDC_STATIC,224,10,48,17
+    LTEXT           "Orientation (degrees)",IDC_STATIC,224,45,52,17
+    GROUPBOX        "Scrolling",IDC_STATIC,219,163,61,90
+    LTEXT           "Speed (pixels/second)",IDC_STATIC,223,175,50,17
+    LTEXT           "Direction (deg)",IDC_STATIC,223,207,50,9
+    GROUPBOX        "",IDC_STATIC,219,3,61,122
+    GROUPBOX        "Alignment",IDC_STATIC,7,163,203,40
+    LTEXT           "Horizontal",IDC_STATIC,15,174,32,8
+    LTEXT           "Vertical",IDC_STATIC,15,188,24,8
+    LTEXT           "Gap (pixels)",IDC_STATIC,222,81,38,8
+    LTEXT           "W",IDC_STATIC,223,94,8,8
+    LTEXT           "H",IDC_STATIC,223,109,8,8
+    LTEXT           "",IDC_STATIC_TEST,7,7,203,152,0,WS_EX_STATICEDGE
+END
+
+IDD_ATTR_DIALOG DIALOG  0, 0, 238, 202
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Font attributes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Caption:",IDC_STATIC,7,9,27,8
+    EDITTEXT        IDC_CAPTION_EDIT,37,7,194,12,ES_AUTOHSCROLL
+    GROUPBOX        "Font color",IDC_STATIC,7,20,106,55
+    LTEXT           "Red:",IDC_STATIC,14,32,22,8
+    EDITTEXT        IDC_RED_EDIT,44,30,51,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_RED_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,96,30,11,12
+    LTEXT           "Green:",IDC_STATIC,14,45,22,8
+    EDITTEXT        IDC_GREEN_EDIT,44,43,51,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_GREEN_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,96,43,11,12
+    LTEXT           "Blue:",IDC_STATIC,14,59,22,8
+    EDITTEXT        IDC_BLUE_EDIT,44,57,51,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_BLUE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,96,57,11,12
+    GROUPBOX        "Background color",IDC_STATIC,125,20,106,55
+    LTEXT           "Red:",IDC_STATIC,132,32,22,8
+    EDITTEXT        IDC_BKRED_EDIT,162,30,51,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_BKRED_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,214,30,11,12
+    LTEXT           "Green:",IDC_STATIC,132,45,22,8
+    EDITTEXT        IDC_BKGREEN_EDIT,162,43,51,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_BKGREEN_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,214,43,11,12
+    LTEXT           "Blue:",IDC_STATIC,132,59,22,8
+    EDITTEXT        IDC_BKBLUE_EDIT,162,57,51,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_BKBLUE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,214,57,11,12
+    LTEXT           "Height:",IDC_STATIC,7,82,24,8
+    EDITTEXT        IDC_HEIGHT_EDIT,34,79,50,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_HEIGHT_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,84,80,11,12
+    LTEXT           "Font:",IDC_STATIC,105,83,18,8
+    EDITTEXT        IDC_FONT_EDIT,125,80,106,12,ES_CENTER | ES_AUTOHSCROLL
+    LTEXT           "3D offset:",IDC_STATIC,138,103,31,8
+    EDITTEXT        IDC_OFFSET_EDIT,171,100,30,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_OFFSET_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,201,100,11,12
+    CONTROL         "Bold",IDC_BOLD_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,125,29,8
+    CONTROL         "Italic",IDC_ITALIC_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,66,125,30,8
+    CONTROL         "Underlined",IDC_UNDER_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,125,47,8
+    CONTROL         "Striked out",IDC_STRIKE_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,123,125,49,8
+    GROUPBOX        "Character replacing",IDC_STATIC,7,137,224,20
+    CONTROL         "Begin",IDC_BEGREP_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,12,146,32,8
+    CONTROL         "Middle",IDC_MIDREP_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,66,146,35,8
+    CONTROL         "End",IDC_ENDREP_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,123,146,27,8
+    CONTROL         "No replacing",IDC_NOREP_RADIO,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,172,146,53,8
+    DEFPUSHBUTTON   "OK",IDOK,185,165,46,14
+    PUSHBUTTON      "Cancel",IDCANCEL,185,181,46,14
+    CONTROL         "Embossed",IDC_EMBOSS_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,28,103,49,8
+    LTEXT           "Static",IDC_TEST_STATIC,7,163,107,32,WS_DISABLED
+    DEFPUSHBUTTON   "Apply",IDC_APPLY_BUTTON,125,170,46,14
+    GROUPBOX        "Text Style",IDC_STATIC,7,115,224,22
+    GROUPBOX        "3D Text Style",IDC_STATIC,7,93,224,22
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Dundas Software Ltd."
+            VALUE "FileDescription", "StatText MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "StatText"
+            VALUE "LegalCopyright", "Copyright (C) 1998"
+            VALUE "OriginalFilename", "StatText.EXE"
+            VALUE "ProductName", "StatText Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_STATTEXT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 280
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 253
+    END
+
+    IDD_ATTR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 231
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 195
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About StatText..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "StaticText"
+    ID_DESCRIPTION_FILE     "StaticTextInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "UTSampleAbout.rc"
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\StatText.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+#include "OXSpinCtrl.rc"         // Spin ctrl resources
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

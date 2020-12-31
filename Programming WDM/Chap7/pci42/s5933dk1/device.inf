@@ -1,0 +1,77 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+Provider=%MFGNAME%
+
+[Manufacturer]
+%MFGNAME%=DeviceList
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+
+[SourceDisksFiles]
+s5933dk1.sys=1
+
+[SourceDisksNames]
+1=%INSTDISK%,,,objchk\i386
+
+[DeviceList]
+%DESCRIPTION%=DriverInstall,*WCO5933
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.NT]
+CopyFiles=DriverCopyFiles
+LogConfig=DriverLogConfig
+
+[DriverCopyFiles]
+s5933dk1.sys,,,2
+
+[DriverLogConfig]
+ConfigPriority=NORMAL
+IoConfig=40@300-33f%ff00(3ff::)
+IoConfig=8@718-71F%fff8(fff::)
+
+[DriverInstall.NT.Services]
+AddService=S5933DK1,2,DriverService
+
+[DriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\s5933dk1.sys
+
+[DriverInstall.nt.hw]
+AddReg=DriverHwAddReg
+
+[DriverHwAddReg]
+HKR,,SampleInfo,,"%wdmbook%\chap7\pci42\pci42.htm"
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall]
+AddReg=DriverAddReg
+CopyFiles=DriverCopyFiles
+LogConfig=DriverLogConfig
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,s5933dk1.sys
+
+[DriverInstall.hw]
+AddReg=DriverHwAddReg
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Walter Oney Software"
+INSTDISK="WDM Book Companion Disc"
+DESCRIPTION="AMCC S5933DK1 Add-On Interface (ISA) Card"
+

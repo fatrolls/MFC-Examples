@@ -1,0 +1,45 @@
+///////////////////////////////////////////////////////////////////
+// Module   : AUTOSRV1.ODL
+//
+// Purpose  : Type library source for AUTOSRV1.EXE
+//
+// Comments : This file will be processed by the Make Type Library 
+//            (mktyplib) tool to produce the type library 
+//            (AutoSrv1.tlb).
+///////////////////////////////////////////////////////////////////
+
+[ uuid(61FE0402-D7C5-11CF-A3BC-444553540000), version(1.0) ]
+library AutoSrv1
+{
+	importlib("stdole32.tlb");
+
+	//  Primary dispatch interface for CAuto1
+	
+	[ uuid(C8DD94E0-D803-11CF-A3BC-444553540000) ]
+	dispinterface IAuto1
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CAuto1)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CAuto1)
+			[id(1)] float CalcGrossPay(float fHourlyWage, float fHoursWorked);
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CAuto1
+
+	[ uuid(C8DD94E1-D803-11CF-A3BC-444553540000) ]
+	coclass AUTO1
+	{
+		[default] dispinterface IAuto1;
+	};
+
+	//{{AFX_APPEND_ODL}}
+};

@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XFolderDialogTest", "XFolderDialogTest.vcproj", "{3D617A90-96A6-4B9C-B394-30EF98C0C50F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D617A90-96A6-4B9C-B394-30EF98C0C50F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3D617A90-96A6-4B9C-B394-30EF98C0C50F}.Debug|Win32.Build.0 = Debug|Win32
+		{3D617A90-96A6-4B9C-B394-30EF98C0C50F}.Release|Win32.ActiveCfg = Release|Win32
+		{3D617A90-96A6-4B9C-B394-30EF98C0C50F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

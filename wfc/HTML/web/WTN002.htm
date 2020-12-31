@@ -1,0 +1,188 @@
+<HTML>
+
+<HEAD>
+<TITLE>WFC - Technical Note 2 - Installing WFC</TITLE>
+</HEAD>
+
+<BODY>
+
+<H1>WFC Technical Note 2 - Installing WFC</H1>
+$Revision: 2 $ Last Modified $Date: 9/21/98 7:57a $<BR><HR>
+
+<H2>Introduction</H2>
+
+Now that you've downloaded the most popular freeware
+MFC extension library in the world, you probably want
+to use the thing.
+
+<H2>Unpacking</H2>
+
+WFC.ZIP contains only one file, WFC.TAR. If you have
+a tool called
+WinZip,
+it will expand both these files.
+Here's the step by step method that I use to unpack WFC.
+
+<OL>
+<LI>Copy <CODE>WFC.ZIP</CODE> to <CODE>C:\TEMP</CODE>
+<LI>Unzip <CODE>WFC.ZIP</CODE> to produce <CODE>WFC.TAR</CODE>
+<LI>Make a directory where WFC will exist
+<LI>Change into that directory
+<LI>Expand the <CODE>WFC.TAR</CODE> file
+</OL>
+
+Here's the closest thing to an install script:
+<PRE><CODE>C:
+cd \
+cd temp
+copy a:\wfc.zip
+unzip wfc.zip
+cd \
+mkdir wfc
+cd wfc
+pax -r &lt;c:\temp\wfc.tar</CODE></PRE>
+
+<H2>Hooking Into DevStudio</H2>
+
+Now that WFC has been installed on the hard drive,
+we must build it before we can get some work done.
+To make life easier, we will make DevStudio aware
+of WFC's existence. To do this, we must tell 
+DevStudio where to look for files.
+
+<H3>Add WFC to the Include Directories</H3>
+
+Click on the following menu items:
+
+<UL>
+<LI>Tools
+<LI>Options
+<LI>Directories
+</UL>
+
+Select &quot;Include files&quot; in the
+&quot;Show directories for&quot; combobox.
+You will see a list of directories used to find header files.
+Double click on the gray box in the edit control
+to add another directory to the list.
+Add <CODE>C:\WFC\Include</CODE> to the list.
+
+<H3>Add WFC to the Library Directories</H3>
+
+Click on the following menu items:
+
+<UL>
+<LI>Tools
+<LI>Options
+<LI>Directories
+</UL>
+
+Select &quot;Library files&quot; in the
+&quot;Show directories for&quot; combobox.
+You will see a list of directories used to find library files.
+Double click on the gray box in the edit control
+to add another directory to the list.
+Add <CODE>C:\WFC\Lib</CODE> to the list.
+
+<H3>Add WFC to the Source Directories</H3>
+
+Click on the following menu items:
+
+<UL>
+<LI>Tools
+<LI>Options
+<LI>Directories
+</UL>
+
+Select &quot;Source files&quot; in the
+&quot;Show directories for&quot; combobox.
+You will see a list of directories used to find source code files.
+Double click on the gray box in the edit control
+to add another directory to the list.
+Add <CODE>C:\WFC\src</CODE> to the list.
+
+<H2>Pre-Build Bug Fixing</H2>
+
+Before we build the WFC library, we must fix a Microsoft bug.
+I know, you are shocked to find out that Microsoft has a bug
+in one of their products. Well, Microsoft is human and we all
+make mistakes. The bug lies in the Project file for WFC
+(<CODE>WFC.DSP</CODE>). DevStudio never updates this file for
+some reason. 
+Here's what we must do to correct the problem.
+
+<UL>
+<LI>Open <CODE>C:\WFC\Lib\WFC.DSP</CODE> in a text editor
+<LI>Ignore the <B>** DO NOT EDIT **</B> warning
+<LI>Search for <CODE>E:\</CODE> (not case sensitive)
+<LI>Replace <CODE>E:\</CODE> with <CODE>C:\</CODE>
+(assuming you have installed WFC on the C drive)
+<LI>Save the file
+</UL>
+
+I don't know what's going on in there but I think it is part
+of some orphaned code or something. All I know is, when
+I build WFC (on machines other than the original WFC
+machine) without these changes, the E: drive is accessed.
+This is really annoying when E: happens to be a Jaz drive
+that has spun down. It is even more annoying when a Jaz
+cartridge isn't in the drive and DevStudio refuses to build
+WFC until you put one in.
+
+<H2>Building WFC</H2>
+
+Now that WFC source code is installed and a bug is fixed,
+we must build the library. Here's how to do just that from
+the DevStudio main menu:
+
+<UL>
+<LI>File
+<LI>Open Workspace
+<LI>File name: <CODE>C:\WFC\Lib\WFC.DSW</CODE>
+<LI>Open
+<LI>Build
+<LI>Set Active Configuration
+<LI>Project configurations: <CODE>WFC - Win32 Release</CODE>
+<LI>OK
+<LI>Build
+<LI>Build WFC.lib
+</UL>
+
+Whew! This will build the Release build of WFC. You can select
+the other configurations and build them too.
+
+<H2>Using WFC</H2>
+
+Now that WFC has been installed and built, it is time
+to use it. All you should have to do is put 
+<CODE>#include&nbsp;&lt;wfc.h&gt;</CODE> in your header
+file.
+
+WFC takes care of including the proper version of
+the library (ASCII or UNICODE, Debug or Release)
+at link time. To find out how this is done,
+read the <CODE>wfc.h</CODE> file.
+
+Here's sample test program that should help.
+You should create a new Win32 Console Application
+and have this code compile and run.
+
+<PRE><CODE>#include &lt;wfc.h&gt;
+#pragma hdrstop
+
+int _tmain( void )
+{
+   CString version_string;
+
+   wfc_get_operating_system_version_string( version_string );
+
+   _tprintf( TEXT( &quot;%s&quot; ), (LPCTSTR) version_string );
+}</PRE></CODE>
+
+<P>
+<HR>
+
+<A HREF="mailto:wfc@pobox.com">Samuel R. Blackburn</A>
+</BODY>
+
+</HTML>

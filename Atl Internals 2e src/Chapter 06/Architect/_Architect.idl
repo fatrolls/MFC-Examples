@@ -1,0 +1,41 @@
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\prsht.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtml.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dimm.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dispex.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtmhst.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\docobj.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\exdisp.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\objsafe.idl";
+
+[
+	object,
+	uuid(09016650-D78A-41AC-81DB-078E670A131F),
+	oleautomation,
+	helpstring("IArchitect Interface"),
+	pointer_default(unique)
+] 
+#line 14 "d:\\vc++\\atl internals 2e src\\chapter 06\\architect\\coarchitect.h"
+interface IArchitect : IUnknown {
+#line 16 "d:\\vc++\\atl internals 2e src\\chapter 06\\architect\\coarchitect.h"
+	HRESULT  Draw();
+};
+
+
+[ version(1.0), uuid(9D24326D-0AF5-4C27-9383-23209D877055), helpstring("Architect 1.0 Type Library") ]
+library Architect
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		version(1.0),
+		uuid(3F6FAEE0-E243-466E-93A3-4F5C2C388A73),
+		helpstring("Architect Class")
+	] 
+#line 32 "d:\\vc++\\atl internals 2e src\\chapter 06\\architect\\coarchitect.h"
+	coclass CArchitect {
+		interface IArchitect;
+	};
+
+}
+

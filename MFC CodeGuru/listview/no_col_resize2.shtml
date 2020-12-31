@@ -1,0 +1,365 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Prevent CListCtrl column resizing (2)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Prevent CListCtrl column resizing (2)</FONT></H3></CENTER>
+<HR>
+
+
+This article was contributed by <A HREF="cherman@acm.org">Charles Herman</A>.
+
+<P>Zafir's article <A HREF="no_col_resize.shtml">Prevent column resizing</A> describes a method to prevent resizing of columns.  However the method does not prevent the cursor from changing its shape.  Furthermore the columns can still be resized if the user double clicks on a column separator.   
+
+<P>In this article I persent a method for overcoming these drawbacks.  First, this method is presented for the case all columns are to be non-resizable, then it is assumed you want some, but not all, columns to be resizable.  
+
+<P>BTW, Since my method does not prevent resizing (except when double clicking), but only prevents the resizing cursor from appearing, you still need to use the method described in "Prevent column resizing" to have it behave properly.
+
+<P>The method presented here requires the creation of a class, CMyHeader, based on the class CHeaderCtrl.  The header from the list ctrl is connected to CMyHeader via the subclassing mechanism.  CMyHeader will intercept the header messages and disable things we want disabled.
+
+<P>In the header file for CMyListCtrl  define the member variable
+
+<PRE><TT><FONT COLOR="#990000">
+           CMyHeader m_Header;
+</FONT></TT></PRE>
+
+<P>We do the subclassing in the OnCreate() function.
+
+<PRE><TT><FONT COLOR="#990000">
+int CMyListCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
+	if (CListCtrl::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	
+	// Since I want to capture all messages passed to the header,
+	// I am subclassing the header.  Note: 0 is the ID for the header
+	m_Header.SubclassDlgItem( 0, this );
+
+	return 0;
+}
+</FONT></TT></PRE>
+
+
+
+
+<P>Next, using AppWizard create the class CMyHeader.  Again using AppWizard, create handlers for the WM_SETCURSOR and WM_LBUTTONDBLCLK messages inside CMyHeader.cpp.
+
+
+<PRE><TT><FONT COLOR="#990000">
+// MyHeader.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CMyHeader window
+#ifndef __MYHEADER_H__
+#define __MYHEADER_H__
+
+class CMyHeader : public CHeaderCtrl
+{
+// Construction
+public:
+	CMyHeader();
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CMyHeader)
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CMyHeader();
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CMyHeader)
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+};
+#endif
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+// MyHeader.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "MyHeader.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CMyHeader
+
+CMyHeader::CMyHeader()
+{
+}
+
+CMyHeader::~CMyHeader()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CMyHeader, CHeaderCtrl)
+	//{{AFX_MSG_MAP(CMyHeader)
+	ON_WM_SETCURSOR()
+	ON_WM_LBUTTONDBLCLK()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CMyHeader message handlers
+
+
+////////////////////////////////////////////////////////////////////
+// Disabling this message handler prevents the cursor from 
+// changing when the cursor is over the column separator line
+// in the header
+//
+BOOL CMyHeader::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+{
+	return TRUE;
+//	return CHeaderCtrl::OnSetCursor(pWnd, nHitTest, message);
+}
+
+
+/////////////////////////////////////////////////////////////////
+// Disabling this message handler prevents the column from resizing 
+// when a double click is done on the column separator line.
+//
+void CMyHeader::OnLButtonDblClk(UINT nFlags, CPoint point) 
+{
+//	CHeaderCtrl::OnLButtonDblClk(nFlags, point);
+}
+</FONT></TT></PRE>
+
+
+<P>Next we assume there are some columns which we want to allow to be re-sized.  
+
+<P>Inside the CMyHeader class definition (in the file MyHeader.h) enter the following declarations:
+
+<PRE><TT><FONT COLOR="#990000">
+// Attributes
+protected:
+	BOOL IsDragAllowed( CPoint point );
+	BOOL m_bAllowDrag;
+</FONT></TT></PRE>
+
+
+<P>Using AppWizard, create a handler for the WM_NCHITTEST messages inside CMyHeader.cpp.
+
+
+<PRE><TT><FONT COLOR="#990000">
+// MyHeader.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "MyHeader.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CMyHeader
+
+CMyHeader::CMyHeader()
+{
+}
+
+CMyHeader::~CMyHeader()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CMyHeader, CHeaderCtrl)
+	//{{AFX_MSG_MAP(CMyHeader)
+	ON_WM_SETCURSOR()
+	ON_WM_LBUTTONDBLCLK()
+	ON_WM_NCHITTEST()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+
+////////////////////////////////////////////////////////////////////
+// Disabling this message callback prevents the cursor from 
+// changing when the cursor is over the column separator line
+// in the header. We enable this callback only if the cursor lies
+// on a separator for which resizing has been allowed.
+//
+BOOL CMyHeader::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+{
+	if (m_bAllowDrag)
+		return CHeaderCtrl::OnSetCursor(pWnd, nHitTest, message);
+	else
+		return TRUE;
+
+}
+
+
+
+/////////////////////////////////////////////////////////////////
+// Disabling this message callback prevents the feature that headers
+// have of resizing a column when a double click is done on the column
+// separator line.  We enable this callback only if the cursor lies
+// on a separator for which resizing has been allowed.
+//
+void CMyHeader::OnLButtonDblClk(UINT nFlags, CPoint point) 
+{
+	if (IsDragAllowed( point ))
+		CHeaderCtrl::OnLButtonDblClk(nFlags, point);
+}
+
+
+
+///////////////////////////////////////////////////////////////
+//	Everytime there is a cursor movement whithin the header, this
+//	function is invoked.  It has the feature that it is invoked 
+//	before OnSetCursor(),  which means we can decide in advance
+//	whether we want the tracking cursor to appear.  (An aside:
+//	OnMouseMove() will also track mouse movement, but it is
+//	invoked after OnSetCursor())
+//
+UINT CMyHeader::OnNcHitTest(CPoint point) 
+{
+	// This 'point' is in screen coordinates.  We need to
+	// transform it to client coords before we test which
+	// column it is in.
+	POINT clientPoint = point;
+	ScreenToClient( &clientPoint );
+
+	m_bAllowDrag = IsDragAllowed( clientPoint );
+	return CHeaderCtrl::OnNcHitTest(point);
+}
+
+
+The following function is where we select the columns for which we want to disable dragging.  It is assumed we have 5 columns, and we want to disable dragging for columns 0, 2, and 3.
+
+/////////////////////////////////////////////////////////////
+//	This is the function which determines which column 
+//	the cursor is in, and we decide whether we want to
+//	allow resizing of that column.
+//
+BOOL CMyHeader::IsDragAllowed( CPoint point )
+{
+	// We will extract information about the header 
+	// using this structure
+	HD_ITEM hi;
+	hi.mask = HDI_WIDTH;	// We want the column width.
+
+	// We keep a running sum of the horizontal location
+	// of each column's divider.
+	int dividerLocations = 0;
+
+	// The amount of space around the dividor inside of which one 
+	// can begin the dragging operation is equal to the width of 
+	// the cursor, centered at the dividor.  So we need to trap 
+	// the cursor a distance of half the cursor width to each 
+	// side of the dividor.
+	int dragWidth = GetSystemMetrics( SM_CXCURSOR );
+
+	// Since we have no need to apply this test for columns for which 
+	// we want to enable dragging, we do not need to go beyond the last 
+	// column for which we want to disable dragging in our 'for loop'.
+	BOOL allowDrag = TRUE;
+	for (int i = 0; i < 4; ++i) {
+		GetItem(i, &hi);
+
+		// hi.cxy contains the width of the i'th column.
+		dividerLocations += hi.cxy;
+
+		// Here is where we place the indexes for the columns 
+		// for which we want to disable dragging.
+		if (i == 0 ||
+		    i == 2 ||
+		    i == 3)
+		      if (point.x > dividerLocations - dragWidth/2 &&
+			  point.x < dividerLocations + dragWidth/2)
+				allowDrag = FALSE;
+		}
+
+	return allowDrag;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,25 @@
+4 Sep 2004
+PEK:	Created this file.
+PEK:	Buttons could now be drawn with theme support
+PEK:	Edit box could be ower drawn focus because of tooltips, so
+		tooltips are disabled when editing. Happens when
+		ListView_SubItemHitTest is called!!!
+PEK:	Found a workaround for the unwanted hottrack in XP:
+		CListCtrl::OnMouseMove() isn't called anymore.
+
+5 Sep 2004
+PEK:	Selection wasn't drawn if no text, fixed.
+
+7 Sep 2004
+PEK:	Handling the LVN_GETDISPINFO to solve the hot item issue.
+PEK:	Added warnings in debug mode if LVS_OWNERDATA isn't set, or LVS_OWNERDRAWFIXED is set.
+
+8 Sep 2004
+PEK:	Added handling for right click in column header.
+
+6 Oct 2004
+PEK:	Added "Edit-on-writing".
+PEK:	Last position in edit box will be select, not all text.
+
+16 Oct 2004
+PEK:	Pressing Ctrl+Letter could start editing, fixed.

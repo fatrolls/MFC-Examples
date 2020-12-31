@@ -1,0 +1,23 @@
+HKCR
+{
+	UTDns.DNSPropPage.1 = s 'DNSPropPage Class'
+	{
+		CLSID = s '{AAA403C6-03B3-11D3-A465-0080C858F182}'
+	}
+	UTDns.DNSPropPage = s 'DNSPropPage Class'
+	{
+		CLSID = s '{AAA403C6-03B3-11D3-A465-0080C858F182}'
+		CurVer = s 'UTDns.DNSPropPage.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AAA403C6-03B3-11D3-A465-0080C858F182} = s 'DNSPropPage Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

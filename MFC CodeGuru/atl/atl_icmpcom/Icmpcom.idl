@@ -1,0 +1,82 @@
+// Icmpcom.idl : IDL source for Icmpcom.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Icmpcom.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(BFD09810-E756-11D1-83E6-00A0244DBC26),
+		dual,
+		helpstring("ICMPCom Interface"),
+		pointer_default(unique)
+	]
+	interface ICMPCom : IDispatch
+	{
+		[id(1), helpstring("method StartICMP")] HRESULT StartICMP();
+		[id(2), helpstring("method StopICMP")] HRESULT StopICMP();
+		[id(3), helpstring("method SetPingVariables")] HRESULT SetPingVariables(BSTR hostname,BOOL opttrcrt,BOOL optresolve,BOOL optnofrag,BOOL optruntointerupt,INT optttl,INT optpacketlen,INT optnumpackets,INT optrroutenum,INT opttimestamp,INT opttos,INT opttimeout);
+		[id(4), helpstring("method RunPing")] HRESULT RunPing();
+		[id(5), helpstring("method StopPing")] HRESULT StopPing();
+		
+		
+	
+		
+	};
+	//
+	/*[
+		object,
+		uuid(6A677B90-E757-11d1-83E6-00A0244DBC26),
+		helpstring("ICMPComEvent Interface"),
+		pointer_default(unique)
+	]
+	interface ICMPComEvent : IDispatch
+	{
+		HRESULT PingMsgEvent(BSTR PingMsg);
+		HRESULT PingDoneEvent();
+		HRESULT PingTerminated();
+	};*/
+[
+	uuid(BFD09803-E756-11D1-83E6-00A0244DBC26),
+	version(1.0),
+	helpstring("Icmpcom 1.0 Type Library")
+]
+library ICMPCOMLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	
+	[
+		uuid(7699DC01-F7E5-11d1-841B-00A0244DBC26),
+		nonextensible,
+		helpstring("DICMPComEvent")
+	]
+
+	dispinterface DICMPComEvent
+	{
+		properties:
+		methods:
+
+		[id(1),helpstring("Message return event")] 
+			void PingMsgEvent(BSTR PingMsg);
+		[id(2),helpstring("Done")] 
+			void PingDoneEvent();
+		[id(3), helpstring("method PingTerminated")] HRESULT PingTerminated();
+
+	};
+
+
+	[
+		uuid(BFD09811-E756-11D1-83E6-00A0244DBC26),
+		helpstring("CICMPCom Class")
+	]
+	coclass CICMPCom
+	{
+		[default] interface ICMPCom;
+		//interface ICMPComEvent;
+		[default,source] dispinterface DICMPComEvent;
+	};
+};

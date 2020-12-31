@@ -1,0 +1,43 @@
+// ex24a.odl : type library source for ex24a.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (ex24a.tlb).
+
+[ uuid(A9515AA2-5B85-11D0-848F-00400526305B), version(1.0) ]
+library Ex24a
+{
+	importlib("stdole32.tlb");
+	
+
+	//  Primary dispatch interface for CBank
+	
+	[ uuid(A9515AB6-5B85-11D0-848F-00400526305B) ]
+	dispinterface IBank
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CBank)
+			[id(1)] double Balance;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CBank)
+			[id(2)] double Withdrawal(double dAount);
+			[id(3)] void Deposit(double dAmount);
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CBank
+
+	[ uuid(632B1E4C-F287-11CE-B5E3-00AA005B1574) ]
+	coclass Bank
+	{
+		[default] dispinterface IBank;
+	};
+
+	//{{AFX_APPEND_ODL}}
+};

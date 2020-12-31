@@ -1,0 +1,89 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc-View - Resizable Docking Window 2</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Resizable Docking Window 2</FONT></H3></CENTER>
+
+<HR>
+
+This article was contributed by <A HREF="mailto:cristi@gds.ro">Cristi Posea</A>.
+
+<P><img src="docking_window.gif">
+
+<H4>Features</H4>
+<P>Control bar like in DevStudio, that size both when docked and when floating.
+<P>The source code is free ! 
+<P>Easy to use: just derive your own control bar from CSizingControlBar and add your child controls.
+
+<H4>Instructions</H4>
+
+Derive a class from CSizingControlBar (you have an example in mybar.h and mybar.cpp).
+
+<P>Add a member variable to CMainFrame (in mainfrm.h).
+
+<PRE><TT><FONT COLOR="#990000">
+CMyBar m_wndMyBar;
+</FONT></TT></PRE>
+
+
+<P>Create the bar in CMainFrame::OnCreate(). Then set bar styles, enable it to dock... like any control bar. 
+<PRE><TT><FONT COLOR="#990000">
+if (!m_wndMyBar.Create(this, CSize(200, 100),
+    AFX_IDW_CONTROLBAR_FIRST + 32))
+{
+	TRACE0("Failed to create mybar\n");
+	return -1;      // fail to create
+}
+</FONT></TT></PRE>
+
+
+<P>Override CMainFrame::RecalcLayout(). 
+<br>Note: use the base framewnd class member function, ie if you have an SDI application replace CMDIFrameWnd with CFrameWnd below. 
+
+<PRE><TT><FONT COLOR="#990000">
+void CMainFrame::RecalcLayout(BOOL bNotify) 
+{
+	CMDIFrameWnd::RecalcLayout(bNotify);
+	CMDIFrameWnd::RecalcLayout(bNotify);
+}
+</FONT></TT></PRE>
+
+<P>Because of RecalcLayout mechanism in MFC, I had to use several tricks to improve the look of control bar. One of them is the double call to RecalcLayout() for controlbar to stretch correctly. The other is that the height of the control bar is 4 pixel larger than its DockBar when docked vertically. So take care of OnSize() member function of your derived class. An example for a control bar with one child control is CMyBar, also included.
+
+<P><A HREF="docking_window.zip">Download Source</A> 8KB
+<br>The zip file contains the CSizingControlBar class, a sample class CMyBar derived from CSizingControlBar and the CMainFrame class from a MDI application which have a CMyBar control bar.
+
+ 
+ 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

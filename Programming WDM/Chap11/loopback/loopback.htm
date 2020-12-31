@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The LOOPBACK Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The LOOPBACK Sample</H2>
+<P>The LOOPBACK Sample accompanies Chapter 11 and illustrates how to do input and output to a bulk transfer pipe. This sample accommodates application requests of any size by recycling a single IRP.</P>
+<P>The sample includes three components:</P>
+
+<UL>
+<LI>LOOPBACK.SYS (SYS subdirectory) is a WDM driver for a USB device based on the Anchor Chips development board. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console application for testing LOOPBACK.SYS. </LI>
+<LI>LOOPBACK.HEX (EZUSB subdirectory) is the firmware image for the LOOPBACK device.</LI></UL>
+
+<H3>Building LOOPBACK</H3>
+<P>To build LOOPBACK.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named LOOPBACK.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing LOOPBACK</H3>
+<P>First follow the <A HREF="../../wdmbook.htm#usbtest">general instructions for testing USB samples</A> to install the device firmware (LOOPBACK.HEX in the EZUSB subdirectory) and the driver. Then open a command prompt and run TEST.EXE from the TEST\DEBUG subdirectory. TEST will output some data to the LOOPBACK device, read it back, and compare the input data to the output data to verify successful operation.</P>
+<P>Currently, TEST only tries to transfer a small number of bytes. You might try modifying TEST to transfer more than 4096 bytes in order to see the multistage scenario unfold that LOOPBACK supports. My very lame firmware can't keep up with a long transfer, however, and you will probably receive a buffer overrun error during the read-back phase of the test. This is not the fault of the driver, though.</P></BODY>
+</HTML>

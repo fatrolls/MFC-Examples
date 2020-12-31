@@ -1,0 +1,414 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "#ifdef _VC60\r\n"
+    "/////////////////////////////////////////////////////////////////////////////\r\n"
+    "//\r\n"
+    "// 24\r\n"
+    "//\r\n"
+    "1                      24      MOVEABLE PURE   ""app.manifest""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "hans.ico"
+IDI_BOB                 ICON    DISCARDABLE     "bob.ico"
+IDI_UAC_SHIELD          ICON    DISCARDABLE     "UAC_shield.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 268, 159
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "About XMsgBoxTest"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,12,20,20,SS_CENTERIMAGE | 
+                    WS_BORDER
+    LTEXT           "XMsgBoxTest Version 1.10",IDC_STATIC,40,11,119,8
+    LTEXT           "Copyright © 1998-2008 Hans Dietrich",IDC_STATIC,40,25,
+                    165,8
+    LTEXT           "This software is released into the public domain.  You are free to use it in any way you like, except that you may not sell this source code.",
+                    IDC_STATIC,40,78,217,18
+    LTEXT           "This software is provided ""as is"" with no expressed or implied warranty.  I accept no liability for any damage or loss of business that this software may cause. ",
+                    IDC_STATIC,40,104,211,26
+    LTEXT           "Send email to Hans Dietrich",IDC_ABOUT_EMAIL,90,140,90,
+                    8,SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,208,9,50,14,WS_GROUP
+    LTEXT           "",IDC_VERSION,40,42,218,28,WS_BORDER
+END
+
+IDD_MSGBOXTEST_DIALOG DIALOGEX 0, 0, 436, 343
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Test of XMessageBox"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME | WS_GROUP,5,2,167,
+                    26
+    CTEXT           "Select the desired MessageBox options, then click one of the MessageBox buttons below.",
+                    IDC_STATIC,13,7,150,16,NOT WS_GROUP
+    GROUPBOX        "Icon",IDC_STATIC,5,31,107,84,WS_GROUP
+    CONTROL         "None specified",IDC_ICON1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,11,44,63,10
+    CONTROL         "MB_ICONEXCLAMATION",IDC_ICON2,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,11,57,99,10
+    CONTROL         "MB_ICONINFORMATION",IDC_ICON3,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,11,70,98,10
+    CONTROL         "MB_ICONQUESTION",IDC_ICON4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,11,83,85,10
+    CONTROL         "MB_ICONSTOP",IDC_ICON5,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,11,96,67,10
+    GROUPBOX        "Default Button",IDC_STATIC,120,31,90,84,WS_GROUP
+    CONTROL         "None specified",IDC_DEFBUTTON1,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,126,42,63,10
+    CONTROL         "MB_DEFBUTTON1",IDC_DEFBUTTON2,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,52,79,10
+    CONTROL         "MB_DEFBUTTON2",IDC_DEFBUTTON3,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,62,79,10
+    CONTROL         "MB_DEFBUTTON3",IDC_DEFBUTTON4,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,72,79,10
+    CONTROL         "MB_DEFBUTTON4",IDC_DEFBUTTON5,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,82,79,10
+    CONTROL         "MB_DEFBUTTON5",IDC_DEFBUTTON6,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,92,79,10
+    CONTROL         "MB_DEFBUTTON6",IDC_DEFBUTTON7,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,102,79,10
+    GROUPBOX        "String",IDC_STATIC,218,31,70,84,WS_GROUP
+    CONTROL         "Short string",IDC_STRING1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,224,42,51,10
+    CONTROL         "Medium string",IDC_STRING2,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,224,55,60,10
+    CONTROL         "Long string",IDC_STRING3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,224,68,51,10
+    CONTROL         "Longer string",IDC_STRING4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,224,81,58,10
+    CONTROL         "Multiline string",IDC_STRING5,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,224,94,61,10
+    GROUPBOX        "Buttons",IDC_STATIC,296,31,135,115,WS_GROUP
+    CONTROL         "MB_OK",IDC_BUTTON1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,302,42,41,10
+    CONTROL         "MB_OKCANCEL",IDC_BUTTON2,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,302,52,69,10
+    CONTROL         "MB_YESNO",IDC_BUTTON3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,302,62,55,10
+    CONTROL         "MB_YESNOCANCEL",IDC_BUTTON4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,302,72,83,10
+    CONTROL         "MB_ABORTRETRYIGNORE",IDC_BUTTON5,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,302,82,108,10
+    CONTROL         "MB_RETRYCANCEL",IDC_BUTTON6,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,302,92,83,10
+    CONTROL         "MB_CANCELTRYCONTINUE",IDC_BUTTON7,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,302,102,111,10
+    CONTROL         "MB_CONTINUEABORT",IDC_BUTTON8,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,302,112,93,10
+    CONTROL         "MB_SKIPSKIPALLCANCEL",IDC_BUTTON9,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,302,122,103,10
+    CONTROL         "MB_IGNOREIGNOREALLCANCEL",IDC_BUTTON10,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,302,132,127,10
+    GROUPBOX        "Help",IDC_STATIC,5,120,283,25,WS_GROUP
+    CONTROL         "Include ""Help"" button",IDC_INCLUDE_HELP,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,29,131,85,10
+    LTEXT           "Context ID for Help Button:",IDC_STATIC,133,131,86,8,
+                    NOT WS_GROUP
+    EDITTEXT        IDC_HELP_CONTEXT_ID,220,130,44,11,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    GROUPBOX        "XMessageBox Only Options",IDC_STATIC,5,150,426,102,
+                    WS_GROUP
+    GROUPBOX        "Checkboxes",IDC_STATIC,16,162,160,54,WS_GROUP
+    CONTROL         "None specified",IDC_DONTASK1,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,22,173,65,10
+    CONTROL         "Include ""Don't ask me again"" checkbox",IDC_DONTASK2,
+                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,22,183,143,10
+    CONTROL         "Include ""Don't tell me again"" checkbox",IDC_DONTASK3,
+                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,22,193,141,10
+    CONTROL         "Include ""Don't show again"" checkbox",IDC_DONTASK4,
+                    "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,22,203,141,10
+    GROUPBOX        "Language",IDC_STATIC,16,220,160,24,WS_GROUP
+    CONTROL         "English",IDC_LANGUAGE1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,22,230,37,11
+    CONTROL         "French (loaded from resource)",IDC_LANGUAGE2,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,62,230,108,10
+    GROUPBOX        "Buttons",IDC_STATIC,186,162,108,82,WS_GROUP
+    CONTROL         "Include ""Yes to All"" button",IDC_INCLUDE_YESTOALL,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,192,175,
+                    100,10
+    CONTROL         "Include ""No to All"" button",IDC_INCLUDE_NOTOALL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,192,187,100,10
+    CONTROL         "Include Report button",IDC_INCLUDE_REPORT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,192,199,100,10
+    CONTROL         "Use custom buttons",IDC_CUSTOM_BUTTONS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,192,211,100,10
+    CONTROL         "Right justify buttons",IDC_RIGHT_JUSTIFY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,192,223,100,10
+    GROUPBOX        "Other",IDC_STATIC,304,162,118,82,WS_GROUP
+    CONTROL         "Vista Style",IDC_VISTA,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,310,174,50,10
+    CONTROL         "Narrow",IDC_NARROW,"Button",BS_AUTOCHECKBOX | WS_GROUP | 
+                    WS_TABSTOP,370,174,41,10
+    CONTROL         "Don't play sounds",IDC_NO_SOUND,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,310,185,100,10
+    CONTROL         "Use custom icon",IDC_CUSTOM_ICON,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,310,196,100,10
+    LTEXT           "Disabled (secs)",IDC_STATIC,311,212,49,8,NOT WS_GROUP
+    EDITTEXT        IDC_DISABLED_EDIT,361,211,40,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_DISABLED_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,401,211,11,12
+    LTEXT           "Timeout (secs)",IDC_STATIC,311,229,49,8,NOT WS_GROUP
+    EDITTEXT        IDC_TIMEOUT_EDIT,361,227,40,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_TIMEOUT_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,401,227,11,12
+    GROUPBOX        "Select options above and then click one of these buttons",
+                    IDC_STATIC,5,257,426,45,WS_GROUP
+    PUSHBUTTON      "Display Windows MessageBox",IDC_TEST_WINDOWS_MSGBOX,81,
+                    270,120,25,BS_MULTILINE | WS_GROUP
+    PUSHBUTTON      "Display XMessageBox",IDC_TEST_XMSGBOX,236,270,120,25
+    GROUPBOX        "Result",IDC_STATIC,5,307,426,30,WS_GROUP
+    LTEXT           "",IDC_RESULT,15,318,406,14,SS_CENTERIMAGE | WS_BORDER
+    PUSHBUTTON      "Help",IDC_ONLINE_HELP,261,8,50,16,WS_GROUP
+    PUSHBUTTON      "Gallery...",IDC_GALLERY,321,8,50,16
+    DEFPUSHBUTTON   "Close",IDOK,381,8,50,16
+END
+
+IDD_GALLERY DIALOG DISCARDABLE  0, 0, 320, 278
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "XMessageBox Gallery"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Click on button to view source code",IDC_STATIC,10,26,
+                    300,141
+    PUSHBUTTON      "Two Custom Buttons",IDC_BUTTON1,30,43,80,22
+    PUSHBUTTON      "Custom Icon +\nCustom Colors",IDC_BUTTON2,120,43,80,22,
+                    BS_MULTILINE
+    PUSHBUTTON      "Standard Help Button",IDC_BUTTON3,210,43,80,22
+    PUSHBUTTON      "Custom Help Button",IDC_BUTTON4,30,73,80,22
+    PUSHBUTTON      "Checkbox",IDC_BUTTON5,120,73,80,22
+    PUSHBUTTON      "Report Button",IDC_BUTTON6,210,73,80,22
+    PUSHBUTTON      "Timeout",IDC_BUTTON7,30,103,80,22
+    PUSHBUTTON      "Timeout on \r\nCustom Button",IDC_BUTTON8,120,103,80,22,
+                    BS_MULTILINE
+    PUSHBUTTON      "Right Justify",IDC_BUTTON9,210,103,80,22,BS_MULTILINE
+    PUSHBUTTON      "User Defined Buttons",IDC_BUTTON10,30,133,80,22,
+                    BS_MULTILINE
+    PUSHBUTTON      "Disabled Buttons",IDC_BUTTON11,120,133,80,22,
+                    BS_MULTILINE
+    EDITTEXT        IDC_EDIT1,10,178,300,90,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_READONLY | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL | 
+                    WS_GROUP
+    DEFPUSHBUTTON   "Close",IDOK,260,6,50,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,10,0,1
+ PRODUCTVERSION 1,10,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "E-mail", "hdietrich@gmail.com\0"
+            VALUE "Article", "http://www.codeproject.com/KB/dialog/xmessagebox.aspx\0"
+            VALUE "FileDescription", "XMsgBoxTest.exe\0"
+            VALUE "FileVersion", "1, 10, 0, 1\0"
+            VALUE "LegalCopyright", "Copyright © 1998-2008 Hans Dietrich\0"
+            VALUE "ProductName", "XMsgBoxTest\0"
+            VALUE "ProductVersion", "1, 10, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_MSGBOXTEST_DIALOG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 433
+        BOTTOMMARGIN, 316
+    END
+
+    IDD_GALLERY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 271
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About XMsgBoxTest..."
+    IDS_MAILTO              "mailto:hdietrich@gmail.com?subject=XMessageBox"
+    IDS_ONLINE_HELP         "http://www.codeproject.com/KB/dialog/xmessagebox.aspx"
+    IDS_CAPTION             "XMsgBoxTest (caption from resource)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NO                  "Non"
+    IDS_CONTINUE            "Continuer"
+    IDS_DONOTASKAGAIN       "Ne me demandez pas encore"
+    IDS_DONOTTELLAGAIN      "Ne me dites pas encore"
+    IDS_DONOTSHOWAGAIN      "Ne affichez pas encore"
+    IDS_YESTOALL            "Oui pour Tous"
+    IDS_NOTOALL             "Non pour Tous"
+    IDS_TRYAGAIN            "Essayer Encore"
+    IDS_REPORT              "Communiquer"
+    IDS_IGNOREALL           "Ignorer tout"
+    IDS_SKIP                "Sauter"
+    IDS_SKIPALL             "Sauter tout"
+    IDS_PROBLEM             "The program has encountered an error and must terminate."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CANCEL              "Annuler"
+    IDS_IGNORE              "Ignorer"
+    IDS_RETRY               "Réessayer"
+    IDS_ABORT               "Arrêt"
+    IDS_HELP                "Aide"
+    IDS_YES                 "Oui"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "afxres.rc"         // Standard components
+#endif
+#ifdef _VC60
+/////////////////////////////////////////////////////////////////////////////
+//
+// 24
+//
+1                      24      MOVEABLE PURE   "app.manifest"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

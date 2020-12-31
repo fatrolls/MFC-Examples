@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>TAPI to place out-bound calls</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">TAPI to place out-bound calls</FONT></H3></CENTER>
+
+<HR>
+
+This article was contributed by <A HREF="mailto:shams@aritel-net.com">M. Shams Mukhtar</A>.
+
+
+<P>Following are the steps involved to place outbound calls using TAPI services/API s
+
+
+<ul>
+<li>Call API function lineInitialize to start the TAPI session.
+<li>Call API function lineNegotiateApiVersion to make sure you can use the installed TAPI services.
+<li>Call API function lineOpen to get a line that is appropriate for your needs (data, fax, voice and so on).
+<li>Use the LINECALLPARAMS structure to setup calling parameters before you place the call and finally …
+<li>Call API function lineMakeCall to actually attempt to place a TAPI call.
+</ul>
+
+<P>Here is the class CTapiLine that abstracts and short-circuits the basic telephony for the outbound calls.
+
+<P>To use the class u need to follow these steps:
+
+<ul>
+<li>Create an instance of the class : i.e.     CTapiLine  m_tapiLine;
+<li>Call this function usually when u have the window handle available 
+	<br>i.e. m_tapiLine .Create(m_hWnd);
+<li>For placing the call use : m_tapiLine.DialCall(m_szTelNumber);
+<li>And for hang-up call m_tapiLine.HangUp();
+</ul>
+
+<P>That's it… and enjoy the world of Call Dialing.
+
+<P><A HREF="tapi_dialout.zip">Download Source</A>
+
+<P>Posted on: 3/15/98 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

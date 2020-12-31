@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemMgrTest", "MemMgrTest.vcxproj", "{6C18DA3F-E3A5-4676-85CB-4D6C7B8C252A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemMgrTestPS", "MemMgrTestPS.vcxproj", "{CB0CD0CE-163F-406A-A051-60074ECEF86E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C18DA3F-E3A5-4676-85CB-4D6C7B8C252A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6C18DA3F-E3A5-4676-85CB-4D6C7B8C252A}.Debug|Win32.Build.0 = Debug|Win32
+		{6C18DA3F-E3A5-4676-85CB-4D6C7B8C252A}.Release|Win32.ActiveCfg = Release|Win32
+		{6C18DA3F-E3A5-4676-85CB-4D6C7B8C252A}.Release|Win32.Build.0 = Release|Win32
+		{CB0CD0CE-163F-406A-A051-60074ECEF86E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CB0CD0CE-163F-406A-A051-60074ECEF86E}.Release|Win32.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

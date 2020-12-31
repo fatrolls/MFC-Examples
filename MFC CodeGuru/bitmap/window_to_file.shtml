@@ -1,0 +1,103 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Writing a window image to a BMP file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Writing a window image to a BMP file</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+To save the image of a window to a BMP file, you have to draw the image to a compatible memory device context, convert the bitmap associated with the memory DC to a device-independent bitmap and then write the DIB to a file. In previous sections, we have already covered how to get a DIB from a device-dependent bitmap and how to save a DIB to a file. The WriteWindowToDIB() function uses the DDBToDIB() and the WriteDIB() functions to accomplish its task.
+
+<p>Let's focus on how we get the window's image onto the memory device context and how to create a logical palette that corresponds to the image. To begin with, we create a memory DC that is compatible with the window's DC. Next we create a compatible bitmap that is the same size as the window. We then use BitBlt() to transfer the image to the memory DC and that gives us the bitmap. 
+
+<p>However, this is just half of the job; the other half is to get the logical palette that can be used with the bitmap. The bitmap won't display properly if it needs a logical palette and one is not available. Depending on the display settings we don't always need a logical palette. We use GetDeviceCaps() to determine whether a display device supports palette operation. For instance, if the display is set for true color then it doesn't support a palette. We allocate enough memory for a LOGPALETTE structure and then use the GetSystemPaletteEntries() to fill the color table. Now we can create the logical palette.
+
+<p>The function then uses the DDBToDIB() and the WriteDIB() functions to complete the job. You should note that if the window is partially or completely covered by other windows then the saved bitmap will show parts of these other windows too.
+
+<PRE><TT><FONT COLOR="#990000">BOOL WriteWindowToDIB( LPTSTR szFile, CWnd *pWnd )
+{
+	CBitmap 	bitmap;
+	CWindowDC	dc(pWnd);
+	CDC 		memDC;
+	CRect		rect;
+
+	memDC.CreateCompatibleDC(&dc); 
+
+	pWnd->GetWindowRect(rect);
+
+	bitmap.CreateCompatibleBitmap(&dc, rect.Width(),rect.Height() );
+	
+	CBitmap* pOldBitmap = memDC.SelectObject(&bitmap);
+	memDC.BitBlt(0, 0, rect.Width(),rect.Height(), &dc, 0, 0, SRCCOPY); 
+
+	// Create logical palette if device support a palette
+	CPalette pal;
+	if( dc.GetDeviceCaps(RASTERCAPS) & RC_PALETTE )
+	{
+		UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * 256);
+		LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+		pLP->palVersion = 0x300;
+
+		pLP->palNumEntries = 
+			GetSystemPaletteEntries( dc, 0, 255, pLP->palPalEntry );
+
+		// Create the palette
+		pal.CreatePalette( pLP );
+
+		delete[] pLP;
+	}
+
+	memDC.SelectObject(pOldBitmap);
+
+	// Convert the bitmap to a DIB
+	HANDLE hDIB = DDBToDIB( bitmap, BI_RGB, &pal );
+
+	if( hDIB == NULL )
+		return FALSE;
+
+	// Write it to file
+	WriteDIB( szFile, hDIB );
+
+	// Free the memory allocated by DDBToDIB for the DIB
+	GlobalFree( hDIB );
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

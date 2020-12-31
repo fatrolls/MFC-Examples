@@ -1,0 +1,196 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ToolBar - A Fix for CToolBar with IE4</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">A Fix for CToolBar with IE4</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>.
+
+
+
+<P>The new version of COMCTL32.DLL that is shipped with the release version of
+IE4 (4.71.1712.3) has a problem when combined with the MFC CToolBar.  When
+an MFC application is run under IE4, and a toolbar with separators (groups)
+is docked vertically, or floated with >1 row) then the bottom button/row is
+clipped.
+
+<P>The reason for this is that CToolBar was written with the assumption the
+horizontal separators are 8 pixels wide and vertical separator are (8*2/3)
+= 5 pixels high.  This was the case until IE4 came along.  Now the vertical
+separators are 8 pixels high instead of 5 pixels.  So CToolBar does not
+allocate enough room for the tooblar buttons.
+
+<P>If MFC had made the function which calculates the size of the buttons and
+separtors virtual, then all that would be required is to override that
+single function.  However, in their infinite wisdom, the MFC designers di
+not do this for us.  So now one needs to copy many functions with many many
+lines of code so one can patch up this 'mistake'.
+
+<P>The code below assumes that you have the code I published earlier the
+detects the version of COMCTL32 that is currently loaded.  It then makes
+the fixes required based on which version is running.  If it is the IE4
+version, then it uses 8 pixels for the height, otherwise it uses 5 pixels
+as before (8*2/3)
+
+<H4>Step 1:</H4>
+To make the fix, copy the following functions verbatim from the
+"BARTOOL.CPP" in your MFC source tree, and change all occurences of
+"CToolBar" to "CMyToolBar"
+
+<PRE><TT><FONT COLOR="#990000">void CMyToolBar::_GetButton(int nIndex, TBBUTTON* pButton) const
+{
+     ...
+}
+void CMyToolBar::_SetButton(int nIndex, TBBUTTON* pButton)
+{
+     ...
+}
+
+#ifdef _MAC
+     #define CX_OVERLAP  1
+#else
+     #define CX_OVERLAP  0
+#endif
+
+void CMyToolBar::SizeToolBar(TBBUTTON* pData, int nCount, int nLength, BOOL
+bVert)
+{
+     ...
+}
+}
+
+struct _AFX_CONTROLPOS
+{
+     int nIndex, nID;
+     CRect rectOldPos;
+};
+
+CSize CMyToolBar::CalcLayout(DWORD dwMode, int nLength)
+{
+     ...
+}
+
+CSize CMyToolBar::CalcFixedLayout(BOOL bStretch, BOOL bHorz)
+{
+     ...
+}
+CSize CMyToolBar::CalcDynamicLayout(int nLength, DWORD dwMode)
+{
+     ...
+}
+</FONT></TT></PRE>
+
+<H4>Step 2:</H4>
+Copy and MODIFY the CalcSize routine from "BARTOOL.CPP" as shown .. my
+changes and additions are commented with // RO
+
+<PRE><TT><FONT COLOR="#990000">CSize CMyToolBar::CalcSize(TBBUTTON* pData, int nCount)
+{
+     // Check for COMCTL32 version number // RO
+     bool isfullheightsep = false; // RO
+     if (QWinApp::ComCtl32Version() >= COMCTL32_471) { // RO
+          isfullheightsep = true;  // RO
+     }    // RO
+     ASSERT(pData != NULL && nCount > 0);
+
+     CPoint cur(0,0);
+     CSize sizeResult(0,0);
+
+     for (int i = 0; i < nCount; i++)
+     {
+          if (pData[i].fsState & TBSTATE_HIDDEN)
+               continue;
+
+          int iBitmapx = pData[i].iBitmap;    // RO
+          int iBitmapy = iBitmapx; // RO
+          if (! isfullheightsep) iBitmapy = iBitmapy * 2 / 3;     // RO
+          if (pData[i].fsStyle & TBSTYLE_SEP)
+          {
+               // A separator represents either a height or width
+               if (pData[i].fsState & TBSTATE_WRAP)
+                    sizeResult.cy = max(cur.y + m_sizeButton.cy + iBitmapy,sizeResult.cy);    // RO
+// RO          sizeResult.cy = max(cur.y + m_sizeButton.cy + pData[i].iBitmap * 2 / 3, sizeResult.cy);
+               else
+                    sizeResult.cx = max(cur.x + iBitmapx, sizeResult.cx);
+// RO
+// RO          sizeResult.cx = max(cur.x + pData[i].iBitmap,sizeResult.cx);
+          }
+          else
+          {
+               sizeResult.cx = max(cur.x + m_sizeButton.cx, sizeResult.cx);
+               sizeResult.cy = max(cur.y + m_sizeButton.cy, sizeResult.cy);
+          }
+
+          if (pData[i].fsStyle & TBSTYLE_SEP)
+               cur.x += pData[i].iBitmap;
+          else
+               cur.x += m_sizeButton.cx - CX_OVERLAP;
+
+          if (pData[i].fsState & TBSTATE_WRAP)
+          {
+               cur.x = 0;
+               cur.y += m_sizeButton.cy;
+               if (pData[i].fsStyle & TBSTYLE_SEP)
+                    cur.y += iBitmapy;
+// RO          cur.y += pData[i].iBitmap * 2 / 3;
+          }
+     }
+     return sizeResult;
+}
+</FONT></TT></PRE>
+
+<P>In summary I have added 5 lines at the top to detect the version, added 3
+lines before "if (pData[i].fsState & TBSTYLE_SEP)", replaced two lines in
+the following "if" and replaced one line near the end.
+
+<H4>Step 3:</H4>
+You need to define a CToolBar derived CMyToolBar (or CFlatToolBar-derived,
+or make the changes to CFlatTOolBar anyway which is what I did).
+In that class, you will need to copy the declarations for the functions we
+have copied - don't forget to make CalcDynamicSize and CalcFixedSize
+VIRTUAL functions !!
+
+<P>That should do it.  Now your toolbars will work under all versions of
+COMCTL32.DLL - well, at least until MS releases a new version :-)
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

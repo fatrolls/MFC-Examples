@@ -1,0 +1,241 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "NUMBERCONVERSIONDEMO MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "NUMBERCONVERSIONDEMO\0"
+            VALUE "LegalCopyright", "Copyright © 1998 Dundas Software Ltd.\0"
+            VALUE "OriginalFilename", "NUMBERCONVERSIONDEMO.EXE\0"
+            VALUE "ProductName", "NUMBERCONVERSIONDEMO Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About NumberConversionDemo..."
+    IDR_MAINFRAM            "Number conversion class demo"
+    ID_DESCRIPTION_FILE     "numConInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_NUMBERCONVERSIONDEMO_DIALOG DIALOGEX 0, 0, 209, 238
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "NumberConversionDemo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "The COXNumber class converts numbers to strings and vice versa.  And it can also convert from one radix to another.",
+                    IDC_STATIC,7,7,195,25
+    LTEXT           "&Input",IDC_STATIC,7,43,23,8
+    EDITTEXT        IDC_INPUT,33,41,127,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Copy",IDC_COPY_IN,164,33,38,14
+    PUSHBUTTON      "Paste",IDC_PAST_IN,164,50,38,14
+    GROUPBOX        "From",IDC_STATIC,7,67,87,91
+    CONTROL         "&Binary",IDC_BINARY_IN,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,13,77,35,10
+    CONTROL         "&Octal",IDC_OCTAL_IN,"Button",BS_AUTORADIOBUTTON,13,89,
+                    32,10
+    CONTROL         "&Decimal",IDC_DECIMAL_IN,"Button",BS_AUTORADIOBUTTON,13,
+                    101,41,10
+    CONTROL         "&Hexadecimal",IDC_HEXADECIMAL_IN,"Button",
+                    BS_AUTORADIOBUTTON,13,113,56,10
+    CONTROL         "O&ther",IDC_OTHER_IN,"Button",BS_AUTORADIOBUTTON,13,125,
+                    32,10
+    EDITTEXT        IDC_RADIX_IN,47,125,40,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_GROUP
+    CONTROL         "Spin1",IDC_SPIN_IN,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,86,124,7,
+                    14
+    GROUPBOX        "To",IDC_STATIC,115,67,87,91
+    CONTROL         "&Binary",IDC_BINARY_OUT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,121,77,35,10
+    CONTROL         "&Octal",IDC_OCTAL_OUT,"Button",BS_AUTORADIOBUTTON,121,
+                    89,32,10
+    CONTROL         "&Decimal",IDC_DECIMAL_OUT,"Button",BS_AUTORADIOBUTTON,
+                    121,101,41,10
+    CONTROL         "&Hexadecimal",IDC_HEXADECIMAL_OUT,"Button",
+                    BS_AUTORADIOBUTTON,121,113,56,10
+    CONTROL         "O&ther",IDC_OTHER_OUT,"Button",BS_AUTORADIOBUTTON,121,
+                    125,32,10
+    EDITTEXT        IDC_RADIX_OUT,155,125,40,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_GROUP
+    CONTROL         "Spin1",IDC_SPIN_OUT,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,194,124,7,
+                    14
+    CONTROL         "Thousand &separated",IDC_SEPARATED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,121,145,79,10
+    PUSHBUTTON      "&Convert",IDC_CONVERT,79,170,50,14
+    LTEXT           "O&utput",IDC_STATIC,7,194,22,8
+    EDITTEXT        IDC_OUTPUT,33,192,127,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Copy",IDC_COPY_OUT,164,192,38,14
+    PUSHBUTTON      "Close",IDCANCEL,81,217,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_NUMBERCONVERSIONDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 202
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 231
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\NumberConversionDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\NumberConversionDemo.ico"
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\NumberConversionDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,220 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""UTFtp.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 4,0,0,1
+ PRODUCTVERSION 4,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "www.theultimatetoolbox.com\0"
+            VALUE "CompanyName", "The Ultimate Toolbox\0"
+            VALUE "FileDescription", "UTFtp Module\0"
+            VALUE "FileVersion", "4, 0, 0, 1\0"
+            VALUE "InternalName", "UTFtp\0"
+            VALUE "LegalCopyright", "Copyright 1995-2007\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OLESelfRegister", "\0"
+            VALUE "OriginalFilename", "UTFtp.DLL\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Ultimate TCP/IP 4.2\0"
+            VALUE "ProductVersion", "4, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_FTP                 BITMAP  DISCARDABLE     "ftp.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_FTP                 REGISTRY DISCARDABLE    "Ftp.rgs"
+IDR_FTPPROPPAGE         REGISTRY DISCARDABLE    "FtpPropPage.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTDLG DIALOG DISCARDABLE  0, 0, 186, 97
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About FTP ActiveX Control"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",1,64,70,50,14
+    CTEXT           "Copyright © The Ultimate Toolbox 1995-2007\r\nwww.theultimatetoolbox.com\r\nAll rights reserved.",
+                    IDC_STATIC,5,37,175,27
+    CTEXT           "FTP ActiveX Control",IDC_STATIC,5,10,175,11
+    CTEXT           "Version 4.0.",IDC_VERSION_TEXT,5,22,175,13
+END
+
+IDD_FTPPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 106
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Connection",IDC_STATIC,5,5,260,45
+    RTEXT           "Host name:",IDC_STATIC,10,17,45,10
+    EDITTEXT        IDC_HOST_NAME,60,15,70,14,ES_AUTOHSCROLL
+    RTEXT           "Account:",IDC_STATIC,10,31,45,10
+    EDITTEXT        IDC_ACCOUNT,60,30,70,14,ES_AUTOHSCROLL
+    RTEXT           "User name:",IDC_STATIC,130,17,50,10
+    EDITTEXT        IDC_USER_NAME,185,15,70,14,ES_AUTOHSCROLL
+    RTEXT           "Password:",IDC_STATIC,130,31,50,10
+    EDITTEXT        IDC_PASSWORD,185,30,70,14,ES_PASSWORD | ES_AUTOHSCROLL
+    RTEXT           "Connection time out (sec.):",IDC_STATIC,0,58,90,9
+    EDITTEXT        IDC_EDITCONNECT_TO,100,55,40,14,ES_AUTOHSCROLL
+    RTEXT           "Blocking mode:",IDC_STATIC,5,72,85,10
+    COMBOBOX        IDC_BLOCKING_MODE,100,70,65,39,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Fire Wall mode:",IDC_STATIC,5,87,85,10
+    COMBOBOX        IDC_FIRE_WALL_MODE,100,85,65,55,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_FTP            ICON    DISCARDABLE     "icon_fin.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_FTPPROPPAGE DLGINIT
+BEGIN
+    IDC_BLOCKING_MODE, 0x403, 6, 0
+0x4146, 0x534c, 0x0045, 
+    IDC_BLOCKING_MODE, 0x403, 5, 0
+0x5254, 0x4555, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTDLG, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 86
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "UTFtp"
+    IDS_TITLEFtpPropPage    "FTP Property Page"
+    IDS_HELPFILEFtpPropPage "FTP Property Page"
+    IDS_DOCSTRINGFtpPropPage "FTP Property Page"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "UTFtp.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

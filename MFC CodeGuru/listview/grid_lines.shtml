@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Drawing horizontal and vertical gridlines</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Drawing horizontal and vertical gridlines</FONT></H3></CENTER>
+
+<HR WIDTH="100%">To draw horizontal and vertical gridlines we essentially
+use the same method used for the vertical gridline or column border used
+in the previous section. After drawing the vertical lines, we use GetItemRect()
+to get the item height and then we draw the horizontal grid lines based
+on this height. One implication of using GetItemRect() is that it fails
+when the list does not have any items in it and no horizontal line is drawn.
+Here is the complete code of the overridden OnPaint() function. Also note
+that the next version of the list view control will support the LVS_EX_GRIDLINES
+style and should make our code redundant.
+<p><img src="grid_lines.gif" width="274" height="221"></p>
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnPaint() 
+{
+	// First let the control do its default drawing.
+	const MSG *msg = GetCurrentMessage();
+	DefWindowProc( msg->message, msg->wParam, msg->lParam );
+
+	// Draw the lines only for LVS_REPORT mode
+	if( (GetStyle() & LVS_TYPEMASK) == LVS_REPORT )
+	{
+		// Get the number of columns
+		CClientDC dc(this );
+		CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+		int nColumnCount = pHeader->GetItemCount();
+
+		// The bottom of the header corresponds to the top of the line 
+		RECT rect;
+		pHeader->GetClientRect( &rect );
+		int top = rect.bottom;
+
+		// Now get the client rect so we know the line length and
+		// when to stop
+		GetClientRect( &rect );
+
+		// The border of the column is offset by the horz scroll
+		int borderx = 0 - GetScrollPos( SB_HORZ );
+		for( int i = 0; i < nColumnCount; i++ )
+		{
+			// Get the next border
+			borderx += GetColumnWidth( i );
+
+			// if next border is outside client area, break out
+			if( borderx >= rect.right ) break;
+
+			// Draw the line.
+			dc.MoveTo( borderx-1, top);
+			dc.LineTo( borderx-1, rect.bottom );
+		}
+
+		// Draw the horizontal grid lines
+
+		// First get the height
+		if( !GetItemRect( 0, &rect, LVIR_BOUNDS ))
+			return;
+
+		int height = rect.bottom - rect.top;
+
+		GetClientRect( &rect );
+		int width = rect.right;
+
+		for( i = 1; i <= GetCountPerPage(); i++ )
+		{
+			dc.MoveTo( 0, top + height*i);
+			dc.LineTo( width, top + height*i );
+		}
+	}
+	
+	// Do not call CListCtrl::OnPaint() for painting messages
+}
+</FONT></TT></PRE>
+<P>The vertical grid line is actually drawn one pixel left of the column border. This
+aligns it better with the column header. It also introduces a bug. When
+you increase a column width, the column area below the last visible item
+is not updated, thus leaving traces of the previous line. There are two
+approaches you can take to resolve this. First, draw the line exactly on
+the column border (e.i. do not subtract 1 from borderx). The second approach
+is to handle the HDN_TRACK notification from the header control
+ and invalidate the exposed area so that it gets redrawn.
+
+<p>BTW, Paul Gerhart has also implemented this using an owner-drawn CListCtrl.
+He has made the source code available with a sample app. You can find it
+at <A HREF="http://www.voicenet.com/~pgerhart/_shware.html">http://www.voicenet.com/~pgerhart/_shware.html</A>
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

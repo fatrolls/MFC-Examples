@@ -1,0 +1,137 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>StatusBar - Showing progress bar in a status bar pane (2)</TITLE>
+</HEAD>
+<BODY>
+
+<CENTER>
+<H3>
+<FONT COLOR="#000099">Showing progress bar in a status bar pane (2)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by 
+<A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>. 
+
+<br><br><IMG SRC="progress_in_status2.gif">
+<br>Download <A HREF="progress_in_status2_src.zip">source files</A> and
+<A HREF="progress_in_status2_demo.zip">demo project</A>.<br>
+
+<p>
+Adding a CProgressCtrl to the status bar has already been addressed
+by Brad Mann. His method involved modifying the status bar and messing
+around with the resource editor. I developed a separate CProgressBar
+class in order to allow the programmer to just drop in a progress bar
+whereever they wanted using a single "CProgressBar Bar(...)" declaration,
+which would initialise and display itself and clean up after itself
+after it was done. The progress bar can also be created once (say as a 
+member variable) and reused multiple times. This new version of the
+progress bar also resizes itself if the status bar size changes.
+</p>
+
+<p>
+The progress bar lets you specify a message (displayed to the left of the bar)
+and a Progress Control bar in the first pane of your applications status bar 
+(if it has one - thanks to Patty You for a bug fix on that one). The message 
+for the progress bar can be changed at any time, as can the size and range
+of the bar.
+</p> 
+
+<p><b>Construction</b></p>
+
+<PRE><TT><FONT COLOR="#990000">
+	CProgressBar(); 
+	CProgressBar(LPCTSTR strMessage, int nSize=100, int MaxValue=100, BOOL bSmooth=FALSE);
+	BOOL Create(LPCTSTR strMessage, int nSize=100, int MaxValue=100, BOOL bSmooth=FALSE);
+</FONT></TT></PRE>
+
+<p>
+Construction is either via the constructor or a two-step process using the
+constructor and the "Create" function. "strMessage" is the message to be
+displayed, "nSize" is the percentage width of the status bar that will be
+occupied by the bar (including the text), and "MaxValue" is the maximum
+range of the bar.</p>
+
+<p>
+"bSmooth" will only be effective if you have the header files and commctrl32.dll
+from IE 3.0 or above (no problems for MS VC 5.0). It specifies whether the progress 
+bar will be smooth or chunky. 
+</p>
+
+<p><b>Operations</b></p>
+<PRE><TT><FONT COLOR="#990000">
+	BOOL Success()                      // Construction successful?
+	int  SetPos(int nPos);              // Same as CProgressCtrl
+	int  OffsetPos(int nPos);           // Same as CProgressCtrl
+	int  SetStep(int nStep);            // Same as CProgressCtrl
+	int  StepIt();                      // Same as CProgressCtrl
+	void Clear();                       // Clear the status bar
+	void SetRange(int nLower, int nUpper, int nStep = 1);
+	                                    // Set min, max and step size
+	void SetText(LPCTSTR strMessage);   // Set the message
+	void SetSize(int nSize);            // Set the bar size
+</FONT></TT></PRE>
+
+<p>To use the bar, just do something like:
+
+<PRE><TT><FONT COLOR="#990000">
+	CProgressBar Bar("Testing", 40, 1000);
+	
+	for (int i = 0; i < 1000; i++) {
+	    // perform operation
+	    Bar.StepIt();
+	}
+</FONT></TT></PRE>
+
+or it can be done two stage as:
+
+<PRE><TT><FONT COLOR="#990000">
+	CProgressBar bar;
+	
+	bar.Create("Processing", 40, 1000);
+	for (int i = 0; i < 1000; i++) {
+	    // perform operation
+	    bar.StepIt();
+	}
+
+	bar.SetText("Writing");
+	for (int i = 0; i < 1000; i++) {
+	    // perform operation
+	    bar.StepIt();
+	    PeekAndPump();	// Message pump
+	}
+	bar.Clear();
+</FONT></TT></PRE>
+
+<p>
+In the above case, PeekAndPump() is a function which simply peeks and pumps
+messages, allowing user interaction with the window during a lengthy process.
+If the window size changes during the processing, the progress bar size will
+alsow change.
+</p>
+
+<p>Updated 30 May 1998.
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

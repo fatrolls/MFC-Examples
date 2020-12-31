@@ -1,0 +1,11 @@
+[OPTIONS]
+TITLE=TOP STUDIO AppWizard Help
+COMPRESS=true
+WARNING=2
+
+[FILES]
+hlp\Top Studio.rtf
+
+[MAP]
+#include <E:\DevStudio\VC\MFC\include\afxhelp.hm>
+#include <hlp\Top Studio.hm>

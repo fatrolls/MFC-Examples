@@ -1,0 +1,257 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "UTDns"="..\UTDns\UTDns.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTDns", CEPCAAAA
+    ..\utdns
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTFinger"="..\UTFinger\UTFinger.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTFinger", ZAPCAAAA
+    ..\utfinger
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTFingerServ"="..\UTFingerServ\UTFingerServ.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTFingerServ", WWPCAAAA
+    ..\utfingerserv
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTFtp"="..\UTFtp\UTFtp.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTFtp", RIPCAAAA
+    ..\utftp
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTFtpServ"="..\UTFtpServ\UTFtpServ.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTFtpServ", PAQCAAAA
+    ..\utftpserv
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTHistory"="..\UTHistory\UTHistory.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTHistory", SQPCAAAA
+    ..\uthistory
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTHttp"="..\UTHttp\UTHttp.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTHttp", MHPCAAAA
+    ..\uthttp
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTHttpServ"="..\UTHttpServ\UTHttpServ.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTHttpServ", HYPCAAAA
+    ..\uthttpserv
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTImap4"="..\UTImap4\UTImap4.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTImap4", IHQCAAAA
+    ..\utimap4
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTMail"="..\UTMail\UTMail.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTMail", XNPCAAAA
+    ..\utmail
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTMailServ"="..\UTMailServ\UTMailServ.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTMailServ", DCQCAAAA
+    ..\utmailserv
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTMsg"="..\UTMsg\UTMsg.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTMsg", ERSCAAAA
+    ..\utmsg
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTNntp"="..\UTNntp\UTNntp.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTNntp", WJPCAAAA
+    ..\utnntp
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTPing"="..\UTPing\UTPing.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTPing", KGPCAAAA
+    ..\utping
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "UTSocket"="..\UTSocket\UTSocket.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/Ultimate TCP-IP 4.0/Working/Code/ActiveX/UTSocket", MPPCAAAA
+    ..\utsocket
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

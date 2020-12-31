@@ -1,0 +1,126 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Folder Browsing Dialog</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Folder Browsing Dialog
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:reedk@daneel.mv.com">Kenneth M. Reed</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="folder_dialog.zip">Download Source Code.</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<P><cite>Copyright &copy; 1998, Kenneth M. Reed, All rights reserved.</cite></P>
+
+<h4>Description</h4>
+
+<P><code>CFolderDialog</code> is an MFC based class that encapsulates the Windows Shell function 
+for browsing folders, <code>::ShBrowseForFolder</code>.</P>
+
+<P>To use it, you create an instance of <code>CFolderDialog</code> and call the 
+<code>DoModal</code> method.  
+Upon return, the method <code>GetPathName</code> can be used to retrieve the path to the user 
+selected folder.</P>
+
+<P>The constructor allows you to specify an optional initial folder, flags specific 
+to the shell function (see the description of the <code>ulFlags</code> field of the 
+<code>BROWSEINFO </code>
+structure in the help for Visual Studio or the Windows Shell API) and a pointer to 
+the parent window’s <code>CWnd</code>. All of these arguments are optional.</P>
+
+<P>You may override the two virtual methods <code>OnInitDialog</code> and 
+<code>OnSelChanged</code> in a 
+derived class to customize their behavior. The default behavior of 
+<code>OnInitDialog</code> is 
+to call <code>SetSelection</code> and <code>SetStatusText</code> with the folder 
+name provided in the constructor. 
+The default 
+version of <code>OnSelChanged</code> places the new path into the status text area
+of the dialog.</P>
+
+<P>The class provides utility functions for 1) enabling or disabling the OK button 
+(<code>EnableOK</code>), 2) setting the status text that appears above the folder 
+list box in 
+the browser folder dialog box (<code>SetStatusText</code>) and 3) setting the 
+current selection (<code>SetSelection</code>). 
+
+The file <code>MyFolderDialog.h</code>, included in the zip 
+file, shows an example of a derived class which uses <code>SetStatusText</code>.</P>
+
+<P>For advanced users, the <code>BROWSEINFO</code> structure is available via the 
+<code>m_bi</code> member 
+variable.  This structure is initialized by the constructor and any changes should 
+be made before the call to <code>DoModal</code>. See the help for Visual Studio or 
+the Windows 
+Shell API for more information on the <code>BROWSEINFO</code> structure. </P>
+
+<h4>Revisions</h4>
+<dl>
+	<dt><strong>April 5, 1998</strong></dt>
+		<dd>Changed the way status text is handled:
+		<ul>
+		<li>The constructor now forces the <code>BIF_STATUSTEXT</code> flag to 
+		be set</li>
+		<li>Changed the base <code>OnInitDialog</code> method to display the initial
+		folder in the status text.</li>
+		<li>Changed the base <code>OnSelChanged</code> method to update the contents
+		of m_strFinalFolderName and display the new folder in the status text area.</li>
+		<li>Removed the <code>MyFolderDialog.h</code> file from the zip.</li>
+		</ul>
+		</dd>
+</dl>
+
+<H4>Bugs and Suggestions</h4>
+
+<P>Please send suggestions and/or bugs to 
+<A HREF="mailto:reedk@daneel.mv.com">reedk@daneel.mv.com</A>.</P>
+
+<!-- Remember to update this -->
+<p>Last updated: 4 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

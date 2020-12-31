@@ -1,0 +1,120 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>DevStudio Macro - Inverting Assignment Operations</TITLE>
+</HEAD>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Inverting Assignment Operations
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:phoenix@cyberus.ca">Paul Thompson</A>.
+
+<br>
+
+<p>I found that frequently (particularly when working with dialogs) I was
+doing a bunch of assignment operations, performing some other operation,
+then doing the reverse of those same assignment operations. The following
+is a typical example:
+
+<FONT COLOR="#990000"><TT><PRE>	ClientSheet.m_lClientNo     = m_ClientNo;
+	ClientSheet.m_szCompanyName = m_CompanyName;
+	ClientSheet.m_szEmail       = m_Email;
+	ClientSheet.m_szFirstName   = m_FirstName;
+	ClientSheet.m_szLastName    = m_LastName;
+	ClientSheet.m_szTitle       = m_Title;
+
+	if (ClientSheet.DoModal()==IDOK) {
+		m_ClientNo    = ClientSheet.m_lClientNo;
+		m_CompanyName = ClientSheet.m_szCompanyName;
+		m_Email       = ClientSheet.m_szEmail;
+		m_FirstName   = ClientSheet.m_szFirstName;
+		m_LastName    = ClientSheet.m_szLastName;
+		m_Title       = ClientSheet.m_szTitle;
+	}
+</tt></PRE></FONT>
+
+<p>Instead of writing the same code twice, I developed this macro to apply to
+the code. It will act on the current line, or more then one selected lines.
+If there is no assignment operator in the line, then that line is ignored.
+The macro treats everything after the first equal sign as the second
+operand, so if it's applied to something like a=b=c, you'll get b=c=a.
+
+<FONT COLOR="#990000"><TT><PRE>	Sub Invert()
+	'DESCRIPTION: Invert an assignment operation
+		Dim win
+		set win = ActiveWindow
+		if win.type <> "Text" Then
+			MsgBox "You can only run this macro when a text editor window is active."
+		else
+			StartLine = ActiveDocument.Selection.TopLine
+			EndLine = ActiveDocument.Selection.BottomLine
+			If EndLine < StartLine Then
+				Temp = StartLine
+				StartLine = EndLine
+				EndLine = Temp
+			End If
+
+			For i = StartLine To EndLine
+				TmpBlock = ""
+
+				ActiveDocument.Selection.GoToLine i
+				ActiveDocument.Selection.StartOfLine dsFirstText
+				ActiveDocument.Selection.EndOfLine dsExtend
+				CmtBlock = ActiveDocument.Selection
+
+				Trim(CmtBlock)
+
+				equal = Instr(CmtBlock,"=")
+				semi = Instr(CmtBlock, ";")
+				If equal <> 0 Then 
+					TmpBlock = Left(CmtBlock, equal-1)
+					If semi <> 0 then
+						CmtBlock = Mid(CmtBlock, equal + 1, semi-equal-1)
+					else
+						CmtBlock = Right(CmtBlock, Len(CmtBlock) - equal)
+					End If
+
+					CmtBlock = Trim(CmtBlock)
+					TmpBlock = Trim(TmpBlock)
+
+					if semi <> 0 then
+						CmtBlock = CmtBlock + " = " + TmpBlock + ";"
+					else
+						CmtBlock = CmtBlock + " = " + TmpBlock
+					End If
+				End If
+				ActiveDocument.Selection = CmtBlock
+			Next
+		End If
+	End Sub
+</tt></PRE></FONT>
+
+<p>Last updated: 2 April 1998
+
+<P><HR>
+
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

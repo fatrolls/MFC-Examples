@@ -1,0 +1,86 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+Provider=%MFGNAME%
+
+[Manufacturer]
+%MFGNAME%=DeviceList
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+CplCopyFiles=11
+
+[SourceDisksFiles]
+WDMIDLE.sys=1
+powcpl.dll=1
+
+[SourceDisksNames]
+1=%INSTDISK%,,,objchk\i386
+
+[DeviceList]
+%DESCRIPTION%=DriverInstall,*WCO0801
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.NT]
+AddReg=CplAddReg
+CopyFiles=DriverCopyFiles,CplCopyFiles
+
+[DriverCopyFiles]
+WDMIDLE.sys,,,2
+
+[CplCopyFiles]
+powcpl.dll,,,2
+
+[DriverInstall.NT.Services]
+AddService=WDMIDLE,2,DriverService
+
+[DriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\WDMIDLE.sys
+
+[DriverInstall.nt.hw]
+AddReg=DriverHwAddReg
+
+[DriverHwAddReg]
+HKR,,FriendlyName,,"Idle Device"
+HKR,,SampleInfo,,"%wdmbook%\chap8\WDMIDLE\WDMIDLE.htm"
+
+; Registry entries for registering the power management shell extension
+
+[CplAddReg]
+HKCR,"CLSID\{2d3dd4c0-3bd7-11d2-821e-444553540000}",,,WdmidleDeviceShellExtension
+HKCR,"CLSID\{2d3dd4c0-3bd7-11d2-821e-444553540000}\InprocServer32",,,%11%\powcpl.dll
+HKCR,"CLSID\{2d3dd4c0-3bd7-11d2-821e-444553540000}\InprocServer32",ThreadingModel,,Apartment
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Controls Folder\Power\ShellEx\PropertySheetHandlers\WdmidleDeviceShellExtension",,,"{2d3dd4c0-3bd7-11d2-821e-444553540000}"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved","{2d3dd4c0-3bd7-11d2-821e-444553540000}",,WdmidleDeviceShellExtension
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall]
+AddReg=DriverAddReg,CplAddReg
+CopyFiles=DriverCopyFiles,CplCopyFiles
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,WDMIDLE.sys
+
+[DriverInstall.hw]
+AddReg=DriverHwAddReg
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Walter Oney Software"
+INSTDISK="WDM Book Companion Disc"
+DESCRIPTION="Idle Detection Sample"
+

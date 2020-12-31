@@ -1,0 +1,302 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>CListCtrl - Dragging Items to Rearrange Rows</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Dragging Items to Rearrange Rows</FONT></H3></CENTER>
+<HR>
+
+
+This article was contributed by <A HREF="WBERTHIN@BC1.COM">Wayne Berthin</A>.
+
+<P>This article describes how to impletment drag and drop rearrangement of
+rows in a list control with the report style.  The drag operation starts
+when the user begins a left drag on any item label (in its left-most
+column). During the drag a ghost image of the item is diplayed. When
+dropped, the item is inserted into the new position in the list. The
+user can thus quickly and easily rearange the order of row items in the
+List Control. The method is easily adapted to moving rows between
+different List Controls or into other types of objects as required.
+
+<P>I have taken this code from my Application where I have a CListCtrl
+derived class contained in a CView derived class. It should be
+addaptable to other arrangements with minor modifications.
+
+<P>In the header file for CMyView.h I have defined the following members:
+
+<PRE><TT><FONT COLOR="#990000">
+protected:
+	CImageList* m_pDragImage;
+	BOOL m_bDragging;
+	int m_nDragIndex, m_nDropIndex;
+	CWnd* m_pDropWnd;
+	CPoint m_ptDropPoint;
+</FONT></TT></PRE>
+
+<P>I also have an object of my derived list control class as a member of
+CMyView named m_ListControl. It is created using CListCtr::Create and
+attached to the view, which is
+a whole other subject.
+
+<P>CMyView needs the following member functions to implement drag and drop:
+
+<PRE><TT><FONT COLOR="#990000">
+protected:
+	void DropItemOnList();
+	
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
+	
+	DECLARE_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+<P>OnMouseMove and OnLButtonUp can be added with the class Wizard but
+OnBeginDrag has to be inserted mannually.
+
+<P>Then in  the CMyView.cpp file Message Map we require the following
+entries:
+
+<PRE><TT><FONT COLOR="#990000">
+BEGIN_MESSAGE_MAP(CSearchResultView, CListCtrlView)
+
+...
+
+ON_WM_MOUSEMOVE()
+ON_WM_LBUTTONUP()
+ON_NOTIFY(LVN_BEGINDRAG, IDI_SEARCH_RESULT_LIST, OnBeginDrag)
+
+END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+
+<P>Initialize the member variables that control the operation in the Class
+constructor,
+
+<PRE><TT><FONT COLOR="#990000">
+CMyView::CMyView()
+{
+	m_pItemList = NULL;
+	m_pItemList = new CItemList(this);
+	m_bDragging = FALSE;
+}
+</FONT></TT></PRE>
+
+and clean up in the class destructor.
+
+<PRE><TT><FONT COLOR="#990000">
+CMyView::~CMyView()
+{
+	delete m_pItemList;
+}
+</FONT></TT></PRE>
+
+<P>The whole drag and drop operation is handled by the four member
+functions, beginning with OnBeginDrag.
+This functions creates a drag image and initializes the drag operation
+using the CListCtrl::CreateDragImage, CImageList::BeginDrag and
+CImageList::DragEnter. 
+
+<P>CreateDragImage takes the item label and image item associated with the
+row and creates a lightened drag image so the user can see the item
+moving as he drags it. The item itself is also left in its fixed state
+in the list until a valid drop occurs. Note if you are using an
+OwnerDraw List Control (as I was) you will have to temporarily turn off
+that feature or CreateDragImage will not give you a proper image if it
+is left on. Insert the line:
+
+<PRE><TT><FONT COLOR="#990000">
+m_ListControl.ModifyStyle(LVS_OWNERDRAWFIXED, 0);
+</FONT></TT></PRE>
+
+immediately before the call to CreateDragImage to disable owner draw,
+and the line
+
+<PRE><TT><FONT COLOR="#990000">
+m_ListControl.ModifyStyle(0, LVS_OWNERDRAWFIXED);
+</FONT></TT></PRE>
+
+right after the call to CreateDragImage to reinstate owner draw after
+the drag image is created.
+
+<P>BeginDrag initializes the drag image and enables it to be moved by
+subsequent calls to CImageList::DragMove.  DragEnter locks updates to
+the Window during the drag operation. The mouse is captured for the
+duration of the drag with SetCapture which preserves the integrity of
+the operation even if the user drags the item outside of the current
+View. A flag (m_bDragging)is set so subsequent mouse messages can be
+interpretted in the context of the drag operation underway.
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyView::OnBeginDrag(NMHDR* pnmhdr, LRESULT* pResult)
+{ 
+	//RECORD THE INDEX OF THE ITEM BEIGN DRAGGED AS m_nDragIndex
+	m_nDragIndex = ((NM_LISTVIEW *)pnmhdr)->iItem;
+	
+	//CREATE A DRAG IMAGE FROM THE CENTER POINT OF THE ITEM IMAGE
+	POINT pt;
+	pt.x = 8;
+	pt.y = 8;
+	m_pDragImage = m_ListControl.CreateDragImage(m_nDragIndex, &pt);
+	m_pDragImage->BeginDrag(0, CPoint (8, 8));
+	m_pDragImage->DragEnter(
+		GetDesktopWindow(), ((NM_LISTVIEW *)pnmhdr)->ptAction);
+	
+	//SET THE FLAGS INDICATING A DRAG IN PROGRESS
+	m_bDragging = TRUE;
+	m_hDropItem = NULL;
+	m_nDropIndex = -1;
+	m_pDropWnd = &m_ListControl;
+	
+	//CAPTURE ALL MOUSE MESSAGES IN CASE THE USER DRAGS OUTSIDE OF THE VIEW
+	SetCapture();
+}
+</FONT></TT></PRE>
+
+<P>During the drag operation the mouse movements are monitored by
+OnMouseMove to update the current location of the drag image and the
+drop point. Drop Highlighting of the drop target could be added here if
+desired.
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyView::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	if( m_bDragging )
+	{
+		m_ptDropPoint = point;
+		ClientToScreen(&m_ptDropPoint);
+		
+		//MOVE THE DRAG IMAGE
+		m_pDragImage->DragMove(m_ptDropPoint);
+		
+		//TEMPORARILY UNLOCK WINDOW UPDATES
+		m_pDragImage->DragShowNolock(FALSE);
+		
+		//CONVERT THE DROP POINT TO CLIENT CO-ORDIANTES
+		m_ pDropWnd = WindowFromPoint(m_ptDropPoint);
+		m_pDropWnd->ScreenToClient(&m_ptDropPoint);
+		
+		//LOCK WINDOW UPDATES
+		m_pDragImage->DragShowNolock(TRUE);
+	}
+	
+	CView::OnMouseMove(nFlags, point);
+}
+</FONT></TT></PRE>
+
+
+<P>The WM_LBUTTONUP will signal that a drop has occurred. It is necessage
+to verify the type of Window the item has been dropped upon. The
+function CObject::IsKindOf  can be used for this.
+
+<PRE><TT><FONT COLOR="#990000">
+void CSearchResultView::OnLButtonUp(UINT nFlags, CPoint point) 
+{
+	if( m_bDragging )
+	{
+		//RELEASE THE MOUSE CAPTURE AND END THE DRAGGING
+		::ReleaseCapture();
+		m_bDragging = FALSE;
+		m_pDragImage->DragLeave(GetDesktopWindow());
+		m_pDragImage->EndDrag();
+		
+		//GET THE WINDOW UNDER THE DROP POINT
+		CPoint pt(point);
+		ClientToScreen(&pt);
+		m_pDropWnd = WindowFromPoint(pt);
+		
+		//DROP THE ITEM ON THE LIST
+		if( pDropWnd->IsKindOf(RUNTIME_CLASS(CListCtrl)) )
+			DropItemOnList();
+	}
+	CView::OnLButtonUp(nFlags, point);
+}
+</FONT></TT></PRE>
+
+The final step is to drop the item on the list. This means Insert the
+dragged item at the drop point and delete it from its previous location.
+Here I offset the drop point 10 pixels so items dropped between other
+items end up between them. I created a CMyView::HitTest based on the the
+method outlined in the Code Guru article "Detecting column index of the
+item clicked" so that a click anywhere on the row would suffice. See
+that article and its discussions of the the short-comings of the
+CListCtrl::HitTest.
+
+<PRE><TT><FONT COLOR="#990000">
+void CSearchResultView::DropItemOnList()
+{
+	//GET THE DROP INDEX
+	m_ptDropPoint.y += 10;
+	m_nDropIndex = HitTest(m_ptDropPoint);
+	
+	//GET INFORMATION ON THE DRAGGED ITEM BY SETTING AN LV_ITEM STRUCTURE
+	//AND THEN CALLING GetItem TO FILL IT IN
+	char szLabel[256];
+	LV_ITEM lvi;
+	ZeroMemory(&lvi, sizeof(LV_ITEM));
+	lvi.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_STATE | LVIF_PARAM;
+	lvi.stateMask = LVIS_DROPHILITED | LVIS_FOCUSED | LVIS_SELECTED;
+	lvi.pszText = szLabel;
+	lvi.iItem = m_nDragIndex;
+	lvi.cchTextMax = 255;
+	m_ListControl.GetItem(&lvi);
+	
+	//INSERT THE DROPPED ITEM
+	if(m_nDropIndex < 0) m_nDropIndex = m_ListControl.GetItemCount();
+	lvi.iItem = m_nDropIndex;
+	m_ListControl.InsertItem(&lvi);
+	
+	//FILL IN ALL OF THE COLUMNS
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)m_ListControl.GetDlgItem(0);
+	int nColumnCount = pHeader->GetItemCount();
+	lvi.mask = LVIF_TEXT;
+	lvi.iItem = m_nDropIndex;
+	//INDEX OF DRAGGED ITEM WILL CHANGE IF ITEM IS DROPPED ABOVE ITSELF
+	if(m_nDragIndex > m_nDropIndex) m_nDragIndex++;
+	for(int col=1; col < nColumnCount; col++)
+	{
+		strcpy(lvi.pszText, (LPCTSTR)(m_ListControl.GetItemText(m_nDragIndex,
+			col)));
+		lvi.iSubItem = col;
+		m_ListControl.SetItem(&lvi);
+	}
+	
+	//DELETE THE ITEM THAT WAS DRAGGED FROM ITS ORIGINAL LOCATION
+	m_ListControl.DeleteItem(m_nDragIndex);
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

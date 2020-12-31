@@ -1,0 +1,60 @@
+<HTML>
+
+<HEAD>
+<TITLE>WFC - Technical Note 3 - Generating HTML Documentation</TITLE>
+</HEAD>
+
+<BODY>
+
+<H1>WFC Technical Note 3 - Generating HTML Documentation</H1>
+$Revision: 2 $ Last Modified $Date: 10/01/98 6:54a $<BR><HR>
+
+<H2>Introduction</H2>
+
+WFC ships with all documentation included. The documentation
+is in HTML format. The reason for this was to make the docs
+as readable as possible. No special tool is used to create the
+documentation. The HTML is embedded in the source code files
+and is pulled out using the <CODE><B>HTML</B></CODE>
+<A HREF="Samples.htm">sample</A> program.
+
+<H2>Building the Extraction Tool</H2>
+
+After you have extracted and built WFC (see
+<A HREF="WTN002.htm">TechNote 2</A>
+for details), you must build the <CODE><B>HTML</B></CODE>
+tool. This tool will go through the source code files and
+create the HTML documentation.
+
+<H3>Build Steps</H3>
+
+<OL>
+<LI>Open the <CODE>\WFC\SAMPLE\HTML\HTML.DSW</CODE> project workspace.
+<LI>Build the <CODE>Release</CODE> project.
+<LI>Copy <CODE>HTML.EXE</CODE> to your system directory (i.e.
+<CODE>C:\WINNT\SYSTEM32</CODE>)
+</OL>
+
+<H2>Creating HTML Documents</H2>
+
+Open the <CODE>\WFC\HTML\Document.cmd</CODE> in a text editor.
+Edit line 6, change <CODE>E:</CODE> to whatever drive
+letter you installed WFC on.
+
+<P>
+
+OK, here comes the hard part. Open a command prompt and change directories to the
+<CODE>WFC\HTML</CODE>
+directory. Run the <CODE>Document.cmd</CODE> batch file. This will create the
+online documentation. To get started, load the
+<CODE><A HREF="wfc.htm">wfc.htm</A></CODE>
+file in
+your favorite browser. You will now be able to navigate the documentation 
+just as though you were on Internet.
+
+<P>
+<HR>
+<A HREF="mailto:wfc@pobox.com">Samuel R. Blackburn</A>
+</BODY>
+
+</HTML>

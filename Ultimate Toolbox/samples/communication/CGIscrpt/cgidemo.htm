@@ -1,0 +1,64 @@
+<!doctype html public "-//IETF//DTD HTML//EN">
+<HTML>
+
+<HEAD>
+
+<TITLE>Check this out ...</TITLE>
+</HEAD>
+
+<BODY>
+
+<H1><CENTER>Test our CGI script class</CENTER></H1>
+
+<HR>
+<P>
+<STRONG>Subject : New CStatusBar Class</STRONG>:
+<P>	
+<STRONG>Description : Incredible but true</STRONG>: 
+<P>
+<STRONG>FileName : c:\statbar.zip</STRONG>: 
+<P>
+<P>
+<HR>
+<P>
+
+<P>
+<P>
+Pushing this button will return you the information a CGI script can access
+through some public functions that use environment variables.</P>
+<FORM ACTION="CGI/CGISCRPT.EXE/report" METHOD="GET">
+<INPUT TYPE="SUBMIT" VALUE="Get Info">
+</FORM>
+
+<!-- **********************************************************************************************************-->
+<!-- *********************************************BEGIN BLOCK*******************************************-->
+<!-- Do not alter the INPUT NAME nor the TYPE within this block.  Only the VALUE can vary !!!!!!-->
+
+<FORM ACTION="CGI/CGISCRPT.EXE" METHOD="POST">
+
+<INPUT NAME="Subject" TYPE="HIDDEN" VALUE="New CStatusBar Class" ALIGN=left>
+<INPUT NAME="Descr" TYPE="HIDDEN" VALUE="Incredible but true" ALIGN=left>
+<INPUT NAME="Filename" TYPE="HIDDEN" VALUE="c:\statbar.zip" ALIGN=left>
+
+<!-- *********************************************END BLOCK**********************************************-->
+<!-- **********************************************************************************************************-->
+
+Give us your<STRONG><EM> Name</EM></STRONG> : <INPUT NAME="MailAddr" VALUE="" >
+<P>
+When you entered your <EM><STRONG>Name</STRONG></EM>, hit this button:
+
+<!-- **********************************************************************************************************-->
+<!-- *********************************************BEGIN BLOCK*******************************************-->
+<!-- Do not alter the INPUT  TYPE within this block.  Only the VALUE can vary !!!!!!-->
+
+<INPUT TYPE="SUBMIT" VALUE="answer me">
+
+<!-- *********************************************END BLOCK**********************************************-->
+<!-- **********************************************************************************************************-->
+
+<P>
+
+</FORM>
+
+</BODY>
+</HTML>

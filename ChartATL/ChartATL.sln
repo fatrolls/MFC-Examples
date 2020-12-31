@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChartATL", "ChartATL\ChartATL.vcproj", "{E5060B20-C22A-44C9-BCEC-E44AF82F376D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChartATLPS", "ChartATL\ChartATLPS.vcproj", "{5F53AEA8-9739-4671-852C-214F2D14D164}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E5060B20-C22A-44C9-BCEC-E44AF82F376D} = {E5060B20-C22A-44C9-BCEC-E44AF82F376D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5060B20-C22A-44C9-BCEC-E44AF82F376D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E5060B20-C22A-44C9-BCEC-E44AF82F376D}.Debug|Win32.Build.0 = Debug|Win32
+		{E5060B20-C22A-44C9-BCEC-E44AF82F376D}.Release|Win32.ActiveCfg = Release|Win32
+		{E5060B20-C22A-44C9-BCEC-E44AF82F376D}.Release|Win32.Build.0 = Release|Win32
+		{5F53AEA8-9739-4671-852C-214F2D14D164}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5F53AEA8-9739-4671-852C-214F2D14D164}.Release|Win32.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

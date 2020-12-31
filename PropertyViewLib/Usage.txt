@@ -1,0 +1,82 @@
+
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+// How to use the property control library                                //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+
+Using as a View
+
+- Add the PropertyViewLib library to your project workspace, make dependency
+
+- Make an EPropView descendant (#include "PropertyViewLib/EPropView.h" in your view header)
+
+- Call SetPropertyHost() from OnUpdate()
+
+- Make sure OnDraw() OnInitialUpdate() are not overridden
+
+
+Using as a Control in a Dialog
+
+- Add the PropertyViewLib library to your project workspace, make dependency
+
+- Create a dialog and put a static where you need the property control to be.
+
+- Add EPropCtrl as a member in your dialog
+
+- Override OnInitDialog() and Create the control using the static control rect
+
+- Call SetPropertyChangeListener() to be notified when something changes
+
+
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+// How to enable an object to be presented in the property control        //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+
+- Inherit the object from IPropertyHost and implement virtuals
+
+  - GetProperties() builds a list of properties for the view to show
+  
+  - PropertyChanging() requests change in properties
+
+
+
+
+
+       +----------------+
+       | EPropWnd       |
+       +----------------+
+        / \          / \
+       /___\        /___\
+         |            |
+         |            |
+         |            |
+         |            |
+         |            |
++-------------+    +-----------------+
+| EGridCtrl   |    | EPropListCtrl   |
++-------------+    +-----------------+
+
+
+
+
+
++-----------------------+
+| EPropCtrl             |
++-----------------------+
+|                       |
+|   +---------------+   |
+|   | EPropListCtrl |   |
+|   +---------------+   |
+|                       |
+|   +----------+        |
+|   | CTabCtrl |        |
+|   +----------+        |
+|                       |
+|   +--------------+    |
+|   | ECommentPane |    |
+|   +--------------+    |
+|                       |
++-----------------------+

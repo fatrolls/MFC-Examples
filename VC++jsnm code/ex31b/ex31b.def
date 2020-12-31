@@ -1,0 +1,7 @@
+; EX31B.def : declares the module parameters for the DLL.
+
+LIBRARY	     "EX31B"
+
+EXPORTS
+	HttpFilterProc
+	GetFilterVersion

@@ -1,0 +1,96 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Visual C++ Tips - Enhance the DevStudio help</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Enhance the DevStudio help</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This topic is about making the help system faster and more useful. This tip is especially useful if you are using the MSDN CD but is applicable even if you are not.
+
+<h4>Tip 1: Make help faster</h4>
+I am sure all of you have noticed that help in VC5 is somewhat slow. What adds to the trouble is that the help files are so big that we leave them on the CD. The installer doesn't have the option of copying certain category of topics to the hard disk. It's either all or none. What we can do is manually copy the help files we access the most to the hard disk and set up the System Registry to use the files on the hard disk rather than on the CD. You can use the RegEdit program to find out what files correspond to which topic. Look at the keys under "\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\InfoViewer\5.0\Titles".
+
+<p>The files that I copied to my hard disk are:
+
+
+<p>
+<TABLE COLS=2 WIDTH="90%" BORDER=1>
+<TR><TD WIDTH="33%">Pdref.ivt</TD>	<TD WIDTH="67%">Reference</TD></TR>
+<TR><TD WIDTH="33%">Pdui.ivt</TD>	<TD WIDTH="67%">User Interface Services</TD></TR>
+<TR><TD WIDTH="33%">Vccore.ivt</TD>	<TD WIDTH="67%">Visual C++ Programmer's Guide</TD></TR>
+<TR><TD WIDTH="33%">Vclang.ivt</TD>	<TD WIDTH="67%">C/C++ Language and C++ Libraries</TD></TR>
+<TR><TD WIDTH="33%">Vcmfc.ivt</TD>	<TD WIDTH="67%">Microsoft Foundation Class Reference</TD></TR>
+</TABLE>
+
+<p>These files take a little less than 50 MB of hard disk space compared to over 600 MB hard disk space you would need if you installed it all on the hard disk.
+
+<p>Once you copy the files to the hard disk, you need to update the registry. You'll find these keys under the "\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\InfoViewer\5.0\Titles" key without the '.ivt' extension. Update the 'content' value for these keys to point to the file on the hard disk.
+
+<h4>Tip 2: Use search filters</h4>
+If you look under the help menu, you will see amongst others, two menuitems - Define Subsets and Select Subsets. An information subset lets you focus your searches or your browsing on topics in a particular category. For example, if you're interested only in the Win32 API, you could define a subset that contains only the documentation from the Win32 SDK. Once, you define a subset, you can use 'Select Subsets' to choose different subsets for full-text searching (Search Query Dialog), context-sensitive help (F1 lookup), and the table of contents (InfoView). You can still access all the other topics through the index search.
+<h4>Tip 3: Remove the titles you never use</h4>
+If you have installed the July version of MSDN, you must have noticed that anytime you press the F1 key you end up with a list of topics. The topics include entries in the Windows CE reference and the MFC 4.2 reference ( which is practically the same as MFC 5 ). This was a big nuisance for me. I don't want to see the topics for Windows CE listed since I am not programming for CE. If you've used tip# 2, you don't really have a problem, except when you are doing an index search. When you are using a search filter, it does not apply to the index search. This is useful since you occasionally need to be able to search for topics outside of your help filter. Since I didn't foresee working on Windows CE, this was still a problem because 
+I still ended up on these pages occasionally.
+
+<p>Anyway, what I did was, I removed the topic entries from the System Registry. These are the ones that were causing me the most pain.
+<p>
+<TABLE COLS=2 WIDTH="90%" BORDER=1>
+<TR><TD WIDTH="33%">Devdoc</TD>		<TD WIDTH="67%">This contained the MFC 4.2 reference</TD></TR>
+<TR><TD WIDTH="33%">Wceide</TD>		<TD WIDTH="67%">Visual C++ for Windows CE 1.0</TD></TR>
+<TR><TD WIDTH="33%">Winceddk</TD>	<TD WIDTH="67%">Windows CE DDK</TD></TR>
+<TR><TD WIDTH="33%">Wincesdk</TD>	<TD WIDTH="67%">Windows CE SDK</TD></TR>
+</TABLE>
+
+<p>I search for the keys under the  "\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\InfoViewer\5.0" that contained these words and I deleted them. Of course I noted down their values before deleting - just in case.
+
+<p>Next, lookup the value of "\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\InfoViewer\5.0\Keywords\CurrentPathname". This value holds the name of the keyword file. Delete this file from the hard disk. It will be recreated the next time you use the help command.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,27 @@
+Pre-emptive Multithreading Web Spider
+
+Copyright (c) 1998 by Sim Ayers.
+Not derived from licensed software source code.
+
+Permission is granted to anyone to use this software code for any
+purpose on any computer system, and to redistribute it in any way,
+subject to the following restrictions:
+
+1. The author is not responsible for the consequences of use of
+	this software code, no matter how awful, even if they arise
+	from defects in it.
+
+2. The origin of this software must not be misrepresented, either
+	by explicit claim or by omission.
+
+3. Altered versions must be plainly marked as such, and must not
+	be misrepresented (by explicit claim or omission) as being
+	the original software.
+ 
+
+4. Redistribution of this source code, other than from 
+	http://www.codeguru.com,  permission must first be granted by Sim Ayers
+	by email at sim@ayersoft.com
+
+
+5. This notice must not be removed or altered.

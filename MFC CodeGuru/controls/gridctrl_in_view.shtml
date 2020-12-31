@@ -1,0 +1,132 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Using the GridCtrl in a View</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Using the GridCtrl in a View
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<!-- Sample image and source code/demo project -->
+<!-- Image and download files -->
+<p>Download <A HREF="gridctrl_in_view.zip">demo project</A>.
+
+<!-- The article... -->
+
+<p>I have had many, MANY questions asking how to use my <a href="gridctrl.shtml">MFC grid control</a>
+in a view instead of in a dialog, so hopefully this will help.
+
+<p>The easiest way as I see it is as follows:
+
+<ol>
+<li>Add a member variable of type CGridCtrl* to your view class:
+
+<FONT COLOR="#990000"><TT><PRE>CGridCtrl* m_pGrid;
+</tt></PRE></FONT>
+<br>
+
+<li>Initialise this to NULL in your view class' constructor:
+
+<FONT COLOR="#990000"><TT><PRE>CMyView::CMyView
+{
+    m_pGrid = NULL;
+}
+</tt></PRE></FONT>
+<br>
+
+<li>In the CView function OnInitialUpdate, create a new CGridCtrl object if the m_pGrid
+is not NULL, and then create the CGridCtrl window:
+
+<FONT COLOR="#990000"><TT><PRE>CMyView::OnInitialUpdate
+{
+    CView::OnInitialUpdate();
+
+    if (m_pGrid == NULL)                    // Have we already done this bit?
+    {
+        m_pGridCtrl = new CGridCtrl;        // Create the Gridctrl object
+        if (!m_pGridCtrl) return;
+
+        CRect rect;                         // Create the Gridctrl window
+        GetClientRect(rect);
+        m_pGridCtrl->Create(rect, this, 100);
+
+        m_pGridCtrl->SetRowCount(50);        // fill it up with stuff
+        m_pGridCtrl->SetColumnCount(10);
+        
+        // ... etc
+    }
+}
+</tt></PRE></FONT>
+
+<p>This allows the view to be reused (eg SDI situations).
+<br><br>
+
+<li>We want the grid to take up the whole of the view's client space, so add a handler to
+the WM_SIZE message for the view and edit the OnSize function thus:
+<FONT COLOR="#990000"><TT><PRE>CMyView::OnSize(UINT nType, int cx, int cy) 
+{
+    CView::OnSize(nType, cx, cy);
+    
+    if (m_pGrid->GetSafeHwnd())     // Have the grid object and window been created yet?
+    {
+        CRect rect;
+        GetClientRect(rect);        // Get the size of the view's client area
+        m_pGrid->MoveWindow(rect);  // Resize the grid to take up that space.
+    }
+}
+</tt></PRE></FONT>
+
+<li>Remember to delete the object when you are done:
+<FONT COLOR="#990000"><TT><PRE>CMyView::~CMyView
+{
+    if (m_pGrid)
+        delete m_pGrid;
+}
+</tt></PRE></FONT>
+
+</ol>
+
+<!-- Remember to update this -->
+<p>Last updated: 20 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

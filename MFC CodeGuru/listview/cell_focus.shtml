@@ -1,0 +1,75 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>ListView - Set focus on a cell</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Set focus on a cell</FONT></H3></CENTER>
+<HR>
+
+
+This article was contributed by <A HREF="mailto:shilpa.shamapant@stoner.com">Shilpa Shamapant</A>. 
+
+<P>I wrote a small piece of code that would help select individual cells in a
+CListCtrl. This is not supported currently by the MFC.
+
+<P>When the user clicks on the cell in the CListCtrl it draws a rect. around
+that cell indicating that is the cell selected by the user. This might not
+be the best solution but a work around if anyone would like to use this.
+
+<PRE><TT><FONT COLOR="#990000">
+//Individual cell selection in CLIstCtrl
+CListCtrl::OnClick(...)
+{
+    int column;
+    CRect m_rect;
+    //the function below is provided in CListCtrl inPlace editing
+    int index = GetRowColumnIndex(point, &column);
+    if(index == -1)return;
+    int offset = 0;
+    for(int i = 0; i < column; i++)
+      offset += GetColumnWidth(i);
+    //Get the rectangle of the label and the icon
+    GetItemRect(index, &m_rect, LVIR_BOUNDS);
+    m_rect.left += offset + 4;
+    //Get the columnWidth of the selected column
+    m_rect.right = m_rect.left + GetColumnWidth(column);
+    Update(index);
+    CClientDC dc(this);    //this is the pointer of the current view
+    dc.DrawFocusRect(m_rect);
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,90 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Section - Directory Picker Dialog</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Directory Picker Dialog
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:VGopal@ASI.Asyst.com">Venkat Gopala</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="dir_picker.zip">Download Source Code and Example</A>
+</p>
+
+<!-- The article... -->
+
+<p>The Directory Picker dialog box lets the user specify directory to select.  This module creates
+and displays a dialog box. This dialog box was developed by customizing Windows 3.1 Open dialog box.
+It can be used in any of the windows platforms.<br>
+<br>
+<h4>To integrate with any code:</h4>
+
+<ul>
+	<li>Include the header file "dirpickf.h"
+	<li>Declare an object for CDirPick class
+	<li>Invoke the following member function to select a directory.
+	<li>Include the dirpick.lib in the project settings.
+</ul>
+
+<h4>Functions</h4>
+<p>int SelectDirectory(HWND hWnd,LPTSTR lpTitle,LPTSTR lpDirPath);</p>
+
+<p><strong>Return Value</strong></p>
+
+Returns the return value of the DoModal function of CFileDialog.
+It can be either IDOK or IDCANCEL.<br>
+<br>
+<p><strong>Parameters</strong></p>
+
+hWnd - Handle to the Parent window.<br>
+<br>
+lpTitle - Title to be displayed on the dialog box.<br>
+<br>
+LpDirPath - Pointer to the buffer to get selected path.<br>
+<br>
+
+<!-- Remember to update this -->
+<p>Last updated: 19 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

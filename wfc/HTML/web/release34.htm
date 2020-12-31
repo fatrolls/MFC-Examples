@@ -1,0 +1,94 @@
+<HTML>
+<!-- $Revision: 2 $ -->
+<H1>Release 34</H1>
+In summary, I've concentrated on UNICODE issues.
+The <CODE>wfc.h</CODE> header file now properly
+sets up the linker to initialize the C Runtime
+environment for UNICODE builds as well as automatically
+linking the proper version of WFC.LIB.
+In release 35 I'll work on
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+entity resolution (as well as more bug fixes).
+
+<H2>What's New</H2>
+
+<B><A HREF="CBase64Coding.htm">CBase64Coding</A></B> - Simple
+base64 encoder/decoder. This is what MIME uses to send binary data in e-mail.<P>
+
+<B>CDragQuery</B> - Encapsulates the HDROP handle
+and API. Useful when handling the WM_DROPFILES
+message (or OnDropFiles method in MFC::CWnd).<P>
+
+<H2>Bug Fixes/Enhancements</H2>
+
+<B><A HREF="CBitArray.htm">CBitArray</A></B> - Fixed
+a bug, thanks to Jeff Winkler (winkler1@sprynet.com),
+in the <CODE><B>SetSize</B>()</CODE> method. Also
+added a new constructor that allows you set the size
+and added a new method, <CODE><B>SetAll</B>()</CODE>
+that allows you to set all the bits in the array to
+one or zero.<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> - Jeff
+Winkler (winkler1@sprynet.com) found a couple of serious bugs.
+One was where I was not properly parsing empty, self-terminated
+elements (<CODE>&lt;job/&gt;</CODE> for example). Another
+was I wasn't allowing for attribute values to be single-quote
+terminated. They are both fixed now. Also, all string
+comparisons are case sensitive.<P>
+
+<B><A HREF="LSOCKETS.htm">CListeningSocket</A></B> - Fixed
+UNICODE problems.<P>
+
+<B><A HREF="lzfile.htm">CLZFile</A></B> - Fixed UNICODE problems.<P>
+
+<B><A HREF="CNetwork.htm">CNetwork</A></B> - Fixed UNICODE
+problem in <CODE><B>Open</B>()</CODE>.<P>
+
+<B><A HREF="CNetworkUser.htm">CNetworkUsers</A></B> - Fixed
+Unicode problem in <CODE><B>Delete</B>()</CODE>.<P>
+
+<B><A HREF="CRandomNumberGenerator.htm">CRandomNumberGenerator</A></B> - One
+of the things that
+always bothered me about this class was that to achieve
+a flat distribution of ones and zeroes across the lowest
+8 bits of the value returned by <CODE><B>GetInteger</B>()</CODE>,
+I used two values from <CODE><B>GetFloat</B>()</CODE>.
+This meant the number of random values pulled using
+<CODE><B>GetInteger</B>()</CODE> (before the series
+started repeating) was half that of 
+<CODE><B>GetFloat</B>()</CODE>.
+Then I got the bright idea of hashing the data. The 
+results are great! The distribution of ones and zeroes
+is now flat across all 32 bits of the integer (take
+a look at the code in <CODE><B>test_CRandomNumberGenerator.cpp</B></CODE>
+to see how I test the generator). This
+means the generator is now good for
+1,000,000,000,000,000,000,000,000,000,000 (i.e. 10^30)
+integers instead of only
+  500,000,000,000,000,000,000,000,000,000 (i.e. 5*10^29) integers. YIPPEE!<P>
+
+<B><A HREF="CRAS.HTM">CRemoteAccessService</A></B> - Fixed
+problem in <CODE><B>EnableLogging</B>()</CODE>.<P>
+
+<B><A HREF="serial.htm">CSerialFile</A></B> - Fixed some
+UNICODE problems and added
+<CODE><B>SetPurgeBufferOnError</B>()</CODE>. This
+allows you to turn off the automatic purging of incoming data
+when a framing error was detected. Thanks Dave!<P>
+
+<B><A HREF="CService.htm">CService</A></B> - Fixed
+multiple debugging statements.<P>
+
+<B><A HREF="CSvcmgr.htm">CServiceControlManager</A></B> - Rainer Kukasch (rk@sicom.de) found
+a bug in the <CODE><B>Stop</B>()</CODE> method.
+It would stop the service but always
+return FALSE. It is fixed now.<P>
+
+<HR>
+<A HREF="Release33.htm">Release 33 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS>Internet: wfc@pobox.com</ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

@@ -1,0 +1,247 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>OpenGL - Printing OpenGL in MFC</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Printing OpenGL in MFC</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:wagner@itd.ucdavis.edu">John Wagner</A>.
+
+
+
+
+<P>I have seen a number of OpenGL view classes in various magazines.
+NONE of them addressed printing.  Sigh.
+
+<P>So, suppose you have an OpenGL view class with member data storing
+the HGLRC and CDC (which are required for an OpenGL-enabled window):
+
+<PRE><TT><FONT COLOR="#990000">
+class COpenGLView : public CView {
+	...
+protected:
+	CDC *m_pDC;
+	HGLRC m_hRC;
+	...
+};
+</FONT></TT></PRE>
+
+In your OnCreate override, you will create these:
+
+<PRE><TT><FONT COLOR="#990000">
+int COpenGLView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+	if (CView::OnCreate (lpCreateStruct) == -1) return (-1);
+	m_pDC = new CClientDC (this);
+	if (m_pDC == NULL) return (-1);
+	//  Set the DC's pixel format...
+	if (!SetDCPixelFormat (m_pDC)) return (-1);
+	m_hRC = wglCreateContext (m_pDC->GetSafeHdc ());
+	if (!wglMakeCurrent (m_pDC->GetSafeHdc (), m_hRC)) return (-1);
+	glClearColor (1.0f, 1.0f, 1.0f, 1.0f);
+	glClearDepth (1.0);
+	return (0);
+}
+</FONT></TT></PRE>
+
+<P>Notice that I call wglMakeCurrent () here.  Some authors do it at the
+beginning of OnDraw ().  That is probably because their code didn't work without it!
+Bear in mind that wglMakeCurrent () makes a specific window instance
+the current OpenGL window.  In an MDI, with two documents open, you need
+to make sure that each view instance makes its own window current before
+drawing into it.  Therefore, calling wglMakeCurrent () in OnCreate () is
+not enough -- otherwise after the second view is created, all subsequent
+OpenGL calls in the first view will get rendered in the second!
+
+<P>Many authors call wglMakeCurrent () at the beginning of the view's OnDraw()
+method -- resist the temptation!  Here is (roughly) my COpenGLView::OnPrint():
+
+<PRE><TT><FONT COLOR="#990000">
+void COpenGLView::OnPrint(CDC* pDC, CPrintInfo* pInfo) {
+	//  Let's not worry for now about print preview...
+	if (pInfo->m_bPreview) return;  //  or print a message to preview
+	window...
+		
+		UINT CurPage = pInfo->m_nCurPage;
+	GLsizei HRes = pDC->GetDeviceCaps(HORZRES);
+	GLsizei VRes = pDC->GetDeviceCaps(VERTRES);
+	GLsizei HPixelsPerInch = pDC->GetDeviceCaps(LOGPIXELSX);
+	GLsizei VPixelsPerInch = pDC->GetDeviceCaps(LOGPIXELSY);
+	pDC->SetMapMode (MM_TEXT);
+	// m_LMargin, etc are margins, in inches...
+	GLint l = (GLint) (m_LMargin*HPixelsPerInch);
+	GLint r = (GLint) (m_RMargin*HPixelsPerInch);
+	GLint t = (GLint) (m_TMargin*VPixelsPerInch);
+	GLint b = (GLint) (m_BMargin*VPixelsPerInch);
+	//  Image width and height...
+	GLsizei w = HRes - l - r;
+	GLsizei h = VRes - t - b;
+	//  Probably don't need this...
+	int SavedDC = pDC->SaveDC ();
+	if (CurPage == 1) {
+		//  Save the current OpenGL settings...
+		HDC   hDCOld   = wglGetCurrentDC ();
+		HGLRC hGLRCOld = wglGetCurrentContext ();
+		//  Make the printer the current
+		//  OpenGL rendering device...
+		HGLRC hGLRCPrinter = wglCreateContext (pDC->GetSafeHdc ());
+		BOOL bRet = wglMakeCurrent (pDC->GetSafeHdc (), hGLRCPrinter);
+		
+		ASSERT (bRet);
+		glClearColor (1.0f, 1.0f, 1.0f, 1.0f);
+		glClearDepth (1.0);
+		//  This makes a square image...
+		if (w < h) h = w;
+		if (h < w) w = h;
+		//  This centers the images...
+		l = (HRes - w)/2;
+		b = (VRes - h)/2;
+		//
+		glViewport(l, b, w, h);
+		OnDraw (pDC);
+		//  Go back to the saved OpenGL settings...
+		wglMakeCurrent (hDCOld, hGLRCOld);
+		wglDeleteContext(hGLRCPrinter);
+	}
+	//  Probably don't need this...
+	if (SavedDC != 0) pDC->RestoreDC (SavedDC);
+}
+</FONT></TT></PRE>
+
+<P>Notice that OnPrint () calls OnDraw ().  If in OnDraw () you were
+to call wglMakeCurrent (), you would no longer be printing...you
+would be redrawing the view!  It should also be noted that setting
+and restoring the current OpenGL device can be done in OnBeginPrinting ()
+and OnEndPrinting (); for simplicity, I have put all the code here.
+
+<P>So, now printing OpenGL is simple.  Let's go back to drawing...
+
+<P>In order to make sure your drawing goes to the correct window, you
+need to call wglMakeCurrent from SOMEWHERE OTHER THAN OnDraw ().
+But where?  The candidates are OnActivateView () and OnUpdate ().
+
+<P>Some of the time, calling it in an override of OnActivateView ()
+might be enough.  However, there is one scenario where
+this will not be enough: MDI apps when you have created a second
+CMDIChildWnd frame via the New Window item in the Window menu.  This
+creates additional views into the same document.  Now you can have
+the situation where the active view does something which causes the
+document to call UpdateAllViews (), which calls the inactive view's
+OnUpdate () method, which will draw into the wrong window!
+
+<P>Alternatively, you can override OnUpdate (), and call wglMakeCurrent ()
+there.  You might be tempted to do this:
+
+<PRE><TT><FONT COLOR="#990000">
+void COpenGLView::OnUpdate (CView* pSender, LPARAM lHint, CObject* pHint) {
+	wglMakeCurrent (m_pDC->GetSafeHdc (), m_hRC);
+	CView::OnUpdate (pSender, lHint, pHint);
+}
+</FONT></TT></PRE>
+
+<P>Unfortunately, this won't work all the time.  CView::OnUpdate ()
+simply invalidates the view's window, which generates a WM_PAINT
+message.  This WM_PAINT is queued up, and handled at some later
+time...in particular, possibly after calling another view's
+OnUpdate () method (that is, after another window has been made
+the current OpenGL rendering device).  There is only one conclusion:
+you must call OnDraw () directly from OnUpdate () (and don't call
+the base class CView::OnUpdate ()).  There are, of course,
+performance issues, but I generally ignore them.
+
+<P>Therefore, I usually override both methods: OnActivateView () and
+OnUpdate (), and I call wglMakeCurrent () in both.  However, in
+OnUpdate (), I save and restore the current settings at the
+beginning and end of the method (just like in OnPrint ()).  This
+is not necessary in OnActivateView ().
+
+<PRE><TT><FONT COLOR="#990000">
+void COpenGLView::OnActivateView(BOOL bActivate,
+								 CView* pActivateView, CView* pDeactiveView) {
+	CView::OnActivateView(bActivate, pActivateView, pDeactiveView);
+	if (bActivate) {
+		wglMakeCurrent (m_pDC->GetSafeHdc (), m_hRC);
+	}
+}
+void COpenGLView::OnUpdate (CView* pSender, LPARAM lHint, CObject* pHint) {
+	//  Save the current OpenGL settings...
+	HDC   hDCOld   = wglGetCurrentDC ();
+	HGLRC hGLRCOld = wglGetCurrentContext ();
+	//  Make this view the current OpenGL rendering context...
+	BOOL bRet = wglMakeCurrent (m_pDC, m_hRC);
+	//  Draw!!!
+	OnDraw (m_pDC);
+	//  Go back to the saved OpenGL settings...
+	wglMakeCurrent (hDCOld, hGLRCOld);
+	wglDeleteContext(hGLRCPrinter);
+}
+</FONT></TT></PRE>
+
+<P>The reason to return to the previous settings in OnUpdate () is
+fairly subtle.  Suppose you didn't, and the last view to be
+redrawn was not the active view.  Suppose you then handled a
+mouse event in the active view, and you called one of the
+OpenGL calls that translated the mouse point into an (x,y,z)
+coordinate.  It would translate it based upon the current
+OpenGL settings (ie. viewport, rotations, scalings, etc).
+If the two views were not identical, you would end up with
+improper translations.  Since I use the mouse to translate,
+scale, etc, this is very important!  In any case, by setting
+the current context in OnActivate (), and restoring the
+previous settings at the end of OnUpdate (), the active
+view is the current OpenGL context when the next (mouse or
+other) event occurs.
+
+<P>Now for print preview: I dunno!  I tried to do it, but it
+did not work.  I basically could not get the CDC configured
+to handle OpenGL.  I don't know WHAT I was doing wrong.  If
+anyone can get it working correctly, please, PLEASE let me
+know.  It bugs the snot out of me!
+
+<P>In summary, I have tried to not only show the main printing
+solution, but have also tried to explain in detail some of the
+subtle problems that show up.  Hopefully, the discussion will
+give you a better understanding of the issues involved, so that
+if you run into other OpenGL problems, you will be better
+equipped to deal with them.
+
+<pre>
+John Wagner
+Institute of Theoretical Dynamics
+UC Davis
+</pre>
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

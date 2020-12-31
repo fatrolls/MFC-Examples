@@ -1,0 +1,53 @@
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\prsht.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtml.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dimm.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dispex.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtmhst.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\docobj.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\exdisp.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\objsafe.idl";
+
+[
+	object,
+	uuid(251DF313-37DE-445C-8115-AFC550B812AA),
+	helpstring("ICowboy Interface"),
+	pointer_default(unique)
+] 
+#line 15 "d:\\vc++\\atl internals 2e src\\chapter 06\\acepowell\\coacepowell.h"
+interface ICowboy : IUnknown {
+#line 17 "d:\\vc++\\atl internals 2e src\\chapter 06\\acepowell\\coacepowell.h"
+	HRESULT  Draw();
+};
+
+[
+	object,
+	uuid(C78F9C90-F937-4CD5-B737-B9AE2B1BC42D),
+	helpstring("ICowboy Interface"),
+	pointer_default(unique)
+] 
+#line 27 "d:\\vc++\\atl internals 2e src\\chapter 06\\acepowell\\coacepowell.h"
+interface IArtist : IUnknown {
+#line 29 "d:\\vc++\\atl internals 2e src\\chapter 06\\acepowell\\coacepowell.h"
+	HRESULT  Draw();
+};
+
+
+[ version(1.0), uuid(A6B18BCB-04CA-4629-A23A-82FAB4E86F29), helpstring("AcePowell 1.0 Type Library") ]
+library AcePowell
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		version(1.0),
+		uuid(17287156-31BC-4C50-8FFD-40DE67B02BA2),
+		helpstring("AcePowell Class")
+	] 
+#line 45 "d:\\vc++\\atl internals 2e src\\chapter 06\\acepowell\\coacepowell.h"
+	coclass CAcePowell {
+		interface ICowboy;
+		interface IArtist;
+	};
+
+}
+

@@ -1,0 +1,164 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Single Instance of an Application Class</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Single Instance of an Application Class
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:kevin@redcreek.com"><!-- Author Name -->Kevin Lussier</A>.
+
+<!-- Text / source code -->
+<P>The question of how to force only one instance of an application
+to run at a time is often asked. Although this is not a difficult problem
+to solve, and indeed can be solved in several different ways, it comes
+up enough to create the need for a nice, canned solution. So here it is.
+
+<P>The class is called CSingleInstance, and is used as follows:
+
+<P>Include the header file to your CWinApp derived class's
+.H file:
+
+<PRE><TT><FONT COLOR="#990000">
+<P>...
+<BR>#ifndef __AFXWIN_H__
+<BR>&nbsp;#error include 'stdafx.h' before including this
+file for PCH
+<BR>#endif
+
+<P>#include "resource.h"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// main symbols
+<BR>#include "SingleInstance.h"
+<BR>...
+</FONT></TT></PRE>
+
+<P>Create a public member variable in you CWinApp derived
+class:
+
+<PRE><TT><FONT COLOR="#990000">
+<P>class CMyApp : public CWinApp
+<BR>{
+<BR>public:
+<BR>&nbsp;&nbsp;&nbsp; CMyApp();
+<BR>&nbsp;&nbsp;&nbsp; CSingleInstance m_singleInstance;
+<BR>...
+</FONT></TT></PRE>
+
+<P>In InitInstance, call the class’s Create() function with
+your main frame’s resource identifier (usually IDR_MAINFRAME):
+
+<PRE><TT><FONT COLOR="#990000">
+<P>BOOL CMyApp::InitInstance()
+<BR>{
+<BR>&nbsp;&nbsp;&nbsp; // Check if an instance of our application
+is already running
+<BR>&nbsp;&nbsp;&nbsp; if ( !m_singleInstance.Create( IDR_MAINFRAME
+) ) {
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Return
+indicating that this instance
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // of the
+app should be shut down
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return FALSE;
+<BR>&nbsp;&nbsp;&nbsp; }
+
+<P>&nbsp;&nbsp;&nbsp; AfxEnableControlContainer();
+<BR>...
+</FONT></TT></PRE>
+
+<P>If the Create() function fails, the application is already
+running AND the running instance will be brought to the foreground. If
+the Create() function succeeds, then this is the first instance of the
+application.
+
+<P>In order to make this work, there is one more piece of
+code that needs to be inserted. In you main frame’s (usually CMainFrame)
+PreCreateWindow() function, add the following:
+
+<PRE><TT><FONT COLOR="#990000">
+<P>BOOL CMainFrame::PreCreateWindow(CREATESTRUCT&amp; cs)
+<BR>{
+<BR>&nbsp;&nbsp;&nbsp; // TODO: Modify the Window class or
+styles here by modifying
+<BR>&nbsp;&nbsp;&nbsp; // the CREATESTRUCT cs
+<BR>&nbsp;&nbsp;&nbsp; CMyApp *app = (CMyApp *)AfxGetApp();
+<BR>&nbsp;&nbsp;&nbsp; // Set the class name to be the app's
+single instance class name
+<BR>&nbsp;&nbsp;&nbsp; cs.lpszClass = app->m_singleInstance.GetClassName();
+<BR>...
+</FONT></TT></PRE>
+
+<P>That’s how to use it. If you’re interested, here’s how
+it works.
+
+<P>The Create() function for CSingleInstance contains two
+protected members: a mutex (m_hMutex ) and a class string (m_strClassName).
+The mutex is used as the mechanism for actually determining if the application
+is already running. If the CreateMutex() function succeeds, the application
+is the first instance. If it fails, the mutex has already been created
+by another instance of the application. The class string is used as a means
+of finding the main window of the application. It is created by taking
+the name of the application (pulled from the resource string) and appending
+" Class" to the end. Simple but effective. It gets attached to the main
+window during the main frame’s PreCreateWindow() function. When we want
+to find the window, we use FindWindowEx() with the class string.
+
+
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="SingleInstanceApp.zip">Download demo project - 19KB</A>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="single_instance.zip">Download source - 2KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 09 May 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+
+
+

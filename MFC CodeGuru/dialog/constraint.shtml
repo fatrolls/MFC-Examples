@@ -1,0 +1,228 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Attaching Elements to Borders on Dialogs</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Attaching Elements to Borders
+
+</FONT></H3></CENTER>
+
+
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:Joachim.Raidl@iname.com"> Joachim Raidl</A>.
+<P>With the XConstraint-class you will be able to attach every border of any element to a border of
+the parent dialog. This means, if you change the size of the dialog, the size or position (or both) of the
+attached elements will also change. Normaly, every Element inside a dialog-window was attached to
+the left, upper corner. If you resize the dialog, the elements stay at their place and nothing changes.
+With this class, it's possible to attach a button to the right corner of the dialog. When you now resize
+the dialog, the button moves in the same way the dialog grows.
+</P>
+<table border="0">
+    <tr>
+        <td><img src="constraint_start.gif"
+        width="344" height="391"></td>
+        <td width="10%">&nbsp;</td>
+        <td><img src="constraint_gross.gif"
+        width="400" height="470"></td>
+    </tr>
+</table>
+
+<P>
+In this example, the "Test Object" was attached to the right and lower border of the dialog. If you
+resize the dialog, the object moves, so that the distance to the right and to the lower border of the
+dialog doesn't change. The four icons in the edges of the dialog are attachted to the according
+borders of the dialog.
+</P>
+
+<h4>What have you to do, to use this class?</h4>
+
+<p>The use the <strong>XConstraint</strong>-class is quite
+simple. First you have to declare a XConstraint-object in the
+headerfile of your dialog-class:</p>
+
+<PRE><TT><FONT COLOR="#990000">
+protected:
+     XConstraint cs;
+</FONT></TT></PRE>
+<P>
+Second, add a message-handler to message the WM_SIZE-event (use class-wizzard):
+</P>
+.cpp:
+<PRE><TT><FONT COLOR="#990000">
+/{{AFX_MSG_MAP(CConstraintDlg)
+     ...
+     ON_WM_SIZE()
+     ...
+     //}}AFX_MSG_MAP
+</FONT></TT></PRE>
+
+.h
+
+<PRE><TT><FONT COLOR="#990000">
+//{{AFX_MSG(CConstraintDlg)
+     ...
+     afx_msg void OnSize(UINT nType, int cx, int cy);
+     ...
+     //}}AFX_MSG
+</FONT></TT></PRE>
+
+<P>
+Third, set the attachments for every element in your dialog in the OnInitDialog()-Method:
+</P>
+<PRE><TT><FONT COLOR="#990000">
+cs.Set(this); // tell the class who is using it
+     cs.Add(IDC_BUTTON1, CS_RIGHT, CS_RIGHT, CS_TOP, CS_TOP);
+     cs.Add(IDC_BUTTON2, CS_LEFT, CS_RIGHT, CS_TOP, CS_BOTTOM);
+     cs.Add(IDC_BUTTON3, CS_FIXWIDTH, CS_FIXWIDTH, CS_FIXHEIGHT,
+     CS_FIXHEIGHT);
+</FONT></TT></PRE>
+<P>
+This means:
+</P>
+<ul>
+    <li>Button1 moves to the right, when the dialog grows and it
+        moves to the left if the dialog is shrinking</li>
+    <li>Button2 grows in the same way the dialog grows</li>
+    <li>Button3 doesn't change it's size, but moves accordingly
+        to the size of the dialog. If button3 appears in the
+        middle of the dialog, it will allway stay in the middle.</li>
+</ul>
+
+<p>The syntax for the Add-command is:<br>
+<strong>Add(ID, leftAttachment, rightAttachment, topAttachment,
+bottomAttachment).</strong></p>
+
+<p>The following attachments are possible:</p>
+
+<table border="1" cellpadding="3" cellspacing="1" width="100%">
+    <tr>
+        <td width="15%" bordercolor="#000000">CS_LEFT</td>
+        <td width="60%" bordercolor="#000000">Attach the
+        specified border of the element to the <strong>left</strong>
+        border of the dialog.</td>
+        <td width="25%" bordercolor="#000000">(left and right
+        borders only)</td>
+    </tr>
+    <tr>
+        <td width="15%" bordercolor="#000000">CS_RIGHT</td>
+        <td width="60%" bordercolor="#000000">Attach the
+        specified border of the element to the <strong>right </strong>border
+        of the dialog.</td>
+        <td width="25%" bordercolor="#000000">(left and right
+        borders only)</td>
+    </tr>
+    <tr>
+        <td width="15%" bordercolor="#000000">CS_TOP</td>
+        <td width="60%" bordercolor="#000000">Attach the
+        specified border of the element to the <strong>top </strong>border
+        of the dialog.</td>
+        <td width="25%" bordercolor="#000000">(top and bottom
+        borders only)</td>
+    </tr>
+    <tr>
+        <td width="15%" bordercolor="#000000">CS_BOTTOM</td>
+        <td width="60%" bordercolor="#000000">Attach the
+        specified border of the element to the <strong>bottom </strong>border
+        of the dialog.</td>
+        <td width="25%" bordercolor="#000000">(top and bottom
+        borders only)</td>
+    </tr>
+    <tr>
+        <td width="15%" bordercolor="#000000">CS_POSITION</td>
+        <td width="60%" bordercolor="#000000">Attach the
+        specified border of the element to the according border
+        of the dialog and move the border according to the size
+        of the border.</td>
+        <td width="25%" bordercolor="#000000">(all borders)</td>
+    </tr>
+    <tr>
+        <td width="15%" bordercolor="#000000">CS_FIXWIDTH</td>
+        <td width="60%" bordercolor="#000000">Let the width of
+        the element unchanged</td>
+        <td width="25%" bordercolor="#000000">(left and right
+        borders only)</td>
+    </tr>
+    <tr>
+        <td width="15%" bordercolor="#000000">CS_FIXHEIGHT</td>
+        <td width="60%" bordercolor="#000000">Let the height of
+        the element unchanged</td>
+        <td width="25%" bordercolor="#000000">(top and bottom
+        borders only)</td>
+    </tr>
+</table>
+
+<p>Fourth and last step: Tell the OnSize()-Method to resize (or
+move) the dialog-elements:</p>
+<PRE><TT><FONT COLOR="#990000">
+void CConstraintDlg::OnSize(UINT nType, int cx, int cy) 
+     {
+     cs.Resize(cx, cy);
+     }
+</FONT></TT></PRE>
+<p>That's all. Now your dialog will move and resize your
+elements.</p>
+
+<table border="0" width="100%">
+    <tr>
+        <td align="center" width="30%"><a href="xconstraint.zip">Download
+        source file</a><br>
+        <a href="xconstraint.zip">(3 KB)</a></td>
+        <td align="center" width="10%">&nbsp;</td>
+        <td align="center" width="30%"><a
+
+        href="xconstraintproject.zip">Download project files</a><br>
+        <a href="xconstraintproject.zip">(23 KB)</a></td>
+        <td align="right" colspan="2" width="30%">(comments in
+        german)</td>
+    </tr>
+</table>
+
+<p>If you've questions contact me at <a
+href="mailto:Joachim.Raidl@iname.com">Joachim.Raidl@iname.com</a></p>
+</p>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+
+
+
+
+
+
+
+
+
+
+

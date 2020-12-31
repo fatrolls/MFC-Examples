@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - RFX_Date alternative</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">RFX_Date alternative</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+
+<p>This article was contributed by <a href="mailto:jasiek@writeme.com">Jarek Jaskolski</a>. In an earlier
+article Claude Turner has pointed out that RFX_Date does not handle invalid dates properly. This code
+is basically a replacement for RFX_Date that can handle invalid dates but still has the limitation that
+it can handle the year upto 2038 only.
+
+<P>In the topic: "Database Programming"-'look subject of the message' there
+is the remark to do not use CTime (its true), but TIMESTAMP_STRUCT (not
+an object) in Access ODBC programming instead.
+In my programs I use COleDateTime (prima!), and just the following code
+must be supported to handle field exchange:
+
+<PRE><TT><FONT COLOR="#990000">
+void RFX_DateTime( CFieldExchange* pFX, 
+      const char* szName, COleDateTime& value )
+{
+      CTime tm = CTime((value.GetYear()<1970 ? 1970 : value.GetYear()),value.GetMonth(),
+      value.GetDay(),value.GetHour(),
+      value.GetMinute(),value.GetSecond());
+      
+      RFX_Date(pFX, szName, tm);
+
+      value.SetDateTime(tm.GetYear(),tm.GetMonth(),
+      tm.GetDay(),tm.GetHour(),
+      tm.GetMinute(),tm.GetSecond());
+// instead of RFX_Date(pFX, szName, value);
+}
+</FONT></TT></PRE>
+
+Of course it does not exceeds date limitations of CTime bottleneck, but
+user has COleDateTime object with all its' functionality for 'near
+future' (till 2038).
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

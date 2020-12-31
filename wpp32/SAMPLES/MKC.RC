@@ -1,0 +1,17 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: MKC.RC
+//
+#include "wpp.h"
+
+xcursor CURSOR mkc.cur
+
+AppMenu MENU { 
+	MENUITEM "E&xit!",			WPIDM_EXIT 
+}
+
+AppAccel ACCELERATORS
+BEGIN
+	"^X", WPIDM_EXIT
+	"^Z", WPIDM_MEMSTATS
+END

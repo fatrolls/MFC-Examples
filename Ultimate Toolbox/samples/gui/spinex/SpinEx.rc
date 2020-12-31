@@ -1,0 +1,217 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\SpinEx.ico"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""OXSpinCtrlRes.h""\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\SpinEx.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "#include ""OXSpinCtrl.rc""         // Spin ctrl resources\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SPINEX_DIALOG DIALOGEX 0, 0, 253, 138
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "COXSpinCtrl demo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_COLORBAR,"Static",SS_GRAYRECT | WS_TABSTOP,7,7,147,99,WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
+    LTEXT           "Red",IDC_STATIC,168,19,20,8
+    EDITTEXT        IDC_BUDDY2,190,17,39,13,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_SPINEX2,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,230,17,11,15
+    LTEXT           "Green",IDC_STATIC,165,45,20,8
+    EDITTEXT        IDC_BUDDY1,190,41,39,13,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_SPINEX1,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,230,40,11,15
+    LTEXT           "Blue",IDC_STATIC,168,67,20,8
+    EDITTEXT        IDC_BUDDY3,190,65,39,13,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_SPINEX3,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS,230,65,11,15
+    RTEXT           "Size",IDC_STATIC,189,87,13,8
+    EDITTEXT        IDC_BUDDY4,207,85,39,13,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Screen pixel = spin unit",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,12,119,89,8
+    CONTROL         "Screen borders <=> spin value limits",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,111,119,128,8
+    GROUPBOX        "Spin value computation method",IDC_STATIC,7,109,239,22
+    GROUPBOX        "Color components",IDC_STATIC,160,5,85,77
+    RTEXT           "(bar width is displayed)",IDC_STATIC,164,95,38,17
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "SpinEx MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "SpinEx"
+            VALUE "LegalCopyright", "Copyright (C) 1997"
+            VALUE "OriginalFilename", "SpinEx.EXE"
+            VALUE "ProductName", "SpinEx Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_SPINEX_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 246
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About SpinEx..."
+    ID_DESCRIPTION_FILE     "SpinExInfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "SpinEx"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\SpinEx.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+#include "OXSpinCtrl.rc"         // Spin ctrl resources
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

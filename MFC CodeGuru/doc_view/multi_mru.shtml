@@ -1,0 +1,330 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc-View : Multiple MRUs, and MRUs on Submenus</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Multiple MRUs, and MRUs on Submenus</FONT></H3></CENTER>
+<HR>
+
+
+<p>This code was contributed by <a href="mailto:tcg@visint.com">Todd C. Gleason</a>. </p>
+
+
+<P>If you've ever tried to do with MRU lists what Developer Studio 5
+does i.e. have more than one menu, or put it on a submenu, then you may 
+have had some difficulty, either with poring through the bowels of 
+MFC or with a bug in MFC's CRecentFileList.
+
+<P>First I'll describe my understanding of how MFC handles the Recent File
+List behind your back (which can be helpful, but in my case, turned out to be a
+problem).  Then I'll detail some of what needs to be done to support additional MRUs 
+(which depends greatly on how the programmer handles multiple document types), as
+well as how to put MRUs in submenus using my VIRecentFileList.
+
+<P>MFC defines an ID called ID_FILE_MRU_FILE1, which I believe is put by
+default into the File menu.  (MFC actually defines several IDs,
+ID_FILE_MRU_FILE1 to ID_FILE_MRU_FILE16, plus
+ID_FILE_MRU_FIRST and ID_FILE_MRU_LAST, in afxres.h)  CWinApp
+defines (in AppCore.cpp) these messages:
+
+<PRE><TT><FONT COLOR="#990000">
+ON_UPDATE_COMMAND_UI(ID_FILE_MRU_FILE1, OnUpdateRecentFileMenu)
+ON_COMMAND_EX_RANGE(ID_FILE_MRU_FILE1, ID_FILE_MRU_FILE16, OnOpenRecentFile)
+</FONT></TT></PRE>
+
+<P>The first line means that when the menu gets prepared, the
+OnUpdateRecentFileMenu() function gets called to edit the menu.  This
+function is defined in AppUI.cpp.  It calls CRecentFileList::UpdateMenu() 
+through the member variable m_pRecentFileList.  In most cases, this does the right
+thing -- it takes out the generic "Recent Files" or whatever item and
+replaces it with one or several of the recently used files.  We'll see later 
+that it does the wrong thing if you try putting the ID in a submenu.
+
+<P>The second line routes any of the IDs created by the first function
+through OnOpenRecentFile().  No big deal here.
+
+<P>The problem with supporting multiple MRUs is that this means you probably
+have multiple document types, and have to either deal with document
+templates (which I didn't care to), or find a way to keep MFC from adding stuff 
+to the MRU so that you can do it yourself (I found this easier).  After doing some
+digging, I determined that (except for Mac users), there is only one place
+that adds files to the MRU--this is when the document template calls the
+document's SetPathName() function.
+
+<PRE><TT><FONT COLOR="#990000">
+virtual void SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU = FALSE);
+</FONT></TT></PRE>
+
+<P>Actually the default is TRUE, and my override does nothing because the
+pointer is to the base class, which defines the default parameter to be
+TRUE. Obviously default parameters are resolved at compile time, so it's
+impossible to see my override.  So in my override, I cheat:
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyDocument::SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU /* = FALSE */)
+/* We can't override the default parameter of CVTKDocument, so
+* have to just ignore bAddToMRU.
+* (Actually, we can override the default parameter, but a pointer to
+* the base class will still use the base class' default parameter, rather
+* than the derived class' one.)
+*/
+{
+        CDocument::SetPathName(lpszPathName, FALSE);
+}  // CMyDocument::SetPathName()
+</FONT></TT></PRE>
+
+<P>Doing this means that you have to completely deal with the multiple
+documents yourself.  Now if you were using multiple document
+templates, I can't help you.  My own company has to determine,
+while loading a file, what type it is, so we handle loading files
+outside the intended and irritating MFC way.  We put stuff into our
+file loading and saving routines to call
+AfxGetApp()->AddToRecentFileList(m_strPathName) (or our custom
+version for the other file type) as we needed.
+
+<P>Now on to the little bug in CRecentFileList::UpdateMenu().  In
+FileList.cpp, MFC implements the CRecentFileList and if you look
+at this function in particular, you may notice that it does nothing
+to handle submenus.  Now I'm still a little unclear about how
+popups are handled, but it appears as though a popup has no
+ID, or maybe its ID is the same ID as the first ID in the menu.  It's
+hard to be sure, but what UpdateMenu appears to do is first delete
+the generic MRU items by calling DeleteMenu(), then insert other stuff.
+Two problems:  DeleteMenu() specifically is supposed to delete
+submenus once they're emptied, and it appears as though this just
+doesn't work because the menu pointer still points to the original
+menu.  Interestingly, if you put something else on the submenu
+before your MRU ID, everything works just fine.  But if you want
+your MRU by itself, you should try the VIRecentFileList instead.
+One caveat--if you're doing weird stuff with lots of submenus, I
+don't know if this will work, so I welcome any enhancements or
+fixes.  On to the code:
+
+
+<PRE><TT><FONT COLOR="#990000">
+// VIRecentFileList.h
+// Visual Interface
+// by Todd C. Gleason
+// Begun:  02-19-1998
+
+#ifndef _VIRECENTFILELIST_H_
+#define _VIRECENTFILELIST_H_
+
+/* This class is a subclass of CRecentFileList which overrides the
+* UpdateMenu() member function.
+* This class may be freely used, distributed, and modified.
+* The four-line header and this comment must be redistributed
+* unmodified with any modified version of this class.
+* In addition, whenever a newly modified form of this class is
+* redistributed, the author must email tcg@visint.com with the
+* changes.
+*
+* This file, and the implementation file, are
+* Copyright (c) 1998 Visual Interface.
+*/
+
+#include &lt afxadv.h>  // for CRecentFileList
+
+class VIRecentFileList : public CRecentFileList {
+public:
+        VIRecentFileList(UINT nStart, LPCTSTR lpszSection,
+                LPCTSTR lpszEntryFormat, int nSize,
+                int nMaxDispLen = AFX_ABBREV_FILENAME_LEN)
+                : CRecentFileList(nStart, lpszSection,lpszEntryFormat, nSize,
+                nMaxDispLen) {}
+        virtual void UpdateMenu(CCmdUI* pCmdUI);
+};  // class VIRecentFileList
+
+#endif  // _VIRECENTFILELIST_H_
+
+
+// VIRecentFileList.cpp
+// Visual Interface
+// by Todd C. Gleason
+// Begun:  02-20-1998
+
+#include "stdafx.h"
+#include "VIRecentFileList.h"
+
+void VIRecentFileList::UpdateMenu(CCmdUI* pCmdUI)
+/* This is much the same as CRecentFileList::UpdateMenu(),
+* only that this function takes into account that the MRU
+* might be in a popup menu.  If it is, the MRU items should still
+* appear in the correct place.
+* Note that this problem would only happen when the MRU ID is the only
+* thing in the submenu.
+* (Actually, I only tested it with just the MRU ID vs. having something
+* before it.  It might be that it fails if there is simply nothing before
+* it in the submenu.)
+*/
+{
+        int iMRU;
+        ASSERT(m_arrNames != NULL);
+
+        CMenu* pMenu = pCmdUI->m_pMenu;
+
+        if (pMenu == NULL)
+                return;
+
+        if (m_strOriginal.IsEmpty() && pMenu != NULL)
+                pMenu->GetMenuString(pCmdUI->m_nID, m_strOriginal, MF_BYCOMMAND);
+
+        if (m_arrNames[0].IsEmpty())
+        {
+                // no MRU files
+                if (!m_strOriginal.IsEmpty())
+                        pCmdUI->SetText(m_strOriginal);
+                pCmdUI->Enable(FALSE);
+                return;
+        }
+
+        ASSERT(pMenu == pCmdUI->m_pMenu);  // make sure preceding code didn't mess with it
+        ASSERT(pMenu->m_hMenu);
+
+        // look for a submenu to use instead
+        CMenu *pSubMenu;
+        if (pMenu)
+                pSubMenu = pMenu->GetSubMenu(pCmdUI->m_nIndex);
+        if (pSubMenu) {
+                ASSERT(pSubMenu->m_hMenu);
+                pMenu = pSubMenu;
+        }
+
+        ASSERT(pMenu->m_hMenu);
+
+        for (iMRU = 0; iMRU < m_nSize; iMRU++) {
+                //pCmdUI->m_pMenu->DeleteMenu(pCmdUI->m_nID + iMRU, MF_BYCOMMAND);
+                // This hopefully will not remove the popup
+                //pCmdUI->m_pMenu->RemoveMenu(pCmdUI->m_nID + iMRU, MF_BYCOMMAND);
+                pMenu->RemoveMenu(pCmdUI->m_nID + iMRU, MF_BYCOMMAND);
+        }
+
+
+#ifndef _MAC
+        TCHAR szCurDir[_MAX_PATH];
+        GetCurrentDirectory(_MAX_PATH, szCurDir);
+        int nCurDir = lstrlen(szCurDir);
+        ASSERT(nCurDir >= 0);
+        szCurDir[nCurDir] = '\\';
+        szCurDir[++nCurDir] = '\0';
+#endif
+
+        CString strName;
+        CString strTemp;
+        for (iMRU = 0; iMRU < m_nSize; iMRU++)
+        {
+#ifndef _MAC
+                if (!GetDisplayName(strName, iMRU, szCurDir, nCurDir))
+                        break;
+#else
+                if (!GetDisplayName(strName, iMRU, NULL, 0))
+                        break;
+#endif
+                // double up any '&' characters so they are not underlined
+                LPCTSTR lpszSrc = strName;
+
+                LPTSTR lpszDest = strTemp.GetBuffer(strName.GetLength()*2);
+
+                while (*lpszSrc != 0)
+
+                {
+                        if (*lpszSrc == '&')
+                                *lpszDest++ = '&';
+
+                        if (_istlead(*lpszSrc))
+                                *lpszDest++ = *lpszSrc++;
+
+                        *lpszDest++ = *lpszSrc++;
+
+                }
+                *lpszDest = 0;
+
+                strTemp.ReleaseBuffer();
+
+                // insert mnemonic + the file name
+                TCHAR buf[10];
+                wsprintf(buf, _T("&%d "), (iMRU+1+m_nStart) % 10);
+                /*pCmdUI->m_pMenu->InsertMenu(pCmdUI->m_nIndex++,
+                MF_STRING | MF_BYPOSITION, pCmdUI->m_nID++,
+                CString(buf) + strTemp);*/
+                // Note we use our pMenu which may not be pCmdUI->m_pMenu
+                pMenu->InsertMenu(pCmdUI->m_nIndex++,
+                        MF_STRING | MF_BYPOSITION, pCmdUI->m_nID++,
+                        CString(buf) + strTemp);
+        }
+
+        // update end menu count
+        pCmdUI->m_nIndex--; // point to last menu added
+        pCmdUI->m_nIndexMax = pMenu->GetMenuItemCount();
+
+        pCmdUI->m_bEnableChanged = TRUE;    // all the added items are enabled
+}  // VIRecentFileList::UpdateMenu()
+</FONT></TT></PRE>
+
+
+<P>If you want to use this code instead of the CRecentFileList entirely,
+you'll need to make sure the app creates a VIRecentFileList instead of a
+RecentFileList.  Do this by overriding the CWinApp::LoadStdProfileSettings().
+An example:
+
+<PRE><TT><FONT COLOR="#990000">void CVIStudioApp::LoadStdProfileSettings(UINT nMaxMRU)
+/* We override the CWinApp version to make it use VIRecentFileList
+ * instead of CRecentFileList.
+ */
+{
+ ASSERT_VALID(this);
+ ASSERT(m_pRecentFileList == NULL);
+
+ if (nMaxMRU != 0)
+ {
+  // create file MRU since nMaxMRU not zero
+
+  // Here's the important part--overriding CRecentFileList
+  m_pRecentFileList = new VIRecentFileList(0, szFileSection, szFileEntry, nMaxMRU);
+
+  m_pRecentFileList->ReadList();
+ }
+ // 0 by default means not set
+ m_nNumPreviewPages = GetProfileInt(szPreviewSection, szPreviewEntry, 0);
+}  // LoadStdProfileSettings()
+</FONT></TT></PRE><P>
+
+<!-- Remember to update this -->
+<p>Last updated: 11 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

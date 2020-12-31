@@ -1,0 +1,213 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\PhysicalTest.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXPhysicalEditEx.rc"" // For extended physical edit controls\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\PhysicalTest.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PHYSICALTEST_DIALOG DIALOGEX 0, 0, 337, 135
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "PhysicalTest"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_LENGTH,53,25,56,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TIME,53,44,56,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TEMPERATURE,53,63,56,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ANGLE,53,82,56,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_LENGTH_LIST,143,25,48,44,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_TIME_LIST,143,45,48,43,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_TEMPERATURE_LIST,143,64,48,46,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_ANGLE_LIST,143,83,48,45,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "To test the class : Type in a value with a unit (e.g. 1m) select a new unit and click Convert",IDC_STATIC,7,7,323,8
+    LTEXT           "&Length",IDC_STATIC,7,28,23,8
+    LTEXT           "To",IDC_STATIC,125,28,10,8
+    PUSHBUTTON      "Convert",IDC_CONVERT_LENGTH,197,25,39,12
+    EDITTEXT        IDC_CONVERTED_LENGTH,246,24,84,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "&Time",IDC_STATIC,7,47,16,8
+    LTEXT           "To",IDC_STATIC,125,47,10,8
+    PUSHBUTTON      "Convert",IDC_CONVERT_TIME,197,45,39,12
+    EDITTEXT        IDC_CONVERTED_TIME,246,44,84,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Tem&perature",IDC_STATIC,7,66,41,8
+    LTEXT           "To",IDC_STATIC,125,66,10,8
+    PUSHBUTTON      "Convert",IDC_CONVERT_TEMPERATURE,197,64,39,12
+    EDITTEXT        IDC_CONVERTED_TEMPERATURE,246,63,84,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "&Angle",IDC_STATIC,7,85,19,8
+    LTEXT           "To",IDC_STATIC,125,85,10,8
+    PUSHBUTTON      "Convert",IDC_CONVERT_ANGLE,197,83,39,12
+    EDITTEXT        IDC_CONVERTED_ANGLE,246,82,84,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "OK",IDOK,100,114,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,187,114,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "PHYSICALTEST MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "PHYSICALTEST"
+            VALUE "LegalCopyright", "Copyright © 1998 Dundas Software Ltd."
+            VALUE "OriginalFilename", "PHYSICALTEST.EXE"
+            VALUE "ProductName", "PHYSICALTEST Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_PHYSICALTEST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 330
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About PhysicalTest..."
+    ID_DESCRIPTION_FILE     "physicalTestInfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "PhysicalTest"
+END
+
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\PhysicalTest.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXPhysicalEditEx.rc" // For extended physical edit controls
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

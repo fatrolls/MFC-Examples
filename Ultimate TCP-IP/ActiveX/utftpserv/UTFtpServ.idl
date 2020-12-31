@@ -1,0 +1,230 @@
+//=================================================================
+//  File:  UTFtpServ.idl : IDL source for UTFtpServ.dll
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTFtpServ.tlb) and marshalling code.
+//
+// =================================================================
+// Ultimate TCP-IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// =================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+cpp_quote("}")
+cpp_quote("#include \"ftp_s.h\" ")
+cpp_quote("extern \"C\"{")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+#include "ftp_s.h"
+cpp_quote("#endif")  
+	
+
+[
+	uuid(20DA1A60-2288-11D3-A48B-0080C858F182),
+	version(4.0),
+	helpstring("Ultimate TCP/IP FTP Server Control 4.2")
+]
+library UTFTPSERVLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//===========================================
+	//	FTP commands enumeration
+	//===========================================
+	typedef [uuid (11B6E9F9-228B-11d3-A48B-0080C858F182), helpstring("Ftp Command")]
+	enum FtpCommand
+	{
+		[helpstring("Unknown command")]		ftpUnknown	= CMD_UNKNOWN,
+		[helpstring("USER command")]		ftpUSER		= USER,
+		[helpstring("PASS command")]		ftpPASS		= PASS,
+		[helpstring("ACCT command")]		ftpACCT		= ACCT,
+		[helpstring("CWD command")]			ftpCWD		= CWD,
+		[helpstring("CDUP command")]		ftpCDUP		= CDUP,
+		[helpstring("SMNT command")]		ftpSMNT		= SMNT,
+		[helpstring("QUIT command")]		ftpQUIT		= QUIT,
+		[helpstring("REIN command")]		ftpREIN		= REIN,
+		[helpstring("PORT command")]		ftpPORT		= PORT,
+		[helpstring("PASV command")]		ftpPASV		= PASV,
+		[helpstring("TYPE command")]		ftpTYPE		= TYPE,
+		[helpstring("STRU command")]		ftpSTRU		= STRU,
+		[helpstring("MODE command")]		ftpMODE		= MODE,
+		[helpstring("RETR command")]		ftpRETR		= RETR,
+		[helpstring("STOR command")]		ftpSTOR		= STOR,
+		[helpstring("STOU command")]		ftpSTOU		= STOU,
+		[helpstring("APPE command")]		ftpAPPE		= APPE,
+		[helpstring("ALLO command")]		ftpALLO		= ALLO,
+		[helpstring("REST command")]		ftpREST		= REST,
+		[helpstring("RNFR command")]		ftpRNFR		= RNFR,
+		[helpstring("RNTO command")]		ftpRNTO		= RNTO,
+		[helpstring("ABOR command")]		ftpABOR		= ABOR,
+		[helpstring("DELE command")]		ftpDELE		= DELE,
+		[helpstring("RMD command")]			ftpRMD		= RMD,
+		[helpstring("MKD command")]			ftpMKD		= MKD,
+		[helpstring("PWD command")]			ftpPWD		= PWD,
+		[helpstring("LIST command")]		ftpLIST		= LIST,
+		[helpstring("NLST command")]		ftpNLST		= NLST,
+		[helpstring("SITE command")]		ftpSITE		= SITE,
+		[helpstring("SYST command")]		ftpSYST		= SYST,
+		[helpstring("STAT command")]		ftpSTAT		= STAT,
+		[helpstring("HELP command")]		ftpHELP		= HELP,
+		[helpstring("NOOP command")]		ftpNOOP		= NOOP
+	} FtpCommand;
+
+
+	//===========================================
+	//	FtpServ control Events interface
+	//===========================================
+	[
+		uuid(20DA1A70-2288-11D3-A48B-0080C858F182),
+		helpstring("_IFtpServEvents Interface")
+	]
+	dispinterface _IFtpServEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnStatus")] HRESULT OnStatus([in] BSTR Message);
+		[id(2), helpstring("method OnConnect")] HRESULT OnConnect();
+		[id(3), helpstring("method OnMaxConnect")] HRESULT OnMaxConnect();
+		[id(4), helpstring("method OnCommandStarted")] HRESULT OnCommandStarted([in] FtpCommand CommandID, [in] BSTR Params, [out] VARIANT_BOOL *Accept);
+		[id(5), helpstring("method OnCommandFinished")] HRESULT OnCommandFinished([in] FtpCommand CommandID, [in] BSTR Params, [in] long Success);
+		[id(6), helpstring("method OnCheckPassword")] HRESULT OnCheckPassword([in] BSTR User, [in] BSTR Password, [out] VARIANT_BOOL *Accept);
+		[id(7), helpstring("method OnConnectNotify")] HRESULT OnConnectNotify([in] BSTR IPAddress, [out] VARIANT_BOOL * Accept) ;
+		[id(8), helpstring("method OnDisconnect")] HRESULT OnDisconnect();
+		[id(9), helpstring("method OnCanAccept")] HRESULT OnCanAccept([in] BSTR Address, [out, retval] BOOL *Result);
+
+	};
+
+	[
+		uuid(20DA1A6F-2288-11D3-A48B-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP FTP Server Control 4.2")
+	]
+	coclass FtpServ
+	{
+		[default] interface IFtpServ;
+		[default, source] dispinterface _IFtpServEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (8792493F-228A-11d3-A48B-0080C858F182), helpstring("Ftp Server Error Codes")]
+	enum FtpServErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Socket creation failed")]	ecSocketCreateFailed	= UTE_SOCK_CREATE_FAILED,
+		[helpstring("Binding failed")]			ecBindFailed			= UTE_SOCK_BIND_FAILED,
+		[helpstring("Listen afiled")]			ecListenFailed			= UTE_SOCK_LISTEN_ERROR
+	} FtpServErrorCodes;
+
+
+
+	[
+		uuid(20DA1A71-2288-11D3-A48B-0080C858F182),
+		helpstring("FtpServPropPage Class")
+	]
+	coclass FtpServPropPage
+	{
+		interface IUnknown;
+	};
+
+
+	//===========================================
+	//	IFtpServ interface
+	//===========================================
+	[
+		object,
+		uuid(20DA1A6E-2288-11D3-A48B-0080C858F182),
+		dual,
+		helpstring("IFtpServ Interface"),
+		pointer_default(unique)
+	]
+	interface IFtpServ : IDispatch
+	{
+			//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_START					= 1;
+		const int DISPID_STOP					= 2;
+		const int DISPID_GET_ERROR_TEXT			= 3;
+		const int DISPID_PATH					= 4;
+		const int DISPID_CONNECTIONS			= 5;
+		const int DISPID_MAX_CONNECTIONS		= 6;
+		const int DISPID_PORT					= 7;
+		const int DISPID_GET_COMMAND_NAME		= 8;
+		const int DISPID_WELCOME_MSG			= 9;
+		const int DISPID_MAX_TIME_OUT			= 10;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, id(DISPID_PATH), helpstring("property Path")] 
+			HRESULT Path([out, retval] BSTR *pVal);
+
+		[propput, id(DISPID_PATH), helpstring("property Path")] 
+			HRESULT Path([in] BSTR newVal);
+
+		[propget, id(DISPID_CONNECTIONS), helpstring("property Connections")] 
+			HRESULT Connections([out, retval] long *pVal);
+
+		[propget, id(DISPID_MAX_CONNECTIONS), helpstring("property MaxConnections")] 
+			HRESULT MaxConnections([out, retval] long *pVal);
+
+		[propput, id(DISPID_MAX_CONNECTIONS), helpstring("property MaxConnections")] 
+			HRESULT MaxConnections([in] long newVal);
+
+		[propget, id(DISPID_PORT), helpstring("property Port")] 
+			HRESULT Port([out, retval] long *pVal);
+
+		[propput, id(DISPID_PORT), helpstring("property Port")] 
+			HRESULT Port([in] long newVal);
+
+		[propget, id(DISPID_WELCOME_MSG), helpstring("property WelcomeMsg")] 
+			HRESULT WelcomeMsg([out, retval] BSTR *pVal);
+
+		[propput, id(DISPID_WELCOME_MSG), helpstring("property WelcomeMsg")] 
+			HRESULT WelcomeMsg([in] BSTR newVal);
+
+		[propget, id(DISPID_MAX_TIME_OUT), helpstring("property MaxTimeOut")] 
+			HRESULT MaxTimeOut([out, retval] long *pVal);
+
+		[propput, id(DISPID_MAX_TIME_OUT), helpstring("property MaxTimeOut")] 
+			HRESULT MaxTimeOut([in] long newVal);
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_START), helpstring("method Start")] 
+			HRESULT Start([out, retval] long *Result);
+
+		[id(DISPID_STOP), helpstring("method Stop")] 
+			HRESULT Stop();
+
+		[id(DISPID_GET_COMMAND_NAME), helpstring("method GetCommandName")] 
+			HRESULT GetCommandName([in] FtpCommand CommandID, [out, retval] BSTR *Name);
+
+
+	};
+
+};

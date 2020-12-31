@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Changing the Tab Label</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Changing the Tab Label</FONT>
+<HR></H3></CENTER>
+The labels used by the tab control inside the property sheet is taken from the captions of the property pages. To change this label at runtime, we have to first get a pointer to the tab control object and call its SetItem() function. The following code changes the label of the first tab.
+<PRE><TT><FONT COLOR="#990000">
+	CString sCaption = _T("New Caption");
+	TC_ITEM tcItem;
+	tcItem.mask = TCIF_TEXT;
+	tcItem.pszText = (LPTSTR)((LPCTSTR)sCaption);
+	GetTabControl()->SetItem(0, &tcItem );
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

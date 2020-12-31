@@ -1,0 +1,414 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - SMTP Protocol wrapper class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">SMTP Protocol wrapper class</FONT></H3></CENTER>
+<HR>
+
+
+
+<p>This article was contributed by <a
+href="mailto:aasif@khi.compol.com">Asif Rasheed</a>. </p>
+
+<p>Email is the most popular media for communication on Internet.
+This application is consist of two protocols,</p>
+
+<ul>
+    <li>POP 3</li>
+</ul>
+
+<p>POP 3 protocol is usually used for retriving mail from email
+server (which is a POP server). I allready submitted a class
+which wrapper the POP 3 protocol. For official description of the
+protocol you can consult with RFC 1225.</p>
+
+<ul>
+    <li>SMTP</li>
+</ul>
+
+<p>SMTP (Simple Mail Transfer Protocol) is used for sending email
+to it destination. For details about SMTP protocol you can refere
+to RCF 821 . My new contribution is wrapper class for SMTP
+protocol. I did not completely implemented the SMTP protocol but
+you can used it in any application which is sending mail through
+SMTP protocol.</p>
+
+<p>This class has several methods. I choice the names of the
+methods same as the SMTP commands, so that it can be easily
+understandable. In this class again I used CSocket as class
+member (surperise not inherent it), so that I can used it in
+Threads. Following is code of the class with comments. </p>
+
+<PRE><TT><FONT COLOR="#990000">
+//////////////////////////////////////////////////////////////////////
+// SMTP.h: interface for the CSMTP class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#if !defined(AFX_SMTP_H__617F7E82_7F4D_11D1_88A0_00001C302581__INCLUDED_)
+#define AFX_SMTP_H__617F7E82_7F4D_11D1_88A0_00001C302581__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+#define CONNECTION_CHECK 0
+#define HELLO_CHECK 1
+#define MAIL_CHECK 2
+#define RCPT_CHECK 3
+#define DATA_START_CHECK 4
+#define DATA_END_CHECK 5
+#define QUIT_CHECK 6
+#define DATA_CHECK 7
+
+
+class CSMTP 
+{
+public:
+	BOOL Mail(); // 
+	CString GetErrorMessage();
+	BOOL Data(CString Subject, CString Body);
+	CString GetTo();
+	BOOL SetTo(CString to);
+	CString GetFrom();
+	void SetFrom(CString from);
+	BOOL Mail(CString from);
+	BOOL Disconnect();
+	CString GetHost();
+	void SetHost(CString Host);
+	BOOL Connect(CString Host, CString Me);
+	BOOL Connect();
+	CSMTP();
+	virtual ~CSMTP();
+	
+private:
+	CString GetError(CString Response);
+	CString m_ErrorMessage;
+	BOOL CheckResponse(int Type);
+	int m_NoOfTo;
+	CStringArray m_To;
+	CString m_From;
+	CSocket m_SMTPServer;
+	CString m_Host;
+   };
+
+#endif // !defined(AFX_SMTP_H__617F7E82_7F4D_11D1_88A0_00001C302581__INCLUDED_)
+
+
+//////////////////////////////////////////////////////////////////////////
+// SMTP.cpp: implementation of the CSMTP class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "MailSend.h"
+#include "SMTP.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CSMTP::CSMTP()
+{
+	m_NoOfTo = 0;
+	m_SMTPServer.Create();
+}
+
+CSMTP::~CSMTP()
+{
+	m_SMTPServer.Close();
+}
+
+// Connect to the SMTP Server
+BOOL CSMTP::Connect()
+{
+	return Connect(m_Host,m_From);
+}
+
+// Connect to the SMTP Server
+BOOL CSMTP::Connect(CString Host,CString From)
+{
+	if (!m_SMTPServer.Connect(Host,25)) // 25 for SMTP Port
+	{
+		m_ErrorMessage = _T("Server cannot be connected");
+		return FALSE;
+	}
+	else
+	{
+		if(CheckResponse(CONNECTION_CHECK)==FALSE)
+			return FALSE;
+		
+		char buf [512];
+		
+		wsprintf (buf, "HELO %s\r\n", (LPCSTR) From);
+		m_SMTPServer.Send(buf, strlen (buf)); 
+		if (CheckResponse(HELLO_CHECK)==FALSE)
+			return FALSE;
+		else 
+			return TRUE; 
+		
+		return TRUE;
+	}
+}
+
+// Setting the Host String
+void CSMTP::SetHost(CString Host)
+{
+	m_Host = Host;
+}
+
+// Returing the Host String
+CString CSMTP::GetHost()
+{
+	return m_Host;
+}
+
+// Sending the "QUIT" command to the SMTP Server
+BOOL CSMTP::Disconnect()
+{
+	char buf[256];
+	
+	wsprintf (buf, "QUIT \r\n");
+	m_SMTPServer.Send(buf, strlen (buf)); 
+	if (CheckResponse(QUIT_CHECK)==FALSE)
+		return FALSE;
+	else 
+		return TRUE;
+}
+
+// Sending the "MAIL" command to the SMTP Server
+BOOL CSMTP::Mail(CString from)
+{
+	char buf[256];
+	
+	wsprintf (buf, "MAIL From:&lt;%s>\r\n", (LPCSTR) from);
+	m_SMTPServer.Send(buf, strlen (buf)); 
+	if (CheckResponse(MAIL_CHECK)==FALSE)
+		return FALSE;
+	else 
+		return TRUE; 
+}
+
+// Setting the From string
+void CSMTP::SetFrom(CString from)
+{
+	m_From = from;
+}
+
+// Returing the From string
+CString CSMTP::GetFrom()
+{
+	return m_From;
+}
+
+// Setting the TO string
+BOOL CSMTP::SetTo(CString to)
+{
+	char buf[256];
+	m_To.Add(to); // Saving vale of to
+	
+	wsprintf (buf, "RCPT TO:&lt;%s>\r\n", (LPCSTR) to);
+	m_SMTPServer.Send(buf, strlen (buf)); 
+	if (CheckResponse(RCPT_CHECK)==FALSE)
+		return FALSE;
+	else 
+		return TRUE; 
+	
+}
+
+// Returing the TO string
+CString CSMTP::GetTo()
+{ 
+	if(m_To.GetSize()>=m_NoOfTo)
+	{
+		m_NoOfTo++;
+		return m_To[m_NoOfTo-1];
+	}
+	else
+		return _T("No more To available");
+}
+
+// Sending the "DATA" command to the SMTP Server
+BOOL CSMTP::Data(CString Subject, CString Body)
+{
+	char buf[256];
+	
+	wsprintf (buf, "DATA\r\n");
+	
+	m_SMTPServer.Send(buf, strlen (buf)); 
+	if (CheckResponse(DATA_CHECK)==FALSE)
+		return FALSE;
+	else 
+	{
+		wsprintf (buf, "SUBJECT:%s\r\n", (LPCSTR) Subject);
+		m_SMTPServer.Send(buf, strlen (buf)); 
+		
+		wsprintf (buf, "%s\r\n", (LPCSTR) Body);
+		m_SMTPServer.Send(buf, strlen (buf)); 
+		
+		wsprintf (buf, ".\r\n");
+		m_SMTPServer.Send(buf, strlen (buf)); 
+		
+		return TRUE;
+	}
+}
+
+// This methods checks the response from the 
+// Server
+BOOL CSMTP::CheckResponse(int Type)
+{
+	char buf [1000];
+	char temp[3];
+	
+	for (int i=0;i &lt; 512;i++)
+		buf[i]='\0';
+	
+	// Receive the data from Server
+	m_SMTPServer.Receive(buf, sizeof(buf));
+	strncpy(temp,buf,3);
+	int temp2 = atoi(temp);
+	switch (Type)
+	{
+	case CONNECTION_CHECK:
+		if (temp2 != 220)
+		{
+			m_ErrorMessage = GetError((LPCTSTR)buf);
+			return FALSE;
+		} 
+		break;
+		
+	case HELLO_CHECK:
+		if (temp2 != 250)
+		{
+			m_ErrorMessage = GetError((LPCTSTR)buf);
+			return FALSE;
+		} 
+		break;
+	case MAIL_CHECK:
+		if (temp2 != 250)
+		{
+			m_ErrorMessage = GetError((LPCTSTR)buf);
+			return FALSE;
+		} 
+		break;
+	case RCPT_CHECK:
+		if (temp2 != 250)
+		{
+			m_ErrorMessage = GetError((LPCTSTR)buf);
+			return FALSE;
+		} 
+		break;
+	case DATA_START_CHECK:
+		if (temp2 != 354)
+		{
+			m_ErrorMessage = GetError((LPCTSTR)buf);
+			return FALSE;
+		} 
+		break;
+	case DATA_END_CHECK:
+		if (temp2 != 250)
+		{
+			m_ErrorMessage = GetError((LPCTSTR)buf);
+			return FALSE;
+		} 
+		break;
+	case QUIT_CHECK:
+		if (temp2 != 221)
+		{
+			m_ErrorMessage = GetError((LPCTSTR)buf);
+			return FALSE;
+		} 
+		break;
+	case DATA_CHECK:
+		if (temp2 != 354)
+		{
+			m_ErrorMessage = GetError((LPCTSTR)buf);
+			return FALSE;
+		} 
+		break;
+		
+	}
+	return TRUE;
+}
+
+// Returing the Error Message
+CString CSMTP::GetErrorMessage()
+{
+	return m_ErrorMessage;
+}
+
+// Preparing the Error Message according to 
+// Error Number
+CString CSMTP::GetError(CString Response)
+{
+	if(Response.Find("211"))
+		return _T("System status or system help reply");
+	if(Response.Find("214"))
+		return _T("Help Message");
+	if(Response.Find("220"))
+		return _T("Service is ready");
+	if(Response.Find("221"))
+		return _T("Service closing transmission channel");
+	if(Response.Find("250"))
+		return _T("Requested mail action okay, completed");
+	if(Response.Find("251"))
+		return _T("user not local: will forward to forward path");
+	if(Response.Find("354"))
+		return _T("Start mail input; end with &lt;CRLF>.&lt;CRLF>");
+	
+	return _T("No Error Number is matched with ")+Response;
+}
+
+// Just overloading of the Mail method
+BOOL CSMTP::Mail()
+{
+	return Mail(m_From);
+}
+</FONT></TT></PRE>
+
+
+Here the samll implementation of the class,
+<PRE><TT><FONT COLOR="#990000">
+CSMTP m_smtp;
+m_smtp.Connect("khi.compol.com","aasif@khi.compol.com");
+m_smtp.Mail("aasif@khi.compol.com");
+m_smtp.SetTo("zafir@home.com");
+m_smtp.Data("test message","This is a test message ... ");
+m_smtp.Disconnect(); 
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi-bin/counters/counter.cgi"--></FONT></CENTER>
+</BODY>
+</HTML>

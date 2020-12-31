@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>C++ & MFC - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various projects">
+   <META Name="keywords" Content="C++ MFC">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">C++ & MFC</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<HR>
+
+
+This section contains C++ code that may or may not use MFC. These articles are
+not directly related to Windows.
+
+<UL>
+<LI><A HREF="sortable_cobarray.shtml">Sortable CObArray class - Douglas Peterson</A>
+<LI><A HREF="sortable_coblist.shtml">Sortable CObList class - Douglas Peterson</A>
+<LI><A HREF="smart_pointers.shtml">Smart Pointers and other Pointer classes - Poul Costinsky</A>
+<LI><A HREF="iterate_list.shtml">Iterating through List Containers - Zoran M.Todorovic</A>
+<LI><A HREF="avl.shtml">AVLTree - template version - Andreas Jäger</A>
+<LI><A HREF="bit_manipulation_undef_type.shtml">Template class to manipulate bits of undefined type - Ludovic CHARRIER</A>
+<LI><A HREF="stl_extension_find.shtml">Extension to the STL "find_if" and "for_each" - Michael Scherotter</A>
+</UL>
+
+
+
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

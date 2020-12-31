@@ -1,0 +1,35 @@
+HKCR
+{ 
+	UTMail.Mail.1 = s 'Dundas Mail Control 4.0'
+	{
+		CLSID = s '{F7FA867E-089C-11D3-A469-0080C858F182}'
+		'Insertable'
+	}
+	UTMail.Mail = s 'Dundas Mail Control 4.0'
+	{
+		CLSID = s '{F7FA867E-089C-11D3-A469-0080C858F182}'
+		CurVer = s 'UTMail.Mail.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F7FA867E-089C-11D3-A469-0080C858F182} = s 'Dundas Mail Control 4.0'
+		{
+			ProgID = s 'UTMail.Mail.1'
+			VersionIndependentProgID = s 'UTMail.Mail'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '132497'
+			}
+			'TypeLib' = s '{F7FA866F-089C-11D3-A469-0080C858F182}'
+			'Version' = s '1.4'
+		}
+	}
+}

@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Michael Scherotter">
+   <TITLE>C++ & MFC - Extension to the STL find_if and for_each</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Extension to the STL find_if and for_each
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:mss@tartus.com"><!-- Author Name -->Michael Scherotter</A>.
+
+<!-- Sample image - gif or jpg -->
+
+
+<!-- Text / source code -->
+<p>The stl algorithms for_each and find_if are inadequate when
+you need more data for the predicate.  Here are two new algorithms
+TDfind_if and TDfor_each which solve that problem.
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+To use:
+
+std::list&ltOBJECT&gt theList;
+
+class DATA
+{
+public:
+    bool IsValid(const OBJECT& rObject) const;
+    void OperateOn(OBJECT& rObject) const;
+};
+
+bool IsValid(OBJECT theObject, DATA theData)
+{
+    return theData.IsValid(theObject);
+}
+
+void DoOperation(OBJECT theObject, DATA theData)
+{
+    theData.OperateOn(theObject);
+}
+
+DATA theData;
+
+OBJECT theObject = ::TDFind_if(theList.begin(), theList.end(), IsValid, theData);
+or
+::TDfor_each(theList.begin(), theList.end(), DoOperation, theData);
+
+// CODE STARTS HERE:
+/////////////////////////////////////////////////////////////////
+// This is like the Standard c++ algorithm find_if, but it takes a second parameter
+template&ltclass _II, class _Pr, class T_DATA&gt inline 
+_II
+TDfind_if(
+  _II _F, // First iterator
+  _II _L, // Last iterator
+  _Pr _P, // Predicate: a static function that returns bool having two
+paramters
+  T_DATA dwData)
+{
+    for (; _F != _L; ++_F)
+    {
+        if (_P(*_F, dwData))
+        {
+            break;
+        }
+    }
+
+    return (_F);
+}
+
+
+template&ltclass _II, class _Fn, class T_DATA&gt inline
+void
+TDfor_each(
+  _II _F,
+  _II _L,
+  _Fn _Op,
+  T_DATA dData)
+{
+    for (; _F != _L; ++_F)
+    {
+        _Op(*_F, dData);
+    }
+}
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+
+<!-- Zipped source -->
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->5/4/98
+<br>Posted by: <A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

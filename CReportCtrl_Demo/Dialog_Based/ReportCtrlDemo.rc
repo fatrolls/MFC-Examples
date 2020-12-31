@@ -1,0 +1,299 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ReportCtrlDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ReportCtrlDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About CReportCtrl Demo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "CReportCtrl Demo 1.0 版",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2003 Bin Liu",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_REPORTCTRLDEMO_DIALOG DIALOGEX 0, 0, 262, 198
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "CReportCtrl Demo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List3",IDC_LIST1,"SysListView32",LVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,7,7,248,130
+    CONTROL         "Allow Sort",IDC_ALLOWSORT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,141,59,10,WS_EX_TRANSPARENT
+    CONTROL         "Allow Edit",IDC_ALLOWEDIT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,152,60,10,WS_EX_TRANSPARENT
+    CONTROL         "Grid Lines",IDC_GRIDLINES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,163,60,10,WS_EX_TRANSPARENT
+    GROUPBOX        "Checkbox Style",IDC_STATIC,67,141,188,30
+    CONTROL         "None",IDC_CHK_NONE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,72,154,33,10
+    CONTROL         "Normal",IDC_CHK_NORMAL,"Button",BS_AUTORADIOBUTTON,113,
+                    154,38,10
+    CONTROL         "Single",IDC_CHK_SINGLE,"Button",BS_AUTORADIOBUTTON,159,
+                    154,35,10
+    CONTROL         "Disabled",IDC_CHK_DISABLED,"Button",BS_AUTORADIOBUTTON,
+                    202,154,43,10
+    PUSHBUTTON      "Selection",IDC_SELECT,7,176,49,15
+    PUSHBUTTON      "Check-mark",IDC_CHECK,57,176,49,15
+    PUSHBUTTON      "Deletion",IDC_DELETE,107,176,49,15
+    PUSHBUTTON      "Position",IDC_POSITION,157,176,49,15
+    PUSHBUTTON      "Exit",IDCANCEL,206,176,49,15
+END
+
+IDD_STATESDLG DIALOGEX 0, 0, 187, 142
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Item States Selection"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Please specify item states. Item states can be a combination of the following states:",
+                    IDC_STATIC,7,7,173,21
+    CONTROL         "All items regardless of states",IDC_ALL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,31,104,10
+    CONTROL         "Selected items",IDC_SELECTED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,43,62,10
+    CONTROL         "Unselected items",IDC_UNSELECTED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,55,70,10
+    CONTROL         "Checked items",IDC_CHECKED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,67,63,10
+    CONTROL         "Unchecked items",IDC_UNCHECKED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,79,71,10
+    CONTROL         "Focused item",IDC_FOCUSED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,91,58,10
+    CONTROL         "Unfocused items",IDC_UNFOCUSED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,103,69,10
+    DEFPUSHBUTTON   "OK",IDOK,44,121,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,94,121,50,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "ReportCtrlDemo Microsoft 基础类应用程序\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "ReportCtrlDemo\0"
+            VALUE "LegalCopyright", "版权所有 (C) 2003\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "ReportCtrlDemo.EXE\0"
+            VALUE "ProductName", "ReportCtrlDemo 应用程序\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_REPORTCTRLDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 255
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
+    END
+
+    IDD_STATESDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 135
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "Selection"
+    BEGIN
+        MENUITEM "Select Items",                ID_SELECTION_ALL
+        MENUITEM "Unselect Items",              ID_SELECTION_UNALL
+        MENUITEM "Invert Selection",            ID_SELECTION_INVERT
+    END
+    POPUP "Checkbox"
+    BEGIN
+        MENUITEM "Check Items",                 ID_CHECKBOX_ALL
+        MENUITEM "Uncheck Items",               ID_CHECKBOX_UNALL
+        MENUITEM "Invert Check",                ID_CHECKBOX_INVERT
+    END
+    POPUP "Position"
+    BEGIN
+        MENUITEM "Move Up",                     ID_POSITION_UP
+        MENUITEM "Move Down",                   ID_POSITION_DOWN
+        MENUITEM "Move to Top",                 ID_POSITION_TOP
+        MENUITEM "Move to Bottom",              ID_POSITION_BOTTOM
+        MENUITEM SEPARATOR
+        MENUITEM "Swap 2 Items",                ID_POSITION_SWAP
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+IDB_BITMAP2             BITMAP  DISCARDABLE     "res\\bitmap2.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 ReportCtrlDemo(&A)..."
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\ReportCtrlDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

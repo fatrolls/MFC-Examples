@@ -1,0 +1,176 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Ireland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENI)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_EIRE
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\MessageBox.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\MessageBox.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MESSAGEBOX_DIALOG DIALOGEX 0, 0, 336, 310
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Sample app to exercise CMessageBoxX class"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Caption:",IDC_STATIC,7,7,27,8
+    EDITTEXT        IDC_CAPTION,44,7,285,14,ES_AUTOHSCROLL
+    LTEXT           "Text: (Will be used for just layout if HTML setting is used)",IDC_STATIC,7,25,179,8
+    EDITTEXT        IDC_TEXT,7,37,322,45,ES_MULTILINE | ES_AUTOHSCROLL | WS_VSCROLL
+    CONTROL         "Included Disabled Cancel button for 5 seconds",IDC_DISABLE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,87,163,10
+    CONTROL         "Modify Caption for Disabled button",IDC_MODIFY_CAPTION_FOR_DISABLED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,101,124,10
+    LTEXT           "Button 1 Caption:",IDC_STATIC,167,103,56,8
+    EDITTEXT        IDC_CAPTION1,230,100,99,14,ES_AUTOHSCROLL
+    CONTROL         "Include 20 second timeout to cancel button",IDC_TIMEOUT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,115,153,10
+    LTEXT           "Button 2 Caption:",IDC_STATIC,167,122,56,8
+    EDITTEXT        IDC_CAPTION2,230,120,99,14,ES_AUTOHSCROLL
+    CONTROL         "Modify Caption for timeout",IDC_MODIFY_CAPTION_FOR_TIMER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,97,10
+    CONTROL         "Reset Timeout On User Activity",IDC_RESET_TIMER_ON_USER_ACTIVITY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,143,115,10
+    CONTROL         "Animated Caption Demo",IDC_ANIMATEDCAPTION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,166,145,92,10
+    CONTROL         "Include Checkbox",IDC_CHECKBOX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,157,73,10
+    CONTROL         "Animated Text Demo",IDC_ANIMATEDTEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,166,161,82,10
+    CONTROL         "Checkbox Initial / Final State",IDC_CHECKBOX_INITIAL_STATE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,171,107,10
+    LTEXT           "CheckBox Text",IDC_STATIC,7,186,50,8
+    EDITTEXT        IDC_CHECKBOX_TEXT,66,183,263,14,ES_AUTOHSCROLL
+    CONTROL         "Right Align Buttons",IDC_RIGHTALIGN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,202,77,10
+    CONTROL         "Selectable Text",IDC_SELECTABLETEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,202,77,10
+    CONTROL         "User Icon",IDC_USERICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,190,202,77,10
+    CONTROL         "HTML",IDC_HTML,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,216,47,10
+    LTEXT           "HTML Text:",IDC_STATIC,7,229,39,8
+    EDITTEXT        IDC_HTMLTEXT,7,242,322,45,ES_MULTILINE | ES_AUTOHSCROLL | WS_VSCROLL
+    PUSHBUTTON      "Test Me!!",IDC_BUTTON1,93,289,104,14
+    PUSHBUTTON      "OK",IDCANCEL,279,289,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_MESSAGEBOX_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 329
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 303
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_MESSAGEBOXX_TIMEOUT_CAPTION "%1 (Closing in %2 seconds)"
+    IDS_MESSAGEBOXX_DISABLED_TIMEOUT_CAPTION "%1 (%2 seconds remaining)"
+    IDS_STRING3             "This is some text from a string table"
+    IDS_STRING4             "Some Text ""%1"""
+    IDS_STRING5             "A Caption ""%1"""
+    IDS_STRING6             "Some Text ""%1"" ""%2"""
+    IDS_STRING7             "A Caption ""%1"" ""%2"""
+END
+
+#endif    // English (Ireland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\MessageBox.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

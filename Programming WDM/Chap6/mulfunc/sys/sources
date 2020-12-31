@@ -1,0 +1,15 @@
+TARGETNAME=mulfunc
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+INCLUDES=..\..\..\generic
+TARGETLIBS=..\..\..\generic\obj$(BUILD_ALT_DIR)\$(CPU)\generic.lib \
+
+SOURCES= 	DriverEntry.cpp \
+		PlugPlayFdo.cpp \
+		stddcls.cpp \
+		PlugPlayPdo.cpp \
+		PowerFdo.cpp \
+		PowerPdo.cpp \
+		RemoveLock.cpp \
+		driver.rc

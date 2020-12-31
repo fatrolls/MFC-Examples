@@ -1,0 +1,28 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: HELLO.RC
+//
+#include "wpp.h"
+
+AppIcon	ICON hello.ico
+
+AppMenu MENU { 
+	MENUITEM "E&xit!", WPIDM_EXIT
+}
+
+DLGABOUT DIALOG  72,13,124,70
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS
+CAPTION "About Hello"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL "OK",IDOK,"Button",BS_DEFPUSHBUTTON | WS_TABSTOP | WS_CHILD | WS_VISIBLE,32,50,30,14
+    CONTROL "Written using the Windows++ Class Library by Paul DiLascia",-1,"static",WS_CHILD | SS_LEFT,32,18,88,28
+    CONTROL "AppIcon",-1,"static",SS_ICON | WS_CHILD,7,22,16,16
+    CONTROL "Windows++ HELLO Program",-1,"static",WS_CHILD | SS_LEFT,32,5,80,8
+END
+
+APPACCEL ACCELERATORS
+BEGIN
+    "^X", WPIDM_EXIT
+    "^Z",   WPIDM_MEMSTATS
+END

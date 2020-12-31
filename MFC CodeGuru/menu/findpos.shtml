@@ -1,0 +1,148 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Menu - Finding a menuitem from command id</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Finding a menu item position from command id</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:jochenr@iait.de">Jochen Ruhland</A>  <A HREF="http://www.iait.de">(www.iait.de) </A>. 
+
+<h3>Indentify a Menupos based on it's Command-ID</h3>
+
+<p>This is taken from a Doc/View-App that is mostly straight from the 
+AppWizard of VC5.</p>
+
+<p>I recently got the Problem, that I had to insert Menuitem at a specific 
+position _below_ a defined MenuItem. Unfortunaletly I found no easy way 
+to enumerate all item in the menubar, so I had to do it myself. In MFC 
+there is a func to get the Command-ID if you know the Menu and Position 
+but no func gives you the Menu and the Menupos from the CommandID :-(</p>
+
+This function will find the first menu item with the given command id looping
+through the submenu until it is found.
+
+<h4>It is used like this:</h4>
+
+<pre><tt><font COLOR="#990000">
+	CWnd* pWnd = AfxGetMainWnd();
+	CMenu *pMenu = pWnd-&gt;GetMenu();
+	int m_Pos = 0;
+	CMenu *pmMenu = pMenu;
+
+	// Insert the Menuitem ID_DUMPRECORD exactly 2 Positions below FileSaveAs
+	FindMenuPos( pMenu, ID_FILE_SAVE_AS, pmMenu, m_Pos );
+
+	m_Pos += 2;
+
+	InsertMenu(pmMenu, m_Pos, MF_BYPOSITION, ID_DUMPRECORD, "Print Record" );
+</font></tt></pre>
+
+<h4>with a little Hack for InsertMenu:</h4>
+
+<pre><tt><font COLOR="#990000">
+void CMainFrame::InsertMenu(CMenu* pMenu, UINT oldID, int Flags, UINT newID, const char * MenuText)
+{
+	if( pMenu == NULL )     return;
+	if(pMenu-&gt;GetMenuState( newID, Flags) == 0xFFFFFFFF )
+		pMenu-&gt;InsertMenu(oldID, Flags, newID, MenuText );
+	else
+		SetMenuState( newID, MF_ENABLED );
+}
+
+void CMainFrame::InsertMenu(UINT oldID, int Flags, UINT newID, const char * MenuText)
+{
+	CWnd* pWnd = AfxGetMainWnd();
+	CMenu *pMenu = pWnd-&gt;GetMenu();
+	InsertMenu(pMenu, oldID, Flags, newID, MenuText);
+}
+</font></tt></pre>
+
+<p>So that my InsertMenu inserts the MenuItem if it dos not exist, if it exist, 
+it will be enabled.</p>
+
+<h4>Find a specific Menupos based on the Command-ID</h4>
+
+<p>I havn't cheched it with cascading submenues, but IF MS tells the truth about their 
+MFC-functions, there should be no problems.</p>
+
+<pre><tt><font COLOR="#990000">
+bool CMainFrame::FindMenuPos(CMenu *pBaseMenu, UINT myID, CMenu * &amp; pMenu, int &amp; mpos)
+{
+	// REMARK: pMenu is a pointer to a Cmenu-Pointer
+	int myPos;
+	if( pBaseMenu == NULL )
+	{
+		// Sorry, Wrong Number
+		pMenu == NULL;
+		mpos = -1;
+		return true;
+	}
+	for( myPos = pBaseMenu-&gt;GetMenuItemCount() -1; myPos &gt;= 0; myPos-- )
+	{
+		int Status = pBaseMenu-&gt;GetMenuState( myPos, MF_BYPOSITION);
+		CMenu* mNewMenu;
+		
+		if( Status == 0xFFFFFFFF )
+		{
+			// That was not an legal Menu/Position-Combination
+			pMenu = NULL;
+			mpos = -1;
+			return true;
+		}
+		// Is this the real one?
+		if( pBaseMenu-&gt;GetMenuItemID(myPos) == myID )
+		{
+			// Yep!
+			pMenu = pBaseMenu;
+			mpos = myPos;
+			return true;
+		}
+		// Maybe a subMenu?
+		mNewMenu = pBaseMenu-&gt;GetSubMenu(myPos);
+		// This function will return NULL if ther is NO SubMenu
+		if( mNewMenu != NULL )
+		{
+			// rekursive!
+			bool found = FindMenuPos( mNewMenu, myID, pMenu, mpos);
+			if(found)
+				return true;	// return this loop
+		}
+		// I have to check the next in my loop
+	}
+	return false; // iterate in the upper stackframe
+}
+</font></tt></pre>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

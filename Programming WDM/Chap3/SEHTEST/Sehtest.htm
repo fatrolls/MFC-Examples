@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The SEHTEST Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The SEHTEST Sample</H2>
+<P>The SEHTEST Sample accompanies Chapter 3 and illustrates the use of a structured exception frame.</P>
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>SEHTEST.SYS is a WDM driver for a non-existent hardware device. </LI></UL>
+
+<H3>Building SEHTEST</H3>
+<P>To build SEHTEST.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named SEHTEST.DSP.</P>
+<H3>Testing SEHTEST</H3>
+<P>Install the SEHTEST.SYS driver. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows. The INF file is named DEVICE.INF. </P>
+<FONT COLOR="#ff0000"><P>Do not try to test this sample in Windows 98. </FONT>While WDM driver code is running, the FS register should always contain a special selector used for structured exception handling. There is a bug in Windows 98 that causes DriverEntry to be called with FS holding the wrong selector when you install this sample program. I'll post further information about this bug and possible workarounds on <A HREF="http://mspress.microsoft.com/mspress/products/2507">my web page</A> when I get it.</P>
+<P>The DriverEntry routine in SEHTEST establishes a structured exception frame and calls ProbeForWrite to attempt to validate an invalid pointer. ProbeForWrite will raise an exception that SEHTEST will catch.</P>
+<P>To verify that SEHTEST has done the right thing, you need to view the debugging output from the driver. Either run under the control of a debugger, or start DbgView (see <A HREF="http://www.sysinternals.com/">http://www.sysinternals.com</A>) beforehand.</P>
+<P>Note that the SEHTEST device will show up in the Device Manager display with a yellow exclamation mark to indicate that no driver could be loaded. This is the normal result of installing this sample, because DriverEntry returns a failure code.</P></BODY>
+</HTML>

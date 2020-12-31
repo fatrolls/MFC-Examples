@@ -1,0 +1,183 @@
+<HTML>
+<!-- $Revision: 2 $ -->
+<H1>Release 36</H1>
+
+<H2>What's New</H2>
+
+<P>
+
+<B><A HREF="CFileDirectory.htm">CFileDirectory</A></B> -
+This class gives you the capability to retrieve the
+names of files (complete full-path filenames) in
+a directory. You can fill in a CStringArray with the
+filenames or execute a callback function. You can
+process the files in a single directory or recurse
+through the subdirectories.
+
+<P>
+
+<B>CServiceApplication</B> - This
+class encapsulates all of the logic behind installing,
+removing and running from a command line (to make
+debugging easier) needed by a service application.
+
+<P>
+
+<B><A HREF="CVolume.htm">CVolume</A></B> -
+This class let's you eject removable media (CD-ROM's
+JAZ drives, tapes, etc). It also let's you
+lock drives.
+
+<P>
+
+<B>wfc_move_file_at_reboot</B> - This function let's
+you schedule a file to be moved at the next reboot.
+This is how system DLL's are upgraded.
+
+<H2>Bug Fixes/Enhancements</H2>
+
+<B><A HRF="CBitArray.htm">CBitArray</A></B> - 
+Anne Davidson
+(<A HREF="mailto:davidsoa@nichols.com">davidsoa@nichols.com</A>)
+found a couple of
+bugs. If you used <CODE>SetSize()</CODE> then you were probably
+affected.
+
+<P>
+
+<B><A HREF="DumyFile.htm">CDummyFile</A></B> -
+Fabio Angelini
+(<A HREF="mailto:fabioang@iol.it">fabioang@iol.it</A>
+or <AHREF="mailto:Anico.sw@ibm.net">Anico.sw@ibm.net</A>)
+suggested adding functions to return <CODE>CreateFile</CODE>()
+parameter values for <A HREF="serial.htm">CSerialFile</A>. I
+added them to CDummyFile instead.
+
+<P>
+
+<B>CExtensibleMarkupLanguageEntities</B> -
+Many thanks go to Darin Greaham (greaham@cyberramp.net)
+(<A HREF="mailto:greaham@cyberramp.net">greaham@cyberramp.net</A>)
+for finding where I was being extraordinarily stupid in the
+<B>Resolve</B>() method. I use a binary search but forgot to
+compute where to go for the next comparison. The result was
+and endless loop. ROOKIE MISTAKE!
+
+<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> -
+Many thanks go to Johann Plank
+(<A HREF="mailto:johann.plank@atabb.mail.abb.com">johann.plank@atabb.mail.abb.com</A>)
+for finding where I forgot to add code in <B>CountChildren</B>().
+What kind of moron forgets to write code?? Geez...
+
+<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> -
+Stephane Drouin
+(<A HREF="mailto:stephane.drouin@inference.com">stephane.drouin@inference.com</A>)
+found an off-by-one error in parsing <CODE>&lt;![CDATA[</CODE> sections in
+the <B>m_ParseCDATASection</B>() method.
+
+<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> -
+Thanks to Mats Johnsson
+(<A HREF="mailto:mats.johnsson@comfacts.com">mats.johnsson@comfacts.com</A>)
+adding a human readable error message capability. Now when <B>Parse</B>()
+returns FALSE, you can get a string containing something fitting to show
+to a human explaining what weny wrong.
+
+<P>
+
+<B><A HREF="CMicrosoftTape.htm">CMicrosoftTape</A></B> - 
+Yehuda Hahn
+(ygh@cfsnet.com)
+(<A HREF="mailto:ygh@cfsnet.com">ygh@cfsnet.com</A>),
+is on the Beta list for Visual C++ 6.0. It has a UINT64
+data type now which collided with the UINT64 data type
+defined in the <CODE>samth.h</CODE> header file. The
+old UINT64 is now called SIXTY_FOUR_BIT_UNSIGNED_INTEGER.
+Let's see Microsoft collide with that name!
+
+<P>
+
+<B><A HREF="CNetworkUser.htm">CNetwork</A></B> - Fixed a bug, thanks to
+Dirk Tolson
+(<A HREF="mailto:dirk.tolson@srs.gov">dirk.tolson@srs.gov</A>),
+where I would go into an endless loop when there were
+more user accounts than could be read in a single read.
+This affected the <B>Enumerate</B>() method.
+
+<P>
+
+<B><A HREF="serial.htm">CSerialFile</A></B> - Thanks go to
+Fabio Angelini
+(<A HREF="mailto:fabioang@iol.it">fabioang@iol.it</A>
+or <AHREF="mailto:Anico.sw@ibm.net">Anico.sw@ibm.net</A>)
+for adding the ability to attach existing file handles. He
+also suggested getting input and output queue sized from 
+the OS rather than retrieving stored class members. There are
+also functions that return the flags for all parameters
+to <CODE>CreateFile</CODE>().
+
+<P>
+
+<B><A HREF="CSystemTime.htm">CSystemTime</A></B> - Added a method, thanks to
+Dean Grimm
+(<A HREF="mailto:dean@cortron.com">dean@cortron.com</A>),
+that takes a TIMESTAMP_STRUCT data type from <CODE>sqltypes.h</CODE>
+in the <B>Copy</B>() method (and copy constructor). While doing this,
+I uncovered a bug when copying from a CTime object. The day of week was
+not getting set properly. It is fixed now.
+
+<P>
+
+<B>Map2Def</A></B> - I've added the removal of exporting
+static strings. Map2Def converts MAP files to DEF files.
+
+<P>
+
+<B>HTML</A></B> - Robin Abecasis
+(<A HREF="mailto:robina@pacific.net.sg">robina@pacific.net.sg</A>)
+Found a spot where I didn't finish renaming a variable. It
+compiles now.
+
+<P>
+
+<H2>Stuff I forgot to Document</H2>
+
+<P>
+
+<B><A HREF="wfc_append_text_to_edit_control.htm">wfc_append_text_to_edit_control</A></B> - C Function
+that appends text to an edit control.
+
+<P>
+
+<B><A HREF="wfc_delete_oldest_file.htm">wfc_delete_oldest_file</A></B> - C function
+that deletes the oldest file in a directory. It will return TRUE if a file
+was deleted or FALSE it a file was not deleted.
+This is useful in a file cache management system.
+
+<P>
+
+<B><A HREF="wfc_get_directory_usage_percentage.htm">wfc_get_directory_usage_percentage</A></B> - C function
+that returns an integer percentage of the space used on a volume by a directory.
+This is useful in a file cache management system.
+
+<P>
+
+<H2>Etcetera</H2>
+
+Someone suggested that I separate WFC from its samples. I did this.
+If you want the samples for the library, click
+<A HREF="sample.zip">here</A>
+or <A HREF="http://www.erols.com/sblackbu/SAMPLE.ZIP">here</A>
+
+<HR>
+<A HREF="Release35.htm">Release 35 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS><A HREF="mailto:wfc@pobox.com">wfc@pobox.com</A></ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

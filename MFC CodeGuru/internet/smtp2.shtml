@@ -1,0 +1,147 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Internet - SMTP MFC Classes</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">SMTP MFC Classes</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:clyburnw@enmu.edu">Wes Clyburn</a></p>
+
+<html>
+
+<head>
+<title>SMTP MFC Classes</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h1>SMTP MFC Classes</h1>
+
+<p>The classes presented in this article allow your application
+to send e-mail using the SMTP protocol. They are part of a
+library I developed for a series of projects that includes a POP3
+class, an IMAP class, and a PostOffice class that manages all
+e-mail activity and provides a storage mechanism (like Outlook's
+folders).</p>
+
+<p>This implementation of the SMTP protocol differs from the
+other on this site (which is very good, and easier to understand
+than mine) in that I deal with messages as discreet entities that
+are passed around to objects that do something with them (like
+send them using SMTP). Additionally, I hide all protocol
+&quot;ping-ponging&quot;, prefering to do a single SendMessage()
+call as opposed to a sequence of &quot;MAIL From:&quot;,
+&quot;RCPT To:&quot;, and &quot;DATA&quot; function calls.</p>
+
+<p>Additionally, this code shows how to properly construct a
+header and cook a message body.</p>
+
+<p>There are two classes in this package, and I'll describe
+briefly how they are used:</p>
+
+<h2>CMessage</h2>
+
+<p>This class encapsulates an e-mail message. It differentiates
+between the header and the body, and builds standard header lines
+such as From, To, Date, and X-Mailer. In addition, it supports
+&quot;friendly&quot; names in the From and To fields. Altogether,
+this class allows your application to send &quot;cooked&quot;
+messages to the server instead of raw DATA commands.</p>
+
+<p>I have a derivative of CMessage that handles file attachments,
+which I may or may not post later (depending on whether or not I
+post them, which I may or may not, depending).</p>
+
+<h2>CSMTP</h2>
+
+<p>This class prepares a CMessage and handles all negotiation
+with the server, including getting the local host name for the
+HELO command, prepping the message header and ensuring that the
+body is fit to send (such as the case where user types a single
+period on a line-- it's part of the message body, but if not
+handled correctly, SMTP will treat it as a end-of-data marker and
+all remaining body text will be lost). I'm sure there are some
+monkey wrenches that could be thrown into it that would clobber
+some mail readers, and if you find any I will un-ignore you.</p>
+
+<p>In short, its a relatively robust package that can be used as
+the basis for real applications with a little tweaking.</p>
+
+<h2>Sending Mail</h2>
+
+<p>Sending a message is easy:</p>
+
+<pre>void CMyView::OnClickSendButton()
+{
+	CMessage msg;
+	CSMTP smtp( &quot;mymailserver.com&quot; ); // You can set server/port later, too.</pre>
+
+<pre>	// Populate the message
+	// Note the friendly names, and that recipients can be added in bulk
+	// or individually.
+	msg.m_sFrom = &quot;Ultramegahunk&lt;clyburnw@enmu.edu&gt;&quot;;
+	msg.AddMultipleRecipients( &quot;Pookie&lt;pookie@foo.com&gt;;Snuggle Bumpkin&lt;snuggles@chakka_khan.com&gt;&quot;);
+	// Oops, forgot one
+	msg.AddRecipient( &quot;elvis@graceland.com&quot;, &quot;You're Dead&quot; );
+	msg.m_sSubject = &quot;Ouch&quot;;
+	msg.m_sBody = &quot;Ow, god, mom, the dog he bited me.&quot;;</pre>
+
+<pre>	// Send the message
+	// You can connect once, and issue multiple SendMessage()
+	// calls before disconnecting-- all messages in an &quot;inbox&quot;,
+	// for instance.
+	smtp.Connect();
+	smtp.SendMessage( &amp;msg );
+	smtp.Disconnect();
+}	</pre>
+
+<h2>Using the Package</h2>
+
+<p>I've included Component-Gallery-ready files in the ZIP that
+can simply be added to your project. You might want to make a
+folder for them in your SharedIDE directory, and toss their butts
+in there. The files are "Mail Message.ogx" and "SMTP.ogx".</p>
+
+<p>Additionally, a sample project (one of those no-frills,
+3-minute, to-hell-with-the-user jobbies) that zaps off a message
+is included. When extracting, be sure to "Use Folder Names".</p>
+
+<p>These classes can be included into any MFC project. I've used
+them for ActiveX controls, ISAPI DLLs, and what have you. It's
+not inherently threadsafe so I either sprinkle CCrits around when
+I need them, or ensure that I only use _local_ CMessage and CSMTP
+objects.</p>
+
+<a href="smtp2_source.zip">Download Project</a>
+
+<P>Posted on: April 11, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

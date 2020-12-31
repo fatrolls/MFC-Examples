@@ -1,0 +1,56 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/12|ColourPicker.shtml||Office 97 style Colour Picker control|Chris Maunder
+1998/04/16|gridctrllist.shtml||MFC Grid control with drop down lists|Motty Cohen
+1998/04/06|GridCtrl.shtml||MFC Grid control (derived from CWnd)|Chris Maunder
+1998/04/11|edit_cr.shtml||Eating returns in a single line edit|Petr Novotny
+1998/04/12|animated_button.shtml||AVI - Animated button|Oscar - R.Voska
+1998/04/12|autocompleting_combo.shtml||Auto-completion ComboBox|Chris Maunder
+1998/04/12|autocompleting_combo2.shtml||Auto-completion ComboBox (2)|Caroline Price
+1998/04/12|autofit_header.shtml||Autofit Header Control|Baldvin Hansson
+1998/04/12|bitmap_text_button.shtml||PushButton with bitmap & text|Michael Santoro
+1998/04/12|btn_circular_button.shtml||Circular Push Button|Kunix
+1998/04/12|change_tooltip.shtml||Change tooltips at runtime|Hans Wedemeyer
+1998/04/12|check_for_enter.shtml||Checking for Enter Key Presses|Laura Michaels
+1998/04/12|combo_color_picker.shtml||Combobox Color Picker|Baldvin Hansson
+1998/04/12|combo_color_picker2.shtml||Combobox Color Picker 2|Eric Zimmerman
+1998/04/12|combo_dropdown_dropdownlist.shtml||ComboBox - Switch between drop down & drop list mode|Robert Cremer
+1998/04/12|credit_static.shtml||Scrolling credits using CStatic|Pål K. Tønder
+1998/04/12|credit_static2.shtml||Scrolling (wave) credits using CStatic|Jens Kreiensiek
+1998/04/12|cstatic_digital_clock.shtml||CStatic as digital clock|Xie Jingwei
+1998/04/12|cstatic_filespec.shtml||Static text to display long filenames with ellipses|Ravi Bhavnani
+1998/04/12|datatip.shtml||DataTip|Simon Wilson
+1998/04/14|date_time_picker3.shtml||A class for the IE3 DateTime Picker|Chris Maunder
+1998/04/12|drag_edit.shtml||Drag text between edit controls|Sam Lu
+1998/04/12|filedragedit.shtml||Drag files into CEdit|Chris Losinger
+1998/04/12|hyperlink.shtml||Hyperlink control|Chris Maunder
+1998/04/12|ie4_controls_classes.shtml||Classes for new IE4 controls|Luis Barreira
+1998/04/12|multicol_combo.shtml||Multicolumn Combobox|Jakawan Ratiwanich
+1998/04/12|ownerdraw_tab.shtml||Implementing an owner drawn Tab Control|Chris Maunder
+1998/04/12|round_buttons.shtml||Round Buttons|Chris Maunder
+1998/04/12|syscol_static.shtml||CStatic with bitmap sensitive to change in system colours|Pål K. Tønder
+1998/04/12|tooltip_for_disabled_control.shtml||Tooltip for disabled controls|Ran Almog
+1998/04/12|triangle_button.shtml||Triangular Button|Janus Kjempff
+1998/04/12|updating_header.shtml||Contiuously updating sizing header|Alger Pike
+1998/04/12|button_color_picker.shtml||Combobox Color Picker|Benoit Dufort
+1998/04/12|inplace_edit.shtml||Inplace edit control|Mario Contestabile
+1998/04/12|check_frame.shtml||CheckFrame Control|Christian Skovdal Andersen
+1998/03/28|avidemo.shtml||CAnimateCtrl() Example Code|Kirk Stowell
+1998/04/11|vector_control.shtml||Custom 3-D Vector Control|Eran Yariv
+1998/04/12|tracklook_button.shtml||CTrackLookButton|strategma@mail.aster.net
+1998/04/12|button_color_picker2.shtml||A Color Picker|Luis Ortega
+1998/04/13|history_edit.shtml||History Edit Control|
+1998/04/19|progress_wnd.shtml||A Popup Progress Window|Chris Maunder

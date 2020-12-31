@@ -1,0 +1,165 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="Author" content="Kirk Stowell">
+<title>Toolbar - How to display tooltips for a toolbar in a dialog</title>
+</head>
+
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+<!-- A word from our sponsors... -->
+
+<table border="0" width="100%">
+  <tr>
+    <td align="center"><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+<!-- Article Title -->
+<font color="#a0a099">
+
+<h3 align="center"><b>How to display tooltips for a toolbar in a dialog</b></h3>
+</font>
+
+<hr>
+<!-- Author and contact details -->
+
+<p>This article was contributed by <!-- Author Email and Author Name --> <a href="mailto:rmore@cri.com">Randy More</a>. </p>
+
+<p><!-- Text --> It is relatively easy to place a toolbar in a dialog box, but I had a hard time making
+the tooltips appear since none of the TTN_xxxx message handlers are present in a CDialog
+derived class. This article describes a simple technique for getting tooltips when you
+have a toolbar in a dialog. It also gives a brief overview of the steps involved in adding
+a toolbar to a dialog box.</p>
+
+<p><b><i>Step 1</i></b></p>
+
+<p>In the dialog's header file you must add a CToolBar instance and an entry in the
+message map to handle the tooltip messages.<br>
+<font color="#990000"><tt><br>
+<!-- start a block of source code -->protected:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CToolBar cToolBar;<br>
+</tt></font></p>
+<!-- end the block of source code -->
+
+<p>at the bottom of the wizard generated message map entries add:</p>
+
+<p><font color="#990000"><tt><!-- start a block of source code --> //}}AFX_MSG<br>
+afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult);<br>
+DECLARE_MESSAGE_MAP()<br>
+</tt></font></p>
+<!-- end the block of source code -->
+
+<p><b><i>Step 2</i></b></p>
+
+<p>In dialog's implementation file add the following to the end of <b>OnInitDialog</b> to
+show the toolbar.</p>
+
+<p><font color="#990000"><tt><!-- start a block of source code --> //add the tool bar to the dialog<br>
+cToolBar.Create(this);<br>
+cToolBar.LoadToolBar(IDR_TOOLBAR);<br>
+cToolBar.ShowWindow(SW_SHOW);<br>
+cToolBar.SetBarStyle(CBRS_ALIGN_TOP | CBRS_TOOLTIPS | CBRS_FLYBY);<br>
+RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);<br>
+</tt></font></p>
+<!-- end the block of source code -->
+
+<p>At the bottom of the message map add the following:</p>
+
+<p><font color="#990000"><tt><!-- start a block of source code --> FX_MSG_MAP<br>
+ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)<br>
+ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)<br>
+END_MESSAGE_MAP()<br>
+</tt></font></p>
+<!-- end the block of source code -->
+
+<p>Finally add the message handler method as entered in the message map:</p>
+
+<p><font color="#990000"><tt><!-- start a block of source code --> BOOL CToolBarTipTestDialog::OnToolTipText(UINT, NMHDR*
+pNMHDR, LRESULT* pResult)<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSERT(pNMHDR-&gt;code == TTN_NEEDTEXTA || pNMHDR-&gt;code
+== TTN_NEEDTEXTW);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// if there is a top level routing frame then let it handle
+the message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (GetRoutingFrame() != NULL) return FALSE;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// to be thorough we will need to handle UNICODE versions of
+the message also !!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TCHAR szFullText[512];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CString strTipText;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UINT nID = pNMHDR-&gt;idFrom;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (pNMHDR-&gt;code == TTN_NEEDTEXTA &amp;&amp;
+(pTTTA-&gt;uFlags &amp; TTF_IDISHWND) ||<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pNMHDR-&gt;code == TTN_NEEDTEXTW
+&amp;&amp; (pTTTW-&gt;uFlags &amp; TTF_IDISHWND))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// idFrom is actually the HWND
+of the tool <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nID =
+::GetDlgCtrlID((HWND)nID);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (nID != 0) // will be zero on a separator<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AfxLoadString(nID,
+szFullText);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strTipText=szFullText;<br>
+<br>
+#ifndef _UNICODE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (pNMHDR-&gt;code ==
+TTN_NEEDTEXTA)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lstrcpyn(pTTTA-&gt;szText,
+strTipText, sizeof(pTTTA-&gt;szText));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_mbstowcsz(pTTTW-&gt;szText,
+strTipText, sizeof(pTTTW-&gt;szText));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+#else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (pNMHDR-&gt;code ==
+TTN_NEEDTEXTA)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_wcstombsz(pTTTA-&gt;szText,
+strTipText,sizeof(pTTTA-&gt;szText));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lstrcpyn(pTTTW-&gt;szText,
+strTipText, sizeof(pTTTW-&gt;szText));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+#endif<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*pResult = 0;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// bring the tooltip window
+above other popup windows<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;::SetWindowPos(pNMHDR-&gt;hwndFrom,
+HWND_TOP, 0, 0, 0, 0,SWP_NOACTIVATE|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWP_NOSIZE|SWP_NOMOVE|SWP_NOOWNERZORDER);
+return TRUE;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+} </tt></font></p>
+<!-- end the block of source code -->
+
+<p>Date Posted: 5 June, 1998<!-- date here --> </p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<table border="0" width="100%">
+  <tr>
+    <td width="33%"><a href="http://www.codeguru.com"><font size="2">Goto HomePage</font></a></td>
+    <td width="33%"><p align="center"><font size="1">© 1998 Zafir Anjum</font>&nbsp; </td>
+    <td width="34%"><p align="right"><font size="2">Contact me: <a
+    href="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+</body>
+</html>

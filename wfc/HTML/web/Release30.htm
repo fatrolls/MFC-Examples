@@ -1,0 +1,38 @@
+<HTML>
+<!-- $Revision: 7 $ -->
+<H1>Release 30</H1>
+<H2>Bug Fixes/Enhancements</H2>
+<B><A HREF="CCryptographicAlgorithm.htm">CCryptographicAlgorithm</A></B> - Added more enums for the new algorithms included in VC5.<P>
+<B><A HREF="CCryptographicKey.htm">CCryptographicKey</A></B> - Fixed a design problem in
+the Crypto API. Now what you decrypt what you encrypted. This ain't what
+happens when you use the Crypto API. In short, I added automatic stripping
+of any pad bytes.<P>
+<B><A HREF="CRandomNumberGenerator.htm">CRandomNumberGenerator</A></B> - 
+Guy Gascoigne - Piggford (ggp@informix.com) provided a better random number
+generator algorithm. This one is good for 900 million pseudo-random
+numbers per seed before it starts to repeat.<P>
+<H2>New Classes</H2>
+<B><A HREF="CDataChunk.htm">CDataChunk</A></B> -
+Allows for handling of data chunks. Patterned after RIFF.<BR>
+<B><A HREF="CDataFile.htm">CDataFile</A></B> -
+A derivative of CFile that makes it easy to read/write
+<A HREF="CDataChunk.htm">CDataChunk</A>'s.<BR>
+<B><A HREF="CDataSocket.htm">CDataSocket</A></B> -
+A derivative of <A HREF="CDataFile.htm">CDataFile</A>
+that allows you to transmit
+<A HREF="CDataChunk.htm">CDataChunk</A>'s over a
+<A HREF="CSimpleSocket.htm">CSimpleSocket</A>.<BR>
+<B><A HREF="CPasswordChangeFilter.htm">CPasswordChangeFilter</A></B> - A class
+that makes it easy to intercept password changes.<BR>
+<B><A HREF="CQueue.htm">CQueue</A></B> - A
+simple thread-safe data queue. Designed for speed (i.e. no linked list).<BR>
+<B><A HREF="CReed.htm">CReedSolomonErrorCorrectionCode</A></B> -
+Allows you to put a forward
+error correction code onto a block of data. This class blocks data into 255
+byte chunks. Up to 16 of those bytes can be scrambled and the errors will
+automatically be fixed.<BR>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS>Internet: wfc@pobox.com</ADDRESS>
+<A HREF="http://ourworld.compuserve.com/homepages/Sam_Blackburn" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

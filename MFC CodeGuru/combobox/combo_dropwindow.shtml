@@ -1,0 +1,134 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Combobox - Drop down a popdown window instead of a dropdown list from a combobox</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Drop down a popdown window instead of a dropdown list from a combobox
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+<p>This article was contributed by <a HREF="mailto:aravindw@hotmail.com">Aravind Corera</a>.
+
+<!-- Sample image and source code/demo project --></p>
+
+<p><u>Environment:</u> VC++ 5.0 , Windows NT 4.0
+
+<p>&nbsp;</p>
+
+<p>This article explains how to drop down a tool window from a combobox.
+The dropdown tool window will replace the default dropdown list in an ordinary 
+combobox. The following procedure describes how to go about it:</p>
+
+<p><u><strong>Step 1:</strong> </u></p>
+
+<p>When the user clicks the arrow button in the combobox, the
+ON_CBN_DROPDOWN handler gets
+to have a go at it. ON_CBN_DROPDOWN(IDC_COMBO1, OnDropdownCombo)</p>
+
+<p>Now to disable the default drop down call ShowDropDown() member
+function of the
+combobox with the flag set to FALSE.</p>
+
+<FONT COLOR="#990000"><TT><PRE>
+void CCoolComboDlg::OnDropdownCombo()
+{
+
+	// prevent drop down of the combo
+	m_CoolCombo.ShowDropDown(FALSE);  
+
+	// Display our own popdown window instead 
+	DisplayPopdownWindow(); 
+} 
+</tt></PRE></FONT>
+
+<p><u><strong>Step 2:</strong></u></p>
+
+<p>Now it's time to display our pop down window. Make sure you create the
+window with the
+extended styles WS_EX_TOPMOST and WS_EX_TOOL_WINDOW. The
+WS_EX_PALETTE_WINDOW style is
+optional. </p>
+
+<FONT COLOR="#990000"><TT><PRE>
+void CCoolComboDlg::DisplayPopdownWindow()
+{
+	//Get the combo's alignment
+	CRect rectCombo;
+	m_CoolCombo.GetWindowRect(&amp;rectCombo);
+
+	//if window is already present delete it
+	if(m_pWndPopDown) delete m_pWndPopDown;
+	
+	///Register class and create window
+	LPCTSTR lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW);
+	m_pWndPopDown = new CPopDownWnd();
+	m_pWndPopDown-&gt;CreateEx(WS_EX_TOPMOST | WS_EX_TOOLWINDOW|WS_EX_PALETTEWINDOW
+	                        lpszClass, 
+	                        _T(&quot;&quot;),
+	                        WS_POPUP | WS_VISIBLE,
+	                        rectCombo.left,rectCombo.bottom, 
+	                        rectCombo.Width(),200,
+	                        m_CoolCombo.GetSafeHwnd(),
+	                        NULL,
+	                        NULL);
+}
+</tt></PRE></FONT>
+
+<p><u><strong>Step 3:</strong></u></p>
+
+<p>Now there is one problem that crops up. Grab the title bar and move the
+dialog. What
+happens ?. Our tool window floats freely independent of the dialog. So we
+need to prevent
+the user from dragging the dialog. Trapping the non client hit test
+notifications is the
+way to go about it. When the user clicks the title bar , a HTCAPTION is
+returned. To
+nullify the drag attempt, simply return HTNOWHERE. </p>
+
+<FONT COLOR="#990000"><TT><PRE>
+UINT CCoolComboDlg::OnNcHitTest(CPoint point) 
+{
+	// TODO: Add your message handler code here and/or call default
+	
+	UINT nHitTest =  CDialog::OnNcHitTest(point);
+	//HTCAPTION  implies user clicked on the title bar , so return HTNOWHERE 
+	return (nHitTest == HTCAPTION) ? HTNOWHERE : nHitTest;
+}
+</tt></PRE></FONT>
+
+<p>That's it. So you now have your own window popping out from the
+combobox instead of the
+default list entries. </p>
+
+<!-- Remember to update this -->
+<p>Last updated: 13 June 1998 </p>
+
+<hr>
+
+<!-- Codeguru contact details -->
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1997 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+</body>
+</html>

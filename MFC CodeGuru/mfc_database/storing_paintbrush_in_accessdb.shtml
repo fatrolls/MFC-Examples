@@ -1,0 +1,138 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Michael Hejselbak">
+   <TITLE><!-- Section Title -->Database - <!-- Article Title -->Storing "Paint Brush" images in a Access DB</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Storing "Paint Brush" images in a Access DB
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:otto@polaris.it"><!-- Author Name -->Luigi Ottoboni</A>.
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+This example demonstrates how to store a "Paint Brush" image in a Access DB.
+In my code I have created a CDaoRecordset derived class for handling and reading the binary data. 
+Class Wizard binds a CLongBinary to the Ole Object field when creating the recordset. 
+CLongBinary is difficult to manage, so in the recordset, that is to receive the binary 
+data, I bind a CByteArray variable to the field. 
+<p>Example : 
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+::DoFieldExchange(CDaoFieldExchange* pFX) 
+
+DFX_LongBinary(pFX, _T("[Images]"), m_Images);
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+<p><!-- The 'p' starts a paragraph of normal text -->
+become
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+DFX_Binary(pFX, _T("[Images]"), m_Images); 
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+In CDAORecordSet the public member "CLongBinary m_Images" become "CByteArray m_Images" 
+
+<p>The function code is : 
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+BOOL CBLOBSDlg::ReadFromBLOB(CByteArray & DBArray) 
+{ 
+  CByteArray Array; 
+  Array.Copy( DBArray); 
+  // the header of BLOB is OLE stuff like "Paint Brush Application" .... ecc.. 
+  // the len is 78 byte ( I do not know for other headers ) 
+  int HeaderLen =   78 + sizeof(BITMAPFILEHEADER); 
+  Array.RemoveAt( 0, HeaderLen ); // I cut all Headers 
+  
+  // some BMP information 
+  BITMAPINFOHEADER &bmiHeader = *(LPBITMAPINFOHEADER)Array.GetData() ; 
+  BITMAPINFO &bmInfo = *(LPBITMAPINFO)Array.GetData() ; 
+  
+  
+  // If bmiHeader.biClrUsed is zero we have to infer the number 
+  // of colors from the number of bits used to specify it. 
+  int nColors = bmiHeader.biClrUsed ? bmiHeader.biClrUsed : 1 << bmiHeader.biBitCount; 
+
+  LPVOID lpDIBBits; 
+  if( bmInfo.bmiHeader.biBitCount > 8 ) 
+      lpDIBBits = (LPVOID)((LPDWORD)(bmInfo.bmiColors + bmInfo.bmiHeader.biClrUsed) + 
+                        ((bmInfo.bmiHeader.biCompression == BI_BITFIELDS) ? 3 : 0)); 
+  else 
+      lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors); 
+  
+
+  CClientDC dc(NULL); 
+  
+  HBITMAP hBmp = CreateDIBitmap( dc.m_hDC,   // handle to device context 
+                                 &bmiHeader,     // pointer to bitmap size and format data 
+                                 CBM_INIT,       // initialization flag 
+                                 lpDIBBits,      // pointer to initialization data 
+                                 &bmInfo,        // pointer to bitmap color-format data 
+                                 DIB_RGB_COLORS);                // color-data usage 
+  
+  OleBmp.Attach( hBmp ); 
+
+  Array.RemoveAll(); //Relese Memory 
+
+  return TRUE; 
+} 
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+Note: 
+<p>1: In the example the DB path in "CString CDaoRecorset::GetDefaultDBName()" must be changed!!  
+<p>2: This code is for VC++ 5 
+
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="storing_paintbrush_in_accessdb.zip">Download source - 36KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 3 Juli 1998<!-- date here -->
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

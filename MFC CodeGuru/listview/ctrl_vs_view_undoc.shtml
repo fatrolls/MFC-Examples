@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>CListCtrl - Using derived CListCtrl in CListView - Undocumented</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using derived CListCtrl in CListView - Undocumented</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+<P>If you weren't satisfied with the answer to this same issue in the previous topic then maybe this one will. However, there is a big risk involved. It uses some undocumented features of MFC and maybe I haven't got all the angles covered. So use this at your own RISK.
+
+<p>The basic idea to make this work is that we set up a couple of member variable of the CListCtrl class to connect it to the actual control and we funnel the windows messages on to the CListCtrl object. The actual list view control is owned by the CListView derived object and MFC does not allow a single control to be owned by multiple C++ objects.
+
+<p>In the discusssions below, CMyListCtrl is the CListCtrl derived class we want to use in CListVw which is turn is a CListView derived class.
+<h4>Step 1: Derive a new class from CMyListCtrl</h4>
+There are two reasons for deriving a new class. First, the CListView derived class needs access to some of the protected members of CListCtrl, so this class declares the CListView derived class as a friend. Second, we override AssertValid().  AssertValid() is defined for debug builds only and our overridden function does nothing. The default version would have asserted since our object is not really in a consistent state as far as MFC is concerned.
+
+<PRE><TT><FONT COLOR="#990000">class CFriendlyListCtrl : public CMyListCtrl
+{
+	CFriendlyListCtrl() {};
+
+#ifdef _DEBUG
+	void AssertValid() const {}
+#endif	
+
+	friend class CListVw;
+};
+</FONT></TT></PRE>
+
+<h4>Step 2: Add member variable in CListVw</h4>
+Add a protected member of the type CFriendlyListCtrl in ClistVw. We will use this object to connect to the list view control and channel the messages to. Use this member whereever you would use GetListCtrl().
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	CFriendlyListCtrl m_listctrl;
+</FONT></TT></PRE>
+
+<h4>Step 3: Override OnCreate in CListVw</h4>
+Override the OnCreate() function. The framework calls this function immediately after the window is created. After calling the base class version we initialize the member variable m_listctrl. We assign the handle of the control to the m_hWnd member. This member is implicitly used by many of the function of a CWnd derived class. The next variable is probably unfamiliar. The m_pfnSuper is a function pointer and it holds the original WndProc of the control before it was sub-classed by MFC. We call the PreSubclassWindow() to make sure that any code in there will be executed.
+
+<PRE><TT><FONT COLOR="#990000">int CListVw::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
+	if (CListView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	
+	
+	m_listctrl.m_hWnd = m_hWnd;
+	m_listctrl.m_pfnSuper = m_pfnSuper;
+	m_listctrl.PreSubclassWindow();
+}
+</FONT></TT></PRE>
+
+<h4>Step 4: Override message handling functions</h4>
+There are three message handling functions that we have to override. In each of these, if the CListVw class does not handle the message we forward it to the CMyListCtrl class.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CListVw::PreTranslateMessage(MSG* pMsg) 
+{
+	if( ! CListView::PreTranslateMessage(pMsg) )
+		return m_listctrl.PreTranslateMessage(pMsg);
+
+	return FALSE;
+}
+
+LRESULT CListVw::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+{
+	LRESULT lResult = 0;
+	if (!OnWndMsg(message, wParam, lParam, &lResult))
+		if( !m_listctrl.OnWndMsg(message, wParam, lParam, &lResult))
+			lResult = DefWindowProc(message, wParam, lParam);
+	return lResult;
+}
+
+
+BOOL CListVw::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, 
+							LRESULT* pLResult) 
+{
+	if( !CListView::OnChildNotify(message, wParam, lParam, pLResult) )
+		return m_listctrl.OnChildNotify(message, wParam, lParam, pLResult) ;
+
+	return FALSE;
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

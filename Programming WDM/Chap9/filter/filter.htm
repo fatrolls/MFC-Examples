@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The FILTER Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The FILTER Sample</H2>
+<P>The FILTER Sample accompanies Chapter 9 and illustrates the mechanics of writing a WDM filter driver.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>FILTER.SYS (SYS subdirectory) is a WDM filter driver.</LI>
+<LI>FILTJECT.DLL (FILTJECT subdirectory) is user-mode DLL for installing a filter for an existing device.</LI></UL>
+
+<H3>Building FILTER</H3>
+<P>To build FILTER.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named SYS\FILTER.DSP.</P>
+<P>To build FILTJECT.DLL, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named FILTJECT\FILTJECT.DSP.</P>
+<H3>Testing FILTER</H3>
+<P>First select an existing device that uses a WDM driver. An easy way to proceed is to install one of the sample devices for this book. Then open SYS\DEVICE.INF in a text editor and replace the string "IOCTL Sample Device" with the name of the device you've selected. This string appears twice, by the way. Also, if you happen to pick the <A HREF="../ioctl/ioctl.htm">IOCTL sample</A>, you won't need to change a thing in the INF file.</P>
+<P>Right-click on the SYS\DEVICE.INF file and select the Install choice from the context menu. Setup will copy FILTER.SYS and FILTJECT.DLL into the Drivers and System or System32 directory, respectively, and it will execute FILTJECT to insert FILTER as an upper filter for your device. <I>Note that you should not use FASTINST or the Add New Hardware wizard to install FILTER.SYS.</P>
+</I><P>The next time you start the device you modified, FILTER.SYS will print a debugging message for each IRP sent to the device. You’ll need to be running a debugger or DbgView to see these messages. You can restart most devices in Windows 2000 by disabling and then reenabling them. In Windows 98, you generally need to reboot the computer.</P>
+<P>To remove the filter, execute the following command at a command prompt:</P><DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>C:&gt;<U>rundll32 filtject,InjectFilter "IOCTL Sample Device" -remove filter<I>[.sys]</P></DIR>
+</DIR>
+
+</I></U></FONT><P>Substitute the name of your own device for "IOCTL Sample Device". Include ".sys" in Windows 98; leave ".sys" out in Windows 2000.</P>
+<H1>About FILTJECT.DLL</H1>
+<P>FILTJECT.DLL allows you add and remove filter drivers for an existing hardware device whose FriendlyName or DeviceDesc you happen to know. You use this DLL in conjunction with RUNDLL32 like this:</P><DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>C:&gt;<B><U>rundll32 filtject,InjectFilter</B> devname<I> </I>filtname<I> </I>[options]</P></DIR>
+</DIR>
+
+</U></FONT><P>Where:</P><DIR>
+<DIR>
+
+<I><P>devname</I> is the name of an existing device. Use either the FriendlyName or the DeviceDesc of a device. FILTJECT will add or remove a filter from all devices having this name.</P>
+<I><P>filtname</I> is the name of the service (Windows 2000) or driver (Windows 98) that you want to inject or remove. In the FILTER sample, this is either FILTER or FILTER.SYS.</P>
+<I><P>options</I> specify the exact operation you want to perform:</P><DIR>
+<DIR>
+
+<P>-ADD or -REMOVE indicates whether you're adding or removing a filter. -ADD is the default if you don't mention either of these options.</P>
+<P>-FIRST, -LAST, -BEFORE xxx, or -AFTER xxx indicates where you want a new filter positioned in the list of existing filters. Specify the exact name, except for upper and lower case, of any existing filter if you use -BEFORE or -AFTER. -FIRST is the default if you don't mention any of these options.</P>
+<P>-UPPER or -LOWER indicates whether you're adding or removing an upper filter or a lower filter. -UPPER is the default if you don't mention either of these options.</P></DIR>
+</DIR>
+</DIR>
+</DIR>
+
+<P>Since FILTJECT.DLL is intended for use with RUNDLL32 during a setup program, it doesn't produce any error messages or interact with the end user in any other way. If something goes wrong, you might see a terse error message in a debug window, but that's about it.</P></BODY>
+</HTML>

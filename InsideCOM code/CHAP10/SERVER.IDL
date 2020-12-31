@@ -1,0 +1,111 @@
+//
+// Server.idl - IDL source for Server.dll
+//
+//   The MIDL compiler generates proxy/stub code and a type library
+//   from this file.
+//
+
+//
+// Interface descriptions
+//
+import "unknwn.idl" ; 
+
+// Interface IX
+[
+	object,
+	uuid(32bb8323-b41b-11cf-a6bb-0080c7b2d682),
+	helpstring("IX Interface"),
+	pointer_default(unique)
+]
+interface IX : IUnknown
+{
+	HRESULT FxStringIn([in, string] wchar_t* szIn) ;
+	HRESULT FxStringOut([out, string] wchar_t** szOut) ;
+} ;
+
+// Interface IY
+[
+	object,
+	uuid(32bb8324-b41b-11cf-a6bb-0080c7b2d682),
+	helpstring("IY Interface"),
+	pointer_default(unique)
+]
+interface IY : IUnknown
+{
+	HRESULT FyCount([out] long* sizeArray) ;
+
+	HRESULT FyArrayIn([in] long sizeIn, 
+	        [in, size_is(sizeIn)] long arrayIn[]) ;
+
+	HRESULT FyArrayOut([out, in] long* psizeInOut, 
+	        [out, size_is(*psizeInOut)] long arrayOut[]) ;
+} ;
+
+// Structure for interface IZ
+typedef struct 
+{
+	double x ;
+	double y ;
+	double z ;
+} Point3d ;
+
+// Interface IZ
+[
+	object,
+	uuid(32bb8325-b41b-11cf-a6bb-0080c7b2d682),
+	helpstring("IZ Interface"),
+	pointer_default(unique)
+]
+interface IZ : IUnknown
+{
+	HRESULT FzStructIn([in] Point3d pt) ;
+	HRESULT FzStructOut([out] Point3d* pt) ;
+} ;
+
+//
+// Component descriptions
+//
+[
+	uuid(d3011ee0-b997-11cf-a6bb-0080c7b2d682),
+	version(1.0),
+	helpstring("Component1.0 Type Library")
+]
+library ServerLib
+{
+	importlib("stdole32.tlb") ;
+
+	// Component 1
+	[
+		uuid(0c092c29-882c-11cf-a6bb-0080c7b2d682),
+		helpstring("Component 1 Class")
+	]
+	coclass Component1
+	{
+		[default] interface IX ;
+		interface IY ;
+		interface IZ ;
+	};
+
+	// Component 2
+	[
+		uuid(0c092c2a-882c-11cf-a6bb-0080c7b2d682),
+		helpstring("Component 2 Class")
+	]
+	coclass Component2
+	{
+		[default] interface IY ;
+		interface IZ ;
+	};
+
+	// Component 3
+	[
+		uuid(0c092c2b-882c-11cf-a6bb-0080c7b2d682),
+		helpstring("Component 3 Class")
+	]
+	coclass Component3
+	{
+		[default] interface IZ ;
+	} ;
+} ;
+
+  

@@ -1,0 +1,39 @@
+
+[Version]
+Signature=$CHICAGO$
+Class=hdc
+Provider=%String0%
+
+[DestinationDirs]
+DefaultDestDir=12
+
+[Manufacturer]
+%String1%=SECTION_0
+
+[SECTION_0]
+%String2%=ramdiskinstall,PNP0600
+
+[ramdiskinstall]
+CopyFiles=ramdiskfiles
+AddReg=ramdiskreg
+
+[ramdiskfiles]
+ramdisk.pdr
+
+[ramdiskreg]
+HKR,,DevLoader,0,*IOS
+HKR,,PortDriver,0,ramdisk.pdr
+
+[ControlFlags]
+
+[SourceDisksNames]
+1=Install Disk,,
+
+[SourceDisksFiles]
+ramdisk.pdr=1
+
+[Strings]
+String0="Walter Oney Software"
+String1="Walter Oney Software"
+String2="RAM Disk Controller"
+

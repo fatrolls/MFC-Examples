@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Checking for Enter Key Presses</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">Checking for Enter Key Presses</FONT></H3></CENTER>
+<HR>
+
+
+
+
+
+This article was contributed by <A HREF="mailto:lauram3017@aol.com">Laura Michaels</A>.
+
+
+
+<P>This tip explains how to check if the enter key is pressed for
+controls that don't support easy checking.
+
+<P>If you have a push button and want to check if the user presses
+enter, you can use the BN_CLICKED message, but some controls
+such as list boxes and combo boxes don't provide an easy way to 
+check for the enter key.  I also noticed a problem on some of my 
+dialog screens.  For example, on a dialog with a CListCtrl, when 
+a user pressed enter while the CListCtrl was in focus, the dialog 
+closed and the user ended up on the main screen.  This wasn't 
+quite what I wanted.  To prevent it, I had to trap the enter key.
+Here's how you do it.
+
+<P>You can trap the enter key in a window or dialog using either of 
+the following member functions, OnCommand or WindowProc.  (You
+can trap several other useful messages in WindowProc too since all 
+messages to a window or dialog are routed there before they're 
+routed through the message map for that window or dialog.)  If 
+you're checking for enter in WindowProc, look for a WM_COMMAND 
+message in the message parameter.  If you're trapping enter in 
+OnCommand, you already know the message is a WM_COMMAND message.  
+To see if enter was pressed, check wParam.  It should hold the 
+value of the default push button for the window or dialog.  In 
+most cases, including those when there are no push buttons on the
+screen, you'll use IDOK.  You can further refine the check by 
+using the GetFocus member function to test if the control you're 
+trapping the enter key for is in focus.  You can also forward the 
+message from the dialog or window to the focused control for 
+further handling using SendMessage.  Here's an example from one 
+of my applications:
+<PRE><TT><FONT COLOR="#990000">
+   m_table->SendMessage (WM_COMMAND, wParam, lParam);
+</FONT></TT></PRE>
+
+
+<P>Here's a code excerpt for trapping enter from one of my programs.
+In this program I was trying to trap when a user presses enter 
+on a CListCtrl.  I added this code to the dialog the CListCtrl
+was in.  The variable m_table is a pointer to my CListCtrl.
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CTableDialog::OnCommand(WPARAM wParam, LPARAM lParam) 
+{
+// TODO: Add your specialized code here and/or call the base class
+   BOOL retval = TRUE;
+   bool handled = false;
+
+   if (wParam == IDOK)
+      if (GetFocus () == m_table)
+         handled = true;
+   if (handled == false)
+      retval = CDialog::OnCommand (wParam, lParam);
+   return (retval);
+}
+</FONT></TT></PRE>
+
+
+<P>For further information on the topic, you may be interested
+in reading TN021, the section "ON_COMMAND and ON_BN_CLICKED".
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

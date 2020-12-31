@@ -1,0 +1,182 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Button Controls - Non-rectangular Buttons</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Non-rectangular Buttons
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:hiltonc@softhome.net">Hilton Campbell</A>.
+
+<!-- The article... -->
+
+<p>The purpose of CVtxButton is to create custom-shaped buttons that mimic the
+standard Windows user-interface. As the user of this class, you define the shape
+of the button using a set of simple polygons. CVtxButton then calculates the
+angle at which light is hitting each side of the button and uses this in 
+combination with the current system colors to shade each side properly. The 
+CVtxButton class provides both the functionality of Chris Maunder's  
+<A HREF="round_buttons.shtml">CRoundButton</A> and Phileppe Dykmans' stretched 
+<A HREF="stretch_round_button.shtml">CRoundButton</A> in a more efficient and 
+abstract manner. In addition to their implementations, it also has predefined
+behavior for drawing a standard rectangle, a vertically stretched round button,
+and a diamond.</p>
+
+<p>Below is a screen shot of the <A HREF="nonrectangle_button_demo.zip">demo application</A>'s 
+main dialog. The CVtxButton is shown normal, ODS_DISABLED, and BS_FLAT, using the 
+predefined polygon shapes VTX_RECT, VTX_DIAMOND, VTX_CIRCLE, and VTX_STRETCHEDCIRCLE.
+<p>
+
+<!-- Sample image and source code/demo project -->
+<P><IMG SRC="nonrectangle_button1.gif" width="444" height="183" alt="Example image 1"><br>
+Download <A HREF="nonrectangle_button_src.zip">Source Code</A> and 
+<A HREF="nonrectangle_button_demo.zip">Example project</A>.
+
+<p><u>Environment:</u> Microsoft Developer Studio: Visual C++ 5.0 - SP3, Windows95</p>
+
+<!-- ...more of the article... -->
+<H4>Using CVtxButton</H4>
+
+<p>Implementing the CVtxButton class is surprisingly easy:</p>
+
+<ol>
+<li>Include Vtx.h, Vtx.ccp, VtxButton.h, and VtxButton.cpp in your project.</li>
+<li>Drop a button on your dialog in <em>Developer Studio</em>.</li>
+<li>Add <FONT COLOR="#990000"><tt>#include "VtxButton.h"</tt></FONT> immediately 
+    before <FONT COLOR="#990000"><tt>#include "MyDlg.h"</tt></FONT> in MyDlg.cpp and
+    MyApp.cpp.</li>
+
+<li>For each button on the dialog that you want to be a CVtxButton, add 
+    <FONT COLOR="#990000"><tt>CVtxButton m_cButton1;</tt></FONT> immediately 
+    after <FONT COLOR="#990000"><tt>//{{AFX_DATA(CMyDlg)</tt></FONT> in the public 
+    section of your dialog class' specification.</li>
+
+<li>Also add <FONT COLOR="#990000"><tt>DDX_Control(pDX, IDC_BUTTON1, m_cButton1);
+    </tt></FONT> immediately after <FONT COLOR="#990000"><tt>//{{AFX_DATA_MAP(CMyDlg)
+	</tt></FONT> in DoDataExchange() for each button.
+</ol>
+
+<p>This is enough to create a default CVtxButton. The button is drawn as a rectangle 
+that takes up the entire client area. The sides will not be shaded the same as CButton
+because they are colored according to the difference of their angle and the angle of 
+light source. If you use at least one CVtxButton on a dialog, it is suggested that 
+you change all your CButton's to CVtxButton's to maintain a coordinated look. If you 
+want to change the look of the CVtxBuUtton, there are two ways of doing so:</p>
+
+<ol>
+<li>Use a predefined shape by adding 
+<FONT COLOR="#990000"><tt>m_cButton1.SetVtx(VTX_RECT);</tt></FONT> to OnInitDialog() 
+in MyDlg.cpp. There are four predefined shapes which can be passed as an argument to 
+SetVtx():<PRE>
+VTX_RECT
+VTX_DIAMOND
+VTX_CIRCLE
+VTX_STRETCHEDCIRCLE
+</PRE>
+
+<li>Create a CVtxPolygons object and pass it as an argument to SetVtx():
+<FONT COLOR="#990000"><TT><PRE>
+CRect rect;
+m_cButton1.GetClientRect(&amp;rect);            // Get the button's original dimensions
+CVtxPolygons vtxPolygons;
+int offset[4] = {0, 1, 2, 4};
+for (int i = 0; i &lt; 4; i++)                 // Iterate through each of the polygons
+{
+    // Add the corners
+    vtxPolygons.Add(i, CVertex(rect.left + offset[i], rect.top + offset[i]));
+    vtxPolygons.Add(i, CVertex(rect.right - offset[i] - 1, rect.top + offset[i]));
+    vtxPolygons.Add(i, CVertex(rect.right - offset[i] - 1, rect.bottom - offset[i] - 1));
+    vtxPolygons.Add(i, CVertex(rect.left + offset[i], rect.bottom - offset[i] - 1));
+}
+vtxPolygons.ClosePolygons();                // Close the polygons off
+m_cButton1.SetVtxPolygons(&vtxPolygons);    // Set the button's polygons
+</PRE></tt></FONT></li>
+</ol>
+
+<H4>Technical Information</H4>
+
+<p>CVtxButton is implemented through the use of three classes: CVtxButton itself, 
+CVtxPolygons, and CVertex. To understand how CVtxButton works it is crucial to 
+understand each of these classes.</p>
+
+<p>CVertex is essentially a CPoint; however, it is an object derived from CObject, 
+not a structure. It has two member variables, x and y, and has just enough 
+constructors and operators to work with CVtxPolygons. It is not a full-featured 
+storage class.</p>
+
+<p>CVtxPolygons is a storage class specifically designed for use with CVtxButton. 
+It contains a private array of four CObArray's called m_oaPolygons. Each CObArray 
+is a list of CVertex's which defines a polygon. These polygons can be tweaked 
+through the use of member functions such as GetSize(), SetAt(), and RemoveAll().</p>
+
+<p>CVtxButton is the button itself, derived from CButton. It draws itself using the 
+m_vtxBtnPolygons member variable, which is of type CVtxPolygons. Each CObArray in a 
+CVtxPolygons object represents a different part of the button. The CObArray at 
+index 0 is the outer border of the button. At index 1 the CObArray is the middle 
+border of the button. Index 2 is the inner border, and index 3 is the focus polygon. 
+If the button is not selected, only the outer and middle polygons are drawn. If the 
+button is focused or selected, all the polygons are drawn.</p>
+
+<p>Here is another example of using CVtxButton:</p>
+
+<FONT COLOR="#990000"><TT><PRE>
+CRect rect;
+m_cButton1.GetClientRect(&amp;rect);
+CVtxPolygons vtxPolygons;
+int offset[4] = {0, 1, 2, 4};
+for (int i = 0; i &lt; 4; i++)
+{
+    vtxPolygons.Add(i, CVertex(rect.left + rect.bottom / 4 + offset[i], rect.top + offset[i]));
+    vtxPolygons.Add(i, CVertex(rect.right - offset[i] * 7 / 4 - 1, rect.top + offset[i]));
+    vtxPolygons.Add(i, CVertex(rect.right - rect.bottom / 4 - offset[i] - 1, rect.bottom - offset[i] - 1));
+    vtxPolygons.Add(i, CVertex(rect.left + offset[i] * 7 / 4, rect.bottom - offset[i] - 1));
+}
+vtxPolygons.ClosePolygons();
+m_cButton1.SetVtxPolygons(&vtxPolygons);
+</PRE></tt></FONT>
+
+<p>This example creates a button that looks something like this:</p>
+<IMG SRC="nonrectangle_button2.gif" width="168" height="202" alt="Example image 2">
+
+<p>The code is rather straight-forward. For further implementation details your best 
+source of information will be to snoop around the code. If there are any questions 
+feel free to send me e-mail at 
+<A HREF="mailto:hiltonc@softhome.net">hiltonc@softhome.net</A>.</p>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 4 July 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

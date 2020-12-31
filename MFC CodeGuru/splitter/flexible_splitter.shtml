@@ -1,0 +1,187 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <title>Splitter Window - Outlook-style Flexible Splitter windows</title>
+</HEAD>
+
+
+<BODY BGCOLOR="#FFFFFF">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+The Outlook style: Flexible splitter windows
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:stein@itcomputing.com">
+Stein Roger Skaflotten</a>.
+
+<p>Microsoft has for a long time recognized that MDI based applications are 
+difficult to use for many users. For this reason they have tried many 
+user-interface designs over the years - with mixed fortune.
+
+<p>Many users find the new user interface concept in Outlook, FrontPage and 
+NetMeeting very appealing because it makes it very easy to navigate between 
+visually and logically separated views. In reality, the way the user interact
+with Outlook and FrontPage is basically equivalent to an SDI application with
+a tabbed view, and the technical issues regarding flexible splitter windows 
+are the same - which is the subject of this article.
+
+<p>Consider FrontPage: The only pane that is fixed in FrontPage is the navigation 
+window at the left side of the application window. The other panes are dynamically 
+created as needed. As an example, if the &quot;Folders&quot; view is selected, a
+pane with two vertically separated views is presented and when the &quot;All 
+Files&quot; view is selected, a pane with a single list view is presented and so 
+on.
+
+<p>So how can we imitate the Outlook behavior in our own application? The 
+method I present here is just one way to do this. However, by design, this 
+technique requires very little overhead code and we don't have to reimplement 
+any MFC classes.
+
+<p>The first issue is how to realize flexible splitter frames when CSplitterWnd 
+obviously does not support this directly. The next thing is to find a way to 
+replace views. However, the latter have been covered by numerous articles on 
+<a HREF="http://www.codeguru.com/">www.codeguru.com</a> and other places on 
+the Web so I don't go into details here.
+
+<p>In a recent project I implemented the &quot;Outlook&quot; style using the 
+technique described below. As in Outlook, the application had a fixed left-most
+pane that was used to navigate through the different views. I implemented the 
+navigation view as a listbox, but it could just as well been a CTreeView or 
+CListView interface. Depending on the user selection the pane on the right 
+presents views with, or without, its own splitter windows. In essence, what 
+happens when an &quot;Outlook&quot;-pane selection is made is that the pane 
+on the right is replaced.
+
+<p>Let's first do the obvious and create two panes whereas the left is the
+&quot;Outlook&quot; view and the second pane is a replaceable view.</p>
+
+<PRE><TT><FONT COLOR="#990000">// Set up mainframe's splitter windows
+BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext) 
+{
+  // Create the splitter window with two columns
+  if (!m_wndSplitter.CreateStatic(this, 1, 2))
+  {
+    TRACE0(&quot;Failed to create splitter window\n&quot;);
+    return FALSE;
+  }
+
+  // &quot;Outlook&quot; view first
+  if (!m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(COutlookView),
+                                CSize(200, 0), pContext))
+  {
+    TRACE0(&quot;Failed to create outlook bar view\n&quot;);
+    return FALSE;
+  }
+
+  // &quot;Flexible pane&quot;: The second pane may present its own
+  // splitter windows.
+  //
+  // THIS PANE CAN BE EASILY REPLACED BY OTHER CONTAINER VIEWS THAT
+  // (MAY) PRESENT OTHER SPLITTER WINDOWS ITSELF.
+  if (!m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CPaneContainerView),
+                                CSize(0, 0), pContext))
+  {
+    TRACE0(&quot;Failed to create CPaneContainerView\n&quot;); 
+    return FALSE;
+  }
+ 
+  // Set the active view
+  SetActiveView((CView*) m_wndSplitter.GetPane(0, 0));
+
+  // ok
+  return TRUE;
+}
+</pre></font></tt>
+
+<p>The view in the &quot;flexible&quot; pane may now present its own splitter 
+windows:
+
+<PRE><TT><FONT COLOR="#990000">// Create content of right pane
+int CPaneContainerView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
+  // Call base class first
+  if (CView::OnCreate(lpCreateStruct) == -1)
+    return -1;
+ 
+  // CPaneContainerView is used to control the right pane that CMainFrame
+  // sets up. In this case we create a second splitter window.
+  m_wndSplitter.CreateStatic(this, 1,2);
+
+  // The context information is passed on from the framework
+  CCreateContext *pContext = (CCreateContext*)lpCreateStruct-&gt;lpCreateParams;
+
+  // Create two views
+  m_wndSplitter.CreateView(0,0,RUNTIME_CLASS(CView1),CSize(150,0), pContext);
+  m_wndSplitter.CreateView(0,1,RUNTIME_CLASS(CView2),CSize(0,0), pContext);
+
+  return 0;
+}
+</pre></font></tt>
+
+<p>CView-derived classes are responsible for sizing their children so we need to 
+override OnSize to position the splitter frame where we want it. Notice that 
+although we cover the entire client area with the splitter frame in this 
+example, OnSize is a great opportunity to position other visual elements. 
+As an example, Outlook presents a header with a button above the splitter 
+frame.
+
+<PRE><TT><FONT COLOR="#990000">void CPaneContainerView::OnSize(UINT nType, int cx, int cy) 
+{
+  CView::OnSize(nType, cx, cy);
+ 
+  // In this example we cover the entire client area.
+  // Notice that we need to adjust for the border that 
+  // CSplitterWnd adds. It looks better this way. The
+  // border seems to have a hard-coded width=2, so we
+  // do the same...
+ 
+  m_wndSplitter.MoveWindow(-2,-2,cx+4,cy+4);
+}
+</pre></font></tt>
+
+<p><i>(Editors note: Instead of using the hard-wired value of 2 it may
+be better to use the value returned from <tt>GetSysMetrics(SM_CXBORDER)</tt> and
+<tt>GetSysMetrics(SM_CYBORDER)</tt>)</i>
+
+<p>To make the whole thing more functional you must implement code that 
+replaces the &quot;Flexible&quot; pane depending on what the user selects 
+in the&quot;Outlook&quot;-pane. For example, override OnSelChange and call 
+your own CMainFrame::ReplaceView(...) as appropriate. Please refer to 
+<a HREF="http://www.codeguru.com/">www.codeguru.com</a> for details.
+
+<p>Notice: If you wish to prevent resizing the &quot;Outlook&quot;-pane 
+you will need to override WM_MOUSEMOVE , WM_LBUTTONDOWN, WM_LBUTTONUP and 
+WM_LBUTTONDBLCLK. Use ClassWizard to create handlers for these messages 
+and simply call the CWnd handlers instead of the CSplitterWnd handlers.
+
+<p>Good luck.
+
+<P>
+
+<p>Updated 27 March 1998
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%"><TR>
+
+<TD WIDTH="33%">
+<FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR></TABLE>
+
+
+
+</BODY>
+</HTML>

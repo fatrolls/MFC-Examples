@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Round Buttons</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Round Buttons</FONT></H3></CENTER>
+<HR>
+
+This sample was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<p>
+<img src="round_buttons.gif" border=0 alt="Round buttons" align="bottom">
+<A HREF="round_buttons.zip">Download sample project and source files</A>
+</p>
+
+<p>Yes - I know there is already a topic on 
+<a href="btn_circular_button.shtml">
+circular push buttons</a> but they weren't quite what I wanted, so
+I wrote my own. What I wanted was a button that looked exactly like
+the normal buttons, but instead I wanted them circular. </p>
+
+<p>First of all I make sure the buttons are circles (and not ellipses)
+and store the centre and radius of the button. Next I simply make the
+button owner drawn and draw it like every other owner drwn button, but
+instead of being able to use nice routines like Draw3dRect, I had to
+roll my own circle drawing routine which would draw each pixel with the
+correct colour dependant on the point on the circle I was drawing.</p>
+
+<p>I will not include the full source in this page - it is available for
+download <A HREF="RoundButtons.zip">here</A>. The owner draw part is simple
+and follows along the lines of any other owner drawn button. The circle
+drawing routine is a standard algorithm, with the only modification in
+calculating the pixel colour. Given two colours crBright and crDark, and
+an angle relative to the x-axis, the colour for a pixel can be calculated 
+using the following.
+
+<PRE><TT><FONT COLOR="#990000">
+COLORREF GetColour(double dAngle, COLORREF crBright, COLORREF crDark)
+{
+#define Rad2Deg	180.0/3.1415 
+#define LIGHT_SOURCE_ANGLE -2.356    // -2.356 radians = -135 degrees, 
+                                     // i.e. From the top left of the screen
+
+	ASSERT(dAngle > -3.1416 && dAngle < 3.1416);
+	double dAngleDifference = LIGHT_SOURCE_ANGLE - dAngle;
+
+	if (dAngleDifference < -3.1415) dAngleDifference = 6.293 + dAngleDifference;
+	else if (dAngleDifference > 3.1415) dAngleDifference = 6.293 - dAngleDifference;
+
+	double Weight = 0.5*(cos(dAngleDifference)+1.0);
+
+	BYTE Red   = (BYTE) (Weight*GetRValue(crBright) + (1.0-Weight)*GetRValue(crDark));
+	BYTE Green = (BYTE) (Weight*GetGValue(crBright) + (1.0-Weight)*GetGValue(crDark));
+	BYTE Blue  = (BYTE) (Weight*GetBValue(crBright) + (1.0-Weight)*GetBValue(crDark));
+
+	return RGB(Red, Green, Blue);
+}
+</FONT></TT></PRE>
+
+<p>This is a simple linear interpolation between the two colours based on the cosine
+of the angle between the light source and the point. Angles are measured from the +ve 
+x-axis (i.e. (1,0) = 0 degrees, (0,1) = 90 degrees ), but remember: positive y points down!
+</P>
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

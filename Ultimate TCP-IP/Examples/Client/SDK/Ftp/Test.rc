@@ -1,0 +1,184 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "test.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+DIALOG_1 DIALOG DISCARDABLE  5, 17, 286, 330
+STYLE DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Ultimate TCP/IP - FTP Client"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Connection",IDC_STATIC,7,7,272,81
+    RTEXT           "&Server:",IDC_STATIC,11,20,54,8
+    EDITTEXT        IDC_EDIT,70,18,135,15
+    RTEXT           "&User:",IDC_STATIC,10,33,54,10
+    EDITTEXT        IDC_EDIT2,70,33,135,15,ES_AUTOHSCROLL
+    RTEXT           "&Password:",IDC_STATIC,9,48,55,10
+    EDITTEXT        IDC_EDIT3,70,48,135,15,ES_AUTOHSCROLL
+    RTEXT           "&Account:",IDC_STATIC,10,63,54,10
+    EDITTEXT        IDC_EDIT4,70,63,135,15,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Connect",IDC_CONNECT,223,19,45,15
+    PUSHBUTTON      "&Disconnect",IDC_DISCONNECT,223,38,45,15
+    PUSHBUTTON      "E&xit",IDC_EXIT,223,57,45,15
+    RTEXT           "Director&y:",IDC_STATIC,18,95,48,10
+    EDITTEXT        IDC_DIRCHANGE,70,93,135,15,ES_AUTOHSCROLL
+    PUSHBUTTON      "A&bout...",IDC_ABOUT,223,93,45,15
+    PUSHBUTTON      "C&hangeDir",IDC_CHANGEDIR,70,110,54,15
+    PUSHBUTTON      "L&ist Directory",IDC_LIST,151,111,54,15
+    RTEXT           "File Name:",IDC_STATIC,15,136,49,10
+    EDITTEXT        IDC_FILENAME,70,134,135,15,ES_AUTOHSCROLL
+    RTEXT           "Save As:",IDC_STATIC,20,156,45,10
+    EDITTEXT        IDC_SAVEAS,70,152,135,15,ES_AUTOHSCROLL
+    CONTROL         "Image Type",IDC_TRANSFER_TYPE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,94,174,52,10
+    CONTROL         "Firewall mode",IDC_FIREWALL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,158,174,59,10
+    PUSHBUTTON      "Receive File",IDC_RETRFILE,223,134,45,14
+    PUSHBUTTON      "Resume Rcv",IDC_TEST_REST,223,152,45,14
+    PUSHBUTTON      "Send File",IDC_SENDFILE,223,170,45,14
+    LTEXT           "Transfer Structure",IDC_STATIC,14,194,70,10
+    CONTROL         "File",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,
+                    93,194,55,10
+    CONTROL         "Record",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,157,194,
+                    55,10
+    CONTROL         "Page",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,221,194,55,
+                    10
+    LTEXT           "Quote to send",IDC_STATIC,15,210,49,11
+    EDITTEXT        IDC_QUOTE_DATA,69,208,135,15,ES_AUTOHSCROLL
+    PUSHBUTTON      "Quote",IDC_QUOTE,222,208,45,14
+    CONTROL         "",IDC_HISTORY,"CUH_Control",WS_BORDER | WS_VSCROLL,7,
+                    227,272,96
+    GROUPBOX        "Directory",IDC_STATIC,7,83,272,48
+    GROUPBOX        "File",IDC_STATIC,7,126,272,62
+    ICON            IDI_ICON1,IDC_STATIC,12,165,20,20
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 250, 105
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About - Ultimate TCP/IP developers Kit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_EXIT,197,6,46,14
+    LTEXT           "Ultimate TCP/IP v 4.0",IDC_STATIC,43,6,84,8
+    LTEXT           "The Ultimate Toolbox.",IDC_STATIC,43,14,70,8
+    LTEXT           "Copyright 1995-2007",IDC_STATIC,43,25,66,8
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,7,47,236,51
+    LTEXT           "Phone:",IDC_STATIC,25,57,24,8
+    LTEXT           "Fax:",IDC_STATIC,25,81,14,8
+    LTEXT           "EMail:",IDC_STATIC,133,57,20,8
+    LTEXT           "WWW:",IDC_STATIC,133,71,25,8
+    LTEXT           "1 416 467-5100 ",IDC_STATIC,54,68,59,8
+    LTEXT           "1 (800) 463 - 1492",IDC_STATIC,54,57,59,8
+    LTEXT           "1 416 422-4801",IDC_STATIC,54,81,59,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,160,57,64,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,166,71,58,8
+    ICON            IDI_ICON1,IDC_STATIC,7,6,20,20
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""test.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    "DIALOG_1", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 279
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        HORZGUIDE, 98
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

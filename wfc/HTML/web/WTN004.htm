@@ -1,0 +1,74 @@
+<HTML>
+
+<HEAD>
+<TITLE>WFC - Technical Note 4 - Integrating SourceSafe with Visual C++ 5.0</TITLE>
+</HEAD>
+
+<BODY>
+
+<H1>WFC Technical Note 4 - Integrating SourceSafe with Visual C++ 5.0</H1>
+$Revision: 2 $ Last Modified $Date: 3/26/00 11:01a $<BR><HR>
+
+<H2>Introduction</H2>
+
+Microsoft is always trying to integrate things together.
+To that end, the integrated SourceSafe into Developer's
+Studio. Like most things Microsoft, it is a wonderful
+idea but a sucky implementation. This tech note discusses
+the experience I had debugging Visual C++ 5.0's integration
+issues with SourceSafe on a team project.
+
+<H2>Children At Work</H2>
+
+When Microsoft integrated SourceSafe into Developer's Studio,
+they put too much intimate information into your workspaces
+(<B>.DSW</B> files). The child that did the integration work put
+the SourceSafe project name, data directory and <I>local working
+folder names</I> into the Visual C++ project workspace. This was
+very stupid. Well, it could have been simple ignorance but since
+it made it all the way through Microsoft's QA, it is probably
+stupidity.
+
+<P>
+
+Why is putting all of this information into the 
+workspace bad? The problem is when you use SourceSafe to modify
+project settings. For example, you create a project in Visual C++
+and check it into SourceSafe. Another developer on another machine
+(OK, this is an advanced concept in programming, multiple programmers
+on one project!!!!) sets his SourceSafe working folder. The two (or more)
+developers have different local directory names. For example, one
+developer is building WFC in his <CODE><B>C:\WFC</B></CODE> directory.
+The other developer is building WFC in <CODE><B>D:\Projects\Public\WFC</B></CODE>
+directory. As you can see, these are different.
+
+<P>
+
+Even though each developer's SourceSafe settings (srcsafe.ini) have
+their project's pointing to different local working folders, the
+setting in Developer Studio's <B>DSW</B> (or <B>OPT</B>) file will
+override them. This is the heart of the problem. Microsoft should
+have let SourceSafe put the files in the local directory associated
+with the SourceSafe project (i.e. let SourceSafe do its job).
+
+
+<H2>Magical Reappearing Settings</H2>
+
+<B>OPT</B> file. This little gem is an OLE compound document.
+It contains more settings but in a non-human viewable format.
+<B><I>DELETE THIS FILE!</I></B> If you don't, it will overwrite
+your SourceSafe settings in the <B>DSW</B> file. No, the GUI will
+not warn you.
+
+<H2>Conclusion</H2>
+
+Don't integrate SourceSafe into Developer's Studio unless you
+can dictate exactly where every developer will put every file
+in your project.
+
+<P>
+<HR>
+<A HREF="mailto:wfc@pobox.com">Samuel R. Blackburn</A>
+</BODY>
+
+</HTML>

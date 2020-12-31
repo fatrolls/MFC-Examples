@@ -1,0 +1,133 @@
+<HTML>
+
+<HEAD>
+<TITLE>Win32 Foundation Classes Release 44</TITLE>
+</HEAD>
+
+<BODY>
+
+<!-- $Revision: 3 $ -->
+<H1>Release 44</H1>
+2000-03-26<BR>
+
+<P>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="0" CELLSPACING="0">
+<TR><TD BGCOLOR="#0" VALIGN="MIDDLE">
+<FONT FACE="Arial" SIZE="3" COLOR="#FFFFFF">
+&nbsp;<I><B>This Release</B></I></FONT>
+</TD></TR></TABLE>
+<P>
+
+Well, Microsoft did it again. They changed a header file
+and broke my code (see rules 1 and 2 of my
+<A HREF="Coding.htm">coding guidelines</A>) in the networking
+classes. With the February 2000 version of the Platform SDK, they
+introduced a new string type, <CODE><B>LMSTR</B></CODE>. Happy
+happy, joy joy.
+
+<P>
+
+<H2>New</H2>
+
+There are three new technotes:
+
+<OL>
+<LI><A HREF="WTN006.htm">What those funny memory values mean.</A>
+<LI><A HREF="WTN004.htm">Integrating SourceSafe with Visual C++</A>
+<LI><A HREF="WTN007.htm">How use use MFC GUI DLLs in a non-MFC application.</A>
+</OL>
+
+<H3>New Samples</H3>
+
+I've added a couple of new sample programs. One is ADO2XML
+which shows you how to dump any database to XML format. ADO
+sits on top of OLE DB which provides universal data access.
+It is very cool stuff. The only problem is it is COM objects
+wrapped by Microsoft code. Microsoft loves to use C++ exception
+handling which leads to code bloat. Every stinking call into
+the classes that wrap ADO must be surrounded by a
+<CODE>try</CODE> and two <CODE>catch</CODE> blocks. That is a
+lot of typing. To make matters worse, you're having to use
+components instead of classes. Components can be great but the
+bad part about them (COM <I>or</I> CORBA) is if functionality is not
+exposed in the interface, you're just plain stuck. If you had
+source code, you could figure out what a method is <I>trying</I>
+to do and fix it. With components, you can't do anything except
+hack and hack and hack and hack away at it until it doesn't die
+any more. With ADO, I've suffered through this kind of muck.
+In the development of ADO2XML, I've been reading a Microsoft
+Access 97 database. Some of the lesson's learned while developing
+ADO-based programs are:
+
+<OL>
+
+<LI><B>ADO doesn't play well with threads</B>.
+If your application is
+multithreaded, you must code it so that all ADO calls come from
+the same thread. It doesn't matter what threading model you started
+COM with (i.e. <CODE>CoInitializeEx( COINIT_MULTITHREADED )</CODE>).
+The problem is ADO may be multithreaded but the underlying data source
+may not be. ADO doesn't handle this situation very well.
+Also, you need to test this as it depends on what database
+source you are connected to. This really sucks when you have to 
+support data sources with different personalities at run time (like
+Access and SQL server). From what I've learned of COM, it doesn't
+do threads very well at all. Almost as if the Windows 95 developers
+worked on COM. I will be writing an article on coding around COM to
+fix these kinds of problems in a generic fashion.
+
+<LI><B>Exception handling sucks!</B>
+COM/OLE is filled with wonderfully
+descriptive error codes like E_FAIL (0x80004005L)
+and E_FAIL (0x80000008L). Microsoft has this uncanny ability to
+be 100% accurate and completely useless all at the same time.
+To make a long store short, if you get incomplete exception
+information from a failed call, go to the object closest to
+the functionality and try it there. COM must have a problem
+propagating exceptions. For example, I was getting an exception
+thrown from the recordset class/object/interface method <CODE>AddNew()</CODE>
+It basically said &quot;an error occurred.&quot; I recoded it as
+a SQL statement and passed to the connection class/object/interface
+method <CODE>Execute()</CODE>. It failed again but this time I got
+the error message in the exception (I was sending a NULL field to an
+Access table that had a field that didn't allow NULL in that
+particular field). Like I said, hack and hack and hack and hack . . .
+
+</OL>
+
+<H2>Modified</H2>
+
+<B><A HREF="WfcTrace.htm">WFCTRACE</A></B> - Now handles variant type.<P>
+
+<B><A HREF="Registry.htm">CRegistry</A></B>
+Added the ability to read and write a key's default value.<P>
+
+<B><A HREF="CService.htm">CService</A></B> - Added a typecast for a handle type.<P>
+
+STL Arrays - The drop-in replacements for CByteArray, CPtrArray,
+CStringArray, CWordArray, CUINTArray and CDWordArray based on STL
+have been fixed. There was a problem in the <CODE>Copy()</CODE>
+method. I have also added test cases to the TEST
+<A HREF="samples.htm">sample</A>
+project for these classes.<P>
+
+<B><A HREF="lmerr.htm">Convert_NERR_Code_to_String()</A></B> - Changed a couple of defined constants
+back to mathematical formulas for folks that have old compilers. This allows
+me to convert error codes that don't have <CODE>#define</CODE>'d constants.<P>
+
+<B>CServiceControlManager</B> - Fixed a bug in the <CODE>Install()</CODE> method.
+Well, actually, it is Microsoft's bug in NT. If an executable path name contains
+a space (like C:\Program&nbsp;Files\myservice.exe), if you don't put quotation marks
+around the executable name, the service control manager (SCM) will report an &quot;invalid
+Windows NT application&quot; error. I added code to make sure the executable name
+is surrounded by quotes if needed.<P>
+
+<HR>
+<A HREF="Release43.htm">Release 43 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS><A HREF="mailto:wfc@pobox.com">wfc@pobox.com</A></ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+
+</BODY>
+
+</HTML>

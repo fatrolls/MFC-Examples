@@ -1,0 +1,316 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>TreeView - Expand branches during drag-drop</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Expand branches during drag-drop</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:Justin@STINGSOFT.COM">Justin Rudd</A>. He maintains
+the MFC FAQ and works at Stingray Software where they develop a very useful MFC class library.
+
+<p><FONT COLOR="#646400">"Here is a sample I whipped up over lunch and cleaned up after work.  It
+demonstrates something that Outlook 97 and the IE 4.0 tree control do.
+When you drag an item and hold it over a closed node for 2 seconds it
+will expand it.  I did it in a CTreeView derived class, but its pretty
+easy to understand.  I used your drag-n-drop logic and just added in the
+timer logic."</FONT>
+
+<p>The data members I used are
+
+<pre><BR><TT><FONT COLOR="#990000">
+        CImageList*     m_pDragImage;
+        HTREEITEM       m_htiDrag, m_htiDrop, m_htiOldDrop;
+        bool            m_bLDragging;
+        UINT            m_idTimer;
+</FONT></TT><BR></pre>
+
+<p>Most of these are self explanatory from the drag and drop page.  The new
+data members I added are m_htiOldDrop and m_idTimer.  It should probably
+be called m_htiDropHilight, but I called it old drop because it is the
+old drop target.  I keep track of the old drop target to fix a
+behavioral issue that IE 4.0 tree control doesn't have.  Mainly, if you
+hilight and item and move it up and down a pixel or 2 ( where the
+hilight still remains ), my code would restart the timer.  So I only
+start the timer if the drop target changed.  m_idTimer is
+self-explanatory...it holds the ID returned by SetTimer.  I use a
+hard-coded value of 1000 which would normally be the first dialog
+control ID, so you might want to change that to a const.
+
+<p>The following code might look a little weird in the OnMouseMove handler.
+What happens is on your initial mouse move action, m_htiOldDrop is NULL
+and gets set to whatever GetDropHilightItem returns.  If it returns
+NULL, it will try to init it next time through.  Once it gets
+initialized, the following check basically says, if we have a valid
+timer ID and the current item found through hit testing (hti) is equal
+to the old drop target kill the timer and start over.  The behavior that
+this fixes is described above, but repeated here...with IE 4.0
+installed, if you drag files from the listview in the right pane to the
+tree view in the left pane, you can have the selection hover over a
+closed node and it will expand automatically.  One thing that it does is
+if you accidently shift the mouse while sitting there, as long as the
+hilight stays the same, it will still open it, it won't restart the
+timer like mine would before.  But with this if statement and the data
+member m_htiOldDrop, I was able to get around this.  So it will only
+kill the timer if you move back over the original drop target.
+
+<pre><BR><TT><FONT COLOR="#990000">
+if( m_idTimer && hti == m_htiOldDrop )
+{
+        KillTimer( m_idTimer );
+        m_idTimer = 0;
+}
+                        
+if( !m_idTimer )
+        m_idTimer = SetTimer( 1000, 2000, NULL );
+</FONT></TT><BR></pre>
+
+
+<p>Now in response to the timer message, I basically just get the drop
+hilight item and check if it has children.  If it does, I expand it.
+
+<pre><BR><TT><FONT COLOR="#990000">
+void CDragView::OnTimer(UINT nIDEvent) 
+{
+        if( nIDEvent == m_idTimer )
+        {
+                CTreeCtrl& theTree = GetTreeCtrl();
+                HTREEITEM htiFloat = theTree.GetDropHilightItem();
+                if( htiFloat && htiFloat == m_htiDrop )
+                {
+                        if( theTree.ItemHasChildren( htiFloat ) )
+                                theTree.Expand( htiFloat, TVE_EXPAND );
+                }
+        }
+
+        CTreeView::OnTimer(nIDEvent);
+}
+</FONT></TT><BR></pre>
+
+
+<p>Justin has provided a zipped file that you can <A HREF="drag_expand.zip">download (52k)</A>.
+
+
+<p>Here's some of the other code that help in the drag-drop.
+
+<pre><BR><TT><FONT COLOR="#990000">
+void CDragView::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+
+	m_htiDrag = pNMTreeView->itemNew.hItem;
+	m_htiDrop = NULL;
+
+	m_pDragImage = GetTreeCtrl().CreateDragImage( m_htiDrag );
+	if( !m_pDragImage )
+		return;
+
+	m_bLDragging = true;
+
+	CPoint pt(0,0);
+	
+	IMAGEINFO ii;
+	m_pDragImage->GetImageInfo( 0, &ii );
+	pt.x = (ii.rcImage.right - ii.rcImage.left) / 2;
+	pt.y = (ii.rcImage.bottom - ii.rcImage.top) / 2;
+
+	m_pDragImage->BeginDrag( 0, pt );
+	pt = pNMTreeView->ptDrag;
+	ClientToScreen( &pt );
+	m_pDragImage->DragEnter(NULL,pt);
+	
+	SetCapture();
+
+	*pResult = 0;
+}
+
+void CDragView::OnLButtonUp(UINT nFlags, CPoint point) 
+{
+	CTreeView::OnLButtonUp(nFlags, point);
+
+	if( m_bLDragging )
+	{
+		CTreeCtrl& theTree = GetTreeCtrl();
+
+		m_bLDragging = false;
+
+		CImageList::DragLeave(this);
+		CImageList::EndDrag();
+
+		ReleaseCapture();
+
+		delete m_pDragImage;
+
+		theTree.SelectDropTarget(NULL);
+		m_htiOldDrop = NULL;
+
+		if( m_htiDrag == m_htiDrop )
+			return;
+
+		HTREEITEM htiParent = m_htiDrop;
+		while( (htiParent = theTree.GetParentItem(htiParent)) != NULL )
+		{
+			if( htiParent == m_htiDrag ) return;
+		}
+
+		theTree.Expand( m_htiDrop, TVE_EXPAND );
+
+		HTREEITEM htiNew = CopyBranch( m_htiDrag, m_htiDrop, TVI_LAST );
+		theTree.DeleteItem(m_htiDrag);
+		theTree.SelectItem( htiNew );
+
+		if( m_idTimer )
+		{
+			KillTimer( m_idTimer );
+			m_idTimer = 0;
+		}
+	}
+}
+
+void CDragView::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	CTreeView::OnMouseMove(nFlags, point);
+
+	HTREEITEM hti;
+	UINT      flags;
+
+	if( m_bLDragging )
+	{
+		CTreeCtrl& theTree = GetTreeCtrl();
+		POINT pt = point;
+		ClientToScreen( &pt );
+		CImageList::DragMove(pt);
+		
+		hti = theTree.HitTest(point,&flags);
+		if( hti != NULL )
+		{
+			CImageList::DragShowNolock(FALSE);
+
+			if( m_htiOldDrop == NULL )
+				m_htiOldDrop = theTree.GetDropHilightItem();
+
+			theTree.SelectDropTarget(hti);
+			
+			m_htiDrop = hti;
+			
+			if( m_idTimer && hti == m_htiOldDrop )
+			{
+				KillTimer( m_idTimer );
+				m_idTimer = 0;
+			}
+			
+			if( !m_idTimer )
+				m_idTimer = SetTimer( 1000, 2000, NULL );
+
+			CImageList::DragShowNolock(TRUE);
+		}
+	}
+}
+
+HTREEITEM CDragView::CopyItem
+	(
+		HTREEITEM hti,
+		HTREEITEM htiNewParent,
+		HTREEITEM htiAfter // = TVI_LAST
+	)
+{
+	CTreeCtrl& theTree = GetTreeCtrl();
+
+	TVINSERTSTRUCT insert;
+	::ZeroMemory(&insert, sizeof(TVINSERTSTRUCT));
+
+	HTREEITEM htiNew = NULL;
+	CString text;
+
+	insert.item.hItem = hti;
+	insert.item.mask = TVIF_CHILDREN|TVIF_HANDLE|TVIF_IMAGE|TVIF_SELECTEDIMAGE;
+	theTree.GetItem(&(insert.item));
+	text = theTree.GetItemText( hti );
+
+	insert.item.cchTextMax = text.GetLength();
+	insert.item.pszText = text.LockBuffer();
+
+	insert.hParent = htiNewParent;
+	insert.hInsertAfter = htiAfter;
+	insert.item.mask = TVIF_IMAGE|TVIF_SELECTEDIMAGE|TVIF_TEXT;
+	htiNew = theTree.InsertItem(&insert);
+	text.UnlockBuffer();
+
+	theTree.SetItemData( htiNew, theTree.GetItemData( hti ) );
+	theTree.SetItemState( htiNew, theTree.GetItemState( hti, TVIS_STATEIMAGEMASK ), TVIS_STATEIMAGEMASK );
+
+	return htiNew;
+}
+
+HTREEITEM CDragView::CopyBranch
+	(
+		HTREEITEM hti,
+		HTREEITEM htiNewParent,
+		HTREEITEM htiAfter // = TVI_LAST
+	)
+{
+	CTreeCtrl& theTree = GetTreeCtrl();
+
+	HTREEITEM htiChild = NULL;
+
+	HTREEITEM htiNew = CopyItem( hti, htiNewParent, htiAfter );
+	htiChild = theTree.GetChildItem( hti );
+	while( htiChild != NULL )
+	{
+		CopyBranch( htiChild, htiNew );
+		htiChild = theTree.GetNextSiblingItem( htiChild );
+	}
+
+	return htiNew;
+}
+
+void CDragView::OnDestroy() 
+{
+	CImageList* pImage = GetTreeCtrl().GetImageList( TVSIL_NORMAL );
+	delete pImage;
+
+	if( m_idTimer )
+	{
+		KillTimer( m_idTimer );
+		m_idTimer = 0;
+	}
+
+	CTreeView::OnDestroy();
+}
+</FONT></TT><BR></pre>
+
+
+<BR>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

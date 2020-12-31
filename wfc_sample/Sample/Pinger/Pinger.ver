@@ -1,0 +1,74 @@
+#if ! defined( VERSION_INFORMATION_HEADER )
+
+#define VERSION_INFORMATION_HEADER
+
+#include <winver.h>
+
+#ifndef VER_PRODUCTVERSION
+
+#define VER_PRODUCTVERSION      1,0,0,0
+#define VER_PRODUCTVERSION_STR "1.0.0\0"
+
+#endif // VER_PRODUCTVERSION
+
+#define VER_FILETYPE              VFT_APP
+#define VER_FILESUBTYPE           VFT2_UNKNOWN
+#define VER_FILEVERSION           1.0.0.0
+#define VER_FILEVERSION_STR      "1.0.0\0"
+#define VER_FILEDESCRIPTION_STR  "WatchDog Service (WFC Sample)\0"
+#define VER_INTERNALNAME_STR     "WatchDog\0"
+#define VER_LEGALCOPYRIGHT_STR   "Samuel R. Blackburn\0"
+#define VER_ORIGINALFILENAME_STR "WatchDog.exe\0"
+#define VER_COMPANYNAME_STR      "Samuel R. Blackburn\0"
+#define VER_PRODUCTNAME_STR      "Samuel R. Blackburn\0"
+
+/*
+** Don't touch enything from here down
+*/
+
+#define VER_DEBUG                0
+#define VER_PRIVATEBUILD         0
+#define VER_PRERELEASE           0
+#define VER_FILEFLAGSMASK        VS_FFI_FILEFLAGSMASK
+#define VER_FILEFLAGS            VS_FF_PRIVATEBUILD
+#define VER_FILEOS               VOS_NT_WINDOWS32
+#define VER_LEGALTRADEMARKS_STR "\256Samuel R. Blackburn\0"
+#define VER_COMMENTS_STR        "WFC Sample\0"
+
+#ifdef RC_INVOKED
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION     VER_FILEVERSION
+PRODUCTVERSION  VER_PRODUCTVERSION
+FILEFLAGSMASK   VER_FILEFLAGSMASK
+FILEFLAGS       VER_FILEFLAGS
+FILEOS          VER_FILEOS
+FILETYPE        VER_FILETYPE
+FILESUBTYPE     VER_FILESUBTYPE
+BEGIN
+   BLOCK "StringFileInfo"
+   BEGIN
+      BLOCK "040904E4"
+      BEGIN
+         VALUE "Comments",         VER_COMMENTS_STR
+         VALUE "CompanyName",      VER_COMPANYNAME_STR
+         VALUE "FileDescription",  VER_FILEDESCRIPTION_STR
+         VALUE "FileVersion",      VER_FILEVERSION_STR
+         VALUE "InternalName",     VER_INTERNALNAME_STR
+         VALUE "LegalCopyright",   VER_LEGALCOPYRIGHT_STR
+         VALUE "LegalTrademarks",  VER_LEGALTRADEMARKS_STR
+         VALUE "OriginalFilename", VER_ORIGINALFILENAME_STR
+         VALUE "ProductName",      VER_PRODUCTNAME_STR
+         VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
+      END
+   END
+
+   BLOCK "VarFileInfo"
+   BEGIN
+      VALUE "Translation", 0x409, 1252
+   END
+END
+
+#endif // RC_INVOKED
+
+#endif // VERSION_INFORMATION_HEADER

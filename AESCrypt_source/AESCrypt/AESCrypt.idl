@@ -1,0 +1,34 @@
+// AESCrypt.idl : IDL source for AESCrypt
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (AESCrypt.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(3E228AAF-683B-44AD-A8DA-3FC8EF25008A),
+	helpstring("IAECryptSShellExt Interface"),
+	pointer_default(unique)
+]
+interface IAESCryptShellExt : IUnknown{
+};
+[
+	uuid(EB9FFF86-F4EC-4882-B45E-90C4EB1ECC07),
+	version(3.0),
+	helpstring("AESCrypt 3.0 Type Library")
+]
+library AESCryptLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(35872D53-3BD4-45FA-8DB5-FFC47D4235E7),
+		helpstring("AESCryptShellExtCom Class")
+	]
+	coclass AESCryptShellExtCom
+	{
+		[default] interface IAESCryptShellExt;
+	};
+};

@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The FILEIO Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The FILEIO Sample</H2>
+<P>The FILEIO Sample accompanies Chapter 3 and illustrates how to perform file I/O operations in Windows 2000 and Windows 98.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>FILEIO.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a test program that calls FILEIO.</LI></UL>
+
+<H3>Building FILEIO</H3>
+<P>To build FILEIO.SYS, you need to have both the Windows 2000 DDK and the Windows 98 DDK installed. Follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>.<FONT COLOR="#ff0000"> </FONT>The Microsoft Visual C++ project file is named FILEIO.DSP. <FONT COLOR="#ff0000">Unfortunately, you cannot use the BUILD utility for this sample program because BUILD is unable to cope with modules that have different compile options than other modules in the project.</P>
+</FONT><P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode samples</A></P>
+<H3>Testing FILEIO</H3>
+<P>Install the FILEIO.SYS driver. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF. Windows 98 may prompt your for the location of FILEIO.JNK, which is in the project directory itself.</P>
+<P>During initialization, the driver will read the contents of the file FILEIO.JNK from the Drivers directory. Thereafter, open a command prompt and execute the TEST.EXE program in the TEST\DEBUG subdirectory. TEST will report the file data read by the driver.</P>
+<P>This sample illustrates how you can do file I/O operations in a driver without needing separate binaries for Windows 2000 and Windows 98. Microsoft prefers that you ship separate binaries, however. If you elect to do that, you would (obviously) need to remove the runtime test for the platform you're using and conditionally compile one or the other version of the file I/O functions.</P></BODY>
+</HTML>

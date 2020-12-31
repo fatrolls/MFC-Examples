@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Tools - Stored Procedure Class Wizard</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Stored Procedure Class Wizard</FONT></H3></CENTER>
+
+<HR>
+
+This tool was contributed by <A HREF="mailto:GPoulose@att.net">George Poulose</A>
+
+
+
+<P>Stored Procedure Class Wizard (SPCW) is a development
+tool that can be used exclusively to generate class files
+(.cpp and .h) derived from MFC’s CRecordset for stored
+procedures. Currently SPCW supports Microsoft SQL Server
+v 6.5 and Sybase SQL Anywhere v 5.5 and can be extended
+to any database. The idea is to speed up the development
+process of client-server projects involving aforementioned
+packages under Windows NT/95. SPCW is an extension to
+DevStudio's class wizard.
+
+<H4>System Requirements:</H4>
+
+VC++ v 5.0, MFC v 4.21, NT 4.0/95
+
+<H4>Running the application:</H4>
+
+Extract it to a <\temp> folder and then run.
+
+
+
+<P><A HREF="spcw.zip">Download File</A> 257K
+
+<P>Posted on: April 7, 98.
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,186 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc-View - Resizable Docking Window</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Resizable Docking Window</FONT></H3></CENTER>
+
+<HR>
+
+This article was contributed by <A HREF="mailto:mrc@mfltd.co.uk">Mark Conway</A>.
+
+<P><IMG SRC="mrc_docktest.gif" >
+
+
+<B><I><FONT FACE="Arial"><P>History</P>
+</B></I></FONT><FONT SIZE=2>
+<P>MRCEXT was originally written towards the end of  1994. At Micro Focus, I was involved in developing a new Development Environment for COBOL (do  I hear laughter ?). We were using beta copies of Visual C++ 2.0, and liked the look and feel of the sizeable dock bars.  There was plenty of debate on newsgroups about how to get these dockbars, and although the guys at Microsoft kept telling people it was all done with MFC, they weren't going to tell anyone how it was done. Back in those days, MFC wasn't documented nearly half as well as it is now, and there were relatively few samples and other literature available. </P>
+
+<P>There was a fair amount of detective work involved, and in the process I learned far more than I wanted to about the internals of MFC. The resulting of the work was an MFC extension DLL MRCEXT.DLL, that was first made publicly available in early '95.  The code hasn't changed much since first written, not because it's perfect or elegant, but because it works, and if it isn't broke don't fix it. It underlies several commercial products, including Micro Focus' Net Express product (see www.microfocus.com), so I believe it to be reasonably robust.</P>
+
+<P>I've been intending to update the external version for a while now, but have found it very difficult to justify the time - after all I get nothing for this. One of my New Year's resolutions for 1998 was to finally get round to doing it. Although there are plenty of things I wanted to add, I just can't justify the time to do them, and my main aim of this &quot;release&quot; is to ship bug-fixes and a version that's compatible with Visual C++ 5.0. Consequently, very little has change from previous releases. Perhaps the biggest change is that classes are now exported using the _declspec() syntax, rather than relying explicitly on the .def file. (the .DEF file was becoming a nightmare). This means that this version is NOT compatible with the original.</P>
+
+<P>I have added a couple of new samples: DockDemo (showing a neater docking sample); and DockScribble (the MFC tutorial Scribble CView's embedded in control bars). Due to time constraints, the documentation (UserRef.doc), and the older sample (Docktest) have not been updated. However, they still provide much useful information, especially on the non-docking classes MRCEXT contains..</P>
+
+<P>This download will provide you with more than enough to get sizeable dockbars implemented in your own applications. I will endeavor to answer any questions you have, but cannot promise to provide solutions. </P>
+<P> </P>
+</FONT><B><I><FONT FACE="Arial"><P>How to Use It</P>
+</B></I></FONT><FONT SIZE=2><P>Using MRCEXT is fairly straightforward:</P>
+<OL>
+
+<LI>Include the headers: Add #include &lt;mrcext.h&gt; to stdafx.h. This has a #pragma to link in .lib automatically.</LI>
+<LI>Derive your main window class (usually called CMainFrame) from CMRCMDIFrameWndSizeDock, instead of CMDIFrameWnd - general a find/replace operation on mainfrm.cpp/h is enough. </LI></OL>
+
+
+<P>Any control bars which you want to be sizeable need to be derived from CMRCSizeControlBar. In a normal MFC application is it rare to derive from CControlBar directly. Normally you would be most likely to use or derive from CDialogBar. MRCEXT includes a CMRCSizeDialogBar class, that is a drop-in replacement for MFC's CDialogBar, and which also provides a style flag to permit simple linear scaling of controls on the dialog. </P>
+
+<P>You can derive from either CMRCSizeControlBar, or CMRCSizeDialogBar. The main difference is that CMRCDialogBar creates it's controls and initial size from a dialog resource. If you prefer to create the controls yourself, and specify the initial sizes programatically, derive from CMRCSizeControlBar. If you want to use a dialog resource, use CMRCDialogBar.</P>
+
+<P>In your derived class you will need to override the OnSizeOrDocked() virtual function.</P>
+
+<P>This is called to notify your bar that it's size or dock status has changed. Write code here that is responsible for positioning the child controls to the new size required. You also need to include code to allow enough of a border round the control bar so that when it's docked, the user has somewhere to grab.  You'll see this in </P>
+<P>the samples.</P>
+
+<P>There is also a CMRCSizeToolBar class that replaces CToolBar. This is a control bar which subclasses the toolbar common control, and provides much of the same functionality as CToolBar, and extends it to include customization. It is not 100% compatible with CToolBar, and lacks some functionality. We don't use it in our products at Micro Focus, but you may still find it useful. </P>
+<P>&nbsp;</P>
+</FONT><B><I><FONT FACE="Arial"><P>Disclaimer</P>
+</B></I></FONT><FONT SIZE=2><P>This software is provided as freeware, WITHOUT WARRANTY, and WITHOUT SUPPORT. Micro Focus Inc. accepts no liability for any losses arising from use of this software.  There is no guarantee of compatibility with previous or future versions of this software.</P>
+</FONT><B><I><FONT FACE="Arial"><P>If you decide to use MRCEXT</P>
+</B></I></FONT><FONT SIZE=2><P>You are free to use this software in your product subject to the following restrictions:</P>
+
+
+<UL>
+<LI>You must acknowledge Micro Focus Inc. copyright in your Banner and/or About Box. Something simple such as &quot;Portions copyright Micro Focus Inc&quot; is fine. </LI>
+<LI>If you alter the code, please rename the .DLL that you ship - i.e. call it something else other than MRCEXT.DLL.</LI></UL>
+
+
+<P>It would also be nice if you mail me and let me know you're using it.</P>
+<P> </P>
+</FONT><B><I><FONT FACE="Arial"><P>DockDemo Sample</P>
+</B></I></FONT><FONT SIZE=2><P>The DockDemo sample shows off some of the docking features. The bar it creates are:</P>
+
+<UL>
+<LI>a fake DevStudio style Workspace window. </LI>
+<LI>a CalendarBar with an OCX calendar control in it. If this doesn't work, you have a different calendar control to me. To fix this open up the sample and insert a different OCX on this dialog. The only point of this is to prove that OCX's work in CMRCSizeDialogBar's.</LI>
+<LI>a sizeable bar with the Micro Focus logo on it. This is just a CMRCSizeDialogBar with the bit set so that the bar resizes as expected.</LI></UL>
+
+<P><IMG SRC="mrc_dockdemo.gif" >
+
+</FONT><B><I><FONT FACE="Arial"><P>DockTest Sample</P>
+</B></I></FONT><FONT SIZE=2><P>This is the original sample I provided back with the first MRCEXT. I decided to include it here separately, as it at least shows the DIB and AVI classes in action. </P>
+</FONT><B><I><FONT FACE="Arial"><P>How it works</P>
+</B></I></FONT><FONT SIZE=2><P>I guess that most of you out there don't really care how the docking works, so you can skip this bit. For those who are interested, first let's look at what happens when a standard CControlBar, (such as a toolbar) is docked into a standard CFrameWnd. </P>
+
+<P>If you use spy to check out the window hierarchy, you'll notice that the control bars, are not parented directly by the main window, but by child windows of it. These child windows are CDockBars, and CFrameWnd::EnableDocking(), creates one of these windows for each side of the frame window docking is enabled on (top, bottom, left, right). The CFrameWnd layout algorithm asks each dock bar in turn (in order of creation) and asks it to how big it is. It then works out the remaining space, and assigns that to the view, (or MDI client window) inside it. This is the mechanism that ensures when a user resizes a frame window, that the view inside gets resized too. If you've ever ended up in the debugger looking at this code by mistake, then it looks like a lot of work to go to just to resize the view, but of course it is very flexible. It also uses the windows window hierarchy to locate the child windows, rather than using specific member variables.</P>
+
+<P>Each CDockBar contains an array of pointers to the CControlBars that belong to it. When asked how big it is, it goes through this array, asking for the size of each control bar in turn. The end of each row of bars is indicated in the array by a NULL pointer. </P>
+
+<P>Now what happens when a window is floating. The CControlBar is again parented by a CDockBar which is parented by a CMiniDockFrameWnd, derived from CFrameWnd. Basically, this is a CFrameWnd with the WS_EX_TOOLWINDOW style to get the smaller caption. Its docking algorithm is identical with CFrameWnd, except it has a special style set (FWS_SNAPTOBARS), so that once the frame has laid out the dockbars, instead of  leaving space for another child window, it resizes itself so there is no space left over. </P>
+
+<P>When a control bar is dragged around, a special message loop in MFC is used which handles detecting where the control bar going to dock, and indicating how big it will be. </P>
+
+<P>When a control bar goes from docked to floating, this is what happens:</P>
+<OL>
+
+<LI>A new CMiniDockFrameWnd is created, with a single CDockBar inside it.</LI>
+<LI>The CControlBar is removed from the CDockbar it's currently part of (if any), and docked into the CDockBar of the CMiniDockFrameWnd.</LI></OL>
+
+
+<P>So you assuming you now understand how the base MFC works, or at least can follow it, you're left with the much harder task of how to go about actually implementing the DevStudio behavior. </P>
+
+<P>The first thing is to derive CMRCSizeControlBar class from CControlBar that has member variables for sizes while docked horizontally, vertically, and floating. Then CalcFixedLayout() returns the appropriate size, depending on the state of the control bar. Then, there are really 2 very different problems: (a) how to make then size while floating; and b)  how to make the windows size while docked. </P>
+
+<OL TYPE="a">
+
+<LI>Nowadays, Microsoft actually provide a sample showing you how to do just this - if only they'd done that 3 years ago. As it turns out there is a very convenient member variable in CFrameWnd, that lets you specify the class to be used for a floating frame window. Indeed, when I first found it, I suspiciously concluded this was there just so the Visual C++ guys could do their docking support. Without it things would be close to impossible. Basically, you introduce our own CMiniDockFrameWnd -derived class that knows has the WS_THICKBORDER style, and when resized itself, updates the size of the floating control bar inside it. As mentioned above, this window has the FWS_SNAPTOBARS style, so that is snaps to the size of the control bar inside it.</LI></OL>
+
+
+<OL START=2 TYPE="a">
+
+<LI>is a bit more involved. You have to replace the CFrameWnd layout code with something that knows about sizeable bars, and which can create splitters between them. This is far more involved, so I won't document the details. Much of the code is involved with what happens when the splitters are dragged, the main frame window is resized (the size of the sizeable control bars needs to be adjusted), or when a bar is shown/unshown again (in which case you want it to be the same size as before). The general approach taken is made more complex, as it relies on passively detecting the layout/size has changed, and adjusting accordingly. This is necessary as the base docking functions for CToolbar, CDialogBar, etc are non-virtual, and I wanted MRCEXT to work with these classes of bars, not just with those derived from CMRCSizeControlBar. </LI></OL>
+
+
+<P>Naturally, we also have to replace the special modal message loop for handling the dragging of control bars to give some indication as to the size of a control bar, and where it will dock. This code isn't perfect, but it does give an indication of when a control bar will dock onto a row on it's own, or into a row with other control bars.</P>
+</FONT><B><I><FONT FACE="Arial"><P>Other Classes</P>
+</B></I></FONT><FONT SIZE=2><P>MRCEXT also has a few other classes in there too, such as device independent bitmaps and their palettes (something that should have been in MFC by now). For the most part, you won't have downloaded MRCEXT to get anything other than the docking support, but since you get these classes for free, you might as well use them. See the Docktest sample and the user guide for details.</P>
+</FONT><B><I><FONT FACE="Arial"><P>Docking Views - DockScribble</P>
+</B></I></FONT><FONT SIZE=2><P>One question I am frequently asked is &quot;How to do docking views  just like DevStudio ?&quot;. By this people mean, they want to take a CDocTemplate, and simply make it create dockable windows, rather than normal frame windows. The first thing to note is that DevStudio doesn't actually do this. The workspace pane is just a control bar, which happens to get populated with information when a file is opened. There may well be an underlying CDocument, but this isn't a docking view. </P>
+
+<P><IMG SRC="mrc_scribble.gif" >
+
+<P>The big problem is that the MFC document/view architecture is also very heavily dependent on the frame window parenting the view. CMDIFrameWnd maintains the currently active view, by finding the currently active MDI frame, and routing messages to it. For control bars, there is no MDI frame window, so this doesn't work.  This also means menu/accelerator resources won't work either. So if you've</P>
+
+<P>&nbsp;</P>
+<P>The honest answer to docking views is that although it is possible, it is pushing MFC document/view architecture beyond it's natural limits. The ScribDock sample is an attempt to get a Scribble document/view into a control bar. To do it, functions in the CView, CDocument and CMultiDocTemplate have been over-ridden, so I think it unlikely it will be possible to simply to permit and CView/CDocument to be dockable.  've not tested it enough to determine if it 100% solution, but for those of you who are still convinced they want to do this, it's a good starting point. </P>
+
+<P>The starting point is a CMultiDocTemplate-derived document template, that overrides OpenDocumentFile() to create a control bar instead of a frame window for the view. This is straightforward enough - the trouble is getting the rest of the MFC framework to work with it, especially when the control bar is floating. </P>
+
+<P>Some of the issues I encountered were:</P>
+
+<UL>
+<LI>Lack of a suitable frame window. One of the weaknesses of the MFC Document/View Architecture is that the frame window classes are also heavily involved. </LI></UL>
+
+
+
+<UL>
+<LI>Although CFrameWnd::m_pViewActive is supposed to contain the active view, and this will be set when a view is activated, it turns out that you don't actually want this to happen in an MDI application. It causes problems when exiting the application, and more unusually, when the control bar is floating.  when the MDI frame window is activated, it sets focus onto the currently active view, and if this view is floating off a control bar, it creates a lot of confusion, and the mainframe window will not respond to events. </LI></UL>
+
+
+
+<UL>
+<LI>Use of context menu's in CView as opposed to using the main menu. Even if you have a menu item permanently on the main menu, you need a way to route it through to your view, as the default MFC command routing won't do it. Though you could do this by keeping track of  the currently active control bar view, I took the simpler approach of a context menu. For complex view, this is going to be big though.</LI></UL>
+
+
+
+<UL>
+<LI>Much of the CDocument/CView stuff, such as Save, Save As and Print works fine. </LI></UL>
+
+
+
+<UL>
+<LI>You need to override CDocument::OnCloseDocument() as the default goes round deleting the parent frames of each view onto a document.</LI></UL>
+
+
+
+<UL>
+<LI>Print Preview works if you un-parent the view from the control bar before calling the default. This fools the print preview code into using the main frame window, and there are comments in the MFC code suggesting this is intentional. </LI></UL>
+
+
+<P>I am sure there are other issues. An important point to note is that both the CView and the CDocument classes need to be overridden to get this to work, so it is hardly a &quot;generic&quot; solution. </P>
+
+
+<P><A HREF="mrcext50.zip">Download Source</A>. Includes source for demo app. 730KB
+<P><A HREF="mrcext_doc.zip">Download Doc</A> 30KB
+<P><A HREF="mrcdemo.zip">Download Demo Apps</A> 103KB
+ 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

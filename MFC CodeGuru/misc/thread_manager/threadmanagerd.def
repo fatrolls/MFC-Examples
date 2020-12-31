@@ -1,0 +1,7 @@
+; ThreadManagerD.def : Declares the module parameters for the DLL. <DEBUG>
+
+LIBRARY      "ThreadManagerD"
+DESCRIPTION  'ThreadManagerD Windows Dynamic Link Library <DEBUG>'
+
+EXPORTS
+    ; Explicit exports can go here

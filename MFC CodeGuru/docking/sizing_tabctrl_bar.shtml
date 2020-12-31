@@ -1,0 +1,128 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Section - Sizing TabControlBar</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Sizing TabControlBar
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:dirk_clemens@hotmail.com">Dirk Clemens</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="sizing_tabctrl_bar.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+<P><img src="sizing_tabctrl_bar.jpg">
+
+<P>
+This article extends the article "Resizable Docking Window 2" by 
+<A HREF="mailto:cristi@gds.ro">Cristi Posea</A>.<BR>
+<P>
+
+<p>
+<H4>Features</H4>
+Control bar like in DevStudio, which has TabControls with different Views (like TreeViews)
+and it can be docked and resized.
+
+<H4>Instructions</H4>
+
+Add the following class to your project:<BR>
+CSizingControlBar<BR>
+CSizingTabCtrlBar
+
+<P>Add a member variable to CMainFrame (in mainfrm.h).
+
+<PRE><TT><FONT COLOR="#990000">
+CSizingTabCtrlBar m_wndSTCBar;
+</FONT></TT></PRE>
+
+<P>Create the bar in CMainFrame::OnCreate(). Then set bar styles, enable it to dock... like any
+control bar. Be sure to add IDW_PROP_BAR to the "resource.h" and to add the bitmap IDB_TABIMAGES
+<img src="sizing_tabctrl_bar1.jpg"> to your resources.
+
+<PRE><TT><FONT COLOR="#990000">
+// SizingControlBar
+m_wndSTCBar.Create(this, CSize(200, 1), IDW_PROP_BAR);
+m_wndSTCBar.SetBarStyle(m_wndToolBar.GetBarStyle() |
+	CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC);
+m_wndSTCBar.EnableDocking(CBRS_ALIGN_ANY);
+DockControlBar(&m_wndSTCBar, AFX_IDW_DOCKBAR_LEFT);
+
+m_wndSTCBar.AddView("Database", RUNTIME_CLASS(CClassView));
+m_wndSTCBar.AddView("Files", RUNTIME_CLASS(CFileView));
+</FONT></TT></PRE>
+
+As you can see, the different views are added by calling 
+
+<PRE><TT><FONT COLOR="#990000">
+m_wndSTCBar.AddView("Files", RUNTIME_CLASS(CFileView));
+</FONT></TT></PRE>
+
+Thats the only thing you have to do, to add a view!
+<P>Override CMainFrame::RecalcLayout().<br>
+Note: use the base framewnd class member function, ie if you have an SDI application
+replace CMDIFrameWnd with CFrameWnd below. 
+
+<PRE><TT><FONT COLOR="#990000">
+void CMainFrame::RecalcLayout(BOOL bNotify) 
+{
+	CMDIFrameWnd::RecalcLayout(bNotify);
+	CMDIFrameWnd::RecalcLayout(bNotify);
+}
+</FONT></TT></PRE>
+
+To call a view from the Mainframe:
+
+<PRE><TT><FONT COLOR="#990000">
+CFileView* pView = (CFileView*)
+	m_wndSTCBar.GetView(RUNTIME_CLASS(CFileView));
+pView->UpdateView();	// or do anything else
+m_wndSTCBar.SetActiveView(RUNTIME_CLASS(CFileView));
+</FONT></TT></PRE>
+
+<!-- Remember to update this -->
+<p>Last updated: 14 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

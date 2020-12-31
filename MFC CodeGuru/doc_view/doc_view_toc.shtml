@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>   
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">   
+    <META NAME="Author" CONTENT="Zafir Anjum">   
+    <TITLE>Document - View : Table of Contents</TITLE>
+    <META Name="description" Content="Source code for various projects">
+    <META Name="keywords" Content="CAPTION MDI SDI VIEW VIEWS SWITCH SPLITTER PANE">
+</HEAD>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><H1><FONT COLOR="#a0a0ff">Document - View</FONT></H1>
+
+<td><td width=10%></td>
+<td align=right>
+<!--#exec cgi="/cgi/ads.cgi"-->
+<td></tr>
+
+</table><HR>
+
+
+<p>This section is being maintained by <a href="mailto:azathoth@cyberdude.com">Pat Laplante</a>.
+
+<UL>
+<LI><A HREF="no_untitled.shtml">How to get rid of "Untitled - MyApp" in MFC - Chris Kohlhepp</A>
+<LI><A HREF="multiview_for_doc.shtml">Multiple views for a single document (MDI) - Adrian Roman</A>
+<LI><A HREF="multiview_for_doc2.shtml">Multiple views for a single document (MDI) 2 - Chris Kirby</A>
+<LI><A HREF="multiview_for_doc3.shtml">Multiple views for a single document (MDI) 3 - Pat Laplante</A>
+<LI><A HREF="msdi.shtml">MultiSingle (MSDI) Document interface - Lanz Jean-Claude</A>
+<LI><A HREF="msdidao.shtml">MultiSingle (MSDI) Document interface with DAO doc - Lanz Jean-Claude</A>
+<LI><A HREF="switchviews_in_splitter.shtml">Switching views in splitter panes (SDI) - Adrian Roman</A>
+<LI><A HREF="tabbed_views.shtml">Tabbed Views - Daniel Harth</A>
+<LI><A HREF="tabbed_views2.shtml">Tabbed Views (2) - Alger Pike</A>
+<LI><A HREF="open_most_recent.shtml">Open most recent file - Adam Solesby</A>
+<LI><A HREF="open_most_recent2.shtml">Open most recent file (2) - Izidor Gams</A>
+<LI><A HREF="variable_splitter.shtml">Variable splitter views - Salvatore Mosaico</A>
+<LI><A HREF="multi_open.shtml">Selecting multiple files in File Open dialog - Klaus Gütter</A>
+<LI><A HREF="zoom_scale.shtml">Add Zoom and Scale Capabilities to CScrollView - Brad Pirtle</A>
+<LI><A HREF="multi_mru.shtml">Multiple MRUs, and MRUs on Submenus - Todd C. Gleason</A>
+<LI><A HREF="autopan.shtml">Auto-Panning Windows - Umut Alev</A>
+<LI><A HREF="autopan2.shtml">Auto-Panning Windows 2 - Russel Freeman</A>
+<LI><A HREF="intellipan.shtml">Intellimouse panning (improved Auto-Panning Windows) - Lutz Kretzschmar</A>
+<LI><A HREF="custom_window_class.shtml">Custom Window Class for View Window - Tyler Bindon</A>
+<LI><A HREF="restoring_window_position.shtml">Restoring Window Position - Yonat Sharon</A>
+</UL>
+
+<CENTER><HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" ><TR>
+<TD WIDTH="33%"><FONT SIZE=-1>
+<A HREF="http://www.codeguru.com">Goto HomePage</A>
+</FONT></TD>
+
+<TD WIDTH="34%"><FONT SIZE=-2>
+<CENTER>&copy; 1998 Zafir Anjum</CENTER>
+</FONT></TD>
+
+<TD WIDTH="33%"><DIV ALIGN=right><FONT SIZE=-1>
+Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;
+</FONT></DIV></TD></TR></TABLE>
+
+
+
+</BODY>
+</HTML>

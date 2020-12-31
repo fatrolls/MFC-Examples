@@ -1,0 +1,1001 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Section - Title</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A DevStudio like CControlBar
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:acp107@psu.edu">Alger Pike</A>.
+
+<!-- Sample image and source code/demo project -->
+
+<!-- The article... -->
+
+<p>There has been much talk of late of making dockable views that have the features of the DevStudio
+workspace. Most of the code that I have seen to date revolves around turning a view into a docking
+window.  They also don't mention how to put a grip bar at the top of these windows. There are many
+types of controls, inclding the docking views, that would benefit from this treatment, and in particular
+a CDialogControl.  In many respects, we are already almost there; a CDialogBar already supports docking
+by default. All we need to do, is include support for the caption with the dock grippers and close 
+button. This as it turns out is easier said than done. However, it is possible and when we are done
+we will have a CGripDialogBar that looks like this: 
+
+<p><img src="devstudio_like_controlbar1.gif"></p>
+
+Why is a caption at the top of a CDialogBar a good thing to have? Well, if you put a control that
+takes up the entire client area of your dialog template, you lose the docking functionality since
+messages are dispatched to your control and not the dialog bar. By having a caption at the top you
+will always have a place to 'grip' onto for your docking support. The new CDialogBar class, 
+CGripDialogBar, is derived from my CInitDialog class. An article on this control can be found on 
+this site, look for CInitDialogBar: A CDialogBar with OnInitDialog() and DDX Support. If you don't
+find it you can always check out my site http://avenger.mri.psu.edu/ntpage.html. The first thing 
+to do in deriving the new class is to override the OnInitDialogBar() function so we can add the new
+features for CGripDialogBar.  We want a caption bar up at the top, to add this simply call the 
+following in your new OnInitDialogBar(): 
+
+<FONT COLOR="#990000"><TT><PRE>
+// Add our caption 
+ModifyStyle(0, WS_CAPTION); 
+</tt></PRE></FONT>
+
+At this point if you derive a CGripDialogBar object you will see that this one statement of code,
+does a lot for us. It creates a dialog bar that has a default windows caption. At this point the
+real work begins, as we want to override the ugly windows deactivated caption bar and add our own
+with grip bars that look like DevStudio’s.  We also, will give it a color gradient so we will be
+one up on DevStudio. In order to draw your own caption bar, you need to provide your own support
+for several of the WM_NC??? messages.  The painting itself is done in WM_NCPAINT. Add this point,
+add a message handler for this function: 
+
+<FONT COLOR="#990000"><TT><PRE>
+//{{AFX_MSG(CInitDialogBar) 
+afx_msg void OnNcPaint(); 
+//{{AFX_MESSAGE 
+
+BEGIN_MESSAGE_MAP(CGripDialogBar, CInitDialogBar) 
+//{{AFX_MSG_MAP(CInitDialogBar) 
+ON_WM_NCPAINT() 
+//}}AFX_MSG_MAP 
+END_MESSAGE_MAP() 
+
+void CGripDialogBar::OnNcPaint() 
+{ 
+	// Let MFC draw the frame for us 
+	// We could do it put it's a pain 
+	// since we do not change the default 
+	// look 
+	Default(); 
+
+	// Here we will paint our own caption 
+	// bar for our dock window 
+	CWindowDC dc(this); 
+	CBrush Brush; 
+
+	Brush.Attach((HBRUSH) GetStockObject(LTGRAY_BRUSH)); 
+
+	CRect rc; 
+	GetWindowRect(rc); 
+
+	// Rect of caption and X/Y Frames 
+	CRect rc2(0,0, rc.Width(), 
+	  GetSystemMetrics(SM_CYCAPTION) 
+	  + GetSystemMetrics(SM_CYFRAME)); 
+
+	//Get Caption Rect 
+	CRect capRect; 
+
+	capRect.left = rc2.left + GetSystemMetrics(SM_CXBORDER); 
+	capRect.top = GetSystemMetrics(SM_CYFRAME); 
+	capRect.right = rc2.right - GetSystemMetrics(SM_CXBORDER); 
+	capRect.bottom = GetSystemMetrics( SM_CYSIZE ); 
+
+	dc.FillRect(rc2, &Brush); 
+
+	float gradient = 0; 
+	float startcolor = 100; 
+	float endcolor = 220; 
+
+	// calculate the slope for color gradient 
+	gradient = (endcolor - startcolor) / rc.Width(); 
+
+	// Draw Color gradient 
+	for(int i = 0; i < rc.Width(); i++) 
+	{ 
+	  int r, g, b; 
+	  float fr, fg, fb; 
+	  CPen* oldPen; 
+
+	  // Higer precision use floats for calcs 
+	  // Leads to smoother gradient 
+	  fr = gradient * (float) i + startcolor; 
+	  fg = gradient * (float) i + startcolor; 
+	  fb = gradient * (float) i + startcolor; 
+
+	  r = (int) fr; 
+	  g = (int) fg; 
+	  b = (int) fb; 
+
+	  CPen pen(PS_SOLID, 1, RGB(r,g,b)); 
+
+	  dc.MoveTo(i,0); 
+	  oldPen = dc.SelectObject(&pen); 
+	  dc.LineTo(i,rc2.bottom); 
+	  dc.SelectObject(oldPen); 
+	} 
+
+	// Draw the docking grippers 
+	CRect rect(5,7,(5+rc.Width()) - 30, 7+3); 
+	dc.Draw3dRect(rect, 
+	RGB(255,255,255), 
+	RGB(128,128,128)); 
+
+	CRect rect2(5,11,(5+rc.Width()) - 30, 11+3); 
+	dc.Draw3dRect(rect2, 
+	  RGB(255,255,255), 
+	  RGB(128,128,128)); 
+
+	// Adjust capRect to receive 
+	// the close button 
+	capRect.left = capRect.right - 20; 
+	capRect.right -= 5; 
+
+	// Put the close button on the caption 
+	dc.DrawFrameControl(capRect, 
+	  DFC_CAPTION, 
+	  DFCS_CAPTIONCLOSE); 
+} 
+</tt></PRE></FONT>
+
+Now, we have a control that has a caption that looks the way we want it to look.
+The next step is to provide the docking control to the caption.  If you have derived
+an object at this point; Test it! Look how clicking on the caption does not cause the
+caption to start the dock drag nor does double clicking dock / undock the control. By
+overriding two more of WM_NC?? messages we can provide these functions quite easily.
+The messages we need to override are WM_NCLBUTTONDOWN, and WM_NC_LBUTTONDBLCLK: 
+
+<FONT COLOR="#990000"><TT><PRE>
+void CGripDialogBar::OnNcLButtonDown(UINT nHitTest, CPoint point) 
+{ 
+     ASSERT(m_pDockContext != NULL); 
+
+     switch(nHitTest) 
+     { 
+     case HTCAPTION: 
+          { 
+           m_pDockContext->StartDrag(point); 
+          } 
+     break; 
+     default: 
+     Default(); 
+     break; 
+     } 
+} 
+
+void CGripDialogBar::OnNcLButtonDblClk(UINT nHitTest, CPoint point) 
+{ 
+
+     ASSERT(m_pDockContext != NULL); 
+
+     // start the drag 
+     m_pDockContext->ToggleDocking(); 
+} 
+</tt></PRE></FONT>
+
+Now if you derive an object and use it you will see that the docking support now works but has a
+major flaw. When the window is in the floating state the caption does not disappear. We get 
+something that looks like this: 
+
+<p><img src="devstudio_like_controlbar2.gif"></p>
+
+So now we need to look at the best way to remove or hide the caption when the window is floating.
+You might think it is a simple matter of calling ModifyStyle(WS_CAPTION, 0); when the window is
+floating. This however does not work. Although, the caption does get removed from the window, i.e.
+mouse buttons no longer work in the caption, the window still draws the non-client area of the window.
+And, also is you were to call ModifyStyle(0, WS_CAPTION); the caption does not reactivate itself. 
+There is a way, however, we can effectively hide the control from view; we will use this method.
+The first step is to declare a RecalcLayout function in our class: 
+
+<FONT COLOR="#990000"><TT><PRE>
+protected: 
+	void RecalcLayout(); 
+</tt></PRE></FONT>
+
+We will call this function before we do our painting. If the window is in a floating state then
+we move the control with respect to its parent up the height of the caption bar.  The hides the 
+control bar’s caption underneath the caption of the floating window. Implement the RecalcLayout
+function like this: 
+
+<FONT COLOR="#990000"><TT><PRE>
+void CGripDialogBar::RecalcLayout() 
+{ 
+     // If we are floating we do not want 
+     // our new caption to be visible, 
+     // so we move our window up so our 
+     // caption is underneath the CMiniFrameWnd 
+     // caption 
+     if(IsFloating()) 
+     { 
+          CRect rect; 
+
+          GetWindowRect(rect); 
+
+          SetWindowPos(NULL, 
+               0, 
+               -(GetSystemMetrics(SM_CYCAPTION) 
+               + GetSystemMetrics(SM_CYFRAME)), 
+               rect.Width(), 
+               rect.Height(), 
+               NULL); 
+     } 
+
+} 
+</tt></PRE></FONT>
+
+Then override your OnPaint() function to call RecalcLayout() before it does its painting: 
+
+<FONT COLOR="#990000"><TT><PRE>
+void CGripDialogBar::OnPaint() 
+{ 
+     // Notice here we break the do not call 
+     // the base class OnPaint Rule. This is 
+     // because we do not set up our own DC 
+     // here so calling the base is OK and also 
+     // required, otherwise we need to redo 
+     // what the base already does for us 
+     RecalcLayout(); 
+     CDialogBar::OnPaint(); 
+} 
+</tt></PRE></FONT>
+
+We have now fixed the floating caption bug, but we have now introduced a new bug. We have lost double
+click support. Look at how the drag frame is now drawn and I think you will see why: 
+
+<p><img src="devstudio_like_controlbar3.gif"></p>
+
+By default, the drag frame is drawn around the dock control window in its entirety. Because our control
+is offset inside the docking frame, the docking frame actually changes position the first time we 
+click the mouse button.  Since the window has moved, the second click gets sent to our control window
+and not the floating frame.  To remedy this, we will need to write a new class which overrides the 
+docking functionality of our window. 
+   (Just a forewarning: We are about to delve into <afxpriv.h>. Although this is not a crime, the 
+reader should be aware that this class may or may NOT work with future MFC versions.) The docking
+support for MFC windows has its own class, CDockExtent.  One single call to StartDrag(), or 
+ToggleDocking(), starts the docking process. Fortunately, these functions are virtual meaning we can
+override the current behavior to provide our own.  Our new class CExDockExtent will override 
+StartDrag() and also provide its own overridable, AdjustWindowForFloat() which will make this class
+very generic and apply to many if not all possibilities. The default will be designed to work with our
+CGripDialogBar: 
+
+<FONT COLOR="#990000"><TT><PRE>
+class CExDockContext : public CDockContext 
+{ 
+   public: 
+        CExDockContext(CControlBar* pBar); 
+        virtual ~CExDockContext(); 
+
+        // Drag Operations 
+       virtual void StartDrag(CPoint pt); 
+
+    protected: 
+         virtual void  AdjustWindowForFloat(CRect& rect); 
+}; 
+</tt></PRE></FONT>
+
+We will now override the start drag function. Most of it will be exactly the same as the base class.
+I will put in comments where we call our AdjustWindowForFloat(). It needs to be called a total of 
+three times. 
+
+<FONT COLOR="#990000"><TT><PRE>
+void CExDockContext::StartDrag(CPoint pt) 
+{ 
+     ASSERT_VALID(m_pBar); 
+
+     m_bDragging = TRUE; 
+     InitLoop(); 
+
+     if (m_pBar->m_dwStyle & CBRS_SIZE_DYNAMIC) 
+    { 
+          // get true bar size (including borders) 
+          CRect rect; 
+          m_pBar->GetWindowRect(rect); 
+
+          // This is our added funtionality 
+          // This overridable allows you 
+          // to adjust the window rect so that 
+          // you can hide controls like a caption 
+          // bar from view 
+//NewCode--> AdjustWindowForFloat(rect); 
+
+          m_ptLast = pt; 
+          CSize sizeHorz = m_pBar->CalcDynamicLayout(0, 
+            LM_HORZ | LM_HORZDOCK); 
+          CSize sizeVert = m_pBar->CalcDynamicLayout(0, 
+            LM_VERTDOCK); 
+          CSize sizeFloat = m_pBar->CalcDynamicLayout(0, 
+            LM_HORZ | LM_MRUWIDTH); 
+
+          m_rectDragHorz = CRect(rect.TopLeft(), sizeHorz); 
+          m_rectDragVert = CRect(rect.TopLeft(), sizeVert); 
+
+          // calculate frame dragging rectangle 
+          m_rectFrameDragHorz = CRect(rect.TopLeft(), sizeFloat); 
+          m_rectFrameDragVert = CRect(rect.TopLeft(), sizeFloat); 
+
+#ifdef _MAC 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragHorz, 
+               WS_THICKFRAME | WS_CAPTION, WS_EX_FORCESIZEBOX); 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragVert, 
+               WS_THICKFRAME | WS_CAPTION, WS_EX_FORCESIZEBOX); 
+#else 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragHorz); 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragVert); 
+#endif 
+          m_rectFrameDragHorz.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+          m_rectFrameDragVert.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+     } 
+     else if (m_pBar->m_dwStyle & CBRS_SIZE_FIXED) 
+     { 
+          // get true bar size (including borders) 
+          CRect rect; 
+          m_pBar->GetWindowRect(rect); 
+
+          // This is our added funtionality 
+          // This overridable allows you 
+          // to adjust the window rect so that 
+          // you can hide controls like a caption 
+          // bar from view 
+//NewCode--> AdjustWindowForFloat(rect); 
+
+          m_ptLast = pt; 
+          CSize sizeHorz = m_pBar->CalcDynamicLayout(-1, 
+            LM_HORZ | LM_HORZDOCK); 
+          CSize sizeVert = m_pBar->CalcDynamicLayout(-1, LM_VERTDOCK); 
+
+          // calculate frame dragging rectangle 
+          m_rectFrameDragHorz = m_rectDragHorz = CRect(rect.TopLeft(), sizeHorz); 
+          m_rectFrameDragVert = m_rectDragVert = CRect(rect.TopLeft(), sizeVert); 
+
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragHorz); 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragVert); 
+          m_rectFrameDragHorz.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+          m_rectFrameDragVert.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+     } 
+     else 
+     { 
+          // get true bar size (including borders) 
+          CRect rect; 
+          m_pBar->GetWindowRect(rect); 
+
+          // This is our added funtionality 
+          // This overridable allows you 
+          // to adjust the window rect so that 
+          // you can hide controls like a caption 
+          // bar from view 
+//NewCode--> AdjustWindowForFloat(rect); 
+
+          m_ptLast = pt; 
+          BOOL bHorz = HORZF(m_dwStyle); 
+          DWORD dwMode = !bHorz ? (LM_HORZ | 
+              LM_HORZDOCK):LM_VERTDOCK; 
+          CSize size = m_pBar->CalcDynamicLayout(-1, dwMode); 
+
+          // calculate inverted dragging rect 
+          if (bHorz) 
+          { 
+               m_rectDragHorz = rect; 
+               m_rectDragVert = CRect(CPoint(pt.x - rect.Height()/2, rect.top), size); 
+          } 
+          else // vertical orientation 
+          { 
+               m_rectDragVert = rect; 
+               m_rectDragHorz = CRect(CPoint(rect.left, pt.y - rect.Width()/2), size); 
+          } 
+
+          // calculate frame dragging rectangle 
+          m_rectFrameDragHorz = m_rectDragHorz; 
+          m_rectFrameDragVert = m_rectDragVert; 
+
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragHorz); 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragVert); 
+          m_rectFrameDragHorz.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+          m_rectFrameDragVert.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+     } 
+
+     // adjust rectangles so that point is inside 
+     AdjustRectangle(m_rectDragHorz, pt); 
+     AdjustRectangle(m_rectDragVert, pt); 
+     AdjustRectangle(m_rectFrameDragHorz, pt); 
+     AdjustRectangle(m_rectFrameDragVert, pt); 
+
+     // initialize tracking state and enter tracking loop 
+     m_dwOverDockStyle = CanDock(); 
+     Move(pt);   // call it here to handle special keys 
+     Track(); 
+} 
+</tt></PRE></FONT>
+
+With that complete we simply call our new AdjustWindowForFloat() to make any modifications to the
+rectangle before the drag frame is drawn. Remember, that we moved our control up to hide the caption
+bar so we would not see it. So in our AdjustWindowForFloat() we will undo the coordinate move and 
+pass the unmodified coordinates: 
+
+<FONT COLOR="#990000"><TT><PRE>
+void CExDockContext::AdjustWindowForFloat(CRect& rect) 
+{ 
+     // Overridable to adjust floating frame 
+     // size for added controls you don not 
+     // want to see in the floating state 
+     // Default behavior is to move window 
+     // up enough to hide the caption bar 
+     if(m_pBar->IsFloating()) 
+           rect.top += (GetSystemMetrics(SM_CYCAPTION) 
+               + GetSystemMetrics(SM_CYFRAME)); 
+} 
+</tt></PRE></FONT>
+
+There is one last step. We now need to tell our CGripDialogBar to use our overridden docking support
+rather than the default.  This is relatively easy to do.  .  The m_pDockContext object is a pointer
+which is setup in the call to EnableDocking().  If a pointer already exists the framework uses that
+one. This means the in our OnInitDialogBar(), which gets called before EnableDocking() in OnCreate(),
+we can allocate the m_pDockContext and the framework now uses our overridden docking support.  
+The completed OnInitDialogBar(). The new InInitDialogBar() function now looks like this: 
+
+<FONT COLOR="#990000"><TT><PRE>
+BOOL CGripDialogBar::OnInitDialogBar() 
+{ 
+     // Add our caption 
+     ModifyStyle(0, WS_CAPTION); 
+
+     // Setup up the overidded context for Docking 
+     // We will use this context to provide our own 
+     // docking functionality. 
+     // By doing this ourselves now instead of during 
+     // Enable docking we are able to replace the 
+     // original member variable with our new class 
+     // since all our changes occur in virtual 
+     // functions. 
+     if (m_pDockContext == NULL) 
+          m_pDockContext = new CExDockContext(this); 
+     ASSERT(m_pDockContext); 
+
+     // Call Base Class 
+     CInitDialogBar::OnInitDialogBar(); 
+     return TRUE; 
+} 
+</tt></PRE></FONT>
+
+	The m_pDockContext object is deleted by the base class destructor you do NOT have to delete it yourself. 
+That pretty much covers it. You should now have a control based on a CDialogBar that has a gripper
+caption at the top like DevStudios. There is still some missing functionality like the close button.
+If you are interested in a more complete version, including close button support, flicker free drawing,
+and other enhancements, along with a sample of its use stop by http://avenger.mri.psu.edu/ntpage.html.
+Look under the column to the right under “Stupid MFC Tricks”.  Anyway the complete source is presented
+for the control that the article describes: 
+
+<FONT COLOR="#990000"><TT><PRE>
+// GripDialogBar.h: interface for the CGripDialogBar class. 
+// 
+////////////////////////////////////////////////////////////////////// 
+
+#if !defined(AFX_GRIPDIALOGBAR_H__E3F8F9A2_CBC9_11D1_9783_726AA5000000__INCLUDED_) 
+#define AFX_GRIPDIALOGBAR_H__E3F8F9A2_CBC9_11D1_9783_726AA5000000__INCLUDED_ 
+
+#if _MSC_VER >= 1000 
+#pragma once 
+#endif // _MSC_VER >= 1000 
+
+#include <afxpriv.h> 
+#include "InitDialogBar.h" 
+
+class CExDockContext; 
+
+class CGripDialogBar : public CInitDialogBar 
+{ 
+     DECLARE_DYNAMIC(CGripDialogBar) 
+
+     // Construction / Destruction 
+    public: 
+         CGripDialogBar(); 
+         virtual ~CGripDialogBar(); 
+
+    // Attributes 
+    public: 
+
+    // Operations 
+    public: 
+
+    // Overrides 
+         // ClassWizard generated virtual function overrides 
+         //{{AFX_VIRTUAL(CInitDialogBar) 
+         //}}AFX_VIRTUAL 
+
+    // Implementation 
+    public: 
+  
+    protected: 
+         virtual BOOL OnInitDialogBar(); 
+  
+     // Generated message map functions 
+    protected: 
+         void RecalcLayout(); 
+         //{{AFX_MSG(CInitDialogBar) 
+         afx_msg void OnNcPaint(); 
+         afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point); 
+         afx_msg void OnPaint(); 
+         afx_msg void OnNcLButtonDblClk(UINT nHitTest, CPoint point); 
+         afx_msg BOOL OnNcActivate(BOOL bActive); 
+         //}}AFX_MSG 
+     DECLARE_MESSAGE_MAP() 
+}; 
+
+// Our new dock Control that overrides 
+// standard docking. 
+class CExDockContext : public CDockContext 
+{ 
+    public: 
+         CExDockContext(CControlBar* pBar); 
+         virtual ~CExDockContext(); 
+
+    public: 
+
+         // Drag Operations 
+         virtual void StartDrag(CPoint pt); 
+
+    protected: 
+         virtual void  AdjustWindowForFloat(CRect& rect); 
+}; 
+////////////////////////////////////////////// 
+
+#endif // !defined(AFX_GRIPDIALOGBAR_H__E3F8F9A2_CBC9_11D1_9783_726AA5000000__INCLUDED_) 
+////////////////////////////////////////////// 
+
+//////////////////////////////////////////////////////////////////////// 
+// GripDialogBar.cpp: implementation of the CGripDialogBar class. 
+// 
+////////////////////////////////////////////////////////////////////// 
+
+#include "stdafx.h" 
+#include <afxpriv.h> 
+#include <..\src\afximpl.h> 
+
+#include "GripDialogBar.h" 
+
+#ifdef _DEBUG 
+#undef THIS_FILE 
+static char THIS_FILE[]=__FILE__; 
+#define new DEBUG_NEW 
+#endif 
+
+////////////////////////////////////////////////////////////////////// 
+// Construction/Destruction 
+////////////////////////////////////////////////////////////////////// 
+IMPLEMENT_DYNAMIC(CGripDialogBar, CInitDialogBar) 
+
+BEGIN_MESSAGE_MAP(CGripDialogBar, CInitDialogBar) 
+     //{{AFX_MSG_MAP(CInitDialogBar) 
+     ON_WM_NCPAINT() 
+     ON_WM_NCLBUTTONDOWN() 
+     ON_WM_PAINT() 
+     ON_WM_NCLBUTTONDBLCLK() 
+     ON_WM_NCACTIVATE() 
+     //}}AFX_MSG_MAP 
+END_MESSAGE_MAP() 
+
+CGripDialogBar::CGripDialogBar() 
+{ 
+
+} 
+
+CGripDialogBar::~CGripDialogBar() 
+{ 
+
+} 
+
+BOOL CGripDialogBar::OnInitDialogBar() 
+{ 
+     // Add our caption 
+     ModifyStyle(0, WS_CAPTION); 
+
+     // Setup up the overidded context for Docking 
+     // We will use this context to provide our own 
+     // docking functionality. 
+     // By doing this ourselves now instead of during 
+     // Enable docking we are able to replace the 
+     // original member variable with our new class 
+     // since all our changes occur in virtual 
+     // functions. 
+     if (m_pDockContext == NULL) 
+          m_pDockContext = new CExDockContext(this); 
+     ASSERT(m_pDockContext); 
+
+     // Call Base Class 
+     CInitDialogBar::OnInitDialogBar(); 
+     return TRUE; 
+} 
+
+void CGripDialogBar::OnNcPaint() 
+{ 
+     // Let MFC draw the frame for us 
+     // We could do it put it's a pain 
+     // since we do not change the default 
+     // look 
+     Default(); 
+
+     // Here we will paint our own caption 
+     // bar for our dock window 
+     CWindowDC dc(this); 
+     CBrush Brush; 
+
+     Brush.Attach((HBRUSH) GetStockObject(LTGRAY_BRUSH)); 
+
+     CRect rc; 
+     GetWindowRect(rc); 
+
+     // Rect of caption and X/Y Frames 
+     CRect rc2(0,0, rc.Width(), 
+      GetSystemMetrics(SM_CYCAPTION) 
+      + GetSystemMetrics(SM_CYFRAME)); 
+  
+     //Get Caption Rect 
+     CRect capRect; 
+
+     capRect.left = rc2.left + GetSystemMetrics(SM_CXBORDER); 
+     capRect.top = GetSystemMetrics(SM_CYFRAME); 
+     capRect.right = rc2.right - GetSystemMetrics(SM_CXBORDER); 
+     capRect.bottom = GetSystemMetrics( SM_CYSIZE ); 
+
+     dc.FillRect(rc2, &Brush); 
+
+     float gradient = 0; 
+     float startcolor = 100; 
+     float endcolor = 220; 
+
+     // calculate the slope for color gradient 
+     gradient = (endcolor - startcolor) / rc.Width(); 
+
+     // Draw Color gradient 
+     for(int i = 0; i < rc.Width(); i++) 
+     { 
+          int r, g, b; 
+          float fr, fg, fb; 
+          CPen* oldPen; 
+
+          // Higer precision use floats for calcs 
+          // Leads to smoother gradient 
+          fr = gradient * (float) i + startcolor; 
+          fg = gradient * (float) i + startcolor; 
+          fb = gradient * (float) i + startcolor; 
+
+          r = (int) fr; 
+          g = (int) fg; 
+          b = (int) fb; 
+  
+          CPen pen(PS_SOLID, 1, RGB(r,g,b)); 
+
+          dc.MoveTo(i,0); 
+          oldPen = dc.SelectObject(&pen); 
+          dc.LineTo(i,rc2.bottom); 
+          dc.SelectObject(oldPen); 
+     } 
+
+     // Draw the docking grippers 
+     CRect rect(5,7,(5+rc.Width()) - 30, 7+3); 
+     dc.Draw3dRect(rect, 
+          RGB(255,255,255), 
+          RGB(128,128,128)); 
+
+     CRect rect2(5,11,(5+rc.Width()) - 30, 11+3); 
+     dc.Draw3dRect(rect2, 
+          RGB(255,255,255), 
+          RGB(128,128,128)); 
+
+     // Adjust capRect to receive 
+     // the close button 
+     capRect.left = capRect.right - 20; 
+     capRect.right -= 5; 
+
+     // Put the close button on the caption 
+     dc.DrawFrameControl(capRect, 
+          DFC_CAPTION, 
+          DFCS_CAPTIONCLOSE); 
+} 
+
+void CGripDialogBar::OnNcLButtonDown(UINT nHitTest, CPoint point) 
+{ 
+     switch(nHitTest) 
+     { 
+      case HTCAPTION: 
+              { 
+                   m_pDockContext->StartDrag(point); 
+              } 
+     break; 
+     default: 
+          Default(); 
+     break; 
+     } 
+} 
+
+void CGripDialogBar::OnNcLButtonDblClk(UINT nHitTest, CPoint point) 
+{ 
+     // start the drag 
+     ASSERT(m_pDockContext != NULL); 
+     m_pDockContext->ToggleDocking(); 
+} 
+
+BOOL CGripDialogBar::OnNcActivate(BOOL bActive) 
+{ 
+     // Whether active or inactive 
+     // we want the same caption 
+     OnNcPaint(); 
+     return TRUE; 
+} 
+
+void CGripDialogBar::OnPaint() 
+{ 
+     // Notice here we break the do not call 
+     // the base class OnPaint Rule. This is 
+     // because we do not set up our own DC 
+     // here so calling the base is OK ans also 
+     // required otherwise we need to redo 
+     // what the base already does for us 
+     RecalcLayout(); 
+     CDialogBar::OnPaint(); 
+} 
+
+void CGripDialogBar::RecalcLayout() 
+{ 
+     // If we are floating we do not want 
+     // our new caption to be visible, 
+     // so we move our window up so our 
+     // caption is underneath the CMiniFrameWnd 
+     // caption 
+     if(IsFloating()) 
+     { 
+          CRect rect; 
+
+          GetWindowRect(rect); 
+
+          SetWindowPos(NULL, 
+               0, 
+               -(GetSystemMetrics(SM_CYCAPTION) 
+               + GetSystemMetrics(SM_CYFRAME)), 
+               rect.Width(), 
+               rect.Height(), 
+               NULL); 
+     } 
+     else 
+     { 
+          // Seems to help avoid a painting bug 
+          SetWindowPos(NULL, 
+               0, 
+               0, 
+               0, 
+               0, 
+               SWP_NOMOVE | SWP_NOSIZE); 
+     } 
+} 
+
+/////////////////////////////////////////////////////////////////// 
+// Class CExDocContext 
+// 
+// Class provides new behaviour for drawing the 
+// track frame when floating 
+// Rem out the code inside AdjustWindowForFloat() 
+// to see original behaviour 
+/////////////////////////////////////////////////////////////////// 
+
+// Gain Access to MFC private DATA 
+// Could change without warning 
+#undef AFX_DATA 
+#define AFX_DATA AFX_CORE_DATA 
+
+extern AFX_DATA AUX_DATA afxData; 
+
+// Macros from orginal DockCont.cpp 
+#define HORZF(dw) (dw & CBRS_ORIENT_HORZ) 
+#define VERTF(dw) (dw & CBRS_ORIENT_VERT) 
+
+// Function from original DockCont.cpp 
+static void AdjustRectangle(CRect& rect, CPoint pt) 
+{ 
+ int nXOffset = (pt.x < rect.left) ? (pt.x - rect.left) : 
+     (pt.x > rect.right) ? (pt.x - rect.right) : 0; 
+ int nYOffset = (pt.y < rect.top) ? (pt.y - rect.top) : 
+     (pt.y > rect.bottom) ? (pt.y - rect.bottom) : 0; 
+ rect.OffsetRect(nXOffset, nYOffset); 
+} 
+
+////////////////////////////////////////////////////////////////////// 
+// Construction/Destruction 
+////////////////////////////////////////////////////////////////////// 
+
+CExDockContext::CExDockContext(CControlBar* pBar) : CDockContext(pBar) 
+{ 
+     // Default constructor passes control object 
+     // to base class 
+} 
+
+CExDockContext::~CExDockContext() 
+{ 
+
+} 
+
+void CExDockContext::StartDrag(CPoint pt) 
+{ 
+     ASSERT_VALID(m_pBar); 
+
+     m_bDragging = TRUE; 
+     InitLoop(); 
+
+     if (m_pBar->m_dwStyle & CBRS_SIZE_DYNAMIC) 
+     { 
+          // get true bar size (including borders) 
+          CRect rect; 
+          m_pBar->GetWindowRect(rect); 
+
+          // This is our added funtionality 
+          // This overridable allows you 
+          // to adjust the window rect so that 
+          // you can hide controls like a caption 
+          // bar from view 
+          AdjustWindowForFloat(rect); 
+
+          m_ptLast = pt; 
+          CSize sizeHorz = m_pBar->CalcDynamicLayout(0, LM_HORZ | LM_HORZDOCK); 
+          CSize sizeVert = m_pBar->CalcDynamicLayout(0, LM_VERTDOCK); 
+          CSize sizeFloat = m_pBar->CalcDynamicLayout(0, LM_HORZ | LM_MRUWIDTH); 
+
+          m_rectDragHorz = CRect(rect.TopLeft(), sizeHorz); 
+          m_rectDragVert = CRect(rect.TopLeft(), sizeVert); 
+
+          // calculate frame dragging rectangle 
+          m_rectFrameDragHorz = CRect(rect.TopLeft(), sizeFloat); 
+          m_rectFrameDragVert = CRect(rect.TopLeft(), sizeFloat); 
+
+#ifdef _MAC 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragHorz, 
+               WS_THICKFRAME | WS_CAPTION, WS_EX_FORCESIZEBOX); 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragVert, 
+               WS_THICKFRAME | WS_CAPTION, WS_EX_FORCESIZEBOX); 
+#else 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragHorz); 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragVert); 
+#endif 
+          m_rectFrameDragHorz.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+          m_rectFrameDragVert.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+     } 
+     else if (m_pBar->m_dwStyle & CBRS_SIZE_FIXED) 
+     { 
+          // get true bar size (including borders) 
+          CRect rect; 
+          m_pBar->GetWindowRect(rect); 
+
+          // This is our added funtionality 
+          // This overridable allows you 
+          // to adjust the window rect so that 
+          // you can hide controls like a caption 
+          // bar from view 
+          AdjustWindowForFloat(rect); 
+
+          m_ptLast = pt; 
+          CSize sizeHorz = m_pBar->CalcDynamicLayout(-1, LM_HORZ | LM_HORZDOCK); 
+          CSize sizeVert = m_pBar->CalcDynamicLayout(-1, LM_VERTDOCK); 
+
+          // calculate frame dragging rectangle 
+          m_rectFrameDragHorz = m_rectDragHorz = CRect(rect.TopLeft(), sizeHorz); 
+          m_rectFrameDragVert = m_rectDragVert = CRect(rect.TopLeft(), sizeVert); 
+
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragHorz); 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragVert); 
+          m_rectFrameDragHorz.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+          m_rectFrameDragVert.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+     } 
+     else 
+     { 
+          // get true bar size (including borders) 
+          CRect rect; 
+          m_pBar->GetWindowRect(rect); 
+
+          // This is our added funtionality 
+          // This overridable allows you 
+          // to adjust the window rect so that 
+          // you can hide controls like a caption 
+          // bar from view 
+          AdjustWindowForFloat(rect); 
+
+          m_ptLast = pt; 
+          BOOL bHorz = HORZF(m_dwStyle); 
+          DWORD dwMode = !bHorz ? (LM_HORZ | LM_HORZDOCK) : LM_VERTDOCK; 
+          CSize size = m_pBar->CalcDynamicLayout(-1, dwMode); 
+
+          // calculate inverted dragging rect 
+          if (bHorz) 
+          { 
+               m_rectDragHorz = rect; 
+               m_rectDragVert = CRect(CPoint(pt.x - rect.Height()/2, rect.top), size); 
+          } 
+          else // vertical orientation 
+          { 
+               m_rectDragVert = rect; 
+               m_rectDragHorz = CRect(CPoint(rect.left, pt.y - rect.Width()/2), size); 
+          } 
+
+          // calculate frame dragging rectangle 
+          m_rectFrameDragHorz = m_rectDragHorz; 
+          m_rectFrameDragVert = m_rectDragVert; 
+
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragHorz); 
+          CMiniFrameWnd::CalcBorders(&m_rectFrameDragVert); 
+          m_rectFrameDragHorz.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+          m_rectFrameDragVert.InflateRect(-afxData.cxBorder2, -afxData.cyBorder2); 
+     } 
+
+     // adjust rectangles so that point is inside 
+     AdjustRectangle(m_rectDragHorz, pt); 
+     AdjustRectangle(m_rectDragVert, pt); 
+     AdjustRectangle(m_rectFrameDragHorz, pt); 
+     AdjustRectangle(m_rectFrameDragVert, pt); 
+
+     // initialize tracking state and enter tracking loop 
+     m_dwOverDockStyle = CanDock(); 
+     Move(pt);   // call it here to handle special keys 
+     Track(); 
+} 
+  
+
+void CExDockContext::AdjustWindowForFloat(CRect& rect) 
+{ 
+     // Overridable to adjust floating frame 
+     // size for added controls you don not 
+     // want to see in the flaoting state 
+     // Default behaviour is to move window 
+     // up enough to hide the caption bar 
+     if(m_pBar->IsFloating()) 
+           rect.top += (GetSystemMetrics(SM_CYCAPTION) 
+               + GetSystemMetrics(SM_CYFRAME)); 
+} 
+</tt></PRE></FONT>
+
+<!-- Remember to update this -->
+<p>Last updated: 12 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

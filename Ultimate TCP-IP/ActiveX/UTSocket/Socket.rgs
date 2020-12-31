@@ -1,0 +1,35 @@
+HKCR
+{
+	UTSocket.Socket.1 = s 'Dundas Socket Control 4.0'
+	{
+		CLSID = s '{D23EA53B-0D35-11D3-A46D-0080C858F182}'
+		'Insertable'
+	}
+	UTSocket.Socket = s 'Dundas Socket Control 4.0'
+	{
+		CLSID = s '{D23EA53B-0D35-11D3-A46D-0080C858F182}'
+		CurVer = s 'UTSocket.Socket.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D23EA53B-0D35-11D3-A46D-0080C858F182} = s 'Dundas Socket Control 4.0'
+		{
+			ProgID = s 'UTSocket.Socket.1'
+			VersionIndependentProgID = s 'UTSocket.Socket'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '132497'
+			}
+			'TypeLib' = s '{D23EA52C-0D35-11D3-A46D-0080C858F182}'
+			'Version' = s '1.4'
+		}
+	}
+}

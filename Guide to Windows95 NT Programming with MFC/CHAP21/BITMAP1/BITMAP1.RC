@@ -1,0 +1,13 @@
+/////////////////////////////////////////////////////////////////////////////
+// BITMAP1 resource script
+
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// The five bitmap resources
+
+IDR_BMPBACKGROUND   BITMAP   DISCARDABLE  "backgrnd.bmp"
+IDR_BMPBTN1         BITMAP   DISCARDABLE  "btn1.bmp"
+IDR_BMPBTN1LIT      BITMAP   DISCARDABLE  "btn1lit.bmp"
+IDR_BMPBTN2         BITMAP   DISCARDABLE  "btn2.bmp"
+IDR_BMPBTN2LIT      BITMAP   DISCARDABLE  "btn2lit.bmp"

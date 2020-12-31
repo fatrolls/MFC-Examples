@@ -1,0 +1,60 @@
+///////////////////////////////////////////////////////////
+//
+//
+// Model_I.idl - Interface description for TangramModel 
+//
+//
+
+//
+// Imports
+//
+import "unknwn.idl" ; 
+
+// Graphic Definitions
+import "tantype.idl" ;
+
+// ITangramModelEvent
+import "event_i.idl" ;
+
+
+///////////////////////////////////////////////////////////
+//
+//					Interface descriptions
+//
+///////////////////////////////////////////////////////////
+//
+// Interface ITangramModel
+//
+[
+	object,
+	uuid(b53313c0-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramModel Interface"),
+	pointer_default(unique)
+]
+interface ITangramModel : IUnknown
+{
+	HRESULT GetNumberOfVertices([out] long* pcVertices) ;
+	HRESULT GetVertices(	[in] long cVertices, 
+							[out, size_is(cVertices)] TangramPoint2d* points) ; 
+	HRESULT SetVertices(	[in] long cVertices, 
+							[in, size_is(cVertices)] TangramPoint2d* points) ;
+};
+
+///////////////////////////////////////////////////////////
+//
+// Interface ITangramTransform
+//
+[
+	object,
+	uuid(b53313c1-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramTransform Interface"),
+	pointer_default(unique)
+]
+interface ITangramTransform : IUnknown
+{
+	HRESULT Translate([in]double x, [in]double y) ;
+	HRESULT GetTranslation([out] TangramPoint2d* point);
+	HRESULT Rotate([in] double fDegrees) ;
+	HRESULT GetRotation([out] double* pRotation) ;
+};
+

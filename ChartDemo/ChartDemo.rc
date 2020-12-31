@@ -1,0 +1,403 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ChartDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.fra\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ChartDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG  0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "A propos de ChartDemo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "ChartDemo version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2006",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_CHARTDEMO_DIALOG DIALOGEX 0, 0, 412, 436
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ChartDemo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CHARTCTRL,"ChartCtrl",WS_CLIPCHILDREN | WS_TABSTOP,7,7,398,261
+    GROUPBOX        "Series",IDC_SERIES_GROUP,7,281,101,148
+    LISTBOX         IDC_SERIES_LIST,17,302,74,82,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_ADDSERIES,17,398,37,14
+    PUSHBUTTON      "Delete",IDC_DELETESERIES,55,398,37,14
+    GROUPBOX        "General",IDC_GENERAL_GROUP,115,281,101,148
+    LTEXT           "Bkgnd color:",IDC_STATIC,123,305,41,8
+    PUSHBUTTON      "",IDC_BKGND_COLBTN,173,303,30,12
+    CONTROL         "Legend visible",IDC_LEGENDVIS_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,123,328,61,10
+    LTEXT           "Title:",IDC_STATIC,157,371,16,8
+    EDITTEXT        IDC_TITLE_EDIT,124,383,83,39,ES_CENTER | ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    GROUPBOX        "Axis",IDC_AXIS_GROUP,225,281,180,148
+    CONTROL         "Left",IDC_LEFTAXIS_RADIO,"Button",BS_AUTORADIOBUTTON,237,298,28,10
+    CONTROL         "Bottom",IDC_BOTTOMAXIS_RADIO,"Button",BS_AUTORADIOBUTTON,276,298,38,10
+    CONTROL         "Right",IDC_RIGHTAXIS_RADIO,"Button",BS_AUTORADIOBUTTON,325,298,33,10
+    CONTROL         "Top",IDC_TOPAXIS_RADIO,"Button",BS_AUTORADIOBUTTON,369,298,29,10
+    CONTROL         "Visible",IDC_AXISVISIBLE_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,237,329,36,10
+    CONTROL         "Inverted",IDC_AXISINVERTED_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,288,329,42,10
+    CONTROL         "Automatic",IDC_AXISAUTOMATIC_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,345,329,47,10
+    CONTROL         "Grid",IDC_AXISGRIDVIS_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,237,349,29,10
+    LTEXT           "Axis min value:",IDC_AXISMINVAL_STATIC,259,370,48,8
+    EDITTEXT        IDC_AXISMINVAL_EDIT,323,368,40,14,ES_AUTOHSCROLL
+    LTEXT           "Axis max value:",IDC_AXISMAXVAL_STATIC,259,389,50,8
+    EDITTEXT        IDC_AXISMAXVAL_EDIT,323,386,40,14,ES_AUTOHSCROLL
+    LTEXT           "Label:",IDC_STATIC,259,410,20,8
+    EDITTEXT        IDC_AXISLABEL_EDIT,287,407,76,14,ES_AUTOHSCROLL
+    CONTROL         "Pan",IDC_PAN_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,123,349,29,10
+    CONTROL         "Zoom",IDC_ZOOM_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,166,349,34,10
+    CONTROL         "ScrollBar",IDC_AXISSCROLLBAR_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,288,349,44,10
+END
+
+IDD_SERIESPROP_DLG DIALOG  0, 0, 272, 269
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Series properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Series properties",IDC_STATIC,7,7,258,82
+    LTEXT           "Series type:",IDC_STATIC,15,25,38,8
+    COMBOBOX        IDC_SERIESTYPE_COMBO,63,23,62,54,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Series name:",IDC_STATIC,141,25,42,8
+    EDITTEXT        IDC_SERIESNAME_EDIT,189,22,63,14,ES_AUTOHSCROLL
+    LTEXT           "Series colour:",IDC_STATIC,15,58,44,8
+    PUSHBUTTON      "",IDC_SERIESCOLOUR_BTN,63,55,38,14
+    LTEXT           "Associated vert axis:",IDC_STATIC,125,50,66,8
+    COMBOBOX        IDC_VERTICALAXIS_COMBO,197,48,48,49,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Associated horiz axis:",IDC_STATIC,125,67,68,8
+    COMBOBOX        IDC_HORIZONTALAXIS_COMBO,197,65,48,51,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Series Data",IDC_STATIC,7,102,258,139
+    CONTROL         "Line",IDC_LINEDATA_RADIO,"Button",BS_AUTORADIOBUTTON,17,119,29,10
+    CONTROL         "Sine wave",IDC_SINEDATA_RADIO,"Button",BS_AUTORADIOBUTTON,87,119,49,10
+    CONTROL         "Random data",IDC_RANDOMDATA_RADIO,"Button",BS_AUTORADIOBUTTON,177,119,59,10
+    RTEXT           "Line Slope:",IDC_DATAPARAM1_TEXT,13,154,52,8
+    EDITTEXT        IDC_DATAPARAM1_EDIT,71,151,40,14,ES_AUTOHSCROLL
+    RTEXT           "Line Offset:",IDC_DATAPARAM2_TEXT,131,154,47,8
+    EDITTEXT        IDC_DATAPARAM2_EDIT,183,151,40,14,ES_AUTOHSCROLL
+    LTEXT           "Number of points:",IDC_STATIC,20,201,56,8
+    EDITTEXT        IDC_POINTSNUMBER_EDIT,82,198,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Minimum X value:",IDC_STATIC,136,190,56,8
+    EDITTEXT        IDC_MINXVALUE_EDIT,195,187,29,14,ES_AUTOHSCROLL
+    LTEXT           "Maximum X value:",IDC_STATIC,136,211,58,8
+    EDITTEXT        IDC_MAXXVALUE_EDIT,195,208,29,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,7,248,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,215,248,50,14
+END
+
+IDD_LINEPROP_DLG DIALOG  0, 0, 168, 90
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Line series properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,59,69,50,14
+    COMBOBOX        IDC_PENSTYLE_COMBO,67,15,79,61,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Pen style:",IDC_STATIC,21,17,32,8
+    LTEXT           "Line width:",IDC_STATIC,21,39,35,8
+    EDITTEXT        IDC_LINEWIDTH_EDIT,67,36,40,14,ES_AUTOHSCROLL
+END
+
+IDD_SURFACEPROP_DLG DIALOG  0, 0, 186, 94
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Surface series properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,68,73,50,14
+    LTEXT           "Fill style:",IDC_STATIC,24,20,27,8
+    CONTROL         "Horizontal surface",IDC_HORIZONTAL_RADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,21,46,73,10
+    CONTROL         "Vertical surface",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,107,47,65,10
+    COMBOBOX        IDC_FILLSTYLE_COMBO,60,18,93,78,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_POINTPROP_DLG DIALOG  0, 0, 186, 91
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Points series properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,67,70,50,14
+    LTEXT           "Point type:",IDC_STATIC,27,9,34,8
+    LTEXT           "Point width:",IDC_STATIC,27,29,38,8
+    LTEXT           "Point height:",IDC_STATIC,27,49,40,8
+    COMBOBOX        IDC_POINTTYPE_COMBO,71,7,88,66,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_POINTWIDTH_EDIT,71,26,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_POINTHEIGHT_EDIT,71,46,40,14,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040C04B0"
+        BEGIN
+            VALUE "FileDescription", "Application MFC ChartDemo"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "ChartDemo"
+            VALUE "LegalCopyright", "Copyright (C) 2006"
+            VALUE "OriginalFilename", "ChartDemo.EXE"
+            VALUE "ProductName", "Application ChartDemo"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_CHARTDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 405
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 429
+    END
+
+    IDD_SERIESPROP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 262
+    END
+
+    IDD_LINEPROP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 161
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 83
+    END
+
+    IDD_SURFACEPROP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_POINTPROP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 84
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SERIESPROP_DLG DLGINIT
+BEGIN
+    IDC_SERIESTYPE_COMBO, 0x403, 5, 0
+0x694c, 0x656e, "\000" 
+    IDC_SERIESTYPE_COMBO, 0x403, 7, 0
+0x6f50, 0x6e69, 0x7374, "\000" 
+    IDC_SERIESTYPE_COMBO, 0x403, 8, 0
+0x7553, 0x6672, 0x6361, 0x0065, 
+    IDC_VERTICALAXIS_COMBO, 0x403, 5, 0
+0x654c, 0x7466, "\000" 
+    IDC_VERTICALAXIS_COMBO, 0x403, 6, 0
+0x6952, 0x6867, 0x0074, 
+    IDC_HORIZONTALAXIS_COMBO, 0x403, 7, 0
+0x6f42, 0x7474, 0x6d6f, "\000" 
+    IDC_HORIZONTALAXIS_COMBO, 0x403, 4, 0
+0x6f54, 0x0070, 
+    0
+END
+
+IDD_LINEPROP_DLG DLGINIT
+BEGIN
+    IDC_PENSTYLE_COMBO, 0x403, 6, 0
+0x6f53, 0x696c, 0x0064, 
+    IDC_PENSTYLE_COMBO, 0x403, 5, 0
+0x6144, 0x6873, "\000" 
+    IDC_PENSTYLE_COMBO, 0x403, 4, 0
+0x6f44, 0x0074, 
+    IDC_PENSTYLE_COMBO, 0x403, 9, 0
+0x6144, 0x6873, 0x442d, 0x746f, "\000" 
+    IDC_PENSTYLE_COMBO, 0x403, 13, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, "\000" 
+    0
+END
+
+IDD_SURFACEPROP_DLG DLGINIT
+BEGIN
+    IDC_FILLSTYLE_COMBO, 0x403, 6, 0
+0x6f53, 0x696c, 0x0064, 
+    IDC_FILLSTYLE_COMBO, 0x403, 20, 0
+0x6148, 0x6374, 0x2068, 0x6f64, 0x6e77, 0x6420, 0x6169, 0x6f67, 0x616e, 
+0x006c, 
+    IDC_FILLSTYLE_COMBO, 0x403, 18, 0
+0x6148, 0x6374, 0x2068, 0x7075, 0x6420, 0x6169, 0x6f67, 0x616e, 0x006c, 
+
+    IDC_FILLSTYLE_COMBO, 0x403, 12, 0
+0x6148, 0x6374, 0x2068, 0x7263, 0x736f, 0x0073, 
+    IDC_FILLSTYLE_COMBO, 0x403, 22, 0
+0x6148, 0x6374, 0x2068, 0x7263, 0x736f, 0x2073, 0x6964, 0x6761, 0x6e6f, 
+0x6c61, 0x0020, 
+    IDC_FILLSTYLE_COMBO, 0x403, 17, 0
+0x6148, 0x6374, 0x2068, 0x6f68, 0x6972, 0x6f7a, 0x746e, 0x6c61, "\000" 
+    IDC_FILLSTYLE_COMBO, 0x403, 15, 0
+0x6148, 0x6374, 0x2068, 0x6576, 0x7472, 0x6369, 0x6c61, "\000" 
+    0
+END
+
+IDD_POINTPROP_DLG DLGINIT
+BEGIN
+    IDC_POINTTYPE_COMBO, 0x403, 8, 0
+0x6c45, 0x696c, 0x7370, 0x0065, 
+    IDC_POINTTYPE_COMBO, 0x403, 10, 0
+0x6552, 0x7463, 0x6e61, 0x6c67, 0x0065, 
+    IDC_POINTTYPE_COMBO, 0x403, 9, 0
+0x7254, 0x6169, 0x676e, 0x656c, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&A propos de ChartDemo..."
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\ChartDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.fra\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

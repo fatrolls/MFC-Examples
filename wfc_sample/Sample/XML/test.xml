@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<![CDATA[>T
+<!CDATA[ sections are fun
+to
+
+
+parse]]]]]]>
+<!DOCTYPE greeting [
+  <!ELEMENT greeting (#PCDATA)>
+]>
+
+
+<PERSON Attribute="Two Words">Sammy</PERSON>
+<dog/>
+<dog/>

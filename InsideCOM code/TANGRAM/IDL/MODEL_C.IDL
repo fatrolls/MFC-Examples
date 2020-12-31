@@ -1,0 +1,44 @@
+///////////////////////////////////////////////////////////
+//
+//
+// Model_C.idl - TypeLibrary for the TangramModel component
+//
+//
+
+// Definitions of IConnectionPoint
+import "ocidl.idl" ; 
+
+
+import "model_i.idl" ;
+
+///////////////////////////////////////////////////////////
+//
+//
+// Component descriptions
+//
+[
+	uuid(b53313c3-20c4-11d0-9c6c-00a0c90a632c),
+	version(1.0),
+	helpstring("TangramModel 1.0 Type Library")
+]
+library TangramModelLib
+{
+	importlib("stdole32.tlb");
+
+	//
+	// TangramModel
+	//
+	[
+		uuid(b53313c4-20c4-11d0-9c6c-00a0c90a632c),
+		helpstring("TangramModel Class")
+	]
+	coclass TangramModel
+	{
+		[default] interface ITangramModel ;
+		interface ITangramTransform ;
+		interface IConnectionPointContainer ;
+
+		// Outgoing source interface.
+		[source] interface ITangramModelEvent ;
+	};
+};

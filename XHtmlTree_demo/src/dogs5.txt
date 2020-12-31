@@ -1,0 +1,88 @@
+; dogs.txt - data file for XHtmlTreeTest.exe
+;
+Sight Hounds~0~1
+Hortaya Borzaya (Chortaj)~0~1
+Irish Wolfhound~0~1
+Italian Greyhound~0~1
+Kanni~0~1
+Khalag Tazi~0~1
+
+
+Herding Dogs~0~1
+Collies~0~1
+ Border Collie~1~1
+ Bearded Collie~0~1
+ Rough Collie~0~1
+Australian Cattle Dog~0~1
+
+Scent Hounds~0~1
+Beagle~0~1
+Bloodhound~0~1
+Brachet~0~1
+Coonhounds~0~1
+ Black and Tan Coonhound~0~1
+ Redbone Coonhound~0~1
+ Bluetick Coonhound~0~1
+ English Coonhound~0~1
+ Treeing Walker Coonhound~0~1
+ Plott Hound~0~1
+
+Gun Dogs~0~1
+Bracco Italiano~0~1
+Braque du Bourbonnais~0~1
+Brittany~0~1
+Cesky Fousek~0~1
+German Longhaired Pointer~0~1
+German Shorthaired Pointer~0~1
+German Wirehaired Pointer~0~1
+Hungarian Vizsla~0~1
+Hungarian Wirehaired Vizsla~0~1
+Italian Spinone~0~1
+
+Terriers~0~1
+American Pitbull Terrier~0~1
+Airedale Terrier~0~1
+Australian Terrier~0~1
+Bedlington Terrier~0~1
+Black Russian Terrier~0~1
+Brazilian Terrier~0~1
+Border Terrier~0~1
+Boston Terrier~0~1
+Bull Terrier~0~1
+Bull Terrier (Miniature)~0~1
+
+Spitz~0~1
+Akita Inu ~0~1
+Alaskan Husky ~0~1
+Alaskan Klee Kai~0~1
+Alaskan Malamute~0~1
+American Eskimo Dog ~0~1
+Canadian Eskimo Dog ~0~1
+Chinese Foo Dog~0~1
+Chinook ~0~1
+Chow Chow ~0~1
+East Siberian Laika~0~1
+
+Guard Dogs~0~1
+Doberman~0~1
+German Shepherd~0~1
+Rottweiler~0~1
+Kangal Dog~0~1
+Bullmastiff~0~1
+American Bulldog~0~1
+Pit bull~0~1
+Kunming Dog (in Asian nations)~0~1
+Kunming Dog (in Asian nations)~0~1
+Kunming Dog (in Asian nations)~0~1
+
+Toy Dogs~0~1
+Chihuahua (Long Coat)~0~1
+Chihuahua (Smooth Coat)~0~1
+Chinese Crested Dog~0~1
+Coton de Tulear~0~1
+English Toy Terrier (Black & Tan)~0~1
+Griffon Bruxellois~0~1
+Havanese~0~1
+Italian Greyhound~0~1
+Japanese Chin~0~1
+King Charles Spaniel~0~1

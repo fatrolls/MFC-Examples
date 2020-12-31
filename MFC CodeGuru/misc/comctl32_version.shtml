@@ -1,0 +1,178 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Determine COMCTL32 version</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Determine COMCTL32 version</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>.
+You can also read a related article in MSDN at
+<br><a href="http://www.microsoft.com/msdn/sdk/inetsdk/help/inet1560.htm">http://www.microsoft.com/msdn/sdk/inetsdk/help/inet1560.htm</a>
+
+<p>Here's what Roger had to say:
+
+<p>Just followed the link on that page to the MSDN Inet article about
+COMCTL32. It looks like a good way also of telling the version.
+
+<P>This article shows another method of testing - also I make use of a static so that the
+test only needs to be done once for efficiency.
+
+
+<P>The new windows common controls live in a system DLL called COMCTL32.DLL
+
+<P>The original Windows 95 included a version of COMCTL32.DLL which gave us
+most of the nice common control, like list views and tree controls.
+
+<P>With Internet Explorer 3, Microsoft introduced some new controls along with
+enhancements to the existing controls.  These include features like flat
+toolbars, hover mode in list views, and new controls like the date picker.
+
+<P>Internet Explorer 4 adds support for new flat scroll bars.  However, it
+also changes the behaviour of the toolbar control and makes existing MFC
+applications display toolbars incorrectly (because MFC CToolBar has
+hardcoded numbers for the size of seperators - but that is another story
+:-).
+
+<P>In order for your application to work with these different version, and to
+take advantage of the new features if they are available, one needs to be
+able to detect the version of COMCTL32 you are using.
+
+<P>The following addition to your CWinApp class will give you this ability.
+
+<H4>Step 1:</H4>
+In your application .h file add the following just before the definition of
+your CWinApp-derived application class...
+
+<PRE><TT><FONT COLOR="#990000">enum COMCTL32VERSION {
+     COMCTL32_UNKNOWN, COMCTL32_400, COMCTL32_470, COMCTL32_471
+};
+</FONT></TT></PRE>
+
+<P>This enumeration has values for the origina Win95 COMCTL32 (v4), the IE3
+COMCTL32 (v4.7) and the IE4 COMCTL32 (v4.71)
+
+<H4>Step 2:</H4>
+Add the following to your CWinApp-derived class in your application .h
+file...
+
+<PRE><TT><FONT COLOR="#990000">class CMyWinApp : public CWinApp {
+     ...
+     // COMCTL32 detection
+private:
+     static COMCTL32VERSION c_nComCtl32Version;
+public:
+     static COMCTL32VERSION ComCtl32Version();
+     ...
+};
+</FONT></TT></PRE>
+
+<H4>Step 3:</H4>
+Add the following to your application .cpp file...
+
+<PRE><TT><FONT COLOR="#990000">COMCTL32VERSION CMyWinApp::c_nComCtl32Version = COMCTL32_UNKNOWN;
+
+COMCTL32VERSION CMyWinApp::ComCtl32Version() {
+     // if we don't already know which version, try to find out
+     if (c_nComCtl32Version == COMCTL32_UNKNOWN) {
+          // have we loaded COMCTL32 yet?
+          HMODULE theModule = ::GetModuleHandle("COMCTL32");
+          // if so, then we can check for the version
+          if (theModule) {
+               // InitCommonControlsEx is unique to 4.7 and later
+               FARPROC theProc = ::GetProcAddress(theModule, "InitCommonControlsEx");
+               if (! theProc) {
+                    // not found, must be 4.00
+                    c_nComCtl32Version = COMCTL32_400;
+               } else {
+                    // The following symbol are unique to 4.71
+                    //   DllInstall
+                    //   FlatSB_EnableScrollBar FlatSB_GetScrollInfo FlatSB_GetScrollPos
+                    //   FlatSB_GetScrollProp FlatSB_GetScrollRange FlatSB_SetScrollInfo
+                    //   FlatSB_SetScrollPos FlatSB_SetScrollProp FlatSB_SetScrollRange
+                    //   FlatSB_ShowScrollBar
+                    //   _DrawIndirectImageList _DuplicateImageList
+                    //   InitializeFlatSB
+                    //   UninitializeFlatSB
+                    // we could check for any of these - I chose DllInstall
+                    FARPROC theProc = ::GetProcAddress(theModule, "DllInstall");
+                    if (! theProc) {
+                         // not found, must be 4.70
+                         c_nComCtl32Version = COMCTL32_470;
+                    } else {
+                         // found, must be 4.71
+                         c_nComCtl32Version = COMCTL32_471;
+                    }
+               }
+          }
+     }
+     return c_nComCtl32Version;
+}
+</FONT></TT></PRE>
+
+<P>This function gets a handle to COMCTL32 and then looks for what functions
+exist within it.  By looking for functions which are known NOT to be in a
+given version (and only in later versions), we can tell what version we
+actually have.
+
+<P>By using a static to keep the result, we do not need to keep redoing the
+detection logic, as once we know, the COMCTL32 cannot change from
+underneath us - it will stay loaded until our application terminates.
+
+<H4>Step 4:</H4>
+When using a feature that relies on a given version, you can use code like
+
+<PRE><TT><FONT COLOR="#990000">     if (CMyWinApp::ComCtl32Version() > COMCTL_400) {
+          // use a feature only in IE3 version or later
+          // like flat tool bars
+     }
+</FONT></TT></PRE>
+
+<P>Of course, what I do is have my own standard enhanced CWinApp-derived class
+which has these additions (and others) in it.  The I derive each
+application from this enhanced class.
+
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

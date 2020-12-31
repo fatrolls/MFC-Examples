@@ -1,0 +1,573 @@
+<HTML>
+
+<HEAD>
+<TITLE>WFC - Technical Note 5 - How to Create Explorer-like Applications in VC6</TITLE>
+</HEAD>
+
+<BODY>
+
+<H1>WFC Technical Note 5 - How to Create Explorer-like Applications in VC6</H1>
+$Revision: 1 $ Last Modified $Date: 9/06/99 6:12p $<BR><HR>
+
+<H2>Introduction</H2>
+
+Visual C++ 6.0 makes it easy to create user interfaces.
+Here's how to create an Explorer like application.
+
+<H2>Steps</H2>
+
+Click on the following:
+
+<OL>
+
+<LI>Visual C++
+<LI>File -&gt; New
+<LI>Projects -&gt; MFC AppWizard (exe)
+<LI>Fill in the Project Name and Location
+<LI>OK
+<LI>Single Document -&gt; Next&gt;
+<LI>None -&gt; Next&gt;
+<LI>None -&gt; Next&gt;
+<LI>Next&gt;
+<LI>Next&gt;
+<LI>You should now be at Step 6 of 6. Edit the class names
+    and filenames as you see fit.
+<LI>Finish
+<LI>OK
+<LI>After Visual C++ generates a ton of C++ code, edit the <CODE>CMainFrame</CODE> class
+    (usually found in <CODE>MainFrm.h</CODE>) to include a member variable:
+<PRE><CODE>public:
+
+   CSplitterWnd m_SplitterWindow;</CODE></PRE>
+<LI>Don't worry about this member variable for now, just save the file.
+<LI>Now click on View -&gt; ClassWizard -&gt; Message Maps -&gt; Add Class -&gt; New...
+<LI><CODE>Name: <B>CMyListView</B></CODE>
+<LI><CODE>Base Class: <B>CListView</B></CODE>
+<LI><B>OK</B>
+<LI>Add Class -&gt; New...
+<LI><CODE>Name: <B>CMyTreeView</B></CODE>
+<LI><CODE>Base Class: <B>CTreeView</B></CODE>
+<LI><B>OK</B>
+<LI>Select <B>CMainFrame</B> in the <CODE>Class name:</CODE> combobox.
+<LI>Select <B>OnCreateClient</B> in the <CODE>Messages:</CODE> listbox.
+<LI>Click the <CODE>Add Function</CODE> button.
+<LI>Double click on the <B>OnCreateClient</B> line in the <CODE>Member functions:</CODE> listbox.
+<LI>You will now be in the editor.
+<LI>Replace this line:
+<PRE><CODE>return CFrameWnd::OnCreateClient(lpcs, pContext);</CODE></PRE>
+with the following code:
+<PRE><CODE>m_SplitterWindow.CreateStatic( this, 1, 2, WS_CHILD | WS_VISIBLE );
+
+CWnd * desktop_window_p = GetDesktopWindow();
+
+CRect rectangle;
+
+if ( desktop_window_p == NULL )
+{
+   rectangle.SetRect( 0, 0, 640, 480 );
+}
+else
+{
+   desktop_window_p-&gt;GetWindowRect( rectangle );
+}
+
+SIZE size;
+
+// Make the tree control pane 25% of the window size
+size.cx = (long) ( rectangle.Width() * 0.25 );
+size.cy = rectangle.Height();
+
+m_SplitterWindow.CreateView( 0, 0,
+                             RUNTIME_CLASS( CMyTreeView ),
+                             size,
+                             pContext );
+
+// Make the list control 75% of the window size
+size.cx = rectangle.Width() - size.cx;
+
+m_SplitterWindow.CreateView( 0, 1,
+                             RUNTIME_CLASS( CMyListView ),
+                             size,
+                             pContext );
+
+SetActiveView( (CView *) m_SplitterWindow.GetPane( 0, 0 ) );
+
+return( TRUE );</CODE></PRE>
+
+<LI>Go to the top of the <CODE>CMainFrame.cpp</CODE> file (or
+whatever filename has CMainFrame in it) and find the line that
+looks like: <PRE><CODE>#include &quot;CMainFrame.h&quot;</CODE></PRE>
+Now add these lines immediately after it:
+<PRE><CODE>#include &quot;MyTreeView.h&quot;
+#include &quot;MyListView.h&quot;</CODE></PRE>
+
+<LI>Edit the <CODE>stdafx.h</CODE> file and delete the following lines:
+<PRE><CODE>#define VC_EXTRALEAN // Exclude rarely-used stuff from Windows headers
+#ifndef _AFX_NO_AFXCMN_SUPPORT
+#endif // _AFX_NO_AFXCMN_SUPPORT</CODE></PRE>
+Now add this line to the rest of the includes:
+<PRE><CODE>#include &lt;afxcview.h&gt;</CODE></PRE>
+
+<LI>Build -&gt; Rebuild All
+<LI>Your program should compile and run. It is time to play with ClassWizard...
+</OL>
+
+<H2>Adding Useful Things to the Tree and List</H2>
+
+I hate the Doc/View model of MFC. Things seem to fall into place once you abandon
+that model. Let's get rid of that tired paradigm:
+
+<OL>
+<LI>Edit your document class and add two member variables.
+<PRE><CODE>public:
+
+   CMyTreeView * TreeView;
+   CMyListView * ListView;</CODE></PRE>
+
+<LI>Just above the declaration for your document class, add these
+two include directives:
+<PRE><CODE>#include &quot;MyTreeView.h&quot;
+#include &quot;MyListView.h&quot;</CODE></PRE>
+
+Documents and views are very incestuous.
+Each has to know way too much about the other in order to function.
+This means the document class is a great place to put information
+about all of the views of that document. As long as your document
+doesn't represent data, everything is fine. Just think of your document
+class as the guy that manages all of the views (a View Manager
+if you will).
+You can have pointers
+to data in the document class but I do not recommend putting any real
+data in there.<P>
+
+<LI>Edit your tree view class to add the following:
+<PRE><CODE>public:
+
+   CImageList ImageList;
+
+   HTREEITEM RootItem;
+   HTREEITEM CurrentItem;</CODE></PRE>
+
+<LI>Edit the resources of your project to add a bitmap resource called
+<CODE>IDB_IMAGELIST</CODE>.
+Make your grid settings 17 pixels high by 16 wide (via the <B>Image-&gt;Grid&nbsp;Settings...</B>)
+Use the darker purple on the color palette bar for your transparent color (the background
+color).
+<LI><B>Insert -&gt; Resource...</B>
+<LI><B>Bitmap -&gt; New</B>
+<LI><B>Image -&gt; Grid Settings...</B>
+<LI>Check the <B>Pixel Grid</B> checkbox
+<LI>Check the <B>Tile Grid</B> checkbox
+<LI><B>Width:</B> <CODE>16</CODE>
+<LI><B>Height:</B> <CODE>17</CODE>
+<LI><B>OK</B>
+<LI>Now move the image border so there is only one row of images (should
+    be three wide).
+<LI>Fill the background with the dark purple color.
+<LI>Using fonts, put a <CODE>1</CODE> in the first tile.
+<LI>Put a <CODE>2</CODE> in the second tile.
+<LI>Put a <CODE>3</CODE> in the third tile. You will overwrite these ugly
+numbers with pretty little drawings later on in the life of your project.
+This usually happens when a graphic artist gets hired by your company.
+<LI>Left button on <CODE>IDB_BITMAP1</CODE> in the <B>ResourceView</B> pane
+to highlight it.
+<LI>Then right mouse on it and select <B>Properties</B> from the context menu
+<LI>Change the <B>ID:</B> to <CODE>IDB_IMAGELIST</CODE> then close the window
+<LI>Now is a good time to save your work.
+<LI><B>View -&gt; ClassWizard -&gt; Message Maps</B>
+<LI>Select <CODE>CMyTreeView</CODE> in the <B>Class name:</B> combobox.
+<LI>Select <CODE>CMyTreeView</CODE> in the <B>Object IDs:</B> listbox.
+<LI>Select <CODE>WM_CREATE</CODE> in the <B>Messages:</B> listbox.
+<LI>Click the <B>Add Function</B> button.
+<LI>Double click on the <B>OnCreate</B> line in the <B>Member functions:</B> listbox.
+<LI>Replace the code:
+<PRE><CODE>if (CTreeView::OnCreate(lpCreateStruct) == -1)
+    return -1;
+
+    // TODO: Add your specialized creation code here
+
+    return 0;</CODE></PRE>
+with this code:
+<PRE><CODE>lpCreateStruct-&gt;style |= ( TVS_HASLINES | TVS_HASBUTTONS | TVS_LINESATROOT );
+
+if ( CTreeView::OnCreate( lpCreateStruct ) == (-1) )
+{
+   return( -1 );
+}
+
+MyDocument * document_p = GetDocument();
+
+ASSERT( document_p != NULL );
+
+document_p-&gt;TreeView = this;
+
+ImageList.Create( IDB_IMAGELIST, 16, 0, RGB( 255, 0, 255 ) );
+ImageList.SetBkColor( GetSysColor( COLOR_WINDOW ) );
+
+CTreeCtrl&amp; tree_control = GetTreeCtrl();
+
+tree_control.SetImageList( &amp;ImageList, TVSIL_NORMAL );
+
+UpdateWindow();
+
+RootItem = tree_control.InsertItem( &quot;Root&quot;, IMAGE_ROOT, IMAGE_ROOT );
+
+return( 0 );</CODE></PRE>
+
+<LI>At the top of this file, you will need to include your document's header file.
+<PRE><CODE>#include &quot;MyDocument.h&quot;</CODE></PRE>
+
+<LI>Edit the <CODE>MyTreeView.h</CODE> header file to start adding defined
+constants for the images in the tree control (the tiles in the image list).
+<PRE><CODE>#define IMAGE_ROOT   0
+#define IMAGE_TILE_2 1
+#define IMAGE_TILE_3 2</CODE></PRE>
+
+<LI><B>View -&gt; ClassWizard -&gt; Message Maps</B>
+<LI>Select <CODE>CMyListView</CODE> in the <B>Class name:</B> combobox.
+<LI>Select <CODE>CMyListView</CODE> in the <B>Object IDs:</B> listbox.
+<LI>Select <CODE>WM_CREATE</CODE> in the <B>Messages:</B> listbox.
+<LI>Click the <B>Add Function</B> button.
+<LI>Double click on the <B>OnCreate</B> line in the <B>Member functions:</B> listbox.
+<LI>Replace the code:
+<PRE><CODE>if (CListView::OnCreate(lpCreateStruct) == -1)
+    return -1;
+
+    // TODO: Add your specialized creation code here
+
+    return 0;</CODE></PRE>
+with this code:
+<PRE><CODE>   lpCreateStruct-&gt;style |= LVS_REPORT;
+
+   if ( CListView::OnCreate( lpCreateStruct ) == (-1) )
+   {
+      return( -1 );
+   }
+
+   CMyDocument * document_p = (CMyDocument *) GetDocument();
+
+   document_p-&gt;ListView = this;
+
+   return( 0 );</CODE></PRE>
+<LI>At the top of this file, you will need to include your document's header file.
+<PRE><CODE>#include &quot;MyDocument.h&quot;</CODE></PRE>
+<LI>You should now be able to compile and run your new Explorer-like application.
+
+</OL>
+
+<H2>Making Life Easier</H2>
+
+Now that we have the skeleton for an Explorer-like application, we need to add things
+to it. Here's a couple of functions I wrote to make life easier.
+
+<H3>Tree View Helpers</H3>
+
+Add this function to your tree view class:
+<PRE><CODE>public:
+
+   void DeleteChildren( HTREEITEM parent_item );</CODE></PRE>
+
+Implemented thusly:
+<PRE><CODE>void CMyTreeView::DeleteChildren( HTREEITEM parent_item )
+{
+   CTreeCtrl&amp; tree_control = GetTreeCtrl();
+
+   HTREEITEM child_item = (HTREEITEM) NULL;
+
+   child_item = tree_control.GetChildItem( parent_item );
+
+   while( child_item != NULL )
+   {
+      tree_control.DeleteItem( child_item );
+      child_item = tree_control.GetChildItem( parent_item );
+   }
+}</CODE></PRE>
+
+<H3>List View Helpers</H3>
+
+I usually add a couple of helper functions to make formatting the list view
+easier.
+
+<PRE><CODE>public:
+
+   BOOL AddColumn( LPCTSTR column_name,
+                   int     column_number,
+                   int     width    = (-1),
+                   int     nSubItem = (-1),
+                   int     mask = LVCF_FMT  | LVCF_WIDTH |
+                                  LVCF_TEXT | LVCF_SUBITEM,
+                   int     format = LVCFMT_LEFT );
+
+   BOOL AddItem( int     row_number,
+                 int     column_number,
+                 LPCTSTR text,
+                 int     image_index = (-1) );
+
+   void Empty( void );</CODE></PRE>
+
+Implemented thusly:
+
+<PRE><CODE>BOOL CMyListView::AddColumn( LPCTSTR column_name,
+                             int column_number,
+                             int width,
+                             int sub_item,
+                             int mask,
+                             int format )
+{
+   CListCtrl&amp; list_control = GetListCtrl();
+
+   LV_COLUMN list_view_column;
+
+   list_view_column.mask    = mask;
+   list_view_column.fmt     = format;
+   list_view_column.pszText = (LPTSTR) column_name;
+
+   if ( width == (-1) )
+   {
+      list_view_column.cx = list_control.GetStringWidth( column_name ) + 15;
+   }
+   else
+   {
+      list_view_column.cx = width;
+   }
+
+   if ( mask & LVCF_SUBITEM )
+   {
+      if ( sub_item != (-1) )
+      {
+         list_view_column.iSubItem = sub_item;
+      }
+      else
+      {
+         list_view_column.iSubItem = column_number;
+      }
+   }
+
+   return( list_control.InsertColumn( column_number, &amp;list_view_column ) );
+}
+
+BOOL CMyListView::AddItem( int     row_number,
+                           int     column_number,
+                           LPCTSTR text,
+                           int     image_index )
+{
+   LV_ITEM list_view_item;
+
+   list_view_item.mask     = LVIF_TEXT;
+   list_view_item.iItem    = row_number;
+   list_view_item.iSubItem = column_number;
+   list_view_item.pszText  = (LPTSTR) text;
+
+   if ( image_index != (-1) )
+   {
+      list_view_item.mask  |= LVIF_IMAGE;
+      list_view_item.iImage = image_index;
+   }
+
+   CListCtrl&amp; list_control = GetListCtrl();
+
+   if ( column_number == 0 )
+   {
+      return( list_control.InsertItem( &amp;list_view_item ) );   
+   }
+   else
+   {
+      return( list_control.SetItem( &amp;list_view_item ) );
+   }
+}
+
+void CMyListView::Empty( void )
+{
+   CListCtrl&amp; list_control = GetListCtrl();
+
+   list_control.DeleteAllItems();
+
+   while( list_control.DeleteColumn( 0 ) )
+   {
+      ;
+   }
+
+   UpdateWindow();
+}</CODE></PRE>
+
+<LI>That is all. You should be able to compile and run your application.
+
+<H2>A Generic Design</H2>
+
+For the rest of this tech note, let's assume I'm writing an XML
+explorer using the XML classes in WFC.
+
+<P>
+
+Generally speaking, when the user selects branches in the tree view,
+you want the list view (I prefer report view) to show details of 
+that item. This means you should add a function to the list view
+class to show the details of each type of item. We also need a way
+to associate tree items with objects that will be displayed in these
+functions.
+
+In general, the document class is responsible for loading the object
+(and sub objects). The tree view is then passed this object and populates
+the tree items. When the user selects a tree item, the tree view
+figures out (via mapping) what the object selected was and tells the
+list view to display it.
+
+<H3>The Document</H3>
+
+The &quot;document&quot; is supposed to represent the data portion
+of your program. The only problem with this idea is when data changes,
+the views of the data must be updated. Instead of thinking of the
+&quot;document&quot; as your data, think of it as the object that
+gets your data. In reality, you want your data to be independent
+of any views of it. Your data objects should be blissfully ignorant
+of the objects that are displaying it. Use <CODE>CDocument</CODE> as
+a view manager and data router. It gets told by the framework to
+load new data (via the <CODE>OpenDocument</CODE> method).
+
+I suggest putting a pointer to your real data-centric object in
+the document class.
+
+Here's the steps you need to take to add your own code to load a file:
+
+<OL>
+<LI><B>View -&gt; ClassWizard -&gt; Message Maps</B>
+<LI>Select <CODE>CMyDocument</CODE> in the <B>Class name:</B> combobox.
+<LI>Select <CODE>CMyDocument</CODE> in the <B>Object IDs:</B> listbox.
+<LI>Select <CODE>OnOpenDocument</CODE> in the <B>Messages:</B> listbox.
+<LI>Click the <B>Add Function</B> button.
+<LI>Double click on the <B>OnOpenDocument</B> line in the <B>Member functions:</B> listbox.
+<LI>Add your code to load your data.
+</OL>
+
+<H3>The Tree View</H3>
+
+The tree view is responsible for handling the user expanding
+branches and clicking on leaves.
+We need a way to link what the user clicks on with an object
+that leaf represents. To do this, I use a technique where
+the image identifier is used to differentiate between
+branches. The images may look the same but they have different
+identifiers (i.e. they appear in different places in the 
+image list). They are duplicated in the image list.
+Differing image identifiers provides uniqueness. Uniqueness
+is the key to simplicity.
+Keep in mind that multiple branches can represent the same 
+objects. Another things to remember is that a DWORD value
+can be associated with each item in the tree control. I
+usually put a pointer to the object in that DWORD.
+Of course, this will break when a 64-bit version of NT comes
+out (possibly named Win64???).
+
+<P>
+
+To map what the user click on to what it represents, do the
+following:
+
+<OL>
+
+<LI>Edit the <CODE>MyTreeView.h</CODE> header file (this is the
+    one that contains the image identifiers <CODE>IMAGE_xxx</CODE>
+    defines).
+
+<LI>Add an enumeration to the <CODE>CMyTreeView</CODE> class. These
+    enumerations will represent the objects.
+<PRE><CODE>class CMyTreeView : public CTreeView
+{
+   public:
+
+      enum _what_it_is
+      {
+         IT_IS_THE_ROOT = 1,
+         IT_IS_AN_XML_DOCUMENT,
+         IT_IS_AN_ELEMENT,
+         IT_IS_A_LIST_OF_ATTRIBUTES,
+         IT_IS_AN_ATTRIBUTE
+      };</CODE></PRE>
+
+<LI>Now add a method to <CODE>CMyTreeView</CODE> to convert
+    image id's to what they represent:
+<PRE><CODE>DWORD ImageToWhatItIs( DWORD image_id ) const;</CODE></PRE>
+implemented thusly:
+<PRE><CODE>DWORD CMyTreeView::ImageToWhatItIs( DWORD image_id ) const
+{
+   switch( image_id )
+   {
+      case IMAGE_ROOT:
+
+         return( IT_IS_THE_ROOT );
+
+      case IMAGE_TILE_2:
+
+         return( IT_IS_AN_XML_DOCUMENT );
+
+      case IMAGE_TILE_3:
+
+         return( IT_IS_AN_ELEMENT );
+
+      default:
+
+         return( 0 );
+   }
+}</CODE></PRE>
+
+</OL>
+
+Now we need to add some code to populate the tree.
+I usually write one method that the document class calls
+(usually from <CODE>OnOpenDocument()</CODE>) and other methods
+to add individual items. For example:
+
+<PRE><CODE>void CMyTreeView::Populate( CExtensibleMarkupLanguageDocument * xml_p )
+{
+   // Start with an empty tree
+   DeleteChildren( RootItem );
+
+   if ( xml_p == NULL )
+   {
+      return;
+   }
+
+   CTreeCtrl&amp; tree_control = GetTreeCtrl();
+
+   HTREEITEM document_item;
+
+   document_item = tree_control.InsertItem( TEXT( &quot;XML&quot; ), IMAGE_TILE_2, IMAGE_TILE_2, RootItem );
+   tree_control.SetItemData( document_item, (DWORD) xml_p );
+
+   CExtensibleMarkupLanguageElement * element_p = xml_p-&gt;GetRootElement();
+
+   AddElement( tree_control, document_item, element_p );
+}</CODE></PRE>
+
+To make things easy (and keep them straight in my little head), I put
+a comment block at the top of the file to give me a nice map
+to what everything means.
+
+<PRE><CODE>/*
+** Image Identifier to What It Is to Item Data mappings
+**
+** IMAGE ID     | WHAT IT IS            | GetItemData() returns
+** -------------+-----------------------+------------------------------------
+** IMAGE_ROOT   | IT_IS_THE_ROOT        |
+** IMAGE_TILE_2 | IT_IS_AN_XML_DOCUMENT | CExtensibleMarkupLanguageDocument *
+** IMAGE_TILE_3 | IT_IS_AN_ELEMENT      | CExtensibleMarkupLanguageElement *
+*/</CODE></PRE>
+
+Here's where you will explain how to handle change notifications.
+
+<H3>The List View</H3>
+
+Now that the tree view knows how to populate itself from
+data given to it by the document class, we need to add
+code to show details of the object the user clicked on.
+The tree view controls what view the list view will
+show.
+
+<H1>I AIN'T DONE YET.</H1>
+
+<P>
+<HR>
+<A HREF="mailto:wfc@pobox.com">Samuel R. Blackburn</A>
+</BODY>
+
+</HTML>

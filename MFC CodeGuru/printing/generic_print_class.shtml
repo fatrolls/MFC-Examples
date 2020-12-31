@@ -1,0 +1,147 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Printing - Generic printing class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Generic printing class (and how to print a list control content)</FONT></H3></CENTER>
+
+<HR>
+
+<P>This article was contributed by <A HREF="mailto:warch@tin.it">Iuri Apollonio</A></P>
+
+<P><b>A Generic Printer class - and how to print a list control content
+(or how to print from anywhere without too many troubles).</b>
+
+<P>The <b>CPrinterJob</b> class is a base class for implementing print process aside from the 
+  view architecture; it comes along with a CPrintStatus (a CDialog derived) which
+  shows the printing progress process. You will need to derive a class from this
+  and override the virtual functions as you need; the function are exactly the same
+  as the CView ones (OnPreparePrinting, OnBeginPrinting, OnPrint and so on ..) and
+  you can threat them in the same way; then you can call the OnFilePrint function that
+  will start the printing process. If you want to call a "Page Setup" dialog for
+  customizing the printing you can do this in the OnPreparePrinting function and 
+  eventually return false to break the process.
+
+<P>As an example, I've written a class to print the content of a CListCtrl (CListCtrlPrint)
+  with a CListPrintSetup class to manage header, footer, fonts types and sizes and margins.
+
+<P>The CListPrintSetup uses three things that can be used for other purposes:
+
+<ol>
+<li>A CCoolButton class, which is an ownerdraw button with a cool look (main code borrowed
+     from another codeguru .. :)
+<li>A CFontCombo class, which is a combobox for choosing a font; borrowed from 
+     Girish Bharadwaj code with only a small modify to avoid symbols font
+<li>Some macros (you will find them in the CListPrintSetup header file) to manage tab pages.
+     I use here this way for tab sheet: I write the main dialog which contains the tab control
+	 and the button which are common (ex. Ok, Cancel), and then the tab pages as child
+	 dialogs without borders and title; then with the macros you can easily connect
+	 them to the tab control.
+</ol>
+
+<H4>The CPrinterJob class</H4>
+
+This class is designed to be a base class for your evil pourpose; it works exactly
+as a CView (except for printing preview, sorry!).
+It has some virtual functions you can override as you would normally do inside a
+CView class:
+
+<PRE><TT><FONT COLOR="#990000">virtual bool OnPreparePrinting(CPrintInfo* pInfo, bool bPrintPreview = false);
+</FONT></TT></PRE>
+- the only difference from the CView's one is the bPrintPreview members - I use it
+  for my pourpose, if you aren't using it from inside a CView you can safely ignore it.
+  You should call the base class function from this one (ex. return CPrinterJob::OnPreparePrinting(pInfo, bPrintPreview));
+
+<PRE><TT><FONT COLOR="#990000">
+virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+virtual void OnPrint(CDC* pDC, CPrintInfo* pInfo);
+virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+</FONT></TT></PRE>
+- those three functions work exactly as the CView ones and do nothing in the base class
+  is up to your derived one to do something (almost in the OnPrint - or you will print white pages ..)
+
+<P>Supposing you have properly derived your class and do something in the OnPrint()
+<br>(ex. CMyPJob::OnPrint(CDC* pDC, CPrintInfo* pInfo) { pDC->TextOut(100,100,"Hello World!"); })
+<br>all you need to do the printing process is this:
+
+<PRE><TT><FONT COLOR="#990000">
+CMyPJob pJob;
+pJob.OnFilePrint();
+</FONT></TT></PRE>
+
+<P>To include this class in your project you will need to do this:
+</ul>
+<li>add the CPrinterJob class
+<li>add the CPrintStatus class (is a dialog, add it with its resoruce)
+<li>add the avi files you will use in the CPrintStatus class (in this sample, it is
+  borrowed from Windows - it's called IDR_PRINT and it's an "AVI" resource
+</ul>
+
+To see a working implementation of the above, look below to the CListCtrlPrint class.
+
+
+<H4>The CListCtrlPrint class</H4>
+
+This is a class derived from the CPrinterJob. It permits to print the content of a 
+CListCtrl; it also implements a option dialog for setting the header and footer and
+the fonts type and size.
+
+<P>The use of this class is very simple, as you can see in the sample application: in the
+OnOK() function of the sample dialog, we find:
+
+<PRE><TT><FONT COLOR="#990000">
+	CListCtrlPrint cJob;
+	cJob.csPageHead = "This is the header of the file\r\nMultiline!\r\n";
+	cJob.csPageFooter = "Just a test for the footers\r\neventually multiline too ..";
+	cJob.csPage = "Page %d of %d";
+	cJob.pList = &wndList;
+	cJob.OnFilePrint();
+</FONT></TT></PRE>
+
+<P>If it meets your needs, all you need is to include the following things in your project:
+<ul>
+<li>the classes for CPrinterJob as stated above;
+<li>classes CCoolButton and CFontCombo for controls
+  (CCoolbutton needs the cursor resource IDC_HANDCUR)
+<li>classes CListPrintPage1, CListPrintPage2 and CListPrintSetup for the option dialog
+  (you'll need the dialogs resources and the bitmap resource IDB_PAGE)
+<li>and finally, the CListCtrlPrint which implements the CPrinterJob derived class and
+  actually do all the work.
+</ul>
+
+<P>You can peer through the CListCtrlPrint code to see how to implement a CPrinterJob
+derived.
+
+<P><A HREF="generic_print_class.zip">Download source</A> 94K.
+
+
+<P>Posted on: March 7, 98.
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

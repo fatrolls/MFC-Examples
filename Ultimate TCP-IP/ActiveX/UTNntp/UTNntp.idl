@@ -1,0 +1,346 @@
+// =================================================================
+//  
+// UTNntp.idl : IDL source for UTNntp.dll
+//  
+//  Purpose:
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTNntp.tlb) and marshalling code.
+//
+// =================================================================
+// Ultimate TCP-IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// =================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+cpp_quote("#endif")  
+
+
+[
+	uuid(ADAD3636-07A3-11D3-A468-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP NNTP Control 4.2")
+]
+library UTNNTPLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(ADAD3646-07A3-11D3-A468-0080C858F182),
+		helpstring("_INntpEvents Interface")
+	]
+	dispinterface _INntpEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnSendArticleProgress")] HRESULT OnSendArticleProgress([in] long BytesSent, [in] long BytesTotal);
+		[id(2), helpstring("method OnConnect")] HRESULT OnConnect([in] long Result);
+		[id(3), helpstring("method OnClose")] HRESULT OnClose([in] long Result);
+		[id(4), helpstring("method OnCheckCanPost")] HRESULT OnCheckCanPost([in] long Result);
+		[id(5), helpstring("method OnGetServerDate")] HRESULT OnGetServerDate([in] BSTR Date, [in] long Result);
+		[id(6), helpstring("method OnSelectNewsGroup")] HRESULT OnSelectNewsGroup([in] long Result);
+		[id(7), helpstring("method OnGetArticle")] HRESULT OnGetArticle([in] long Result);
+		[id(8), helpstring("method OnPostArticle")] HRESULT OnPostArticle([in] long Result);
+		[id(9), helpstring("method OnGetArticleList")] HRESULT OnGetArticleList([in] long Result);
+		[id(10), helpstring("method OnGetNewsGroupList")] HRESULT OnGetNewsGroupList([in] long Result);
+	};
+
+	[
+		uuid(ADAD3645-07A3-11D3-A468-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP NNTP Control 4.2")
+	]
+	coclass Nntp
+	{
+		[default] interface INntp;
+		[default, source] dispinterface _INntpEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (08B7CAD5-EBF9-11d2-A440-0080C858F182), helpstring("NNTP Error Codes")]
+	enum NNTPErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Error")]					ecError					= UTE_ERROR,
+		[helpstring("Invalid address format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Not connected")]			ecNoConnection			= UTE_NOCONNECTION,
+		[helpstring("Connection failed")]		ecConnectionFailed		= UTE_CONNECT_FAILED,
+		[helpstring("Connection rejected")]		ecConnectionRejected	= UTE_CONNECT_REJECTED,
+		[helpstring("Connection terminated")]	ecConnectionTerminated	= UTE_CONNECT_TERMINATED,
+		[helpstring("No response")]				ecNoResponse			= UTE_NO_RESPONSE,
+		[helpstring("Invalid response")]		ecInvalidResponse		= UTE_INVALID_RESPONSE,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("Timed out")]				ecTimeOut				= UTE_CONNECT_TIMEOUT,
+		[helpstring("File open failed")]		ecFileOpenFailed		= UTE_DS_OPEN_FAILED,
+		[helpstring("File write failed")]		ecFileWriteFailed		= UTE_DS_WRITE_FAILED,
+		[helpstring("File close failed")]		ecFileCloseFailed		= UTE_DS_CLOSE_FAILED,
+		[helpstring("Wrong file type used")]	ecFileTypeError			= UTE_FILE_TYPE_ERROR,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR,
+		[helpstring("Index is out of range")]	ecIndexOutOfRange		= UTE_INDEX_OUTOFRANGE,
+		[helpstring("XOVER command failed")]	ecXOVERFailed			= UTE_XOVER_FAILED,
+		[helpstring("USER command failed")]		ecUSERFailed			= UTE_USER_FAILED,
+		[helpstring("PASS command failed")]		ecPASSFailed			= UTE_PASS_FAILED,
+		[helpstring("AUTHINFO USER command failed")]	ecAUTHINFO_USERFailed	= UTE_NNTP_AUTHINFO_USER_FAILED,
+		[helpstring("AUTHINFOPASS command failed")]		ecAUTHINFO_PASSFailed	= UTE_NNTP_AUTHINFO_PASS_FAILED,
+		[helpstring("Unable to update group information")]	ecInfoUpdateFailed	= UTE_GROUP_INFO_UPDATE_FAILED,
+		[helpstring("No posting permitted")]	ecNoPosting				= UTE_NNTP_NOPOSTING,
+		[helpstring("Posting failed")]			ecPostFailed			= UTE_NNTP_POST_FAILED,
+		[helpstring("Bad article")]				ecBadArticle			= UTE_NNTP_BAD_ARTICLE,
+		[helpstring("No selected news group")]	ecNoGroupSelected		= UTE_GROUP_NOT_SELECTED,
+		[helpstring("Invalid parameter")]		ecInvalidParameter		= UTE_PARAMETER_INVALID_VALUE
+	
+	} NNTPErrorCodes;
+
+
+	//===========================================
+	//	Request information types enumeration
+	//===========================================
+	typedef [uuid (EDD74F35-07B9-11d3-A468-0080C858F182), helpstring("Request Information Type")]
+	enum RequestInfoType
+	{
+		[helpstring("Request all information")]			itRequestAll,
+		[helpstring("Request only new information")]	itRequestNew
+	} RequestInfoType;
+
+	//===========================================
+	//	Nntp control PropertyPage object
+	//===========================================
+	[
+		uuid(ADAD3647-07A3-11D3-A468-0080C858F182),
+		helpstring("NntpPropPage Class")
+	]
+	coclass NntpPropPage
+	{
+		interface IUnknown;
+	};
+};
+
+
+	//===========================================
+	//	INntp interface
+	//===========================================
+
+	[
+		object,
+		uuid(ADAD3644-07A3-11D3-A468-0080C858F182),
+		dual,
+		helpstring("INntp Interface"),
+		pointer_default(unique)
+	]
+	interface INntp : IDispatch
+	{
+			//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_CONNECT_TIME_OUT		= 1;
+		const int DISPID_RECEIVE_TIME_OUT		= 2;
+		const int DISPID_BLOCKING_MODE			= 3;
+		const int DISPID_GET_ERROR_TEXT			= 4;
+		const int DISPID_CANCEL_NNTP			= 5;
+		const int DISPID_CONNECT				= 6;
+		const int DISPID_CLOSE					= 7;
+		const int DISPID_CHECK_CAN_POST			= 8;
+		const int DISPID_GET_SERVER_DATE		= 9;
+		const int DISPID_SELECT_NEWS_GROUP		= 10;
+		const int DISPID_SAVE_NEWS_GROUP_LIST	= 11;
+		const int DISPID_LOAD_NEWS_GROUP_LIST	= 12;
+		const int DISPID_NEWS_GROUP_TITLE		= 13;
+		const int DISPID_CHECK_FOR_NEW_GROUPS	= 14;
+		const int DISPID_SAVE_ARTICLE_LIST		= 15;
+		const int DISPID_LOAD_ARTICLE_LIST		= 16;
+		const int DISPID_GET_NEW_ARTICLES_LIST	= 17;
+		const int DISPID_GET_ARTICLE			= 18;
+		const int DISPID_RESET_ARTICLE_INFO_ENUM= 19;
+		const int DISPID_ENUM_ARTICLE_INFO		= 20;
+		const int DISPID_POST_ARTICLE			= 21;
+		const int DISPID_ARTICLE_LIST			= 22;
+		const int DISPID_NEWS_GROUP_LIST		= 23;
+		const int DISPID_HOST_NAME				= 24;
+		const int DISPID_USER_NAME				= 25;
+		const int DISPID_USER_PASSWORD			= 26;
+		const int DISPID_NEWS_GROUP_COUNT		= 27;
+		const int DISPID_NEW_ARTICLE_COUNT		= 28;
+		const int DISPID_ARTICLE_HEADER_COUNT	= 29;
+		const int DISPID_ARTICLE_INFO_ID		= 30;
+		const int DISPID_ARTICLE_INFO_SUBJECT	= 31;
+		const int DISPID_ARTICLE_INFO_AUTHOR	= 32;
+		const int DISPID_ARTICLE_INFO_DATE		= 33;
+		const int DISPID_ARTICLE_INFO_MSG_ID	= 34;
+		const int DISPID_ARTICLE_INFO_REFER		= 35;
+		const int DISPID_ARTICLE_INFO_BYTE_COUNT= 36;
+		const int DISPID_ARTICLE_INFO_LINE_COUNT= 37;
+		const int DISPID_ARTICLE_INFO_STATUS	= 38;
+		const int DISPID_SERVER_DATE			= 39;
+		const int DISPID_POST_ARTICLE_FROM_FILE	= 40;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_HOST_NAME), helpstring("property HostName")] 
+			HRESULT HostName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_HOST_NAME), helpstring("property HostName")] 
+			HRESULT HostName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_USER_NAME), helpstring("property UserName")] 
+			HRESULT UserName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_USER_NAME), helpstring("property UserName")] 
+			HRESULT UserName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_USER_PASSWORD), helpstring("property UserPassword")] 
+			HRESULT UserPassword([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_USER_PASSWORD), helpstring("property UserPassword")] 
+			HRESULT UserPassword([in] BSTR newVal);
+
+		[propget, id(DISPID_NEWS_GROUP_COUNT), helpstring("property NewsGroupCount")] 
+			HRESULT NewsGroupCount([out, retval] long *pVal);
+
+		[propget, id(DISPID_NEW_ARTICLE_COUNT), helpstring("property NewArticleCount")] 
+			HRESULT NewArticleCount([out, retval] long *pVal);
+
+		[propget, id(DISPID_ARTICLE_HEADER_COUNT), helpstring("property ArticleHeaderCount")] 
+			HRESULT ArticleHeaderCount([out, retval] long *pVal);
+
+		[propget, id(DISPID_SERVER_DATE), helpstring("Get result of the GetServerDate method")] 
+			HRESULT ServerDate([out, retval] BSTR *pVal);
+
+
+		//===========================================
+		//	Article information Get methods
+		//===========================================
+
+		[propget, id(DISPID_ARTICLE_INFO_ID), helpstring("property ArticleInfo_ID")] 
+			HRESULT ArticleInfo_ID([out, retval] long *pVal);
+
+		[propget, id(DISPID_ARTICLE_INFO_SUBJECT), helpstring("property ArticleInfo_Subject")] 
+			HRESULT ArticleInfo_Subject([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_ARTICLE_INFO_AUTHOR), helpstring("property ArticleInfo_Author")] 
+			HRESULT ArticleInfo_Author([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_ARTICLE_INFO_DATE), helpstring("property ArticleInfo_Date")] 
+			HRESULT ArticleInfo_Date([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_ARTICLE_INFO_MSG_ID), helpstring("property ArticleInfo_MsgID")] 
+			HRESULT ArticleInfo_MsgID([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_ARTICLE_INFO_REFER), helpstring("property ArticleInfo_Refer")] 
+			HRESULT ArticleInfo_Refer([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_ARTICLE_INFO_BYTE_COUNT), helpstring("property ArticleInfo_ByteCount")] 
+			HRESULT ArticleInfo_ByteCount([out, retval] long *pVal);
+
+		[propget, id(DISPID_ARTICLE_INFO_LINE_COUNT), helpstring("property ArticleInfo_LineCount")] 
+			HRESULT ArticleInfo_LineCount([out, retval] long *pVal);
+
+		[propget, id(DISPID_ARTICLE_INFO_STATUS), helpstring("property ArticleInfo_Status")] 
+			HRESULT ArticleInfo_Status([out, retval] long *pVal);
+
+
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_CANCEL_NNTP), helpstring("Cancel Nntp request")] 
+			HRESULT CancelNntp();
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_CONNECT), helpstring("method Connect")] 
+			HRESULT Connect([out, retval] long * Result);
+
+		[id(DISPID_CLOSE), helpstring("method Close")] 
+			HRESULT Close([out, retval] long * Result);
+
+		[id(DISPID_CHECK_CAN_POST), helpstring("method CheckCanPost")] 
+			HRESULT CheckCanPost([out, retval] long * Result);
+
+		[id(DISPID_GET_SERVER_DATE), helpstring("method GetServerDate")] 
+			HRESULT GetServerDate([out, retval] long * Result);
+
+		[id(DISPID_SELECT_NEWS_GROUP), helpstring("method SelectNewsGroup")] 
+			HRESULT SelectNewsGroup([in] BSTR NewsGroup, [out, retval] long * Result);
+
+		[id(DISPID_SAVE_NEWS_GROUP_LIST), helpstring("method SaveNewsGroupList")] 
+			HRESULT SaveNewsGroupList([in] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_LOAD_NEWS_GROUP_LIST), helpstring("method LoadNewsGroupList")] 
+			HRESULT LoadNewsGroupList([in] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_NEWS_GROUP_TITLE), helpstring("method GetNewsGroupTitle")] 
+			HRESULT GetNewsGroupTitle([in] long Index, [out, retval] BSTR * Result);
+
+		[id(DISPID_SAVE_ARTICLE_LIST), helpstring("method SaveArticleHeaderList")] 
+			HRESULT SaveArticleHeaderList([in] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_LOAD_ARTICLE_LIST), helpstring("method LoadArticleHeaderList")] 
+			HRESULT LoadArticleHeaderList([in] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_GET_ARTICLE), helpstring("method GetArticle")] 
+			HRESULT GetArticle([in] BSTR ArticleID, [in] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_RESET_ARTICLE_INFO_ENUM), helpstring("method ResetArticleInfoEnum")] 
+			HRESULT ResetArticleInfoEnum();
+
+		[id(DISPID_ENUM_ARTICLE_INFO), helpstring("method EnumArticleInfo")] 
+			HRESULT EnumArticleInfo([out, retval] long * Result);
+
+		[id(DISPID_POST_ARTICLE), helpstring("method PostArticle")] 
+			HRESULT PostArticle([in] BSTR NewsGroup, [in] BSTR From, [in] BSTR Subject, [in] BSTR Article, [out, retval] long *Result);
+
+		[id(DISPID_ARTICLE_LIST), helpstring("method GetArticleList")] 
+			HRESULT GetArticleList([in] RequestInfoType Type, [out, retval] long *Result);
+
+		[id(DISPID_NEWS_GROUP_LIST), helpstring("method GetNewsGroupList")] 
+			HRESULT GetNewsGroupList([in] RequestInfoType Type, [out, retval] long *Result);
+		
+		[id(DISPID_POST_ARTICLE_FROM_FILE), helpstring("method PostArticleFromFile")] 
+			HRESULT PostArticleFromFile([in] BSTR FileName, [out,retval] long *Result);
+		
+
+	};
+

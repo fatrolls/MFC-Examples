@@ -1,0 +1,250 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MONTHCALENDAR_DIALOG DIALOGEX 0, 0, 450, 290
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "MonthCalendar"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "",IDC_MONTHCAL,8,8,282,192,0,WS_EX_CLIENTEDGE
+    CONTROL         "MCS_DAYSTATE",IDC_CHECK_DAYSTATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,305,16,73,10
+    CONTROL         "MCS_MULTISELECT",IDC_CHECK_MULTISELECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,305,30,85,10
+    CONTROL         "MCS_NOTODAY",IDC_CHECK_NOTODAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,305,44,71,10
+    CONTROL         "MCS_NOTODAYCIRCLE",IDC_CHECK_NOTODAYCIRCLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,305,58,96,10
+    CONTROL         "MCS_WEEKNUMBERS",IDC_CHECK_WEEKNUMBERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,305,72,93,10
+    CONTROL         "OXMCS_BOLDHOLIDAYS",IDC_CHECK_BOLDHOLIDAYS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,305,86,101,10
+    CONTROL         "OXMCS_INFOTIP",IDC_CHECK_INFOTIP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,305,100,73,10
+    CONTROL         "\nSpecifies background color displayed between months",IDC_BUTTON_CLRBK,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,304,154,61,16
+    CONTROL         "\nSpecifies background color displayed text within a month",IDC_BUTTON_CLRTEXT,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,377,154,61,16
+    CONTROL         "\nSpecifies background color displayed within months",IDC_BUTTON_CLRMONTHBK,
+                    "Button",BS_OWNERDRAW | BS_LEFT | WS_TABSTOP,304,194,61,16
+    CONTROL         "\nSpecifies background color displayed text within calendar's title",IDC_BUTTON_CLRTITLETEXT,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,377,194,61,16
+    CONTROL         "\nSpecifies background color displayed in the calendar's title",IDC_BUTTON_CLRTITLEBK,
+                    "Button",BS_OWNERDRAW | BS_LEFT | WS_TABSTOP,304,231,61,16
+    CONTROL         "\nSpecifies background color to display header and trailed-day text",IDC_BUTTON_CLRTRAILINGTEXT,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,377,231,61,16
+    COMBOBOX        IDC_COMBO_DIMENSION,60,213,67,66,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FIRSTDAY,60,232,67,76,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_SCROLLRATE,87,251,39,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_SCROLLRATE,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,126,251,13,13
+    PUSHBUTTON      "Font ...",IDC_BUTTON_FONTNAME,7,268,39,13
+    EDITTEXT        IDC_EDIT_MAXSEL,235,214,39,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_MAXSEL,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,274,214,13,13
+    PUSHBUTTON      "Apply",IDC_APPLY,296,265,40,14
+    PUSHBUTTON      "Restore",IDC_RESTORE,350,265,40,14
+    DEFPUSHBUTTON   "Close",IDCANCEL,403,265,40,14
+    GROUPBOX        "Styles",IDC_STYLES,295,4,148,111
+    GROUPBOX        "Colors",IDC_COLORS,295,127,148,130
+    LTEXT           "Background",IDC_STATIC,304,143,40,8
+    LTEXT           "Month Background",IDC_STATIC,304,183,62,8
+    LTEXT           "Text",IDC_STATIC,378,143,15,8
+    LTEXT           "Title Background",IDC_STATIC,304,221,55,8
+    LTEXT           "Title Text",IDC_STATIC,378,184,30,8
+    LTEXT           "Trailing Text",IDC_STATIC,378,221,40,8
+    LTEXT           "First weekday",IDC_STATIC,7,235,44,8
+    LTEXT           "Scroll rate (in months)",IDC_STATIC,7,253,68,8
+    LTEXT           "Max selected",IDC_STATIC,155,215,43,8
+    LTEXT           "Dimension",IDC_STATIC,7,215,34,8
+    LTEXT           "Selection",IDC_STATIC,155,236,30,8
+    LTEXT           "Static",IDC_SELECTION,193,235,81,11,SS_SUNKEN
+    LTEXT           "Selection range",IDC_STATIC,155,252,50,8
+    LTEXT           "from",IDC_STATIC,156,267,14,8
+    LTEXT           "Static",IDC_RANGEFROM,173,266,41,11,SS_SUNKEN
+    LTEXT           "to",IDC_STATIC,222,267,8,8
+    LTEXT           "Static",IDC_RANGETO,233,266,41,11,SS_SUNKEN
+    LTEXT           "Static",IDC_STATIC_FONTNAME,59,269,67,12,SS_CENTERIMAGE | SS_SUNKEN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "MonthCalendar MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "MonthCalendar"
+            VALUE "LegalCopyright", "Copyright (C) 1998"
+            VALUE "OriginalFilename", "MonthCalendar.EXE"
+            VALUE "ProductName", "MonthCalendar Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_MONTHCALENDAR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 443
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 283
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About MonthCalendar..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Month Calendar Demo"
+    ID_DESCRIPTION_FILE     "MonthCalendarInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\MonthCalendar.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""utsampleabout.rc""\r\n"
+    "#include ""OXBitmapButton.rc""\r\n"
+    "#include ""OXPopupBarCtrl.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\MonthCalendar.ico"
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\MonthCalendar.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "utsampleabout.rc"
+#include "OXBitmapButton.rc"
+#include "OXPopupBarCtrl.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

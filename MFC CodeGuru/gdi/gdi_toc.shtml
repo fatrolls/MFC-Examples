@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>GDI</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">GDI</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+
+<hr>
+
+<p>This section is being maintained by <a href = "mailto:mdbuck@compuserve.com">Michael D. Buck</a>.
+<br>
+
+<UL>
+<LI><A HREF="dotted_lines.shtml">Drawing dotted lines - Jean-Edouard Lachand-Robert</A>
+<LI><A HREF="metafile.shtml">CMetaFile class - Robert Caldecott</A>
+<LI><A HREF="cgdi.shtml">CGDI class - Michael Scherotter</A>
+
+</UL>
+
+
+
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

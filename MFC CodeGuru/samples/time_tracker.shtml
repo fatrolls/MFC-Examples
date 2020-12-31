@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Samples - Track billable hours (2)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Track billable hours (2)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This sample was contributed by <A HREF="mailto:blenkers@anachem.ruhr-uni-bochum.de">Thomas Blenkers</A>.
+
+
+<P>The attached file is zipped version of my TimeTracker project. I
+generated this app because I would like to know how many times I spend
+in front of the computer and to track track whow many time I spend
+working on various projects (I'm earning money with my hobby ;-)
+
+<P>The best (?) way to implement this was to create an app that resides on
+the <b>taskbar notifation area</b>, adding some entry to a log-file at startup
+and another entry at exit. One of the problems involved was that on
+windows shutdown you get no WM_EXIT command.
+That was the outcome of my newsgroup question "Taskbar Status Area
+App?".
+
+<P>The second thing I includes in this project - just for demonstating this
+feature - is CListCrtlView based class <b>displaying images in SUBitems</b>.
+For this I have changed YOUR code for "full row selection in list
+controls" (dont know the exact title now, but you do). The key idea was
+adding special texts for bitmaps. I only wanted to implement one bitmap
+for a yes value and another vor a no value. So I choose to enter the
+text 0]|[ for no and 1]|[ for yes. In OnDrawItem I check, if the text is
+of length 4 and if the last three characters are the combination ']|['
+(I choose two anti-matching-brackets to avoid confusing the find-
+matching- brace- makros of the IDE) then the first character is
+convertet to integer and used to determine which bitmap to draw...
+
+
+<p><a href="../cgi/redirect.cgi?url=http://www.codeguru.com/samples/TimeTracker.zip">Download Files</a> The zip file is 142K.
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

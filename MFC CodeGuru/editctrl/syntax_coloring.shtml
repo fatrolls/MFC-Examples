@@ -1,0 +1,130 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Syntax Coloring Text Edit Window Class</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Syntax Coloring Text Edit Window Class
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:rmore@cri.com"><!-- Author Name -->Randy More</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="syntax_coloring.gif" >
+
+
+<!-- Text / source code -->
+<P>This class provides a CWnd derived editor that provides syntax
+coloring based on a keyword file you provide. It also supports
+auto-indent and retab. It is much faster than using CRichEditView to
+do the same thing, but it flickers a little and does not support any
+additional formatting.</P>
+
+<P>There are two classes that must be added to a project
+"ColorEditWnd" is the editor and "Colorize" is the parser. The
+included project shows how to add the window.</p>
+
+<P>Add the window as follows:</P>
+
+<P>Add a member variable which is a pointer to a ColorEditWnd (in
+this example cColorWnd)</P>
+
+<P>After initialization of the parent window instantiate the color
+edit window as follows:</P>
+
+<BLOCKQUOTE><FONT SIZE="-1" COLOR="#990000">	CRect client;<BR>
+   	GetClientRect(client);<BR>
+   	CString keywordsFile = "Keywords.ini";<BR>
+   	BOOL caseSensitive = FALSE;<BR>
+   	long pCharDX = 10;<BR>
+   	long pCharDY = 16;<BR>
+   	long pTabSize = 4;<BR>
+   	int pFontSize = 120;<BR>
+   	CString pFontName = "Courier New";</FONT>
+   
+   <P><FONT SIZE="-1" COLOR="#990000">	cColorWnd = new
+   ColorEditWnd(</FONT></P>
+   
+   <BLOCKQUOTE><FONT SIZE="-1" COLOR="#990000">	this,			//parent
+      window<BR>
+      	client,			//initial size and position<BR>
+      	IDC_COLOR_WND,	//id value<BR>
+      	keywordsFile,	//keywords file<BR>
+      	caseSensitive,	//case sensitive ? <BR>
+      	pCharDX,		//width of each character<BR>
+      	pCharDY,		//height of each character<BR>
+      	pTabSize,		//size of a tab in characters<BR>
+      	pFontSize,		//font size * 10 (I.E. 100 = 10)<BR>
+      	pFontName);		//the font name</FONT></BLOCKQUOTE>
+   
+   <P><FONT SIZE="-1" COLOR="#990000">	cColorWnd-&gt;ShowWindow(SW_SHOW);</FONT></P></BLOCKQUOTE>
+
+<P>Use the methods "LoadText" and "UnloadText" to control the text in
+the edit window. .</P>
+
+<P><FONT SIZE="+1"><B>Keyword File</B></FONT></P>
+
+<P>The keyword file is a simple text file with each word on a
+separate line. Individual words will appear as keywords (blue), words
+preceded by '&amp;' are user defined functions (red). If a word is
+preceded by '+' it causes an auto-indent, '-' causes an
+auto-unindent.</P>
+
+<P>The example project includes a keyword file for VBA.</P>
+
+<P><FONT SIZE="+1"><B>Limitations</B></FONT></P>
+
+<P>There is some flickering in the current version.</P>
+
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="syntax_coloring_project.zip">Download source - 41KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 09 May 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+
+
+

@@ -1,0 +1,374 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Owner Drawn Font Selection ComboBox</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Owner Drawn Font Selection ComboBox</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:Girish_Bharadwaj@smtpnotes.pictel.com">Girish Bharadwaj</A>.
+
+
+
+<p>Following is a owner drawn Combo Box which will be filled with the names of
+the fonts.. And each entry is in same font as selected. This is something
+similar to the one in Netscape 4.x font selector.
+
+<p>This is pretty simple. All it does is to enumerate the fonts and store the
+LOGFONTs in the Item data. and when the painting is to be done, takes the
+value from the Item data and paints the item..
+
+<p>It has a very nice effect.. Since this does only the font names, you might
+need another combobox for the sizes..
+
+<p>You can also set the colors for the highlight and normal..
+
+<p>To use this, Create a ComboBox in your Resource Editor, Set the Owner draw
+to "Variable" and check the "Has strings".
+
+<p>Then, In the OnInitDialog () or OnInitialUpdate() call the function
+FillFonts (). Thats it.. You have got your fonts in the Combo box. To get
+the selected font, Use GetSelFont () with LOGFONT& as the argument. this
+argument will be filled in upon return.
+
+<p>P.S:If you make the  ComboBox to be a "Drop down List"  then the edit
+window (actually the static control window) will hav the name in the same
+font as selected.. Otherwise, it will be in the dialog box's font..
+
+
+<PRE><TT><FONT COLOR="#990000">
+//*************************************************************************
+//CCustComboBox.h
+
+#if !defined(AFX_CUSTCOMBOBOX_H__F8528B4F_396E_11D1_9384_00A0248F6145__INCLUDED_)
+#define AFX_CUSTCOMBOBOX_H__F8528B4F_396E_11D1_9384_00A0248F6145__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// CustComboBox.h : header file
+//
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CCustComboBox window
+
+typedef enum {FONTS} STYLE;      //Why have I enumerated, Cos, Maybe I might want something other than Fonts here
+
+
+class CCustComboBox : public CComboBox
+{
+// Construction
+public:
+     CCustComboBox();
+     CCustComboBox (STYLE);
+
+// Attributes
+public:
+     void SetHilightColors (COLORREF hilight,COLORREF hilightText)
+     {
+          m_clrHilight = hilight;
+          m_clrHilightText = hilightText;
+     };
+     void SetNormalColors (COLORREF clrBkgnd,COLORREF clrText)
+     {
+          m_clrNormalText = clrText;
+          m_clrBkgnd = clrBkgnd;
+     };
+     static BOOL CALLBACK EnumFontProc (LPLOGFONT lplf, LPTEXTMETRIC lptm, DWORD dwType, LPARAM lpData);
+     void FillFonts ();
+     int  GetSelFont (LOGFONT&);
+
+
+// Operations
+public:
+
+// Overrides
+     // ClassWizard generated virtual function overrides
+     //{{AFX_VIRTUAL(CCustComboBox)
+     public:
+     virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+     virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
+     protected:
+     virtual void PreSubclassWindow();
+     //}}AFX_VIRTUAL
+
+// Implementation
+public:
+     virtual ~CCustComboBox();
+
+     // Generated message map functions
+protected:
+     STYLE m_enStyle;
+     COLORREF m_clrHilight;
+     COLORREF m_clrNormalText;
+     COLORREF m_clrHilightText;
+     COLORREF m_clrBkgnd;
+     BOOL m_bInitOver;
+
+
+     void DrawDefault (LPDRAWITEMSTRUCT);
+     void DrawFont(LPDRAWITEMSTRUCT);
+
+     void InitFonts ();
+     //{{AFX_MSG(CCustComboBox)
+     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+     afx_msg void OnDestroy();
+     //}}AFX_MSG
+     afx_msg   long OnInitFonts (WPARAM, LPARAM);
+     DECLARE_MESSAGE_MAP()
+};
+
+///////////////////////////////////////////////////////////////////////////
+//
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif //!defined(AFX_CUSTCOMBOBOX_H__F8528B4F_396E_11D1_9384_00A0248F6145__INCLUDED_)
+
+
+
+
+
+//**************************************************************************
+// CustComboBox.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "CustComboBox.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+#define WM_INITFONTS          (WM_USER + 123)
+//I chose 123 cos nobody might use the same exact number.. I can improve this by use RegisterWindowMessage..
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CCustComboBox
+
+//Initial values of the text and highlight stuff
+
+CCustComboBox::CCustComboBox()
+{
+     m_enStyle = FONTS;
+     m_clrHilight = GetSysColor (COLOR_HIGHLIGHT);
+     m_clrNormalText = GetSysColor (COLOR_WINDOWTEXT);
+     m_clrHilightText = GetSysColor (COLOR_HIGHLIGHTTEXT);
+     m_clrBkgnd = GetSysColor (COLOR_WINDOW);
+     m_bInitOver = FALSE;
+
+}
+
+
+CCustComboBox::CCustComboBox (STYLE enStyle)
+{
+     m_enStyle = enStyle;
+     m_clrHilight = GetSysColor (COLOR_HIGHLIGHT);
+     m_clrNormalText = GetSysColor (COLOR_WINDOWTEXT);
+     m_clrHilightText = GetSysColor (COLOR_HIGHLIGHTTEXT);
+     m_clrBkgnd = GetSysColor (COLOR_WINDOW);
+     m_bInitOver =FALSE;
+}
+
+CCustComboBox::~CCustComboBox()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CCustComboBox, CComboBox)
+     //{{AFX_MSG_MAP(CCustComboBox)
+     ON_WM_CREATE()
+     ON_WM_DESTROY()
+     //}}AFX_MSG_MAP
+     ON_MESSAGE (WM_INITFONTS,OnInitFonts)
+END_MESSAGE_MAP()
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CCustComboBox message handlers
+
+
+void CCustComboBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+     //I might want to add something else someday
+     switch (m_enStyle)
+     {
+     case FONTS:
+          DrawFont(lpDrawItemStruct);
+          break;
+     }
+}
+
+
+//I dont need the MeasureItem to do anything. Whatever the system says, it stays
+
+void CCustComboBox::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+}
+
+void CCustComboBox::DrawFont(LPDRAWITEMSTRUCT lpDIS)
+{
+     CDC* pDC = CDC::FromHandle(lpDIS->hDC);
+     CRect rect;
+
+     TRACE0 ("In Draw Font\n");
+
+    // draw the colored rectangle portion
+     rect.CopyRect(&lpDIS->rcItem);
+
+     pDC->SetBkMode( TRANSPARENT );
+
+     if (lpDIS->itemState & ODS_SELECTED)
+     {
+          pDC->FillSolidRect (rect,m_clrHilight);
+          pDC->SetTextColor (m_clrHilightText);
+     }
+     else
+     {
+          pDC->FillSolidRect (rect,m_clrBkgnd);
+          pDC->SetTextColor (m_clrNormalText);
+     }
+
+     if ((int)(lpDIS->itemID) < 0) // Well its negetive so no need to draw text
+     {
+     }
+     else
+     {
+          CString strText;
+          GetLBText (lpDIS->itemID,strText);
+          CFont newFont;
+          CFont *pOldFont;
+
+          ((LOGFONT*)lpDIS->itemData)->lfHeight = 90; //9 point size
+          ((LOGFONT*)lpDIS->itemData)->lfWidth = 0;
+          newFont.CreatePointFontIndirect ((LOGFONT*)lpDIS->itemData);
+          pOldFont = pDC->SelectObject (&newFont);
+          pDC->DrawText(strText, rect, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
+          pDC->SelectObject (pOldFont);
+          newFont.DeleteObject ();
+     }
+}
+
+void CCustComboBox::InitFonts ()
+{
+     CDC *pDC = GetDC ();
+     ResetContent (); //Delete whatever is there
+     EnumFonts (pDC->GetSafeHdc(),NULL,(FONTENUMPROC) EnumFontProc,(LPARAM)this);//Enumerate
+     m_bInitOver = TRUE;
+}
+
+BOOL CALLBACK CCustComboBox::EnumFontProc (LPLOGFONT lplf, LPTEXTMETRIC lptm, DWORD dwType, LPARAM lpData)
+{
+     if (dwType == TRUETYPE_FONTTYPE) //Add only TTF fellows, If you want you can change it to check for others
+     {
+          int index = ((CCustComboBox *) lpData)->AddString(lplf->lfFaceName);
+          LPLOGFONT lpLF;
+          lpLF = new LOGFONT;
+          CopyMemory ((PVOID) lpLF,(CONST VOID *) lplf,sizeof (LOGFONT));
+          ((CCustComboBox *) lpData)->SetItemData (index,(DWORD) lpLF);
+     }
+     return TRUE;
+}
+
+int CCustComboBox::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+     if (CComboBox::OnCreate(lpCreateStruct) == -1)
+          return -1;
+
+     // TODO: Add your specialized creation code here
+     if (m_enStyle == FONTS)
+     {
+          PostMessage (WM_INITFONTS,0,0);
+     }
+     return 0;
+}
+
+long CCustComboBox::OnInitFonts (WPARAM, LPARAM)
+{
+     InitFonts ();
+     return 0L;
+}
+
+
+void CCustComboBox::OnDestroy()
+{
+
+     if (m_enStyle == FONTS)
+     {
+          int nCount;
+          nCount = GetCount ();
+          for (int i = 0; i <  nCount; i++)
+          {
+               delete ((LOGFONT*)GetItemData (i)); //delete the LOGFONTS actually created..
+          }
+     }
+     // TODO: Add your message handler code here
+     CComboBox::OnDestroy();
+}
+
+void CCustComboBox::FillFonts ()
+{
+     m_enStyle = FONTS;
+     PostMessage (WM_INITFONTS,0,0); //Process in one place
+}
+
+int  CCustComboBox::GetSelFont (LOGFONT& lf)
+{
+     int index = GetCurSel ();
+     if (index == LB_ERR)
+          return LB_ERR;
+     LPLOGFONT lpLF = (LPLOGFONT) GetItemData (index);
+     CopyMemory ((PVOID)&lf, (CONST VOID *) lpLF, sizeof (LOGFONT));
+     return index; //return the index here.. Maybe the user needs it:-)
+}
+
+void CCustComboBox::PreSubclassWindow()
+{
+     // TODO: Add your specialized code here and/or call the base class
+     //Tried to do what Roger Onslow did for the button.. Did not work..?? Any R&D guys around :-)
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

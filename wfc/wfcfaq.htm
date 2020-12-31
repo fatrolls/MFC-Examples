@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+<TITLE>WFC - Frequently Asked Questions</TITLE>
+<META name="keywords" content="WFC, MFC extension library, FAQ, freeware class library, Win32, questions">
+<META name="description" content="This page answers the most common questions about Win32 Foundation Classes.">
+</HEAD>
+<BODY>
+<!-- $Revision: 2 $ -->
+<H1><CENTER>Win32 Foundation Classes</CENTER>
+<CENTER>(WFC)</CENTER>
+<CENTER>Frequently Asked Questions</CENTER></H1>
+
+<H2>Introduction</H2>
+
+This frequently asked questions (FAQ) document is meant
+answer the most commonly asked questions about WFC.
+
+<HR>
+<H1>1. WFC FAQ Information and Credits</H1>
+<H2>1.1 What is WFC?</H2>
+WFC started out as a simple little class library that
+attempts to represent the Win32 API as a set of C++ classes.
+Over time, more non-Win32 related classes have crept in
+as I have encountered problems that needed solving.
+Also, things that have interested me, (like forward
+error correction) wind up being encapsulated in a generic
+class and included.
+
+<H2>1.2 Who Wrote WFC?</H2>
+I (Sam Blackburn) did mostly. I have had many people
+submit bug reports and improvement suggestions. I have
+incorporated most of those submissions. I can't take
+credit for other people's work so where ever a bug
+has been reported and fixed, I include a comment in
+the code giving thanks to the programmer that 
+found it. I will also surf Internet looking for good
+freeware code that I can roll into the library.
+When I do, I try to keep the original author's name
+in there. I usually wind up rewriting the code to make
+it more readable (i.e. so I can understand it).
+
+<H2>1.3 Did Microsoft Steal Your Name?</H2>
+Not really. They have a Java product
+called Windows Foundations Classes (WFC).
+
+<HR>
+<H1>2. A Brief History of WFC</H1>
+<H2>2.1 When was WFC Written?</H2>
+
+<HR>
+<H1>3. Philosophical Questions</H1>
+<H2>3.1 Why is the Source Code so Wordy?</H2>
+I tend to think of source code as a medium by
+which humans communicate ideas from one to another.
+
+There are a lot of programmers out there that think
+source code is primarily something that a compiler
+ingests.
+
+The opinion of the programmer producing the code
+directly relates to the maintainability (and
+reusability) of that code.
+
+If a programmer thinks source code is for compiling,
+their code tends to be be full of abbreviations and
+short cuts that save a CPU-cycle here and there.
+This code is very expensive to reuse.
+
+Humans naturally want to solve any given problem
+using the most knowledge they have at that time.
+What generally
+happens is advanced programmers use advanced
+solutions to simple problems whether or not
+an &quot;advanced technique&quot; is appropriate.
+
+The environment I work in has aggressive delivery
+schedules. If I cannot reuse code from many dissimilar
+projects, I will not meet my deadlines.
+
+This means in order for code to be quickly reused, it
+must be painfully obvious what that code does (and in
+the case of debugging, what that code is <I>supposed</I>
+to do).
+
+<H2>3.1 Which is More Important, Reuse or Object Oriented?</H2>
+Reuse. I have seen many object oriented (OO) pundits think
+reuse is a by-product of an OO system. It is not. Reuse
+is easier with OO designs but all to many times the
+implementations of those designs are so tied to the original
+application that reuse is impossible.
+
+It is very easy for designers to focus on &quot;solving
+this problem&quot; when they should be focusing on
+&quot;solving problems like this.&quot;
+
+<HR>
+<H1>4. Installation Questions</H1>
+<H2>4.1 How do I install WFC?</H2>
+
+<HR>
+<H1>5. Build Questions</H1>
+<H2>5.1 How do I build WFC?</H2>
+
+<H2>5.2 Can I use WFC as a static library?</H2>
+Yes, go into the WFC project to the Project-&gt;Settings-&gt;General-&gt;Microsoft Foundtion Classes:
+and select Use MFC in a Static Library. Then recompile everything.
+Don't forget to change this setting in your project also. If you
+compile WFC for MFC in a static library, but your project uses MFC
+in a DLL, you will get linker errors for things like <CODE>new</CODE>
+being multiply defined.
+
+</BODY>
+</HTML>

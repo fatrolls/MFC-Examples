@@ -1,0 +1,157 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Draw bitmap with grayed 3D effect</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Draw bitmap with grayed 3D effect</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This code was contributed by <a href="mailto:iamwired@geocities.com">Jean-Edouard Lachand-Robert</a>.
+It draws any bitmap with a grayed 3D effect like the one
+Win32 uses to draw a disabled toolbar button. 
+This code seemed very similar to the DrawState() function so I asked him how it was different. Here's
+what he said.
+
+<p>I have tried the DrawState function before writing one of my own. However,
+what I have got disappointed me because I found that often, some colors are
+badly converted from the original image and disapear into the result. I have
+attached to this message a <a href="dither_blt.jpg">sample bitmap</a> which shows very well the
+difference between DrawState() and DitherBlt() when they are used on the
+same bitmap. It's true that the difference is not always so visible. In
+fact, it depends on the original bitmap. More it has pale colors or adjacent
+pixels with near color, more ugly the result is with DrawState().
+DitherBlt() has not this problem and the result looks always perfect. In
+addition, it works under Win32s. I agree that in most cases, DrawState() is
+good enough. But if your application must run on Windows 3.1 and/or you have
+bitmaps with a lot of pale colors to draw, its better using DitherBlt().
+
+I tested it under NT3.51, NT4.0 and Windows95. 
+
+<PRE><TT><FONT COLOR="#990000">
+//
+//      DitherBlt :     Draw a bitmap dithered (3D grayed effect like disabled buttons in toolbars) into a destination DC
+//      Author :        Jean-Edouard Lachand-Robert (iamwired@geocities.com), June 1997.
+//
+//      hdcDest :       destination DC
+//      nXDest :        x coordinate of the upper left corner of the destination rectangle into the DC
+//      nYDest :        y coordinate of the upper left corner of the destination rectangle into the DC
+//      nWidth :        width of the destination rectangle into the DC
+//      nHeight :       height of the destination rectangle into the DC
+//      hbm :           the bitmap to draw (as a part or as a whole)
+//      nXSrc :         x coordinates of the upper left corner of the source rectangle into the bitmap
+//      nYSrc :         y coordinates of the upper left corner of the source rectangle into the bitmap
+//
+void DitherBlt (HDC hdcDest, int nXDest, int nYDest, int nWidth, 
+				int nHeight, HBITMAP hbm, int nXSrc, int nYSrc)
+{
+	ASSERT(hdcDest && hbm);
+	ASSERT(nWidth > 0 && nHeight > 0);
+	
+	// Create a generic DC for all BitBlts
+	HDC hDC = CreateCompatibleDC(hdcDest);
+	ASSERT(hDC);
+	
+	if (hDC)
+	{
+		// Create a DC for the monochrome DIB section
+		HDC bwDC = CreateCompatibleDC(hDC);
+		ASSERT(bwDC);
+		
+		if (bwDC)
+		{
+			// Create the monochrome DIB section with a black and white palette
+			struct {
+				BITMAPINFOHEADER bmiHeader; 
+				RGBQUAD 		 bmiColors[2]; 
+			} RGBBWBITMAPINFO = {
+				
+				{		// a BITMAPINFOHEADER
+					sizeof(BITMAPINFOHEADER),	// biSize 
+						nWidth, 				// biWidth; 
+						nHeight,				// biHeight; 
+						1,						// biPlanes; 
+						1,						// biBitCount 
+						BI_RGB, 				// biCompression; 
+						0,						// biSizeImage; 
+						0,						// biXPelsPerMeter; 
+						0,						// biYPelsPerMeter; 
+						0,						// biClrUsed; 
+						0						// biClrImportant; 
+				},
+				
+				{
+					{ 0x00, 0x00, 0x00, 0x00 }, { 0xFF, 0xFF, 0xFF, 0x00 }
+					} 
+			};
+			VOID *pbitsBW;
+			HBITMAP hbmBW = CreateDIBSection(bwDC,
+				(LPBITMAPINFO)&RGBBWBITMAPINFO, DIB_RGB_COLORS, &pbitsBW, NULL, 0);
+			ASSERT(hbmBW);
+			
+			if (hbmBW)
+			{
+				// Attach the monochrome DIB section and the bitmap to the DCs
+				SelectObject(bwDC, hbmBW);
+				SelectObject(hDC, hbm);
+				
+				// BitBlt the bitmap into the monochrome DIB section
+				BitBlt(bwDC, 0, 0, nWidth, nHeight, hDC, nXSrc, nYSrc, SRCCOPY);
+				
+				// Paint the destination rectangle in gray
+				FillRect(hdcDest, CRect(nXDest, nYDest, nXDest + nWidth, nYDest +
+					nHeight), GetSysColorBrush(COLOR_3DFACE));
+				
+				// BitBlt the black bits in the monochrome bitmap into COLOR_3DHILIGHT bits in the destination DC
+				// The magic ROP comes from the Charles Petzold's book
+				HBRUSH hb = CreateSolidBrush(GetSysColor(COLOR_3DHILIGHT));
+				HBRUSH oldBrush = (HBRUSH)SelectObject(hdcDest, hb);
+				BitBlt(hdcDest, nXDest + 1, nYDest + 1, nWidth, nHeight, bwDC, 0, 0, 0xB8074A);
+				
+				// BitBlt the black bits in the monochrome bitmap into COLOR_3DSHADOW bits in the destination DC
+				hb = CreateSolidBrush(GetSysColor(COLOR_3DSHADOW));
+				DeleteObject(SelectObject(hdcDest, hb));
+				BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, bwDC, 0, 0, 0xB8074A);
+				DeleteObject(SelectObject(hdcDest, oldBrush));
+			}
+			
+			VERIFY(DeleteDC(bwDC));
+		}
+		
+		VERIFY(DeleteDC(hDC));
+	}
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

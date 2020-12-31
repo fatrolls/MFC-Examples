@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Getting free resource under Windows 95</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Getting free resource under Windows 95</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:warch@tin.it">Iuri Apollonio</A>. 
+
+<P>If I could have a penny for all the times this question has been posted in discussion board ..
+well, finally .. looking at Corel Draw 7 script samples (!) I could figure out how to get the free
+system resource under Windows 95.<br>
+And here is the code for you; take care of this - it works ONLY under Windows 95 (not NT) and you must (I think) 
+have the resource meter installed, since we are using its function, not system ones.<br>
+In other words, this way will fail if you don't have the "RSRC32.dll" installed.<br>
+
+<FONT COLOR="#990000"><P><PRE>
+#include "stdio.h"
+#include "windows.h"
+
+#define GFSR_SYSTEMRESOURCES	0
+#define GFSR_GDIRESOURCES		1
+#define GFSR_USERRESOURCES		2
+
+typedef LONG (CALLBACK* GETRES)(int);
+
+void main()
+{
+	HINSTANCE hInst = LoadLibrary("RSRC32.dll");
+	if (hInst != NULL)
+	{
+		GETRES pGetRes = (GETRES) GetProcAddress(hInst, "_MyGetFreeSystemResources32@4");//); 
+
+		if (pGetRes)
+		{
+			long lSysRes = (*pGetRes)(GFSR_SYSTEMRESOURCES);
+			long lGdiRes = (*pGetRes)(GFSR_GDIRESOURCES);
+			long lUsrRes = (*pGetRes)(GFSR_USERRESOURCES);
+			printf("System resource: %d\n", lSysRes);
+			printf("GDI resource: %d\n", lGdiRes);
+			printf("User resource: %d\n", lUsrRes);
+			return;
+		}
+		printf("Error getting pointer to _MyGetFreeSystemResources32()\n");
+		return;
+	}
+	printf("Error loading rsrc32.dll. You must run this under Win95 only and with the resource meter installed.\n\n");
+}
+</FONT></PRE>
+
+<p>Last updated: 26 June 1998 </p>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

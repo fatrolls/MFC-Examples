@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database Programming - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for MFC Database programming">
+   <META Name="keywords" Content="SOURCE CODE MFC WINDOWS DBGRID DAO ODBC">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Database Programming</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<hr>
+
+This section is maintained by <a href="mailto:michael@hejselbak.dk">Michael Hejselbak</a>
+
+
+<UL>
+<LI><A HREF="unbound_dbgrid.shtml">Using DBGrid in unbound mode - Adrian Roman</A>
+<LI><A HREF="tips_odbc_access.shtml">Tips: ODBC & Access database - Claude Turner</A>
+<LI><A HREF="calling_stored_procedure.shtml">Calling Stored Procedures - Craig Lucas</A>
+<LI><A HREF="virtual_dblist.shtml">Using a Virtual CListView with a Dynaset - Sam Fugarino</A>
+<LI><A HREF="rfx_date_alternative.shtml">RFX_Date alternative - Jarek Jaskolski</A>
+<LI><A HREF="rfx_oledatetime.shtml">RFX_Date using COleDateTime - Dan Querciagrossa</A>
+<LI><A HREF="dao_multithreading.shtml">DAO multi-threading tips - John Bundgaard</A>
+<LI><A HREF="print_mailing_labels.shtml">Print Mailing Labels - Larry Hansen</A>
+<LI><A HREF="DAO_non_accessdb.shtml">Using DAO to read data sources other than MS Access - John Vannoy</A>
+<LI><A HREF="direct_sql_with_odbc.shtml">Classes for direct SQL calls with ODBC - Dave Merner</A>
+<LI><A HREF="generic_recordset.shtml">The Generic recordset - Bob Place</A>
+<LI><A HREF="storing_paintbrush_in_accessdb.shtml">Storing "Paint Brush" images in a Access DB - Luigi Ottoboni</A>
+<LI><A HREF="storproc.shtml">A class to call stored procedures that do not return records - Jorge Lodos</A>
+
+</UL>
+
+
+ 
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

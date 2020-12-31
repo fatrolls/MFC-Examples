@@ -1,0 +1,239 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Flat-look Buttons</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Flat-look Buttons
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:roger.onslow@compsys.com.au">Roger Onslow</A>.
+
+<!-- Sample image and source code/demo project -->
+<!-- NONE -->
+<br>
+
+<!-- The article... -->
+
+<p>Flat look (cool) toolbar buttons have been well covered.  But what about
+including the same sort of button in a Dialog (or form or dialog bar)?
+This is not supported by the new common controls, so you have to do it
+yourself.
+
+<p>Here is a class that does flat-look buttons for you.  Just like a toolbar,
+the buttons get borders when the mouse moves over them.  The code uses
+DrawState to draw the buttons.
+
+<p>This class can be (I'll send further articles when I get some time :-)
+enhanced to include check-style, optional standard looks, icons as well as
+text, change cursor as mouse moves over, color change (for links), 3D text,
+size text to fit etc etc.  But this is a good starting point :-)
+
+<FONT COLOR="#990000"><TT><PRE>
+class CMyFlatButton : public CButton {
+     DECLARE_DYNAMIC(CMyFlatButton)
+private:
+     bool m_bRaised;
+     bool m_bDrawBackground;
+public:
+     CMyFlatButton()
+          : CButton()
+          , m_bRaised(false)  // internal only
+          , m_bDrawBackground(true)      // internal only
+     {}
+
+     // drawing
+protected:
+     virtual void DrawText(CDC* pDC, const CRect& rect, LPCTSTR text, UINT state=0);
+     virtual void DrawBorders(CDC* pDC, CRect& rect, UINT state=0);
+     virtual void Draw(CDC* pDC, const CRect& rect, UINT state=0);
+
+protected:
+     //{{AFX_MSG(CMyFlatButton)
+     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+     afx_msg LONG OnMouseLeave(WPARAM, LPARAM);
+     //}}AFX_MSG
+     //{{AFX_VIRTUAL(CMyFlatButton)
+     virtual void PreSubclassWindow();
+     virtual void DrawItem(LPDRAWITEMSTRUCT lpDIS);
+     //}}AFX_VIRTUAL
+     DECLARE_MESSAGE_MAP();
+};
+
+///////////////////////////////////////////////////////////////////////////
+//
+BEGIN_MESSAGE_MAP(CMyFlatButton, CButton)
+//{{AFX_MSG_MAP(CMyFlatButton)
+ON_WM_ERASEBKGND()
+ON_WM_MOUSEMOVE()
+ON_MESSAGE(WM_MOUSELEAVE,OnMouseLeave)
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+IMPLEMENT_DYNAMIC(CMyFlatButton,CButton)
+
+
+// this routine uses DrawState to draw the text approriately.
+// it automatically centres the text within the button border
+
+void CMyFlatButton::DrawText(CDC* pDC, const CRect& rect, LPCTSTR text, UINT state) {
+     // we want transparent text
+     int nBkModeOld = pDC->SetBkMode(TRANSPARENT);
+     // setup text color
+     COLORREF textcol = ::GetSysColor(COLOR_BTNTEXT);
+     COLORREF oldTextColor = pDC->SetTextColor(textcol);
+     // centre the text
+     CSize textSizeClient = pDC->GetTextExtent(text,strlen(text));
+     int x = rect.left+(rect.Width()-textSizeClient.cx)/2;
+     int y = rect.top+(rect.Height()-textSizeClient.cy)/2;
+     // draw the text
+     pDC->DrawState(CPoint(x,y), rect.Size(), text,
+          (state & ODS_DISABLED?DSS_DISABLED:DSS_NORMAL), true, 0, (HBRUSH)NULL
+          );
+     // restore dc
+     pDC->SetTextColor(oldTextColor);
+     pDC->SetBkMode(nBkModeOld);
+}
+
+
+// this routine (optionally) draws the borders on the button
+// flat buttons use only single-pixel borders, so we cannot use
+// DrawFrameControl.
+
+void CMyFlatButton::DrawBorders(CDC* pDC, CRect& rect,UINT state) {
+     if (state & ODS_SELECTED) {
+          pDC->Draw3dRect(rect,::GetSysColor(COLOR_3DSHADOW),
+                               ::GetSysColor(COLOR_3DHILIGHT));
+          rect.DeflateRect(1,1);
+     } else if (! m_bRaised && ! (state & ODS_FOCUS)) {
+          // no border - flat look
+          rect.DeflateRect(1,1);
+     } else {
+
+          pDC->Draw3dRect(rect,::GetSysColor(COLOR_3DHILIGHT),
+                               ::GetSysColor(COLOR_3DSHADOW));
+          rect.DeflateRect(1,1);
+     }
+     rect.DeflateRect(1,1);
+     if (state & ODS_SELECTED) {
+          rect.OffsetRect(1,1);    // offset image when pressed
+     }
+}
+
+
+// Here we draw the appropriate parts of the button
+
+void CMyFlatButton::Draw(CDC* pDC, const CRect& inrect, UINT state) {
+     CRect rect = inrect;
+     DrawBorders(pDC,rect,state);
+     CString text;
+     GetWindowText(text);
+     if (! text.IsEmpty()) {
+          DrawText(pDC,rect,text,state);
+     }
+}
+
+// Overrides
+void CMyFlatButton::PreSubclassWindow() {
+     SetButtonStyle(GetButtonStyle() | BS_OWNERDRAW | BS_NOTIFY);
+}
+
+
+// we use m_bDrawBackground flag to allow us to
+// repaint behind the button before drawing on top
+
+void CMyFlatButton::DrawItem(LPDRAWITEMSTRUCT lpDIS) {
+     if (m_bDrawBackground) {
+          m_bDrawBackground = false;
+          // if not redrawing the whole thing,
+          CWnd* pParent = GetParent();
+          CRect rect; GetWindowRect(rect);
+          pParent->ScreenToClient(rect);
+          pParent->InvalidateRect(rect);
+          pParent->UpdateWindow();
+     } else {
+          m_bDrawBackground = true;
+          CDC* pDC = CDC::FromHandle(lpDIS->hDC);
+          ASSERT_VALID(pDC);
+          CRect rectClient = lpDIS->rcItem;
+          Draw(pDC,rectClient,lpDIS->itemState);
+     }
+}
+
+// Messages
+BOOL CMyFlatButton::OnEraseBkgnd(CDC*) {
+     return true;    // we don't do any erasing when owner drawn
+}
+
+
+// the m_bRaised flag inidicates whether or not to
+// draw the borders.  If the mouse is over the button
+// the borders are drawn.  We use TrackMouseEvent to
+// detect when the mouse leaves the button so we can
+// turn off the flag
+
+void CMyFlatButton::OnMouseMove(UINT, CPoint) {
+     if (! m_bRaised) {
+          // draw with button borders
+          m_bRaised = true;
+          Invalidate();
+          // remember to remove button borders when we leave
+          TRACKMOUSEEVENT trackmouseevent;
+          trackmouseevent.cbSize = sizeof(trackmouseevent);
+          trackmouseevent.dwFlags = TME_LEAVE;
+          trackmouseevent.hwndTrack = GetSafeHwnd();
+          trackmouseevent.dwHoverTime = HOVER_DEFAULT;
+          _TrackMouseEvent(&trackmouseevent);
+     }
+}
+
+LONG CMyFlatButton::OnMouseLeave(WPARAM, LPARAM) {
+     // remove button borders
+     m_bRaised = false;
+     Invalidate();
+     return 0;
+}
+</tt></PRE></FONT>
+
+<!-- Remember to update this -->
+<p>Last updated: 13 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

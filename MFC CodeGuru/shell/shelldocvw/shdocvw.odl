@@ -1,0 +1,995 @@
+// Generated .IDL file (by the OLE/COM Object Viewer)
+// 
+// typelib filename: shdocvw.dll
+// Forward declare all types defined in this typelib
+interface IWebBrowser;
+dispinterface DWebBrowserEvents;
+interface IWebBrowserApp;
+interface IWebBrowser2;
+dispinterface DWebBrowserEvents2;
+interface IFolderViewOC;
+dispinterface DShellFolderViewEvents;
+dispinterface DShellWindowsEvents;
+interface IShellWindows;
+interface IShellLinkDual;
+interface FolderItemVerb;
+interface FolderItemVerbs;
+interface Folder;
+interface FolderItems;
+interface FolderItem;
+interface IShellFolderViewDual;
+interface IShellDispatch;
+interface IShellUIHelper;
+
+[
+  uuid(EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B),
+  version(1.1),
+  helpstring("Microsoft Internet Controls")
+]
+library SHDocVw
+{
+    // TLib : OLE Automation : {00020430-0000-0000-C000-000000000046}
+    importlib("stdole2.tlb");
+
+    [
+      odl,
+      uuid(EAB22AC1-30C1-11CF-A7EB-0000C05BAE0B),
+      helpstring("Web Browser interface"),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface IWebBrowser : IDispatch {
+        [id(0x00000064), helpstring("Navigates to the previous item in the history list.")]
+        HRESULT _stdcall GoBack();
+        [id(0x00000065), helpstring("Navigates to the next item in the history list.")]
+        HRESULT _stdcall GoForward();
+        [id(0x00000066), helpstring("Go home/start page.")]
+        HRESULT _stdcall GoHome();
+        [id(0x00000067), helpstring("Go Search Page.")]
+        HRESULT _stdcall GoSearch();
+        [id(0x00000068), helpstring("Navigates to a URL or file.")]
+        HRESULT _stdcall Navigate(
+                        [in] BSTR URL, 
+                        [in, optional] VARIANT* Flags, 
+                        [in, optional] VARIANT* TargetFrameName, 
+                        [in, optional] VARIANT* PostData, 
+                        [in, optional] VARIANT* Headers);
+        [id(0xfffffdda), helpstring("Refresh the currently viewed page.")]
+        HRESULT _stdcall Refresh();
+        [id(0x00000069), helpstring("Refresh the currently viewed page.")]
+        HRESULT _stdcall Refresh2([in, optional] VARIANT* Level);
+        [id(0x0000006a), helpstring("Stops opening a file.")]
+        HRESULT _stdcall Stop();
+        [id(0x000000c8), propget, helpstring("Returns the application automation object if accessible, this automation object otherwise..")]
+        HRESULT _stdcall Application([out, retval] IDispatch** ppDisp);
+        [id(0x000000c9), propget, helpstring("Returns the automation object of the container/parent if one exists or this automation object.")]
+        HRESULT _stdcall Parent([out, retval] IDispatch** ppDisp);
+        [id(0x000000ca), propget, helpstring("Returns the container/parent automation object, if any.")]
+        HRESULT _stdcall Container([out, retval] IDispatch** ppDisp);
+        [id(0x000000cb), propget, helpstring("Returns the active Document automation object, if any.")]
+        HRESULT _stdcall Document([out, retval] IDispatch** ppDisp);
+        [id(0x000000cc), propget, helpstring("Returns True if this is the top level object.")]
+        HRESULT _stdcall TopLevelContainer([out, retval] VARIANT_BOOL* pBool);
+        [id(0x000000cd), propget, helpstring("Returns the type of the contained document object.")]
+        HRESULT _stdcall Type([out, retval] BSTR* Type);
+        [id(0x000000ce), propget, helpstring("The horizontal position (pixels) of the frame window relative to the screen/container.")]
+        HRESULT _stdcall Left([out, retval] long* pl);
+        [id(0x000000ce), propput, helpstring("The horizontal position (pixels) of the frame window relative to the screen/container.")]
+        HRESULT _stdcall Left([in] long pl);
+        [id(0x000000cf), propget, helpstring("The vertical position (pixels) of the frame window relative to the screen/container.")]
+        HRESULT _stdcall Top([out, retval] long* pl);
+        [id(0x000000cf), propput, helpstring("The vertical position (pixels) of the frame window relative to the screen/container.")]
+        HRESULT _stdcall Top([in] long pl);
+        [id(0x000000d0), propget, helpstring("The horizontal dimension (pixels) of the frame window/object.")]
+        HRESULT _stdcall Width([out, retval] long* pl);
+        [id(0x000000d0), propput, helpstring("The horizontal dimension (pixels) of the frame window/object.")]
+        HRESULT _stdcall Width([in] long pl);
+        [id(0x000000d1), propget, helpstring("The vertical dimension (pixels) of the frame window/object.")]
+        HRESULT _stdcall Height([out, retval] long* pl);
+        [id(0x000000d1), propput, helpstring("The vertical dimension (pixels) of the frame window/object.")]
+        HRESULT _stdcall Height([in] long pl);
+        [id(0x000000d2), propget, helpstring("Gets the short (UI-friendly) name of the URL/file currently viewed.")]
+        HRESULT _stdcall LocationName([out, retval] BSTR* LocationName);
+        [id(0x000000d3), propget, helpstring("Gets the full URL/path currently viewed.")]
+        HRESULT _stdcall LocationURL([out, retval] BSTR* LocationURL);
+        [id(0x000000d4), propget, helpstring("Query to see if something is still in progress.")]
+        HRESULT _stdcall Busy([out, retval] VARIANT_BOOL* pBool);
+    };
+
+    [
+      uuid(EAB22AC2-30C1-11CF-A7EB-0000C05BAE0B),
+      helpstring("Web Browser Control Events (old)"),
+      hidden
+    ]
+    dispinterface DWebBrowserEvents {
+        properties:
+        methods:
+            [id(0x00000064), helpstring("Fired when a new hyperlink is being navigated to.")]
+            void BeforeNavigate(
+                            [in] BSTR URL, 
+                            long Flags, 
+                            BSTR TargetFrameName, 
+                            VARIANT* PostData, 
+                            BSTR Headers, 
+                            [in, out] VARIANT_BOOL* Cancel);
+            [id(0x00000065), helpstring("Fired when the document being navigated to becomes visible and enters the navigation stack.")]
+            void NavigateComplete([in] BSTR URL);
+            [id(0x00000066), helpstring("Statusbar text changed.")]
+            void StatusTextChange([in] BSTR Text);
+            [id(0x0000006c), helpstring("Fired when download progress is updated.")]
+            void ProgressChange(
+                            [in] long Progress, 
+                            [in] long ProgressMax);
+            [id(0x00000068), helpstring("Download of page complete.")]
+            void DownloadComplete();
+            [id(0x00000069), helpstring("The enabled state of a command changed")]
+            void CommandStateChange(
+                            [in] long Command, 
+                            [in] VARIANT_BOOL Enable);
+            [id(0x0000006a), helpstring("Download of a page started.")]
+            void DownloadBegin();
+            [id(0x0000006b), helpstring("Fired when a new window should be created.")]
+            void NewWindow(
+                            [in] BSTR URL, 
+                            [in] long Flags, 
+                            [in] BSTR TargetFrameName, 
+                            [in] VARIANT* PostData, 
+                            [in] BSTR Headers, 
+                            [in, out] VARIANT_BOOL* Processed);
+            [id(0x00000071), helpstring("Document title changed.")]
+            void TitleChange([in] BSTR Text);
+            [id(0x000000c8), helpstring("Fired when a new hyperlink is being navigated to in a frame.")]
+            void FrameBeforeNavigate(
+                            [in] BSTR URL, 
+                            long Flags, 
+                            BSTR TargetFrameName, 
+                            VARIANT* PostData, 
+                            BSTR Headers, 
+                            [in, out] VARIANT_BOOL* Cancel);
+            [id(0x000000c9), helpstring("Fired when a new hyperlink is being navigated to in a frame.")]
+            void FrameNavigateComplete([in] BSTR URL);
+            [id(0x000000cc), helpstring("Fired when a new window should be created.")]
+            void FrameNewWindow(
+                            [in] BSTR URL, 
+                            [in] long Flags, 
+                            [in] BSTR TargetFrameName, 
+                            [in] VARIANT* PostData, 
+                            [in] BSTR Headers, 
+                            [in, out] VARIANT_BOOL* Processed);
+            [id(0x00000067), helpstring("Fired when application is quiting.")]
+            void Quit([in, out] VARIANT_BOOL* Cancel);
+            [id(0x0000006d), helpstring("Fired when window has been moved.")]
+            void WindowMove();
+            [id(0x0000006e), helpstring("Fired when window has been sized.")]
+            void WindowResize();
+            [id(0x0000006f), helpstring("Fired when window has been activated.")]
+            void WindowActivate();
+            [id(0x00000070), helpstring("Fired when the PutProperty method has been called.")]
+            void PropertyChange([in] BSTR Property);
+    };
+
+    typedef [uuid(34A226E0-DF30-11CF-89A9-00A0C9054129), helpstring("Constants for WebBrowser CommandStateChange")]
+    enum {
+        CSC_UPDATECOMMANDS = -1,
+        CSC_NAVIGATEFORWARD = 1,
+        CSC_NAVIGATEBACK = 2
+    } CommandStateChangeConstants;
+
+    [
+      odl,
+      uuid(0002DF05-0000-0000-C000-000000000046),
+      helpstring("Web Browser Application Interface."),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface IWebBrowserApp : IWebBrowser {
+        [id(0x0000012c), helpstring("Exits application and closes the open document.")]
+        HRESULT _stdcall Quit();
+        [id(0x0000012d), helpstring("Converts client sizes into window sizes.")]
+        HRESULT _stdcall ClientToWindow(
+                        [in, out] int* pcx, 
+                        [in, out] int* pcy);
+        [id(0x0000012e), helpstring("Associates vtValue with the name szProperty in the context of the object.")]
+        HRESULT _stdcall PutProperty(
+                        [in] BSTR Property, 
+                        [in] VARIANT vtValue);
+        [id(0x0000012f), helpstring("Retrieve the Associated value for the property vtValue in the context of the object.")]
+        HRESULT _stdcall GetProperty(
+                        [in] BSTR Property, 
+                        [out, retval] VARIANT* pvtValue);
+        [id(00000000), propget, helpstring("Returns name of the application.")]
+        HRESULT _stdcall Name([out, retval] BSTR* Name);
+        [id(0xfffffdfd), propget, helpstring("Returns the HWND of the current IE window.")]
+        HRESULT _stdcall HWND([out, retval] long* pHWND);
+        [id(0x00000190), propget, helpstring("Returns file specification of the application, including path.")]
+        HRESULT _stdcall FullName([out, retval] BSTR* FullName);
+        [id(0x00000191), propget, helpstring("Returns the path to the application.")]
+        HRESULT _stdcall Path([out, retval] BSTR* Path);
+        [id(0x00000192), propget, helpstring("Determines whether the application is visible or hidden.")]
+        HRESULT _stdcall Visible([out, retval] VARIANT_BOOL* pBool);
+        [id(0x00000192), propput, helpstring("Determines whether the application is visible or hidden.")]
+        HRESULT _stdcall Visible([in] VARIANT_BOOL pBool);
+        [id(0x00000193), propget, helpstring("Turn on or off the statusbar.")]
+        HRESULT _stdcall StatusBar([out, retval] VARIANT_BOOL* pBool);
+        [id(0x00000193), propput, helpstring("Turn on or off the statusbar.")]
+        HRESULT _stdcall StatusBar([in] VARIANT_BOOL pBool);
+        [id(0x00000194), propget, helpstring("Text of Status window.")]
+        HRESULT _stdcall StatusText([out, retval] BSTR* StatusText);
+        [id(0x00000194), propput, helpstring("Text of Status window.")]
+        HRESULT _stdcall StatusText([in] BSTR StatusText);
+        [id(0x00000195), propget, helpstring("Controls which toolbar is shown.")]
+        HRESULT _stdcall ToolBar([out, retval] int* Value);
+        [id(0x00000195), propput, helpstring("Controls which toolbar is shown.")]
+        HRESULT _stdcall ToolBar([in] int Value);
+        [id(0x00000196), propget, helpstring("Controls whether menubar is shown.")]
+        HRESULT _stdcall MenuBar([out, retval] VARIANT_BOOL* Value);
+        [id(0x00000196), propput, helpstring("Controls whether menubar is shown.")]
+        HRESULT _stdcall MenuBar([in] VARIANT_BOOL Value);
+        [id(0x00000197), propget, helpstring("Maximizes window and turns off statusbar, toolbar, menubar, and titlebar.")]
+        HRESULT _stdcall FullScreen([out, retval] VARIANT_BOOL* pbFullScreen);
+        [id(0x00000197), propput, helpstring("Maximizes window and turns off statusbar, toolbar, menubar, and titlebar.")]
+        HRESULT _stdcall FullScreen([in] VARIANT_BOOL pbFullScreen);
+    };
+
+    [
+      odl,
+      uuid(D30C1661-CDAF-11D0-8A3E-00C04FC9E26E),
+      helpstring("Web Browser Interface for IE4."),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface IWebBrowser2 : IWebBrowserApp {
+        [id(0x000001f4), helpstring("Navigates to a URL or file or pidl.")]
+        HRESULT _stdcall Navigate2(
+                        [in] VARIANT* URL, 
+                        [in, optional] VARIANT* Flags, 
+                        [in, optional] VARIANT* TargetFrameName, 
+                        [in, optional] VARIANT* PostData, 
+                        [in, optional] VARIANT* Headers);
+        [id(0x000001f5), helpstring("IOleCommandTarget::QueryStatus")]
+        HRESULT _stdcall QueryStatusWB(
+                        [in] OLECMDID cmdID, 
+                        [out, retval] OLECMDF* pcmdf);
+        [id(0x000001f6), helpstring("IOleCommandTarget::Exec")]
+        HRESULT _stdcall ExecWB(
+                        [in] OLECMDID cmdID, 
+                        [in] OLECMDEXECOPT cmdexecopt, 
+                        [in, optional] VARIANT* pvaIn, 
+                        [in, out, optional] VARIANT* pvaOut);
+        [id(0x000001f7), helpstring("Set BrowserBar to Clsid")]
+        HRESULT _stdcall ShowBrowserBar(
+                        [in] VARIANT* pvaClsid, 
+                        [in, optional] VARIANT* pvarShow, 
+                        [in, optional] VARIANT* pvarSize);
+        [id(0xfffffdf3), propget, bindable]
+        HRESULT _stdcall ReadyState([out, retval] tagREADYSTATE* plReadyState);
+        [id(0x00000226), propget, helpstring("Controls if the frame is offline (read from cache)")]
+        HRESULT _stdcall Offline([out, retval] VARIANT_BOOL* pbOffline);
+        [id(0x00000226), propput, helpstring("Controls if the frame is offline (read from cache)")]
+        HRESULT _stdcall Offline([in] VARIANT_BOOL pbOffline);
+        [id(0x00000227), propget, helpstring("Controls if any dialog boxes can be shown")]
+        HRESULT _stdcall Silent([out, retval] VARIANT_BOOL* pbSilent);
+        [id(0x00000227), propput, helpstring("Controls if any dialog boxes can be shown")]
+        HRESULT _stdcall Silent([in] VARIANT_BOOL pbSilent);
+        [id(0x00000228), propget, helpstring("Registers OC as a top-level browser (for target name resolution)")]
+        HRESULT _stdcall RegisterAsBrowser([out, retval] VARIANT_BOOL* pbRegister);
+        [id(0x00000228), propput, helpstring("Registers OC as a top-level browser (for target name resolution)")]
+        HRESULT _stdcall RegisterAsBrowser([in] VARIANT_BOOL pbRegister);
+        [id(0x00000229), propget, helpstring("Registers OC as a drop target for navigation")]
+        HRESULT _stdcall RegisterAsDropTarget([out, retval] VARIANT_BOOL* pbRegister);
+        [id(0x00000229), propput, helpstring("Registers OC as a drop target for navigation")]
+        HRESULT _stdcall RegisterAsDropTarget([in] VARIANT_BOOL pbRegister);
+        [id(0x0000022a), propget, helpstring("Controls if the browser is in theater mode")]
+        HRESULT _stdcall TheaterMode([out, retval] VARIANT_BOOL* pbRegister);
+        [id(0x0000022a), propput, helpstring("Controls if the browser is in theater mode")]
+        HRESULT _stdcall TheaterMode([in] VARIANT_BOOL pbRegister);
+        [id(0x0000022b), propget, helpstring("Controls whether address bar is shown")]
+        HRESULT _stdcall AddressBar([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000022b), propput, helpstring("Controls whether address bar is shown")]
+        HRESULT _stdcall AddressBar([in] VARIANT_BOOL Value);
+        [id(0x0000022c), propget, helpstring("Controls whether the window is resizable")]
+        HRESULT _stdcall Resizable([out, retval] VARIANT_BOOL* Value);
+        [id(0x0000022c), propput, helpstring("Controls whether the window is resizable")]
+        HRESULT _stdcall Resizable([in] VARIANT_BOOL Value);
+    };
+
+    typedef enum {
+        OLECMDID_OPEN = 1,
+        OLECMDID_NEW = 2,
+        OLECMDID_SAVE = 3,
+        OLECMDID_SAVEAS = 4,
+        OLECMDID_SAVECOPYAS = 5,
+        OLECMDID_PRINT = 6,
+        OLECMDID_PRINTPREVIEW = 7,
+        OLECMDID_PAGESETUP = 8,
+        OLECMDID_SPELL = 9,
+        OLECMDID_PROPERTIES = 10,
+        OLECMDID_CUT = 11,
+        OLECMDID_COPY = 12,
+        OLECMDID_PASTE = 13,
+        OLECMDID_PASTESPECIAL = 14,
+        OLECMDID_UNDO = 15,
+        OLECMDID_REDO = 16,
+        OLECMDID_SELECTALL = 17,
+        OLECMDID_CLEARSELECTION = 18,
+        OLECMDID_ZOOM = 19,
+        OLECMDID_GETZOOMRANGE = 20,
+        OLECMDID_UPDATECOMMANDS = 21,
+        OLECMDID_REFRESH = 22,
+        OLECMDID_STOP = 23,
+        OLECMDID_HIDETOOLBARS = 24,
+        OLECMDID_SETPROGRESSMAX = 25,
+        OLECMDID_SETPROGRESSPOS = 26,
+        OLECMDID_SETPROGRESSTEXT = 27,
+        OLECMDID_SETTITLE = 28,
+        OLECMDID_SETDOWNLOADSTATE = 29,
+        OLECMDID_STOPDOWNLOAD = 30,
+        OLECMDID_ONTOOLBARACTIVATED = 31,
+        OLECMDID_FIND = 32,
+        OLECMDID_DELETE = 33,
+        OLECMDID_HTTPEQUIV = 34,
+        OLECMDID_HTTPEQUIV_DONE = 35,
+        OLECMDID_ENABLE_INTERACTION = 36,
+        OLECMDID_ONUNLOAD = 37,
+        OLECMDID_PROPERTYBAG2 = 38,
+        OLECMDID_PREREFRESH = 39
+    } OLECMDID;
+
+    typedef enum {
+        OLECMDF_SUPPORTED = 1,
+        OLECMDF_ENABLED = 2,
+        OLECMDF_LATCHED = 4,
+        OLECMDF_NINCHED = 8
+    } OLECMDF;
+
+    typedef enum {
+        OLECMDEXECOPT_DODEFAULT = 0,
+        OLECMDEXECOPT_PROMPTUSER = 1,
+        OLECMDEXECOPT_DONTPROMPTUSER = 2,
+        OLECMDEXECOPT_SHOWHELP = 3
+    } OLECMDEXECOPT;
+
+    typedef enum {
+        READYSTATE_UNINITIALIZED = 0,
+        READYSTATE_LOADING = 1,
+        READYSTATE_LOADED = 2,
+        READYSTATE_INTERACTIVE = 3,
+        READYSTATE_COMPLETE = 4
+    } tagREADYSTATE;
+
+    [
+      uuid(34A715A0-6587-11D0-924A-0020AFC7AC4D),
+      helpstring("Web Browser Control events interface"),
+      hidden
+    ]
+    dispinterface DWebBrowserEvents2 {
+        properties:
+        methods:
+            [id(0x00000066), helpstring("Statusbar text changed.")]
+            void StatusTextChange([in] BSTR Text);
+            [id(0x0000006c), helpstring("Fired when download progress is updated.")]
+            void ProgressChange(
+                            [in] long Progress, 
+                            [in] long ProgressMax);
+            [id(0x00000069), helpstring("The enabled state of a command changed.")]
+            void CommandStateChange(
+                            [in] long Command, 
+                            [in] VARIANT_BOOL Enable);
+            [id(0x0000006a), helpstring("Download of a page started.")]
+            void DownloadBegin();
+            [id(0x00000068), helpstring("Download of page complete.")]
+            void DownloadComplete();
+            [id(0x00000071), helpstring("Document title changed.")]
+            void TitleChange([in] BSTR Text);
+            [id(0x00000070), helpstring("Fired when the PutProperty method has been called.")]
+            void PropertyChange([in] BSTR szProperty);
+            [id(0x000000fa), helpstring("Fired before navigate occurs in the given WebBrowser (window or frameset element). The processing of this navigation may be modified.")]
+            void BeforeNavigate2(
+                            [in] IDispatch* pDisp, 
+                            [in] VARIANT* URL, 
+                            [in] VARIANT* Flags, 
+                            [in] VARIANT* TargetFrameName, 
+                            [in] VARIANT* PostData, 
+                            [in] VARIANT* Headers, 
+                            [in, out] VARIANT_BOOL* Cancel);
+            [id(0x000000fb), helpstring("A new, hidden, non-navigated WebBrowser window is needed.")]
+            void NewWindow2(
+                            [in, out] IDispatch** ppDisp, 
+                            [in, out] VARIANT_BOOL* Cancel);
+            [id(0x000000fc), helpstring("Fired when the document being navigated to becomes visible and enters the navigation stack.")]
+            void NavigateComplete2(
+                            [in] IDispatch* pDisp, 
+                            [in] VARIANT* URL);
+            [id(0x00000103), helpstring("Fired when the document being navigated to reaches ReadyState_Complete.")]
+            void DocumentComplete(
+                            [in] IDispatch* pDisp, 
+                            [in] VARIANT* URL);
+            [id(0x000000fd), helpstring("Fired when application is quiting.")]
+            void OnQuit();
+            [id(0x000000fe), helpstring("Fired when the window should be shown/hidden")]
+            void OnVisible([in] VARIANT_BOOL Visible);
+            [id(0x000000ff), helpstring("Fired when the toolbar  should be shown/hidden")]
+            void OnToolBar([in] VARIANT_BOOL ToolBar);
+            [id(0x00000100), helpstring("Fired when the menubar should be shown/hidden")]
+            void OnMenuBar([in] VARIANT_BOOL MenuBar);
+            [id(0x00000101), helpstring("Fired when the statusbar should be shown/hidden")]
+            void OnStatusBar([in] VARIANT_BOOL StatusBar);
+            [id(0x00000102), helpstring("Fired when fullscreen mode should be on/off")]
+            void OnFullScreen([in] VARIANT_BOOL FullScreen);
+            [id(0x00000104), helpstring("Fired when theater mode should be on/off")]
+            void OnTheaterMode([in] VARIANT_BOOL TheaterMode);
+    };
+
+    [
+      uuid(EAB22AC3-30C1-11CF-A7EB-0000C05BAE0B),
+      helpstring("WebBrowser Control"),
+      control
+    ]
+    coclass WebBrowser_V1 {
+        interface IWebBrowser2;
+        [default] interface IWebBrowser;
+        [source] dispinterface DWebBrowserEvents2;
+        [default, source] dispinterface DWebBrowserEvents;
+    };
+
+    [
+      uuid(8856F961-340A-11D0-A96B-00C04FD705A2),
+      helpstring("WebBrowser Control"),
+      control
+    ]
+    coclass WebBrowser {
+        [default] interface IWebBrowser2;
+        interface IWebBrowser;
+        [default, source] dispinterface DWebBrowserEvents2;
+        [source] dispinterface DWebBrowserEvents;
+    };
+
+    [
+      uuid(0002DF01-0000-0000-C000-000000000046),
+      helpstring("Internet Explorer Application.")
+    ]
+    coclass InternetExplorer {
+        [default] interface IWebBrowser2;
+        interface IWebBrowserApp;
+        [default, source] dispinterface DWebBrowserEvents2;
+        [source] dispinterface DWebBrowserEvents;
+    };
+
+    [
+      odl,
+      uuid(9BA05970-F6A8-11CF-A442-00A0C90A8F39),
+      helpstring("Folder View Events Forwarder Object"),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface IFolderViewOC : IDispatch {
+        [id(0x60020000), helpstring("Set the ShellFolderView object to monitor events of.")]
+        HRESULT _stdcall SetFolderView([in] IDispatch* pDisp);
+    };
+
+    [
+      uuid(62112AA2-EBE4-11CF-A5FB-0020AFE7292D),
+      helpstring("Event interface for ShellFolderView")
+    ]
+    dispinterface DShellFolderViewEvents {
+        properties:
+        methods:
+            [id(0x000000c8), helpstring("The Selection in the view changed.")]
+            void SelectionChanged();
+    };
+
+    [
+      uuid(9BA05971-F6A8-11CF-A442-00A0C90A8F39),
+      helpstring("Shell Folder View Events Router."),
+      hidden
+    ]
+    coclass ShellFolderViewOC {
+        [default] interface IFolderViewOC;
+        [default, source] dispinterface DShellFolderViewEvents;
+    };
+
+    typedef [uuid(F41E6981-28E5-11D0-82B4-00A0C90C29C5), helpstring("Constants for ShellWindows registration")]
+    enum {
+        SWC_EXPLORER = 0,
+        SWC_BROWSER = 1,
+        SWC_3RDPARTY = 2,
+        SWC_CALLBACK = 4
+    } ShellWindowTypeConstants;
+
+    typedef [uuid(7716A370-38CA-11D0-A48B-00A0C90A8F39), helpstring("Options for ShellWindows FindWindow")]
+    enum {
+        SWFO_NEEDDISPATCH = 1,
+        SWFO_INCLUDEPENDING = 2,
+        SWFO_COOKIEPASSED = 4
+    } ShellWindowFindWindowOptions;
+
+    [
+      uuid(FE4106E0-399A-11D0-A48C-00A0C90A8F39),
+      helpstring("Event interface for IShellWindows")
+    ]
+    dispinterface DShellWindowsEvents {
+        properties:
+        methods:
+            [id(0x000000c8), helpstring("A new window was registered.")]
+            void WindowRegistered([in] long lCookie);
+            [id(0x000000c9), helpstring("A new window was revoked.")]
+            void WindowRevoked([in] long lCookie);
+    };
+
+    [
+      odl,
+      uuid(85CB6900-4D95-11CF-960C-0080C7F4EE85),
+      helpstring("Definition of interface IShellWindows"),
+      dual,
+      oleautomation
+    ]
+    interface IShellWindows : IDispatch {
+        [id(0x60020000), propget, helpstring("Get count of open Shell windows")]
+        HRESULT _stdcall Count([out, retval] long* Count);
+        [id(00000000), helpstring("Return the shell window for the given index")]
+        HRESULT _stdcall Item(
+                        [in, optional] VARIANT index, 
+                        [out, retval] IDispatch** Folder);
+        [id(0xfffffffc), helpstring("Enumerates the figures")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** ppunk);
+        [id(0x60020003), hidden, helpstring("Register a window with the list")]
+        HRESULT _stdcall Register(
+                        [in] IDispatch* pid, 
+                        [in] long HWND, 
+                        [in] int swClass, 
+                        [out] long* plCookie);
+        [id(0x60020004), hidden, helpstring("Register a pending open with the list")]
+        HRESULT _stdcall RegisterPending(
+                        [in] long lThreadId, 
+                        [in] VARIANT* pvarloc, 
+                        [in] VARIANT* pvarlocRoot, 
+                        [in] int swClass, 
+                        [out] long* plCookie);
+        [id(0x60020005), hidden, helpstring("Remove a window from the list")]
+        HRESULT _stdcall Revoke([in] long lCookie);
+        [id(0x60020006), hidden, helpstring("Notifies the new location")]
+        HRESULT _stdcall OnNavigate(
+                        [in] long lCookie, 
+                        [in] VARIANT* pvarloc);
+        [id(0x60020007), hidden, helpstring("Notifies the activation")]
+        HRESULT _stdcall OnActivated(
+                        [in] long lCookie, 
+                        [in] VARIANT_BOOL fActive);
+        [id(0x60020008), hidden, helpstring("Find the window based on the location")]
+        HRESULT _stdcall FindWindow(
+                        [in] VARIANT* pvarloc, 
+                        [in] VARIANT* pvarlocRoot, 
+                        [in] int swClass, 
+                        [out] long* pHWND, 
+                        [in] int swfwOptions, 
+                        [out, retval] IDispatch** ppdispOut);
+        [id(0x60020009), hidden, helpstring("Notifies on creation and frame name set")]
+        HRESULT _stdcall OnCreated(
+                        [in] long lCookie, 
+                        [in] IUnknown* punk);
+        [id(0x6002000a), hidden, helpstring("Used by IExplore to register different processes")]
+        HRESULT _stdcall ProcessAttachDetach([in] VARIANT_BOOL fAttach);
+    };
+
+    [
+      uuid(9BA05972-F6A8-11CF-A442-00A0C90A8F39),
+      helpstring("ShellDispatch Load in Shell Context")
+    ]
+    coclass ShellWindows {
+        [default] interface IShellWindows;
+        [default, source] dispinterface DShellWindowsEvents;
+    };
+
+    [
+      odl,
+      uuid(88A05C00-F000-11CE-8350-444553540000),
+      helpstring("Definition of Shell Link IDispatch interface"),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface IShellLinkDual : IDispatch {
+        [id(0x60020000), propget, helpstring("Get the path of the link")]
+        HRESULT _stdcall Path([out, retval] BSTR* pbs);
+        [id(0x60020000), propput, helpstring("Get the path of the link")]
+        HRESULT _stdcall Path([in] BSTR pbs);
+        [id(0x60020002), propget, helpstring("Get the description for the link")]
+        HRESULT _stdcall Description([out, retval] BSTR* pbs);
+        [id(0x60020002), propput, helpstring("Get the description for the link")]
+        HRESULT _stdcall Description([in] BSTR pbs);
+        [id(0x60020004), propget, helpstring("Get the working directory for the link")]
+        HRESULT _stdcall WorkingDirectory([out, retval] BSTR* pbs);
+        [id(0x60020004), propput, helpstring("Get the working directory for the link")]
+        HRESULT _stdcall WorkingDirectory([in] BSTR pbs);
+        [id(0x60020006), propget, helpstring("Get the arguments for the link")]
+        HRESULT _stdcall Arguments([out, retval] BSTR* pbs);
+        [id(0x60020006), propput, helpstring("Get the arguments for the link")]
+        HRESULT _stdcall Arguments([in] BSTR pbs);
+        [id(0x60020008), propget, helpstring("Get the Hotkey for the link")]
+        HRESULT _stdcall Hotkey([out, retval] int* piHK);
+        [id(0x60020008), propput, helpstring("Get the Hotkey for the link")]
+        HRESULT _stdcall Hotkey([in] int piHK);
+        [id(0x6002000a), propget, helpstring("Get the Show Command for the link")]
+        HRESULT _stdcall ShowCommand([out, retval] int* piShowCommand);
+        [id(0x6002000a), propput, helpstring("Get the Show Command for the link")]
+        HRESULT _stdcall ShowCommand([in] int piShowCommand);
+        [id(0x6002000c), helpstring("Tell the link to resolve itself")]
+        HRESULT _stdcall Resolve([in] int fFlags);
+        [id(0x6002000d), helpstring("Get the IconLocation for the link")]
+        HRESULT _stdcall GetIconLocation(
+                        [out] BSTR* pbs, 
+                        [out, retval] int* piIcon);
+        [id(0x6002000e), helpstring("Set the IconLocation for the link")]
+        HRESULT _stdcall SetIconLocation(
+                        [in] BSTR bs, 
+                        [in] int iIcon);
+        [id(0x6002000f), helpstring("Tell the link to save the changes")]
+        HRESULT _stdcall Save([in, optional] VARIANT vWhere);
+    };
+
+    [
+      uuid(11219420-1768-11D1-95BE-00609797EA4F),
+      helpstring("Shell Link object")
+    ]
+    coclass ShellLinkObject {
+        [default] interface IShellLinkDual;
+    };
+
+    [
+      odl,
+      uuid(08EC3E00-50B0-11CF-960C-0080C7F4EE85),
+      helpstring("Definition of interface FolderItemVerb"),
+      dual,
+      oleautomation
+    ]
+    interface FolderItemVerb : IDispatch {
+        [id(0x60020000), propget, helpstring("Get Application object")]
+        HRESULT _stdcall Application([out, retval] IDispatch** ppid);
+        [id(0x60020001), propget, helpstring("Get Parent object")]
+        HRESULT _stdcall Parent([out, retval] IDispatch** ppid);
+        [id(00000000), propget, helpstring("Get display name for item")]
+        HRESULT _stdcall Name([out, retval] BSTR* pbs);
+        [id(0x60020003), helpstring("Execute the verb")]
+        HRESULT _stdcall DoIt();
+    };
+
+    [
+      odl,
+      uuid(1F8352C0-50B0-11CF-960C-0080C7F4EE85),
+      helpstring("Definition of interface FolderItemVerbs"),
+      dual,
+      oleautomation
+    ]
+    interface FolderItemVerbs : IDispatch {
+        [id(0x60020000), propget, helpstring("Get count of open folder windows")]
+        HRESULT _stdcall Count([out, retval] long* plCount);
+        [id(0x60020001), propget, helpstring("Get Application object")]
+        HRESULT _stdcall Application([out, retval] IDispatch** ppid);
+        [id(0x60020002), propget, helpstring("Get Parent object")]
+        HRESULT _stdcall Parent([out, retval] IDispatch** ppid);
+        [id(0x60020003), helpstring("Return the specified verb")]
+        HRESULT _stdcall Item(
+                        [in, optional] VARIANT index, 
+                        [out, retval] FolderItemVerb** ppid);
+        [id(0xfffffffc), helpstring("Enumerates the figures")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** ppunk);
+    };
+
+    [
+      odl,
+      uuid(BBCBDE60-C3FF-11CE-8350-444553540000),
+      helpstring("Definition of interface Folder"),
+      dual,
+      oleautomation
+    ]
+    interface Folder : IDispatch {
+        [id(00000000), propget, helpstring("Get the display name for the window")]
+        HRESULT _stdcall Title([out, retval] BSTR* pbs);
+        [id(0x60020001), propget, helpstring("Get Application object")]
+        HRESULT _stdcall Application([out, retval] IDispatch** ppid);
+        [id(0x60020002), propget, helpstring("Get Parent object")]
+        HRESULT _stdcall Parent([out, retval] IDispatch** ppid);
+        [id(0x60020003), propget, helpstring("Get Parent object")]
+        HRESULT _stdcall ParentFolder([out, retval] Folder** ppsf);
+        [id(0x60020004), helpstring("The collection of Items in folder")]
+        HRESULT _stdcall Items([out, retval] FolderItems** ppid);
+        [id(0x60020005), helpstring("Parse the name to get an item.")]
+        HRESULT _stdcall ParseName(
+                        [in] BSTR bName, 
+                        [out, retval] FolderItem** ppid);
+        [id(0x60020006), helpstring("Create a new sub folder in this folder.")]
+        HRESULT _stdcall NewFolder(
+                        [in] BSTR bName, 
+                        [in, optional] VARIANT vOptions);
+        [id(0x60020007), helpstring("Move Items to this folder.")]
+        HRESULT _stdcall MoveHere(
+                        [in] VARIANT vItem, 
+                        [in, optional] VARIANT vOptions);
+        [id(0x60020008), helpstring("Copy Items to this folder.")]
+        HRESULT _stdcall CopyHere(
+                        [in] VARIANT vItem, 
+                        [in, optional] VARIANT vOptions);
+        [id(0x60020009), helpstring("Get the details about an item.")]
+        HRESULT _stdcall GetDetailsOf(
+                        [in] VARIANT vItem, 
+                        [in] int iColumn, 
+                        [out, retval] BSTR* pbs);
+    };
+
+    [
+      odl,
+      uuid(744129E0-CBE5-11CE-8350-444553540000),
+      helpstring("Definition of interface FolderItems"),
+      dual,
+      oleautomation
+    ]
+    interface FolderItems : IDispatch {
+        [id(0x60020000), propget, helpstring("Get count of items in the folder")]
+        HRESULT _stdcall Count([out, retval] long* plCount);
+        [id(0x60020001), propget, helpstring("Get Application object")]
+        HRESULT _stdcall Application([out, retval] IDispatch** ppid);
+        [id(0x60020002), propget, helpstring("Get Parent object")]
+        HRESULT _stdcall Parent([out, retval] IDispatch** ppid);
+        [id(0x60020003), helpstring("Return the figure for the given index")]
+        HRESULT _stdcall Item(
+                        [in, optional] VARIANT index, 
+                        [out, retval] FolderItem** ppid);
+        [id(0xfffffffc), helpstring("Enumerates the figures")]
+        HRESULT _stdcall _NewEnum([out, retval] IUnknown** ppunk);
+    };
+
+    [
+      odl,
+      uuid(FAC32C80-CBE4-11CE-8350-444553540000),
+      helpstring("Definition of interface FolderItem"),
+      dual,
+      oleautomation
+    ]
+    interface FolderItem : IDispatch {
+        [id(0x60020000), propget, helpstring("Get Application object")]
+        HRESULT _stdcall Application([out, retval] IDispatch** ppid);
+        [id(0x60020001), propget, helpstring("Get Parent object")]
+        HRESULT _stdcall Parent([out, retval] IDispatch** ppid);
+        [id(00000000), propget, helpstring("Get display name for item")]
+        HRESULT _stdcall Name([out, retval] BSTR* pbs);
+        [id(00000000), propput, helpstring("Get display name for item")]
+        HRESULT _stdcall Name([in] BSTR pbs);
+        [id(0x60020004), propget, helpstring("Get the pathname to the item")]
+        HRESULT _stdcall Path([out, retval] BSTR* pbs);
+        [id(0x60020005), propget, helpstring("If item is link return link object")]
+        HRESULT _stdcall GetLink([out, retval] IDispatch** ppid);
+        [id(0x60020006), propget, helpstring("If item is a folder return folder object")]
+        HRESULT _stdcall GetFolder([out, retval] IDispatch** ppid);
+        [id(0x60020007), propget, helpstring("Is the item a link?")]
+        HRESULT _stdcall IsLink([out, retval] VARIANT_BOOL* pb);
+        [id(0x60020008), propget, helpstring("Is the item a Folder?")]
+        HRESULT _stdcall IsFolder([out, retval] VARIANT_BOOL* pb);
+        [id(0x60020009), propget, helpstring("Is the item a file system object?")]
+        HRESULT _stdcall IsFileSystem([out, retval] VARIANT_BOOL* pb);
+        [id(0x6002000a), propget, helpstring("Is the item browsable?")]
+        HRESULT _stdcall IsBrowsable([out, retval] VARIANT_BOOL* pb);
+        [id(0x6002000b), propget, helpstring("Modification Date?")]
+        HRESULT _stdcall ModifyDate([out, retval] DATE* pdt);
+        [id(0x6002000b), propput, helpstring("Modification Date?")]
+        HRESULT _stdcall ModifyDate([in] DATE pdt);
+        [id(0x6002000d), propget, helpstring("Size")]
+        HRESULT _stdcall Size([out, retval] long* pul);
+        [id(0x6002000e), propget, helpstring("Type")]
+        HRESULT _stdcall Type([out, retval] BSTR* pbs);
+        [id(0x6002000f), helpstring("Get the list of verbs for the object")]
+        HRESULT _stdcall Verbs([out, retval] FolderItemVerbs** ppfic);
+        [id(0x60020010), helpstring("Execute a command on the item")]
+        HRESULT _stdcall InvokeVerb([in, optional] VARIANT vVerb);
+    };
+
+    [
+      odl,
+      uuid(E7A1AF80-4D96-11CF-960C-0080C7F4EE85),
+      helpstring("definition of interface IShellFolderViewDual"),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface IShellFolderViewDual : IDispatch {
+        [id(0x60020000), propget, helpstring("Get Application object")]
+        HRESULT _stdcall Application([out, retval] IDispatch** ppid);
+        [id(0x60020001), propget, helpstring("Get Parent object")]
+        HRESULT _stdcall Parent([out, retval] IDispatch** ppid);
+        [id(0x60020002), propget, helpstring("Get the folder being viewed")]
+        HRESULT _stdcall Folder([out, retval] Folder** ppid);
+        [id(0x60020003), helpstring("The collection of Selected Items in folder")]
+        HRESULT _stdcall SelectedItems([out, retval] FolderItems** ppid);
+        [id(0x60020004), propget, helpstring("The currently focused item in the folder")]
+        HRESULT _stdcall FocusedItem([out, retval] FolderItem** ppid);
+        [id(0x60020005), helpstring("Select the item")]
+        HRESULT _stdcall SelectItem(
+                        [in] VARIANT* pvfi, 
+                        [in] int dwFlags);
+        [id(0x60020006), helpstring("Show items menu and return command selected")]
+        HRESULT _stdcall PopupItemMenu(
+                        [in] FolderItem* pfi, 
+                        [in, optional] VARIANT vx, 
+                        [in, optional] VARIANT vy, 
+                        [out, retval] BSTR* pbs);
+        [id(0x60020007), propget, helpstring("Returns the scripting automation model.")]
+        HRESULT _stdcall Script([out, retval] IDispatch** ppDisp);
+        [id(0x60020008), propget, helpstring("Returns the view options for showing a folder.")]
+        HRESULT _stdcall ViewOptions([out, retval] long* plViewOptions);
+    };
+
+    [
+      uuid(62112AA1-EBE4-11CF-A5FB-0020AFE7292D),
+      helpstring("Shell Folder View Object")
+    ]
+    coclass ShellFolderView {
+        [default] interface IShellFolderViewDual;
+        [default, source] dispinterface DShellFolderViewEvents;
+    };
+
+    typedef [uuid(742A99A0-C77E-11D0-A32C-00A0C91EEDBA), helpstring("Constants for ViewOptions")]
+    enum {
+        SFVVO_SHOWALLOBJECTS = 1,
+        SFVVO_SHOWEXTENSIONS = 2,
+        SFVVO_SHOWCOMPCOLOR = 8,
+        SFVVO_SHOWSYSFILES = 32,
+        SFVVO_WIN95CLASSIC = 64,
+        SFVVO_DOUBLECLICKINWEBVIEW = 128,
+        SFVVO_DESKTOPHTML = 512
+    } ShellFolderViewOptions;
+
+    [
+      odl,
+      uuid(D8F015C0-C278-11CE-A49E-444553540000),
+      helpstring("Definition of interface IShellDispatch"),
+      hidden,
+      dual,
+      oleautomation
+    ]
+    interface IShellDispatch : IDispatch {
+        [id(0x60020000), propget, helpstring("Get Application object")]
+        HRESULT _stdcall Application([out, retval] IDispatch** ppid);
+        [id(0x60020001), propget, helpstring("Get Parent object")]
+        HRESULT _stdcall Parent([out, retval] IDispatch** ppid);
+        [id(0x60020002), helpstring("Enum the contents of a folder")]
+        HRESULT _stdcall NameSpace(
+                        [in] VARIANT vDir, 
+                        [out, retval] Folder** ppsdf);
+        [id(0x60020003), helpstring("Browse the name space for a Folder")]
+        HRESULT _stdcall BrowseForFolder(
+                        [in] long HWND, 
+                        [in] BSTR Title, 
+                        [in] long Options, 
+                        [in, optional] VARIANT RootFolder, 
+                        [out, retval] Folder** ppsdf);
+        [id(0x60020004), helpstring("The collection of open folder windows")]
+        HRESULT _stdcall Windows([out, retval] IDispatch** ppid);
+        [id(0x60020005), helpstring("Open a folder")]
+        HRESULT _stdcall Open([in] VARIANT vDir);
+        [id(0x60020006), helpstring("Explore a folder")]
+        HRESULT _stdcall Explore([in] VARIANT vDir);
+        [id(0x60020007), helpstring("Minimize all windows")]
+        HRESULT _stdcall MinimizeAll();
+        [id(0x60020008), helpstring("Undo Minimize All")]
+        HRESULT _stdcall UndoMinimizeALL();
+        [id(0x60020009), helpstring("Bring up the file run")]
+        HRESULT _stdcall FileRun();
+        [id(0x6002000a), helpstring("Cascade Windows")]
+        HRESULT _stdcall CascadeWindows();
+        [id(0x6002000b), helpstring("Tile windows vertically")]
+        HRESULT _stdcall TileVertically();
+        [id(0x6002000c), helpstring("Tile windows horizontally")]
+        HRESULT _stdcall TileHorizontally();
+        [id(0x6002000d), helpstring("Exit Windows")]
+        HRESULT _stdcall ShutdownWindows();
+        [id(0x6002000e), helpstring("Suspend the pc")]
+        HRESULT _stdcall Suspend();
+        [id(0x6002000f), helpstring("Eject the pc")]
+        HRESULT _stdcall EjectPC();
+        [id(0x60020010), helpstring("Bring up the Set time dialog")]
+        HRESULT _stdcall SetTime();
+        [id(0x60020011), helpstring("Handle Tray properties")]
+        HRESULT _stdcall TrayProperties();
+        [id(0x60020012), helpstring("Display shell help")]
+        HRESULT _stdcall Help();
+        [id(0x60020013), helpstring("Find Files")]
+        HRESULT _stdcall FindFiles();
+        [id(0x60020014), helpstring("Find a computer")]
+        HRESULT _stdcall FindComputer();
+        [id(0x60020015), helpstring("Refresh the menu")]
+        HRESULT _stdcall RefreshMenu();
+        [id(0x60020016), helpstring("Run a controlpanelItem")]
+        HRESULT _stdcall ControlPanelItem([in] BSTR szDir);
+    };
+
+    [
+      uuid(13709620-C279-11CE-A49E-444553540000),
+      helpstring("Shell Object Type Information")
+    ]
+    coclass Shell {
+        [default] interface IShellDispatch;
+    };
+
+    [
+      uuid(0A89A860-D7B1-11CE-8350-444553540000),
+      helpstring("ShellDispatch Load in Shell Context"),
+      hidden
+    ]
+    coclass ShellDispatchInproc {
+        [default] interface IUnknown;
+    };
+
+    [
+      uuid(1820FED0-473E-11D0-A96C-00C04FD705A2),
+      hidden
+    ]
+    coclass WebViewFolderContents {
+        [default] interface IShellFolderViewDual;
+        [default, source] dispinterface DShellFolderViewEvents;
+    };
+
+    typedef [uuid(CA31EA20-48D0-11CF-8350-444553540000), helpstring("Constants for Special Folders for open/Explore")]
+    enum {
+        ssfDESKTOP = 0,
+        ssfPROGRAMS = 2,
+        ssfCONTROLS = 3,
+        ssfPRINTERS = 4,
+        ssfPERSONAL = 5,
+        ssfFAVORITES = 6,
+        ssfSTARTUP = 7,
+        ssfRECENT = 8,
+        ssfSENDTO = 9,
+        ssfBITBUCKET = 10,
+        ssfSTARTMENU = 11,
+        ssfDESKTOPDIRECTORY = 16,
+        ssfDRIVES = 17,
+        ssfNETWORK = 18,
+        ssfNETHOOD = 19,
+        ssfFONTS = 20,
+        ssfTEMPLATES = 21
+    } ShellSpecialFolderConstants;
+
+    [
+      odl,
+      uuid(729FE2F8-1EA8-11D1-8F85-00C04FC2FBE1),
+      helpstring("Shell UI Helper Control Interface"),
+      dual,
+      oleautomation
+    ]
+    interface IShellUIHelper : IDispatch {
+        [id(0x00000001), hidden]
+        HRESULT _stdcall ResetFirstBootMode();
+        [id(0x00000002), hidden]
+        HRESULT _stdcall ResetSafeMode();
+        [id(0x00000003), hidden]
+        HRESULT _stdcall RefreshOfflineDesktop();
+        [id(0x00000004)]
+        HRESULT _stdcall AddFavorite(
+                        [in] BSTR URL, 
+                        [in, optional] VARIANT* Title);
+        [id(0x00000005)]
+        HRESULT _stdcall AddChannel([in] BSTR URL);
+        [id(0x00000006)]
+        HRESULT _stdcall AddDesktopComponent(
+                        [in] BSTR URL, 
+                        [in] BSTR Type, 
+                        [in, optional] VARIANT* Left, 
+                        [in, optional] VARIANT* Top, 
+                        [in, optional] VARIANT* Width, 
+                        [in, optional] VARIANT* Height);
+        [id(0x00000007)]
+        HRESULT _stdcall IsSubscribed(
+                        [in] BSTR URL, 
+                        [out, retval] VARIANT_BOOL* pBool);
+    };
+
+    [
+      uuid(64AB4BB7-111E-11D1-8F79-00C04FC2FBE1)
+    ]
+    coclass ShellUIHelper {
+        [default] interface IShellUIHelper;
+    };
+};

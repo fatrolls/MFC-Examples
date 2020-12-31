@@ -1,0 +1,134 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Section - Parse IP addresses</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Parse IP addresses
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:nikolay@jriver.com">Nikolay Sokratov</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="ddx_ipaddress.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>Very often, if you write Internet applications, you need to verify IP address
+user entered and make sure that it's correct. So lets see how we can do that without
+a lot of troubles.<br>
+First of all we need to add declarations of the following function to header file of the
+dialog.
+
+<FONT COLOR="#990000"><TT><PRE>
+#include &lt;winsock.h&gt;
+
+void WINAPI DDX_IPAddress(CDataExchange* pDX, int nIDC, UINT & value);
+</tt></PRE></FONT>
+
+To implement data exchange you need to call DDX_IPAddress function from
+within your dialog DoDataExchange function<BR>
+Now add following code to the implementation file of the dialog, and do not forget
+to include <b>ws2_32.lib</b> into the project or you'll get a lot of linking errors.
+<FONT COLOR="#990000"><TT><PRE>
+// DDX routine fo IP address translation
+void WINAPI DDX_IPAddress(CDataExchange* pDX, int nIDC, UINT & value)
+{
+	// from dialog to class ?
+	if( pDX->m_bSaveAndValidate)
+	{
+		CString Val;
+		BOOL bValid = true;
+
+		pDX->m_pDlgWnd->GetDlgItem(nIDC)->GetWindowText(Val);
+
+		for( int i = 0; i < Val.GetLength(); i++)
+		{
+			// let's check if all entered char in entered
+			// IP address are digits
+			if(Val[i] == '.')
+				continue;
+
+			if(isdigit(Val[i]) == 0)
+			{
+				bValid = false;
+				break;			
+			}
+		}
+
+		if(bValid)
+		{
+			value = inet_addr(Val);
+			if(value == INADDR_NONE)
+			{
+				pDX->m_pDlgWnd->MessageBox("The entered IP address is invalid.");
+				pDX->PrepareEditCtrl(nIDC);
+				pDX->Fail();
+			}
+		}
+		else
+		{
+			pDX->m_pDlgWnd->MessageBox("IP address can only have digits and dots.");
+			pDX->PrepareEditCtrl(nIDC);
+			pDX->Fail();
+		}
+	}
+	else
+	{
+		// if the value is a valid IP address store it in the child control
+		in_addr IPaddress;
+		memcpy(&IPaddress, &value, 4);
+		CString Address = inet_ntoa(IPaddress);
+		if(!Address.IsEmpty())
+		{
+			pDX->m_pDlgWnd->GetDlgItem(nIDC)->SetWindowText(Address);
+		}
+	}	
+}
+</tt></PRE></FONT>
+
+<!-- Remember to update this -->
+<p>Last updated: 14 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

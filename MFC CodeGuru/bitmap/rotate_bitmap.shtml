@@ -1,0 +1,473 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Rotate a bitmap image</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Rotate a bitmap image</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+
+
+<p>If you are targeting your application for Windows NT alone, then you have access to API functions to help you rotate the bitmap. You can either use world transformation and BitBlt() or use PlgBlt() for rotating the bitmap.  A function using the first combination is shown below.
+
+<p>If you are targeting multiple platforms, then your task becomes tougher. You could either rotate each pixel in the source bitmap one at a time or directly manipulate the DIB bits to get the rotated bitmap. The first method is very slow to the point of being useless and the second is more complex but is fast enough. We cover both these methods below. Note that all the functions shown below create a new bitmap ( in one case it creates a DIB ). If instead of a new bitmap you want the rotated image to be drawn directly, you will need to modify the functions.
+
+Function 1: GetRotatedBitmapNT()
+This function is specific to NT and will not work on Windows95. It's the simplest and probably the fastest of the three functions listed in this topic. The other two functions share some of the same initial code.
+
+<p>All the three functions expect the angle of rotation to be in radians. If you have degrees to begin with you can convert from degrees to radians by using the formula 
+
+<p>radian = (2*pi *degree)/360
+
+<p>Here are the steps that we take to rotate the bitmap.
+<ol>
+<li>Create a couple of device contexts compatible with the display. One of them will be used to hold the source bitmap and the other will hold the destination bitmap (for the rotated image).
+<li>Precompute the cosine and the sine of the angle. This will help save a few microseconds in subsequent computations.
+<li>Compute the bounding rectangle of the rotated image. We use the formula   
+<br><b>newx = x.cos(angle) + y.sin(angle)
+<br>newy = y.cos(angle) - x.sin(angle)</b>
+<br>We assume one of the corners (0,0) to be the center of rotation and therefore need to calculate the new co-ordinates of the other three corners. Based on this we can determine the widht and height of the new bitmap.
+<li>Since the rotated image will not occupy the entire area of the new bitmap, we fill the destination bitmap with the background color specified through the function argument.
+<li>Since we will use NTs support for linear transformation we set the graphic mode of the destination DC to support this.
+<li>We set up the XFORM struction and call SetWorldTransform() to activate the transformation. The SetWorldTransform() function sets up the stage for BitBlt(), which is when the transformation takes place. The algorithm used for the linear transformation is
+<br><b>newx = x * eM11 + y * eM21 + eDx
+<br>newy = x * eM12 + y * eM22 + eDy</b>
+<br>For rotation eM11 and eM22 should be the cosine of the rotation angle, eM12 should be the sine of the rotation angle and eM21 should be -eM12. In the DC we are using, since the +ve y direction is downwards, we reverse the signs of eM12 and eM21. We also set the translation components (eDx & eDy) so that rotated image fits inside the new bitmap without part of it getting clipped.
+<li>We finally call BitBlt() to do the actual rotation. This call in itself looks like it will simply copy the image. However, the previous call to SetWorldTransform() causes the image to be rotated.
+</ol>
+
+<PRE><TT><FONT COLOR="#990000">
+// GetRotatedBitmapNT	- Create a new bitmap with rotated image
+// Returns		- Returns new bitmap with rotated image
+// hBitmap		- Bitmap to rotate
+// radians		- Angle of rotation in radians
+// clrBack		- Color of pixels in the resulting bitmap that do
+//			  not get covered by source pixels
+HBITMAP GetRotatedBitmapNT( HBITMAP hBitmap, float radians, COLORREF clrBack )
+{
+	// Create a memory DC compatible with the display
+	CDC sourceDC, destDC;
+	sourceDC.CreateCompatibleDC( NULL );
+	destDC.CreateCompatibleDC( NULL );
+
+	// Get logical coordinates
+	BITMAP bm;
+	::GetObject( hBitmap, sizeof( bm ), &bm );
+
+	float cosine = (float)cos(radians);
+	float sine = (float)sin(radians);
+
+	// Compute dimensions of the resulting bitmap
+	// First get the coordinates of the 3 corners other than origin
+	int x1 = (int)(bm.bmHeight * sine);
+	int y1 = (int)(bm.bmHeight * cosine);
+	int x2 = (int)(bm.bmWidth * cosine + bm.bmHeight * sine);
+	int y2 = (int)(bm.bmHeight * cosine - bm.bmWidth * sine);
+	int x3 = (int)(bm.bmWidth * cosine);
+	int y3 = (int)(-bm.bmWidth * sine);
+
+	int minx = min(0,min(x1, min(x2,x3)));
+	int miny = min(0,min(y1, min(y2,y3)));
+	int maxx = max(0,max(x1, max(x2,x3)));
+	int maxy = max(0,max(y1, max(y2,y3)));
+
+	int w = maxx - minx;
+	int h = maxy - miny;
+
+	// Create a bitmap to hold the result
+	HBITMAP hbmResult = ::CreateCompatibleBitmap(CClientDC(NULL), w, h);
+
+	HBITMAP hbmOldSource = (HBITMAP)::SelectObject( sourceDC.m_hDC, hBitmap );
+	HBITMAP hbmOldDest = (HBITMAP)::SelectObject( destDC.m_hDC, hbmResult );
+
+	// Draw the background color before we change mapping mode
+	HBRUSH hbrBack = CreateSolidBrush( clrBack );
+	HBRUSH hbrOld = (HBRUSH)::SelectObject( destDC.m_hDC, hbrBack );
+	destDC.PatBlt( 0, 0, w, h, PATCOPY );
+	::DeleteObject( ::SelectObject( destDC.m_hDC, hbrOld ) );
+
+	// We will use world transform to rotate the bitmap
+	SetGraphicsMode(destDC.m_hDC, GM_ADVANCED);
+	XFORM xform;
+	xform.eM11 = cosine;
+	xform.eM12 = -sine;
+	xform.eM21 = sine;
+	xform.eM22 = cosine;
+	xform.eDx = (float)-minx;
+	xform.eDy = (float)-miny;
+
+	SetWorldTransform( destDC.m_hDC, &xform );
+
+	// Now do the actual rotating - a pixel at a time
+	destDC.BitBlt(0,0,bm.bmWidth, bm.bmHeight, &sourceDC, 0, 0, SRCCOPY );
+
+	// Restore DCs
+	::SelectObject( sourceDC.m_hDC, hbmOldSource );
+	::SelectObject( destDC.m_hDC, hbmOldDest );
+
+	return hbmResult;
+}
+</FONT></TT></PRE>
+
+<h4>Function 2: GetRotatedBitmap() using GetPixel & SetPixel</h4>
+This function is more for education purpose. It does work but it takes a few seconds to finish. It might even be useful for very small bitmaps.
+
+<p>Here's what the function does:
+<ol>
+<li>Create a couple of device contexts to work with. 
+<li>Computes the bounding rectangle of the rotated image and fills it with the background color.
+<li>We set the mapping mode in both the device contexts so that the +ve direction of the y-axis goes up. We also set the origin in the destination DC to the point that would coincide with the point (0,0) in the source DC. This is simply to make our computation somewhat simpler.
+<li>We traverse through each pixel in the destination bitmap and compute which pixel, if any, from the source bitmap corresponds to it. This is somewhat unusual. You would expect to traverse the source pixels and copy it to its proper place in the destination bitmap. Although, this would be a more straight forward approach, it doesn't work right. The problem is that it leaves a few gaps in the destination bitmap. Reversing the transformation fixes this problem.
+</ol>
+
+<PRE><TT><FONT COLOR="#990000">
+// GetRotatedBitmap	- Create a new bitmap with rotated image
+// Returns		- Returns new bitmap with rotated image
+// hBitmap		- Bitmap to rotate
+// radians		- Angle of rotation in radians
+// clrBack		- Color of pixels in the resulting bitmap that do
+//			  not get covered by source pixels
+// Note			- If the bitmap uses colors not in the system palette 
+//			  then the result is unexpected. You can fix this by
+//			  adding an argument for the logical palette.
+HBITMAP GetRotatedBitmap( HBITMAP hBitmap, float radians, COLORREF clrBack )
+{
+	// Create a memory DC compatible with the display
+	CDC sourceDC, destDC;
+	sourceDC.CreateCompatibleDC( NULL );
+	destDC.CreateCompatibleDC( NULL );
+
+	// Get logical coordinates
+	BITMAP bm;
+	::GetObject( hBitmap, sizeof( bm ), &bm );
+
+	float cosine = (float)cos(radians);
+	float sine = (float)sin(radians);
+
+	// Compute dimensions of the resulting bitmap
+	// First get the coordinates of the 3 corners other than origin
+	int x1 = (int)(-bm.bmHeight * sine);
+	int y1 = (int)(bm.bmHeight * cosine);
+	int x2 = (int)(bm.bmWidth * cosine - bm.bmHeight * sine);
+	int y2 = (int)(bm.bmHeight * cosine + bm.bmWidth * sine);
+	int x3 = (int)(bm.bmWidth * cosine);
+	int y3 = (int)(bm.bmWidth * sine);
+
+	int minx = min(0,min(x1, min(x2,x3)));
+	int miny = min(0,min(y1, min(y2,y3)));
+	int maxx = max(x1, max(x2,x3));
+	int maxy = max(y1, max(y2,y3));
+
+	int w = maxx - minx;
+	int h = maxy - miny;
+
+
+	// Create a bitmap to hold the result
+	HBITMAP hbmResult = ::CreateCompatibleBitmap(CClientDC(NULL), w, h);
+
+	HBITMAP hbmOldSource = (HBITMAP)::SelectObject( sourceDC.m_hDC, hBitmap );
+	HBITMAP hbmOldDest = (HBITMAP)::SelectObject( destDC.m_hDC, hbmResult );
+
+	// Draw the background color before we change mapping mode
+	HBRUSH hbrBack = CreateSolidBrush( clrBack );
+	HBRUSH hbrOld = (HBRUSH)::SelectObject( destDC.m_hDC, hbrBack );
+	destDC.PatBlt( 0, 0, w, h, PATCOPY );
+	::DeleteObject( ::SelectObject( destDC.m_hDC, hbrOld ) );
+
+	// Set mapping mode so that +ve y axis is upwords
+	sourceDC.SetMapMode(MM_ISOTROPIC);
+	sourceDC.SetWindowExt(1,1);
+	sourceDC.SetViewportExt(1,-1);
+	sourceDC.SetViewportOrg(0, bm.bmHeight-1);
+
+	destDC.SetMapMode(MM_ISOTROPIC);
+	destDC.SetWindowExt(1,1);
+	destDC.SetViewportExt(1,-1);
+	destDC.SetWindowOrg(minx, maxy);
+
+	// Now do the actual rotating - a pixel at a time
+	// Computing the destination point for each source point
+	// will leave a few pixels that do not get covered
+	// So we use a reverse transform - e.i. compute the source point
+	// for each destination point
+
+	for( int y = miny; y < maxy; y++ )
+	{
+		for( int x = minx; x < maxx; x++ )
+		{
+			int sourcex = (int)(x*cosine + y*sine);
+			int sourcey = (int)(y*cosine - x*sine);
+			if( sourcex >= 0 && sourcex < bm.bmWidth && sourcey >= 0 
+					&& sourcey < bm.bmHeight )
+				destDC.SetPixel(x,y,sourceDC.GetPixel(sourcex,sourcey));
+		}
+	}
+
+	// Restore DCs
+	::SelectObject( sourceDC.m_hDC, hbmOldSource );
+	::SelectObject( destDC.m_hDC, hbmOldDest );
+
+	return hbmResult;
+}
+</FONT></TT></PRE>
+
+
+<h4>Function 3: GetRotatedBitmap() using DIB</h4>
+This function works on the same principle as the previous function. Unlike the previous function this function is usable and works directly on the bits of the device-independent bitmap. Most of the complexity of this function is due to the fact that DIBs are organized differently depending on the number of colors it uses.
+
+<p>There are two main attributes of a DIB that affect the flow of control in this function. The first is the number of bits used to specify a pixel. This affects how the  color information is read and written. The second attribute is the compression. This function does not support run length encoded DIBs. The two compression flags handled are the BI_RGB and BI_BITFIELD. These flags affect how we compute the start of the bitmap bits. The BI_BITFIELD is valid only when the bits per pixel (BPP) is more than 8. This indicates that immediately after the BITMAPINFOHEADER are three double word values which represent a bitmask for the red, green and blue colors. The first of the double word mask is for red. 
+
+<p>After computing the size of the new DIB we allocate space for a new bitmap and initialize it with values from the source DIB. The widht and height of course is set to new values. We then set the background color for the new DIB to the specified value. Actually we set the color only when the BPP is 8 or less, otherwise we simply compute a color value specific to the DIB and save it for later use. If the bits per pixel is 4 or 8, we scan through the color table to find a match for the supplied background color. If we find the color, we set this index for all the pixels in the bitmap otherwise we let the color remain black. For bitmaps with 16 or more bits per pixel we create a 16, 24 or 32 bit value that will represent the color. We only use those color masks that is supported by both Windows 95 and NT.
+
+<p>The actual rotation involves using a reverse transform. That is, for each destination pixel we determine the source pixel that should be copied there. As I've noted while discussing the previous function, the reason for this is that the straight transform will leave small blank spots. The main stuff here is getting and setting the color information. When dealing with monochrome bitmaps, each bit represents a pixel. The most significant bit in a byte is the left most pixel. This explains the expression (0x80 >> x%8) which gives us the bit position of the given pixel. Since we are dealing with bits, we have to first clear out the relevant bit in the destination bitmap before using the OR operation to set it to the new value. Note that the bit position in the source and the bit position in the destination bitmaps are likely to be different.
+
+<p>For bitmaps with 4 bits per pixel, we again have to deal with bitmasks. In this case the 4 most significant bits specify the pixel on the left. When the bits per pixel is 8, 16, 24 or 32 we copy 1,2,3 and 4 bytes respectively. Also, when the bits per pixel is more than 8 and the destination pixel does not correspond to any of the source pixel, then we set it to the background color.
+
+
+<PRE><TT><FONT COLOR="#990000">
+// GetRotatedBitmap	- Create a new bitmap with rotated image
+// Returns		- Returns new bitmap with rotated image
+// hDIB			- Device-independent bitmap to rotate
+// radians		- Angle of rotation in radians
+// clrBack		- Color of pixels in the resulting bitmap that do
+//			  not get covered by source pixels
+HANDLE GetRotatedBitmap( HANDLE hDIB, float radians, COLORREF clrBack )
+{
+	// Get source bitmap info
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	int bpp = bmInfo.bmiHeader.biBitCount;		// Bits per pixel
+	
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+					1 << bpp;
+	int nWidth = bmInfo.bmiHeader.biWidth;
+	int nHeight = bmInfo.bmiHeader.biHeight;
+	int nRowBytes = ((((nWidth * bpp) + 31) & ~31) / 8);
+
+	// Make sure height is positive and biCompression is BI_RGB or BI_BITFIELDS
+	DWORD &compression = bmInfo.bmiHeader.biCompression;
+	if( nHeight < 0 || (compression!=BI_RGB && compression!=BI_BITFIELDS))
+		return NULL;
+
+	LPVOID lpDIBBits;
+	if( bmInfo.bmiHeader.biBitCount > 8 )
+		lpDIBBits = (LPVOID)((LPDWORD)(bmInfo.bmiColors +
+			bmInfo.bmiHeader.biClrUsed) + 
+			((compression == BI_BITFIELDS) ? 3 : 0));
+	else
+		lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+
+    
+	// Compute the cosine and sine only once
+	float cosine = (float)cos(radians);
+	float sine = (float)sin(radians);
+
+	// Compute dimensions of the resulting bitmap
+	// First get the coordinates of the 3 corners other than origin
+	int x1 = (int)(-nHeight * sine);
+	int y1 = (int)(nHeight * cosine);
+	int x2 = (int)(nWidth * cosine - nHeight * sine);
+	int y2 = (int)(nHeight * cosine + nWidth * sine);
+	int x3 = (int)(nWidth * cosine);
+	int y3 = (int)(nWidth * sine);
+
+	int minx = min(0,min(x1, min(x2,x3)));
+	int miny = min(0,min(y1, min(y2,y3)));
+	int maxx = max(x1, max(x2,x3));
+	int maxy = max(y1, max(y2,y3));
+
+	int w = maxx - minx;
+	int h = maxy - miny;
+
+
+	// Create a DIB to hold the result
+	int nResultRowBytes = ((((w * bpp) + 31) & ~31) / 8);
+	long len = nResultRowBytes * h;
+	int nHeaderSize = ((LPBYTE)lpDIBBits-(LPBYTE)hDIB) ;
+	HANDLE hDIBResult = GlobalAlloc(GMEM_FIXED,len+nHeaderSize);
+	// Initialize the header information
+	memcpy( (void*)hDIBResult, (void*)hDIB, nHeaderSize);
+	BITMAPINFO &bmInfoResult = *(LPBITMAPINFO)hDIBResult ;
+	bmInfoResult.bmiHeader.biWidth = w;
+	bmInfoResult.bmiHeader.biHeight = h;
+	bmInfoResult.bmiHeader.biSizeImage = len;
+
+	LPVOID lpDIBBitsResult = (LPVOID)((LPBYTE)hDIBResult + nHeaderSize);
+
+	// Get the back color value (index)
+	ZeroMemory( lpDIBBitsResult, len );
+	DWORD dwBackColor;
+	switch(bpp)
+	{
+	case 1:	//Monochrome
+		if( clrBack == RGB(255,255,255) )
+			memset( lpDIBBitsResult, 0xff, len );
+		break;
+	case 4:
+	case 8:	//Search the color table
+		int i;
+		for(i = 0; i < nColors; i++ )
+		{
+			if( bmInfo.bmiColors[i].rgbBlue ==  GetBValue(clrBack)
+				&& bmInfo.bmiColors[i].rgbGreen ==  GetGValue(clrBack)
+				&& bmInfo.bmiColors[i].rgbRed ==  GetRValue(clrBack) )
+			{
+				if(bpp==4) i = i | i<<4;
+				memset( lpDIBBitsResult, i, len );
+				break;
+			}
+		}
+		// If not match found the color remains black
+		break;
+	case 16:
+		// Windows95 supports 5 bits each for all colors or 5 bits for red & blue
+		// and 6 bits for green - Check the color mask for RGB555 or RGB565
+		if( *((DWORD*)bmInfo.bmiColors) == 0x7c00 )
+		{
+			// Bitmap is RGB555
+			dwBackColor = ((GetRValue(clrBack)>>3) << 10) + 
+					((GetRValue(clrBack)>>3) << 5) +
+					(GetBValue(clrBack)>>3) ;
+		}
+		else
+		{
+			// Bitmap is RGB565
+			dwBackColor = ((GetRValue(clrBack)>>3) << 11) + 
+					((GetRValue(clrBack)>>2) << 5) +
+					(GetBValue(clrBack)>>3) ;
+		}
+		break;
+	case 24:
+	case 32:
+		dwBackColor = (((DWORD)GetRValue(clrBack)) << 16) | 
+				(((DWORD)GetGValue(clrBack)) << 8) |
+				(((DWORD)GetBValue(clrBack)));
+		break;
+	}
+
+
+	// Now do the actual rotating - a pixel at a time
+	// Computing the destination point for each source point
+	// will leave a few pixels that do not get covered
+	// So we use a reverse transform - e.i. compute the source point
+	// for each destination point
+
+	for( int y = 0; y < h; y++ )
+	{
+		for( int x = 0; x < w; x++ )
+		{
+			int sourcex = (int)((x+minx)*cosine + (y+miny)*sine);
+			int sourcey = (int)((y+miny)*cosine - (x+minx)*sine);
+			if( sourcex >= 0 && sourcex < nWidth && sourcey >= 0 
+				&& sourcey < nHeight )
+			{
+				// Set the destination pixel
+				switch(bpp)
+				{
+					BYTE mask;
+				case 1:		//Monochrome
+					mask = *((LPBYTE)lpDIBBits + nRowBytes*sourcey + 
+						sourcex/8) & (0x80 >> sourcex%8);
+					//Adjust mask for destination bitmap
+					mask = mask ? (0x80 >> x%8) : 0;
+					*((LPBYTE)lpDIBBitsResult + nResultRowBytes*(y) + 
+								(x/8)) &= ~(0x80 >> x%8);
+					*((LPBYTE)lpDIBBitsResult + nResultRowBytes*(y) + 
+								(x/8)) |= mask;
+					break;
+				case 4:
+					mask = *((LPBYTE)lpDIBBits + nRowBytes*sourcey + 
+						sourcex/2) & ((sourcex&1) ? 0x0f : 0xf0);
+					//Adjust mask for destination bitmap
+					if( (sourcex&1) != (x&1) )
+						mask = (mask&0xf0) ? (mask>>4) : (mask<<4);
+					*((LPBYTE)lpDIBBitsResult + nResultRowBytes*(y) + 
+							(x/2)) &= ~((x&1) ? 0x0f : 0xf0);
+					*((LPBYTE)lpDIBBitsResult + nResultRowBytes*(y) + 
+							(x/2)) |= mask;
+					break;
+				case 8:
+					BYTE pixel ;
+					pixel = *((LPBYTE)lpDIBBits + nRowBytes*sourcey + 
+							sourcex);
+					*((LPBYTE)lpDIBBitsResult + nResultRowBytes*(y) + 
+							(x)) = pixel;
+					break;
+				case 16:
+					DWORD dwPixel;
+					dwPixel = *((LPWORD)((LPBYTE)lpDIBBits + 
+							nRowBytes*sourcey + sourcex*2));
+					*((LPWORD)((LPBYTE)lpDIBBitsResult + 
+						nResultRowBytes*y + x*2)) = (WORD)dwPixel;
+					break;
+				case 24:
+					dwPixel = *((LPDWORD)((LPBYTE)lpDIBBits + 
+						nRowBytes*sourcey + sourcex*3)) & 0xffffff;
+					*((LPDWORD)((LPBYTE)lpDIBBitsResult + 
+						nResultRowBytes*y + x*3)) |= dwPixel;
+					break;
+				case 32:
+					dwPixel = *((LPDWORD)((LPBYTE)lpDIBBits + 
+						nRowBytes*sourcey + sourcex*4));
+					*((LPDWORD)((LPBYTE)lpDIBBitsResult + 
+						nResultRowBytes*y + x*4)) = dwPixel;
+				}
+			}
+			else 
+			{
+				// Draw the background color. The background color
+				// has already been drawn for 8 bits per pixel and less
+				switch(bpp)
+				{
+				case 16:
+					*((LPWORD)((LPBYTE)lpDIBBitsResult + 
+						nResultRowBytes*y + x*2)) = 
+						(WORD)dwBackColor;
+					break;
+				case 24:
+					*((LPDWORD)((LPBYTE)lpDIBBitsResult + 
+						nResultRowBytes*y + x*3)) |= dwBackColor;
+					break;
+				case 32:
+					*((LPDWORD)((LPBYTE)lpDIBBitsResult + 
+						nResultRowBytes*y + x*4)) = dwBackColor;
+					break;
+				}
+			}
+		}
+	}
+
+	return hDIBResult;
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

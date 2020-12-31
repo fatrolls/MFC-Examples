@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The GENERIC Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The GENERIC Sample</H2>
+<P>The GENERIC Sample is a kernel-mode library used by most of the book sample drivers.</P>
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>GENERIC.SYS is a WDM library. </LI></UL>
+
+<P>You may find differences in the electronic copy of GENERIC and the code described in the book. Those differences have arisen because I continued (and still continue) to improve GENERIC after the book was frozen by the editorial process.</P>
+<H3>Building GENERIC</H3>
+<P>To build GENERIC.SYS, follow the <A HREF="../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named GENERIC.DSP.</P>
+<H3>Testing GENERIC</H3>
+<P>It’s not necessary for you to specifically install GENERIC.SYS. In fact, the setup program for the book samples automatically does this for you because most of the other samples depend on it being present. If you rebuild the DEBUG version of GENERIC, the build script will copy your new GENERIC.SYS module to the Drivers directory. It will be used the next time you restart your system.</P>
+<P>If you're using a separate machine for testing than where you installed the sample programs, be sure to copy the original and any rebuilt version of GENERIC.SYS from the OBJCHK\I386 to the drivers directory by hand.</P>
+<H3>Redistributing GENERIC</H3>
+<P>GENERIC is an exception to the blanket license to use the sample programs for this book. The author will grant a royalty-free license to anyone to redistribute GENERIC as part of a WDM driver package. The license will, however, include conditions designed to insure the consistency and quality of GENERIC on end user machines. Send e-mail to <A HREF="mailto:waltoney@oneysoft.com">waltoney@oneysoft.com</A> for information about obtaining this conditional license.</P></BODY>
+</HTML>

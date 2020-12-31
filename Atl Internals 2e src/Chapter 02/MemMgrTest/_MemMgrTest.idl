@@ -1,0 +1,39 @@
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\prsht.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtml.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dimm.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dispex.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtmhst.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\docobj.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\exdisp.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\objsafe.idl";
+
+[
+	object,
+	uuid(5B9343BD-D717-4DD7-86F3-E4015381D340),
+	oleautomation,
+	helpstring("ICalc Interface"),
+	pointer_default(unique)
+] 
+#line 14 "d:\\vc++\\atl internals 2e src\\chapter 02\\memmgrtest\\calc.h"
+interface ICalc : IUnknown {
+};
+
+
+[ version(1.0), uuid(AB9C13F1-07B7-46E7-BC35-74C4D72E33DB), helpstring("MemMgrTest 1.0 Type Library") ]
+library MemMgrTest
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		version(1.0),
+		uuid(70C6F14A-A0AA-416F-A548-02B65463C47A),
+		helpstring("Calc Class")
+	] 
+#line 32 "d:\\vc++\\atl internals 2e src\\chapter 02\\memmgrtest\\calc.h"
+	coclass CCalc {
+		interface ICalc;
+	};
+
+}
+

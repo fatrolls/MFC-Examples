@@ -1,0 +1,90 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - A multi-check ListBox</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A multi-check ListBox
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:hdevine@geocities.com">Harry J. Devine</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG SRC="multichecklistbox.jpg" width="283" height="236" alt="CMultiCheckListBox example">&nbsp;
+Download <A HREF="multichecklistbox_src.zip">Source Code</a> and 
+<A HREF="multichecklistbox_demo.zip">Example project</A>
+</p>
+<br>
+
+<!-- The article... -->
+<p>
+I had a desire/requirement on a recent project to have a CCheckListbox class that allowed for
+more than one checkbox in front of the string.  The 3-state style set by the CCheckListbox
+simply didn't do what I wanted or needed.  I had a list of people who could fall into 2 different
+categories at the same time.  The 3-state style told me that this person fell into one category,
+but I had to just know WHICH one. 
+
+<p>So, I decided to write a class that extended the capabilities of the CCheckListbox.  What I
+came up with was the <b> CMultiCheckListBox </b> class.  What it does is add another checkbox
+in front of the original checkbox in the CCheckListbox implementation. <br><br>
+
+<p>To use the class, follow these steps:<br>
+<ul>
+<li>Add a member variable to the desired class (CDialog, CFormView, etc.) <br>
+            <pre><tt><font COLOR="#990000"> CMultiCheckListBox m_List; </font></tt></pre>
+<li>Subclass the list box variable just created.<br>
+            <pre><tt><font COLOR="#990000">
+ void CCharityReportDlg::DoDataExchange(CDataExchange* pDX)
+ {
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CCharityReportDlg)
+    DDX_Control(pDX, IDC_LIST1, m_List);
+    //}}AFX_DATA_MAP
+ }
+            </font></tt></pre>
+<li> To set the first checkbox for listbox item <i>nIndex</i>, call SetCheck(nIndex, nCheck)
+             <pre><tt><font COLOR="#990000"> m_List.SetCheck(nIndex,1); </font></tt></pre>
+<li> To set the second checkbox, call SetMultiCheck(nIndex, nCheck)
+	     <pre><tt><font COLOR="#990000"> m_List.SetMultiCheck(nIndex,1); </font></tt></pre>
+<li> To retrieve the checkbox state of the first checkbox, call GetCheck(nIndex)
+	     <pre><tt><font COLOR="#990000"> m_List.GetCheck(nIndex); </font></tt></pre>
+<li> To retrieve the checkbox state of the second checkbox, call GetMultiCheck(nIndex)
+	     <pre><tt><font COLOR="#990000"> m_List.MultiGetCheck(nIndex); </font></tt></pre>
+</ul>
+
+<!-- Remember to update this -->
+<p>Last updated: 4 July 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

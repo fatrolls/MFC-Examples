@@ -1,0 +1,299 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONTEXTHELP_DIALOG DIALOGEX 0, 0, 185, 60
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Context Help/Tooltips"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Dialog with Context Sensitive help and Tooltips",IDC_BUTTON1,8,13,170,14
+    PUSHBUTTON      "Prop. Sheet with Context Sensitive help and Tooltips",IDC_BUTTON2,8,34,170,14
+END
+
+IDD_COLOR DIALOG  0, 0, 225, 41
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Test2"
+FONT 8, "MS Sans Serif"
+BEGIN
+    SCROLLBAR       IDC_SCROLLBAR2,215,0,10,41,SBS_VERT
+    CONTROL         "Check1",IDC_TESTCHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,0,39,10
+    COMBOBOX        IDC_TESTCOMBO1,0,15,48,42,CBS_DROPDOWNLIST | CBS_SORT | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Button2",IDC_TESTBUTTON2,60,15,50,14
+    LISTBOX         IDC_LIST1,142,0,48,40,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_STYLE DIALOG  0, 0, 224, 41
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Test"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "A group box",IDC_STATIC3,0,0,224,41
+    EDITTEXT        IDC_TESTEDIT,5,20,60,14,ES_AUTOHSCROLL
+    CONTROL         "Static text",IDC_STATIC4,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,10,50,8
+    PUSHBUTTON      "Button1",IDC_TESTBUTTON,80,20,50,14
+    CONTROL         "Check again",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,160,17,54,10
+END
+
+IDD_TESTBOX DIALOGEX 0, 0, 253, 111
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Dialog with Context Sensitive help and Tootips"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,197,7,49,14,WS_GROUP,0,HIDOK
+    PUSHBUTTON      "Cancel",IDCANCEL,196,27,50,14,0,0,HIDCANCEL
+    CONTROL         130,IDC_BITMAP,"Static",SS_BITMAP | SS_REALSIZEIMAGE | WS_TABSTOP,7,7,36,33,WS_EX_DLGMODALFRAME,HIDC_BITMAP
+    LTEXT           "Example of COXContextHelpDialog classes",IDC_STATIC1,67,16,117,8,0,0,HIDC_STATIC1
+    EDITTEXT        IDC_EDIT1,77,28,70,14,ES_AUTOHSCROLL,0,HIDC_EDIT1
+    GROUPBOX        "Static",IDC_STATIC2,59,7,128,43,0,0,HIDC_STATIC2
+    PUSHBUTTON      "Button",1004,7,58,50,14,0,0,0x808103ec
+    CONTROL         "ENABLE TOOLTIPS",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,73,87,89,10,0,HIDC_CHECK1
+    COMBOBOX        IDC_COMBO1,198,58,48,57,CBS_DROPDOWNLIST | CBS_SORT | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP,0,HIDC_COMBO1
+    SCROLLBAR       IDC_SCROLLBAR1,135,58,56,11,0,0,HIDC_SCROLLBAR1
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "CONTEXTHELP MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "CONTEXTHELP"
+            VALUE "LegalCopyright", "Copyright © 1997"
+            VALUE "OriginalFilename", "CONTEXTHELP.EXE"
+            VALUE "ProductName", "CONTEXTHELP Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CONTEXTHELP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 53
+    END
+
+    IDD_TESTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 246
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP              BITMAP                  "res\\bitmap1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_COLOR DLGINIT
+BEGIN
+    IDC_TESTCOMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3120, "\000" 
+    IDC_TESTCOMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3220, "\000" 
+    IDC_TESTCOMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3320, "\000" 
+    IDC_TESTCOMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3420, "\000" 
+    IDC_TESTCOMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3520, "\000" 
+    0
+END
+
+IDD_TESTBOX DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3120, "\000" 
+    IDC_COMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3220, "\000" 
+    IDC_COMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3320, "\000" 
+    IDC_COMBO1, 0x403, 7, 0
+0x7449, 0x6d65, 0x3420, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ContextHelp..."
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Context Sensitive Help"
+    ID_DESCRIPTION_FILE     "CntxHlpInfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Context help and tooltip files"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\ContextHelp.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ContextHelp.ico"
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\ContextHelp.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

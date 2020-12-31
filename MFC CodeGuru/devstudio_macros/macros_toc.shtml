@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META Name="description" Content="DevStudio Macros">
+   <META Name="keywords" Content="VISUAL DEVSTUDIO MACRO">
+   <TITLE>DevStudio Macros - Table of Contents</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">DevStudio Macros</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<HR>
+<P>This section is maintained by <A href="mailto:jerryiii@sprynet.com">Jaroslav Pisk</A> (call me Jerry - it's easier for both you and me).</P>
+
+<UL>
+<LI><A HREF="open_header.shtml">Open current header file (macro)- Jignesh Patel, Ian Southwell, Douglas Peterson & Sven Rymenants</A></LI>
+<LI><A HREF="open_stdafx.shtml">Open stdafx.h and other macros - Ian Southwell</A></LI>
+<LI><A HREF="comment_uncomment.shtml">Comment / Uncomment macros - Guy Gascoigne - Piggford</A></LI>
+<LI><A HREF="user_msg_macro.shtml">WM_COMMAND user message macro - John Christian Lonningdal</A></LI>
+<LI><A HREF="comment_uncomment2.shtml">Comment / Uncomment and other macros - Adam Solesby</A></LI>
+<LI><A HREF="keyboard_recorder.shtml">VC4.2 style keyboard macro recorder - Darren Richards</A></LI>
+<LI><A HREF="renumber_resources.shtml">Sequentially Renumber resource ID's - Corey House</A></LI>
+<LI><A HREF="export_makefile.shtml">Export Makefile - Joseph Dziedzic</A></LI>
+<LI><A HREF="invert_assigment.shtml">Inverting Assignment Operations  - Paul Thompson</A></LI>
+<LI><A HREF="code_template.shtml">Code Template add-in for Visual C++ 5.0 - Darren Richards</A></LI>
+<LI><A HREF="secondary_clipboard.shtml">Secondary clipboard - Alex Niblett</A></LI>
+<LI><A HREF="cfiledialog.shtml">CFileDialog code generator - Christian Skovdal Andersen</A></LI>
+<LI><A HREF="launch_app.shtml">Application Launcher - Omar Francisco</A></LI>
+<LI><A HREF="wordmove.shtml">Better caret movement by words - David Cotton</LI>
+</UL>
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%"><CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT></CENTER>
+</TD>
+
+<TD WIDTH="33%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

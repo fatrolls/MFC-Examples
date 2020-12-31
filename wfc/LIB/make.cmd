@@ -1,0 +1,1 @@
+nmake /f "wfc.mak" CFG="WFC - Win32 Debug"

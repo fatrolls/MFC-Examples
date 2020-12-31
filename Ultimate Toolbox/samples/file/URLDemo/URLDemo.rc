@@ -1,0 +1,248 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\URLDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXUNCStandartActor.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\URLDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_URLDEMO_DIALOG DIALOGEX 0, 0, 226, 267
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "URL Demo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "URL/UNC",IDC_STATIC,7,10,38,8
+    EDITTEXT        IDC_URL_UNC,52,7,167,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Split URL",IDC_SPLIT_URL,61,25,50,14
+    PUSHBUTTON      "&Combine URL",IDC_COMBINE_URL,126,25,50,14
+    PUSHBUTTON      "&Split UNC",IDC_SPLIT_UNC,61,44,50,14
+    PUSHBUTTON      "&Combine UNC",IDC_COMBINE_UNC,126,44,50,14
+    GROUPBOX        "Parts",IDC_STATIC,7,59,212,127
+    LTEXT           "Protocol",IDC_STATIC,11,71,36,8
+    EDITTEXT        IDC_PROTOCOL,52,68,40,14,ES_AUTOHSCROLL
+    CONTROL         "Part of URL",IDC_URL_PART,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,126,70,50,10
+    LTEXT           "Port",IDC_STATIC,11,88,28,8
+    EDITTEXT        IDC_PORT,52,85,40,14,ES_AUTOHSCROLL
+    LTEXT           "Server",IDC_STATIC,11,105,35,8
+    EDITTEXT        IDC_SERVER,52,102,117,14,ES_AUTOHSCROLL
+    LTEXT           "Share",IDC_STATIC,11,122,25,8
+    EDITTEXT        IDC_SHARE,52,119,117,14,ES_AUTOHSCROLL
+    LTEXT           "Directory",IDC_STATIC,11,139,40,8
+    EDITTEXT        IDC_DIRECTORY,52,136,117,14,ES_AUTOHSCROLL
+    LTEXT           "File",IDC_STATIC,11,156,23,8
+    EDITTEXT        IDC_FILE,52,153,60,14,ES_AUTOHSCROLL
+    LTEXT           "Basename",IDC_STATIC,118,156,43,8
+    LTEXT           "",IDC_BASE_NAME,164,156,47,8
+    LTEXT           "Extension",IDC_STATIC,118,172,36,8
+    LTEXT           "",IDC_EXTENSION,163,172,50,8
+    LTEXT           "File managment functions are fully supported but not shown in this demo : Copy, Delete, Rename, File attributes, File times and much more ...",
+                    IDC_STATIC,7,188,212,24
+    LTEXT           "Fill out a UNC at the top, select which list you want and click List",
+                    IDC_STATIC,7,216,212,8
+    CONTROL         "&Files",IDC_INCLUDE_FILES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,227,31,10
+    CONTROL         "&Directories",IDC_INCLUDE_DIRS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,40,227,49,10
+    CONTROL         "&Recurse",IDC_RECURSIVE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,89,227,39,10
+    DEFPUSHBUTTON   "&List",IDC_LIST,176,227,43,14
+    PUSHBUTTON      "&Test",IDC_TEST,45,247,32,13,NOT WS_VISIBLE
+    PUSHBUTTON      "Close",IDCANCEL,94,246,50,14
+    CONTROL         "&Depth first",IDC_DEPTH_FIRST,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,130,227,46,10
+END
+
+IDD_UNC_LIST DIALOG DISCARDABLE  0, 0, 244, 99
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "UNC List"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Close",IDCANCEL,97,78,50,14
+    LISTBOX         IDC_LIST,7,7,230,65,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,3
+ PRODUCTVERSION 1,0,0,3
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "URLDEMO MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 3\0"
+            VALUE "InternalName", "URLDEMO\0"
+            VALUE "LegalCopyright", "Copyright © 1998 Dundas Software Ltd.\0"
+            VALUE "OriginalFilename", "URLDEMO.EXE\0"
+            VALUE "ProductName", "URLDEMO Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 3\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_URLDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 260
+    END
+
+    IDD_UNC_LIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 237
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 92
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About URLDemo..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Ultimate tool box demo"
+    ID_DESCRIPTION_FILE     "urldemoinfo.rtf"
+END
+
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\URLDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXUNCStandartActor.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

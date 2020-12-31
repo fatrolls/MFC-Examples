@@ -1,0 +1,99 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="*****">
+   <TITLE>Tools - The InfoViewer Assistant</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->The InfoViewer Assistant
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:Tom@Malcolmson.com"><!-- Author Name -->Tom Malcolmson</A>.
+
+<!-- Text / source code -->
+<H4>The <STRONG>InfoViewer Assistant </STRONG>is a free utility that allows you 
+to organize and manage the help 'titles' used by the Microsoft Developer 
+Studio97 and by the MSDN library.</H4>
+<P>There is some information about this utility and a download link below, but 
+for detailed information please refer to the InfoViewer Assistant's <A 
+href="http://www.malcolmson.com">homepage</A>.</P>
+<P>For information about Microsoft's InfoViewer, see the unofficial <A 
+href="http://www.malcolmson.com/infoman/InfoViewer.htm">InfoViewer Information 
+page</A>.</P>
+<HR>
+
+<H3>Some of the issues it addresses.</H3>
+<P>This utility is intended to address some of the concerns about the InfoViewer 
+help system. In particular:</P>
+<UL>
+<LI>When you install the MSDN Library you get two choices: install all titles to 
+your hard drive, or install none and access all of them from the CD's (note that 
+installing all the titles requires 1.3GB, the figure reported by the installer 
+is incorrect).<BR>This is inconvient if you will only be using a single title or 
+group of titles, eg. the Knowledge Base (200M) or the Visual C++ documention 
+(only 106M including the samples).<BR>
+<LI>When you install new titles and indexes, the files that they replace are 
+often left on your hard drive, inaccessible and unused.<BR>
+<LI>Once you've installed the Library or a product's documentation, there is no 
+way to make changes to your installation or to see what is installed and where 
+(I frequently see usenet postings that suggest users make changes to their 
+registry just to make adjustments to the organization of their InfoViewer 
+titles). </LI></UL>
+<HR>
+
+<H3><FONT color=#000000>The Program</FONT></H3>
+<P>Please note that the InfoViewer Assistant currently doesn't require any 
+support files or changes to your system, so the download is not an 'install' 
+program - it is just the application executable itself. The program's ReadMe 
+file and an Overview that explains how it works are available from its home page 
+(see the link above).</P>
+<P><FONT color=#000000><EM>Requirements:</EM></FONT></P>
+<P><FONT color=#000000>All that is required is version 5 of the Microsoft 
+InfoViewer, which comes as part of the Visual Studio97 products - <STRONG>except 
+Visual Basic</STRONG> - and with MSDN CD's since April 97. </FONT></P>
+
+<!-- Zipped source -->
+<P><A href="http://www.malcolmson.com/infoman/TitleMan.exe">Download v1.2 - 285KB, uncompressed</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 05/20/98
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

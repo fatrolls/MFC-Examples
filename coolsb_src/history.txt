@@ -1,0 +1,24 @@
+Cool Scrollbar Library
+Copyright (c) J Brown 2001
+
+History
+--------------------------
+
+Version 1.2: Nov 2002
+
+ Fixed TreeView problem (thanks to Diego Tartara)
+ Small problem in thumb calculation also fixed  
+
+Version 1.1: Jan 2002
+
+ Supports ALL types of window (only in Windows NT, 2000 and XP). 
+ Simplified demo application. 
+ MFC demo application also included. 
+ Added support for Right-left reading windows . 
+ Changed calling convention of APIs to WINAPI (__stdcall). 
+ Completely standalone (no need for c-runtime). 
+
+Version 1.0: Apr 2001: Initial Version
+ Initial release
+
+

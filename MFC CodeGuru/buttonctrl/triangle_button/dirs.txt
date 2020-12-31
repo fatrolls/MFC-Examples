@@ -1,0 +1,40 @@
+ Volume in drive F is EXTERN 2
+ Volume Serial Number is 1E3F-10EC
+
+
+ Directory of F:\TEMP\TriangleButtonDemo
+
+01/15/98  10:28a        <DIR>          .
+01/15/98  10:28a        <DIR>          ..
+02/03/98  11:36a                 1,694 TriangleButtonDemo.clw
+01/15/98  10:28a                 1,322 TriangleButtonDemo.h
+01/15/98  10:28a                 1,596 TriangleButtonDemo.cpp
+01/15/98  10:28a                   928 StdAfx.h
+01/15/98  10:28a                   216 StdAfx.cpp
+01/15/98  10:28a        <DIR>          res
+02/03/98  11:40a                50,176 TriangleButtonDemo.ncb
+01/15/98  10:39a                 5,294 TriangleButtonDemoDlg.cpp
+01/15/98  10:39a                 1,404 Resource.h
+01/15/98  10:39a                35,524 TriangleButtonDemo.aps
+01/15/98  10:39a                 5,988 TriangleButtonDemo.rc
+02/03/98  11:39a                 2,523 TriangleButtonDemo.plg
+01/14/98  03:40p                14,052 TriangleButton.cpp
+01/15/98  10:39a                 2,085 TriangleButtonDemoDlg.h
+01/15/98  10:41a                   559 TriangleButtonDemo.dsw
+01/15/98  04:01p                 2,604 TriangleButton.h
+01/15/98  04:01p                 4,448 TriangleButtonDemo.dsp
+02/03/98  11:40a                48,640 TriangleButtonDemo.opt
+02/03/98  11:50a                     0 dirs.txt
+              21 File(s)        179,053 bytes
+
+ Directory of F:\TEMP\TriangleButtonDemo\res
+
+01/15/98  10:28a        <DIR>          .
+01/15/98  10:28a        <DIR>          ..
+01/15/98  10:28a                   410 TriangleButtonDemo.rc2
+01/15/98  10:28a                 1,078 TriangleButtonDemo.ico
+               4 File(s)          1,488 bytes
+
+     Total Files Listed:
+              25 File(s)        180,541 bytes
+                            274,448,384 bytes free

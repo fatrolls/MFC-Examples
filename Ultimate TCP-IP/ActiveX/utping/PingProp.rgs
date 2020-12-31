@@ -1,0 +1,23 @@
+HKCR
+{
+	UTPing.PingProp.1 = s 'PingProp Class'
+	{
+		CLSID = s '{455C54FF-597A-11D3-A4D3-0080C858F182}'
+	}
+	UTPing.PingProp = s 'PingProp Class'
+	{
+		CLSID = s '{455C54FF-597A-11D3-A4D3-0080C858F182}'
+		CurVer = s 'UTPing.PingProp.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {455C54FF-597A-11D3-A4D3-0080C858F182} = s 'PingProp Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

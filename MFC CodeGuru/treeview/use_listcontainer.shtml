@@ -1,0 +1,270 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>TreeView - Connect a list container to a tree/list control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Connect a list container to a tree/list control</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+<P><FONT COLOR="#000000">This article was contributed by <A HREF="mailto:codor@eunet.yu">Zoran
+M.Todorovic</A>.</FONT>
+<BR>&nbsp;
+<BR>Most user interface oriented applications need a container of some
+kind (for example, list) and a visual representation of this container
+in a tree or list control. When a programmer modifies an item in a container,
+it must also update this specific item in a tree/list control. Vice versa,
+if a user of the program modifies the contents of the item, programmer
+must also update the item contents in a container.
+
+<P>As an example, I will discuss tree control since it is more complex.
+Each level in a tree control can be (and usually is) represented with a
+different data structure or class.
+
+<P><B>Using a structure for a node item</B>
+
+<P>Each structure representing a node item should be declared in such a
+way that its first data member is an enum type. Enum is declared separatelly
+and identifies different type of structures which are used in a tree control.
+
+<P><TT><FONT COLOR="#CC0000">enum treeItems {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; tiVehicleGroup,&nbsp;&nbsp;&nbsp;
+// Planes, trucks, cars, ships etc.</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; tiVehicle,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Toyota, Renault, Mercedes, Chrysler, etc.</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; tiPart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Windshield, Wheels, Tyres, Engine, etc.</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">struct TVehicleGroup {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; int Id;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Initialized to tiVehicleGroup</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; CString Name;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; .....</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; void *Handle;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">struct TVehicle {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; int Id;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Initialized to tiVehicle</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; CString Name;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; ......</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; TVehicleGroup *Owner;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; void *Handle;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P>These structures are organized into one or more containers. When populating
+a tree control, Name is used for item visual representation while a pointer
+to a data structure is associated with a tree item: Handle is initialized
+with a HTREEITEM handle returned from InsertItem function. It is declared
+as a pointer to void instead of HTREEITEM in order to allow a structure
+to be inserted in a tree or list control.
+
+<P><TT><FONT COLOR="#CC0000">void TFoo::Foo(CTreeCtrl&amp; tc, TVehicleGroup
+*ptr)</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; HTREEITEM handle = tc.InsertItem(ptr->Name);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; ptr->Handle = (void*)handle;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; tc.SetItemData(handle,(DWORD)ptr);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">}</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">void TFoo::Foo(CTreeCtrl&amp; tc, TVehicle
+*ptr)</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; HTREEITEM handle = tc.InsertItem(ptr->Name,
+(HTREEITEM)ptr->Owner->Handle);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; ptr->Handle = (void*)handle;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; tc.SetItemData(handle,(DWORD)ptr);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">}</FONT></TT>
+<BR>&nbsp;
+<BR>Getting a pointer to a data structure given a handle to a tree item
+is straightforward:
+
+<P><TT><FONT COLOR="#CC0000">HTREEITEM handle = tc.GetSelectedItem();</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">TVehicle *ptr = (TVehicle*)tc.GetItemData(handle);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">switch (ptr->Id) {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; case tiVehicleGroup:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TVehicleGroup *vg = (TVehicleGroup*)ptr;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Do something</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+break;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; case tiVehicle:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TVehicle *vg = (TVehicleGroup*)ptr;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Do something</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+break;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; case tiPart:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+....</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+break;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P>I can safely test an Id member of an unknown structure only if it is
+assunmed that all structures associated with tree items have an Id as a
+first data member. After detecting the exact type, I can safelly access
+all its data members.
+<BR>&nbsp;
+<BR><B>Using classes for node items</B>
+
+<P>With classes it is not possible to rely on an in-memory representation
+of the class as I did with structures. Different approach is needed. First,
+declare a base class for all classes whose instances will be associated
+with tree items. This class contains all common data (name of tree item,
+handle to tree item etc.).
+
+<P><TT><FONT COLOR="#CC0000">class TBaseForTreeItem : public CObject {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; public:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CString Name;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+void *Handle;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TBaseForTreeItem *Parent;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// ....</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P>Then, concrete classes are declare using previous class as a base class.
+
+<P><TT><FONT COLOR="#CC0000">class TVehicleGroup : public TBaseForTreeItem
+{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; ....</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">class TVehicle : public TBaseForTreeItem {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; ....</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P>Inserting an item into the tree control is the same as previously described.
+The difference is in getting the pointer to the object in a container.
+For this, we can use several different techniques:
+<UL>
+<LI>
+If all classes use a DECLARE_SERIAL or DECLARE_DYNAMIC macro, then rtti
+is enabled and we can use IsKindOf to get to the right object.</LI>
+
+
+<P><TT><FONT COLOR="#CC0000">HTREEITEM handle = tc.GetSelectedItem();</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">TBaseForTreeItem *obj = (TBaseForTreeItem*)tc.GetItemData(handle);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">if (obj->IsKindOf(RUNTIME_CLASS(TVehicleGroup))
+{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; TVehicleGroup *vg = (TVehicleGroup*)obj;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; // Do something</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">} else if (obj->IsKindOf(RUNTIME_CLASS(TVehicle))
+{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; TVehicle *v = (TVehicle*)obj;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; // Do something</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">}</FONT></TT>
+<BR>&nbsp;
+<LI>
+If rtti is enabled but we don't use DECLARE_SERIAL or DECLARE_DYNAMIC macros,
+we can use a C++ defined dynamic_cast macro to get to the right object.</LI>
+
+
+<P><TT><FONT COLOR="#CC0000">HTREEITEM handle = tc.GetSelectedItem();</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">TBaseForTreeItem *obj = (TBaseForTreeItem*)tc.GetItemData(handle);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">TVehicleGroup *vg = dynamic_cast&lt;TVehicleGroup*>(obj);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">if (vg != NULL) {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; // Do something</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">} else {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; TVehicle *v = dynamic_cast&lt;TVehicle*>(obj);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; if (v != NULL) {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Do something</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; }</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">}</FONT></TT>
+<BR>&nbsp;
+<LI>
+If rtti is not enabled, we can rely on C++ inheritance and do the following:</LI>
+</UL>
+
+<UL>
+<UL>
+<LI>
+Define an <TT><FONT COLOR="#CC0000">enum treeItem { tiBase, tiVehicleGroup,
+tiVehicle, ... }</FONT></TT>.</LI>
+
+<LI>
+Add a <TT><FONT COLOR="#CC0000">virtual int GetId(void)</FONT></TT> member
+function to a TBaseForTreeItem and all derived classes.</LI>
+
+<LI>
+Implement this function in each class and return a different enum constant
+(based on a class type).</LI>
+</UL>
+With this modifications, it is possible to get the correct pointer to an
+object associated with a tree item using the following:
+
+<P><TT><FONT COLOR="#CC0000">HTREEITEM handle = tc.GetSelectedItem();</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">TBaseForTreeItem *obj = (TBaseForTreeItem*)tc.GetItemData(handle);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">switch (obj->GetId()) {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; case tiVehicleGroup:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TVehicleGroup *vg = (TVehicleGroup*)obj;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Do something</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+break;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; case tiVehicle:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TVehicle *v = (TVehicle*)obj;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Do something</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+break;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">}</FONT></TT></UL>
+<B>Conclusion</B>
+
+<P>This technique can be used with all controls that allow a programmer
+to associate a DWORD with a control item (list boxes, combo boxes, listview
+etc.).
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

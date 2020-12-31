@@ -1,0 +1,381 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About MyListCtrl"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "MyListCtrl Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2004",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_MYLISTCTRL_DIALOG DIALOGEX 0, 0, 312, 334
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "MyListCtrl"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Add +10",IDC_BUTTON_ADDTEN,255,228,50,14
+    PUSHBUTTON      "&Clear",IDC_BUTTON_CLEAR,255,246,50,14
+    CONTROL         "&Full row select",IDC_CHECK_FULLROW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,170,250,61,10
+    CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_OWNERDATA | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,7,7,298,166
+    CONTROL         "Radio 1",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,177,41,10
+    CONTROL         "Image 1",IDC_CHECK_IMAGE1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,190,41,10
+    CONTROL         "Check 2",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,126,178,43,10
+    CONTROL         "Image 2",IDC_CHECK_IMAGE2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,126,191,41,10
+    CONTROL         "Push 3",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,242,178,38,10
+    CONTROL         "Image 3",IDC_CHECK_IMAGE3,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,242,191,41,10
+    CONTROL         "Progress bar",IDC_CHECK_PROGRESS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,231,55,10
+    CONTROL         "Win colors",IDC_CHECK_WINCOLORS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,266,49,10
+    CONTROL         "Normal style",IDC_CHECK_NOSTYLECHANGE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,88,266,54,10
+    LTEXT           "Default image list (column 1): ",IDC_STATIC,7,286,93,8
+    COMBOBOX        IDC_COMBO_IMAGELIST,103,283,48,51,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "No image seletion",IDC_CHECK_NOIMAGESEL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,249,72,10
+    CONTROL         "No button selection",IDC_CHECK_NOCHECKSELECTIOn,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,88,249,77,10
+    CONTROL         "No selection 1",IDC_CHECK_NOSEL1,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,204,61,10
+    CONTROL         "No selection 2",IDC_CHECK_NOSEL2,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,126,204,61,10
+    CONTROL         "No selection 3",IDC_CHECK_NOSEL3,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,244,204,61,10
+    COMBOBOX        IDC_COMBO_KEYFIND,7,313,71,83,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Colors",IDC_BUTTON_COLORS,255,264,50,14
+    LTEXT           "Progress border:",IDC_STATIC,79,232,52,8
+    COMBOBOX        IDC_COMBO_PROGBORDER,135,230,57,70,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Grid",IDC_CHECK_GRID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,170,266,29,10
+    CONTROL         "Enable column navigation",IDC_CHECK_COLUMNNAVIGATION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,285,97,10
+    LTEXT           "Key search in:",IDC_STATIC,7,302,50,8
+    CONTROL         "&Edit on enter",IDC_CHECK_EDITONENTER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,110,304,56,10
+    CONTROL         "Edit on F2",IDC_CHECK_EDITONF2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,181,304,48,10
+    CONTROL         "Edit on double click",IDC_CHECK_EDITONDBLCLICK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,110,317,78,10
+    PUSHBUTTON      "&Redraw",IDC_BUTTON_FULLREDRAW,255,302,50,14
+    CONTROL         "Edit on writing",IDC_CHECK_EDITONWRITING,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,197,317,60,10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "MyListCtrl MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "MyListCtrl\0"
+            VALUE "LegalCopyright", "Copyright (C) 2004\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "MyListCtrl.EXE\0"
+            VALUE "ProductName", "MyListCtrl Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_MYLISTCTRL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 305
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 327
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_MYLISTCTRL_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_IMAGELIST, 0x403, 6, 0
+0x614c, 0x6772, 0x0065, 
+    IDC_COMBO_IMAGELIST, 0x403, 6, 0
+0x6d53, 0x6c61, 0x006c, 
+    IDC_COMBO_IMAGELIST, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO_KEYFIND, 0x403, 15, 0
+0x6553, 0x646e, 0x7420, 0x206f, 0x6170, 0x6572, 0x746e, "\000" 
+    IDC_COMBO_KEYFIND, 0x403, 15, 0
+0x7543, 0x7272, 0x6e65, 0x2074, 0x6f63, 0x756c, 0x6e6d, "\000" 
+    IDC_COMBO_KEYFIND, 0x403, 9, 0
+0x6f43, 0x756c, 0x6e6d, 0x3120, "\000" 
+    IDC_COMBO_KEYFIND, 0x403, 9, 0
+0x6f43, 0x756c, 0x6e6d, 0x3220, "\000" 
+    IDC_COMBO_KEYFIND, 0x403, 9, 0
+0x6f43, 0x756c, 0x6e6d, 0x3320, "\000" 
+    IDC_COMBO_PROGBORDER, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO_PROGBORDER, 0x403, 10, 0
+0x4445, 0x4547, 0x425f, 0x4d55, 0x0050, 
+    IDC_COMBO_PROGBORDER, 0x403, 12, 0
+0x4445, 0x4547, 0x455f, 0x4354, 0x4548, 0x0044, 
+    IDC_COMBO_PROGBORDER, 0x403, 12, 0
+0x4445, 0x4547, 0x525f, 0x4941, 0x4553, 0x0044, 
+    IDC_COMBO_PROGBORDER, 0x403, 12, 0
+0x4445, 0x4547, 0x535f, 0x4e55, 0x454b, 0x004e, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About MyListCtrl..."
+    IDS_EMPTYMESS           "There are no items to show in this view."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Swedish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)
+#ifdef _WIN32
+LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_COLOR DIALOG DISCARDABLE  0, 0, 243, 218
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST_COLORS,"SysListView32",LVS_REPORT | 
+                    LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,29,229,184
+    LTEXT           "This list has 256*256*256 = 16,777,216 and uses almost no memory at all :-).",
+                    IDC_STATIC,7,7,229,18
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG_COLOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\MyListCtrl.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\MyListCtrl.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+IDB_BITMAP2             BITMAP  DISCARDABLE     "res\\bitmap2.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+IDR_MANIFEST            RT_MANIFEST DISCARDABLE "mylistctrl.exe.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_HEADERMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Header menu"
+    BEGIN
+        MENUITEM "Column 1",                    ID_HEADERMENU_COLUMN1
+        , CHECKED
+        MENUITEM "Column 2",                    ID_HEADERMENU_COLUMN2
+        , CHECKED
+        MENUITEM "Column 3",                    ID_HEADERMENU_COLUMN3
+        , CHECKED
+    END
+END
+
+#endif    // Swedish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\MyListCtrl.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

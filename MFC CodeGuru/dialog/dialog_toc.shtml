@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Zafir Anjum">
+<title>Dialog - Table of Contents</title>
+<meta Name="description" Content="Source code for various types of dialogs">
+<meta Name="keywords" Content="SPLASH COLOR FILE DIRECTORY">
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><h1><font COLOR="#FF0000">Dialog</font></h1>
+    </td>
+    <td></td>
+    <td width="10%"></td>
+    <td align="right"><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<hr>
+
+This section is now being maintained by <A HREF="mailto:nikolay@jriver.com">Nikolay Sokratov</A>.
+
+<ul>
+  <li><a HREF="splash.shtml">Splash Screen with 256 color support</a></li>
+  <li><a HREF="dir_dialog.shtml">Class to select directory - Girish Bharadwaj</a></li>
+  <li><a HREF="custom_color.shtml">Color Dialog with Persistent Custom Colors - Roger Onslow</a></li>
+  <li><a HREF="font_dialog.shtml">Font dialog with custom text preview &amp; color - Roger
+    Onslow</a></li>
+  <li><a HREF="credits_dialog.shtml">Scrolling credits dialog - Mark Findlay</a></li>
+  <li><a HREF="drag_dialog.shtml">Dragging a dialog by clicking anywhere on it - Craig Lucas</a></li>
+  <li><a HREF="override_fontdlg.shtml">Customizing the font dialog - Petr Novotny</a></li>
+  <li><a HREF="modeless_to_modal.shtml">Convert modeless dialogs to modal - Sushil Saxena</a></li>
+  <li><a HREF="ccmduidialog.shtml">Using ON_UPDATE_COMMAND_UI with dialogs - James Hebben</a></li>
+  <li><a HREF="dialog_updateui.shtml">Using ON_UPDATE_COMMAND_UI with dialogs (2) - Tim McColl</a></li>
+  <li><a HREF="animated_dialog.shtml">CDialog using animated control - Ran Almog</a></li>
+  <li><a HREF="browse_shell_namespace.shtml">Class for Browsing shell namespace with your own
+    dialog - Selom Ofori</a></li>
+  <li><a HREF="../controls/progress_wnd.shtml">Showing progress in a Dialog - Chris Maunder</a></li>
+  <li><a HREF="dialogspl.shtml">Dialog with Splash Screen Example Code - Kirk Stowell</a></li>
+  <li><a HREF="bitmap_open.shtml">Open Dialog with Bitmap Preview - Luis Ortega</a></li>
+  <li><a HREF="cmdlg.shtml">Costumizing CFileDialog - Christian Skovdal Andersen</a></li>
+  <li><a HREF="constraint.shtml">Attaching Elements to Borders - Joachim Raidl</a></li>
+  <li><a HREF="toolbars.shtml">Toolbars and Statusbars on Dialogs - Cyril Zekser</a></li>
+  <li><a HREF="split_in_dlg.shtml">CSplitterWnd in a Dialog based Application - Gerd Klevesaat</a></li>
+  <li><a href="resizing_dlg.shtml">Sizable dialogs at its easiest - Hans Buehler</a></li>
+  <li><a href="dialogbar_init_ddx.shtml">Enhacing CDialogBar with InitDialog and DDX - Alger
+    Pike</a></li>
+  <li><a href="resizing_dlg_2.shtml">Resizable Dialog Box - Eli Vingot</a></li>
+  <li><a href="dlgctrls_help_in_status.shtml">Display help for dialog controls on the status bar - Nikolay Sokratov</a></li>
+  <li><a href="dlg_layout_mgr.shtml">A Simple Dialog Layout Manager - Erwin Tratar</a></li>
+  <li><a href="dlg_back_text_color.shtml">Simple way to change dialog's background and text colors - Nikolay Sokratov</a></li>
+  <li><a href="dynamic_splash_screen.shtml">Splash screen with text on it that uses its own thread - Markus Loibl</a></li>
+  <li><a href="tooltips_in_dlg.shtml">Tooltips for dialog controls - Dave Bixler</a></li>
+  <li><a href="dir_picker.shtml">Directory Picker Dialog - Venkat Gopala</a></li>
+</ul>
+
+<ul>
+  DDX
+  <li><a HREF="ddx_phone.shtml">Parse phone fields - Jeff Lundgren</a></li>
+  <li><a HREF="ddx_ipaddress.shtml">Parse IP addresses - Nikolay Sokratov</a></li>
+</ul>
+
+<hr align="center">
+
+<table COLS="3" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="34%"><p align="center"><font SIZE="-2">© 1997 - 1998 Zafir Anjum</font> </td>
+    <td WIDTH="33%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - Class for Browsing shell namespace with your own dialog</TITLE>
+</HEAD>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Class for Browsing shell namespace with your own dialog
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:sofori@chat.carleton.ca">Selom Ofori (a.k.a SubRosa)</A>.
+
+
+
+<p><img src="browse_shell_namespace1.gif"></p>
+<p><img src="browse_shell_namespace2.gif"></p>
+
+<p>CShellTree Version 1.02 (any previous unversioned copies are older/inferior). Please 
+see <a href="http://chat.carleton.ca/~sofori">http://chat.carleton.ca/~sofori</a> for 
+updates and method descriptions. Thanks to everybody who reported/fixed some of the
+bugs and to those who requested features. 
+
+<p>Created with MSVC 5, tested under Win95 OSR2 and WinNT 4
+<br>
+
+<P>Anybody who is interested in having a ShellFolder tree directly in his or her
+dialog box has probably tried to come to grips with MFCENUM. MFCENUM is pretty
+easy to understand, but only if you go through the pain of trying to modify the code 
+to work with yours. CShellTree contains the important parts of MFCENUM that deals with
+browsing the shell namespace.
+
+<P>CShellTree which inherits CTreeCtrl. After you initialize the tree with the Shell Folders
+the only other interaction the Shell 'engine' has with the tree control is through TVN_ITEMEXPANDING
+(when the user clicks on the plus sign or double clicks on the folder).
+
+<P>Operations:
+
+<PRE><TT><FONT COLOR="#990000">	// Initializes the treeview with "mycomputer" etc
+	void	PopulateTree();							
+
+	// Initializes the treeview starting with a special folder as root
+	// See the SHGetSpecialFolderLocation() for constants and descriptions
+	void	PopulateTree(int SpecialFolderID);							
+
+	// Must be called from OnItemExpanding(), message TVN_ITEMEXPANDING
+	void	OnFolderExpanding(NMHDR* pNMHDR, LRESULT* pResult);		
+
+	// Frees memory allocated for the shell object. message TVN_DELETEITEM
+	void	OnDeleteShellItem(NMHDR* pNMHDR, LRESULT* pResult);		
+
+	// Must be called from OnRclick(). message NM_RCLICK
+	void	GetContextMenu(NMHDR* pNMHDR, LRESULT* pResult);			
+
+	// Must be called from OnSelChanged(), message TVN_SELCHANGED
+	BOOL	OnFolderSelected(NMHDR* pNMHDR, LRESULT* pResult, CString &szFolderPath);	
+
+	// Enables Folder Images in the tree control.
+	void	EnableImages();							
+
+	// Retrieves the path of the Selected Folder.
+	BOOL	GetSelectedFolderPath(CString &szFolderPath);			
+	
+	// Opens the folder of the specified path. Does it's own error checking
+	void	TunnelTree(CString szFindPath)
+</FONT></TT></PRE>
+	
+
+<P>The General Steps are:
+
+<ol>
+<li>Include 'shelltree.cpp' and 'shelltree.h' into your project<br>
+    Include 'shellpidl.cpp' and 'shellpidl.h' into your project<br>
+    Include 'filename.cpp' and 'filename.h' into your project<br>
+
+<PRE><TT><FONT COLOR="#990000">	#include "Shelltree.h"
+	#include "shellpidl.h"
+	#include "filename.h"
+</FONT></TT></PRE>
+
+<li> Create a dialog or use an existing dialog (after you are familar with CShellTree)</li><br><br>
+<li> Add a treecontrol to your dialog.
+<PRE><TT><FONT COLOR="#990000">
+      CShellTree* m_TreeCtl;
+</FONT></TT></PRE>
+
+<p>Do not create member variables of the treecontrol using classwizard. Instead open the header
+file of the dialog class.
+<br><br>
+
+<li>In your OnInitDialog(), a callback to the WM_INITDIALOG message, initialize your treecontrol 
+
+<PRE><TT><FONT COLOR="#990000">BOOL CTreeSelect::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	// TODO: Add extra initialization here
+	m_TreeCtl = (CShellTree*) GetDlgItem(IDC_SHELLTREE); //replace IDC_SHELLTREE with your control's ID
+	ASSERT(m_TreeCtl);
+
+	m_TreeCtl->EnableImages();	//enable images
+	m_TreeCtl->PopulateTree();	//populate for the with Shell Folders for the first time
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+</FONT></TT></PRE>
+
+
+<P><b>NOTE:</b> REQUIRED. CShellTree handles the images for you. DO NOT attach an ImageList to CSHellTree. This internal imagelist
+      is a handle to the system image list and uses it directly. Using CImageList will result in the 
+      system imagelist being destroyed after your application exits.
+
+<P>The call
+<PRE><TT><FONT COLOR="#990000">		m_TreeCtl->EnableImages(); 
+</FONT></TT></PRE>
+
+      creates and attaches an image list to the Tree Control
+
+<P>To initialize the ShellFolders you call 
+
+<PRE><TT><FONT COLOR="#990000">	m_TreeCtl->PopulateTree();
+</FONT></TT></PRE>
+
+<P>This fills it with the starting folders like "My Computer","network neighbourhood etc"</li><br><br>
+
+
+<li>It is very important that you create OnItemExpanding(), a callback to TVN_ITEMEXPANDING.
+   Otherwise your shell would be pretty much dead.
+
+<PRE><TT><FONT COLOR="#990000">void CTreeSelect::OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	m_TreeCtl->FolderExpanding(pNMHDR,pResult);
+	*pResult = 0;
+}
+</FONT></TT></PRE>
+
+
+<P><b>Comments:</b> REQUIRED. The FolderExpanding() method of CShellTree does the dirty work of 
+          adding folder nodes to the tree control. It takes the same paramters as your 
+          OnItemExpanding, so all you have to do is pass the paramters along.
+		  </li><br><br>
+
+
+<li> If you want a popup menu to be active, create a OnRclick(), a callback to NM_RCLICK. This
+   popup is the same as the one in windows explorer. 
+
+<PRE><TT><FONT COLOR="#990000">void CTreeSelect::OnRclick(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	// TODO: Add your control notification handler code here
+	m_TreeCtl->FolderPopup(pNMHDR,pResult);
+	*pResult = 0;
+}
+</FONT></TT></PRE>
+
+<P><b>Comments:</b> Takes the same paramters as OnRclick. All you do is pass on the parameters to
+          the FolderPopup() method of CShellTree. The popup is handled by the system.
+		  </li><br><br>
+
+<li> CShellTree expects you to keep track of the filepath in your OnSelChanged(), a callback to
+   TVN_SELCHANGED. CShellTree provides a method 
+
+<PRE><TT><FONT COLOR="#990000">	FolderSelected(NMHDR* pNMHDR, LRESULT* pResult, CString &szFolderPath)
+</FONT></TT></PRE>
+
+<P>   intended to by called from your OnSelChanged() callback function. The CString object will contain
+   the path of that folder selected if FolderSelected() returns TRUE. If it returns FALSE, the
+   node selected isn't part of the filesystem and has no path.
+
+<P><b>Comments:</b> Use this function if you need to set the path in a corresponding combobox or editwindow.
+
+<PRE><TT><FONT COLOR="#990000">void CTreeSelect::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	CString SelPath;
+	if(m_TreeCtl->FolderSelected(pNMHDR,pResult,SelPath))
+		MessageBox(SelPath);
+	*pResult = 0;
+}
+</FONT></TT></PRE>
+
+<P><b>Comments:</b> The above code displays the path of the Folder selected if it's in the filesystem.
+		  </li><br><br>
+
+<li>You must allow CShellTree to release the memory allocated for the Shellobjects. in your
+   OnDeleteItem(), a callback to TVN_DELETEITEM, CShellTree provides a method
+
+<PRE><TT><FONT COLOR="#990000">	void	OnDeleteShellItem(NMHDR* pNMHDR, LRESULT* pResult);
+</FONT></TT></PRE>
+
+<p>You absolutely <b>must</b> call this method or your project will leak memory
+
+<PRE><TT><FONT COLOR="#990000">void CTreeExampleDlg::OnDeleteitem(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	m_TreeCtl->OnDeleteShellItem(pNMHDR,pResult);
+	*pResult = 0;
+}
+</FONT></TT></PRE>
+
+</ol>
+
+<h4>MISC NOTES:</h4>
+
+<ol>
+<li>void CShellTree::TunnelTree(CString szFindPath) requires that you
+   implement the TVN_SELCHANGED message handler. TunnelTree will just
+   just not work if you do NOT implement it. Works only on folders under 
+   "MY COMPUTER". This means local drives and mapped network drives. No 
+   network neighbourhood or whatever
+
+<li>void CShellTree::PopulateTree(int nSpecialFolder) will start the tree at
+   a special folder location. See ::ShBrowseForFolder() and ::ShGetSpecialFolderLocation().
+   CShellTree::TunnelTree() will not work if you use this method to initialize the tree.
+</ol>
+
+<P>BONUS: You can get the path of the Selected Node by calling GetSelectedFolderPath(). It will
+       return TRUE if the selected Folder is part of the filesystem. Returns false if an item
+       hasn't been selected or the Folder is not part of the filesystem. eg. "My Computer"
+
+<h4>HISTORY:</h4>
+v1.02
+<ul>
+<li>Fixed a skipped initialization of a variable that caused TunnelTree() to crash on WinNT
+  if the folder didn't have any subfolders
+<li>Added TunnelTree(CString szFindPath) and PopulateTree(int SpecialFolder) methods
+<li>Implemented a required call to OnDeleteShellItem(); TVN_DELETEITEM, that released the memory
+  allocated by that shell folder
+</ul>
+
+<P><A HREF="browse_shell_namespace_src.zip">Download source files</A>
+<P><A HREF="browse_shell_namespace_proj.zip">Download project files</A>
+
+<p>Last updated 6 April 1998
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

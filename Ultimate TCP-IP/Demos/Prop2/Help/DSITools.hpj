@@ -1,0 +1,82 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+; Help Project File for New Help Projects
+;
+;  This file is maintained by RoboHELP.  Do not modify this file directly.
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+[OPTIONS]
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+; The Options section contains the following information:
+;
+; The optional BMROOT=entry sets the directories in which the Help Compiler
+; will look for graphics.
+;
+; The CONTENTS=tells WinHelp which topic contains the contents.
+;
+; The TITLE=is displayed in the Title Bar of WINHELP.EXE
+;
+; The BUILD=setting allows you to create different Help systems from
+; the same source file.
+;
+; The COMPRESS=option tells the Help Compiler how much to compress
+; the Help file.
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ERRORLOG=DSITools.err
+LCID=0x409 0x0 0x0 ; English (United States)
+REPORT=Yes
+TITLE=Dundas Software Internet Tools Demo
+BUILD=WINDOWS
+HLP=DSITools.hlp
+
+[FILES]
+DSITools.rtf
+Context.RTF
+
+[BUILDTAGS]
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+; The Build Tags section specifies to the Help Compiler the names
+; of all the valid build tags used in this Help project.
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+WINDOWS
+
+[ALIAS]
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+; The Alias section sets up aliases for Topic IDs in your Help system.
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+[MAP]
+#include <DSITools.hh>
+#include <Context.HH>
+
+[WINDOWS]
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+; The Windows section contains all of the information about the windows
+; in a Help project.
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+;Gloss="Glossary",(100,100,350,350),0,(255,255,255),(255,255,255)
+Main="",,29188
+Second="",(584,102,410,870),20740,(r14745599),(r14745599),f2
+
+[CONFIG]
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+; The Config section defines macros which will run at startup.
+;* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+RegisterRoutine(`Inetwh32.dll',`INETWH_Initialize',`')
+RegisterRoutine(`Inetwh32.dll',`Internet',`S')
+RegisterRoutine(`Inetwh32.dll',`Inet',`S')
+INETWH_Initialize()
+
+[CONFIG-Second]
+RegisterRoutine(`Inetwh32.dll',`INETWH_Initialize',`')
+RegisterRoutine(`Inetwh32.dll',`Internet',`S')
+RegisterRoutine(`Inetwh32.dll',`Inet',`S')
+INETWH_Initialize()
+
+[BAGGAGE]
+;
+;
+;
+DIALOG.CID

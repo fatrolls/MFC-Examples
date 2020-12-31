@@ -1,0 +1,103 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - CAnimateCtrl() Example Code</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+CAnimateCtrl() Example Code...
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:kstowel@sprynet.com">Kirk Stowell</A>.
+
+<!-- Sample image and source code/demo project -->
+<P><IMG SRC="avidemo.gif"></P>
+<p><A HREF="avidemo.zip">Download Example Project - (145 kb)</A></P>
+
+<br>
+
+<!-- The article... -->
+
+<p>Its pretty easy to implement an avi control. Follow these steps to add
+an avi animation control (CAnimateCtrl) to your dialog resource:
+
+<ul>
+
+<li>In the resource editor, click on the animate control icon, and place one
+on your dialog.</li>
+ 
+<li>Go into 'Class Wizard' and add a control name to your newly inserted
+component. example:</li>
+<FONT COLOR="#990000"><TT><PRE>CAnimateCtrl m_avi;
+</tt></PRE></FONT>
+<p>this is placed in your .h file.</p>
+
+<li>Next, import the .avi file into your project. To do this, highlite your
+resource project name, and right click in the resource view window. Select 
+import. Set the filter to *.avi, and select the avi file you want to import.</li> 
+
+<li>Enter "AVI" for resource type in the custom resource type dialog box.</li> 
+
+<li>Add the following code to your project:</li>
+
+<FONT COLOR="#990000"><TT><PRE>
+ /////////////////////////////////////////////////////////////////////////////
+ // CAvidemoDlg message handlers
+
+ BOOL CAvidemoDlg::OnInitDialog()
+ {
+    CDialog::OnInitDialog();
+    ...
+    ...
+    // TODO: Add extra initialization here
+    m_avi.Open( IDR_AVI ); // open the avi resource.
+    m_avi.Play( 0, -1,-1 );play avi resource.
+
+    // return TRUE unless you set the focus to a control
+    return TRUE;
+  }
+</tt></PRE></FONT>
+
+</ul>
+
+<!-- Remember to update this -->
+<p>Last updated: 29 March 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

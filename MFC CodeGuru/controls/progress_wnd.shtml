@@ -1,0 +1,152 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - A Popup Progress Window</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A Popup Progress Window
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>. 
+
+<!-- Sample image and source code/demo project -->
+<p>
+<IMG SRC="progress_wnd.gif"><A HREF="progress_wnd.zip">Download source files</A> (5 Kb)
+or a <A HREF="progress_wnd_demo.zip">Sample project</A> (38 Kb)
+<br>
+
+<!-- The article... -->
+
+<p>
+There are many occasions where it's nice to have a poopup window
+that shows the progress of a lengthy operation. Incorporating a 
+dialog resource with a progress control and cancel button, then 
+linking up the control messages for every project you wish to have
+the progress window can get monotonous and messy.</p>
+
+<p>The class <b>CProgressWnd</b> is a simple drop in window that
+contains a progress control, a cancel button and a text area for
+messages. The text area can display 4 lines of text as default,
+although this can be changed using CProgressWnd::SetWindowSize()
+(below)</p>
+
+
+<p><b>Construction</b></p>
+
+<PRE><TT><FONT COLOR="#990000">    CProgressWnd(); 
+    CProgressWnd(CWnd* pParent, LPCTSTR strTitle, BOOL bSmooth=FALSE);
+    BOOL Create(CWnd* pParent, LPCTSTR strTitle, BOOL bSmooth=FALSE);
+</FONT></TT></PRE>
+
+<p>
+Construction is either via the constructor or a two-step process using the
+constructor and the "Create" function. "pParent" is the parent of the progress
+window, "strTitle" is the window caption title. "bSmooth" will only be effective 
+if you have the header files and commctrl32.dll from IE 3.0 or above (no problems 
+for MS VC 5.0). It specifies whether the progress bar will be smooth or chunky. 
+</p>
+
+<p><b>Operations</b></p>
+<PRE><TT><FONT COLOR="#990000">    int  SetPos(int nPos);              // Same as CProgressCtrl
+    int  OffsetPos(int nPos);           // Same as CProgressCtrl
+    int  SetStep(int nStep);            // Same as CProgressCtrl
+    int  StepIt();                      // Same as CProgressCtrl
+    void SetRange(int nLower, int nUpper, int nStep = 1);
+                                        // Set min, max and step size
+
+    void Hide();                        // Hide the window
+    void Show();                        // Show the window
+    void Clear();                       // Clear the text and reset the progress bar
+    void SetText(LPCTSTR fmt, ...);     // Set the text in the text area
+
+    BOOL Cancelled()                    // Has the cancel button been pressed?
+
+    void SetWindowSize(int nNumTextLines, int nWindowWidth = 390);
+                                        // Sets the size of the window according to
+                                        // the number of text lines specifed and the
+                                        // desired window size in pixels.
+
+    void PeekAndPump(BOOL bCancelOnESCkey = TRUE, BOOL bModal = FALSE);  
+                                        // Message pumping, with options of allowing
+                                        // Cancel on ESC key, and modal operation only  
+</FONT></TT></PRE>
+
+<p>The PeekAndPump function allows messages to be pumped during long
+operations. The first parameter allows the window to be cancelled by pressing
+the ESC key, while the second parameter will allow you to make the window behave
+as a modal window, meaning messages will only be passed to the progress window
+(and its children), and not the main application itself.
+
+<p>To use the bar, just do something like:
+
+<PRE><TT><FONT COLOR="#990000">
+    CProgressWnd wndProgress(this, "Progress");
+
+    wndProgress.SetRange(0,5000);
+    wndProgress.SetText("Processing...");         
+
+    for (int i = 0; i < 5000; i++) {
+        wndProgress.StepIt();
+        wndProgress.PeekAndPump();
+
+        if (wndProgress.Cancelled()) {
+            MessageBox("Progress Cancelled");
+            break;
+        }
+    }    
+</FONT></TT></PRE>
+
+or it can be done two stage as:
+
+<PRE><TT><FONT COLOR="#990000">
+    CProgressWnd wndProgress;
+    
+    if (!wndProgress.Create(this, "Progress"))
+        return;
+
+    wndProgress.SetRange(0,5000);
+    wndProgress.SetText("Processing...");         
+</FONT></TT></PRE>
+
+
+<p>Last updated: 18 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

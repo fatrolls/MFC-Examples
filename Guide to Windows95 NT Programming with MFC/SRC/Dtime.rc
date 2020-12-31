@@ -1,0 +1,1231 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CDATE DIALOG DISCARDABLE  0, 0, 137, 51
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Tag",IDC_DAY_PRMPT,8,12,18,8
+    LTEXT           "Monat",IDC_MONTH_PRMPT,49,12,24,8
+    LTEXT           "Jahr",IDC_YEAR_PRMPT,107,12,18,8
+    EDITTEXT        IDC_DAY,2,20,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,19,20,11,13
+    COMBOBOX        IDC_MONTH,34,20,59,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,95,20,38,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_YEAR,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,122,20,9,13
+    CONTROL         "&Ungültig",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,4,37,40,10
+    DEFPUSHBUTTON   "OK",IDOK,71,40,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,103,40,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    14,11
+END
+
+IDD_CDATE_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 136, 39
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Tag",IDC_DAY_PRMPT,9,0,18,8
+    LTEXT           "Monat",IDC_MONTH_PRMPT,50,0,24,8
+    LTEXT           "Jahr",IDC_YEAR_PRMPT,108,0,18,8
+    EDITTEXT        IDC_DAY,3,8,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,20,8,11,13
+    COMBOBOX        IDC_MONTH,35,8,59,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,96,8,38,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_YEAR,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,123,7,9,13
+    CONTROL         "&Ungültig",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,25,39,10
+    DEFPUSHBUTTON   "OK",IDOK,72,28,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,104,28,29,9
+END
+
+IDD_CLDATE DIALOG DISCARDABLE  0, 0, 128, 85
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Tag",IDC_DAY_PRMPT,8,10,18,9
+    LTEXT           "Monat",IDC_MONTH_PRMPT,47,10,24,9
+    LTEXT           "Jahr",IDC_YEAR_PRMPT,103,10,18,9
+    EDITTEXT        IDC_DAY,2,20,27,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,17,19,9,13
+    COMBOBOX        IDC_MONTH,32,20,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,89,20,37,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_YEAR2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,116,20,9,13
+    LTEXT           "Stunde",IDC_HOUR_PRMPT,4,36,23,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,34,36,23,8
+    LTEXT           "Sekunde",IDC_SECOND_PRMPT,62,36,27,8
+    LTEXT           "Millisek.",IDC_MILLISECOND_PRMPT,96,36,31,8
+    EDITTEXT        IDC_HOUR,2,45,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,15,20,9,11
+    EDITTEXT        IDC_MINUTE,32,45,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,44,47,9,11
+    EDITTEXT        IDC_SECOND,64,45,27,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,72,20,9,11
+    EDITTEXT        IDC_MILLISECOND,94,45,32,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,115,46,9,11
+    COMBOBOX        IDC_TIMEFRAME,3,71,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Ungültig",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,75,60,41,11
+    LTEXT           "Zeitzone",IDC_TIMEFRAME_PRMPT,11,61,34,9
+    DEFPUSHBUTTON   "OK",IDOK,63,74,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,96,74,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    15,10
+END
+
+IDD_CLDATE_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 128, 75
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Tag",IDC_DAY_PRMPT,8,0,18,9
+    LTEXT           "Monat",IDC_MONTH_PRMPT,47,0,24,9
+    LTEXT           "Jahr",IDC_YEAR_PRMPT,98,0,18,9
+    EDITTEXT        IDC_DAY,2,10,27,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,17,9,9,13
+    COMBOBOX        IDC_MONTH,32,10,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,89,10,37,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_YEAR2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,116,10,9,13
+    LTEXT           "Stunde",IDC_HOUR_PRMPT,4,26,22,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,34,26,23,8
+    LTEXT           "Sekunde",IDC_SECOND_PRMPT,62,26,27,8
+    LTEXT           "Millisek.",IDC_MILLISECOND_PRMPT,96,26,31,8
+    EDITTEXT        IDC_HOUR,2,35,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,15,10,9,11
+    EDITTEXT        IDC_MINUTE,32,35,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,44,37,9,11
+    EDITTEXT        IDC_SECOND,64,35,27,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,72,10,9,11
+    EDITTEXT        IDC_MILLISECOND,94,35,32,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,115,36,9,11
+    COMBOBOX        IDC_TIMEFRAME,3,60,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Ungültig",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,75,50,39,11
+    LTEXT           "Zeitzone",IDC_TIMEFRAME_PRMPT,11,51,34,9
+    DEFPUSHBUTTON   "OK",IDOK,63,64,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,96,64,29,9
+END
+
+IDD_CLTIMEOFDAY DIALOG DISCARDABLE  0, 0, 122, 45
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Stunde",IDC_HOUR_PRMPT,3,10,24,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,31,10,23,8
+    LTEXT           "Sekunde",IDC_SECOND_PRMPT,59,10,27,8
+    LTEXT           "Millisek.",IDC_MILLISECOND_PRMPT,90,10,24,8
+    EDITTEXT        IDC_HOUR,3,19,26,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,12,20,11,11
+    EDITTEXT        IDC_MINUTE,31,19,25,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,39,19,11,11
+    EDITTEXT        IDC_SECOND,59,19,26,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,71,19,9,11
+    EDITTEXT        IDC_MILLISECOND,90,19,30,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,105,19,9,11
+    CONTROL         "&Ungültig",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,33,39,11
+    DEFPUSHBUTTON   "OK",IDOK,59,34,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,91,34,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    14,9
+END
+
+IDD_CLTIMEOFDAY_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 123, 34
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Stunde",IDC_HOUR_PRMPT,3,0,24,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,31,0,23,8
+    LTEXT           "Sekunde",IDC_SECOND_PRMPT,59,0,28,8
+    LTEXT           "Millisek.",IDC_MILLISECOND_PRMPT,93,0,30,8
+    EDITTEXT        IDC_HOUR,3,9,26,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,12,10,11,11
+    EDITTEXT        IDC_MINUTE,31,9,25,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,39,9,11,11
+    EDITTEXT        IDC_SECOND,59,9,26,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,71,9,9,11
+    EDITTEXT        IDC_MILLISECOND,90,9,30,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,105,9,9,11
+    CONTROL         "&Ungültig",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,23,37,11
+    DEFPUSHBUTTON   "OK",IDOK,59,24,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,92,24,29,9
+END
+
+IDD_CLTIMESPAN DIALOG DISCARDABLE  0, 0, 159, 45
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Tag",IDC_DAY_PRMPT,6,10,16,8
+    LTEXT           "Stunde",IDC_HOUR_PRMPT,44,10,22,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,72,10,22,8
+    LTEXT           "Sekunde",IDC_SECOND_PRMPT,98,10,27,8
+    LTEXT           "Millisek.",IDC_MILLISECOND_PRMPT,129,10,30,8
+    EDITTEXT        IDC_DAY,1,19,39,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,16,19,9,11
+    EDITTEXT        IDC_HOUR,44,19,25,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,55,18,9,11
+    EDITTEXT        IDC_MINUTE,70,19,28,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,83,18,9,11
+    EDITTEXT        IDC_SECOND,100,19,26,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,111,18,9,11
+    EDITTEXT        IDC_MILLISECOND,127,19,30,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,145,18,9,11
+    CONTROL         "&Ungültig",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,25,34,38,9
+    DEFPUSHBUTTON   "OK",IDOK,94,34,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,127,34,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    16,9
+END
+
+IDD_CLTIMESPAN_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 159, 35
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Tag",IDC_DAY_PRMPT,6,0,16,8
+    LTEXT           "Stunde",IDC_HOUR_PRMPT,44,0,22,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,70,0,21,8
+    LTEXT           "Sekunde",IDC_SECOND_PRMPT,95,0,27,8
+    LTEXT           "Millisek.",IDC_MILLISECOND_PRMPT,129,0,30,8
+    EDITTEXT        IDC_DAY,1,9,39,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_DAY3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,16,9,9,11
+    EDITTEXT        IDC_HOUR,44,9,25,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,55,8,9,11
+    EDITTEXT        IDC_MINUTE,70,9,28,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,83,8,9,11
+    EDITTEXT        IDC_SECOND,100,9,26,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,111,8,9,11
+    EDITTEXT        IDC_MILLISECOND,127,9,30,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,145,8,9,11
+    CONTROL         "&Ungültig",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,25,24,41,9
+    DEFPUSHBUTTON   "OK",IDOK,94,24,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,127,24,29,9
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CDATE DLGINIT
+BEGIN
+    IDC_MONTH, 0x403, 8, 0
+0x614a, 0x756e, 0x7261, 0x0079, 
+    IDC_MONTH, 0x403, 9, 0
+0x6546, 0x7262, 0x6175, 0x7972, "\000" 
+    IDC_MONTH, 0x403, 6, 0
+0x614d, 0x6372, 0x0068, 
+    IDC_MONTH, 0x403, 6, 0
+0x7041, 0x6972, 0x006c, 
+    IDC_MONTH, 0x403, 4, 0
+0x614d, 0x0079, 
+    IDC_MONTH, 0x403, 5, 0
+0x754a, 0x656e, "\000" 
+    IDC_MONTH, 0x403, 5, 0
+0x754a, 0x796c, "\000" 
+    IDC_MONTH, 0x403, 7, 0
+0x7541, 0x7567, 0x7473, "\000" 
+    IDC_MONTH, 0x403, 10, 0
+0x6553, 0x7470, 0x6d65, 0x6562, 0x0072, 
+    IDC_MONTH, 0x403, 8, 0
+0x634f, 0x6f74, 0x6562, 0x0072, 
+    IDC_MONTH, 0x403, 9, 0
+0x6f4e, 0x6576, 0x626d, 0x7265, "\000" 
+    IDC_MONTH, 0x403, 9, 0
+0x6544, 0x6563, 0x626d, 0x7265, "\000" 
+    0
+END
+
+IDD_CLDATE DLGINIT
+BEGIN
+    IDC_MONTH, 0x403, 8, 0
+0x614a, 0x756e, 0x7261, 0x0079, 
+    IDC_MONTH, 0x403, 9, 0
+0x6546, 0x7262, 0x6175, 0x7972, "\000" 
+    IDC_MONTH, 0x403, 6, 0
+0x614d, 0x6372, 0x0068, 
+    IDC_MONTH, 0x403, 6, 0
+0x7041, 0x6972, 0x006c, 
+    IDC_MONTH, 0x403, 4, 0
+0x614d, 0x0079, 
+    IDC_MONTH, 0x403, 5, 0
+0x754a, 0x656e, "\000" 
+    IDC_MONTH, 0x403, 5, 0
+0x754a, 0x796c, "\000" 
+    IDC_MONTH, 0x403, 7, 0
+0x7541, 0x7567, 0x7473, "\000" 
+    IDC_MONTH, 0x403, 10, 0
+0x6553, 0x7470, 0x6d65, 0x6562, 0x0072, 
+    IDC_MONTH, 0x403, 8, 0
+0x634f, 0x6f74, 0x6562, 0x0072, 
+    IDC_MONTH, 0x403, 9, 0
+0x6f4e, 0x6576, 0x626d, 0x7265, "\000" 
+    IDC_MONTH, 0x403, 9, 0
+0x6544, 0x6563, 0x626d, 0x7265, "\000" 
+    IDC_TIMEFRAME, 0x403, 4, 0
+0x4355, 0x0054, 
+    IDC_TIMEFRAME, 0x403, 3, 0
+0x5445, "\000" 
+    IDC_TIMEFRAME, 0x403, 6, 0
+0x6f4c, 0x6163, 0x006c, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_WEEKDAY1            "Sonntag"
+    IDS_WEEKDAY2            "Montag"
+    IDS_WEEKDAY3            "Dienstag"
+    IDS_WEEKDAY4            "Mittwoch"
+    IDS_WEEKDAY5            "Donnerstag"
+    IDS_WEEKDAY6            "Freitag"
+    IDS_WEEKDAY7            "Samstag"
+    IDS_ABR_WEEKDAY1        "So"
+    IDS_ABR_WEEKDAY2        "Mo"
+    IDS_ABR_WEEKDAY3        "Di"
+    IDS_ABR_WEEKDAY4        "Mi"
+    IDS_ABR_WEEKDAY5        "Do"
+    IDS_ABR_WEEKDAY6        "Fr"
+    IDS_ABR_WEEKDAY7        "Sa"
+    IDS_MONTH1              "Januar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MONTH2              "Februar"
+    IDS_MONTH3              "März"
+    IDS_MONTH4              "April"
+    IDS_MONTH5              "Mai"
+    IDS_MONTH6              "Juni"
+    IDS_MONTH7              "Juli"
+    IDS_MONTH8              "August"
+    IDS_MONTH9              "September"
+    IDS_MONTH10             "Oktober"
+    IDS_MONTH11             "November"
+    IDS_MONTH12             "Dezember"
+    IDS_ABR_MONTH1          "Jan"
+    IDS_ABR_MONTH2          "Feb"
+    IDS_ABR_MONTH3          "Mär"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABR_MONTH4          "Apr"
+    IDS_ABR_MONTH5          "Mai"
+    IDS_ABR_MONTH6          "Jun"
+    IDS_ABR_MONTH7          "Jul"
+    IDS_ABR_MONTH8          "Aug"
+    IDS_ABR_MONTH9          "Sep"
+    IDS_ABR_MONTH10         "Okt"
+    IDS_ABR_MONTH11         "Nov"
+    IDS_ABR_MONTH12         "Dez"
+    IDS_INVALID_DATE_RANGE  "Das eingegebene Datum liegt außerhalb des gültigen Bereichs"
+    IDS_INVALID_TIMESPAN_RANGE 
+                            "Die eingegebene Zeitspanne liegt außerhalb des gültigen Bereichs"
+    IDS_INVALID_TIMEOFDAY_RANGE 
+                            "Die eingegebene Tageszeit liegt außerhalb des gültigen Bereichs"
+    IDS_INVALID_DATE_MIN    "Das eingegebene Datum liegt vor dem erlaubten Datum"
+    IDS_INVALID_TIMESPAN_MIN 
+                            "Die eingegebene Zeitspanne ist kleiner als die erlaubte Zeitspanne"
+    IDS_INVALID_TIMEOFDAY_MIN 
+                            "Die eingegebene Tageszeit liegt vor der erlaubten Tageszeit"
+    IDS_INVALID_DATE_MAX    "Das eingegebene Datum liegt hinter dem erlaubten Datum"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_INVALID_TIMESPAN_MAX 
+                            "Die eingegebene Zeitspanne ist größer als die erlaubte Zeitspanne"
+    IDS_INVALID_TIMEOFDAY_MAX 
+                            "Die eingegebene Tageszeit liegt hinter der erlaubten Tageszeit"
+    IDS_CEYEAR              "%1 CE"
+    IDS_BCEYEAR             "%1 BCE"
+    IDS_LOCAL               "Lokal"
+    IDS_UTC                 "UTC"
+    IDS_ET                  "ET"
+    IDS_AM                  "a.m."
+    IDS_PM                  "p.s."
+    IDS_INVALID_DATE        "Es muß ein gültiges Datum eingegeben werden."
+    IDS_INVALID_TIMESPAN    "Es muß eine gültige Zeitspanne eingegeben werden."
+    IDS_INVALID_TIMEOFDAY   "Es muß eine gültige Tageszeit eingegeben werden."
+    IDS_INVALID_LDATE       "Es muß ein gültiges langes Datum eingegeben werden."
+    IDS_INVALID_LDATE_MIN   "Das eingegebene lange Datum liegt vor dem erlaubten Datum"
+    IDS_INVALID_LDATE_MAX   "Das eingegebene lange Datum liegt hinter dem erlaubtem Datum"
+    IDS_YEAR                "Jahr"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MONTH               "Monat"
+    IDS_DAY                 "Tag"
+    IDS_HOUR                "Stunde"
+    IDS_MINUTE              "Minute"
+    IDS_SECOND              "Sekunde"
+    IDS_MILLISECOND         "Millisekunde"
+    IDS_ABR_HOUR            "S"
+    IDS_ABR_MINUTE          "M"
+    IDS_ABR_SECOND          "s"
+    IDS_ABR_MILLISECOND     "ms"
+    IDS_TIMEFRAME           "Zeitzone"
+    IDS_ENTERED_INVALID_DATE 
+                            "Bitte geben Sie ein gültiges Datum ein. Ein mögliches ungültiges Datum liegt während der Einführung des gregorianischen Kalenders."
+    IDS_ENTERED_INVALID_LDATE 
+                            "Bitte geben Sie ein gültiges langes Datum ein. Ein mögliches ungültiges Datum liegt während der Einführung des gregorianischen Kalenders oder während des Beginns/Endes der Sommerzeit."
+    IDS_EDIT_TEXT           "..."
+    IDS_UNICODE_DEBUG       "(Unicode Debug Build)"
+    IDS_UNICODE_RELEASE     "(Unicode Release Build)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ASCII_DEBUG         "(Ascii Debug Build)"
+    IDS_ASCII_RELEASE       "(Ascii Release Build)"
+    IDS_SHAREWARE_CAPTION   "DTime v%1 %2"
+    IDS_TT_PUSHPIN          "sichtbar fixieren"
+    IDS_TT_MODIFY           "Ändern"
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Ireland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENI)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_EIRE
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CDATE_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 136, 39
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,9,0,18,8
+    LTEXT           "Month",IDC_MONTH_PRMPT,50,0,24,8
+    LTEXT           "Year",IDC_YEAR_PRMPT,108,0,18,8
+    EDITTEXT        IDC_DAY,3,8,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,20,8,11,13
+    COMBOBOX        IDC_MONTH,35,8,59,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,96,8,38,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_YEAR,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,123,7,9,13
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,25,36,10
+    DEFPUSHBUTTON   "OK",IDOK,72,28,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,104,28,29,9
+END
+
+IDD_CLDATE DIALOG DISCARDABLE  0, 0, 128, 85
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,8,10,18,9
+    LTEXT           "Month",IDC_MONTH_PRMPT,47,10,24,9
+    LTEXT           "Year",IDC_YEAR_PRMPT,103,10,18,9
+    EDITTEXT        IDC_DAY,2,20,27,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,17,19,9,13
+    COMBOBOX        IDC_MONTH,32,20,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,89,20,37,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_YEAR2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,116,20,9,13
+    LTEXT           "Hour",IDC_HOUR_PRMPT,4,36,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,34,36,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,62,36,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,91,36,36,8
+    EDITTEXT        IDC_HOUR,2,45,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,15,20,9,11
+    EDITTEXT        IDC_MINUTE,32,45,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,44,47,9,11
+    EDITTEXT        IDC_SECOND,64,45,27,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,72,20,9,11
+    EDITTEXT        IDC_MILLISECOND,94,45,32,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,115,46,9,11
+    COMBOBOX        IDC_TIMEFRAME,3,71,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,75,60,36,11
+    LTEXT           "Timeframe",IDC_TIMEFRAME_PRMPT,11,61,34,9
+    DEFPUSHBUTTON   "OK",IDOK,63,74,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,96,74,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    15,10
+END
+
+IDD_CLTIMEOFDAY DIALOG DISCARDABLE  0, 0, 122, 45
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Hour",IDC_HOUR_PRMPT,3,10,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,31,10,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,59,10,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,86,10,36,8
+    EDITTEXT        IDC_HOUR,3,19,26,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,12,20,11,11
+    EDITTEXT        IDC_MINUTE,31,19,25,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,39,19,11,11
+    EDITTEXT        IDC_SECOND,59,19,26,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,71,19,9,11
+    EDITTEXT        IDC_MILLISECOND,90,19,30,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,105,19,9,11
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,33,36,11
+    DEFPUSHBUTTON   "OK",IDOK,59,34,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,91,34,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    14,9
+END
+
+IDD_CLTIMESPAN DIALOG DISCARDABLE  0, 0, 159, 45
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,6,10,16,8
+    LTEXT           "Hour",IDC_HOUR_PRMPT,44,10,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,68,10,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,95,10,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,123,10,36,8
+    EDITTEXT        IDC_DAY,1,19,39,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,16,19,9,11
+    EDITTEXT        IDC_HOUR,44,19,25,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,55,18,9,11
+    EDITTEXT        IDC_MINUTE,70,19,28,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,83,18,9,11
+    EDITTEXT        IDC_SECOND,100,19,26,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,111,18,9,11
+    EDITTEXT        IDC_MILLISECOND,127,19,30,12,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,145,18,9,11
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,25,34,36,9
+    DEFPUSHBUTTON   "OK",IDOK,94,34,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,127,34,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    16,9
+END
+
+IDD_CDATE DIALOG DISCARDABLE  0, 0, 137, 51
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,8,12,18,8
+    LTEXT           "Month",IDC_MONTH_PRMPT,49,12,24,8
+    LTEXT           "Year",IDC_YEAR_PRMPT,107,12,18,8
+    EDITTEXT        IDC_DAY,2,20,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,19,20,11,13
+    COMBOBOX        IDC_MONTH,34,20,59,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,95,20,38,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_YEAR,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,122,20,9,13
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,4,37,36,10
+    DEFPUSHBUTTON   "OK",IDOK,71,40,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,103,40,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    14,11
+END
+
+IDD_CLDATE_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 128, 75
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,8,0,18,9
+    LTEXT           "Month",IDC_MONTH_PRMPT,47,0,24,9
+    LTEXT           "Year",IDC_YEAR_PRMPT,103,0,18,9
+    EDITTEXT        IDC_DAY,2,10,27,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_DAY2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,17,9,9,13
+    COMBOBOX        IDC_MONTH,32,10,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,89,10,37,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_YEAR2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,116,10,9,13
+    LTEXT           "Hour",IDC_HOUR_PRMPT,4,26,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,34,26,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,62,26,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,91,26,36,8
+    EDITTEXT        IDC_HOUR,2,35,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,15,10,9,11
+    EDITTEXT        IDC_MINUTE,32,35,26,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,44,37,9,11
+    EDITTEXT        IDC_SECOND,64,35,27,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,72,10,9,11
+    EDITTEXT        IDC_MILLISECOND,94,35,32,13,ES_MULTILINE
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,115,36,9,11
+    COMBOBOX        IDC_TIMEFRAME,3,60,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,75,50,36,11
+    LTEXT           "Timeframe",IDC_TIMEFRAME_PRMPT,11,51,34,9
+    DEFPUSHBUTTON   "OK",IDOK,63,64,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,96,64,29,9
+END
+
+IDD_CLTIMEOFDAY_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 123, 34
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Hour",IDC_HOUR_PRMPT,3,0,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,31,0,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,59,0,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,87,0,36,8
+    EDITTEXT        IDC_HOUR,3,9,26,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,12,10,11,11
+    EDITTEXT        IDC_MINUTE,31,9,25,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,39,9,11,11
+    EDITTEXT        IDC_SECOND,59,9,26,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,71,9,9,11
+    EDITTEXT        IDC_MILLISECOND,90,9,30,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,105,9,9,11
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,23,36,11
+    DEFPUSHBUTTON   "OK",IDOK,59,24,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,92,24,29,9
+END
+
+IDD_CLTIMESPAN_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 159, 35
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,6,0,16,8
+    LTEXT           "Hour",IDC_HOUR_PRMPT,44,0,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,68,0,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,95,0,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,123,0,36,8
+    EDITTEXT        IDC_DAY,1,9,39,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_DAY3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,16,9,9,11
+    EDITTEXT        IDC_HOUR,44,9,25,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_HOUR3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,55,8,9,11
+    EDITTEXT        IDC_MINUTE,70,9,28,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_MINUTE3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,83,8,9,11
+    EDITTEXT        IDC_SECOND,100,9,26,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_SECOND3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,111,8,9,11
+    EDITTEXT        IDC_MILLISECOND,127,9,30,12,ES_MULTILINE | ES_NUMBER
+    CONTROL         "Generic1",IDC_UPDOWN_MILLISECOND3,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,145,8,9,11
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,25,24,36,9
+    DEFPUSHBUTTON   "OK",IDOK,94,24,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,127,24,29,9
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CDATE DLGINIT
+BEGIN
+    IDC_MONTH, 0x403, 8, 0
+0x614a, 0x756e, 0x7261, 0x0079, 
+    IDC_MONTH, 0x403, 9, 0
+0x6546, 0x7262, 0x6175, 0x7972, "\000" 
+    IDC_MONTH, 0x403, 6, 0
+0x614d, 0x6372, 0x0068, 
+    IDC_MONTH, 0x403, 6, 0
+0x7041, 0x6972, 0x006c, 
+    IDC_MONTH, 0x403, 4, 0
+0x614d, 0x0079, 
+    IDC_MONTH, 0x403, 5, 0
+0x754a, 0x656e, "\000" 
+    IDC_MONTH, 0x403, 5, 0
+0x754a, 0x796c, "\000" 
+    IDC_MONTH, 0x403, 7, 0
+0x7541, 0x7567, 0x7473, "\000" 
+    IDC_MONTH, 0x403, 10, 0
+0x6553, 0x7470, 0x6d65, 0x6562, 0x0072, 
+    IDC_MONTH, 0x403, 8, 0
+0x634f, 0x6f74, 0x6562, 0x0072, 
+    IDC_MONTH, 0x403, 9, 0
+0x6f4e, 0x6576, 0x626d, 0x7265, "\000" 
+    IDC_MONTH, 0x403, 9, 0
+0x6544, 0x6563, 0x626d, 0x7265, "\000" 
+    0
+END
+
+IDD_CLDATE DLGINIT
+BEGIN
+    IDC_MONTH, 0x403, 8, 0
+0x614a, 0x756e, 0x7261, 0x0079, 
+    IDC_MONTH, 0x403, 9, 0
+0x6546, 0x7262, 0x6175, 0x7972, "\000" 
+    IDC_MONTH, 0x403, 6, 0
+0x614d, 0x6372, 0x0068, 
+    IDC_MONTH, 0x403, 6, 0
+0x7041, 0x6972, 0x006c, 
+    IDC_MONTH, 0x403, 4, 0
+0x614d, 0x0079, 
+    IDC_MONTH, 0x403, 5, 0
+0x754a, 0x656e, "\000" 
+    IDC_MONTH, 0x403, 5, 0
+0x754a, 0x796c, "\000" 
+    IDC_MONTH, 0x403, 7, 0
+0x7541, 0x7567, 0x7473, "\000" 
+    IDC_MONTH, 0x403, 10, 0
+0x6553, 0x7470, 0x6d65, 0x6562, 0x0072, 
+    IDC_MONTH, 0x403, 8, 0
+0x634f, 0x6f74, 0x6562, 0x0072, 
+    IDC_MONTH, 0x403, 9, 0
+0x6f4e, 0x6576, 0x626d, 0x7265, "\000" 
+    IDC_MONTH, 0x403, 9, 0
+0x6544, 0x6563, 0x626d, 0x7265, "\000" 
+    IDC_TIMEFRAME, 0x403, 4, 0
+0x4355, 0x0054, 
+    IDC_TIMEFRAME, 0x403, 3, 0
+0x5445, "\000" 
+    IDC_TIMEFRAME, 0x403, 6, 0
+0x6f4c, 0x6163, 0x006c, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\datentry.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+PIND                    BITMAP  FIXED IMPURE    "res\\pushpind.bmp"
+PINU                    BITMAP  FIXED IMPURE    "res\\pushpinu.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Dtime.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+#if defined(APSTUDIO_INVOKED) || defined(_ASCIIDEBUG)
+#if defined(APSTUDIO_INVOKED)
+VS_VERSION_INFO$(_ASCIIDEBUG) VERSIONINFO
+#else
+VS_VERSION_INFO VERSIONINFO
+#endif
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "180904b0"
+        BEGIN
+            VALUE "Comments", "A Date / Time MFC 4.0 Extension DLL\0"
+            VALUE "CompanyName", "PJ Naughter\0"
+            VALUE "FileDescription", "DTIME MFC Extension DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 0\0"
+            VALUE "InternalName", "DTIME (Ascii Debug)\0"
+            VALUE "LegalCopyright", "Copyright © 1996 PJ Naughter\0"
+            VALUE "LegalTrademarks", "DTime\0"
+            VALUE "OriginalFilename", "DT100D.DLL\0"
+            VALUE "ProductName", "DTIME Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x1809, 1200
+    END
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_ASCIIRELEASE)
+#if defined(APSTUDIO_INVOKED)
+VS_VERSION_INFO$(_ASCIIRELEASE) VERSIONINFO
+#else
+VS_VERSION_INFO VERSIONINFO
+#endif
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "180904b0"
+        BEGIN
+            VALUE "Comments", "A Date / Time MFC 4.0 Extension DLL\0"
+            VALUE "CompanyName", "PJ Naughter\0"
+            VALUE "FileDescription", "DTIME MFC Extension DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 0\0"
+            VALUE "InternalName", "DTIME (Ascii Release)\0"
+            VALUE "LegalCopyright", "Copyright © 1996 PJ Naughter\0"
+            VALUE "LegalTrademarks", "DTime\0"
+            VALUE "OriginalFilename", "DT100.DLL\0"
+            VALUE "ProductName", "DTIME Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x1809, 1200
+    END
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_UNICODEDEBUG)
+#if defined(APSTUDIO_INVOKED)
+VS_VERSION_INFO$(_UNICODEDEBUG) VERSIONINFO
+#else
+VS_VERSION_INFO VERSIONINFO
+#endif
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "180904b0"
+        BEGIN
+            VALUE "Comments", "A Date / Time MFC 4.0 Extension DLL\0"
+            VALUE "CompanyName", "PJ Naughter\0"
+            VALUE "FileDescription", "DTIME MFC Extension DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 0\0"
+            VALUE "InternalName", "DTIME (Unicode Debug)\0"
+            VALUE "LegalCopyright", "Copyright © 1996 PJ Naughter\0"
+            VALUE "LegalTrademarks", "DTime\0"
+            VALUE "OriginalFilename", "DT100DU.DLL\0"
+            VALUE "ProductName", "DTIME Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x1809, 1200
+    END
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_UNICODERELEASE)
+#if defined(APSTUDIO_INVOKED)
+VS_VERSION_INFO$(_UNICODERELEASE) VERSIONINFO
+#else
+VS_VERSION_INFO VERSIONINFO
+#endif
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "180904b0"
+        BEGIN
+            VALUE "Comments", "A Date / Time MFC 4.0 Extension DLL\0"
+            VALUE "CompanyName", "PJ Naughter\0"
+            VALUE "FileDescription", "DTIME MFC Extension DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 0\0"
+            VALUE "InternalName", "DTIME (Unicode Release)\0"
+            VALUE "LegalCopyright", "Copyright © 1996 PJ Naughter\0"
+            VALUE "LegalTrademarks", "DTime\0"
+            VALUE "OriginalFilename", "DT100U.DLL\0"
+            VALUE "ProductName", "DTIME Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x1809, 1200
+    END
+END
+#endif
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_WEEKDAY1            "Sunday"
+    IDS_WEEKDAY2            "Monday"
+    IDS_WEEKDAY3            "Tuesday"
+    IDS_WEEKDAY4            "Wednesday"
+    IDS_WEEKDAY5            "Thursday"
+    IDS_WEEKDAY6            "Friday"
+    IDS_WEEKDAY7            "Saturday"
+    IDS_ABR_WEEKDAY1        "Sun"
+    IDS_ABR_WEEKDAY2        "Mon"
+    IDS_ABR_WEEKDAY3        "Tue"
+    IDS_ABR_WEEKDAY4        "Wed"
+    IDS_ABR_WEEKDAY5        "Thur"
+    IDS_ABR_WEEKDAY6        "Fri"
+    IDS_ABR_WEEKDAY7        "Sat"
+    IDS_MONTH1              "January"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MONTH2              "February"
+    IDS_MONTH3              "March"
+    IDS_MONTH4              "April"
+    IDS_MONTH5              "May"
+    IDS_MONTH6              "June"
+    IDS_MONTH7              "July"
+    IDS_MONTH8              "August"
+    IDS_MONTH9              "September"
+    IDS_MONTH10             "October"
+    IDS_MONTH11             "November"
+    IDS_MONTH12             "December"
+    IDS_ABR_MONTH1          "Jan"
+    IDS_ABR_MONTH2          "Feb"
+    IDS_ABR_MONTH3          "Mar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABR_MONTH4          "Apr"
+    IDS_ABR_MONTH5          "May"
+    IDS_ABR_MONTH6          "Jun"
+    IDS_ABR_MONTH7          "Jul"
+    IDS_ABR_MONTH8          "Aug"
+    IDS_ABR_MONTH9          "Sep"
+    IDS_ABR_MONTH10         "Oct"
+    IDS_ABR_MONTH11         "Nov"
+    IDS_ABR_MONTH12         "Dec"
+    IDS_INVALID_DATE_RANGE  "The date entered is outside of the allowable range"
+    IDS_INVALID_TIMESPAN_RANGE 
+                            "The time span entered is outside of the allowable range"
+    IDS_INVALID_TIMEOFDAY_RANGE 
+                            "The time of day entered is outside of the allowable range"
+    IDS_INVALID_DATE_MIN    "The date entered is earlier that the allowable value"
+    IDS_INVALID_TIMESPAN_MIN 
+                            "The time span entered is earlier that the allowable value"
+    IDS_INVALID_TIMEOFDAY_MIN 
+                            "The time of day entered is earlier that the allowable value"
+    IDS_INVALID_DATE_MAX    "The date entered is later that the allowable value"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_INVALID_TIMESPAN_MAX 
+                            "The time span entered is later that the allowable value"
+    IDS_INVALID_TIMEOFDAY_MAX 
+                            "The time of day entered is later that the allowable value"
+    IDS_CEYEAR              "%1 CE"
+    IDS_BCEYEAR             "%1 BCE"
+    IDS_LOCAL               "Local"
+    IDS_UTC                 "UTC"
+    IDS_ET                  "ET"
+    IDS_AM                  "AM"
+    IDS_PM                  "PM"
+    IDS_INVALID_DATE        "A valid date must be entered."
+    IDS_INVALID_TIMESPAN    "A valid time span must be entered."
+    IDS_INVALID_TIMEOFDAY   "A valid time of day must be entered."
+    IDS_INVALID_LDATE       "A valid long date must be entered."
+    IDS_INVALID_LDATE_MIN   "The long date entered is earlier that the allowable value"
+    IDS_INVALID_LDATE_MAX   "The long date entered is later that the allowable value"
+    IDS_YEAR                "Year"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MONTH               "Month"
+    IDS_DAY                 "Day"
+    IDS_HOUR                "Hour"
+    IDS_MINUTE              "Minute"
+    IDS_SECOND              "Second"
+    IDS_MILLISECOND         "Millisecond"
+    IDS_ABR_HOUR            "H"
+    IDS_ABR_MINUTE          "M"
+    IDS_ABR_SECOND          "S"
+    IDS_ABR_MILLISECOND     "MS"
+    IDS_TIMEFRAME           "Timeframe"
+    IDS_ENTERED_INVALID_DATE 
+                            "Please enter a valid date. A Possible reason that the date is invalid is that it occured during the skip when the Gregorian calendar was introduced."
+    IDS_ENTERED_INVALID_LDATE 
+                            "Please enter a valid long date. Possible reasons that the date is invalid is that it occured during the skip when the Gregorian calendar was introduced or when Daylight Savings was introduced or removed."
+    IDS_EDIT_TEXT           "..."
+    IDS_UNICODE_DEBUG       "(Unicode Debug Build)"
+    IDS_UNICODE_RELEASE     "(Unicode Release Build)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ASCII_DEBUG         "(Ascii Debug Build)"
+    IDS_ASCII_RELEASE       "(Ascii Release Build)"
+    IDS_SHAREWARE_CAPTION   "DTime v%1 %2"
+    IDS_TT_PUSHPIN          "Keep Visible"
+    IDS_TT_MODIFY           "Modify"
+END
+
+#endif    // English (Ireland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "Dtime.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

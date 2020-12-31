@@ -1,0 +1,89 @@
+<?xml version="1.0" standalone="yes"?>
+  <_datatypes>
+    <MACHINE>
+      <!-- The "structure" datatype means it is a type that holds other types -->
+      <_datatype>structure</_datatype>
+      <_description>The MACHINE holds data about the user's computer.</_description>
+      <NAME>
+        <_datatype>string.ansi</_datatype>
+      </NAME>
+      <USER_INFO_LEVEL>
+        <_datatype>int</_datatype>
+        <_description>The level of information that was retrieved.</_description>
+      </USER_INFO_LEVEL>
+      <REPORT_TIME>
+        <_datatype>dateTime.iso8601tz</_datatype>
+        <_description>The time at which this report was generated.</_description>
+      </REPORT_TIME>
+      <USER>
+        <_datatype>structure</_datatype>
+        <_description>The data from the USER_INFO_xxx data structures.</_description>
+        <NAME>
+          <_datatype>string.ansi</_datatype>
+          <_description>The user's name, usually from the usrixxx_name field.</_description>
+        </NAME>
+        <FULL_NAME>
+          <_datatype>string.ansi</_datatype>
+        </FULL_NAME>
+        <LOGON_HOURS>
+          <_datatype>bin.base64</_datatype>
+        </LOGON_HOURS>
+        <ENCRYPTED_PASSWORD>
+          <_datatype>bin.base64</_datatype>
+        </ENCRYPTED_PASSWORD>
+        <PASSWORD_AGE>
+          <_datatype>i4</_datatype>
+          <_description>Represented as number of whole seconds.</_description>
+        </PASSWORD_AGE>
+        <LAST_LOGON>
+          <_datatype>dateTime.iso8601tz</_datatype>
+          <_description>The time the user last logged on.</_description>
+        </LAST_LOGON>
+        <LAST_LOGOFF>
+          <_datatype>dateTime.iso8601tz</_datatype>
+          <_description>The time the user last logged off.</_description>
+        </LAST_LOGOFF>
+      </USER>
+    </MACHINE>
+  </_datatypes>
+  <MACHINE>
+    <NAME>SAMMY</NAME>
+    <USER_INFO_LEVEL>3</USER_INFO_LEVEL>
+    <REPORT_TIME>1998-05-16T20:27:12Z</REPORT_TIME>
+    <USER>
+      <NAME>Administrator</NAME>
+      <FULL_NAME></FULL_NAME>
+      <LOGON_HOURS>////////////////////////////=</LOGON_HOURS>
+      <ENCRYPTED_PASSWORD>=</ENCRYPTED_PASSWORD>
+      <PASSWORD_AGE>41865271</PASSWORD_AGE>
+      <LAST_LOGON>1998-05-15T10:52:15-05:00</LAST_LOGON>
+      <LAST_LOGOFF>1997-03-23T10:42:16-05:00</LAST_LOGOFF>
+    </USER>
+    <USER>
+      <NAME>Guest</NAME>
+      <FULL_NAME></FULL_NAME>
+      <LOGON_HOURS>////////////////////////////=</LOGON_HOURS>
+      <ENCRYPTED_PASSWORD>=</ENCRYPTED_PASSWORD>
+      <PASSWORD_AGE>0</PASSWORD_AGE>
+      <LAST_LOGON>1969-12-31T19:00:00-05:00</LAST_LOGON>
+      <LAST_LOGOFF>1969-12-31T19:00:00-05:00</LAST_LOGOFF>
+    </USER>
+    <USER>
+      <NAME>Sammy</NAME>
+      <FULL_NAME>Sammy</FULL_NAME>
+      <LOGON_HOURS>////////////////////////////=</LOGON_HOURS>
+      <ENCRYPTED_PASSWORD>=</ENCRYPTED_PASSWORD>
+      <PASSWORD_AGE>41844896</PASSWORD_AGE>
+      <LAST_LOGON>1998-05-16T15:35:35-05:00</LAST_LOGON>
+      <LAST_LOGOFF>1997-08-10T10:21:44-05:00</LAST_LOGOFF>
+    </USER>
+    <USER>
+      <NAME>TwiddleDee</NAME>
+      <FULL_NAME></FULL_NAME>
+      <LOGON_HOURS>////////////////////////////=</LOGON_HOURS>
+      <ENCRYPTED_PASSWORD>=</ENCRYPTED_PASSWORD>
+      <PASSWORD_AGE>0</PASSWORD_AGE>
+      <LAST_LOGON>1969-12-31T19:00:00-05:00</LAST_LOGON>
+      <LAST_LOGOFF>1969-12-31T19:00:00-05:00</LAST_LOGOFF>
+    </USER>
+  </MACHINE>

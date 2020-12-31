@@ -1,0 +1,116 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Misc - Memory API Wrappers</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Memory API Wrappers</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:Poul@wizsoft.com">Poul Costinsky</A>. You can also
+find this and other articles at his web site at <A HREF="http://www.wizsoft.com/~poul/srs/">http://www.wizsoft.com/~poul/srs/</A>
+
+<P>
+        <li><b>One size private heap</b> class&nbsp;<a name="CWizOneSizeHeap"></a>CWizOneSizeHeap.<br>
+          I wrote this class for very common situation: when you have to allocate <br>
+          many of small objects of the same size; the obvious case is some class widely used in a
+          program. The assumption that all objects on the heap are of the same size allows to
+          minimize allocation overhead to <b>zero</b>. Indeed, every allocation block in the regular
+          heap is preceded by block size. But when the size is known in advance, you could save this
+          place. The <b>technique</b> is simple: the heap manager requests big blocks of the memory
+          from some common heap. Every block of memory is either occupied by allocated <br>
+          object, or points to the next free block. Therefore it manages &quot;in place&quot; linked
+          list of free items without any overhead. The sources are <a href="OneSizeHeap.h">here</a>.
+          <br>
+          <i><u>NB:</u></i> Feel free to <i>remove inlines</i> if you're more concerned about <i>size</i>
+          then about <i>speed</i>. <br>
+          &nbsp; </li>
+        <li><small><font size="+0"><b>Local heap</b> class CWizLocalHeap - wrapper for Win32 API
+          local heap machinery.</font><br>
+          <font size="+0">Helper class CWizLocalHeapLock useful for locking the heap in the
+          multithreading environment.</font> <br>
+          <font size="+0">Files <a href="LOCALHEP.H">LOCALHEP.H</a> and <a href="LOCALHEP.CPP">LOCALHEP.CPP</a>
+          .</font> </small></li>
+        <li><small><font size="+0">Template class CWizTypedLocalHeap derived from CWizLocalHeap to
+          avoid mess with local heap parameters.</font><br>
+          <font size="+0">Class&nbsp;<a name="CWizDefaultTypedLocalHeap"></a>CWizDefaultTypedLocalHeap
+          derived from CWizTypedLocalHeap and supplies reasonable default parameters.</font> <br>
+          <font size="+0">Define <b>DECLARE_LOCAL_HEAP</b> forces objects of any class to be
+          allocated from it's own private local heap. Very useful in <i>new-intensive</i>
+          algorithms.</font> <br>
+          Files <a href="TypedLocalHeap.CPP">TypedLocalHeap.CPP</a> and <a href="TypedLocalHeap.H">TypedLocalHeap.H</a>
+          . </small></li>
+        <li><small><font size="+0"><b>Virtual memory</b> class&nbsp;<a name="CWizVirtualMemory"></a>CWizVirtualMemory
+          - wrapper for Win32 API virtual memory machinery.</font><br>
+          <font size="+0">Derived template class CWizTypedVMem to be used as virtual array.</font> <br>
+          <font size="+0">Files <a href="VIRT_MEM.H">VIRT_MEM.H</a> and <a href="VIRT_MEM.CPP">VIRT_MEM.CPP</a>
+          .</font> </small></li>
+        <li><b>Memory&nbsp;<a name="memmapfile"></a>mapped file wrappers</b>:</li>
+        <ul>
+          <li><a name="CWizFileMapping"></a>CWizFileMapping - kind of file mapping wrapper.</li>
+          <li><a name="CWizFileMapView"></a>CWizFileMapView - view of this mapping (actual memory
+            address).</li>
+          <li>template &lt;class TYPE&gt; class CWizFileView - kind of &quot;virtual array&quot;
+            mirroring a file.</li>
+          <li>template &lt;class TYPE&gt; class CWizROFileView - read-only view (virtual array) of an
+            existing file.</li>
+          <li>CWizFullFileView - read/write file mapping. Uses CWizTempFileStrategy for managing
+            temporary files.</li>
+          <li>template &lt;class TYPE&gt; class CWizTypedFullFileView - typed derivative of
+            CWizFullFileView.</li>
+        </ul>
+        <font size="+0"><p>Files <a href="FILE_MAP.H">FILE_MAP.H</a> and <a href="FILE_MAP.CPP">FILE_MAP.CPP</a>
+        .</font> <ul>
+          <li><a name="CWizFileROFileMapping"></a>CWizFileROFileMapping - implements
+            &quot;windowed&quot; view to memory mapping.Useful when address space is low or when
+            access to the file is rare. <br>
+            Nested class Window acts like actual window to the mapping and moves itself by demand. <br>
+            This class has template parameter LOCKER which implements <b>multithreading </b>synchronization
+            for Window objects. Two classes supplied for this: </li>
+          <li>CWizFileMapNoLocker - no locking and synchronization. Useful when:<p><b>a) </b>only
+            single thread accesses the view or <br>
+            <b>b)</b> another synchronization implemented in your application or <br>
+            <b>c)</b> you are absolutely sure it's no need for synchronization. </p>
+          </li>
+          <li>CWizFileMapCritSectLocker - uses <b>critical section</b> for synchronization between
+            threads.<p><b><u>Please note</u></b> that synchronization is managed only when retrieving
+            the view from memory mapping. Every view supposed to be thread-specific or at protected by
+            another way. </p>
+          </li>
+          <li>template&lt;class LOCKER, class DATA&gt; class CWizTypedFileROFileMapping -<br>
+            typed derivative of CWizFileROFileMapping (like virtual array of <tt>structs</tt>). <br>
+            Because of strange compilation errors -:) the nested class is called Wnd instead of
+            Window.</li>
+        </ul>
+        <font size="+0"><p>Files <a href="FileMapWindow.H">FileMapWindow.H</a> and <a
+        href="FileMapWindow.CPP">FileMapWindow.CPP</a> .</font></p>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

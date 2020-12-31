@@ -1,0 +1,334 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Splash Screen with 256 color support</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Splash Screen with 256 color support</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>The Developer Studio in Visual C++ has a Splash Screen component that you can insert using the Component Galery. Unfortunately, this component supports only 16 colors. I have yet to see a commercial application that uses a 16 color splash screen. There might be a few software using a 16 color splash screen but I haven't seen one yet. The code given below is for a splash screen that supports 256 color and is very easy to use.
+Step 1: Create the splash window class
+To make the implementation of the splash screen modular it is best to create a new class for it. The CMySplashWnd class derives from CWnd. The header and the implementation file listings are given below.
+
+<PRE><TT><FONT COLOR="#990000">
+#if !defined(AFX_MYSPLASHWND_H__08C608F3_1FB3_11D1_830E_58A47E000000__INCLUDED_)
+#define AFX_MYSPLASHWND_H__08C608F3_1FB3_11D1_830E_58A47E000000__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// MySplashWnd.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CMySplashWnd window
+
+class CMySplashWnd : public CWnd
+{
+// Construction
+public:
+    CMySplashWnd(UINT nBitmapID, UINT nDuration = 2500);
+
+// Attributes
+public:
+    BOOL Create();
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CMySplashWnd)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CMySplashWnd)
+	afx_msg void OnPaint();
+	afx_msg void OnTimer(UINT nIDEvent);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+protected:
+	BOOL GetBitmapAndPalette(UINT nIDResource, CBitmap &bitmap, CPalette &pal);
+
+protected:
+	UINT m_nBitmapID;
+	UINT m_nDuration;
+	UINT m_nTimerID;
+	CBitmap m_bitmap;
+	CPalette m_pal;
+	CWnd m_wndInvisible;
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_MYSPLASHWND_H__08C608F3_1FB3_11D1_830E_58A47E000000__INCLUDED_)
+
+
+
+
+
+
+
+// MySplashWnd.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "RichEdit.h"
+#include "MySplashWnd.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CMySplashWnd
+
+CMySplashWnd::CMySplashWnd(UINT nBitmapID, UINT nDuration /*= 2500*/)
+{
+	m_nBitmapID = nBitmapID;
+	m_nDuration = nDuration;
+}
+
+BEGIN_MESSAGE_MAP(CMySplashWnd, CWnd)
+	//{{AFX_MSG_MAP(CMySplashWnd)
+	ON_WM_PAINT()
+	ON_WM_TIMER()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+
+
+BOOL CMySplashWnd::Create()
+{
+	if( !GetBitmapAndPalette(m_nBitmapID, m_bitmap, m_pal) )
+	{
+		TRACE1( "Could not load bitmap resource - %d\n", m_nBitmapID );
+		return FALSE;
+	}
+
+
+	BITMAP bm;
+	m_bitmap.GetObject(sizeof(BITMAP), &bm);
+	
+	// First create an invisible window
+	m_wndInvisible.CreateEx(WS_EX_TOPMOST, 
+			AfxRegisterWndClass(CS_CLASSDC), 
+			_T(""), WS_POPUP, 0, 0, 
+			bm.bmWidth, bm.bmHeight, NULL, NULL);
+
+	// Create the the splash window with invisible parent as parent
+	BOOL bRetVal = CWnd::CreateEx(WS_EX_TOPMOST, 
+			AfxRegisterWndClass(CS_CLASSDC), 
+			_T(""), WS_POPUP, 0, 0, 
+			bm.bmWidth, bm.bmHeight, m_wndInvisible.m_hWnd, NULL);
+
+	CenterWindow();
+	ShowWindow(SW_SHOW);
+	UpdateWindow();
+	
+	//Create the timer.
+	m_nTimerID = SetTimer(1, m_nDuration, NULL);
+	ASSERT(m_nTimerID);
+	
+	return bRetVal;
+}
+
+
+BOOL CMySplashWnd::GetBitmapAndPalette(UINT nIDResource, CBitmap &bitmap, CPalette &pal)
+{
+	LPCTSTR lpszResourceName = (LPCTSTR)nIDResource;
+
+	HBITMAP hBmp = (HBITMAP)::LoadImage( AfxGetInstanceHandle(), 
+			lpszResourceName, IMAGE_BITMAP, 0,0, LR_CREATEDIBSECTION );
+
+	if( hBmp == NULL ) 
+		return FALSE;
+
+	bitmap.Attach( hBmp );
+
+	// Create a logical palette for the bitmap
+	DIBSECTION ds;
+	BITMAPINFOHEADER &bmInfo = ds.dsBmih;
+	bitmap.GetObject( sizeof(ds), &ds );
+
+	int nColors = bmInfo.biClrUsed ? bmInfo.biClrUsed : 1 << bmInfo.biBitCount;
+
+	// Create a halftone palette if colors > 256. 
+	CClientDC dc(NULL);			// Desktop DC
+	if( nColors > 256 )
+		pal.CreateHalftonePalette( &dc );
+	else
+	{
+		// Create the palette
+
+		RGBQUAD *pRGB = new RGBQUAD[nColors];
+		CDC memDC;
+		memDC.CreateCompatibleDC(&dc);
+
+		memDC.SelectObject( &bitmap );
+		::GetDIBColorTable( memDC, 0, nColors, pRGB );
+
+		UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+		LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+		pLP->palVersion = 0x300;
+		pLP->palNumEntries = nColors;
+
+		for( int i=0; i < nColors; i++)
+		{
+			pLP->palPalEntry[i].peRed = pRGB[i].rgbRed;
+			pLP->palPalEntry[i].peGreen = pRGB[i].rgbGreen;
+			pLP->palPalEntry[i].peBlue = pRGB[i].rgbBlue;
+			pLP->palPalEntry[i].peFlags = 0;
+		}
+
+		pal.CreatePalette( pLP );
+
+		delete[] pLP;
+		delete[] pRGB;
+	}
+
+	return TRUE;
+}
+
+void CMySplashWnd::OnPaint() 
+{
+	CPaintDC dc(this); // device context for painting
+	
+	// Create a memory DC compatible with the paint DC
+	CDC memDC;
+	memDC.CreateCompatibleDC( &dc );
+
+	CBitmap *pBmpOld = memDC.SelectObject( &m_bitmap );
+
+	// Select and realize the palette
+	if( dc.GetDeviceCaps(RASTERCAPS) & RC_PALETTE && m_pal.m_hObject != NULL )
+	{
+		dc.SelectPalette( &m_pal, FALSE );
+		dc.RealizePalette();
+	}
+
+
+	// Window is same size as bitmap
+	CRect rcWnd;
+	GetWindowRect( &rcWnd );
+	dc.BitBlt(0, 0, rcWnd.Width(), rcWnd.Height(), &memDC, 0, 0,SRCCOPY);
+
+	// Restore bitmap in memDC
+	memDC.SelectObject( pBmpOld );
+	
+	// Do not call CWnd::OnPaint() for painting messages
+}
+
+void CMySplashWnd::OnTimer(UINT nIDEvent) 
+{
+	if (m_nTimerID == nIDEvent)
+	{	
+		//Destroy the timer and splash window
+		KillTimer(m_nTimerID);
+		m_wndInvisible.DestroyWindow(); 	
+		delete this;
+		return;
+	}	 
+	
+	CWnd::OnTimer(nIDEvent);
+}
+
+BOOL CMySplashWnd::PreTranslateMessage(MSG* pMsg) 
+{
+	ASSERT(pMsg != NULL);
+	
+	if (pMsg->message == WM_KEYDOWN ||
+			pMsg->message == WM_SYSKEYDOWN ||
+			pMsg->message == WM_LBUTTONDOWN ||
+			pMsg->message == WM_RBUTTONDOWN ||
+			pMsg->message == WM_MBUTTONDOWN )
+	{
+		//Destroy the timer and splash window
+		KillTimer(m_nTimerID);
+		m_wndInvisible.DestroyWindow(); 	
+		delete this;
+		return 1;
+	}	 
+	
+	return CWnd::PreTranslateMessage(pMsg);
+}
+</FONT></TT></PRE>
+
+
+
+
+<p>The CMySplashWnd object created with the resource ID of the bitmap that will be shown in the splash screen. You can also provide a second argument for the number milliseconds that the splash screen should be displayed. If you don't provide a second argument to the constructor, it defaults to 2500 milliseconds.
+
+<p>Once the object has been constructed, the window itself has to be created by a call to Create(). This function uses the GetBitmapAndPalette() function to load the bitmap resource and also create a logical palette from the color information in the bitmap. The GetBitmapAndPalette() function has been explained in the section on bitmaps and palettes. If you want to know its working, you can refer to that section.
+
+<p>The Create() function goes on to create an invisible window. It will use this window as a parent window. Since the parent window is not made visible, it wont appear on the taskbar. If you do not use an invisible window and use it as a parent window, then the splash window will show up in the taskbar. Actually there is an easier way to make a topmost window not appear in the taskbar; assign it the WS_EX_TOOLWINDOW style. However, the problem with the WS_EX_TOOLWINDOW style is that it handles the palette differently. It forces any palette realization to the background mode. This, of course, would effect the colors displayed in the splash screen.
+
+<p>The splash window is created with the same widht and height as the bitmap. When creating the window it does not use the WS_VISIBLE style, because the window is centered before it is displayed. The WS_EX_TOPMOST style makes sure that the splash screen does not get covered by any other window. After centering the window and showing it, the Create() function sets a system timer. The timer will be used to destroy the window after the desired number of milliseconds have elapsed.
+
+<p>The OnPaint() function paints the bitmap to the screen after selecting and realizing the logical palette. The OnTimer() function destroys the splash window (actually the parent, which destroys the splash window in turn), the timer and the object itself. The PreTranslateMessage() also destroys the splash window when key down or a mouse down event is received.
+
+
+<h4>Step 2: Create splash screen in CWinApp::InitInstance()</h4>
+To create the splash screen, allocate a CMySplashWnd object and call the create function. You do not have to delete the object since it deletes itself. You can place this code at the top of the InitInstance() function or if your application uses a CCommandLineInfo object,  you can create the splash screen after the call to ParseCommandLine() as shown below. The advantage of using the CCommandLineInfo object is that you can check whether the splash should be displayed at all. 
+
+<PRE><TT><FONT COLOR="#990000">	// Parse command line for standard shell commands, DDE, file open
+	CCommandLineInfo cmdInfo;
+	ParseCommandLine(cmdInfo);
+
+
+	<b>if( cmdInfo.m_bShowSplash )
+	{
+		CMySplashWnd * pSplashWnd = new CMySplashWnd(IDB_SPLASH,2500);
+		pSplashWnd->Create();
+	}</b>
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

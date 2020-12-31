@@ -1,0 +1,192 @@
+///////////////////////////////////////////////////////////////////
+//  Header   : COLORS.H
+//
+//  Purpose  : Header providing 125 predefined COLORREF color 
+//             definitions for MFC programs.
+//
+//  Comments : Many of these colors were converted from the 
+//             color definitions in the POVRAY 2.2 include file 
+//             COLORS.INC. Thanks POV-Team!
+//
+//  Author   : Rob McGregor, rob_mcgregor@compuserve.com
+//        
+//  Date     : 04-29-96
+///////////////////////////////////////////////////////////////////
+
+#ifndef __COLORS_H__
+#define __COLORS_H__
+
+#include <wingdi.h>  // For RGB() macro support
+
+//
+// Define RGB macros for various colors 
+//
+
+// A
+#define crAquamarine            RGB(112, 219, 147)
+
+// B
+#define crBakersChoc            RGB(92, 51, 23)
+#define crBlack                 RGB(0, 0, 0)
+#define crBlue                  RGB(0, 0, 255)
+#define crBlueViolet            RGB(159, 95, 159)
+#define crBrightGold            RGB(217, 217, 26)
+#define crBronze1               RGB(140, 120, 36)
+#define crBronze2               RGB(166, 125, 61)
+#define crBrown                 RGB(165, 42, 42)
+
+// C
+#define crCadetBlue             RGB(95, 159, 159)
+#define crClear                 RGB(255, 255, 255)
+#define crCoolCopper            RGB(217, 135, 26)
+#define crCopper                RGB(184, 115, 51)
+#define crCoral                 RGB(255, 127, 0)
+#define crCornflowerBlue        RGB(66, 66, 111)
+#define crCyan                  RGB(0, 255, 255)
+
+// D
+#define crDarkBrown             RGB(92, 64, 51)
+#define crDarkGreen             RGB(47, 79, 47)
+#define crDarkOliveGreen        RGB(79, 79, 47)
+#define crDarkOrchid            RGB(153, 50, 204)
+#define crDarkPurple            RGB(135, 31, 120)
+#define crDarkSlateBlue         RGB(107, 35, 142)
+#define crDarkSlateGray         RGB(47, 79, 79)
+#define crDarkSlateGrey         RGB(47, 79, 79)
+#define crDarkTan               RGB(150, 105, 79)
+#define crDarkTurquoise         RGB(112, 147, 219)
+#define crDarkWood              RGB(133, 94, 66)
+#define crDimGray               RGB(84, 84, 84)
+#define crDimGrey               RGB(84, 84, 84)
+#define crDkGreenCopper         RGB(74, 117, 110)
+#define crDustyRose             RGB(133, 99, 99)
+
+// F
+#define crFeldspar              RGB(209, 145, 117)
+#define crFirebrick             RGB(142, 35, 35)
+#define crFlesh                 RGB(245, 204, 176)
+#define crForestGreen           RGB(35, 142, 35)
+
+// G
+#define crGold                  RGB(204, 127, 50)
+#define crGoldenrod             RGB(219, 219, 112)
+#define crGray                  RGB(192, 192, 192)
+#define crGray05                RGB(13, 13, 13)
+#define crGray10                RGB(26, 26, 26)
+#define crGray15                RGB(38, 38, 38)
+#define crGray20                RGB(51, 51, 51)
+#define crGray25                RGB(64, 64, 64)
+#define crGray30                RGB(77, 77, 77)
+#define crGray35                RGB(89, 89, 89)
+#define crGray40                RGB(102, 102, 102)
+#define crGray45                RGB(115, 115, 115)
+#define crGray50                RGB(128, 128, 128)
+#define crGray55                RGB(140, 140, 140)
+#define crGray60                RGB(153, 153, 153)
+#define crGray65                RGB(166, 166, 166)
+#define crGray70                RGB(178, 178, 178)
+#define crGray75                RGB(191, 191, 191)
+#define crGray80                RGB(204, 204, 204)
+#define crGray85                RGB(217, 217, 217)
+#define crGray90                RGB(229, 229, 229)
+#define crGray95                RGB(242, 242, 242)
+#define crGreen                 RGB(0, 255, 0)
+#define crGreenCopper           RGB(82, 125, 117)
+#define crGreenYellow           RGB(147, 219, 112)
+#define crGrey                  RGB(192, 192, 192)
+
+// H
+#define crHuntersGreen          RGB(33, 94, 79)
+
+// I
+#define crIndianRed             RGB(79, 47, 47)
+
+// K
+#define crKhaki                 RGB(159, 159, 95)
+
+// L
+#define crLightBlue             RGB(191, 216, 216)
+#define crLightGray             RGB(168, 168, 168)
+#define crLightGrey             RGB(168, 168, 168)
+#define crLightSteelBlue        RGB(143, 143, 188)
+#define crLightWood             RGB(232, 194, 166)
+#define crLimeGreen             RGB(50, 204, 50)
+
+// M
+#define crMagenta               RGB(255, 0, 255)
+#define crMandarinOrange        RGB(227, 120, 51)
+#define crMaroon                RGB(142, 35, 107)
+#define crMediumAquamarine      RGB(50, 204, 153)
+#define crMediumBlue            RGB(50, 50, 204)
+#define crMediumForestGreen     RGB(107, 142, 35)
+#define crMediumGoldenrod       RGB(234, 234, 173)
+#define crMediumOrchid          RGB(147, 112, 219)
+#define crMediumSeaGreen        RGB(66, 111, 66)
+#define crMediumSlateBlue       RGB(127, 0, 255)
+#define crMediumSpringGreen     RGB(127, 255, 0)
+#define crMediumTurquoise       RGB(112, 219, 219)
+#define crMediumVioletRed       RGB(219, 112, 147)
+#define crMediumWood            RGB(166, 128, 99)
+#define crMica                  RGB(0, 0, 0)
+#define crMidnightBlue          RGB(47, 47, 79)
+
+// N
+#define crNavy                  RGB(35, 35, 142)
+#define crNavyBlue              RGB(35, 35, 142)
+#define crNeonBlue              RGB(77, 77, 255)
+#define crNeonPink              RGB(255, 110, 199)
+#define crNewMidnightBlue       RGB(0, 0, 156)
+#define crNewTan                RGB(235, 199, 158)
+
+// O
+#define crOffWhite              RGB(240, 240, 240)
+#define crOrange                RGB(255, 128, 0)
+#define crOrangeRed             RGB(255, 0, 127)
+#define crOrchid                RGB(219, 112, 219)
+
+// P
+#define crPaleGreen             RGB(143, 188, 143)
+#define crPink                  RGB(188, 143, 143)
+#define crPlum                  RGB(234, 173, 234)
+
+// Q
+#define crQuartz                RGB(217, 217, 242)
+
+// R
+#define crRed                   RGB(255, 0, 0)
+#define crRichBlue              RGB(89, 89, 171)
+
+// S
+#define crSalmon                RGB(111, 66, 66)
+#define crScarlet               RGB(140, 23, 23)
+#define crSeaGreen              RGB(35, 142, 107)
+#define crSemiSweetChoc         RGB(107, 66, 38)
+#define crSienna                RGB(142, 107, 35)
+#define crSilver                RGB(229, 232, 250)
+#define crSkyBlue               RGB(50, 153, 204)
+#define crSlateBlue             RGB(0, 127, 255)
+#define crSpicyPink             RGB(255, 28, 173)
+#define crSpringGreen           RGB(0, 255, 127)
+#define crSteelBlue             RGB(35, 107, 142)
+#define crSummerSky             RGB(56, 176, 222)
+
+// T
+#define crTan                   RGB(219, 147, 112)
+#define crThistle               RGB(216, 191, 216)
+#define crTurquoise             RGB(173, 234, 234)
+
+// V
+#define crVeryDarkBrown         RGB(89, 41, 36)
+#define crViolet                RGB(79, 47, 79)
+#define crVioletRed             RGB(204, 50, 153)
+#define crVLightGrey            RGB(204, 204, 204)
+
+// W
+#define crWheat                 RGB(216, 216, 191)
+#define crWhite                 RGB(255, 255, 255)
+
+// Y
+#define crYellow                RGB(255, 255, 0)
+#define crYellowGreen           RGB(153, 204, 50)
+                           
+#endif  // __COLORS_H__

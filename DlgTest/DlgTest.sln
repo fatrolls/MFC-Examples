@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DlgTest", "DlgTest\DlgTest.vcproj", "{D3CA04B4-5C70-45FA-B3C4-150D1B31B2E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3CA04B4-5C70-45FA-B3C4-150D1B31B2E8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D3CA04B4-5C70-45FA-B3C4-150D1B31B2E8}.Debug|Win32.Build.0 = Debug|Win32
+		{D3CA04B4-5C70-45FA-B3C4-150D1B31B2E8}.Release|Win32.ActiveCfg = Release|Win32
+		{D3CA04B4-5C70-45FA-B3C4-150D1B31B2E8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

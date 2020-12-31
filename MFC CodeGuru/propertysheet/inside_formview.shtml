@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Embedding inside Form View</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Creating a Property Sheet Inside a Form View - Asaf Levy</FONT>
+<HR></H3></CENTER>
+This topic was contributed by <b>Asaf Levy</b>.
+
+
+<p>Form views (CFormView) can do almost anything you want: you can easily shape and modify it, process its control's messages, and communicate with the document. It's like creating a very important dialog box.
+
+<p>Property sheet (CPropertySheet) is also a very convinient and simple way to gather and display information. You create property pages using the dialog template editor, and simply add them to the propery sheet's object. Most importantly, the property sheet takes care of all the page's notification messages for you. All you have to be worried about is what your code will do, not where it is routed to, and who is actually getting it (each page intercepts its own IDC_blahblah's messages).
+
+<p>But, have you ever tried putting a propery sheet inside a form view, together with other controls like buttons, check boxes, list boxes, ect...? Sure, you can use the tab control (CTabControl), given in the dialog template editor. But who will take care of all the notification messages? YOU?? no way!! And how will you create the page's interfaces? BY HAND?? no way!!
+
+<p>To my opinion, these two reasons if far from enough to convince a sane programmer to look for a way out: property sheets inside a form view! It handels your notification messages and lets you add editable dialog templates to the sheet - what more can you possibly ask??
+
+<p>Now, lets look at how you do this. This task has a few simple steps:
+
+<h4>Step 1: Create a "place holder" control in your form view's template</h4>
+You have to create a control that will function as a place holder for the property sheet control. The most suitable control is the picture control: it will be the sheet's parent window. Make sure the control is Visible, and that it's on type Frame. Make it big enough to include the pages in it. Lets suppose that its ID of the picture control is IDC_PLACEHOLDER.
+
+<h4>Step 2: Create a derived CPropertySheet class</h4>
+Create a class derived from CPropertySheet using ClassWizard (lets call it CMyPropertySheet), and leave only one constructor with the parent window as its parameter:
+
+<PRE><TT><FONT COLOR="#990000">	CMyPropSheet(CWnd* pParentWnd = NULL);
+</FONT></TT></PRE>
+
+<h4>Step 3: Add a pointer to the derived property sheet class in your form view class</h4>
+In your derived form view class, add a pointer to the newly created derived property sheet class, so you can refer to it and use it later:
+
+<PRE><TT><FONT COLOR="#990000">	CMyPropSheet* m_pMyPropSheet;
+</FONT></TT></PRE>
+
+<h4>Step 4: Add code in CMyFormView::OnInitialUpdate() to create your property sheet</h4>
+Create a handler to WM_INITIALUPDATE in CMyFromView, and after the call to CFormView::OnInitialUpdate(), add code to create a Modeless Property Sheet and associate it with the place holder control.
+
+<PRE><TT><FONT COLOR="#990000">	// create and asociated the property sheet with the "place holder" window
+	CWnd* pwndPropSheetHolder = GetDlgItem(IDC_PLACEHOLDER);
+	m_pMyPropSheet = new CMyPropSheet(pwndPropSheetHolder);
+	if (!m_pMyPropSheet->Create(pwndPropSheetHolder, 
+		WS_CHILD | WS_VISIBLE, 0))
+	{
+		delete m_pMyPropSheet;
+		m_pMyPropSheet = NULL;
+		return;
+	}
+
+	// fit the property sheet into the place holder window, and show it
+	CRect rectPropSheet;
+	pwndPropSheetHolder->GetWindowRect(rectPropSheet);
+	m_pMyPropSheet->SetWindowPos(NULL, 0, 0,
+		rectPropSheet.Width(), rectPropSheet.Height(),
+		SWP_NOZORDER | SWP_NOACTIVATE);
+</FONT></TT></PRE>
+
+<h4>Step 5: Create the pages by deriving from CPropertyPage</h4>
+Create as many classes as you wish which are derived from CPropertyPage using ClassWizard, and leave them as they are (you will later handle the page control's specific messages there). Associate a different IDD_blahblah to every class.
+
+<h4>Step 6: Add the page's objects as member variables to the propery sheet class</h4>
+Declare objects of your page's derived types (as was created in step 5), and put them in the class declaration of your derived property sheet:
+
+<PRE><TT><FONT COLOR="#990000">	CMyPage1 m_pageMy1;
+	CMyPage2 m_pageMy2;
+	......
+</FONT></TT></PRE>
+
+<h4>Step 7: Add page insertion code in the derived property sheet's constructor</h4>
+Now you will associate the page's objects to your property sheet, by adding them to the sheet, using the CPropertySheet::AddPage(...) function. 
+<p>Note: Here i put the code in the sheet's constructor, so it will be done automatically, but you can put this code anywhere you want in the derived property sheet class. 
+
+
+<PRE><TT><FONT COLOR="#990000">CMyPropSheet::CMyPropSheet(CWnd* pParentWnd)
+	:CPropertySheet(AFX_IDS_APP_TITLE, pParentWnd)
+{
+	AddPage(&m_pageMy1);
+	AddPage(&m_pageMy2);
+	......
+}
+</FONT></TT></PRE>
+
+
+That's it. If you compile and run your application, you will now get a fully functional property sheets with pages you can edit easily!
+<p>All you have to do now is add message handlers in each page to the page's own control. Have Fun!!
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

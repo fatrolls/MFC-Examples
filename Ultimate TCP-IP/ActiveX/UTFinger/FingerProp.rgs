@@ -1,0 +1,23 @@
+HKCR
+{
+	UTFinger.FingerProp.1 = s 'FingerProp Class'
+	{
+		CLSID = s '{B63A9001-ED4F-11D2-A443-0080C858F182}'
+	}
+	UTFinger.FingerProp = s 'FingerProp Class'
+	{
+		CLSID = s '{B63A9001-ED4F-11D2-A443-0080C858F182}'
+		CurVer = s 'UTFinger.FingerProp.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B63A9001-ED4F-11D2-A443-0080C858F182} = s 'FingerProp Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

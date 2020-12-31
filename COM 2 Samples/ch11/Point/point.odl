@@ -1,0 +1,48 @@
+[
+    uuid(3C591B20-1F13-101B-B826-00DD01103DE1),        // LIBID_Point.
+    helpstring("Point 1.0 Type Library"),
+    lcid(0x0000),
+    version(1.0)
+]
+library Point
+{
+    importlib("stdole.tlb");
+    [
+        uuid(3C591B25-1F13-101B-B826-00DD01103DE1),  // IID_IPoint.
+        helpstring("IPoint interface."),
+    ]
+    interface IPoint : IUnknown
+    {
+        [propget, helpstring("Returns and sets x coordinate.")]
+        HRESULT x([out, retval] int* retval); 
+        [propput, helpstring("Returns and sets x coordinate.")]
+        HRESULT x([in] int Value);
+
+        [propget, helpstring("Returns and sets y coordinate.")]
+        HRESULT y([out, retval] int* retval); 
+        [propput, helpstring("Returns and sets y coordinate.")]
+        HRESULT y([in] int Value);
+
+        [helpstring("Move Point To.")]
+        HRESULT MoveTo([in] int newX, [in] int newy);
+    }
+
+    [
+        uuid(3C591B26-1F13-101B-B826-00DD01103DE1),  // IID_DIPoint.
+        helpstring("DIPoint interface."),
+    ]
+    dispinterface DIPoint
+    {
+        interface IPoint;
+    }
+    [
+        uuid(3C591B21-1F13-101B-B826-00DD01103DE1),    // CLSID_Point
+        helpstring("Point Class"),
+        appobject
+    ]
+    coclass Point
+    {
+        [default] dispinterface DIPoint;
+    }
+}
+

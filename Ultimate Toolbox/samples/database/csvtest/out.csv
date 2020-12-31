@@ -1,0 +1,11 @@
+"ID","Name","Byte","Integer","Float","Double","String","Valid"
+1,George,25,-30,234.345306,3245235234.235000,"This is a test, this is only a test",Yes
+2,Peter,255,32767,3.141593,3.141593,"And now,
+for something
+completely different",No
+3,Paul,0,2342,2.718282,23.140693,Some more numbers,Yes
+
+"ID","Last Name","Address"
+1,McGill,1231 Sunnyside Circle
+2,Piper,21w238 Honeysuckle Rose Lane
+3,Howard,19 First Street

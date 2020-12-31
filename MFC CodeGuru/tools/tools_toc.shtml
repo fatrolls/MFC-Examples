@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Table of Contents</TITLE>
+   <META Name="description" Content="Tools for MFC / Windows programmers">
+   <META Name="keywords" Content="">
+</HEAD>
+<BODY aLink=#ff0000 background=../fancyhome/back.gif bgColor=#ffffff 
+bgProperties=fixed link=#b50029 vLink=#8e2323>
+<TABLE width=100%>
+<TR WIDTH = 100%>
+<TD>
+<H1><FONT color=#a0a0ff>Tools - Table of Contents</FONT></H1>
+<TD>
+<TD width=10%></TD>
+<TD align=right><!--#exec cgi="/cgi/ads.cgi"--><TD></TD>
+</TR>
+</TABLE>
+
+<HR>
+
+<P>This section is being maintained by Hugo Bernier. 
+ </P>
+<UL>
+  <LI>Visual Studio Add-Ins
+    <UL>
+  <LI><A href="buildcount.shtml">BuildCount Add-In - Eldad Kuperman</A></LI></UL>
+  <LI>
+  Standalone Tools
+    <UL>
+  <LI><A href="odbc_classgen.shtml">ODBC Class generator - Shekar Narayanan</A>
+  <LI><A href="map_mode.shtml">Understanding GDI mapping modes and other functions - Hans 
+        Wedemeyer</A>
+  <LI><A href="spcw.shtml">Stored 
+        Procedure Class Wizard - George Poulose</A>
+  <LI><A href="titleman.shtml" 
+    >InfoViewer Assistant - Tom Malcomson</A>
+  <LI><A href="rewritefiles.shtml" 
+        >RewriteFiles Utility - Christian Skovdal 
+        Andersen</A> </LI></UL>
+  <LI>Comercial Software - Free under certain conditions
+      <UL>
+	<LI><A href="covers.shtml">COVERS 3.1a - object-oriented modeling, code generation and 
+        simulation software. - Experimental Object Technologies</A>
+	<LI><A href="classbuilder.shtml">ClassBuilder: an Object Oriented C++ front end - Jimmy Venema</A> 
+        </LI>
+      </UL>
+      <HR>
+    </LI>
+</UL>
+
+
+
+<TABLE COLS=3 WIDTH=100% >
+<TR>
+<TD width=33%><FONT size=-1><A href="http://www.codeguru.com">Goto 
+            HomePage</A></FONT></TD>
+
+<TD width=34%>
+<FONT size=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD width=33%>
+<DIV align=right><FONT size=-1>Contact me: <A href="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

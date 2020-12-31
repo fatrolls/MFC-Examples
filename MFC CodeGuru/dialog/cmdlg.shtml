@@ -1,0 +1,165 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Dialogs - Costumizing CFileDialog</TITLE>
+</HEAD>
+
+<!-- Set article properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Costumizing CFileDialog
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:csa@mail.jubii.dk">Christian Skovdal
+Andersen</a>. </p>
+
+<p><font face="Arial"><em><strong>The Demo</strong></em><br>
+</font>The following code will make the file-open dialog 150 pixels higher, than it use to
+be. This is a very simple example of the things that can be done, to make the common
+dialogs smarter and more useable.</p>
+
+<p><img src="cmdlg.gif" width="426" height="442" alt="cmdlg.gif (10566 bytes)"></p>
+
+<p><em><font face="Arial"><strong>What To Consider</strong></font></em><br>
+Eventhough it has become easier to costumize the common dialogs with MFC, there still is
+some tricky parts. 
+
+<ul>
+  <li>If you want to change the size or appearence of some of the controls in the dialog (or
+    the dialog it self, for that matter) you cannot just use &quot;GetDlgItem()&quot;,
+    because&nbsp; the controls belongs to the parent of the dialog you have subclassed.</li>
+  <li>The id's of the controls is defined in the header file <em>&lt;dlgs.h&gt; </em>as
+    &nbsp;&nbsp;&nbsp;&nbsp; <br>
+    <br>
+    <em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stc3, stc2
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </em>The two label controls (&quot;File name&quot; and &quot;Files of type&quot;)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>edt1, cmb1
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </em>The edit control and the drop-down box.<br>
+    <em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IDOK, IDCANCEL </em>The OK and Cancel
+    button.<br>
+    <em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lst1
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </em>The window that is used to browse the namespace.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you using a dialog with &quot;Help&quot;
+    button and &quot;Open as read-only&quot; check button, <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; there will also be ids for these controls. They
+    are all defined in <em>&lt;dlgs.h&gt;.</em></li>
+</ul>
+
+<p><font face="Arial"><strong><em>The sample code</em></strong></font><br>
+The class CMyFileDialog is derived from CFileDialog using classwizard. A handler for
+WM_INITDIALOG has been added and that is where everything is done.</p>
+
+<pre>////////////////////////////////////////////////////////////////
+// This is where the real action is going on
+// Remember #include &lt;dlgs.h&gt;
+<font
+color="#800000">BOOL CMyFileDialog::OnInitDialog() // Override
+{
+</font><font
+color="#000000">    // This variable should be changed acording to your wishes
+    // about the size of the finished dialog
+</font><font
+color="#800000">    const UINT iExtraSize = 150;
+</font><font color="#000000">    // Number of controls in the File Dialog</font><font
+color="#800000">
+    const UINT nControls = 7;    
+
+</font><font color="#000000">    // Get a pointer to the original dialog box.</font><font
+color="#800000">
+    CWnd *wndDlg = GetParent();
+
+    RECT Rect;
+    wndDlg-&gt;GetWindowRect(&amp;Rect);
+</font><font
+color="#000000">    // Change the size</font><font color="#800000">
+    wndDlg-&gt;SetWindowPos(NULL, 0, 0, 
+                        Rect.right - Rect.left, 
+                        Rect.bottom - Rect.top + iExtraSize, 
+                        SWP_NOMOVE);
+
+</font><font
+color="#000000">    // Control ID's - defined in &lt;dlgs.h&gt;</font><font
+color="#800000">
+    UINT Controls[nControls] = {stc3, stc2, </font><font color="#000000">// The two label controls</font><font
+color="#800000">
+                                edt1, cmb1, </font><font color="#000000">// The eidt control and the drop-down box</font><font
+color="#800000">
+                                IDOK, IDCANCEL, 
+                                lst1}; </font><font
+color="#000000">// The Explorer window</font><font color="#800000">
+
+</font><font
+color="#000000">    // Go through each of the controls in the dialog box, and move them to a new position
+</font><font
+color="#800000">    for (int i=0 ; i&lt;nControls ; i++)
+    {
+        CWnd *wndCtrl = wndDlg-&gt;GetDlgItem(Controls[i]);
+        wndCtrl-&gt;GetWindowRect(&amp;Rect);
+        wndDlg-&gt;ScreenToClient(&amp;Rect); </font><font
+color="#000000">// Remember it is child controls
+</font><font color="#800000">
+</font><font
+color="#000000">        // Move all the controls according to the new size of the dialog.
+</font><font
+color="#800000">        if (Controls[i] != lst1)
+            wndCtrl-&gt;SetWindowPos(NULL, 
+                            Rect.left, Rect.top + iExtraSize,
+                            0, 0, SWP_NOSIZE);
+        else </font><font
+color="#000000">// This is the explorer like window. It should be sized - not moved.</font><font
+color="#800000">
+            wndCtrl-&gt;SetWindowPos(NULL, 0, 0,
+                                Rect.right - Rect.left, 
+                                Rect.bottom - Rect.top + iExtraSize, 
+                                SWP_NOMOVE);
+    }
+
+    </font><font
+color="#000000">// Remember to call the baseclass.</font><font color="#800000">
+    return CFileDialog::OnInitDialog();
+}
+</font></pre>
+
+<p>Download the sample project/executable <a href="cmdlg.zip">cmdlg.zip</a> (31 kb)</p>
+
+<!-- Remember to update this -->
+<p>Last updated: 11 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

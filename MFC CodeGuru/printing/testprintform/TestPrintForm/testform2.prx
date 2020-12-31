@@ -1,0 +1,31 @@
+[Form Page Header]
+NumPages=2
+Page 0=testpage
+Page 1=testsubform
+
+[testpage]
+Rect=100,100,2000,2800
+Static=0,0,1900,150,Test Form Demo with subform,,,bold,italic,,Times New Roman,26,-1,ffffff,000000,000000,0,0,1,37
+Static=0,300,300,400,Field 1:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=350,300,900,400,m_Field1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=0,400,300,500,Field 2:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=350,400,900,500,m_Field2,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=900,300,1200,400,Field 3:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=1250,300,1900,400,m_Field3,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=900,400,1200,500,Field 4:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=1250,400,1900,500,m_Field4,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+HLine=0,150,1900,200,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Image=1600,0,1900,150,m_Image1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Subform=94,694,1790,2500,testsubform,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=88,644,398,688,Column 1,,,,,,Arial,8,0,c0c0c0,000000,000000,0,0,1,0
+Static=396,644,1792,688,Column 2,,,,,,Arial,8,0,c0c0c0,000000,000000,0,0,1,0
+HLine=10,2602,1882,2630,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Rect=88,644,1792,688,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Rect=88,692,1792,2498,testsubform,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+
+[testsubform]
+Rect=0,0,1800,53
+Edit=0,0,298,46,m_subfield1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Edit=303,0,1888,46,m_subfield2,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+HLine=0,52,1700,53,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+VLine=299,0,301,53,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0

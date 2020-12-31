@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Static Controls - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various windows controls">
+   <META Name="keywords" Content="">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Static Controls - Table of Contents</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<HR>
+
+<p>This section is being maintained by <a href = "mailto:chris.maunder@codeguru.com">Chris Maunder</a>.
+<br>
+
+<UL>
+<LI><A HREF="cstatic_filespec.shtml">Static text to display long filenames with ellipses - Ravi Bhavnani</A></LI>
+<LI><A HREF="cstatic_digital_clock.shtml">CStatic as digital clock - Xie Jingwei</A></LI>
+<LI><A HREF="syscol_static.shtml">CStatic with bitmap sensitive to change in system colours - Pål K. Tønder</A></LI>
+<LI><A HREF="credit_static.shtml">Scrolling credits using CStatic - Pål K. Tønder</A></LI>
+<LI><A HREF="credit_static2.shtml">Scrolling(iwave) credits using CStatic - Jens Kreiensiek</A></LI>
+<LI><A HREF="label_static.shtml">Extended Use of CStatic Class - Norm Alomond</a></li> 
+</UL>
+
+
+<HR>
+
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,35 @@
+HKCR
+{
+	UTMsg.Message.1 = s 'Dundas Message Control 4.0'
+	{
+		CLSID = s '{663A8A5F-6792-11D3-A4E3-0080C858F182}'
+		'Insertable'
+	}
+	UTMsg.Message = s 'Dundas Message Control 4.0'
+	{
+		CLSID = s '{663A8A5F-6792-11D3-A4E3-0080C858F182}'
+		CurVer = s 'UTMsg.Message.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {663A8A5F-6792-11D3-A4E3-0080C858F182} = s 'Dundas Message Control 4.0'
+		{
+			ProgID = s 'UTMsg.Message.1'
+			VersionIndependentProgID = s 'UTMsg.Message'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '132497'
+			}
+			'TypeLib' = s '{663A8A50-6792-11D3-A4E3-0080C858F182}'
+			'Version' = s '1.4'
+		}
+	}
+}

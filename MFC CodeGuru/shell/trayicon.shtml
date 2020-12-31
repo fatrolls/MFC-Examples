@@ -1,0 +1,258 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Shell Programming - TrayIcon</TITLE>
+</HEAD>
+<BODY>
+
+<CENTER>
+<H3>
+<FONT COLOR="#000099">TrayIcon</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto: Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<p>
+<img src="trayicon.gif" width=157 height=31 border=0 alt="TrayIcon example image" align="bottom">
+<A HREF="TrayIcon.zip">Download source files</A> (3Kb) or <A HREF="SystemTray.zip">Sample Project</a> (31.3Kb).
+</p>
+
+<p>
+<A HREF="TrayIcon.html#Intro">Introduction</A><br>
+<A HREF="TrayIcon.html#Construction">Construction</A><br>
+<A HREF="TrayIcon.html#Operations">Operations</A><br>
+<A HREF="TrayIcon.html#Default">Default message handling</A><br>
+<A HREF="TrayIcon.html#Example">Example of use</A><br>
+<A HREF="TrayIcon.html#TrackPopupMenu">NOTE on TrackPopupMenu</A><br>
+</P>
+
+<h4><A NAME="Intro">Introduction</a></h4>
+<P>This is a conglomeration of ideas from the MSJ "Webster" application,
+sniffing round the online docs, and from other implementations such
+as PJ Naughter's "CTrayIconifyIcon" (<A HREF="http://indigo.ie/~pjn/ntray.html">
+http://indigo.ie/~pjn/ntray.html</A>) especially the "CTrayIcon::OnTrayNotification"
+member function and the SetStandardIcon stuff.
+
+<P>This class is a light wrapper around the windows system tray stuff. It
+adds an icon to the system tray with the specified ToolTip text and 
+callback notification value, which is sent back to the Parent window.
+
+<P>The basic steps to using a tray icon via the windows API are:
+<ol>
+<li>Load up the <tt>NOTIFYICONDATA</tt> structure</li>
+<li>Call <tt>Shell_NotifyIcon(NIM_ADD, &MyTrayNotifyStruct)</tt></li>
+</ol>
+
+<P>Changing the values of the fields in NOTIFYICONDATA and calling 
+Shell_NotifyIcon allows you to change to icon or tool tip text or remove 
+the icon itelf. All this messing around has been bundled in a class wrapper 
+to make it easier and neater.
+
+<P>The tray icon can be instantiated using either the constructor or by
+declaring the object and creating (and displaying) it later on in the
+program. eg.
+
+<PRE><TT><FONT COLOR="#990000">	CTrayIcon m_TrayIcon;   // Member variable of some class
+
+	... 
+	// in some member function maybe...
+	m_TrayIcon.Create(pParentWnd, WM_MY_NOTIFY, "Click here", 
+	                  hIcon, nTrayIconID);
+</FONT></TT></PRE>
+
+<a name="Construction"><H4>Construction</H4></a>
+
+<PRE><TT><FONT COLOR="#990000">	CTrayIcon();
+	CTrayIcon(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szToolTip, HICON icon, UINT uID);
+	BOOL Create(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szToolTip, HICON icon, UINT uID);
+</FONT></TT></PRE>
+
+<P>Note that the destructor automatically removes the icon from the tray.</P>
+
+<FONT COLOR="#990000">
+<TABLE CELLSPACING=0 BORDER=0 WIDTH="100%">
+<TR><td WIDTH="10%">&nbsp;</td>
+<TD WIDTH="30%"><tt>pWnd</tt></TD>
+<TD WIDTH="65%">Parent window where notification messages will be sent</TD>
+</TR>
+<TR>
+<td WIDTH="5%">&nbsp;</td>
+<TD WIDTH="30%"><tt>uCallbackMessage</tt></TD>
+<TD WIDTH="65%">The notification messages that will be sent to the parent window</TD>
+</TR>
+<TR>
+<td WIDTH="5%">&nbsp;</td>
+<TD WIDTH="30%"><tt>szToolTip</tt></TD>
+<TD WIDTH="65%">Tooltip for the tray icon</TD>
+</TR>
+<TR>
+<td WIDTH="5%">&nbsp;</td>
+<TD WIDTH="30%"><tt>icon</tt></TD>
+<TD WIDTH="65%">Handle to the icon to be displayed</TD>
+</TR>
+<TR>
+<td WIDTH="5%">&nbsp;</td>
+<TD WIDTH="30%"><tt>uID</tt></TD>
+<TD WIDTH="65%">Tray icon ID</TD>
+</TR>
+</TABLE>
+</FONT>
+
+<h4><A NAME="Operations">Operations</a></h4>
+
+<PRE><TT><FONT COLOR="#990000">	LRESULT OnTrayNotification(WPARAM wID,
+	                           LPARAM lEvent)      // Discussed below
+
+	void    MoveToRight()                           // Moves the icon to the far right of the tray,
+	                                                //   so it is immediately to the left of the clock
+	void    RemoveIcon()                            // Removes the icon from the tray (icon can no
+	                                                //   longer be manipulated)
+	void    HideIcon()                              // Hides but does not totally remove the icon
+	                                                //   from the tray.
+	void    ShowIcon()                              // Redisplays a previously hidden icon
+
+	BOOL    SetTooltipText(LPCTSTR pszTip)          // Set Tooltip text
+	BOOL    SetTooltipText(UINT nID)                // Set tooltip from text resource ID
+	CString GetTooltipText() const                  // Retrieve tool tip text
+
+	BOOL    SetNotificationWnd(CWnd* pWnd)          // Self explanatory
+	CWnd*   GetNotificationWnd() const
+
+	HICON   GetIcon() const                         //  Get current tray icon
+	BOOL    SetIcon(HICON hIcon)                    //  Change tray icon. Returns FALSE if unsuccessful
+	BOOL    SetIcon(LPCTSTR lpszIconName)           //  Same, using name of the icon resource
+	BOOL    SetIcon(UINT nIDResource)               //  Same, using icon resource ID
+
+	BOOL    SetStandardIcon(LPCTSTR lpIconName)     //  Load icon from the current application.
+	BOOL    SetStandardIcon(UINT nIDResource)         
+</FONT></TT></PRE></p>
+
+<p>SetStandardIcon can also take any of the following values:</p>
+<p>
+<PRE><TT>	<u>                                                                            </u>
+	<u>nIDResource             Description                                         </u>
+	IDI_APPLICATION         Default application icon. 
+	IDI_ASTERISK            Asterisk (used in informative messages). 
+	IDI_EXCLAMATION         Exclamation point (used in warning messages). 
+	IDI_HAND                Hand-shaped icon (used in serious warning messages). 
+	IDI_QUESTION            Question mark (used in prompting messages). 
+	<u>IDI_WINLOGO             Windows logo                                        </u>                                                                         
+</TT></PRE>
+
+
+<h4><A NAME="Default">Default message handling</a></h4>
+
+The parent window, on receiving a notification message, can redirect this
+message back to the tray icon for handling be calling 
+<strong>CTrayIcon::OnTrayNotification(...)</strong>. The default implementation
+tries to find a menu with the same resource ID as the tray icon. If it finds a 
+menu and the event received was a right mouse button up, then the submenu is
+displayed as a context menu. If a double click was received, then the message
+ID of first item in the submenu is sent back to the parent window.
+
+<h4><A NAME="Example">Example of use</a></h4>
+
+A good place to declare the tray icon is in your CFrameWnd derived class.<br>
+eg. 
+
+<PRE><TT><FONT COLOR="#990000">	#define WM_ICON_NOTIFY  WM_USER+10
+	
+	CTrayIcon m_TrayIcon
+</FONT></TT></PRE>
+
+
+Add a message map entry for the tray icon notification:
+
+
+<PRE><TT><FONT COLOR="#990000">	BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
+		...
+		ON_MESSAGE(WM_ICON_NOTIFY, <strong>OnTrayNotification</strong>)
+	END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+
+Create the icon (maybe in your OnCreate):
+
+<PRE><TT><FONT COLOR="#990000">	if (!m_TrayIcon.Create(this, WM_ICON_NOTIFY, strToolTip, hIcon, IDR_POPUP_MENU))
+		return -1;
+</FONT></TT></PRE>
+
+
+where IDR_POPUP_MENU is the ID of a popup menu to display for the icon.
+You then need a handler for the tray icon notification message:
+
+<PRE><TT><FONT COLOR="#990000">	LRESULT CMainFrame::OnTrayNotification(WPARAM wParam, LPARAM lParam)
+	{
+		// Delegate all the work back to the default implementation in CTrayIcon.
+		return m_TrayIcon.OnTrayNotification(wParam, lParam);
+	}
+</FONT></TT></PRE>
+
+
+The menu used (IDR_POPUP_MENU) looks like the following:
+
+<PRE><TT><FONT COLOR="#990000">	IDR_POPUP_MENU MENU PRELOAD DISCARDABLE 
+	BEGIN
+		POPUP "POPUP_MENU"
+		BEGIN
+			MENUITEM "&About...",      ID_APP_ABOUT
+			MENUITEM SEPARATOR
+			MENUITEM "&Options...",    ID_APP_OPTIONS
+			MENUITEM SEPARATOR
+			MENUITEM "E&xit",          ID_APP_EXIT
+		END
+	END
+</FONT></TT></PRE>
+
+A single right click on the tray icon will bring up this menu, while
+a double click will send a ID_APP_ABOUT message back to the frame.
+
+
+<h4><A NAME="TrackPopupMenu">NOTE on TrackPopupMenu</a></h4>
+
+Many people have had troubles using TrackPopupMenu. They have reported that the popup
+menu will often not disappear once the mouse is clicked outside of the menu, even though
+they have set the last parameter of TrackPopupMenu() as NULL. This is a Microsoft
+"feature", and is by design. The mind boggles, doesn't it?</p>
+<p>Anyway - to workaround this "feature", one must set the current window as the 
+foreground window <em>before</em> calling TrackPopupMenu. This then causes a second
+problem - namely that the next time the menu is displayed it displays then immediately 
+disappears. To fix <em>this</em> problem, you must make the currernt application 
+active after the menu disappears. This can be done by sending a benign message such
+as WM_USER to the current window.</p>
+<p>So - what should have been a simple:
+<PRE><TT><FONT COLOR="#990000">	TrackPopupMenu(hSubMenu, TPM_RIGHTBUTTON, pt.x,pt.y, 0, hDlg, NULL);
+</FONT></TT></PRE>
+ becomes
+<PRE><TT><FONT COLOR="#990000">	SetForegroundWindow(hDlg);
+	TrackPopupMenu(hSubMenu, TPM_RIGHTBUTTON, pt.x,pt.y, 0, hDlg, NULL);
+	PostMessage(hDlg, WM_NULL, 0, 0);
+</FONT></TT></PRE>
+Refer to KB article "PRB: Menus for Notification Icons Don't Work Correctly" for more info.
+
+<br>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi-bin/counters/counter.cgi"--></FONT></CENTER>
+</BODY>
+</HTML>

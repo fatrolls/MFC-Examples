@@ -1,0 +1,276 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Ciotescu Raul">
+   <TITLE><!-- Section Title -->Bitmap & Palette - <!-- Article Title -->DIB classes</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->EBGFX Library 
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:ef00@luc.ac.be"><!-- Author Name -->El Barto</A>.
+
+<!-- Sample image - gif or jpg -->
+<!--P><IMG SRC="******" -->
+
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+ 
+<p>
+The EBGFX Library is a Free MFC compatible library created to get fast
+access to image data and include several functions not available in the
+windows gdi. <br>
+<p>
+Whether you create a Ray-Tracer, an Image Processing
+Library, a Painting Program or Games, you need direct pixel access,
+you can't just use GetPixel, SetPixelV. One way to achieve this is using
+Dibs (Device Independant Bitmaps). To get rid of the details of creating
+destroying DibSections I wrote a CDib class. <br>However I want more
+than just Creating and Destroying Images, I want to have several layers
+and techniques to composite those layers into a final Image, so I've
+implemented some of the Compositing techniques found in Photoshop.
+(As a GFX Artist I'm more acquainted with those techniques as with
+src & dst Blend functions). <p>I also included some routines to Copy/Paste
+parts of Images to other Images, with optional Compositing.
+The current public version of the Library contains two classes :
+CDib, which can be used as an offscreen surface, a tile, a layer, and
+which includes several Compositing techniques and Drawing Primitives.
+CDrawDib, which can be used to write a CDib directly into Video
+Memory with optional Stretching and/or Dithering the Dib.<p>
+Two other classes are not yet released : CFilter, which implements a lot of
+Image Processing Filters, and CFileHandler which loads several Image
+Formats like BMP, JPG, GIF, TGA, TIFF, PCX, PSD, etc.
+In the future I'll probably create a DirectDaw based version for
+Games.
+
+
+<p>
+<CENTER><font size = "5">Compositing</font></CENTER>
+<p>
+
+<p align="center"><img src="ebgfx_Otaku.gif" width="64" height="64"><br>
+Original</p>
+<div align="center"><center>
+
+<table border="0">
+    <tr>
+        <td align="center">Original</td>
+        <td align="center">Blend</td>
+        <td align="center">Darken</td>
+        <td align="center">Difference</td>
+        <td align="center">Lighten</td>
+        <td align="center">Multiply</td>
+        <td align="center">Screen</td>
+    </tr>
+    <tr>
+        <td><img src="ebgfx_colors.gif" width="64" height="64"><br>
+        <img src="ebgfx_flare.gif" width="64" height="64"></td>
+        <td colspan="6"><img src="ebgfx_effects.jpg" width="384"
+        height="128"></td>
+    </tr>
+</table>
+</center></div>
+
+<p align="center">What does each function do ?</p>
+<div align="center"><center>
+
+<table border="1" cellpadding="2" cellspacing="0"
+bordercolor="#808080" bordercolordark="#83DC29"
+bordercolorlight="#C0C0C0">
+    <tr>
+        <td>Blend :</td>
+        <td>Blends the src color with the dst color (alpha from 0
+        to 255)</td>
+    </tr>
+    <tr>
+        <td>Darken :</td>
+        <td>dst = Darkest Color ( src, dst )</td>
+    </tr>
+    <tr>
+        <td>Difference :</td>
+        <td>dst = Abs ( src-dst )</td>
+    </tr>
+    <tr>
+        <td>Lighten :</td>
+        <td>dst = Lightest Color ( src, dst )</td>
+    </tr>
+    <tr>
+        <td>Multiply :</td>
+        <td>dst = src*dst</td>
+    </tr>
+    <tr>
+        <td>Screen :</td>
+        <td>dst = (255-src)*(255-dst)</td>
+    </tr>
+</table>
+</center></div>
+
+<p align="center">What can they be used for ?</p>
+<div align="center"><center>
+
+<table border="1" cellpadding="2" cellspacing="0"
+bordercolor="#808080" bordercolordark="#83DC29"
+bordercolorlight="#C0C0C0">
+    <tr>
+        <td>Blend :</td>
+        <td>That nice Glassy effect for windows, water, fading</td>
+    </tr>
+    <tr>
+        <td>Darken :</td>
+        <td>Shadows</td>
+    </tr>
+    <tr>
+        <td>Difference :</td>
+        <td>Inverting</td>
+    </tr>
+    <tr>
+        <td>Multiply :</td>
+        <td>Exclude certain color channels, masking</td>
+    </tr>
+    <tr>
+        <td>Lighten, Screen :</td>
+        <td>Flares, Fire, Explosions</td>
+    </tr>
+</table>
+</center></div>
+
+<p>
+
+This is a small example which shows some of the functionality
+of the CDib and CDrawDib classes : RotoZoom.zip
+
+<p align="center"><img src="ebgfx_rotozoom1.gif" width="112"
+height="146"> <img src="ebgfx_rotozoom2.gif" width="112" height="146"></p>
+It's a small RotoZoomer with optional Motion Blur (using the CDib functions)
+
+<p>
+This is a second example testing the new CopyDC/PasteDC functions,
+It grabs the opposite part of the screen, and puts it behind Glass.
+There is still a little problem though (see Second Screenshot), how can you grab the screen
+before your window gets painted ? If anyone knows how to fix this,
+please mail me
+
+<p align="center"><img src="ebgfx_xray1.gif" width="208" height="246"></p>
+
+<p>
+<CENTER><font size = "5">Bugs & Warnings</font></CENTER>
+
+<p>
+Send Suggestions, Speed Increases and Bug Reports to <A HREF="mailto:ef00@luc.ac.be">ef00@luc.ac.be</A>
+
+<table border="0">
+    <tr>
+        <td valign="top">Bugs :</td>
+        <td valign="top"><ul>
+            <li>No known Bugs at this Time</li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">Warnings :</td>
+        <td valign="top"><ul>
+            <li>Line drawing has no clipping at the moment, so
+                keep<br>
+                the points within the clipping region please.</li>
+            <li>The Rect functions have clipping capacity, if you
+                don't<br>
+                need clipping you can throw the clipping code
+                away for<br>
+                extra speed.</li>
+            <li>Copy means copy from 'this' to first param.</li>
+            <li>Paste means copy from first param to 'this'.</li>
+            <li>Only 32-bit Dibs are supported at this time.</li>
+            <li>The Dibs are upside-down because DrawDibDraw<br>
+                won't accept them otherwise.</li>
+            <li>You won't find a SetPixel function because it's
+                just<br>
+                stupid to create such a function, use<br>
+                m_Bits[y*m_Size.cx+x]=Color instead.<br>
+                Or define a macro :<br>
+                #define SetPixel(x,y,C) m_Bits[y*m_Size.cx+x]=C</li>
+        </ul>
+        </td>
+    </tr>
+</table>
+
+<p>
+<CENTER><font size = "5">
+Future Enhancements
+</font></CENTER>
+<p>
+
+<table border="0">
+    <tr>
+			<td valign="top"></td>
+			<td valign="top"><ul>
+				<li>Speed</li>
+				<li>More primitives.</li>
+				<li>Maybe Render-States which determine what function
+					to<br>
+					use.</li>
+				<li>...</li>
+			</ul>
+			</td>
+    </tr>
+</table>
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+
+
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="ebgfx_rotozoom.zip">Download demo project and source code: RotoZoom - 160KB</A>
+<p><!-- first the filename (zip files) --><A HREF="ebgfx_xray.zip">Download demo project XRay.zip - 145KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 5/08/98
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

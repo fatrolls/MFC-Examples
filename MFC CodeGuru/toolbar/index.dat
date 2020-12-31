@@ -1,0 +1,27 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|256colors_in_toolbar.shtml||Using 256 color bitmaps in toolbar|Kevin Bentley
+1998/03/28|combo_in_flatbar.shtml||Using ComboBox on a Flat Toolbar|Kenneth Carter
+1998/03/28|ctrls_in_tb.shtml||Place Controls on ToolBars|Randy More
+1998/03/28|customizable_tb.shtml|| Customizable toolbar|Doug Keith
+1998/03/28|devstudio_like.shtml||DevStudio like Flat Toolbar|Roger Onslow
+1998/03/28|fix_for_ctoolbar.shtml||A Fix for CToolBar with IE4|Roger Onslow
+1998/03/28|flatbar.shtml||Another Flat ToolBar (does not require MSIE)|
+1998/03/28|no_sysmenu.shtml||Remove system menu from floating toolbar|Sushil Saxena
+1998/03/28|tb_custmsg_tips.shtml||Custom status messages and tooltips|Pål K. Tønder
+1998/04/21|VCMenu.shtml||Visual Studio/Office 97 style Flat Toolbar and Dockable Menu bar|Tony Hoyle
+1998/03/28|flatbar_controls.shtml||Flat Toolbar with Controls Example Code|Kirk Stowell
+1998/04/18|custom_tb.shtml||Customizable Toolbar (2)|Stas Levin

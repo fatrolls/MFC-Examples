@@ -1,0 +1,6 @@
+LANGUAGE 0x7,0x1
+1 11 msg00002.bin
+LANGUAGE 0xc,0x1
+1 11 msg00003.bin
+LANGUAGE 0x9,0x1
+1 11 msg00001.bin

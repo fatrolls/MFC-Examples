@@ -1,0 +1,124 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Display help for dialog controls on the status bar</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Display help for dialog controls on the status bar
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:nikolay@jriver.com">Nikolay Sokratov</A>.
+
+<!-- Sample image and source code/demo project -->
+<!-- The article... -->
+
+<p>If the user passes the mouse over a button, extra help text for that button should appear in
+the status bar. To use status bar to display extra help for dialog controls is preaty easy.
+
+Every time the mouse passes over a window, the WM_SETCURSOR message is sent to the window's owner.
+If we catch the message through OnSetCursor, we can easy determine if the mouse is over a dialog
+control. Then, assuming the control has a string resource with the same ID, we pass the ID to a
+special function that sets the text in the first status bar pane.<br>
+<br>
+
+1. Create function to handle WM_SETCURSOR
+
+<FONT COLOR="#990000"><TT><PRE>
+BOOL CAboutDlg::OnSetCursor(CWnd * pWnd, UINT nHitText, UINT message)
+{
+	// if the cursor is not over a child window control, revert
+	// to the default status bar text
+
+	if(pWnd == this)
+		SetPaneText();
+	else
+		SetPaneText(pWnd->GetDlgCtrlID());
+
+	return CDialog::OnSetCursor(pWnd, nHitTest, message);
+}
+</tt></PRE></FONT>
+
+2. Handle WM_DESTROY message to restore status bar text
+
+<FONT COLOR="#990000"><TT><PRE>
+void CAboutDlg::OnDestroy()
+{
+	SetPaneText();
+	CDialog::OnDestroy();
+}
+</tt></PRE></FONT>
+
+3. Add SetPaneText helper function
+
+<FONT COLOR="#990000"><TT><PRE>
+// this part goes to CAboutDlg class declaration
+protected:
+	void SetPaneText(UINT nID = 0);
+
+// and this is function implementation
+void CAboutDlg::SetPaneText(UINT nID)
+{
+	if(nID == 0)
+		nID = AFX_IDS_IDLEMESSAGE;
+
+	CWnd * pWnd = AfxGetMainWnd()->GetDescendantWindow(AFX_IDW_STATUS_BAR);
+	if(pWnd)
+	{
+		AfxGetMainWnd()->SendMessage(WM_SETMESSAGESTRING, nID);
+		pWnd->SendMessage(WM_IDLEUPDATECMDUI);
+		pWnd->UpdateWindow();
+	}
+}
+</tt></PRE></FONT>
+
+4. And finally do not foget to add following include files
+
+<FONT COLOR="#990000"><TT><PRE>
+#include <afxpriv.h> // for WM_SETMESSAGESTRING and WM_IDLEUPDATECMDUI
+#include <afxres.h> // for AFX_IDW_STATUS_BAR
+</tt></PRE></FONT>
+
+
+
+<!-- Remember to update this -->
+<p>Last updated: 11 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - Dragging a dialog by clicking anywhere on it</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Dragging a dialog by clicking anywhere on it</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:clucas@tel3.com">Craig Lucas</A>.
+
+<P>This is how you create a dialog that can be dragged by clicking anywhere
+on it, ie. not just the caption bar.
+
+<PRE><TT><FONT COLOR="#990000">
+void CNCHitDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+	CDialog::OnLButtonDown(nFlags, point); 
+	// fake windows into thinking your clicking on the caption, does not
+	// maximize on double click
+	PostMessage( WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM( point.x, point.y));
+} 
+</FONT></TT></PRE>
+
+or
+
+<PRE><TT><FONT COLOR="#990000">
+UINT CNCHitDlg::OnNcHitTest(CPoint point) 
+{
+	UINT nHitTest = CDialog::OnNcHitTest( point );
+	// also fake windows out, but this maximizes the window when you double
+	// click on it. 
+	return (nHitTest == HTCLIENT) ? HTCAPTION : nHitTest;
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

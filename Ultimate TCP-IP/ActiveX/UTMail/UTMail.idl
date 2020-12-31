@@ -1,0 +1,417 @@
+// =================================================================
+//  
+//  UTMail.idl : IDL source for UTMail.dll
+//  
+//  Purpose:
+//
+//    This file will be processed by the MIDL tool to
+//    produce the type library (UTMail.tlb) and marshalling code.
+//
+// =================================================================
+// Ultimate TCP/IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// =================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+
+
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+
+// Avoid redeclaration of enumerations
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+cpp_quote("#endif")  
+
+[
+#ifndef _BLOCKING_MODE_ONLY
+	uuid(F7FA866F-089C-11D3-A469-0080C858F182),
+	helpstring("Ultimate TCP/IP Mail Control 4.2"),
+#else
+	uuid(FCA758B3-D299-11d3-A550-0080C858F182),
+	helpstring("Ultimate TCP/IP Mail Control 4.2 (Blocking Mode)"),
+#endif
+	version(1.4)
+
+]
+library UTMAILLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		
+	#ifndef _BLOCKING_MODE_ONLY
+		uuid(F7FA867F-089C-11D3-A469-0080C858F182),
+	#else
+		uuid(FCA758B4-D299-11d3-A550-0080C858F182),
+	#endif
+
+		helpstring("_IMailEvents Interface")
+	]
+	dispinterface _IMailEvents
+	{
+		properties:
+		methods:
+
+		//===========================================
+		//	Mail control events
+		//===========================================
+
+	#ifndef _BLOCKING_MODE_ONLY
+
+		[id(1), helpstring("Called each time bytes are sent to the server")] 
+			HRESULT OnSendMailProgress([in] long BytesSent, [in] long BytesTotal);
+
+		[id(2), helpstring("Called when a connection to the server is established")] 
+			HRESULT OnSMTPConnect([in] long Result);
+
+		[id(3), helpstring("Called each time bytes are sent to the server")] 
+			HRESULT OnSendMail([in] long Result);
+
+		[id(4), helpstring("Called when a connection to the server is established")] 
+			HRESULT OnPOP3Connect([in] long Result);
+
+		[id(5), helpstring("Called when the number of messages are retreived")] 
+			HRESULT OnGetMsgNumber([in] long MsgNumber, [in] long Result);
+
+		[id(6), helpstring("Called when the size of a message is retreived")] 
+			HRESULT OnGetMsgSize([in] long MsgSize, [in] long Result);
+
+		[id(7), helpstring("Called when a message is saved")] 
+			HRESULT OnSaveMsg([in] long Result);
+
+		[id(8), helpstring("Called each time more bytes are written to a saved message")] 
+			HRESULT OnSaveMsgProgress([in] long BytesReceived);
+
+		[id(9), helpstring("Called when a message is deleted from the server")] 
+			HRESULT OnDeleteMsg([in] long Result);
+
+		[id(10), helpstring("Called when messages flagged for deletion on the server are unmarked for deletion")] 
+			HRESULT OnResetDelete([in] long Result);
+
+		[id(11), helpstring("Called when a message is opened for reading")] 
+			HRESULT OnOpenMsg([in] long Result);
+
+		[id(12), helpstring("Called when a line is read from a message body")] 
+			HRESULT OnReadMsgLine([in] BSTR Line, [in] long Result);
+
+		[id(13), helpstring("Called when the TOP command is executed")] 
+			HRESULT OnOpenTop([in] long Result);
+
+		[id(14), helpstring("Called when a line is read while executing the TOP command")] 
+			HRESULT OnReadTopLine([in] BSTR Line, [in] long Result);
+
+		[id(15), helpstring("Called when the CloseTop method finished.")] 
+			HRESULT OnCloseTop([in] long Result);
+
+		[id(16), helpstring("Called when the CloseMsg method finished.")] 
+			HRESULT OnCloseMsg([in] long Result);
+
+		[id(17), helpstring("Called when the POP3Close method finished.")] 
+			HRESULT OnPOP3Close([in] long Result);
+
+		[id(18), helpstring("Called when the SMTPClose method finished.")] 
+			HRESULT OnSMTPClose([in] long Result);
+
+	#endif // _BLOCKING_MODE_ONLY
+	};
+
+	[
+		
+	#ifndef _BLOCKING_MODE_ONLY
+		uuid(F7FA867E-089C-11D3-A469-0080C858F182),
+	#else
+		uuid(FCA758B5-D299-11d3-A550-0080C858F182),
+	#endif
+
+		licensed,
+		helpstring("Ultimate TCP/IP Mail Control 4.2")
+	]
+	coclass Mail
+	{
+		[default] interface IMail;
+		[default, source] dispinterface _IMailEvents;
+	};
+
+	[
+#ifndef _BLOCKING_MODE_ONLY
+	uuid(F7FA8680-089C-11D3-A469-0080C858F182),
+#else
+	uuid(255E1EA1-D29D-11d3-A550-0080C858F182),
+#endif
+
+		helpstring("MailPropPage Class")
+	]
+	coclass MailPropPage
+	{
+		interface IUnknown;
+	};
+
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (E0B3E64A-0D37-11d3-A46D-0080C858F182), helpstring("Mail Error Codes")]
+	enum MailErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Error")]					ecError					= UTE_ERROR,
+		[helpstring("Invalid address format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Not connected")]			ecNoConnection			= UTE_NOCONNECTION,
+		[helpstring("Connection failed")]		ecConnectionFailed		= UTE_CONNECT_FAILED,
+		[helpstring("Connection rejected")]		ecConnectionRejected	= UTE_CONNECT_REJECTED,
+		[helpstring("Connection terminated")]	ecConnectionTerminated	= UTE_CONNECT_TERMINATED,
+		[helpstring("No response")]				ecNoResponse			= UTE_NO_RESPONSE,
+		[helpstring("Invalid response")]		ecInvalidResponse		= UTE_INVALID_RESPONSE,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("Timed out")]				ecTimeOut				= UTE_CONNECT_TIMEOUT,
+		[helpstring("File open failed")]		ecFileOpenFailed		= UTE_DS_OPEN_FAILED,
+		[helpstring("File write failed")]		ecFileWriteFailed		= UTE_DS_WRITE_FAILED,
+		[helpstring("File close failed")]		ecFileCloseFailed		= UTE_DS_CLOSE_FAILED,
+		[helpstring("Wrong file type used")]	ecFileTypeError			= UTE_FILE_TYPE_ERROR,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR,
+		[helpstring("Index is out of range")]	ecIndexOutOfRange		= UTE_INDEX_OUTOFRANGE,
+		[helpstring("USER command failed")]		ecUSERFailed			= UTE_USER_FAILED,
+		[helpstring("PASS command failed")]		ecPASSFailed			= UTE_PASS_FAILED,
+		[helpstring("Message body is too big")]	ecMsgBodyTooBig			= UTE_MSG_BODY_TOO_BIG,
+		[helpstring("Failed to add message attachment")]		
+			ecMsgAttachmentAddFailed	= UTE_MSG_ATTACHMENT_ADD_FAILED,
+		[helpstring("No response from Server")]					
+			ecSvrNoResponse				= UTE_SVR_NO_RESPONSE,
+		[helpstring("DELE command has timed out without a response from the server")]	
+			ecDeleteFailed				= UTE_DELE_FAILED,
+		[helpstring("STAT command was not reponded to positivly")]	
+			ecStatFailed				= UTE_STAT_FAILED,
+		[helpstring("LIST command was not reponded to positivly")]	
+			ecListFailed				= UTE_LIST_FAILED,
+		[helpstring("RETR command has timed out without a response from the server")]	
+			ecRetrFailed				= UTE_RETR_FAILED,
+		[helpstring("TOP command has timed out without a response from the server")]	
+			ecTopFailed					= UTE_TOP_FAILED,
+		[helpstring("RSET command has timed out without a response from the server")]	
+			ecRsetFailed				= UTE_RSET_FAILED,
+		[helpstring("Socket already open or in use")]	
+			ecSocketAlredyOpened		= UTE_SOCK_ALREADY_OPEN,
+		[helpstring("Socket creation failed")]	
+			ecSocketCreateFailed		= UTE_SOCK_CREATE_FAILED,
+		[helpstring("Socket connection failed")]	
+			ecSocketConnectionFailed	= UTE_SOCK_CONNECT_FAILED,
+		[helpstring("Not able to open file for writing")]	
+			ecFileOpenError				= UTE_FILE_OPEN_ERROR,
+		[helpstring("Timed out while receiving parts of the message")]	
+			ecSocketTimeOut				= UTE_SOCK_TIMEOUT,
+		[helpstring("There was a problem with the server with respect to the RCPT command")]	
+			ecRCPTFailed				= UTE_RCPT_FAILED,
+		[helpstring("The DATA command failed.")]	
+			ecDATAFailed				= UTE_DATA_FAILED,
+		[helpstring("Winsock send command failed.")]		
+			ecSocketSendError			= UTE_SOCK_SEND_ERROR,
+		[helpstring("Get temporary file name failed")]	
+			ecTempFileNameFailed		= UTE_TEMP_FILENAME_FAILED,
+		[helpstring("Invalid parameter")]		
+			ecInvalidParameter			= UTE_PARAMETER_INVALID_VALUE
+	
+	} MailErrorCodes;
+};
+
+
+	[
+		object,
+	#ifndef _BLOCKING_MODE_ONLY
+		uuid(F7FA867D-089C-11D3-A469-0080C858F182),
+	#else
+		uuid(FCA758B7-D299-11d3-A550-0080C858F182),
+	#endif
+
+		dual,
+		helpstring("IMail Interface"),
+		pointer_default(unique)
+	]
+	interface IMail : IDispatch
+	{
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_CONNECT_TIME_OUT		= 1;
+		const int DISPID_RECEIVE_TIME_OUT		= 2;
+		const int DISPID_BLOCKING_MODE			= 3;
+		const int DISPID_GET_ERROR_TEXT			= 4;
+		const int DISPID_CANCEL_MAIL			= 5;
+		const int DISPID_MAIL_HOST_NAME			= 6;
+		const int DISPID_POP3_HOST_NAME			= 7;
+		const int DISPID_USER_NAME				= 8;
+		const int DISPID_USER_PASSWORD			= 9;
+		const int DISPID_SMTP_CONNECT			= 10;
+		const int DISPID_SMTP_CLOSE				= 11;
+		const int DISPID_SEND_MAIL				= 12;
+		const int DISPID_POP3_CONNECT			= 13;
+		const int DISPID_POP3_CLOSE				= 14;
+		const int DISPID_GET_MSG_NUMBER			= 15;
+		const int DISPID_GET_MSG_SIZE			= 16;
+		const int DISPID_SAVE_MSG				= 17;
+		const int DISPID_DELETE_MSG				= 18;
+		const int DISPID_RESET_DELETE			= 19;
+		const int DISPID_OPEN_MSG				= 20;
+		const int DISPID_CLOSE_MSG				= 21;
+		const int DISPID_READ_MSG_LINE			= 22;
+		const int DISPID_OPEN_TOP				= 23;
+		const int DISPID_CLOSE_TOP				= 24;
+		const int DISPID_READ_TOP_LINE			= 25;
+		const int DISPID_LOCAL_HOST_NAME		= 26;
+		const int DISPID_MSG_NUMBER				= 27;
+		const int DISPID_MSG_SIZE				= 28;
+		const int DISPID_LAST_LINE_READ			= 29;
+		const int DISPID_SEND_MAIL_FROM_FILE	= 30;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([in] long newVal);
+	
+	#ifndef _BLOCKING_MODE_ONLY
+
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+	#endif // _BLOCKING_MODE_ONLY
+
+		[propget, bindable, requestedit, id(DISPID_MAIL_HOST_NAME), helpstring("Get/Set mail host name")] 
+			HRESULT MailHostName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_MAIL_HOST_NAME), helpstring("Get/Set mail host name")] 
+			HRESULT MailHostName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_POP3_HOST_NAME), helpstring("Get/Set pop3 mail host name")] 
+			HRESULT POP3HostName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_POP3_HOST_NAME), helpstring("Get/Set pop3 mail host name")] 
+			HRESULT POP3HostName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_USER_NAME), helpstring("Get/Set user name")] 
+			HRESULT UserName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_USER_NAME), helpstring("Get/Set user name")] 
+			HRESULT UserName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_USER_PASSWORD), helpstring("Get/Set user password")] 
+			HRESULT UserPassword([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_USER_PASSWORD), helpstring("Get/Set user password")] 
+			HRESULT UserPassword([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_LOCAL_HOST_NAME), helpstring("Get/Set local host name")] 
+			HRESULT LocalHostName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_LOCAL_HOST_NAME), helpstring("Get/Set local host name")] 
+			HRESULT LocalHostName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_MSG_NUMBER), helpstring("Get result of the GetMsgNumber method")] 
+			HRESULT MsgNumber([out, retval] long *pVal);
+
+		[propget, bindable, requestedit, id(DISPID_MSG_SIZE), helpstring("Get result of the GetMsgSize method")] 
+			HRESULT MsgSize([out, retval] long *pVal);
+
+		[propget, bindable, requestedit, id(DISPID_LAST_LINE_READ), helpstring("Get result of the ReadMsgLine or ReadTopLine methods")] 
+			HRESULT LineRead([out, retval] BSTR *pVal);
+
+		//===========================================
+		//	Generic Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+	#ifndef _BLOCKING_MODE_ONLY
+		[id(DISPID_CANCEL_MAIL), helpstring("Cancel Mail request")] 
+			HRESULT CancelMail();
+	#endif
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+
+		//===========================================
+		//	SMTP Interface methods
+		//===========================================
+
+		[id(DISPID_SMTP_CONNECT), helpstring("Connect to the SMTP server")] 
+			HRESULT SMTPConnect([out, retval] long * Result);
+
+		[id(DISPID_SMTP_CLOSE), helpstring("Close connection to SMTP server")] 
+			HRESULT SMTPClose([out, retval] long * Result);
+
+		[id(DISPID_SEND_MAIL), helpstring("Send mail")] 
+			HRESULT SendMail([in] BSTR To, [in] BSTR From, [in] BSTR Subject, [in] BSTR Message, [in, defaultvalue("")] BSTR Cc, [in, defaultvalue("")] BSTR Bcc, [in, defaultvalue("")] BSTR Attach,  [out, retval] long * Result);
+
+		[id(DISPID_SEND_MAIL_FROM_FILE), helpstring("method SendMailFromFile")] 
+			HRESULT SendMailFromFile([in] BSTR FileName, [out,retval] long *Result);
+
+		//===========================================
+		//	POP3 Interface methods
+		//===========================================
+
+		[id(DISPID_POP3_CONNECT), helpstring("Connect to the pop3 server")] 
+			HRESULT POP3Connect([out, retval] long *Result);
+
+		[id(DISPID_POP3_CLOSE), helpstring("Close connection to pop3 server")] 
+			HRESULT POP3Close([out, retval] long *Result);
+
+		[id(DISPID_GET_MSG_NUMBER), helpstring("Gets the number of messages")] 
+			HRESULT GetMsgNumber([out, retval] long *Result);
+
+		[id(DISPID_GET_MSG_SIZE), helpstring("Gets the size of the specified message")] 
+			HRESULT GetMsgSize([in] long MsgIndex, [out, retval] long *Result);
+
+		[id(DISPID_SAVE_MSG), helpstring("Saves the message to a file")] 
+			HRESULT SaveMsg([in] long MsgIndex, [in] BSTR FileName, [out, retval] long *Result);
+
+		[id(DISPID_DELETE_MSG), helpstring("Deletes a message off the server")] 
+			HRESULT DeleteMsg([in] long MsgIndex, [out, retval] long *Result);
+
+		[id(DISPID_RESET_DELETE), helpstring("Unmarks messages flagged for deletion on the server")] 
+			HRESULT ResetDelete([out, retval] long *Result);
+
+		[id(DISPID_OPEN_MSG), helpstring("Open the message for reading")] 
+			HRESULT OpenMsg([in] long MsgIndex, [out, retval] long *Result);
+
+		[id(DISPID_CLOSE_MSG), helpstring("Closes the message")] 
+			HRESULT CloseMsg([out, retval] long *Result);
+
+		[id(DISPID_READ_MSG_LINE), helpstring("Reads a line from the message")] 
+			HRESULT ReadMsgLine([out, retval] long *Result);
+
+		[id(DISPID_OPEN_TOP), helpstring("Open the message for TOP command")] 
+			HRESULT OpenTop([in] long MsgIndex, [in] long MsgLines, [out, retval] long *Result);
+
+		[id(DISPID_CLOSE_TOP), helpstring("Close the message from TOP command")] 
+			HRESULT CloseTop([out, retval] long *Result);
+
+		[id(DISPID_READ_TOP_LINE), helpstring("Read a line from the message opened with TOP command")] 
+			HRESULT ReadTopLine([out, retval] long *Result);
+		
+
+	};
+

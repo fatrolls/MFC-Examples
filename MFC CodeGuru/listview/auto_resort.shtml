@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Automatically resorting after an edit</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Automatically resorting after an edit</FONT></H3></CENTER>
+
+<HR WIDTH="100%">The only time the list view control does some sorting
+is when inserting an item into the list. Then too, the control should have
+the LVS_SORTASCENDING&nbsp; or the LVS_SORTDESCENDING&nbsp; style. The
+new item is inserted in its proper place and the other items remain in
+the same relative order. If the user edits an item, the list view has to
+be explicitly sorted to maintain the order. To achieve this, the resort
+code has to be initiated from the LVN_ENDLABELEDIT handler. The code below
+uses the SortTextItems() function covered in a previous section. If the
+sorting is based on anything other that the text, then the SortItems()
+function should be used for sorting.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LV_DISPINFO&nbsp; *plvDispInfo = (LV_DISPINFO *)pNMHDR;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LV_ITEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *plvItem = &amp;plvDispInfo->item;
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (plvItem->pszText != NULL)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetItemText(plvItem->iItem, plvItem->iSubItem, plvItem->pszText);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SortTextItems( 0, TRUE );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *pResult = FALSE;
+}</FONT></TT></PRE>
+There are two things that should be noted. First, the item is updated using
+SetItemText() before calling the sorting function. If this were not done,
+the sorting routing see only the old data. Second, we set *pResult to FALSE.
+This is important. Setting a TRUE value tell Windows that the editing change
+should be accepted, but the row that was edited is now probably occupied
+by another row and it is this row that will get updated.
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

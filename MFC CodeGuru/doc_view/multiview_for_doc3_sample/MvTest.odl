@@ -1,0 +1,30 @@
+// MvTest.odl : type library source for MvTest.exe
+
+[ uuid(A695B2BE-DE92-11D1-B6BE-00C04FA35F76), version(1.0) ]
+library MvTest
+{
+	importlib("stdole32.tlb");
+	
+
+	[ uuid(A695B2BF-DE92-11D1-B6BE-00C04FA35F76) ]
+	dispinterface IMvTest
+	{
+		properties:
+			//{{AFX_ODL_PROP(CMvTestDoc)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			//{{AFX_ODL_METHOD(CMvTestDoc)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	[ uuid(A695B2BD-DE92-11D1-B6BE-00C04FA35F76) ]
+	coclass Document
+	{
+		[default] dispinterface IMvTest;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

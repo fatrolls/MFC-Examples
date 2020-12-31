@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Splitter Windows &#150; Toggling the Splitter Orientation</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Splitter Windows &#150; Toggling the Splitter Orientation</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:guy@wyrdrune.com">Guy Gascoigne -
+Piggford</a></p>
+
+<p>This is a pair of classes that will allow you to give the user control over the
+orientation of the splitter in a static splitter window.</p>
+
+<p>The first is <tt>CTogSplitterWnd</tt>, a <tt>CSplitterWnd</tt> that contains support
+for actually toggling the splitter bar. The second, <tt>CSplitFrame</tt>, is a <tt>CMDIChildWnd</tt>
+(though changing this to be any other <tt>CFrameWnd</tt> shouldn&#146;t be hard).</p>
+
+<p>The <tt>CMDIChildWnd</tt> derived class provides support for various message handlers
+to allow the user to get at these functions as well as providing support for closing
+either pane of the view. It does this by resizing the splitter rather than completely
+hiding the view, for my application this was more appropriate.</p>
+
+<p>The full code is in the <a href="SplitterTog_source.zip">zip file</a>, but here are a few
+comments about the code.</p>
+
+<p>The actual toggle function is:</p>
+
+<pre><tt><font COLOR="#990000">
+void CTogSplitterWnd::Toggle()
+{
+    if ( BarIsHorizontal() )
+    {
+        SetWindowLong( GetPane( 1, 0 )-&gt;m_hWnd, GWL_ID, AFX_IDW_PANE_FIRST + 1 );
+        m_nRows = 1;
+        m_nCols = 2;
+    }
+    else
+    {
+        SetWindowLong( GetPane( 0, 1 )-&gt;m_hWnd, GWL_ID, AFX_IDW_PANE_FIRST + 16 );
+        m_nRows = 2;
+        m_nCols = 1;
+    }
+}
+</font></tt></pre>
+
+<p>It turns out to be fairly simple, though it took some rooting around in the MFC source
+to work out how to do it. Whilst I&#146;m sure that this is undocumented, this code is
+basically the same as the version I wrote for MFC 1.5 many moons ago (<tt>SetWindowWord</tt>
+became <tt>SetWindowLong</tt> if I remember correctly).</p>
+
+<p>There is certainly more code to <tt>CSplitFrame</tt> since it has to store the location
+of the splitter bar so that it restores back to its last location. It also depends upon
+the definition of a number of command IDs that are in the sample resource file.</p>
+</body>
+</html>
+
+<P>Posted on: April 10, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

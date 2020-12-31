@@ -1,0 +1,498 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Nikolay Sokratov">
+<title>A CDialogBar with OnInitDialog() and DDX Support</title>
+</head>
+<!-- Set background properties -->
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+<!-- A word from our sponsors... -->
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+<!-- Article Title -->
+
+<h3 align="center">A CDialogBar with OnInitDialog() and DDX Support</h3>
+
+<hr align="center">
+<!-- Author and contact details -->
+
+<p>This article was contributed by <a href="mailto:acp107@psu.edu">Alger Pike</a></p>
+
+<p>
+<!-- The article... -->
+As you all know, the CDialogBar control, is the MFC control that lets the programmer add
+any control he wants, into a dockable window via a dialog template. This class is very
+much like the CDialog class iteself; however, there are two major differences between the
+classes.<br>
+CDialogBar does not have an OnInitDialog function where you can initialize your controls,
+nor does it support the DDX mechanism. These are two simple items which can be added to a
+new class, thereby making it possible to have a CDialogBar that behaves much more like a
+regular CDialog.<br>
+As it turns out, a class that does this is quite simple to implement. The support for DDX
+is already built into CWnd, the base class of CDialogBar. The required DDX_??? Functions
+to update the controls are global MFC functions and CWnd already supports the DDX mechanism.
+Why DDX support never found itself into the MFC CDialogBar is really puzzling? To add it all
+you need to do is call the already provided functions at the proper time. By taking these few
+simple steps, you then create a powerful, yet simple class that really makes getting the data
+from your CDialogBar controls much eaiser. Below I will outline the steps to creating the 
+CInitDialogBar class.<br>
+The first step is to look at where CDialog initializes the DDX mechanism. It does so in
+its OnInitDialog function, with its first call to UpdateData(). This function is a CWnd
+function, not a CDialog function. Since CDialogBar has no OnInitDialog() function, we need to
+mimic this behavior with our derived CDialogBar class. In CDialog, OnInitDialog() gets
+called in response to the dialog window sending itself a WM_INITDIALOG message. CDialogBar
+has no such message since its really a CWnd and not strictly a dialog window. The important 
+thing to note, is that the WM_INITDIALOG message, in a real dialog, is sent to the window 
+after its handle exists. This means that although we won&#146;t officially send ourselves a
+message in the CInitDialogBar class, that we can call our own version of OnInitDialog() after
+the handle to our window exists. We modify the create function of CDialogBar to do this.
+Since Create() for a CDialogBar is overloaded we redefine each create and make out modifications
+to it.<br><br>
+First in the CInitDialogBar class redefine the public create functions:<br>
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL Create(CWnd * pParentWnd, UINT nIDTemplate, UINT nStyle, UINT nID);
+
+BOOL Create(CWnd * pParentWnd, LPCTSTR lpszTemplateName, UINT nStyle, UINT nID);
+</FONT></TT></PRE>
+
+
+By doing this, we don&#146;t change the way our CInitDialogBar is created.<br><br>
+Next, define a virtual function, which all derived classes will override. This function,
+will provide the missing OnInitDialog() functionality. Also we re-declare the virtual 
+CWnd DDX funtion DoDataExchange as well:<br>
+
+<PRE><TT><FONT COLOR="#990000">
+virtual BOOL OnInitDialogBar();
+
+// ClassWizard generated virtual function overrides
+//{{AFX_VIRTUAL(CInitDialogBar)
+protected:
+virtual void DoDataExchange(CDataExchange* pDX);
+//}}AFX_VIRTUAL
+</FONT></TT></PRE>
+
+We are now ready to implement our new functions. Let&#146;s start with the Create().
+CDialogBar already has a Create() which will create the control for us. Let&#146;s not 
+reinvent the wheel, but instead reuse it. (Both overloaded functions are changed in the
+same way so I will only show one here.) After we call the base class, Create() function
+our m_hWnd is valid. This is what we have been waiting for. We can now call our OnInitDialogBar()
+function.<br>
+
+<PRE><TT><FONT COLOR="#990000">
+// Let MFC Create the control
+// Call the base class Create()
+if(!CDialogBar::Create(pParentWnd,
+	lpszTemplateName, /*(nIDTemplate) for other Create()*/
+	nStyle, nID))
+{
+	return FALSE;
+}
+
+// Since there is no WM_INITDIALOG message we have to call
+// our own InitDialog function ourselves after m_hWnd is valid
+if(!OnInitDialogBar())
+	return FALSE;
+return TRUE;
+</FONT></TT></PRE>
+
+
+Just like in CDialog the OnInitDialogBar() will initialize the DDX mechanism for us by
+calling The UpdateData() function. For this reason it will be important for derived
+classes to call the base class. The UpdateData() function will call our virtual
+DoDataExchange(), for now we will leave this function blank. We will put our initializing
+code in our derived classes. That&#146;s pretty much all the new code we need. We are now
+ready to start using our class and deriving our own objects from it.<br>
+The first step is to derive your own object from CInitDialogBar. To create the Dialog bar
+in our CMainFrame object do the following in the CMainFrame::OnCreate():<br>
+
+<PRE><TT><FONT COLOR="#990000">
+// CInitDialogBar m_wndDialogBar; in mainframe.h
+
+if (!m_wndDialogBar.Create(this, IDD_DBAR, CBRS_LEFT, 0))
+{
+	TRACE0(&quot;Failed to create InitDialogBar\n&quot;);
+	return -1; // fail to create
+}
+
+m_wndDialogBar.EnableDocking(CBRS_ALIGN_ANY);
+EnableDocking(CBRS_ALIGN_ANY);
+DockControlBar(&amp;m_wndDialogBar);
+</FONT></TT></PRE>
+
+At this point, a dialog bar should appear with the template that you provide for it. The
+controls don&#146;t communicate with the CInitDialogBar derived object; let&#146;s remedy
+this. Because of the way CInitDialogBar was written we now only need to override our two 
+virtual functions. Below are the functions and the required code to initialize a CBitmapButton
+and CheckBox.<br>
+
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMainDialogBar::OnInitDialogBar()
+{
+	// Support for DDX mechanism
+	// If you do not want DDX then
+	// do not call base class
+	// All out DDX controls are intialized
+	// the virtual call to DoDataExchange.
+	CInitDialogBar::OnInitDialogBar();
+
+	// Initialize any controls NOT supported by DDX
+	// CBitmapButton is one
+	m_OKButton.AutoLoad(IDOK, this);
+
+	return TRUE;
+}
+
+void CMainDialogBar::DoDataExchange(CDataExchange* pDX)
+{
+	ASSERT(pDX);
+
+	CInitDialogBar::DoDataExchange(pDX);
+
+	// DDX_??? functions to synchronize control with
+	// data or control object
+
+	//{{AFX_DATA_MAP(CAboutDlg)
+	DDX_Check(pDX, IDC_CHECK1, m_CheckBox);
+	//}}AFX_DATA_MAP
+}
+</FONT></TT></PRE>
+
+We now have a CDialogBar that uses the DDX mechanism. This makes it much easier to keep
+out controls and their variables synchronized. Any time you want the current state of your
+DDX controls just call UpdateData(TRUE). This will synchronize the variables with the
+controls current state. And likewise to set the controls to a know state call
+UpdateData(FALSE).<br>
+<br>
+The complete code for CInitDialogBar and a sample derived object follow.<br><br>
+Enjoy! :)<br>
+
+<PRE><TT><FONT COLOR="#990000">
+//////////////////////////////////////////////////////////////////////
+//
+// InitDialogBar.h: interface for the CInitDialogBar class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#if !defined(AFX_INITDIALOGBAR_H__46B4D2B3_C982_11D1_8902_0060979C2EFD__INCLUDED_)
+
+#define AFX_INITDIALOGBAR_H__46B4D2B3_C982_11D1_8902_0060979C2EFD__INCLUDED_
+
+#if _MSC_VER &gt;= 1000
+#pragma once
+#endif // _MSC_VER &gt;= 1000
+
+////////////////////////////////////////////////////////////////////////////
+//
+// CInitDialogBar window
+//
+////////////////////////////////////////////////////////////////////////////
+
+class CInitDialogBar : public CDialogBar
+{
+	DECLARE_DYNAMIC(CInitDialogBar)
+
+	// Construction / Destruction
+	public:
+	CInitDialogBar();
+	virtual ~CInitDialogBar();
+
+	// Attributes
+	public:
+
+	// Operations
+	public:
+
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CInitDialogBar)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);
+	//}}AFX_VIRTUAL
+
+	// Implementation
+	public:
+	BOOL Create(CWnd * pParentWnd, UINT nIDTemplate, UINT nStyle, UINT
+	nID);
+	BOOL Create(CWnd * pParentWnd, LPCTSTR lpszTemplateName, UINT
+	nStyle, UINT nID);
+
+	protected:
+	virtual BOOL OnInitDialogBar();
+
+	// Generated message map functions
+	protected:
+	//{{AFX_MSG(CInitDialogBar)
+	// NOTE - the ClassWizard will add and remove member functions
+	here.
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+////////////////////////////////////////////////////////////////////////////
+/
+
+#endif // !defined(AFX_INITDIALOGBAR_H__46B4D2B3_C982_11D1_8902_0060979C2EFD__INCLUDED_)
+
+////////////////////////////////////////////////////////////////////////////
+//
+// InitDialogBar.cpp: implementation of the CInitDialogBar class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include &quot;stdafx.h&quot;
+#include &quot;spectra.h&quot;
+#include &quot;InitDialogBar.h&quot;
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+IMPLEMENT_DYNAMIC(CInitDialogBar, CDialogBar)
+
+BEGIN_MESSAGE_MAP(CInitDialogBar, CDialogBar)
+//{{AFX_MSG_MAP(CInitDialogBar)
+// NOTE - the ClassWizard will add and remove mapping macros
+here.
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+CInitDialogBar::CInitDialogBar()
+{
+	// In derived classes set intial
+	// state of control(s) here
+}
+
+CInitDialogBar::~CInitDialogBar()
+{
+
+}
+
+BOOL CInitDialogBar::Create(CWnd * pParentWnd, LPCTSTR lpszTemplateName,
+	UINT nStyle, UINT nID)
+{
+	// Let MFC Create the control
+	if(!CDialogBar::Create(pParentWnd, lpszTemplateName, nStyle, nID))
+		return FALSE;
+
+	// Since there is no WM_INITDIALOG message we have to call
+	// our own InitDialog function ourselves after m_hWnd is valid
+	if(!OnInitDialogBar())
+		return FALSE;
+
+	return TRUE;
+}
+
+BOOL CInitDialogBar::Create(CWnd * pParentWnd, UINT nIDTemplate,
+	UINT nStyle, UINT nID)
+{
+	if(!Create(pParentWnd, MAKEINTRESOURCE(nIDTemplate), nStyle, nID))
+		return FALSE;
+
+	// Since there is no WM_INITDIALOG message we have to call
+	// our own InitDialog function ourselves after m_hWnd is valid
+	if(!OnInitDialogBar())
+		return FALSE;
+	return TRUE;
+}
+
+BOOL CInitDialogBar::OnInitDialogBar()
+{
+	// Support for the MFC DDX model 
+	// If you do not want this do not call the base class
+	// from derived classes
+	UpdateData(FALSE);
+
+	return TRUE;
+}
+
+void CInitDialogBar::DoDataExchange(CDataExchange* pDX)
+{
+	//Derived Classes Overide this function
+	ASSERT(pDX);
+
+	CDialogBar::DoDataExchange(pDX);
+
+	// In derived class call the DDX_??? functions to set/retrieve values
+	// of your controls. See example derived class for how to do this.
+}
+
+</FONT></TT></PRE>
+
+Sample derived Control:
+
+<PRE><TT><FONT COLOR="#990000">
+//////////////////////////////////////////////////////////////////////
+//
+// MainDialogBar.h: interface for the CMainDialogBar class.
+//
+//////////////////////////////////////////////////////////////////////
+
+
+#if !defined(AFX_MAINDIALOGBAR_H__46B4D2B3_C982_11D1_8902_0060979C2EFD__INCLUDED_)
+
+#define AFX_MAINDIALOGBAR_H__46B4D2B3_C982_11D1_8902_0060979C2EFD__INCLUDED_
+
+#if _MSC_VER &gt;= 1000
+#pragma once
+#endif // _MSC_VER &gt;= 1000
+
+#include &quot;InitDialogBar.h&quot;
+
+// CMainDialogBar window
+
+class CMainDialogBar : public CInitDialogBar
+{
+	DECLARE_DYNAMIC(CMainDialogBar)
+
+	// Construction
+	public:
+	CMainDialogBar();
+	virtual ~CMainDialogBar();
+
+	// Attributes
+	public:
+	protected:
+
+	// Control Objects
+	CBitmapButton m_OKButton;
+
+	// Control Variables
+	BOOL m_CheckBox;
+
+	// Operations
+	public:
+
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CMainDialogBar)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);
+	//}}AFX_VIRTUAL
+
+	protected:
+	virtual BOOL OnInitDialogBar();
+
+	// Implementation
+	public:
+
+	// Generated message map functions
+	protected:
+	//{{AFX_MSG(CMainDialogBar)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+////////////////////////////////////////////////////////////////////////////
+/
+
+#endif // !defined(AFX_MAINDIALOGBAR_H__46B4D2B3_C982_11D1_8902_0060979C2EFD__INCLUDED_)
+
+////////////////////////////////////////////////////////////////////////////
+//
+// MainDialogBar.cpp: implementation of the CMainDialogBar class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include &quot;stdafx.h&quot;
+#include &quot;spectra.h&quot;
+#include &quot;MainDialogBar.h&quot;
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+IMPLEMENT_DYNAMIC(CMainDialogBar, CInitDialogBar)
+
+BEGIN_MESSAGE_MAP(CMainDialogBar, CInitDialogBar)
+//{{AFX_MSG_MAP(CMainDialogBar)
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+
+CMainDialogBar::CMainDialogBar()
+{
+	//Set Initial conditions for controls
+	m_CheckBox = 1;
+}
+
+
+CMainDialogBar::~CMainDialogBar()
+{
+
+}
+
+
+BOOL CMainDialogBar::OnInitDialogBar()
+{
+	// Support for DDX mechanism
+	// If you do not want DDX then
+	// do not call base class
+	CInitDialogBar::OnInitDialogBar();
+
+	// Update any controls NOT supported by DDX
+	// CBitmapButton is one
+	m_OKButtton.AutoLoad(IDOK, this);
+
+	return TRUE;
+}
+
+void CMainDialogBar::DoDataExchange(CDataExchange* pDX)
+{
+	ASSERT(pDX);
+
+	CInitDialogBar::DoDataExchange(pDX);
+
+	// DDX_??? functions to associate control with
+	// data or control object
+	// Call UpdateData(TRUE) to get data at any time
+	// Call UpdateData(FALSE) to set data at any time
+
+	//{{AFX_DATA_MAP(CAboutDlg)
+	DDX_Check(pDX, IDC_CHECK1, m_CheckBox);
+	//}}AFX_DATA_MAP
+}
+</FONT></TT></PRE>
+
+<!-- Remember to update this -->
+
+<p>Last updated: 11 May 1998 </p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1997 - 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+<!-- Counter -->
+
+
+</body>
+</html>

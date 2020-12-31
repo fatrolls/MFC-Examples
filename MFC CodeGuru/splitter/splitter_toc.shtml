@@ -1,0 +1,54 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Zafir Anjum">
+<title>Splitter Window : Table of Contents</title>
+<meta Name="description" Content="Source code related to Splitter Window">
+<meta Name="keywords" Content="SPLITTER WINDOW DETECT ROW COLUMN SPLIT FOCUS">
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000" bgproperties="fixed">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><h1><font COLOR="#a0a0ff">Splitter Window</font></h1>
+    </td>
+    <td></td>
+    <td width="10%"></td>
+  <td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<hr>
+<p>This section is maintained by <a href="mailto:mark@funtown.com">Mark E. Pennell</a><p>
+<ul>
+  <li><a HREF="is_split.shtml">Detect if window is split - Randy More</a> </li>
+  <li><a HREF="rowcol_of_view.shtml">Determine the row and column of a view - Randy More</a> </li>
+  <li><a HREF="keyboard_split.shtml">Split a view from a menu item or keystroke - Randy More</a>
+  </li>
+  <li><a HREF="show_focus_view.shtml">Highlight view with focus - Randy More</a> </li>
+  <li><a HREF="show_hide_static_panes.shtml">Show/Hide static panes - Oleg Galkin</a> </li>
+  <li><a HREF="flexible_splitter.shtml">Outlook style Flexible splitter windows - Stein Roger
+    Skaflotten</a></li>
+  <li><a href="dynamic_splitter.shtml">&quot;True&quot; Dynamic Splitter Bar - Andrew Slivker</a></li>
+  <li><a HREF="SplitterTog.shtml">Toggling the Splitter Orientation - Guy Gascoigne - Piggford</a> </li>
+  <li><a href="outlook_style.shtml">Outlook Style Splitter - Ken C. Len</a>
+  <li><a href="simple_splitter.shtml">Simple Splitter - Yurong Lin</a>
+</ul>
+
+<hr align="center">
+
+<table COLS="3" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="34%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font> </td>
+    <td WIDTH="33%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

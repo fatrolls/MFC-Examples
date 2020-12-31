@@ -1,0 +1,40 @@
+// MotleyFool.idl : IDL source for MotleyFool.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MotleyFool.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(6DEEE498-08CC-43F0-BCA0-DBB5A25C9501),
+		dual,
+		helpstring("IStockBar Interface"),
+		pointer_default(unique)
+	]
+	interface IStockBar : IDispatch
+	{
+	};
+
+[
+	uuid(84C94803-B5EC-4491-B2BE-7B113E013B77),
+	version(1.0),
+	helpstring("MotleyFool 1.0 Type Library")
+]
+library MOTLEYFOOLLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+	[
+		uuid(A6790AA5-C6C7-4BCF-A46D-0FDAC4EA90EB),
+		helpstring("StockBar Class")
+	]
+	coclass StockBar
+	{
+		[default] interface IStockBar;
+	};
+};

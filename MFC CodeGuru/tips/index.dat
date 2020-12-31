@@ -1,0 +1,23 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|classwiz_hide_function.shtml||Visual C++ Tips - Hide a function or variable from the Class View|
+1998/03/28|classwiz_msg_category.shtml||Visual C++ Tips - Handle any category of messages using Class Wizard|
+1998/03/28|devstudio_tips.shtml||Visual C++ Tips - DevStudio Tips|
+1998/03/28|editor_tips.shtml||Visual C++ Tips - Editor Tips|
+1998/03/28|enhance_help.shtml||Visual C++ Tips - Enhance the DevStudio help|
+1998/04/11|user_def_keywords.shtml||Visual C++ Tips - Set syntax coloring for user-defined keywords|
+1998/04/11|fileopen.shtml||Visual C++ Tips - Opening a File|Brian MacKay
+1998/04/13|visual_studio_full_platforms.shtml||Visual C++ Tips - Multiple Platforms in VC++ 5.0 Professional|Matthew Ellis

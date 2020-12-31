@@ -1,0 +1,7 @@
+; EX31A.def : declares the module parameters for the DLL.
+
+LIBRARY	     "EX31A"
+
+EXPORTS
+	HttpExtensionProc
+	GetExtensionVersion

@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CTreeCtrl - Dynamic Calculation of DragImage Hotspot</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Dynamic Calculation of DragImage Hotspot</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:Chris.Protopapas@Nemasoft-Cols.com">Chris Protopapas</A>
+
+
+<p>Have you ever noticed how, when you drag an item from the left pane in
+the Explorer, the drag image is always created relative to the cursor
+position?  It looks like you are grabbing the drag item exactly where
+the cursor is.  Here is code that accomplishes this.  The key is to
+dynamically calculate the offset between the cursor and the selected
+image, and use that as the hotspot.
+
+<p>This code is added to the OnBeginDrag method, immediately before the
+call to CImageList::BeginDrag.  Change variable names as needed to make
+it work in your code.
+
+<PRE><TT><FONT COLOR="#990000">
+        // Calculate the offset to the hotspot
+        CPoint offsetPt(8,8);   // Initialize a default offset
+
+        CPoint dragPt = pNMTreeView->ptDrag;    // Get the Drag point
+        UINT nHitFlags = 0;
+        HTREEITEM htiHit = pMyTree->HitTest(dragPt, &nHitFlags);
+        if (NULL != htiHit)
+        {
+                // The drag point has Hit an item in the tree
+                CRect itemRect;
+                if (pMyTree->GetItemRect(htiHit, &itemRect, FALSE))
+                {
+                        // Count indent levels
+                        HTREEITEM htiParent = htiHit;
+                        int nIndentCnt = 0;
+                        while (htiParent != NULL)
+                        {
+                                htiParent = pMyTree->GetParentItem(htiParent);
+                                nIndentCnt++;
+                        }
+
+                        // Calculate the new offset
+                        offsetPt.y = dragPt.y - itemRect.top;
+                        offsetPt.x = dragPt.x - (nIndentCnt * pMyTree->GetIndent()) + GetScrollPos(SB_HORZ);
+                }
+        }
+
+        // Begin the Drag operation using the Drag image and the calculated hotspot offset
+        m_pDragImage->BeginDrag(0, offsetPt);
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

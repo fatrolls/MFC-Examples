@@ -1,0 +1,23 @@
+HKCR
+{
+	dm.meow.1 = s 'MeowMoniker Class'
+	{
+		CLSID = s '{E900C00E-BD9D-11D0-9A44-00008600A105}'
+	}
+	dm.meow = s 'MeowMoniker Class'
+	{
+		CurVer = s '{E900C00E-BD9D-11D0-9A44-00008600A105}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E900C00E-BD9D-11D0-9A44-00008600A105} = s 'MeowMoniker Class'
+		{
+			ProgID = s 'dm.meow.1'
+			VersionIndependentProgID = s 'dm.meow'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+		}
+	}
+}

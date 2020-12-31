@@ -1,0 +1,7 @@
+Next Release: US Version
+
+	- Update and expand database
+	- Save program options to database table
+	- Multiple databases, and File Dialog search for database
+	- Enter passthrough SQL queries
+	- Saved queries

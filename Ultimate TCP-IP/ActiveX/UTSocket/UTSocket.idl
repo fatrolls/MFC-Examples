@@ -1,0 +1,438 @@
+// ===================================================================
+// UTSocket.idl : IDL source for UTSocket.dll
+//
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTSocket.tlb) and marshalling code.
+//
+// ===================================================================
+// Ultimate TCP-IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// ===================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+
+// Avoid redeclaration of enumerations
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+cpp_quote("#endif")  
+
+
+[
+	uuid(D23EA52C-0D35-11D3-A46D-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP Socket Control 4.2")
+]
+library UTSOCKETLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(D23EA53C-0D35-11D3-A46D-0080C858F182),
+		helpstring("_ISocketEvents Interface")
+	]
+	dispinterface _ISocketEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnReceiveFileProgress")] HRESULT OnReceiveFileProgress([in] long BytesReceived);
+		[id(2), helpstring("method OnSendFileProgress")] HRESULT OnSendFileProgress([in] long BytesSent);
+		[id(3), helpstring("method OnConnect")] HRESULT OnConnect([in] long Result);
+		[id(4), helpstring("method OnConnectBound")] HRESULT OnConnectBound([in] long Result);
+		[id(5), helpstring("method OnCreateUDPSocket")] HRESULT OnCreateUDPSocket([in] long Result);
+		[id(6), helpstring("method OnWaitForAccept")] HRESULT OnWaitForAccept([in] long Result);
+		[id(7), helpstring("method OnSend")] HRESULT OnSend([in] long BytesSent);
+		[id(8), helpstring("method OnSendFile")] HRESULT OnSendFile([in] long Result);
+		[id(9), helpstring("method OnSendTo")] HRESULT OnSendTo([in] long BytesSent);
+		[id(10), helpstring("method OnWaitForSend")] HRESULT OnWaitForSend([in] long Result);
+		[id(11), helpstring("method OnReceive")] HRESULT OnReceive([in] VARIANT Data, [in] long DataLength);
+		[id(12), helpstring("method OnReceiveLine")] HRESULT OnReceiveLine([in] BSTR Line, [in] long LineLength);
+		[id(13), helpstring("method OnReceiveToFile")] HRESULT OnReceiveToFile([in] long Result);
+		[id(14), helpstring("method OnCloseConnection")] HRESULT OnCloseConnection([in] long Result);
+		[id(15), helpstring("method OnReset")] HRESULT OnReset([in] long Result);
+		[id(16), helpstring("method OnAcceptConnection")] HRESULT OnAcceptConnection([in] long Result);
+		[id(17), helpstring("method OnReceiveFrom")] HRESULT OnReceiveFrom([in] VARIANT Data, [in] BSTR IPAddress, [in] long Result);
+		[id(18), helpstring("method OnSendAsLine")] HRESULT OnSendAsLine([in] long BytesSent);
+	};
+
+	[
+		uuid(D23EA53B-0D35-11D3-A46D-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP Socket Control 4.2")
+	]
+	coclass Socket
+	{
+		[default] interface ISocket;
+		[default, source] dispinterface _ISocketEvents;
+	};
+
+	//===========================================
+	//	Socket types enumeration
+	//===========================================
+	typedef [uuid (06F9D98E-0D49-11d3-A46D-0080C858F182), helpstring("Socket Type")]
+	enum SocketType
+	{
+		[helpstring("TCP Socket")]				SocketTCP				= 1,
+		[helpstring("UDP Socket")]				SocketUDP				= 2
+	} SocketType;
+
+	//===========================================
+	//	Socket family enumeration
+	//===========================================
+	typedef [uuid (06F9D990-0D49-11d3-A46D-0080C858F182), helpstring("Socket Family")]
+	enum SocketFamily
+	{
+		[helpstring("Local to host (pipes, portals)")]		Family_UNIX			= 1,
+		[helpstring("Internetwork: UDP, TCP, etc.")]		Family_INET			= 2,
+		[helpstring("Arpanet imp addresses")]				Family_IMPLINK		= 3,
+		[helpstring("PUP protocols: e.g. BSP")]				Family_PUP			= 4,
+		[helpstring("Mit CHAOS protocols")]					Family_CHAOS		= 5,
+		[helpstring("XEROX NS protocols")]					Family_NS			= 6,
+		[helpstring("IPX protocols: IPX, SPX, etc.")]		Family_IPX			= 6,
+		[helpstring("ISO protocols")]						Family_ISO			= 7,
+		[helpstring("OSI is ISO")]							Family_OSI			= 7,
+		[helpstring("European computer manufacturers")]		Family_ECMA			= 8,
+		[helpstring("Datakit protocols")]					Family_DATAKIT		= 9,
+		[helpstring("CCITT protocols, X.25 etc")]			Family_CCITT		= 10,
+		[helpstring("IBM SNA")]								Family_SNA			= 11,
+		[helpstring("DECnet")]								Family_DECNET		= 12,
+		[helpstring("Direct data link interface")]			Family_DLI			= 13,
+		[helpstring("LAT")]									Family_LAT			= 14,
+		[helpstring("NSC Hyperchannel")]					Family_HYLINK		= 15,
+		[helpstring("AppleTalk")]							Family_APPLETALK	= 16,
+		[helpstring("NetBios-style addresses")]				Family_NETBIOS		= 17,
+		[helpstring("VoiceView")]							Family_VOICEVIEW	= 18,
+		[helpstring("Protocols from Firefox")]				Family_FIREFOX		= 19,
+		[helpstring("Somebody is using this!")]				Family_UNKNOWN1		= 20,
+		[helpstring("Banyan")]								Family_BAN			= 21,
+		[helpstring("Native ATM Services")]					Family_ATM			= 22,
+		[helpstring("Internetwork Version 6")]				Family_INET6		= 23,
+		[helpstring("Microsoft Wolfpack")]					Family_CLUSTER		= 24,
+		[helpstring("IEEE 1284.4 WG AF")]					Family_12844		= 25
+
+	} SocketFamily;
+
+
+	//===========================================
+	//	Socket protocol enumeration
+	//===========================================
+	typedef [uuid (06F9D993-0D49-11d3-A46D-0080C858F182), helpstring("Socket Protocol")]
+	enum SocketProtocol
+	{
+		[helpstring("IP protocol")]							Protocol_IP			= 0,
+		[helpstring("Control message protocol")]			Protocol_ICMP		= 1,
+		[helpstring("Internet group management protocol")]	Protocol_IGMP		= 2,
+		[helpstring("Gateway^2 (deprecated) protocol")]		Protocol_IGGP		= 3,
+		[helpstring("TCP protocol")]						Protocol_TCP		= 6,
+		[helpstring("PUP protocol")]						Protocol_PUP		= 12,
+		[helpstring("User datagram protocol")]				Protocol_UDP		= 17,
+		[helpstring("XNS IDP protocol")]					Protocol_IDP		= 22,
+		[helpstring("Net disk protocol")]					Protocol_ND			= 77
+	} SocketProtocol;
+
+
+	//===========================================
+	//	File writing types enumeration
+	//===========================================
+	typedef [uuid (06F9D996-0D49-11d3-A46D-0080C858F182), helpstring("File Write Type")]
+	enum FileWriteType
+	{
+		[helpstring("Truncate existing file")]				FileTruncate,
+		[helpstring("Add to the end of existing file")]		FileAdd
+	} FileWriteType;
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (02B48FD8-0D38-11d3-A46D-0080C858F182), helpstring("Socket Error Codes")]
+	enum SocketErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Error")]					ecError					= UTE_ERROR,
+		[helpstring("Invalid address format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Not connected")]			ecNoConnection			= UTE_NOCONNECTION,
+		[helpstring("Connection failed")]		ecConnectionFailed		= UTE_CONNECT_FAILED,
+		[helpstring("Connection rejected")]		ecConnectionRejected	= UTE_CONNECT_REJECTED,
+		[helpstring("Connection terminated")]	ecConnectionTerminated	= UTE_CONNECT_TERMINATED,
+		[helpstring("No response")]				ecNoResponse			= UTE_NO_RESPONSE,
+		[helpstring("Invalid response")]		ecInvalidResponse		= UTE_INVALID_RESPONSE,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("File open failed")]		ecFileOpenFailed		= UTE_DS_OPEN_FAILED,
+		[helpstring("File write failed")]		ecFileWriteFailed		= UTE_DS_WRITE_FAILED,
+		[helpstring("File close failed")]		ecFileCloseFailed		= UTE_DS_CLOSE_FAILED,
+		[helpstring("Wrong file type used")]	ecFileTypeError			= UTE_FILE_TYPE_ERROR,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR,
+		[helpstring("Invalid parameter")]		ecInvalidParameter		= UTE_PARAMETER_INVALID_VALUE,
+		[helpstring("Socket already in use")]	ecSocketAlreadyOpen		= UTE_SOCK_ALREADY_OPEN,
+		[helpstring("Socket creation failed")]	ecSocketCreateFailed	= UTE_SOCK_CREATE_FAILED,
+		[helpstring("Socket connection failed")]ecSocketConnectFailed	= UTE_SOCK_CONNECT_FAILED,
+		[helpstring("Connect time out")]		ecConnectTimeOut		= UTE_CONNECT_TIMEOUT,
+		[helpstring("Socket binding failed")]	ecSocketBindFailed		= UTE_SOCK_BIND_FAILED,
+		[helpstring("Listen failed")]			ecSocketListenFailed	= UTE_SOCK_LISTEN_ERROR,
+		[helpstring("Socket is not set up")]	ecSocketNotOpened		= UTE_SOCK_NOT_OPEN,
+		[helpstring("Send failure")]			ecSocketSendError		= UTE_SOCK_SEND_ERROR,
+		[helpstring("Receive failure")]			ecSocketReceiveError	= UTE_SOCK_RECEIVE_ERROR,
+		[helpstring("Socket timeout")]			ecSocketTimeOut			= UTE_SOCK_TIMEOUT,
+		[helpstring("Name lookup failure")]		ecNameLookUpFailed		= UTE_NAME_LOOKUP_FAILED
+	
+	} SocketErrorCodes;
+
+
+	[
+		uuid(D23EA53D-0D35-11D3-A46D-0080C858F182),
+		helpstring("SocketPropPage Class")
+	]
+	coclass SocketPropPage
+	{
+		interface IUnknown;
+	};
+};
+
+
+	[
+		object,
+		uuid(D23EA53A-0D35-11D3-A46D-0080C858F182),
+		dual,
+		helpstring("ISocket Interface"),
+		pointer_default(unique)
+	]
+	interface ISocket : IDispatch
+	{
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_CONNECT_TIME_OUT		= 1;
+		const int DISPID_RECEIVE_TIME_OUT		= 2;
+		const int DISPID_BLOCKING_MODE			= 3;
+		const int DISPID_GET_ERROR_TEXT			= 4;
+		const int DISPID_CANCEL_SOCKET			= 5;
+		const int DISPID_PORT					= 6;
+		const int DISPID_SEND_TIME_OUT			= 7;
+		const int DISPID_SOCKET_TYPE			= 8;
+		const int DISPID_SOCKET_FAMILY			= 9;
+		const int DISPID_SOCKET_PROTOCOL		= 10;
+		const int DISPID_MAX_RECEIVE			= 11;
+		const int DISPID_MAX_SEND				= 12;
+		const int DISPID_CLOSE_CONNECTION		= 13;
+		const int DISPID_RESET					= 14;
+		const int DISPID_ACCEPT_CONNECTION		= 15;
+		const int DISPID_IS_DATA_WAITING		= 16;
+		const int DISPID_GET_ADDRESS_FROM_NAME	= 17;
+		const int DISPID_GET_NAME_FROM_ADDRESS	= 18;
+		const int DISPID_GET_HOST_ADDRESS		= 19;
+		const int DISPID_CONNECT				= 20;
+		const int DISPID_CONNECT_BOUND			= 21;
+		const int DISPID_CREATE_UDP_SOCKET		= 22;
+		const int DISPID_WAIT_FOR_CONNECT		= 23;
+		const int DISPID_WAIT_FOR_ACCEPT		= 24;
+		const int DISPID_SEND					= 25;
+		const int DISPID_SEND_FILE				= 26;
+		const int DISPID_SEND_TO				= 27;
+		const int DISPID_WAIT_FOR_SEND			= 28;
+		const int DISPID_RECEIVE				= 29;
+		const int DISPID_RECEIVE_LINE			= 30;
+		const int DISPID_RECEIVE_TO_FILE		= 31;
+		const int DISPID_SET_SOCKET_OPTION		= 32;
+		const int DISPID_GET_SOCKET_OPTION		= 33;
+		const int DISPID_IS_IP_ADDRESS			= 34;
+		const int DISPID_LAST_RECEIVED_DATA		= 35;
+		const int DISPID_LAST_RECEIVED_LINE		= 36;
+		const int DISPID_RECEIVE_FROM			= 37;
+		const int DISPID_SEND_AS_LINE			= 38;
+		const int DISPID_IS_CONNECTED			= 39;
+		const int DISPID_REMOTE_HOST_IP_ADDRESS = 40;
+		const int DISPID_REMOTE_PORT			= 41;
+		const int DISPID_LOCAL_PORT				= 42;
+		const int DISPID_ACCEPT_PORT			= 43;
+		const int DISPID_SOCKET_HANDLE			= 44;
+		const int DISPID_SOCKET_ERROR			= 45;
+		const int DISPID_ACCEPT_SOCKET_ERROR	= 46;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_SEND_TIME_OUT), helpstring("property SendTimeOut")] 
+			HRESULT SendTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_SEND_TIME_OUT), helpstring("property SendTimeOut")] 
+			HRESULT SendTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_SOCKET_TYPE), helpstring("property Type")] 
+			HRESULT Type([out, retval] SocketType *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_SOCKET_TYPE), helpstring("property Type")] 
+			HRESULT Type([in] SocketType newVal);
+
+		[propget, bindable, requestedit, id(DISPID_SOCKET_FAMILY), helpstring("property Family")] 
+			HRESULT Family([out, retval] SocketFamily *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_SOCKET_FAMILY), helpstring("property Family")] 
+			HRESULT Family([in] SocketFamily newVal);
+
+		[propget, bindable, requestedit, id(DISPID_SOCKET_PROTOCOL), helpstring("property Protocol")] 
+			HRESULT Protocol([out, retval] SocketProtocol *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_SOCKET_PROTOCOL), helpstring("property Protocol")] 
+			HRESULT Protocol([in] SocketProtocol newVal);
+
+		[propget, id(DISPID_MAX_RECEIVE), helpstring("property MaxReceive")] 
+			HRESULT MaxReceive([out, retval] long *pVal);
+
+		[propput, id(DISPID_MAX_RECEIVE), helpstring("property MaxReceive")] 
+			HRESULT MaxReceive([in] long newVal);
+
+		[propget, id(DISPID_MAX_SEND), helpstring("property MaxSend")] 
+			HRESULT MaxSend([out, retval] long *pVal);
+
+		[propput, id(DISPID_MAX_SEND), helpstring("property MaxSend")] 
+			HRESULT MaxSend([in] long newVal);
+
+		[propget, id(DISPID_LAST_RECEIVED_DATA), helpstring("property LastReceived Data")] 
+			HRESULT LastReceivedData([out, retval] VARIANT *pVal);
+
+		[propget, id(DISPID_LAST_RECEIVED_LINE), helpstring("property LastReceived Line")] 
+			HRESULT LastReceivedLine([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_IS_CONNECTED), helpstring("property IsConnected")] 
+			HRESULT IsConnected([out, retval] VARIANT_BOOL *pVal);
+
+		[propget, id(DISPID_REMOTE_HOST_IP_ADDRESS), helpstring("property RemoteHostIPAddress")] 
+			HRESULT RemoteHostIPAddress([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_SOCKET_HANDLE), helpstring("property SocketHandle")] 
+			HRESULT SocketHandle([out, retval] LONG *pVal);
+
+		[propget, id(DISPID_REMOTE_PORT), helpstring("property RemotePort")] 
+			HRESULT RemotePort([out, retval] long *pVal);
+
+		[propget, id(DISPID_LOCAL_PORT), helpstring("property LocalPort")] 
+			HRESULT LocalPort([out, retval] long *pVal);
+
+		[propget, id(DISPID_ACCEPT_PORT), helpstring("property AcceptPort")] 
+			HRESULT AcceptPort([out, retval] long *pVal);
+
+		[propget, id(DISPID_SOCKET_ERROR), helpstring("property LastSocketError")] 
+			HRESULT LastSocketError([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_ACCEPT_SOCKET_ERROR), helpstring("property LastAcceptSocketError")] 
+			HRESULT LastAcceptSocketError([out, retval] BSTR *pVal);
+
+		//===========================================
+		//	Generic Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_CANCEL_SOCKET), helpstring("Cancel Socket Transfer")] 
+			HRESULT CancelTransfer();
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_CLOSE_CONNECTION), helpstring("method CloseConnection")] 
+			HRESULT CloseConnection([out, retval] long *Result);
+
+		[id(DISPID_RESET), helpstring("method Reset")] 
+			HRESULT Reset([out, retval] long *Result);
+
+		[id(DISPID_ACCEPT_CONNECTION), helpstring("method AcceptConnection")] 
+			HRESULT AcceptConnection([out, retval] long *Result);
+
+		[id(DISPID_IS_DATA_WAITING), helpstring("method IsDataWaiting")] 
+			HRESULT IsDataWaiting([out, retval] BOOL *Result);
+
+		[id(DISPID_GET_ADDRESS_FROM_NAME), helpstring("method GetAddressFromName")] 
+			HRESULT GetAddressFromName([in] BSTR Name, [out, retval] BSTR *Address);
+
+		[id(DISPID_GET_NAME_FROM_ADDRESS), helpstring("method GetNameFromAddress")] 
+			HRESULT GetNameFromAddress([in] BSTR Address, [out, retval] BSTR *Name);
+
+		[id(DISPID_GET_HOST_ADDRESS), helpstring("method GetHostAddress")] 
+			HRESULT GetHostAddress([in,defaultvalue(FALSE)] VARIANT_BOOL UseCurrentConnectAddr, [out, retval] BSTR *Address);
+
+		[id(DISPID_CONNECT), helpstring("method Connect")] 
+			HRESULT Connect([in] BSTR Address, [in] long Port, [out, retval] long * Result);
+
+		[id(DISPID_CONNECT_BOUND), helpstring("method ConnectBound")] 
+			HRESULT ConnectBound([in] long LocalPort, [in] long RemotePort, [in] BSTR LocalAddress, [in] BSTR RemoteAddress, [out, retval] long * Result);
+
+		[id(DISPID_CREATE_UDP_SOCKET), helpstring("method CreateUDPSocket")] 
+			HRESULT CreateUDPSocket([in] long LocalPort, [in] long RemotePort, [in] BSTR RemoteAddress, [in, defaultvalue("")] BSTR LocalAddress, [out, retval] long * Result);
+
+		[id(DISPID_WAIT_FOR_CONNECT), helpstring("method Listen")] 
+			HRESULT Listen([in] long Port, [in,defaultvalue("")] BSTR Address, [in,defaultvalue(1)] long QueueSize, [out, retval] long *Result);
+
+		[id(DISPID_WAIT_FOR_ACCEPT), helpstring("method WaitForAccept")] 
+			HRESULT WaitForAccept([in] long Seconds, [out, retval] long *Result);
+
+		[id(DISPID_SEND), helpstring("method Send")] 
+			HRESULT Send([in] VARIANT Data, [out, retval] long *Result);
+
+		[id(DISPID_SEND_FILE), helpstring("method SendFile")] 
+			HRESULT SendFile([in] BSTR FileName, [out, retval] long *Result);
+
+		[id(DISPID_SEND_TO), helpstring("method SendTo")] 
+			HRESULT SendTo([in] VARIANT Data, [in, defaultvalue("")] BSTR Address, [in, defaultvalue(-1)] long Port, [out, retval] long *Result);
+
+		[id(DISPID_WAIT_FOR_SEND), helpstring("method WaitForSend")] 
+			HRESULT WaitForSend([in] long Seconds, [in, defaultvalue(0)] long MilliSeconds, [out, retval] long *Result);
+
+		[id(DISPID_RECEIVE), helpstring("method Receive")] 
+			HRESULT Receive([in] long MaxSize, [out, retval] long *Result);
+
+		[id(DISPID_RECEIVE_LINE), helpstring("method ReceiveLine")] 
+			HRESULT ReceiveLine([out, retval] long *Result);
+
+		[id(DISPID_RECEIVE_TO_FILE), helpstring("method ReceiveToFile")] 
+			HRESULT ReceiveToFile([in] BSTR FileName, [in] FileWriteType Type, [out, retval] long *Result);
+		
+		[id(DISPID_SET_SOCKET_OPTION), helpstring("method SetSocketOption")] 
+			HRESULT SetSocketOption([in] long OptionType, [in] long OptionData, [out, retval] long *Result);
+
+		[id(DISPID_GET_SOCKET_OPTION), helpstring("method GetSocketOption")] 
+			HRESULT GetSocketOption([in] long OptionType, [out, retval] long *OptionData);
+
+		[id(DISPID_IS_IP_ADDRESS), helpstring("method IsIPAddress")] 
+			HRESULT IsIPAddress([in] BSTR Address, [out, retval] BOOL *Result);
+
+		[id(DISPID_RECEIVE_FROM), helpstring("method ReceiveFrom")] 
+			HRESULT ReceiveFrom([in] long MaxSize, [out, retval] long *Result);
+		
+		[id(DISPID_SEND_AS_LINE), helpstring("method SendAsLine")] 
+			HRESULT SendAsLine([in] BSTR Line, [in,defaultvalue(0)] long MaxLineLength, [out,retval] long *Result);
+		
+	};
+		
+

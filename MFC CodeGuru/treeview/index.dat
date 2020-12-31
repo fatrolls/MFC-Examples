@@ -1,0 +1,56 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|advanced_checkbox.shtml||CTreeCtrl: Adding Advanced Checkbox|
+1998/03/28|allow_edit.shtml||Allowing users to edit item labels|
+1998/03/28|background_image.shtml||Using a bitmap as a background image|
+1998/03/28|collapse_all.shtml||Collapsing all branches|
+1998/03/28|collapse_branch.shtml||Collapsing a branch|
+1998/03/28|copy_branch.shtml||Copy a branch|
+1998/03/28|copy_item.shtml||Copy an item to a new location|
+1998/03/28|ctrl_color.shtml||Setting a background color|
+1998/03/28|drag_drop.shtml||Drag and drop|
+1998/03/28|drag_drop_indentlevel.shtml||Keeping the indentation level with Drag & Drop|Roelf Nel
+1998/03/28|drag_expand.shtml||Expand branches during drag-drop|Justin Rudd
+1998/03/28|drag_hotspot.shtml||Dynamic Calculation of DragImage Hotspot|Chris Protopapas
+1998/03/28|drap_drop_ctreeview.shtml||Class for drag-drop enabled TreeView|Ran Almog
+1998/03/28|enhanced_drag_drop.shtml||Enhanced Drag & Drop|Miguel Grinberg
+1998/03/28|esc_drag_drop.shtml||Using ESC to cancel drag and drop|
+1998/03/28|esc_edit.shtml||Handling ESC and Return keys while editing label|
+1998/03/28|expand_branch.shtml||Expanding a branch|
+1998/03/28|find_item.shtml||Finding an item|
+1998/03/28|get_last.shtml||Get last item in branch|
+1998/03/28|get_next.shtml||Get next item in outline|
+1998/03/28|get_prev.shtml||Get previous item in outline|
+1998/03/28|item_color_font.shtml||Setting color and font attribute for individual items|
+1998/03/28|item_images.shtml||Setting up the item images|
+1998/03/28|limit_text.shtml||Limiting label length when edititng|
+1998/03/28|move_item.shtml||Moving an item or a branch|
+1998/03/28|multiple_sel.shtml||Allowing multiple selection|
+1998/03/28|no_auto_selection.shtml||Stop auto-selection of item|Justin Rudd
+1998/03/28|overlay_images.shtml||Using overlay images|
+1998/03/28|prevent_drag_drop.shtml||Preventing inadvertant drag and drop|
+1998/03/28|right_button_menu.shtml||Right button popup menu|
+1998/03/28|right_drag_drop.shtml||Right Button Drag and Drop with Popup Menu|
+1998/03/28|scroll_drag_drop.shtml||Scrolling during drag and drop|
+1998/03/28|serialize_to_text.shtml||Serializing to / from a text file|
+1998/03/28|simple_checkbox.shtml||CTreeCtrl: Adding Simple Checkbox for each Item|
+1998/03/28|state_images.shtml||Setting up state images|
+1998/03/28|temp.shtml||CTreeCtrl: Adding Simple Checkbox for each Item|
+1998/03/28|tooltip.shtml||Adding tooltips for item images|
+1998/03/28|treelist.shtml||TreeList : Multi column tree control|David Lantsman
+1998/03/28|use_listcontainer.shtml||Connect a list container to a tree/list control|
+1998/04/30|find_data.shtml||Finding an item (matching data instead of label)|<!-- Author Name -->Nancy Davis
+1998/05/01|printable_ctreectrl.shtml||A Print Enabled Tree Control|<!-- Author Name -->Mike Wild

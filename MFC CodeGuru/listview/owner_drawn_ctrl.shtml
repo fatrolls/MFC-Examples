@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>CListCtrl - Owner drawn control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Owner drawn control</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+One of the styles that the listview control can have is the LVS_OWNERDRAWFIXED style. The implication of this style is that the responsibility of drawing the content of the control is on the application. That is, you have to write all the code for drawing and displaying text in the control. Another aspect of the LVS_OWNERDRAWFIXED style is that all the rows should have the same height. The height of a row is set when the parent window responds to the WM_MEASUREITEM message when the control is created. If this height is not satisfactory, you can change it by using the technique discussed in the topic 
+"<A HREF="change_row_height.shtml">Changing row height in owner drawn control</A>"	.
+
+<p>The virtual function DrawItem() is called for each row that needs to be painted. This function is responsible for drawing the entire row including the state image, the item image, the item label and the sub-labels. The default implementation of this function simply asserts. This means that there is not short cut for implementing this function. Besides drawing the images and the texts, you also have to set the hightlight color if the row is selected and the focus rectangle if the row has focus. All this makes the implementation of the DrawItem() function somewhat tedious but allows a great deal of customization. 
+
+<p>Here are few things we can do with an owner drawn list view control. We can implement full row selection where the full row is highlighted rather than just the first column of the row. We can use different background colors and text colors for different rows, columns and even different cells. We can also display icons in any column. The owner drawn control can also be used to show a background image.
+
+<p>For code to implement owner drawn CListCtrl see the topic "<A HREF="sel_row.shtml">Selection highlighting of entire row</A>".
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

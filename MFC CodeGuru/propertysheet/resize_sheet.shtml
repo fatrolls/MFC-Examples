@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Resizing the Property Sheet</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Resizing the Property Sheet</FONT>
+<HR></H3></CENTER>
+The property sheet is not resizable by the user. That is, the user cannot drag an edge of the property sheet dialog to resize it. However, resizing the property sheet programmatically is the same as resizing any other window - get the window dimension by calling GetWindowRect(), modify the dimension and then resize the window by calling the MoveWindow() or the SetWindowPos() function. The code fragment below is from a member function of a CPropertySheet derived class. It increases the width of the property sheet by 100 pixels.
+<PRE><TT><FONT COLOR="#990000">
+	CRect rectWnd;
+	GetWindowRect(rectWnd);
+	SetWindowPos(NULL, 0, 0,
+		rectWnd.Width() + 100,
+		rectWnd.Height(),
+		SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+</FONT></TT></PRE>
+<P>One of the effects of resizing the property sheet is that the standard buttons get left behind in an aesthetically undesirable position. Its usually a good idea to follow the resize of the property sheet with a move of the standard buttons. Assuming that the Cancel, OK and Apply buttons are visible, code below moves them 100 pixels to the right to match the increase in width of the property sheet.
+<PRE><TT><FONT COLOR="#990000">
+	int ids[] = { IDOK, IDCANCEL, ID_APPLY_NOW };
+	for( int i =0; i < sizeof(ids)/sizeof(ids[0]); i++)
+	{
+		GetDlgItem(ids[i])->GetWindowRect(rectWnd);
+		ScreenToClient(rectWnd);
+		rectWnd.right += 100;
+		rectWnd.left += 100;
+		GetDlgItem(ids[i])->MoveWindow(rectWnd);
+	}
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

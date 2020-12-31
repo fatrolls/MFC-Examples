@@ -1,0 +1,324 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Rama Krishna">
+   <TITLE>Property Pages for ActiveX Controls</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Property Pages for ActiveX Controls
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:shimonp@globalserve.net">Shimon Pozin</A>.
+<p>I am not going to reinvent the wheel and everything I am going
+to talk about is documented here and there. The only reason I am
+putting all this in one place is because I spent a week to get
+all parts together.</p>
+
+<p>ActiveX introduced a new way to display the propery pages.
+Each page is a separate control. You may find the GUID for these
+controls in the registry, but you cannot find them using
+&quot;Object viewer&quot; or importing the type library of the
+main ActiveX control.</p>
+
+<p>How to create a property page for your control? This is not a
+big deal and this part is well documented and supplied with
+numerous examples. You simply follow these steps:</p>
+
+<ol>
+    <li>Create a new dialog resource (size 250x62 or 250x110
+        dialog units) and using ClassWizard add to your project a
+        new class derived from COlePropertyPage, e.g. <font
+        color="#630000">class COptionsPropPage : public
+        COlePropertyPage</font></li>
+    <li>Create two new string resources (add them to your string
+        table resource): one - for the caption of your new
+        property page and another one - for the property page
+        name (do you remember - property page is an object?)</li>
+    <li>At the top of *.cpp file, created for your property page,
+        find the following functions and replace 0-s (otherwise
+        regsvr32 will crash:<PRE><TT><FONT COLOR="#990000">/////////////////////////////////////////////////////////////////////////////
+// COptionsPropPage::COptionsPropPageFactory::UpdateRegistry-
+// Adds or removes system registry entries for COptionsPropPage
+
+BOOL COptionsPropPage::COptionsPropPageFactory::UpdateRegistry(BOOL bRegister)
+{
+   // TODO: Define string resource for page type; replace '0' below with ID.
+
+        if (bRegister)
+            return AfxOleRegisterPropertyPageClass(AfxGetInstanceHandle(),
+                m_clsid, IDS_PPG_OPTIONS);
+        else
+            return AfxOleUnregisterClass(m_clsid, NULL);
+}
+       
+/////////////////////////////////////////////////////////////////////////////
+// COptionsPropPage::COptionsPropPage - Constructor
+// TODO: Define string resource for page caption; replace '0' below with ID.
+
+COptionsPropPage::COptionsPropPage() :
+        COlePropertyPage(IDD, <font color="#630000">IDS_PPG_OPTIONS_CAPTION</font>)
+{
+    //{{AFX_DATA_INIT(CDJNasdaqLIIOptionsPropPage)
+    //}}AFX_DATA_INIT
+}</FONT></TT></PRE>
+    </li>
+    <li>Add *.h file of your new property page to *.cpp file of
+        your control and modify the following macros as follows:<PRE><TT><FONT COLOR="#990000">// TODO: Add more property pages as needed.  Remember to increase the count!
+BEGIN_PROPPAGEIDS(CDoSomethingCtrl, <font color="#630000">4</font>)
+	PROPPAGEID(COptionsPropPage::guid)
+	<font color="#808080">PROPPAGEID(CLSID_CColorPropPage)
+	PROPPAGEID(CLSID_CFontPropPage)
+	PROPPAGEID(CLSID_CPicturePropPage)</font>
+END_PROPPAGEIDS(CDJNasdaqLIICtrl)</FONT></TT></PRE>
+<p>Pay attention that last three lines will automatically
+        insert stock property pages for color, font and pictures
+        respectively (you don't have to create them separately,
+        Microsoft did it for you)</p>
+</li>
+</ol>
+
+<p><font size="4"><strong>Case 1: Your control wants to display
+its own property sheet in runtime mode.</strong></font></p>
+
+<p>This case is simple one, but is not documented. You have to do
+the following:</p>
+
+<ol>
+    <li>Add GetPages() method to the implementation file of your
+        control:<PRE><TT><FONT COLOR="#990000">// This method returns array of property pages used then by
+// OLE container to bring property pages to the user
+<font color="#630000">STDMETHODIMP</font> CDoSomethingCtrl::<font
+color="#630000">GetPages(CAUUID *pPages)</font>
+{
+    GUID *pGUID;
+    const unsigned CPROPPAGES = 4;
+        
+    pPages-&gt;cElems = 0;
+    pPages-&gt;pElems = NULL;
+ 
+    pGUID = (GUID*) CoTaskMemAlloc( CPROPPAGES * sizeof(GUID) );
+
+    if( NULL == pGUID )
+    {
+        return ResultFromScode(E_OUTOFMEMORY);
+    }
+
+    // Fill the array of property pages now
+    pGUID[0] = COptionsPropPage::guid;
+    pGUID[2] = CLSID_CFontPropPage;
+    pGUID[3] = CLSID_CColorPropPage;
+    pGUID[4] = CLSID_CPicturePropPage;
+
+    //Fill the structure and return
+    pPages-&gt;cElems = CPROPPAGES;
+    pPages-&gt;pElems = pGUID;
+    return NOERROR;
+}</FONT></TT></PRE>
+        <p>Pay attention that you may have different set of pages
+        from your original one. You are not comitted to display
+        the same property pages in design- and runtime modes.</p>
+    </li>
+    <li>Add OnShowProperties method to the implementation file of
+        your control:<PRE><TT><FONT COLOR="#990000">// This method is usually implemented by container to display
+// the properties of a control at runtime. We need it for the control
+// itself to display property pages at runtime.
+<font color="#000000"><strong>void</strong></font> CDoSomethingCtrl::<strong>OnShowProperties()</strong>
+{
+	CAUUID	caGUID;
+	HRESULT	hr;
+	<font color="#630000">LPDISPATCH pIDispatch = GetIDispatch(TRUE);</font>
+	<font color="#804000">LCID lcid = AmbientLocaleID();</font>
+
+	GetPages(&amp;caGUID);
+
+	<font color="#630000">hr = OleCreatePropertyFrame(
+			m_hWnd,
+			10,
+			10,
+			OLESTR(&quot;Do something control&quot;),
+			1,
+			(IUnknown**) &amp;pIDispatch,
+			caGUID.cElems,
+			caGUID.pElems,
+			lcid,
+			0L,
+			NULL );</font>
+	if( FAILED(hr) )
+	{
+		ErrorMsg(IDS_FAILED_DISPLAY_PROPERTY_PAGES, MB_ICONERROR);
+	}
+
+	CoTaskMemFree( (void*) caGUID.pElems );
+	return;
+}</FONT></TT></PRE>        
+<p>A few comments: <br>
+        - OleCreatePropertyFrame is the method to display the
+        property pages you selected in GetPages() method before;<strong><br>
+        - m_hWnd</strong> member you have because your control is
+        derived from CWnd;<br>
+        - The fourth parameter (OLESTR string) is just the
+        caption of your property sheet and you may type whatever
+        you want there;<br>
+        - I use GetIDispatch(TRUE) of CCmdTarget to get a pointer
+        to IDispatch interface of my control, but actually all
+        you need is a pointer to IUnknown. If you already have a
+        pointer to IUnknown of your control, just use it.</p>
+        <p>That's it, folks! Simple, isn't it? I have no idea why
+        it is so difficult to compile this information from
+        multiple sources :-)</p>
+    </li>
+</ol>
+
+<p><font size="4"><strong>Case 1: Your container wants to display
+property sheet of your control in runtime mode.</strong></font></p>
+
+<p>Actually, as I said before, this is documented in &quot;Inside
+OLE&quot; of Brockschmidt (pp795+.) Unfortunately, Brockschmidt
+assumes that you create your OLE control from scratch without
+COleControl class. If you have already derived your control from
+COleControl class (as you normally do), you already have a train
+of interfaces which you can see in OLE Object Viewer. In this
+case the following steps demonstrate how to display the property
+pages in runtime mode in your container.</p>
+
+<ol>
+    <li>Add GetPages() method to the <strong>implementation file
+        of your control</strong> this way:<PRE><TT><FONT COLOR="#990000">// This method returns array of property pages used then by
+// OLE container to bring property pages to the user
+<font color="#630000">STDMETHODIMP</font> CDoSomethingCtrl::<font
+color="#630000">XSpecifyPropertyPages::GetPages(CAUUID *pPages)</font>
+{
+    GUID *pGUID;
+    const unsigned CPROPPAGES = 4;
+        
+    pPages-&gt;cElems = 0;
+    pPages-&gt;pElems = NULL;
+ 
+    pGUID = (GUID*) CoTaskMemAlloc( CPROPPAGES * sizeof(GUID) );
+
+    if( NULL == pGUID )
+    {
+        return ResultFromScode(E_OUTOFMEMORY);
+    }
+
+    // Fill the array of property pages now
+    pGUID[0] = COptionsPropPage::guid;
+    pGUID[2] = CLSID_CFontPropPage;
+    pGUID[3] = CLSID_CColorPropPage;
+    pGUID[4] = CLSID_CPicturePropPage;
+
+    //Fill the structure and return
+    pPages-&gt;cElems = CPROPPAGES;
+    pPages-&gt;pElems = pGUID;
+    return NOERROR;
+}</FONT></TT></PRE>
+<p>Pay attention to this strange class
+        XSpecifyPropertyPages: there is no place to declare this.
+        Where does it come from? From COleControl, of course.
+        Declaration of COleControl class includes the following
+        lines:</p><PRE><TT><FONT COLOR="#990000">// ISpecifyPropertyPages
+<font color="#630000">BEGIN_INTERFACE_PART</font>(<strong>SpecifyPropertyPages</strong>, ISpecifyPropertyPages)
+    INIT_INTERFACE_PART(COleControl, SpecifyPropertyPages)
+    STDMETHOD(GetPages)(CAUUID*);
+<font color="#630000">END_INTERFACE_PART</font>(SpecifyPropertyPages)</pre>
+        <p>where BEGIN_INTERFACE_PART is further decoded to</p>
+        <pre>#define BEGIN_INTERFACE_PART(<strong>localClass</strong>, baseClass) \
+    class <font color="#630000">X##localClass</font> : public baseClass \
+    { \
+    public: \
+        STDMETHOD_(ULONG, AddRef)(); \ and so on</FONT></TT></PRE>
+		        <p>This is where XSpecifyPropertyPages comes from.</p>
+    </li>
+    <li>Add OnShowProperties method to the implementation file of
+        your <strong>container</strong> (this is taken as is from
+        the Inside OLE of BrockSchmidt with a note below):<PRE><TT><FONT COLOR="#990000">void CApp::OnShowProperties(void)
+{
+    ISpecifyPropertyPages  *pISPP;
+    CAUUID                  caGUID;
+    HRESULT                 hr;
+    <font color="#804000">LCID lcid = AmbientLocaleID();</font>
+
+    if (FAILED(m_pIDispatch-&gt;QueryInterface(IID_ISpecifyPropertyPages, (void **)&amp;pISPP)))
+    {
+        AfxMessageBox(&quot;Object has no property pages.&quot;);
+        return;
+    }
+
+    hr=pISPP-&gt;GetPages(&amp;caGUID);
+    pISPP-&gt;Release();
+
+    if (FAILED(hr))
+    {
+        AfxMessageBox(&quot;Failed to retrieve property page GUIDs.&quot;);
+        return;
+    }
+
+    hr=OleCreatePropertyFrame(m_hWnd, 10, 10, OLETEXT(&quot;Beeper&quot;)
+        , 1, (IUnknown **)&amp;m_pIDispatch, caGUID.cElems
+        , caGUID.pElems, <font color="#000000">lcid</font>, 0L, NULL);
+
+    if (FAILED(hr))
+        AfxMessageBox(&quot;OleCreatePropertyFrame failed.&quot;);
+
+    //Free GUIDs.
+    CoTaskMemFree((void *)caGUID.pElems);
+    return;
+}</FONT></TT></PRE>
+        <p><strong>Notes</strong>: I changed a few minor things
+        to get this code compiled imeediately without any further
+        changes. I changed Message method of BrockSchmidt to the
+        standard AfxMessageBox(). Then, I replaced the 9th
+        parameter from m_lcid to 0L because I am not interested
+        in locale information (of course you have to take care of
+        it if you support multiple languages!!!)</p>
+    </li>
+</ol>
+
+<p>The theory of property pages, property pages browsing and
+notifications is slightly more difficult than that. I sincerely
+encourage you to read the sixteenth chapter of &quot;Inside
+OLE&quot; of BrockSchmidt to get the full picture of OLE property
+pages.</p>
+
+<p>Date Posted: May 20, 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+

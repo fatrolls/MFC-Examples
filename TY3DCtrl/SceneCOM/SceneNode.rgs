@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.SceneNode.1 = s 'SceneNode Class'
+	{
+		CLSID = s '{9E1A28DB-F69A-4CAB-8E65-CE43C51CFADF}'
+	}
+	TY3DCtrl.SceneNode = s 'SceneNode Class'
+	{		
+		CurVer = s 'TY3DCtrl.SceneNode.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {9E1A28DB-F69A-4CAB-8E65-CE43C51CFADF} = s 'SceneNode Class'
+		{
+			ProgID = s 'TY3DCtrl.SceneNode.1'
+			VersionIndependentProgID = s 'TY3DCtrl.SceneNode'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{0F12A734-4D76-4E8F-B7B3-A2ECDC7CCC93}'
+			Version = s '1.0'
+		}
+	}
+}

@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Umut Alev">
+   <TITLE>Doc/View - Auto-Panning Windows</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Auto-Panning Windows
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:mailto:umut.alev@worldspan.com"><!-- Author Name -->Umut Alev</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="autopan.gif" >
+
+
+<!-- Text / source code -->
+<P>It implements an MFC extension class that adds IntelliMouse panning to CScrollView or any window with scroll bars. There is already one example of this in circulation (George Shepherd and Scot Wingo at MSJ Dec97) but the implementation is quite weak. Their version caused lots of flickering, incorrect paintings etc. So I wrote my own auto-panning windows extention.
+
+<P>As part of the IntelliMouse specification, a variety of cursors defined to be used in IntelliMouse panning. When a user clicks the mouse wheel / middle mouse button to initiate scrolling or moves the cursor back to the neutral zone (the area around the panning origin), one of three standard cursors appears, telling the user what level of panning support is provided.<br><br>
+
+<img src="autopan_all.gif" border=0 alt="Auto-Panning Windows Example image" align="bottom">Indicates when two-dimensional panning is supported.<br>
+
+<img src="autopan_ud.gif" border=0 alt="Auto-Panning Windows Example image" align="bottom">Indicates that vertical-only, one-dimensional panning is available.<br>
+
+<img src="autopan_lr.gif" border=0 alt="Auto-Panning Windows Example image" align="bottom">Indicates that horizontal-only, one-dimensional panning is available.<br>
+
+<p>This is achieved through creating only one addition control named CWheelWnd. The control is very simple. It creates a floating popup window over the scrolling window, and controls the movements of the scrolling window until presses mouse wheel button. To add this functionality to your CScrollView based window or any other scrolling window add the following code to your <b>OnMButtonDown</b> function.
+
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+void CAutoPanView::OnMButtonDown(UINT nFlags, CPoint point) 
+{
+    BOOL bCtl = GetKeyState(VK_CONTROL) & 0x8000;
+    if(!bCtl && nFlags == MK_MBUTTON)
+    {
+        MfxTrackAutoPan(this);
+    }
+    else
+    {
+        CScrollView::OnMButtonDown(nFlags, point);
+    }
+}
+</FONT></TT></PRE>
+
+<p>
+Also, given resources must be included to the project with given IDs.<!-- end the block of source code -->
+
+<PRE><TT><FONT COLOR="#990000"> 
+Resource	ID
+--------------  -------------
+autopan.bmp	IDC_AUTOPAN
+pan_up.cur	IDC_PAN_UP
+pan_down.cur	IDC_PAN_DOWN
+pan_left.cur	IDC_PAN_LEFT
+pan_right.cur	IDC_PAN_RIGHT
+</FONT></TT></PRE>
+
+<b>Happy Scrolling :)</b>
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="autopan_demo.zip">Download demo project - 38KB</A>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="autopan_source.zip">Download source - 4.9KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->5/6/98
+<br>Posted by: <A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

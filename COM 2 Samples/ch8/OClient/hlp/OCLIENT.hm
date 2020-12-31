@@ -1,0 +1,32 @@
+// MAKEHELP.BAT generated Help Map file.  Used by OCLIENT.HPJ. 
+ 
+// Commands (ID_* and IDM_*) 
+HID_OBJECT_POPUP_MENU                   0x10066
+HID_OBJECT_TRACK_SIZE                   0x107D0
+HID_CANCEL_INPLACE                      0x107D2
+HID_OBJECT_DISPLAYCONTENT               0x107D3
+HID_OBJECT_DISPLAYASICON                0x107D4
+HID_OBJECT_CHANGEICON                   0x107D5
+HID_EDIT_CLONE                          0x107D6
+HID_OBJECT_RESETSIZE                    0x107D9
+HID_OLE_CHANGE_SOURCE                   0x107DC
+ 
+// Prompts (IDP_*) 
+HIDP_BUSY                               0x30065
+HIDP_CLIPBOARD_CUT_FAILED               0x30201
+HIDP_CLIPBOARD_COPY_FAILED              0x30202
+HIDP_GET_FROM_CLIPBOARD_FAILED          0x30203
+HIDP_FAILED_TO_CREATE                   0x30204
+HIDP_SAVEINCOMPLETE                     0x30205
+HIDP_CLIPBOARD_ZERO_SIZE                0x30206
+HIDP_AFXOLEINIT_FAILED                  0x30207
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20002
+HIDR_OCLIENTTYPE                        0x20003
+HIDR_OCLIENTTYPE_CNTR_IP                0x20068
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+ 
+// Frame Controls (IDW_*) 

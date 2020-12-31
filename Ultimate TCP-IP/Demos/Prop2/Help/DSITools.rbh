@@ -1,0 +1,19 @@
+[File Properties]
+HasProperties=1
+BrowseType=0
+AutoMapFile=1
+StartingWith=0
+IncrementBy=20
+NextTopicNumber=0
+StartingNumber=1
+BrowseString=MAIN:0
+DefaultBuildTag=
+Update Styles=2
+MapStartWith=1
+Scan_Objects_for_Save=2
+
+[VERSION]
+RHFile=7.0
+
+[Project]
+CHFile=Context.RTF

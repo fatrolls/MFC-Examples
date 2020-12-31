@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.DataCache.1 = s 'DataCache Class'
+	{
+		CLSID = s '{3CC87264-55C5-40C1-A18E-F7A586905DD0}'
+	}
+	TY3DCtrl.DataCache = s 'DataCache Class'
+	{		
+		CurVer = s 'TY3DCtrl.DataCache.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {3CC87264-55C5-40C1-A18E-F7A586905DD0} = s 'DataCache Class'
+		{
+			ProgID = s 'TY3DCtrl.DataCache.1'
+			VersionIndependentProgID = s 'TY3DCtrl.DataCache'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{40937355-B66F-40ED-815C-32F09B862F13}'
+			Version = s '1.0'
+		}
+	}
+}

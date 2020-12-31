@@ -1,0 +1,294 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Windows Compliant Screen Saver Using MFC</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--></td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Windows Compliant Screen Saver Using MFC
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:ed@explorati.com">Ed Halley</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="mfcsaver_preview.gif">
+
+
+<hr>
+
+<h4>Writing Screen Savers</h4>
+
+<blockquote>
+
+<p>
+With the advent of modern display devices, including long-life phosphors, liquid crystals,
+and Energy Star<sup><font size="1">TM</font></sup> power saving modes, there is less need for screen saver programs than ever before.
+Despite that, the number of screen saver programs is still exploding, especially those offered on a freebie or shareware price basis.
+</p>
+
+<p>
+It might be due to the fact that writing a screen saver can be so much fun.
+And writing screen savers in MFC can be even more fun, since classes like CRect and CGdiObject really
+makes using the drawing functions a lot simpler than the equivalent C API code.
+</p>simpler than most &quot;Hello, world.&quot; Windows applications.  It doesn't have a WinMain(), for example.
+
+<p>
+If you dig through the Windows C API for the requirements to create a screen saver, you'll find they
+are very minimal indeed.  That is, for a program written in C.  A screen saver is, in many ways,
+
+Screen savers don't even call the DefWindowProc() function, and instead call DefScreenSaverProc().
+If you export one of your functions (or optionally, three), you can have a full-featured screen
+saver program that supports everything that every other screen saver supports.
+</p>
+
+<p>For all screen savers,
+<ul>
+	<li>The name or description of the screen saver is in string 1.</li>
+	<li>The icon for the screen saver is ID_APP, defined in &lt;scrnsave.h&gt; to 100.</li>
+	<li>The WINAPI ScreenSaverProc() must be defined and exported.<br>
+		(The <b>CScreenSaverWnd</b> module here implements this API for you.)</li>
+	<li>The executable should be named with a .SCR file extension.</li>
+</ul>
+</p>
+
+<p>For configurable screen savers,
+<ul>
+	<li>The dialog for configuring the screen saver is DLG_SCRNSAVECONFIGURE, defined in &lt;scrnsave.h&gt; to 2003.</li>
+	<li>The WINAPI ScreenSaverConfigureDialog() must be defined and exported.</li>
+	<li>The WINAPI RegisterDialogClasses() must be defined and exported.<br>
+		(The <b>CScreenSaverDlg</b> module here implements these APIs for you.)</li>
+</ul>
+</p>
+
+<p>(A quick note about password protection: WinNT handles it for you, and it's probably a waste of
+time to try to make security features for any other unsecure version of Windows.)</p>
+
+</blockquote>
+
+<hr>
+
+<h4>Some MFC Surgery</h4>
+
+<blockquote>
+
+<p>
+All this simplicity gets in the way of a program written in MFC, of course.  The acronym AFX stands
+
+DLL lfor &quot;Application Frameworks.&quot;  And a screen saver really isn't an application, so much as it's aoaded by the operating system when you walk away from your keyboard.  Without a WinMain(), an
+MFC program seems impossible; MFC writes WinMain() for you, and just about forces you to use it,
+doesn't it?  If you are one of the many MFC programmers who have never written Windows C API programs,
+you might not even know that MFC is calling DefWindowProc() behind the scenes for you.
+</p>
+
+<p>
+You <b>can</b> create a screen saver in MFC, it just takes a little work to ask MFC to live within
+the restrictions imposed on a screen saver.  The two abstract classes offered here,
+<b>CScreenSaverWnd</b> and <b>CScreenSaverDlg</b>, will take these restrictions into account, and
+will let you make a fully Windows compliant screen saver in just a few minutes' time.
+</p>
+
+<p><b>Make a Dialog-based MFC Application.</b><br>
+To create a new project for a screen saver, using Visual C++ 4.2 or 5.0, you can start with the closest
+AppWizard available, the &quot;Win32 MFC Application&quot;.  If you choose to link with MFC in a shared DLL, your
+screen saver will be quite small, indeed.  A dialog-based application will avoid the CDocument/CView
+architecture infrastructure (see <a href="#avoid">footnote</a>).
+</p>
+
+<p><b>Delete all mention of CWinApp.</b><br>
+It's counter-intuitive, but delete all declarations and definitions of your CWinApp-derived class,
+including that one global instance of the class that's created for you.  Just chop it all out.
+</p>
+
+<p><b>Create a CWnd-derived Class.</b><br>
+We started with a dialog-based application, but a screen saver is mostly about a simple CWnd that's
+made to be topmost and fills the screen completely.  Use the ClassWizard to make something derived
+from the generic CWnd class.
+</p>
+
+<p><b>It's Not Too Late to Choose Your Parents.</b><br>
+Grab your copy of <b>CScreenSaverWnd</b> and <b>CScreenSaverDlg</b> from the download links here, and
+include those in your project.  (All the author asks is that you keep the copyright notices intact
+in the source code.)  Search for CWnd in your own window class, and replace it with CScreenSaverWnd.
+Search for CDialog in your own dialog class, and replace it with CScreenSaverDlg.  And include the
+supplied header files to make things compile again.
+</p>
+
+<p><b>A Dialogue of Assumptions.</b><br>
+The Class Wizard makes CDialog-based classes, with non-default constructors which take arguments.
+Due to the rigid way in which a screen saver configuration dialog is specified to Windows, you won't
+need those arguments.  Supply a public, argument-free constructor and destructor for your dialog.
+</p>
+
+<p><b>Think Globally.</b><br>
+When you deleted the CWinApp-derived object, you also deleted a global instance of that application.
+For your CScreenSaverWnd-derived class to function properly, you need one global instance of it.
+Also, your CScreenSaverDlg-derived class needs a global instance to back it up.
+</p>
+
+<p><b>Resources.</b><br>
+Above, the listed requirements for compliant screen savers includes some details for the resources.
+Add a description string of index one (1).  It should probably be less than twenty characters, since
+it shows up in a small combo box when the user's choosing a screen saver.  Change the icon's ID to
+be equal to 100.  Change the dialog's ID to be equal to the wierd number 2003.  (You can read
+mfcsaver.rc as a text file to learn a trick on how to include &lt;scrnsave.h&gt; and use ID_APP and
+DLG_SCRNSAVECONFIGURE instead of numbers.)
+
+<p><b>Lather, Rinse, Repeat.</b><br>
+You're pretty much done with the basic screen saver, and it's ready to compile, debug and develop.
+You can change the output filename setting for the project, so that it has a .SCR extension rather
+screen saver configuration dialog will appear.  If you want to debug your screen saver window, then
+use the program argument &quot;/save&quot; when running the saver.
+</p>
+
+<p><b>Dissect the Example.</b><br>
+Use the included <A HREF="mfcsaver_src.zip">MfcSaver.SCR project</a> if in doubt.
+It was created in Visual C++ 5.0, and links to the shared MFC42.DLL.  The code should be VC++4.2 compatible.
+Besides illustrating the use of <b>CScreenSaverWnd</b> and <b>CScreenSaverDlg</b>, the project also
+uses a CImageList to draw from a library of icons, animated to bounce around the screen.
+The source code is liberally commented.
+</p>
+
+</blockquote>
+
+<hr>
+
+<h4>The Code</h4>
+
+<blockquote>
+
+<p>
+Even though CScreenSaverWnd is not a CView-derived object, I felt it was useful to have the OnInitialUpdate()
+and OnDraw() overridables.  I also added three time-saver features which can be used, or ignored, if you like.
+<ul>
+<li>The default behavior of CScreenSaverWnd is to black the whole screen in OnEraseBkgnd(); this can be disabled by a
+call to SetAutoBlack(FALSE) in your constructor or OnCreate() or OnInitialUpdate() override.</li>
+<li>There is a member variable called m_pPalette which, if set to point to a CPalette, will be used to prepare the
+drawing display context before OnDraw() is called.  The OnQueryNewPalette() and OnPaletteChanged() overrides do the
+correct handling for palettized applications.  Leaving m_pPalette = NULL will mean that any and all palette management
+must be done by your code.
+(Note that if you draw in 16 colors, like the example does, you'll never need palette management.)
+</li>
+<li>The configuration dialog and the screen saver itself rarely get a chance to be seen at the same time, but they
+do need to communicate.  Two overridables, SaveOptions() and RestoreOptions() can be implemented to keep any
+parameters between runs.  Where you save the options is up to you, but the system registry is the preferred choice.
+</ul>
+</p>
+
+<p>This is a sketch of the declaration of the two classes included.  The source code in the downloadable project
+is well-commented and complete.
+</p>
+
+<FONT COLOR="#990000"><TT><PRE>
+<i>// Implemented class CScreenSaverWnd</i>
+class <b>CScreenSaverWnd</b> : public CWnd
+{
+public:
+	CScreenSaverWnd();
+<i>// Attributes</i>
+public:
+	BOOL IsAutoBlack() const;
+	void SetAutoBlack(BOOL bAutoBlack = TRUE);
+	CPalette* GetPalette() const;
+	void SetPalette(CPalette* pPalette);
+<i>// Overridables</i>
+public:
+	virtual void OnDraw(CDC* pDC);
+	virtual void OnInitialUpdate();
+	virtual void SaveOptions();
+	virtual void RestoreOptions();
+<i>//Implementation</i>
+public:
+	virtual ~ScreenSaverWnd();
+protected:
+	virtual LRESULT WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT DefWindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnPaint();
+	afx_msg BOOL OnQueryNewPalette();
+	afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
+};
+
+<i>// Implemented class CScreenSaverDlg</i>
+class <b>CScreenSaverDlg</b> : public CDialog
+{
+public:
+	CScreenSaverDlg();
+<i>// Overrides</i>
+public:
+	virtual BOOL OnInitDialog();
+<i>//Implementation</i>
+public:
+	virtual ~ScreenSaverDlg();
+protected:
+	virtual LRESULT WindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT DefWindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
+};
+
+<i>// Implemented APIs</i>
+LRESULT WINAPI <b>ScreenSaverProc</b>(HWND hWnd, UINT uMsg,
+                               WPARAM wParam, LPARAM lParam);
+BOOL WINAPI <b>ScreenSaverConfigureDialog</b>(HWND hDlg, UINT uMsg,
+                                       WPARAM wParam, LPARAM lParam);
+BOOL WINAPI <b>RegisterDialogClasses</b>(HANDLE hInstance);
+
+</tt></PRE></FONT>
+
+</blockquote>
+
+<a name="avoid"></a>
+<i>Footnote:</i>Generally, I'm a big proponent of using CDocument/CView architecture.  I once gave
+a lecture that showed that the <i>Microsoft Excel</i> office application and <i>ID Software's DOOM</i> action game were
+both good candidates for CViews and CDocuments; in fact, they had nearly identical data architectures.  Honest!
+
+
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="mfcsaver_src.zip">Download source - 53KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 27 June 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE="-1"><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE="-2">&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE="-1">Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE="-2"><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

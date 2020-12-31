@@ -1,0 +1,320 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 246, 119
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About GridCtrlDemo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
+    LTEXT           "GridCtrlDemo Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (c) 1998",IDC_STATIC,39,51,119,8
+    DEFPUSHBUTTON   "OK",IDOK,207,7,32,14,WS_GROUP
+    LTEXT           "Written by Chris Maunder\nChris.Maunder@cbr.clw.csiro.au",
+                    IDC_STATIC,40,25,128,23
+    LTEXT           "Based on the original WorldCom grid control written by Joe Willcoxson.\nemail: chinajoe@bigfoot.com\nweb: http://user.aol.com/chinajoe/wcmfclib.html",
+                    IDC_STATIC,39,70,171,38
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "GridCtrlDemo MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "GridCtrlDemo\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "GridCtrlDemo.EXE\0"
+            VALUE "ProductName", "GridCtrlDemo Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 239
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About GridCtrlDemo..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Australia) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENA)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_AUS
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_GRIDCTRLDEMO_DIALOG DIALOGEX 0, 0, 399, 271
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "MFC Grid Control Demo"
+MENU IDR_MENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Custom1",IDC_GRID,"MFCGridCtrl",WS_BORDER | WS_TABSTOP,
+                    7,7,291,162
+    EDITTEXT        IDC_EDIT_ROWS,348,17,30,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_ROW,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,378,17,11,
+                    13
+    EDITTEXT        IDC_EDIT_COLS,348,33,30,12,ES_AUTOHSCROLL
+    CONTROL         "Spin2",IDC_SPIN_COL,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,378,33,11,
+                    12
+    EDITTEXT        IDC_EDIT_FIXROWS,348,49,30,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_FIXROW,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,378,49,11,13
+    EDITTEXT        IDC_EDIT_FIXCOLS,348,65,30,12,ES_AUTOHSCROLL
+    CONTROL         "Spin2",IDC_SPIN_FIXCOL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,377,65,11,12
+    CONTROL         "Show Vertical lines",IDC_VERT_LINES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,310,85,79,12
+    CONTROL         "Show Horz. lines",IDC_HORZ_LINES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,310,96,79,12
+    CONTROL         "Allow Row resizing",IDC_ROW_RESIZE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,310,110,89,12
+    CONTROL         "Allow Column resizing",IDC_COL_RESIZE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,310,122,79,12
+    CONTROL         "Editable?",IDC_EDITABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,310,137,79,12
+    CONTROL         "Allow selection?",IDC_ALLOW_SELECTION,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,310,146,80,15
+    CONTROL         "List mode?",IDC_LISTMODE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,310,161,79,12
+    CONTROL         "Sort on header click?",IDC_HEADERSORT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,310,172,79,12
+    CONTROL         "Cell (1,1) Read-only?",IDC_READ_ONLY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,309,185,83,12
+    PUSHBUTTON      "Change Font...",IDC_FONT_BUTTON,333,206,59,14
+    PUSHBUTTON      "Print...",IDC_PRINT_BUTTON,332,225,60,14
+    PUSHBUTTON      "Cancel",IDCANCEL,331,242,61,14
+    LTEXT           "Rows",IDC_STATIC,322,19,25,12
+    LTEXT           "Cols",IDC_STATIC,325,35,20,12
+    LTEXT           "Fixed Rows",IDC_STATIC,305,48,40,12
+    LTEXT           "Fixed Cols",IDC_STATIC,306,65,38,12
+    LTEXT           "Features:\nIn-place editing, drag and drop, listview mode, column and row resizing, double-click on column/row separators to autosize, images,  printing, plus a simple CListCtrl-like class interface. Ctrl-C/V/X for copy/paste/cut and OLE drag and drop.",
+                    IDC_STATIC,7,184,295,43
+    LTEXT           "Cell selection uses mouse drag, with usual Shift and Ctrl key combination.\n""List mode"" enables sort on header click and auto-full row selection.\nCell starts editing on key stroke (enabling cell navigation with arrows) or mouse click (no cell navigation.",
+                    IDC_STATIC,7,230,302,41
+    SCROLLBAR       IDC_SIZEBOX,384,259,15,12,SBS_SIZEBOXBOTTOMRIGHTALIGN | 
+                    SBS_SIZEBOX | SBS_SIZEGRIP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_GRIDCTRLDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 392
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 264
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\GridCtrlDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\GridCtrlDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_IMAGES              BITMAP  DISCARDABLE     "res\\smallico.bmp"
+IDB_RESIZE              BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Select All\tCtrl-A",          ID_EDIT_SELECTALL
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About GridCtrlDemo...",      ID_APP_ABOUT
+    END
+END
+
+#endif    // English (Australia) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\GridCtrlDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

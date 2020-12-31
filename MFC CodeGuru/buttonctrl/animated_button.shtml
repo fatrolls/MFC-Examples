@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - AVI - Animated button</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">AVI - Animated button</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:oscarko@cyberus.ca">Oscar - R.Voska</A>
+
+<P>You can see this effect on some multimedia programs: as you drag mouse over
+the button, the button will animate.
+The whole thing is in CAniButton class derived from CButton.
+
+<P>Use CAniButton as a normal CButton (Style must be Owner draw)
+On Init dialog simply use LoadAVI( AVI_ID ) where AVI_ID is ID of AVI file
+loaded in resources.
+
+<P>The button will resize to match the size of AVI animation.
+The first frame of animation will be used as a static look.
+Be careful when you create your own AVI file. Not everything could be played !
+
+<P>Here is what is written  for Animated control in MSDN:
+<P>Animation controls can play only simple AVI clips. Specifically, the clips
+to be played by an animation control must meet the following requirements:
+<br>-There must be exactly one video stream and it must have at least one frame.
+<br>-There can be at most two streams in the file (typically the other stream,
+if present, is an audio stream, although the animation control ignores
+audio information).
+<br>-The clip must either be uncompressed or compressed with RLE8 compression. 
+<br>-No palette changes are allowed in the video stream. 
+
+
+<P><A HREF="animated_button.zip">Download source</A> 41KB
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

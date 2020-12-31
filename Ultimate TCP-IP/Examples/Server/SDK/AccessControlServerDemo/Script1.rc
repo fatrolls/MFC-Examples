@@ -1,0 +1,193 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOG DISCARDABLE  0, 0, 172, 209
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Access Control Server Test"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Start",IDC_START,4,4,60,16
+    PUSHBUTTON      "&Control Access",IDC_CONTROL_ACCESS,106,4,60,16
+    PUSHBUTTON      "E&xit",IDC_EXIT,106,26,60,16
+    PUSHBUTTON      "&About",IDC_ABOUT,4,26,60,16
+    CONTROL         "",IDC_HISTORY,"CUH_Control",WS_BORDER,4,46,162,160
+END
+
+IDD_ACCESS_CONTROL_CONFIG DIALOG DISCARDABLE  0, 0, 212, 215
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Access Control Configurations"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Access Blocked",IDC_BLOCKED,"Button",BS_AUTORADIOBUTTON,
+                    6,4,65,10
+    CONTROL         "Access Allowed",IDC_ALLOWED,"Button",BS_AUTORADIOBUTTON,
+                    6,18,64,10
+    CONTROL         "Temporary Blocked",IDC_TEMP_BLOCKED,"Button",
+                    BS_AUTORADIOBUTTON,6,32,76,10
+    DEFPUSHBUTTON   "&Add ",IDC_ADD,96,4,50,14
+    PUSHBUTTON      "Delete",IDC_DELETE,156,4,50,14
+    PUSHBUTTON      "&Refresh",IDC_REFRESH,96,24,50,14
+    PUSHBUTTON      "&Edit",IDC_EDIT,156,24,50,14
+    LISTBOX         IDC_IP_LIST,7,70,198,138,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "This access policy is applied to the following computers",
+                    IDC_STATIC,6,46,192,20,SS_CENTERIMAGE
+END
+
+IDD_ADD_IP_DLG DIALOG DISCARDABLE  0, 0, 216, 56
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add New IP Address to The List"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "IPAddress3",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
+                    6,13,100,15
+    CONTROL         "IPAddress4",IDC_IPADDRESS2,"SysIPAddress32",WS_TABSTOP,
+                    110,13,100,15
+    CONTROL         "Range",IDC_RANGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    6,32,36,8
+    DEFPUSHBUTTON   "OK",IDOK,56,32,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,160,32,50,14
+    LTEXT           "Start IP",IDC_STATIC,6,2,22,8
+    LTEXT           "End IP",IDC_END_STATIC,108,2,21,8
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 250, 105
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About - Ultimate TCP/IP developers Kit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,197,6,46,14
+    LTEXT           "Ultimate TCP/IP v 4.0 ",IDC_STATIC,43,6,84,8
+    LTEXT           "The Ultimate Toolbox.",IDC_STATIC,43,14,70,8
+    LTEXT           "Copyright 1995-2007",IDC_STATIC,43,25,66,8
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,7,47,236,51
+    LTEXT           "Phone:",IDC_STATIC,25,57,24,8
+    LTEXT           "Fax:",IDC_STATIC,25,81,14,8
+    LTEXT           "EMail:",IDC_STATIC,133,57,20,8
+    LTEXT           "WWW:",IDC_STATIC,133,71,25,8
+    LTEXT           "1 (416) 239 - 7472",IDC_STATIC,54,68,59,8
+    LTEXT           "1 (800) 463 - 1492",IDC_STATIC,54,57,59,8
+    LTEXT           "1 (416) 239 - 2183",IDC_STATIC,54,81,59,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,160,57,64,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,166,71,58,8
+    ICON            IDI_ICON1,IDC_STATIC,7,6,20,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 165
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 202
+    END
+
+    IDD_ACCESS_CONTROL_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_ADD_IP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 209
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 49
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        HORZGUIDE, 98
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

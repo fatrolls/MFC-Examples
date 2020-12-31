@@ -1,0 +1,315 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>HOWTO Configure DCOM Timeouts</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">HOWTO Configure DCOM Timeouts</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:kohlhepp@iosphere.net">Chris Kohlhepp</A>.
+
+
+
+<H4>Synopsis</H4>
+
+This HOWTO describes the configuration of timeouts on DCOM clients. It
+assumes that you are using Visual C++ 5.0 and are linking to MFC in
+the client application. Further, it assumes that the client
+application is not calling out from a free threaded apartment.
+
+<P>We will also look at how to dispense with the disturbing "Server Not
+Responding - Switch To" and "Server Busy" dialog boxes.
+
+<H4>Introduction</H4>
+
+Not long after my first attempts at ATL and DCOM, I developed two pet
+hates:
+
+
+<P>1) 'Prefab' dialog boxes that interrupt the application and launch the
+taskbar 
+<P>START menu when the client cannot connect to the server.
+
+<P>2) Lack of support for timeouts. 
+
+<P>A worst case scenario would be: A Windows 95 LAN client belonging to
+the domain "engineering.mycompany" attempts to instantiate an object
+on the server with the NETBIOS name "Einstein". The client can try to
+locate "Einstein" in a number of ways, including concatenating
+"Einstein" and "engineering.mycompany" to a single domain name and
+asking the local name server to resolve this name. Let us further
+assume that the LAN is connected to the internet via a dial-on-demand
+link and that the local DNS is not a root server. If
+"Einstein.engineering.mycompany" cannot be resolved, the DNS server
+will attempt to contact the next DNS in the hierarchy on the internet.
+
+
+<P>In the meantime, the user of the DCOM client application is either
+looking at an hour glass or gets a dialog box encouraging him/her to
+task-switch to the server application - as if it were possible to
+task-switch across a network.
+
+<P>My friend Bud Millwood and I,  here at Weird Solutions Inc., have been
+working on a client / server application based on DCOM and devised a
+relatively straight forward solution to both problems described above.
+Bud suggested that I post our solution onto the DCOM mailing list to
+encourage further exploration of the issue and perhaps constructive
+feedback. So here it is folks....
+
+
+<H4>Solutions</H4>
+
+<P>1) Addressing the "Server Busy" dialog  problem. 
+
+<P>Declare an object, say "MyFilter" of class "COleMessageFilter" in your
+application, ensure that you are including <afxole.h> and call the
+following methods:
+
+<PRE><TT><FONT COLOR="#990000">
+MyFilter.EnableNotRespondingDialog(FALSE);
+MyFilter.EnableBusyDialog(FALSE);
+MyFilter.Register();
+</FONT></TT></PRE>
+
+<P>This will have registered a new implementation of the IMessageFilter
+interface for your application. The  IMessageFilter interface is used
+for concurrency management. Your new IMessageFilter differs from the
+default in that it does not display the notorious dialog boxes. 
+
+<P>2) Contemplating a solution to the timeout  problem. 
+
+The suggested method to make timeouts configurable is to implement
+one's own "IMessageFilter" interface with the "MessagePending" method.
+>From within this method you can return PENDINGMSG_CANCELCALL when your
+patience has expired. This will unblock your application. 
+
+<P>Canceling an ongoing DCOM call might well create temporary orphan
+resources on the server, but this seems a small price to pay compared
+to an non-responsive application that the user will shut down via task
+manager.  In any event, one is well advised to exercise good judgement
+in establishing timeouts and perhaps even carry out some statistical
+analysis of typical response times. I have found, for instance,  that
+starting a local COM service on my coding machine varies between one
+and three seconds. Clearly then, a client timeout of one second would
+be inappropriate, while anything in the excess of  - say -  10 seconds
+would provide an ample safety margin.
+
+<P>The question that presents itself is whether one should implement an
+"IMessageFilter" interface from scratch or reuse what already ships
+with MFC. The MFC class "COleMessageFilter" almost meets the
+requirements; it even has a virtual function
+"COleMessageFilter::OnMessagePending" that you can override in a
+derived class of your own. It does, however, have one serious flaw.
+You might wish to examine the source code for this class in the file
+"....\vc\mfc\src\olemsgf.cpp".
+
+<P>Two methods are of interest here: 
+
+<P>a) "MessagePending" 
+
+<P>This maps to the COM interface IMessageFilter::MessagePending method
+and is called by DCOM to process pending messages during an otherwise
+blocking DCOM call. Its simplified structure is as follows:
+
+<PRE><TT><FONT COLOR="#990000">
+MessagePending()  {
+
+    //do something useful
+
+	//call virtual function OnMessagePending
+
+	return PENDINGMSG_WAITNOPROCESS
+}
+</FONT></TT></PRE>
+
+
+
+<P>b) "OnMessagePending"
+
+This is the virtual function called by MessagePending(). You may
+override this function in a derived class to customize the behaviour
+of your application.
+
+<P>Now here is the problem: Microsoft has already decided for us what
+will be returned by MessagePending(). The return value of your
+implementation of  OnMessagePending() is ignored completely in the
+parent function  MessagePending(). Hence, whatever you return from
+OnMessagePending()  is inconsequential. 
+
+<H4>What now? </H4>
+
+<P>We could of course modify the source of "COleMessageFilter" and
+rebuild MFC. For our purposes, this was inappropriate.
+
+<P>The MS Visual C++ 5.0 help files state: 
+
+<P>"You will probably want to implement your own message filter.The
+default implementation provided by COM offers only minimal message
+filtering capability."
+
+<P>Rather than building the message filter from scratch, I have opted to
+take over the code base from "COleMessageFilter" to create my own base
+class with an identical interface and named it "COleMsgFilter". It
+exists parallel to and independent from the MFC class
+"COleMessageFilter". The minor - but crucial - change in the
+implementation of  COleMsgFilter::MessagePending() is to actually
+return the value from the function call to
+COleMsgFilter::OnMessagePending(). This will allow returning
+PENDINGMSG_CANCELCALL from within OnMessagePending()  and thus allow
+controlling the DCOM timeout.
+
+3) Implementing the solution to the timeout  problem. 
+
+Prepare the class header file.
+------------------------------
+
+<P>a) Open the file "../vc/mfc/include/afxole.h". "afxole.h" is a
+collection 
+   header file for a number of OLE classes. Look for the definition of
+   the "COleMessageFilter" class. It is prefixed with the following
+   header:
+
+<PRE><TT><FONT COLOR="#990000">
+   ///////////////////////////////////////////////////////////////////
+   ////////// // COleMessageFilter (implements IMessageFilter)
+</FONT></TT></PRE>
+
+   Mark and copy the COMPLETE class definition and paste it to a new
+   header file,  named "OleMsgFlt.h". 
+
+<P>b) Search for every instance of "COleMessageFilter"  in the file 
+   OleMsgFlt.h and replace it with "COleMsgFilter".
+
+<P>c) Change the return type of  OnMessagePending() from BOOL to DWORD.
+
+
+<H4>Prepare the class CPP file.</H4>
+
+<P>a) Open the file "../vc/mfc/src/olemsgf.cpp", copy its contents to a 
+   new file, and save it in your project directory under
+   "OleMsgFlt.cpp". 
+
+<P>b) Search for every instance of "COleMessageFilter" in the file 
+   OleMsgFlt.cpp and replace it with "COleMsgFilter".
+
+<P>c) Insert the statement shown below at the top of your CPP file.
+
+<PRE><TT><FONT COLOR="#990000">
+     #include "OleMsgFlt.h" 
+</FONT></TT></PRE>
+
+<P>d) Insert the line shown below at the top of your CPP file
+<PRE><TT><FONT COLOR="#990000">
+#include <afxodlgs.h> 
+</FONT></TT></PRE>
+
+<P>e) From the file "../vc/mfc/src/afximpl.h" copy the line shown below
+to 
+   the top of your CPP file
+
+<PRE><TT><FONT COLOR="#990000">
+#define _countof(array) (sizeof(array)/sizeof(array[0]))   
+</FONT></TT></PRE>
+
+<P>f) From the file ""../vc/mfc/include/afxpriv.h" copy the line shown 
+   below to the top of  your CPP file
+
+<PRE><TT><FONT COLOR="#990000">
+#define WM_KICKIDLE         0x036A  
+</FONT></TT></PRE>
+
+
+<P>g) Find the method "COleMsgFilter::XMessageFilter::MessagePending" and
+
+   within it, the line where OnMessagePending() is called. It should
+   look like this:
+
+<PRE><TT><FONT COLOR="#990000">
+                     pThis->OnMessagePending(&msg);
+</FONT></TT></PRE>
+
+    Prefix this line with "return", like so:
+
+<PRE><TT><FONT COLOR="#990000">
+    return pThis->OnMessagePending(&msg);
+</FONT></TT></PRE>
+
+<P>h) Change the return type of  the implementation of OnMessagePending()
+
+   from BOOL to DWORD.
+
+<P>i) You will find that some of  the initialization functions for the 
+   class' data members are absent from the class implementation. This
+   is because they are in-lined in the file "AfxOle.inl". Their non
+   in-lined counterparts are shown below. You can just copy and paste
+   them directly into your CPP file.
+
+<PRE><TT><FONT COLOR="#990000">
+void COleMsgFilter::SetRetryReply(DWORD nRetryReply) {
+  m_nRetryReply = nRetryReply;
+}
+void COleMsgFilter::SetMessagePendingDelay(DWORD nTimeout) {
+   m_nTimeout = nTimeout;
+}
+void COleMsgFilter::SetBusyReply(SERVERCALL nBusyReply) {
+  m_nBusyReply = nBusyReply;
+}
+void COleMsgFilter::EnableBusyDialog(BOOL bEnableBusy) {
+  m_bEnableBusy = bEnableBusy;
+}
+void COleMsgFilter::EnableNotRespondingDialog(BOOL
+bEnableNotResponding ) {
+  m_bEnableNotResponding = bEnableNotResponding;
+}
+</FONT></TT></PRE>
+
+<H4>Compilation and linking</H4>
+
+Insert both files into your project, make sure <afxole.h> as well as
+the standard DCOM / OLE headers are included in your project, and
+compile...
+
+<H4>Usage</H4>
+
+Derive from COleMsgFilter and implement your own OnMessagePending()
+function. Here you can check for timeout and return
+PENDINGMSG_CANCELCALL when your application has timed out.
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

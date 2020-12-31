@@ -1,0 +1,128 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>PushButton - An Unclickable Button</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+An Unclickable Button
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG SRC="trick_button.gif" width=241 height=147>&nbsp;
+Download <A HREF="trick_button_src.zip">Source Code</a> and <A HREF="trick_button_demo.zip">Demo Project</A>
+</p>
+
+<!-- Environment -->
+<u>Environment:</u> VC++ 5.0 (SP3) NT 4.0 (SP3), Win95
+
+
+<!-- The article... -->
+<p>I wrote this a while back for a friend. It is basically just a normal
+pushbutton, except that when the user tries to click on it, it moves out
+of the way making it practically un-clickable.
+
+<p>I have no idea what anyone would ever want to use such a control in
+their app, apart from wanting to be extremely annoying to users (and hey - 
+don't we all get like that on occasion?) :)
+
+<p>The button is just a normal button with OnMouseMove overridden: (m_nJumpDistance
+is the distance in pixels to jump once the mouse has moved over the control).
+<br>
+
+<FONT COLOR="#990000"><TT><PRE>
+void CTrickButton::OnMouseMove(UINT nFlags, CPoint point) 
+{
+    CWnd* pParent = GetParent();
+    if (!pParent) pParent = GetDesktopWindow();
+
+    CRect ParentRect;                                   // Parent client area (Parent coords)
+    pParent->GetClientRect(ParentRect);
+
+    ClientToScreen(&point);                             // Convert point to parent coords
+    pParent->ScreenToClient(&point);
+
+    CRect ButtonRect;                                   // Button Dimensions (Parent coords)
+    GetWindowRect(ButtonRect);  
+    pParent->ScreenToClient(ButtonRect);
+    CPoint Center = ButtonRect.CenterPoint();           // Center of button (parent coords)
+
+    CSize CriticalSize(ButtonRect.Width()/6, ButtonRect.Height()/6);
+
+
+    CRect NewButtonRect = ButtonRect;                    // New position (parent coords)
+
+    if (point.x - CriticalSize.cx > Center.x)            // Mouse is right of center
+    {
+        if (ButtonRect.left > ParentRect.left + ButtonRect.Width() + m_nJumpDistance)
+            NewButtonRect -= CSize(ButtonRect.right - point.x + m_nJumpDistance, 0);
+        else
+            NewButtonRect += CSize(point.x - ButtonRect.left + m_nJumpDistance, 0);
+    }
+    else if (point.x + CriticalSize.cx < Center.x)      // Mouse is left of center
+    {
+        if (ButtonRect.right < ParentRect.right - ButtonRect.Width() - m_nJumpDistance)
+            NewButtonRect += CSize(point.x - ButtonRect.left + m_nJumpDistance, 0);
+        else
+            NewButtonRect -= CSize(ButtonRect.right - point.x + m_nJumpDistance, 0);
+    }
+
+    if (point.y - CriticalSize.cy > Center.y)           // Mouse is below center
+    {
+        if (ButtonRect.top > ParentRect.top + ButtonRect.Height() + m_nJumpDistance)
+            NewButtonRect -= CSize(0, ButtonRect.bottom - point.y + m_nJumpDistance);
+        else
+            NewButtonRect += CSize(0, point.y - ButtonRect.top + m_nJumpDistance);
+    }
+    else if (point.y + CriticalSize.cy < Center.y)      // Mouse is above center
+    {
+        if (ButtonRect.bottom < ParentRect.bottom - ButtonRect.Height() - m_nJumpDistance)
+            NewButtonRect += CSize(0, point.y - ButtonRect.top + m_nJumpDistance);
+        else
+            NewButtonRect -= CSize(0, ButtonRect.bottom - point.y + m_nJumpDistance);
+    }
+
+    MoveWindow(NewButtonRect);
+    RedrawWindow();
+    
+	CButton::OnMouseMove(nFlags, point);
+}
+</tt></PRE></FONT>
+
+<!-- Remember to update this -->
+<p>Last updated: 16 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

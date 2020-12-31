@@ -1,0 +1,175 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "test.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+DIALOG_1 DIALOGEX 5, 17, 310, 218
+STYLE DS_SETFONT | DS_CENTER | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Ultimate TCP/IP - DNS Client"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CTEXT           "&DNS Server:",IDC_STATIC,6,7,41,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_DNSSERVER,51,7,189,14,ES_AUTOHSCROLL
+    CTEXT           "L&ook-up:",IDC_STATIC,6,26,37,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_LOOKUP,51,26,189,14
+    COMBOBOX        IDC_RECORD_TYPE,51,45,189,98,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Use UDP sockets",IDC_USE_UDP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,51,62,167,10
+    DEFPUSHBUTTON   "&Look-up",IDC_LOOKUPBTN,250,7,53,14
+    PUSHBUTTON      "&Authoritative",IDC_AUTHLOOKUPBTN,250,24,53,14
+    PUSHBUTTON      "A&bout...",IDC_ABOUT,250,41,53,14
+    CONTROL         "",IDC_HISTORY,"CUH_Control",WS_BORDER | WS_VSCROLL,6,78,297,133
+    ICON            IDR_ICON,IDC_STATIC,6,48,21,20
+END
+
+IDD_ABOUT DIALOG  0, 0, 250, 105
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About - Ultimate TCP/IP developers Kit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_EXIT,197,6,46,14
+    LTEXT           "Ultimate TCP/IP v 3.0",IDC_STATIC,43,6,84,8
+    LTEXT           "The Ultimate Toolbox.",IDC_STATIC,43,14,70,8
+    LTEXT           "Copyright 1995-2007",IDC_STATIC,43,25,66,8
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,7,47,236,51
+    LTEXT           "Phone:",IDC_STATIC,25,57,24,8
+    LTEXT           "Fax:",IDC_STATIC,25,81,14,8
+    LTEXT           "EMail:",IDC_STATIC,133,57,20,8
+    LTEXT           "WWW:",IDC_STATIC,133,71,25,8
+    LTEXT           " 416 467-9100 ",IDC_STATIC,54,68,59,8
+    LTEXT           "1 (800) 463 - 1492",IDC_STATIC,54,57,59,8
+    LTEXT           "416 422-4801",IDC_STATIC,54,81,59,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,160,57,64,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,166,71,58,8
+    ICON            IDR_ICON,IDC_STATIC,7,6,20,20
+END
+
+IDD_SPLASH DIALOG  0, 0, 249, 126
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ultimate TCP/IP - DNS Lookup "
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_ICON,IDC_STATIC,16,9,20,20
+    LTEXT           "DNS Lookup Program",IDC_STATIC,54,9,70,8
+    LTEXT           "Developed using Ultimate TCP/IP developers Kit",IDC_STATIC,54,20,154,8
+    LTEXT           "Copyright 1995-2007 The Ultimate Toolbox.",IDC_STATIC,54,32,137,8
+    LTEXT           "The DNS lookup program uses the DNS C++ classes that are included as",IDC_STATIC,8,47,232,8
+    LTEXT           "Part of the Ultimate TCP/IP developers Kit. The developers Kit includes",IDC_STATIC,8,58,225,8
+    LTEXT           "Many C++ classes and OCX controls for developing Internet client and",IDC_STATIC,8,68,221,8
+    LTEXT           "Server applications. Easily develop programs with standard protocols or",IDC_STATIC,8,79,224,8
+    LTEXT           "custom protocols.",IDC_STATIC,8,89,56,8
+    DEFPUSHBUTTON   "Continue",IDC_EXIT,99,105,50,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""test.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    "DIALOG_1", DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 303
+        VERTGUIDE, 240
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    "IDD_ABOUT", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        HORZGUIDE, 98
+    END
+
+    "IDD_SPLASH", DIALOG
+    BEGIN
+        BOTTOMMARGIN, 17
+        BOTTOMMARGIN, 17
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_ICON                ICON                    "Data.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,225 @@
+<HTML>
+
+<HEAD>
+
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+   <META NAME="Author" CONTENT="Gage Renzi">
+
+   <META Name="description" Content="Source code for various TREEVIEW related tasks">
+
+   <META Name="keywords" Content="MFC SOURCE CODE WINDOWS C++ PROGRAMMING PROGRAMMER
+
+   TREE TREEVIEW CTreeView CTreeCtrl IMAGE ITEM STATE OVERLAY EXPAND COLLAPSE BRANCH TRAVERSE
+
+   LAST NEXT PREV PREVIOUS LABEL SEARCH TEXT EDIT LIMIT ESC RETURN DRAG DROP COPY MOVE CANCEL
+
+   SCROLL TOOL TOOLTIP SERIALIZE MULTIPLE SELECTION CHECK CHECKBOX COLOR FONT IMAGE BITMAP BACKGROUND">
+
+   <TITLE>TreeView - Table of Contents</TITLE>
+
+</HEAD>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Tree View Control - Table of Contents</FONT></H1>
+</td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--></td>
+</tr>
+</table>
+
+
+<HR>
+
+<p>This section is being maintained by <a href = "mailto:Gage_Renzi@MythicProportions.com">Gage Renzi</a>.
+<br><br>
+
+<UL>
+
+<LI><FONT COLOR="#000000">Using Images</FONT>
+
+	<UL>
+
+	<LI><FONT COLOR="#000099"><A HREF="item_images.shtml">Setting up the item images - Zafir Anjum</A></FONT>
+
+	<LI><A HREF="state_images.shtml">Setting up state images - Zafir Anjum</A>
+
+	<LI><A HREF="overlay_images.shtml">Using overlay images - Zafir Anjum</A>
+
+	</UL>
+
+
+
+<LI><FONT COLOR="#000000">Expand - Collapse</FONT>
+
+	<UL>
+
+	<LI><A HREF="expand_branch.shtml">Expanding a branch - Zafir Anjum</A>
+
+	<LI><A HREF="collapse_branch.shtml">Collapsing a branch - Zafir Anjum</A>
+
+	<LI><A HREF="collapse_all.shtml">Collapsing all branches - Zafir Anjum</A>
+
+	</UL>
+
+
+
+<LI><FONT COLOR="#000000">Tree traversal</FONT>
+
+	<UL>
+
+	<LI><A HREF="get_last.shtml">Get last item in branch - Zafir Anjum</A>
+
+	<LI><A HREF="get_next.shtml">Get next item in outline - Zafir Anjum</A>
+
+	<LI><A HREF="get_prev.shtml">Get previous item in outline - Zafir Anjum</A>
+
+	<LI><A HREF="find_item.shtml">Search text in labels - Zafir Anjum</A>
+
+	<LI><A HREF="find_data.shtml">Finding an item (matching data instead of label) - Nancy Davis</A>
+
+	</UL>
+
+
+
+<LI><FONT COLOR="#000000">Editing Labels</FONT>
+
+	<UL>
+
+	<LI><A HREF="allow_edit.shtml">Allowing users to edit item labels - Zafir Anjum</A>
+
+	<LI><A HREF="limit_text.shtml">Limiting label length when editing - Zafir Anjum</A>
+
+	<LI><A HREF="esc_edit.shtml">Handling ESC and Return keys while editing label - Zafir Anjum</A>
+
+	</UL>
+
+
+
+<LI><FONT COLOR="#000000">Drag &amp; Drop</FONT>
+
+	<UL>
+
+	<LI><A HREF="copy_item.shtml">Copy an item to new location - Zafir Anjum</A>
+
+	<LI><A HREF="copy_branch.shtml">Copy a branch - Zafir Anjum</A>
+
+	<LI><A HREF="move_item.shtml">Moving an item or a branch - Zafir Anjum</A>
+
+	<LI><A HREF="drag_drop.shtml">Drag and drop - Zafir Anjum</A>
+
+	<LI><A HREF="drag_hotspot.shtml">Dynamic Calculation of DragImage Hotspot - Chris Protopapas</A>
+
+	<LI><A HREF="prevent_drag_drop.shtml">Preventing inadvertant drag and drop - Zafir Anjum</A>
+
+	<LI><A HREF="esc_drag_drop.shtml">Using ESC to cancel drag and drop - Zafir Anjum</A>
+
+	<LI><A HREF="scroll_drag_drop.shtml">Scrolling during drag and drop - Zafir Anjum</A>
+
+	<LI><A HREF="right_drag_drop.shtml">Right Button Drag and Drop with Popup Menu - Zafir Anjum</A>
+
+	<LI><A HREF="enhanced_drag_drop.shtml">Enhanced Drag & Drop - Miguel Grinberg</A>
+
+	<LI><A HREF="drag_expand.shtml">Expand branches during drag-drop - Justin Rudd</A>
+
+	<LI><A HREF="drag_drop_indentlevel.shtml">Keeping the indentation level with Drag & Drop - Roelf Nel</A>
+
+	</UL>
+
+
+
+<LI><FONT COLOR="#000000">Misc - Advanced</FONT>
+
+	<UL>
+
+	<LI><A HREF="tooltip.shtml">Adding tooltips for item images - Zafir Anjum</A>
+
+	<LI><A HREF="serialize_to_text.shtml">Serializing to / from a text file - Zafir Anjum</A>
+
+	<LI><A HREF="multiple_sel.shtml">Allowing multiple selection - Zafir Anjum</A>
+
+	<LI><A HREF="simple_checkbox.shtml">Adding Simple Checkbox for each Item - Zafir Anjum</A>
+
+	<LI><A HREF="advanced_checkbox.shtml">Adding Advanced Checkbox - Zafir Anjum</A>
+
+	<LI><A HREF="item_color_font.shtml">Setting color and font attribute for individual items - Zafir Anjum</A></FONT>
+
+	<LI><A HREF="ctrl_color.shtml">Setting a background color - Zafir Anjum</A></FONT>
+
+	<LI><A HREF="background_image.shtml">Using a bitmap as a background image - Zafir Anjum</A></FONT>
+
+	<LI><A HREF="treelist.shtml">TreeList : Multi column tree control - David Lantsman</A></FONT>
+
+	<li><A HREF="use_listcontainer.shtml">Connect a list container to a tree/list control - Zoran M.Todorovic</A>
+
+	<li><A HREF="right_button_menu.shtml">Right button popup menu - Christopher A. Snyder</A>
+
+	</UL>
+
+
+
+
+
+<li>New ListView control (IE 4.0)
+
+	<ul>
+
+	<li><A HREF="no_auto_selection.shtml">Stop auto-selection of item - Justin Rudd</A>
+
+	<li><A HREF="treemenu.shtml">A Control like IE 4's Favorites/History/Channels View - Rainer Pfitzner</A>
+
+	</ul>
+
+
+
+<li>Classes
+
+	<ul>
+
+	<li><A HREF="drap_drop_ctreeview.shtml">Class for drag-drop enabled TreeView - Ran Almog</A>
+
+	<li><A HREF="printable_ctreectrl.shtml">A Print Enabled Tree Control - Mike Wild</A>
+
+	</ul>
+
+
+
+</UL>
+
+<CENTER>
+
+<HR></CENTER>
+
+
+
+<TABLE COLS=3 WIDTH="100%" >
+
+<TR>
+
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+
+
+<TD WIDTH="34%"><CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT></CENTER>
+
+</TD>
+
+
+
+<TD WIDTH="33%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+
+</TD>
+
+</TR>
+
+</TABLE>
+
+
+
+</BODY>
+
+</HTML>
+

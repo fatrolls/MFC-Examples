@@ -1,0 +1,43 @@
+// AnalysisCOM.idl : AnalysisCOM 的 IDL 源
+//
+
+// 此文件将由 MIDL 工具处理以
+// 产生类型库(AnalysisCOM.tlb)和封送处理代码。
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(1CBF49E3-5770-45DB-AD59-D74C1C2B73D6),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IAnalysis : IDispatch{
+};
+[
+	uuid(0BCAD96D-D93C-41C7-BD71-06DD4D035124),
+	version(1.0),
+]
+library AnalysisCOMLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(22897D4F-BED7-4EF2-BE10-24E730F61892)		
+	]
+	dispinterface _IAnalysisEvents
+	{
+		properties:
+		methods:
+	};
+	[
+		uuid(2243AD26-A251-4B9B-8FC3-B78B6EF49D36)		
+	]
+	coclass Analysis
+	{
+		[default] interface IAnalysis;
+		[default, source] dispinterface _IAnalysisEvents;
+	};
+};
+

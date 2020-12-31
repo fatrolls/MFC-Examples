@@ -1,0 +1,251 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Demo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Demo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Demo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "Buffer Pool Demo Application",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2002",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_DEMO_DIALOG DIALOGEX 0, 0, 376, 244
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Demo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Exit",IDCANCEL,7,223,19,14
+    CONTROL         "Progress1",IDC_BUFFER_POOL_PROGRESS,"msctls_progress32",
+                    PBS_SMOOTH | WS_BORDER,13,54,349,8
+    CONTROL         "Progress2",IDC_REGULAR_ALLOCATION_PROGRESS,
+                    "msctls_progress32",PBS_SMOOTH | WS_BORDER,13,182,350,8
+    PUSHBUTTON      "Interaction Test",IDC_TEST_BUTTON,303,223,60,12,BS_FLAT
+    LTEXT           "Free:",IDC_STATIC,15,66,27,10
+    LTEXT           "Allocate:",IDC_STATIC,15,79,27,10
+    LTEXT           "",IDC_BP_FREE_STATIC,48,66,30,10
+    LTEXT           "",IDC_BP_ALLOCATE_STATIC,48,79,30,10
+    LTEXT           "Free:",IDC_STATIC,15,195,27,10
+    LTEXT           "Allocate:",IDC_STATIC,15,206,27,10
+    LTEXT           "",IDC_REG_FREE_STATIC,48,195,30,10
+    LTEXT           "",IDC_REG_ALLOCATE_STATIC,48,206,30,10
+    GROUPBOX        "Buffer Pool",IDC_STATIC,7,38,362,123
+    GROUPBOX        "Regular Allocation",IDC_STATIC,7,166,362,55
+    LTEXT           "Number of Threads:",IDC_STATIC,7,9,65,10
+    LTEXT           "Number of Operations:",IDC_STATIC,7,25,72,10
+    LTEXT           "Maximum Buffers:",IDC_STATIC,133,9,58,10
+    LTEXT           "Buffers Size:",IDC_STATIC,133,25,39,10
+    LTEXT           "Static",IDC_BP_AV_TIME_STATIC,229,68,33,9
+    LTEXT           "Static",IDC_REG_AV_TIME_STATIC,229,197,33,9
+    PUSHBUTTON      "Test",IDC_TEST_BP_BUTTON,344,145,19,11,BS_FLAT
+    PUSHBUTTON      "Test",IDC_TEST_GLOBAL_BUTTON,343,204,19,11,BS_FLAT
+    LTEXT           "Avrage Time:",IDC_STATIC,180,197,43,9
+    LTEXT           "Avrage Time:",IDC_STATIC,180,68,43,9
+    LTEXT           "Total Time:",IDC_STATIC,99,68,43,9
+    LTEXT           "Total Time:",IDC_STATIC,99,197,43,9
+    LTEXT           "Static",IDC_BP_TOTAL_TIME_STATIC,143,68,33,9
+    LTEXT           "Static",IDC_REG_TOTAL_TIME_STATIC,143,197,33,9
+    EDITTEXT        IDC_BUFFERS_SIZE_EDT,197,23,46,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAXIMUM_BUFFERS_EDT,197,7,46,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_NUM_OF_OPERATIONS_EDT,80,23,46,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_NUM_OF_THREADS_EDT,80,7,46,12,ES_AUTOHSCROLL
+    LTEXT           "Initial Number Of Segments :",IDC_STATIC,173,92,85,10
+    EDITTEXT        IDC_NUM_OF_SEGMENTS_START_EDT,281,91,46,12,
+                    ES_AUTOHSCROLL
+    LTEXT           "Minimum Number of Segments:",IDC_STATIC,13,121,102,10
+    EDITTEXT        IDC_PRECENT_FOR_DELETION_EDT,181,143,46,12,
+                    ES_AUTOHSCROLL
+    LTEXT           "Percentage of Free Buffers for Segment Deletion:",
+                    IDC_STATIC,13,144,161,10
+    EDITTEXT        IDC_NUM_OF_SEGMENTS_MIN_EDT,117,120,46,12,ES_AUTOHSCROLL
+    LTEXT           "Maximum Number of Segments:",IDC_STATIC,173,122,102,10
+    EDITTEXT        IDC_NUM_OF_SEGMENTS_MAX_EDT,281,121,46,12,ES_AUTOHSCROLL
+    LTEXT           "Number of Buffer per Segment:",IDC_STATIC,13,92,102,10
+    EDITTEXT        IDC_NUM_OF_BUFFERS_PER_SEGMENTS_EDT,117,91,46,12,
+                    ES_AUTOHSCROLL
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Demo MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "Demo\0"
+            VALUE "LegalCopyright", "Copyright (C) 2002\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "Demo.EXE\0"
+            VALUE "ProductName", "Demo Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_DEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 369
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 237
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About Demo..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\Demo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

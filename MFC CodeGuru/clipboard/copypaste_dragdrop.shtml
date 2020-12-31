@@ -1,0 +1,219 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Clipboard - Basic Copy/Paste & Drag/Drop Support</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Basic Copy/Paste & Drag/Drop Support</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+<P>This article was contributed by <A HREF="mailto:keithr@europa.com">Keith Rule</A>. </P>
+
+<H4>Overview</H4>
+<P>The clipboard is used to transfer data between windows or applications. It is used either during Drag/Drop operation or during a Cut/Copy/Paste operation. Whether you are using Drag/Drop or Cut/Copy/Paste, the code used to place data on the clipboard is very similar. This article will show you the basics for accessing the clipboard. </P>
+<H4>Placing Data on the Clipboard</H4>
+<P>Writing to the Clipboard is straightforward. By following a few simple steps you can place nearly any supported clipboard format onto the clipboard. </P>
+<OL>
+
+<LI>Create a new COleDataSource. </LI>
+<LI>Create a new CSharedFile (see initialization in example below). </LI>
+<LI>Write info to the CSharedFile instance. </LI>
+<LI>Detach the memory associated with the CSharedFile. </LI>
+<LI>Pass the detached memory and format info to CacheGlobalData(). </LI>
+<LI>Place the data on the clipboard using SetClipboard(). </LI></OL>
+
+<B><I><P>Example 1 - Source for Writing to Clipboard </P>
+</B></I><FONT COLOR="#800000"><TT><PRE>
+void CClipExamView::OnEditCopy() 
+{
+&#9;COleDataSource*&#9;pSource = new COleDataSource();
+&#9;CSharedFile&#9;sf(GMEM_MOVEABLE|GMEM_DDESHARE|GMEM_ZEROINIT);
+&#9;CString&#9;&#9;text = _T("Testing 1... 2... 3...");
+
+&#9;sf.Write(text, text.GetLength()); // You can write to the clipboard as you would to any CFile
+
+&#9;HGLOBAL hMem = sf.Detach();
+&#9;if (!hMem) return;
+&#9;pSource-CacheGlobalData(CF_TEXT, hMem);
+&#9;pSource-SetClipboard();
+}</PRE>
+</FONT></TT><H4>Serializing to the Clipboard</H4>
+<P>Often it is useful to be able to serialize your data to the clipboard so that you can create a custom clipboard for your application. This can be done by registering a custom clipboard format and serializing to a CSharedFile. The following source illustrates how to serialize a CObject to the clipboard. </P>
+<B><I><P>Example 2 - Serializing to the Clipboard </P>
+</B></I><FONT COLOR="#800000"><TT><PRE>
+void SerializeToClipboard(CObject* obj, CString formatname )
+{
+&#9;COleDataSource*&#9;pSource = new COleDataSource();
+&#9;CSharedFile&#9;sf(GMEM_MOVEABLE|GMEM_DDESHARE|GMEM_ZEROINIT);
+&#9;UINT&#9;&#9;format = RegisterClipboardFormat(formatname);
+&#9;CArchive&#9;&#9;ar(&amp;sf, CArchive::store);
+
+&#9;obj-Serialize(ar);
+&#9;ar.Close();
+
+&#9;HGLOBAL hMem = sf.Detach();
+&#9;if (!hMem) return;
+&#9;pSource-CacheGlobalData(format, hMem);
+&#9;pSource-SetClipboard();
+}</PRE>
+</FONT></TT><H4>Reading Data from the Clipboard</H4>
+<P>Reading data from the clipboard is nearly the inverse of placing data on the clipboard. </P>
+<OL>
+
+<LI>Create a COleDataObject instance. </LI>
+<LI>Check to see if the format you want is available. </LI>
+<LI>Place the data associated with the clipboard into a CMemFile. </LI>
+<LI>Read the data out of the CMemFile. </LI>
+<LI>Release the global memory. </LI></OL>
+
+<B><I><P>Example 3 - Reading Data from the Clipboard </P>
+</B></I><FONT COLOR="#800000"><TT><PRE>
+void CClipExamView::OnEditPaste() 
+{
+&#9;COleDataObject&#9;obj;
+
+&#9;if (obj.AttachClipboard()) {
+&#9;&#9;if (obj.IsDataAvailable(CF_TEXT)) {
+&#9;&#9;&#9;HGLOBAL hmem = obj.GetGlobalData(CF_TEXT);
+&#9;&#9;&#9;CMemFile sf((BYTE*) ::GlobalLock(hmem), ::GlobalSize(hmem));
+&#9;&#9;&#9;CString buffer;
+
+&#9;&#9;&#9;LPSTR str = buffer.GetBufferSetLength(::GlobalSize(hmem));
+&#9;&#9;&#9;sf.Read(str, ::GlobalSize(hmem));
+&#9;&#9;&#9;::GlobalUnlock(hmem);
+
+&#9;&#9;&#9;// Do something with the data in 'buffer'
+&#9;&#9;&#9;TRACE("Paste received = '%s'\r\n", buffer);
+&#9;&#9;}
+&#9;}
+}</PRE>
+</FONT></TT><H4>Serializing from the Clipboard</H4>
+<P>Serializing from the Clipboard is only a slight modification of the previous example. </P>
+<B><I><P>Example 4 - Reading Serialized Data from the Clipboard </P>
+</B></I><FONT COLOR="#800000"><TT><PRE>
+void SerializeFromClipboard(COleDataObject* obj, CObject* cobj, CString formatname)
+{
+&#9;UINT&#9;&#9;format = RegisterClipboardFormat(formatname);
+
+&#9;if (obj-IsDataAvailable(format)) {
+&#9;&#9;HGLOBAL hmem = obj-GetGlobalData(format);
+&#9;&#9;CMemFile sf((BYTE*) ::GlobalLock(hmem), ::GlobalSize(hmem));
+&#9;&#9;
+&#9;&#9;CArchive ar(file, CArchive::load);
+&#9;&#9;cobj-Serialize(ar); 
+&#9;&#9;ar.Close();
+&#9;&#9;::GlobalUnlock(hmem);
+&#9;}
+}</PRE>
+</FONT></TT><H4>Drag/Drop Support</H4>
+<P>All of the examples thus far are placing the data on the clipboard as if a copy operation had been invoked. Enabling Drag/Drop is a simple change to the above code. </P>
+<B><P>Sourcing a Drag/Drop</B> </P>
+<P>The code for the origination of a drag/drop is identical to examples for placing data on the clipboard, with one little modification. Rather than executing the SetClipboard() command, you should execute the DoDragDrop() command. </P>
+<B><I><P>Example 5 - Sourcing a Drag/Drop </P>
+</B></I><FONT COLOR="#800000"><TT><PRE>
+// Initiate the Drag/Drop
+void CClipExamView::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+&#9;COleDataSource*&#9;pSource = new COleDataSource();
+&#9;CSharedFile&#9;sf(GMEM_MOVEABLE|GMEM_DDESHARE|GMEM_ZEROINIT);
+&#9;CString&#9;&#9;text = _T("Testing 1... 2... 3...");
+
+&#9;sf.Write(text, text.GetLength()); // You can write to the clipboard as you would to any CFile
+
+&#9;HGLOBAL hMem = sf.Detach();
+&#9;if (!hMem) return;
+&#9;pSource-CacheGlobalData(CF_TEXT, hMem);
+&#9;pSource-DoDragDrop();
+}</PRE>
+</FONT></TT><B><P>Accepting a Drag/Drop</B> </P>
+<B><I><P>Example 5 - Accepting a Drag/Drop </P>
+<FONT COLOR="#800000"><TT><PRE>
+</B></I>// OnDragOver - Called when mouse moves over window during a Drag/Drop
+DROPEFFECT CClipExamView::OnDragOver(COleDataObject* pDataObject, DWORD dwKeyState, CPoint point) 
+{
+&#9;if (pDataObject-IsDataAvailable(CF_TEXT)) {
+&#9;&#9;return DROPEFFECT_COPY;&#9;&#9;
+&#9;}
+&#9;return DROPEFFECT_NONE;
+}
+
+// OnDrop - Called when drop occurs
+BOOL CClipExamView::OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point) 
+{
+&#9;if (pDataObject-IsDataAvailable(CF_TEXT)) {
+&#9;&#9;HGLOBAL hmem = pDataObject-GetGlobalData(CF_TEXT);
+&#9;&#9;CMemFile sf((BYTE*) ::GlobalLock(hmem), ::GlobalSize(hmem));
+&#9;&#9;CString buffer;
+
+&#9;&#9;LPSTR str = buffer.GetBufferSetLength(::GlobalSize(hmem));
+&#9;&#9;sf.Read(str, ::GlobalSize(hmem));
+&#9;&#9;::GlobalUnlock(hmem);
+
+&#9;&#9;// Do something with the data in 'buffer'
+&#9;&#9;TRACE("OnDrop received = '%s'\r\n", buffer);
+&#9;&#9;return TRUE;
+&#9;}
+&#9;return FALSE;
+}</PRE>
+</FONT></TT><B><P>Housekeeping Issues</B> </P>
+<P>A few additional housekeeping things must be done make drag/drop work correctly. </P>
+<OL>
+
+<LI>Make sure that your applications InitInstance() member function calls the AfxOleInit() function.</LI>
+<LI>The view must be registered as a drag/drop target. If you don't do this you won't be able to accept a drag/drop. See Example 6. </LI>
+<LI>Several includes must be added to stdafx.h to insure that your code will compile. See Example 7. </LI></OL>
+
+<B><I><P>Example 6 - Initializing View as Drop Target </P>
+</B></I><FONT COLOR="#800000"><TT><PRE>
+// Enable view as a drop target. Assumes COleDropTarget&#9;m_DropTarget is defined in view object.
+void CClipExamView::OnInitialUpdate() 
+{
+&#9;CView::OnInitialUpdate();
+&#9;m_DropTarget.Register(this); 
+}</PRE>
+</FONT></TT><B><I><P>Example 7 - Include to Add to stdafx.h </P>
+</B></I><FONT COLOR="#800000"><TT><PRE>
+#include &lt;afxole.h&gt;         // MFC OLE classes
+#include &lt;afxodlgs.h&gt;       // MFC OLE dialog classes
+#include &lt;afxdisp.h &gt;       // MFC OLE automation classes
+#include &lt;afxpriv.h&gt;</PRE>
+</FONT></TT><P><A HREF="copypaste_dragdrop.zip">Download files</A> 33KB </P>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

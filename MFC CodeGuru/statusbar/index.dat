@@ -1,0 +1,24 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|clock_in_status.shtml||Adding a clock to the status bar|Roger Onslow
+1998/03/28|enhanced_status.shtml|| Enhanced statusbar class|Doug Keith
+1998/03/28|longop.shtml|| A UI class for long operation feedback|Klaus Gütter
+1998/03/28|printf_to_status.shtml|| Write to status bar using sprintf syntax|Keith Rule
+1998/03/28|progress_in_status.shtml||Showing progress bar in a status bar pane|Brad Mann
+1998/03/12|progress_in_status2.shtml||Showing progress bar in a status bar pane (2)|
+1998/03/28|progress_in_status3.shtml||Showing progress bar in a status bar pane (3)|Levente Farkas
+1998/03/28|ready_prompt.shtml||"Ready" prompt replacement|Mark Findlay
+1998/03/28|scrolling_text.shtml||Show scrolling text in a status bar pane|Sushil Saxena

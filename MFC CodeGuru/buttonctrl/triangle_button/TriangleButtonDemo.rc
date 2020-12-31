@@ -1,0 +1,198 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\TriangleButtonDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\TriangleButtonDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TRIANGLEBUTTONDEMO_DIALOG DIALOGEX 0, 0, 450, 255
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "TriangleButtonDemo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,388,13,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,388,29,50,14
+    PUSHBUTTON      "Down",IDTRI_3D_1,15,96,86,70
+    PUSHBUTTON      "Down",IDTRI_3D_2,109,96,63,57
+    PUSHBUTTON      "Down",IDTRI_3D_3,180,96,47,44
+    PUSHBUTTON      "Down",IDTRI_3D_4,235,96,35,34
+    PUSHBUTTON      "Down",IDTRI_3D_5,278,96,26,25
+    PUSHBUTTON      "Down",IDTRI_3D_6,312,96,18,17
+    PUSHBUTTON      "Down",IDTRI_3D_7,338,96,14,12
+    PUSHBUTTON      "Down",IDTRI_F_1,16,13,86,70,BS_FLAT
+    PUSHBUTTON      "Down",IDTRI_F_2,110,13,63,57,BS_FLAT
+    PUSHBUTTON      "Down",IDTRI_F_3,181,13,47,44,BS_FLAT
+    PUSHBUTTON      "Down",IDTRI_F_4,236,13,35,34,BS_FLAT
+    PUSHBUTTON      "Down",IDTRI_F_5,279,13,26,25,BS_FLAT
+    PUSHBUTTON      "Down",IDTRI_F_6,313,13,18,17,BS_FLAT
+    PUSHBUTTON      "Down",IDTRI_F_7,339,13,14,12,BS_FLAT
+    EDITTEXT        IDC_BUTTONTEXT,175,194,92,13,ES_AUTOHSCROLL
+    CONTROL         "Down",IDC_RA_DOWN,"Button",BS_AUTORADIOBUTTON,57,195,46,
+                    11
+    CONTROL         "DisableButton",IDC_CH_DISABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,129,221,61,9
+    CONTROL         "Up",IDC_RA_UP,"Button",BS_AUTORADIOBUTTON,57,221,46,11
+    CONTROL         "Left",IDC_RA_LEFT,"Button",BS_AUTORADIOBUTTON | 
+                    BS_LEFTTEXT,23,208,27,11
+    CONTROL         "Right",IDC_RA_RIGHT,"Button",BS_AUTORADIOBUTTON,72,208,
+                    46,11
+    GROUPBOX        "direction",IDC_STATIC,16,182,108,61
+    LTEXT           "ButtonText",IDC_STATIC,130,196,46,12
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "TriangleButtonDemo MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "TriangleButtonDemo\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "TriangleButtonDemo.EXE\0"
+            VALUE "ProductName", "TriangleButtonDemo Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TRIANGLEBUTTONDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 443
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 248
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\TriangleButtonDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

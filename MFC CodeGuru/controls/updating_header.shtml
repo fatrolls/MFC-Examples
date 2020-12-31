@@ -1,0 +1,224 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Contiuously updating sizing header</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Contiuously updating sizing header</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:acp107@psu.edu">Alger Pike</A>.
+
+
+
+
+<P>If you have ever used a CHeader the first thing you notice that it isn't
+as nice as the one that appears at the top of list controls. What I mean
+by this is that when you resize the control
+<BR>all you get is a resizing line.&nbsp; When you move this line the header
+does not update its items
+<BR>as it moves only at the end when you release the button.&nbsp; With
+a CListCtrl the headers continuously update as they move.
+
+<P>This functionality is cool and would be nice to have in a standard CHeader
+control.
+<BR>Following is the procedure by which you can add this functionality
+to your own CHeader derived classes.&nbsp; All you need to do is override
+a couple of the mouse procedures and you are in business.
+
+An Avi of how it works:
+
+<P><EMBED SRC="updating_header.avi" AUTOSTART="TRUE" HEIGHT=60 WIDTH=552>
+
+<P>Below are the new procedures and the code for each:
+
+<PRE><TT><FONT COLOR="#990000">
+//Header
+class CSizeHeader : public CHeaderCtrl
+{
+	// Construction
+	public:
+	CSizeHeader();
+
+	// Attributes
+	public:
+
+	// Operations
+	public:
+
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CSizeHeader)
+	//}}AFX_VIRTUAL
+
+	// Implementation
+	public:
+	CString m_sGrayFont;
+	CString m_sSelFont;
+	virtual ~CSizeHeader();
+
+	// Generated message map functions
+	protected:
+	CSize m_minSize;
+	CRect m_itemRect;
+	CSize m_offset;
+	int m_cx;
+	int m_twidth;
+	int m_hititem;
+	CFont m_selFont;
+	//{{AFX_MSG(CSizeHeader)
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+	};
+
+// -------------------------------------------------------------------------------------------------------
+//.cpp file
+CSizeHeader::CSizeHeader()
+{
+	m_sSelFont = _T("Helv");
+	m_sGrayFont = _T("Helv");
+}
+
+CSizeHeader::~CSizeHeader()
+{
+}
+ 
+
+BEGIN_MESSAGE_MAP(CSizeHeader, CHeaderCtrl)
+//{{AFX_MSG_MAP(CSizeHeader)
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_ERASEBKGND()
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CSizeHeader::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+	HD_ITEM item;
+	char text[255];
+
+	item.pszText = text;
+	item.mask = HDI_TEXT | HDI_WIDTH;
+	item.cchTextMax = 255;
+
+
+	m_twidth = 0;
+	for(int i = 0; i < GetItemCount(); i++)
+	{
+		GetItem(i, &item);
+		m_twidth += item.cxy;
+		if(m_twidth  > point.x - 10 && m_twidth < point.x + 10)
+		{
+			m_hititem = i;
+			m_cx = item.cxy;
+			break;
+		}
+		else
+			m_hititem = -1;
+//		return;
+	}	
+	CHeaderCtrl::OnLButtonDown(nFlags, point);
+	return;
+}
+
+void CSizeHeader::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	if(m_hititem > -1)
+	{
+		SetCapture();
+		HD_ITEM item;
+		char text[255];
+
+		item.pszText = text;
+		item.mask = HDI_TEXT | HDI_WIDTH;
+		item.cchTextMax = 255;
+
+		GetItem(m_hititem, &item);
+
+		item.cxy = m_cx - (m_twidth - point.x);
+
+		SetItem(m_hititem, &item);
+		return;
+	}
+	CHeaderCtrl::OnMouseMove(nFlags, point);
+	return;
+}
+
+void CSizeHeader::OnLButtonUp(UINT nFlags, CPoint point) 
+{
+	if(m_hititem > -1)
+	{
+		m_hititem = -1;
+		ReleaseCapture();
+		return;
+	}
+	CHeaderCtrl::OnLButtonUp(nFlags, point);
+	return;
+}
+
+BOOL CSizeHeader::OnEraseBkgnd(CDC* pDC) 
+{
+	HD_ITEM item;
+	char text[255];
+
+	item.pszText = text;
+	item.mask = HDI_TEXT | HDI_WIDTH;
+	item.cchTextMax = 255;
+
+	int twidth = 0;
+
+	for(int i = 0; i < GetItemCount(); i++)
+	{
+		GetItem(i, &item);
+		twidth += item.cxy;
+	}
+
+	CRect rect;
+
+	GetClientRect(rect);
+	rect.DeflateRect(0, CY_BORDER);
+	rect.left = twidth;
+	
+	CBrush rBrush(GetSysColor(COLOR_3DFACE));
+	pDC->FillRect(rect, &rBrush);
+	return FALSE;	
+}
+</FONT></TT></PRE>
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,115 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - DataTip</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">DataTip</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:simon@techsoft.demon.co.uk">Simon Wilson</A>.
+
+
+<P>This class shows how I went about implementing my own tooltip window when I
+had trouble getting the standard Tooltips to provide the functionality I
+wanted. The attached code readily demonstrates the concepts of defining your
+own windows for use with MFC, installing keyboard hooks, and handling the
+correct clean-up of the system on completion (note the static methods and
+instance counting). The windows use the same colour scheme as Tooltips under
+Win95/NT (COLOR_INFOBK + COLOR_INFOTEXT) but you can choose your own colours
+should you wish (see the OnPaint method).
+
+<P>The class uses the standard two-stage MFC creation process. You use the
+class by defining an instance of the class in your view/dialog/etc and then
+calling the Create method passing it a pointer to the parent window
+(normally in your OnInitialUpdate or OnInitDialog methods).
+
+<P>You then handle the OnMouseMove event and call the Set method passing it a
+display point and display string. If the mouse remains static for the
+pre-defined delay time (set via SetDelay) then a tip window will be
+displayed at the appropiate point. Pressing a key, pressing a mouse button,
+or moving the mouse outside of a pre-defined are will remove the tip window
+from the display.
+
+<H4>Example:</H4>
+
+<PRE><TT><FONT COLOR="#990000">
+class CMyView : public CView
+{
+	:
+	SIMDataTip m_datatip;
+	:
+};
+
+void CMyView::OnInitialUpdate()
+{
+	CView::OnInitialUpdate();
+
+	// enable datatips for this window
+   	m_datatip.Create(this);
+        :
+        :
+}
+
+void CMyView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	CView::OnMouseMove(nFlags, point);
+
+	// intialise the datatip for this point
+	m_datatip.Set(point, "message");
+}
+</FONT></TT></PRE>
+
+<P>The tip window can be turned on and off by calling the On method. It's
+current status is available via the IsOn method, and the display offset
+position (from the passed cursor position in Set) can be set using the
+overloaded SetOffset method.
+
+<P>The class maintains a pointer to the active tip window ensuring that a
+single tip window is visible at a time.
+
+<P>Please bear in mind that it hasn't been designed for extending but does
+readily demonstrate the concepts behind getting it to work. If you wanted to
+change it so that you could use multi-line tips, then the Display and
+OnPaint methods can be changed to change the window size and display the
+text over the correct number of lines respectively. Please let me know if
+you find this class useful. If there is sufficient interest then I may
+update the class to enable it to be more easily extendable.
+
+<P>The class was developed and tested under Visual C++ v4.1 but should work
+equally well under VC5. (Note that with a few minor changes the class will
+work under VC1.5)
+
+
+<P><A HREF="simdatatip.zip">Download Files</A>
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

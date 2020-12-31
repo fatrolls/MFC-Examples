@@ -1,0 +1,427 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (WinNT; I) [Netscape]">
+   <TITLE>ToolBar - Another Flat ToolBar (does not require MSIE)</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+&nbsp;
+<TABLE WIDTH="100%" >
+<TR WIDTH="100%">
+<TD>
+<CENTER><A HREF="http://www.codeguru.com/cgi/ads.cgi?advert=myad2"><IMG SRC="advertise2.gif" ALT="" ></A></CENTER>
+</TD>
+
+<TD></TD>
+</TR>
+</TABLE>
+
+<CENTER>
+<H3>
+<FONT COLOR="#A0A0FF">Another Flat ToolBar (does not require MSIE)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:Joerg.Koenig@rhein-neckar.de">Joerg
+Koenig</A>.
+
+<P>For those of you, who have already read this article: <A HREF="#Enhance">The
+major enhancements start here</A>.
+<BR><A HREF="#rev2">Changes for Revision 2.</A>
+<BR><A HREF="#download">Download section</A>
+<BR>I'm looking for someone who has enough time to <A HREF="#help">help</A>
+me !
+
+<P>Some time ago, I saw Roger Onslow's flat toolbar implementation. The
+fact, that I need a special product (MSIE) (or even DLL ->comctl32.dll)
+was somewhat inconvenient to me. So I started to develop my own version
+of a flat looking toolbar without such requirements. The result is a class
+called CToolBarEx.
+
+<P>With CToolBarEx one can toggle between flat- and "classic"-mode. The
+appropriate look will be shown immediataly.
+
+<P>Don't wonder if some parts of the code seem to be well known to you.
+The drawing of separators and the gripper was (more or less) stolen from
+Roger's toolbar (why should I do all of the hard bits again ;-)
+
+<P>In flat-mode CToolBarEx makes all of the drawings by itself; in classic-mode,
+MFC does the work.
+
+<P>Since VC++ >= 4.2 provides custom-draw abilities, this feature will
+be emulated in flat mode by a local helper class, so one can use this feature
+regardless of the current mode (flat or classic). To get some further informations
+on owner-drawing, have a look at the implementation file ToolBarEx.cpp.
+The MainFrm.cpp in the <A HREF="flatbar_sample_project.zip">sample (165KB)</A>
+application may provide even more informations, if you're not familiar
+with owner-drawing on toolbars.
+
+<P>However, CToolBarEx should be able to work with older versions of VC++
+too ...
+
+<P>CToolBarEx consists of two files:
+<BR>ToolBarEx.h
+<BR>ToolBarEx.cpp
+<BR><A HREF="flatbar_source.zip">Download Source</A> 8KB
+<BR><A HREF="flatbar_sample_project.zip">Download Project</A> 165KB
+
+<P>To use CToolBarEx in an MFC application, you have to perform the following
+steps (I assume you use App-/Class-Wizard):
+<BR>1. <FONT COLOR="#993300">#include "ToolBarEx.h"</FONT>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp; in either StdAfx.h or MainFrm.h
+
+<P>2. Change the type of CMainFrame::m_wndToolBar from
+<BR>&nbsp;&nbsp;&nbsp; CToolBar to CToolBarEx
+
+<P>The CToolBarEx class provides the following public methods (in addition
+to its ancestor-classes):
+<PRE><TT><FONT COLOR="#990000">// Set the mode of the toolbar. The mode changes immediately
+// on the screen.
+void SetFlatLook( BOOL bFlat = TRUE );
+
+// determine wether the current mode is "flat"
+BOOL IsFlatLook() const;
+
+// This function I've personally missed in CToolBar
+// for more than one time ...
+void GetSizes( CSize &amp; sizeButton, CSize &amp; sizeImage ) const;
+
+// Get the window to which the toolbar initially was docked. This
+// is not necessarily the window returned by CWnd::GetParent() or
+// CControlBar::GetDockingFrame(). Both these functions don't
+// return the expected window, if the toolbar is floating ...
+CWnd * GetParentFrame() const;</FONT></TT></PRE>
+Update: The code has now been enhanced
+<UL>
+<LI>
+texts on buttons now work</LI>
+
+<LI>
+gripper improved for a closer look like Office97</LI>
+
+<LI>
+disabled images now look embossed</LI>
+
+<BR>(thanks to <A HREF="mailto:victorv@telic.nl">Victor Vogelpoel</A>)
+<BR>(Zafir: Also to <A HREF="mailto:oscarko@cyberus.ca">Oscar</A> who sent
+in the same fix)
+<LI>
+a separator is drawn only if it has no WRAP state set</LI>
+
+<BR>&nbsp;</UL>
+<A NAME="Enhance"></A>
+<BR><B><FONT SIZE=+1>Major Enhanced Version</FONT></B>
+
+<P>First note that this enhanced version of CToolBarEx currently does not
+run properly on NT &lt; 4.0, so if you plan to use the CToolBarEx on such
+a system, please use the standard version above!
+
+<P><B>Many thanks to <A HREF="mailto:jonchin@bigfoot.com">Jonathan Chin</A>,
+<A HREF="mailto:VictorV@telic.nl">Victor Vogelpoel</A> and <A HREF="mailto:PatrickL@code3.code3.com">Patrick
+Liechty</A> (the three guinea-pigs :-) for their help in testing and fixing
+this version of the CToolBarEx class !</B>
+
+<P>The enhanced version covers two major features:
+<OL>
+<LI>
+The ALT-drag feature is now implemented. That means that one can drag'n'drop
+buttons and controls from one toolbar to another by pressing the ALT-key
+and the left mouse button simultanously. CToolBarEx uses the same technique
+to allow customization as CToolBarCtrl do, so if you're not familiar with
+adjustable toolbars, please refer to the online help and/or have a look
+at the <A HREF="enh_flatbar_sample.zip">enhanced sample</A>.</LI>
+
+<LI>
+Easy, generalized way to add custom controls to a toolbar. The CToolBarEx
+class allows you to add/replace/reposition controls onto the toolbar and
+takes care of these controls.</LI>
+</OL>
+This (zoomed) image gives you a feeling of the new features.<IMG SRC="Alt-Drag.gif" NOSAVE HEIGHT=110 WIDTH=228 ALIGN=ABSCENTER>
+
+<P>Things, that have to be done later:
+<OL>
+<LI>
+It is still impossible to save/restore a customized toolbar. The methods
+from the underlaying CToolBarCtrl class are not usable, if one uses custom
+controls and/or moved buttons/controls from one bar to another ...</LI>
+
+<LI>
+There is still no (Office97- or DevStudio-like) customization dialog</LI>
+</OL>
+Limitations:
+<OL>
+<LI>
+It is generally a bad idea to use toolbars one with texts on its buttons
+and another without. Either all bars have buttons with text or no bar has
+it. Otherwise you will get the user confused, if he/she moves a button
+from a bar without text to one with text or vice versa. See the sample
+for what happens.</LI>
+</OL>
+New methods:
+<PRE><TT><FONT COLOR="#990000">// determine wether this toolbar supports buttons with text
+BOOL&nbsp;&nbsp;&nbsp; HasButtonText() const;
+
+// invalidate the button with the given index (force a repaint of this button)
+void&nbsp;&nbsp;&nbsp; InvalidateButton(int nIndex);
+
+// Check wether the button with index &lt;idx> is a "real" separator.
+// Thus it is *not* a control.
+BOOL&nbsp;&nbsp;&nbsp; IsSeparator(int idx) const;
+
+// Check wether the button with the given index is a control in real life
+BOOL&nbsp;&nbsp;&nbsp; IsControl(int idx) const;
+
+// Get the control that is associated with the given index
+// The CWnd * returned may be temporary (if you don't use
+// MFC to add a control to the toolbar)
+// Set &lt;IdxIsID> to TRUE, if &lt;idx> represents the ID of the control
+CWnd *&nbsp; GetControl(int idx, BOOL IdxIsID = FALSE) const;
+
+// Retrieve the bitmap associated with the button with ID &lt;ID>.
+// The background of the bitmap is the current setting for
+// COLOR_BTNFACE.
+// Don't forget to destroy the bitmap, if it is not longer needed!
+HBITMAP GetBitmap(int ID);
+
+// Replace the button with ID &lt;id> with a custom control
+// of type &lt;pClass>. The custom control gets the ID &lt;id>.
+// &lt;rc> gives width &amp; height of the control.
+// The stylebits WS_CHILD and WS_VISIBLE will be added automatically.
+// to &lt;dwStyle>.
+// The control shall support the DECLARE_DYNCREATE! (except
+// CComboBox and CEdit which are handled separatly)
+// You must not "delete" the return-value !
+CWnd *&nbsp; CtrlReplace(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CRuntimeClass * pClass,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CRect &amp; rc,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UINT id,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwStyle = 0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; );
+
+// Insert a custom control before the button with index &lt;before>.
+// if &lt;before> == -1, then the control is appended behind the last
+// For more information see CtrlReplace() above.
+CWnd *&nbsp; CtrlInsert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CRuntimeClass * pClass,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CRect &amp; rc,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UINT id,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int before = 0,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DWORD dwStyle = 0
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; );
+
+// call "RepositionControls()" if you have added one or more controls
+// and want to add more buttons/controls.
+// This function will automatically be called for controls when calling
+// CtrlReplace() and CtrlInsert().
+void&nbsp;&nbsp;&nbsp; RepositionControls();
+
+// Recalculate the size of the toolbar and recalculate the
+// layout of its parent.
+// There should be no need to call this method from outside
+// the toolbar.
+void&nbsp;&nbsp;&nbsp; RecalcLayout();</FONT></TT></PRE>
+There is no must to add controls with either CtrlInsert() or CtrlReplace().
+You can do it in a more traditional fashion too and the toolbar still works
+(i.e. it takes care of all its children, regardless of the way of insertion).
+So there is no need to change your existing code. You should call RepositionControls()
+by yourself, if you add more controls in another way than the prefered
+one.
+
+<P>You might add a combo-box in the following way (assuming your toolbar
+resource includes a button with the id IDC_COMBOBOX, that is to be replaced
+by the control):
+<PRE><TT><FONT COLOR="#990000">// ...
+// replace a button by a CComboBox-control on the toolbar
+DWORD dwComboStyle = WS_VSCROLL|CBS_AUTOHSCROLL|CBS_DROPDOWN|CBS_HASSTRINGS;
+CComboBox * pBox = (CComboBox*) m_wndToolBar.CtrlReplace(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RUNTIME_CLASS(CComboBox),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // insert control of type CComboBox
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IDC_COMBOBOX,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // id of the button that is to replace with the control
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dwComboStyle&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // style bits
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; );
+if( pBox ) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pBox->AddString(TEXT("Line 1"));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pBox->AddString(TEXT("Line 2"));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pBox->AddString(TEXT("Line 3"));
+}
+// ...</FONT></TT></PRE>
+As you can see, adding a control is an easy task.
+
+<P>If you plan to use other types of controls (other than CComboBox or
+CEdit), you have to derive a class from this type and to implement the
+DECLARE_DYNCREATE macro and to overload the following methods:
+<BR><FONT COLOR="#990000">virtual BOOL Create( LPCTSTR lpszClassName, LPCTSTR
+lpszWindowName, DWORD dwStyle, const RECT&amp; rect, CWnd* pParentWnd,
+UINT nID, CCreateContext* pContext = NULL);</FONT>
+<BR>and
+<BR><FONT COLOR="#990000">virtual void PostNcDestroy();</FONT>
+
+<P>Lets say you plan to insert a static text into the toolbar:
+<BR>Create a new class using class-wizard to create a class derived from
+CStatic.
+<BR>Use class-wizard or class-view to overload the 2 virtual methods described
+above.
+<BR>The result should look like this (assuming you have named the class
+"CText"):
+<PRE><TT><FONT COLOR="#990000">/////////////////////////////////////////////////////////////////////////////
+// CText window
+
+class CText : public CStatic
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DECLARE_DYNCREATE(CText);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // &lt;&lt;== YOU HAVE TO INSERT THIS
+
+// Construction
+public:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CText();
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // ClassWizard generated virtual function overrides
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //{{AFX_VIRTUAL(CText)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT&amp; rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; protected:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; virtual void PostNcDestroy();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //}}AFX_VIRTUAL
+
+// Implementation
+public:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; virtual ~CText();
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Generated message map functions
+protected:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //{{AFX_MSG(CText)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // NOTE - the ClassWizard will add and remove member functions here.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //}}AFX_MSG
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DECLARE_MESSAGE_MAP()
+};</FONT></TT></PRE>
+In the implementation file you have to fill out the 2 overloaded methods:
+<PRE><TT><FONT COLOR="#990000">IMPLEMENT_DYNCREATE(CText, CStatic); // &lt;&lt;== DO NOT FORGET THIS
+
+BOOL CText::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT&amp; rect, CWnd* pParentWnd, UINT nID, CCrea
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return CWnd::Create(TEXT("STATIC"), TEXT("text control"), dwStyle|SS_LEFT, rect, pParentWnd, nID);
+}
+
+void CText::PostNcDestroy()&nbsp;
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete this;
+}</FONT></TT></PRE>
+That's all you have to do.
+<BR>The proceeding with other types of controls is similar.
+
+<P>Now you can insert such a control like follows:
+<PRE><TT><FONT COLOR="#990000">int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // ...
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_wndToolBar.CtrlInsert(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RUNTIME_CLASS(CText),&nbsp;&nbsp; // the control's runtime class
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CRect(-100, -22, 0, 0), // width is 100, height is 22
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IDC_TEXT,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // control's ID
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // insert before button with index 2
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // ...
+}</FONT></TT></PRE>
+
+<H4>
+<A NAME="rev2"></A>Changes in Revision 2</H4>
+Many thanks to <A HREF="mailto:W.Loch@intershop.de">Wolfgang Loch</A>,
+<A HREF="mailto:jarmstrong@runge.com.au">John Armstrong</A> and <A HREF="mailto:aivasyuk@clark.net">Anatoly
+Ivasyuk</A> who helped me to release that version.
+<UL>
+<LI>
+buttons that are checked <B>and</B> disabled are now looking ok</LI>
+
+<LI>
+don't draw a gripper if the bar is not dockable</LI>
+
+<LI>
+do not adjust space for gripper in "classic" mode</LI>
+
+<LI>
+give the bar itself a real 3D look (as in Office or DevStudio) (see images
+below)</LI>
+
+<LI>
+some minor code improvements</LI>
+</UL>
+<IMG SRC="OldStyleBorderLook.jpg" NOSAVE HEIGHT=180 WIDTH=472>
+<BR>Old style 3D look of a toolbar.
+
+<P><IMG SRC="NewStyleBorderLook.jpg" NOSAVE HEIGHT=186 WIDTH=472>
+<BR>New style (as in Office or DevStudio).
+
+<P>To enable the new 3D style you have to exchange the call to EnableDocking()
+in your CMainFrame's OnCreate() method with a call to FrameEnableDocking():
+
+<P><TT><FONT COLOR="#990000">// original code:</FONT></TT>
+<BR><TT><FONT COLOR="#990000">int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; // ...</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; EnableDocking(CBRS_ALIGN_ANY);</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; DockControlBar(&amp;m_wndToolBar);</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; // ...</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return 0;</FONT></TT>
+<BR><TT><FONT COLOR="#990000">}</FONT></TT>
+
+<P><TT><FONT COLOR="#990000">// changed code to get "real" 3D style:</FONT></TT>
+<BR><TT><FONT COLOR="#990000">int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; // ...</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; FrameEnableDocking(this,
+CBRS_ALIGN_ANY);</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; DockControlBar(&amp;m_wndToolBar);</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; // ...</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return 0;</FONT></TT>
+<BR><TT><FONT COLOR="#990000">}</FONT></TT>
+<H4>
+<A NAME="help"></A>Help !</H4>
+Since my commercial projects have a higher priority than my hobby projects,
+I don't have enough time to complete the persistence and customization
+of the toolbar in a reasonable time. I'm looking for someone, who wants
+to help me completing this. I have a somewhat more advanced version of
+the class, that implements some aspects of these issues (send me mail to
+get the source and see the images below). Both these problems got more
+complex than I expected ...
+
+<P><IMG SRC="ContextMenu.jpg" ALT="Context Menu" NOSAVE HEIGHT=146 WIDTH=212>
+<BR>context menu of the toolbar
+
+<P><IMG SRC="ToolBarPage-Resource.jpg" ALT="Toolbar Dialog Resource" NOSAVE HEIGHT=262 WIDTH=406>
+<BR>"Toolbar" customization dialog in the resource
+
+<P><IMG SRC="Customize-Dlg.jpg" ALT="Toolbar Dialog" NOSAVE HEIGHT=292 WIDTH=386>
+<BR>"Toolbar" customization dialog in action
+
+<P><A NAME="download"></A>CToolBarEx still consists of two files:
+<BR>CToolBarEx.h and
+<BR>CToolBarEx.cpp
+<BR><A HREF="enh_flatbar_source.zip">Download enhanced source</A> 25K
+<BR><A HREF="enh_flatbar_sample.zip">Download enhanced sample</A> 56K
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@dsp.net">zafir@dsp.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<CENTER><FONT SIZE=-2>404</FONT></CENTER>
+
+</BODY>
+</HTML>

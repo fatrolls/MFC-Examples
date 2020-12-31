@@ -1,0 +1,213 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Drawing a bitmap</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Drawing a bitmap</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+Within your program, you may have three different forms of a bitmap, a device-independent bitmap (DIB), a device-dependent bitmap (DDB) and a DIB section. The DIB is essentially a representation of bitmap in a manner that is independent of any device. It contains the information to enable it to be rendered on any device. There are different versions of DIBs, the most common being version 3. The specification for version 4 has also been released but this format is not yet as prevalent. There are two drawbacks to using a DIB; there are fewer functions that handle a DIB and it takes longer to render a DIB. 
+
+<p>The device-dependent bitmap is specific to a device and it is very unlikely that a DDB for one device can be rendered on another. One such situation is when you want to render an image from the screen to a printer. In this case you would have to change the DDB to a DIB before you try to render it onto the printer. Most of the GDI functions take a DDB as an argument instead on a DIB.
+
+<p>The DIB section is somewhat new and designed to alleviate some of the problems with a DIB. You can use a DIB section wherever you use a DDB and yet have access to the bitmap bits and the color information. All this preamble was basically to say that you need one function to render a DIB and another to render a DDB or a DIB section.
+
+<h4>Function 1: DrawDIB</h4>
+The DrawDIB() function uses the function SetDIBitsToDevice() for to render the image. When using this function, you should be aware that the BMP file is arranged such that the first scan line (first row of pixels) is the bottom most scan line. You could actually have the top most scan line be the first if the height of the bitmap is specified as a negative value but this is rarely used. So if you want only the top half of the bitmap drawn then the nStartScan value should be half of  nNumScans.
+
+<p>You can also use the StretchDIBits() to render the bitmap data onto a device. The StretchDIBits() function is more versatile in that it allows the bitmap to be streched or compressed and it can use various raster operations to generate the image. The StretchDIBits() function can also be used to mirror the image.
+
+<p>One of the argument to the DrawDIB() function is the palette that should be used when rendering the bitmap. This information can be derived from the DIB itself but using a predefined palette can help speed things up slightly.
+
+<PRE><TT><FONT COLOR="#990000">
+// DrawDIB	- Draws a DIB onto a device
+// pDC		- Pointer to a device context
+// hDIB		- Handle of the device-independent bitmap
+// pPal		- Pointer to a palette associated with the DIB
+// xDest	- x-coordinate of the upper-left corner of the destination rect
+// yDest	- y-coordinate of the upper-left corner of the destination rect
+void DrawDIB( CDC* pDC, HGLOBAL hDIB, CPalette *pPal, int xDest, int yDest )
+{
+	LPVOID  lpDIBBits;              // Pointer to DIB bits
+	BOOL    bSuccess=FALSE;         // Success/fail flag
+	
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+				1 << bmInfo.bmiHeader.biBitCount;
+	
+	// Compute the address of the bitmap bits
+	if( bmInfo.bmiHeader.biBitCount > 8 )
+		lpDIBBits = (LPVOID)((LPDWORD)(bmInfo.bmiColors + 
+			bmInfo.bmiHeader.biClrUsed) + 
+			((bmInfo.bmiHeader.biCompression == BI_BITFIELDS) ? 3 : 0));
+	else
+		lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+	
+	// Select and realize the palette if one supplied and if device supports it
+	if( pPal && (pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE) )
+	{
+		pDC->SelectPalette(pPal, FALSE);
+		pDC->RealizePalette();
+	}
+	
+	::SetDIBitsToDevice(pDC->m_hDC, 		 // hDC
+		xDest,					 // DestX
+		yDest,					 // DestY
+		bmInfo.bmiHeader.biWidth,		 // nDestWidth
+		bmInfo.bmiHeader.biHeight,		 // nDestHeight
+		0,					 // SrcX
+		0,					 // SrcY
+		0,					 // nStartScan
+		bmInfo.bmiHeader.biHeight,		 // nNumScans
+		lpDIBBits,				 // lpBits
+		(LPBITMAPINFO)hDIB, 			 // lpBitsInfo
+		DIB_RGB_COLORS);			 // wUsage
+}
+</FONT></TT></PRE>
+
+<h4>Function 2: DrawBitmap</h4>
+The DrawBitmap() function can be used with both a DDB and a DIB section. This function does take into account that the destination device context might have a map mode other than MM_TEXT. This might not work always or the effect may not be what you want.
+
+<PRE><TT><FONT COLOR="#990000">
+// DrawBitmap	- Draws a bitmap (DDB & DIB section) onto a device
+// pDC		- Pointer to a device context
+// hBitmap	- Handle of the bitmap
+// hPal		- Handle of a logical palette associated with the bitmap
+// xDest	- x-coordinate of the upper-left corner of the destination rect
+// yDest	- y-coordinate of the upper-left corner of the destination rect
+void DrawBitmap( CDC *pDC, HBITMAP hBitmap, HPALETTE hPal, int xDest, int yDest )
+{
+	// Get logical coordinates
+	BITMAP bm;
+	::GetObject( hBitmap, sizeof( bm ), &bm );
+	CPoint size( bm.bmWidth, bm.bmHeight );
+	pDC->DPtoLP(&size);
+
+	CPoint org(0,0);
+	pDC->DPtoLP(&org);
+
+	// Create a memory DC compatible with the destination DC
+	CDC memDC;
+	memDC.CreateCompatibleDC( pDC );
+	memDC.SetMapMode( pDC->GetMapMode() );
+	
+	//memDC.SelectObject( &bitmap );
+	HBITMAP hBmOld = (HBITMAP)::SelectObject( memDC.m_hDC, hBitmap );
+	
+	
+	// Select and realize the palette
+	if( hPal && pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE)
+	{
+		SelectPalette( pDC->GetSafeHdc(), hPal, FALSE );
+		pDC->RealizePalette();
+	}
+	pDC->BitBlt(xDest, yDest, size.x, size.y, &memDC, org.x, org.y, SRCCOPY);
+
+	::SelectObject( memDC.m_hDC, hBmOld );
+}
+</FONT></TT></PRE>
+
+<h4>Function 3: DrawDIBSection</h4>
+Although we can use the DrawBitmap() function to draw a DIB section as well, this functions takes the color information of the bitmap into consideration and will create and use an appropriate palette when needed. Note that since this function may create a palette in each call, it might be better, for performance reasons, to create an appropriate palette from the DIB section and use the DrawBitmap() function instead. The DrawDIBSection() is handy if DIB section's color information is modified before displaying it.
+
+<PRE><TT><FONT COLOR="#990000">
+// DrawDIBSection	- Draws a DIB section onto a device
+// hDC		- Handle to a device context
+// hBitmap	- Handle of the DIB Section
+// xDest	- x-coordinate of the upper-left corner of the destination rect
+// yDest	- y-coordinate of the upper-left corner of the destination rect
+void DrawDIBSection( HDC hDC, HBITMAP hBitmap, int xDest, int yDest )
+{
+	HPALETTE hPal;
+
+	HDC hDCMem = ::CreateCompatibleDC( hDC );
+
+	// Create a logical palette for the bitmap
+	DIBSECTION ds;
+	BITMAPINFOHEADER &bmInfo = ds.dsBmih;
+	if( ::GetObject(hBitmap, sizeof(ds), &ds ) == 0 )
+		return;			// Not a DIB Section
+	
+	HGDIOBJ hBmpOld =  ::SelectObject(hDCMem, hBitmap);
+
+	int nColors = bmInfo.biClrUsed ? bmInfo.biClrUsed : 1 << ds.dsBm.bmBitsPixel;
+	
+	if( ::GetDeviceCaps(hDC, RASTERCAPS) & RC_PALETTE )
+	{
+		// Create a halftone palette if colors > 256. 
+		if( nColors > 256 )
+			hPal = ::CreateHalftonePalette(hDC);
+		else
+		{
+			// Create the palette
+			RGBQUAD *pRGB = new RGBQUAD[nColors];
+			
+			::GetDIBColorTable( hDCMem, 0, nColors, pRGB );
+			
+			UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+			LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+			
+			pLP->palVersion = 0x300;
+			pLP->palNumEntries = nColors;
+			
+			for( int i=0; i < nColors; i++)
+			{
+				pLP->palPalEntry[i].peRed = pRGB[i].rgbRed;
+				pLP->palPalEntry[i].peGreen = pRGB[i].rgbGreen;
+				pLP->palPalEntry[i].peBlue = pRGB[i].rgbBlue;
+				pLP->palPalEntry[i].peFlags = 0;
+			}
+			
+			hPal = ::CreatePalette( pLP );
+			
+			delete[] pLP;
+			delete[] pRGB;
+		}
+
+		HPALETTE hPalOld = ::SelectPalette(hDC,hPal,FALSE);
+		::RealizePalette(hDC);
+		BitBlt(hDC,xDest,yDest,bmInfo.biWidth,bmInfo.biHeight,hDCMem,0,0,SRCCOPY);
+
+		::SelectPalette(hDC,hPalOld,FALSE);
+		// delete GDI objects
+		::DeleteObject(hPal);
+	}
+	else
+		BitBlt(hDC,xDest,yDest,bmInfo.biWidth,bmInfo.biHeight,hDCMem,0,0,SRCCOPY);
+
+	::SelectObject(hDCMem, hBmpOld);
+	::DeleteDC(hDCMem);
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

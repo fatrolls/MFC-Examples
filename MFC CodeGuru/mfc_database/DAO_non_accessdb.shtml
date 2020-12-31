@@ -1,0 +1,236 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - Using DAO to read data sources other than MS Access</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using DAO to read data sources other than MS Access</FONT></H3></CENTER>
+<HR>
+
+
+
+
+<p>This code was contributed by <a href="mailto:teeces@mindspring.com">John Vannoy</a>. </p>
+
+
+<P>MS Access (.mdb) is not the only data source you can use as a DAO database.  Many other types can be opened directly without ODBC.</P>
+
+<P>The secret lies in the parameters passed to CDaoDatabase::Open().  If you're opening an Access file, you can omit all but the first parameter:</P>
+
+<PRE><TT><FONT COLOR="#990000">
+CDaoDatabase db;
+db.Open("c:\\test.mdb");
+</FONT></TT></PRE>
+
+<P>But there are three more parameters for Open().  Here's the prototype:</P>
+
+<PRE><TT><FONT COLOR="#990000">
+Open( LPCTSTR lpszName,
+      BOOL bExclusive=FALSE,
+      BOOL bReadOnly=FALSE,
+      LPCTSTR lpszConnect="");
+</FONT></TT></PRE>
+
+<P>If lpszConnect is blank (the default value), it designates you're opening an Access file.  The following table shows the connect string used to open all the types supported by DAO:</P>
+<table border="1">
+    <tr>
+        <td><b>File Type</b></td>
+        <td><b>Connect String</b></td>
+    </tr>
+    <tr>
+        <td>Access</td>
+        <td>blank</td>
+    </tr>
+    <tr>
+        <td>dBASE III</td>
+        <td>dBASE III;</td>
+    </tr>
+    <tr>
+        <td>dBASE IV</td>
+        <td>dBASE IV;</td>
+    </tr>
+    <tr>
+        <td>dBASE 5</td>
+        <td>dBASE 5.0;</td>
+    </tr>
+    <tr>
+        <td>Paradox 3.x</td>
+        <td>Paradox 3.x;</td>
+    </tr>
+    <tr>
+        <td>Paradox 4.x</td>
+        <td>Paradox 4.x;</td>
+    </tr>
+    <tr>
+        <td>Paradox 5.x</td>
+        <td>Paradox 5.x;</td>
+    </tr>
+
+    <tr>
+        <td>FoxPro 2.0</td>
+        <td>FoxPro 2.0;</td>
+    </tr>
+    <tr>
+        <td>FoxPro 2.5</td>
+        <td>FoxPro 2.5;</td>
+    </tr>
+    <tr>
+        <td>FoxPro 2.6</td>
+        <td>FoxPro 2.6;</td>
+    </tr>
+
+    <tr>
+        <td>Excel 3.0</td>
+        <td>Excel 3.0;</td>
+    </tr>
+    <tr>
+        <td>Excel 4.0</td>
+        <td>Excel 4.0;</td>
+    </tr>
+    <tr>
+        <td>Excel 5.0 or Excel 95</td>
+        <td>Excel 5.0;</td>
+    </tr>
+    <tr>
+        <td>Excel 97</td>
+        <td>Excel 97;</td>
+    </tr>
+
+
+    <tr>
+        <td>HTML Import</td>
+        <td>HTML Import;</td>
+    </tr>
+    <tr>
+        <td>HTML Export</td>
+        <td>HTML Export;</td>
+    </tr>
+    <tr>
+        <td>Text</td>
+        <td>Text;</td>
+    </tr>
+
+</table>
+
+<P>To open an Excel spreadsheet in your MFC application, do this:</P>
+
+<PRE><TT><FONT COLOR="#990000">
+CDaoDatabase* pDB = new CDaoDatabase;
+pDB->Open("c:\\test.xls",  //path
+     FALSE,           //exclusive?
+     FALSE,           //read only?
+     "Excel 5.0;");   //connect string
+CDaoRecordSet rs(pDB);
+rs.Open(dbOpenDynaset, "select * from range1");
+</FONT></TT></PRE>
+
+<P>Excel behaves a little differently than the regular database types (Access, FoxPro, etc).  DAO treats any named range in the sheet as a table, and each column in the range becomes a column in the table.  The first row in the range is not included as a row in the table; instead, it is used to assign the column names.  DAO also treats the entire sheet as a table, using the sheet name as the table name and using the first row to assign column names.</P>
+
+<P>As an illustration, I'll show you how to modify the MFC sample app "DAOTable" to support multiple types.</P>
+
+1)  add a selection "all files (*.*)" to the file dialog in CDAOTableDlg::OnButtonConnect():
+
+<PRE><TT><FONT COLOR="#990000">
+CFileDialog dlg (TRUE,_T("mdb"),NULL,OFN_HIDEREADONLY,
+   _T("Access Files (*.mdb)|*.mdb|all files (*.*)|*.*||"),this);
+</FONT></TT></PRE>
+
+2)  After calling DoModal(), get the extension of the selected file:
+
+<PRE><TT><FONT COLOR="#990000">
+CString strDatabaseExt = dlg.GetFileExt();
+</FONT></TT></PRE>
+
+3)  Add a parameter to openDatabase() to receive the file extension:
+
+<PRE><TT><FONT COLOR="#990000">
+[the declaration]
+int openDatabase(CDaoDatabase **ppDatabase,
+                 CString fileName,
+                 BOOL bReportNoOpen = TRUE,
+                 CString fileExt = "");
+
+[the definition]
+int openDatabase(CDaoDatabase **ppDatabase,
+                 CString fileName,
+                 BOOL bReportNoOpen,
+                 CString fileExt)
+</FONT></TT></PRE>
+
+4)  Meanwhile back in OnButtonConnect(), pass the file extension to openDatabase():
+
+<PRE><TT><FONT COLOR="#990000">
+// now open the database if possible
+int retCode = openDatabase(&amp;m_pDatabase,
+              m_strDatabaseName,
+              TRUE,
+              strDatabaseExt);
+</FONT></TT></PRE>
+
+5)  Test the file extension in openDatabase() and set the connect string accordingly:
+<PRE><TT><FONT COLOR="#990000">
+if (ppDatabase == NULL)
+   return -1; // fatal error
+
+fileExt.MakeLower();
+CString strConnect;
+	
+if (fileExt == "xls")
+   strConnect="Excel 5.0;";
+else if (fileExt == "dbf")
+   strConnect="FoxPro 2.6;";
+else if (fileExt == "mdb")
+   strConnect="";
+else
+   {
+      AfxMessageBox("File type not supported");
+      return -1;
+   }
+
+// now open the database object with error checking
+try
+{
+   (*ppDatabase)->Open(fileName,
+                       FALSE,
+                       FALSE,
+                       strConnect);
+}
+catch (CDaoException *e)
+{
+   etc.
+</FONT></TT></PRE>
+
+<P>You can use this version of DAOTable to explore the structure of a file as seen by DAO.</P>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

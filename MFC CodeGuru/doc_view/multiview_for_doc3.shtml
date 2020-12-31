@@ -1,0 +1,123 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Patrick Laplante">
+   <TITLE>Doc/View - Multiple views for a single document (MDI) 3</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Multiple views for a single document (MDI) 3
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="multiview_for_doc3.jpg" >
+
+
+<!-- Text / source code -->
+<p>This package differ from other package from the point of view that it didn't tells you what to do.  Its doing it.  You can use it exactly like other MFC doc template class.
+
+<p>One of my biggest problems was to have multiple view using a Single document.  To achieve that, I've create a class that act like a standard document template class.  This class implements a <b>single document interface with multiple view.</b>
+
+<p>I basically start by creating a class that derived from a <b>multiple document interface.</b>  I modify it to support only one document.  The reason I didn't derived from a <b>single document interface</b> is because the architecture of MFC require the use of a MDIDocTemplate to use with a MDIChildFrame.  
+
+<p>In this document template, I manage a list of document template, named FrameTemplate, that are simply acting has a container for a frame and a view.  To each frame template, you can assign a specific menu id, icon id, and window style.  You can specify the start-up style (Open/Close).
+
+<p>This is a sample on how to use it in you Application class.  For further information, take a look at the sample application zip files.
+
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+    CSDIMVDocTemplate *pDocTemplate = new CSDIMVDocTemplate( IDR_MVTESTTYPE, RUNTIME_CLASS( CMvTestDoc ) );
+    pDocTemplate->AddFrameTemplate(
+        new CFrameTemplate( 
+            IDR_MV1, 
+            RUNTIME_CLASS( CChildFrame1 ), 
+            RUNTIME_CLASS( CView1 ), 
+            ID_VIEW_VIEW1, 
+            SW_SHOWNORMAL, 
+            TRUE ) );
+
+    pDocTemplate->AddFrameTemplate(
+        new CFrameTemplate( 
+            IDR_MV2, 
+            RUNTIME_CLASS( CChildFrame1 ), 
+            RUNTIME_CLASS( CView2 ), 
+            ID_VIEW_VIEW2, 
+            SW_SHOWNORMAL, 
+            TRUE ) );
+
+    pDocTemplate->AddFrameTemplate(
+        new CFrameTemplate( 
+            IDR_MV3, 
+            RUNTIME_CLASS( CChildFrame2 ), 
+            RUNTIME_CLASS( CView3 ), 
+            ID_VIEW_VIEW3, 
+            SW_SHOWNORMAL, 
+            TRUE ) );
+
+    pDocTemplate->AddFrameTemplate(
+        new CFrameTemplate( 
+            IDR_MV4, 
+            RUNTIME_CLASS( CChildFrame2 ), 
+            RUNTIME_CLASS( CView4 ), 
+            ID_VIEW_VIEW4, 
+            SW_SHOWNORMAL, 
+            TRUE ) );
+
+    AddDocTemplate( pDocTemplate );
+    m_server.ConnectTemplate( clsid, pDocTemplate, FALSE );
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="multiview_for_doc3_sample.zip">Download demo project - 85KB</A>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="multiview_for_doc3_source.zip">Download source - 11KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->4/28/98
+<br>Posted by: <A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

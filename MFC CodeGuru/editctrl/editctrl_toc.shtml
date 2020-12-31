@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Edit Controls - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various windows controls">
+   <META Name="keywords" Content="MFC source code edit controls">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Edit Controls - Table of Contents</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<HR>
+
+<p>This section is being maintained by <a href = "mailto:chris.maunder@codeguru.com">Chris Maunder</a>.
+<br><br>
+
+<UL>
+<LI><A HREF="drag_edit.shtml">Drag text between edit controls - Sam Lu</A></LI>
+<LI><A HREF="filedragedit.shtml">Drag files into CEdit - Chris Losinger</A></LI>
+<LI><A HREF="inplace_edit.shtml">Inplace edit control - Mario Contestabile</A></LI>
+<LI><A HREF="edit_cr.shtml">Eating returns in a single line edit - Petr Novotny</a></li>
+<LI><A HREF="history_edit.shtml">History Edit Control - Ravi Bhavnani</a></li>
+<LI><A HREF="range_edit.shtml">A range validation Edit control - Donald R. Kichline</a></li>
+<LI><A HREF="masked_edit.shtml">A masked edit control - Sam Claret</a></li>
+<LI><A HREF="ip_addr_masked_edit.shtml">An IP address masked edit control - Joseph Dziedzic</a></li>
+<LI><A HREF="color_edit.shtml">Keyword coloring edit control - Keith Rule</a></li>
+<LI><A HREF="syntax_coloring.shtml">Syntax coloring text edit window class - Randy More</a></li>
+</UL>
+
+
+<HR>
+
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

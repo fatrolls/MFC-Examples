@@ -1,0 +1,59 @@
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\prsht.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtml.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dimm.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dispex.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtmhst.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\docobj.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\exdisp.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\objsafe.idl";
+
+[
+	object,
+	dual,
+	uuid(3C093AF2-1EFC-4FE9-B602-D5A23D967B77),
+	helpstring("IPenguin Interface"),
+	pointer_default(unique)
+] 
+#line 15 "d:\\vc++\\atlinternals-src\\chapter 04\\birdsattr\\copenguin.h"
+interface IPenguin : IDispatch {
+#line 17 "d:\\vc++\\atlinternals-src\\chapter 04\\birdsattr\\copenguin.h"
+	[propget,id(1)] HRESULT  Name([out,retval] BSTR *pVal);
+	[propput,id(1)] HRESULT  Name([in] BSTR newVal);
+	[id(2)] HRESULT  StraightenTie();
+};
+
+[
+	object,
+	dual,
+	uuid(92247816-FA98-4861-83AB-56FD45F37991),
+	helpstring("IBird Interface"),
+	pointer_default(unique)
+] 
+#line 30 "d:\\vc++\\atlinternals-src\\chapter 04\\birdsattr\\copenguin.h"
+interface IBird : IDispatch {
+#line 32 "d:\\vc++\\atlinternals-src\\chapter 04\\birdsattr\\copenguin.h"
+	[propget,id(1)] HRESULT  Wingspan([out,retval] LONG *pVal);
+	[propput,id(1)] HRESULT  Wingspan([in] LONG newVal);
+	[id(2)] HRESULT  Fly();
+};
+
+
+[ version(1.0), uuid(1D172D25-115D-42C8-B8BD-B001B23AA715), helpstring("BirdsAttr 1.0 Type Library") ]
+library BirdsAttr
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		version(1.0),
+		uuid(F591F114-57D0-45DA-B627-5E859AB62248),
+		helpstring("Penguin Class")
+	] 
+#line 48 "d:\\vc++\\atlinternals-src\\chapter 04\\birdsattr\\copenguin.h"
+	coclass CPenguin {
+		interface IPenguin;
+		interface IBird;
+	};
+
+}
+

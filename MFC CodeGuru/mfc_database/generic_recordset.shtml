@@ -1,0 +1,266 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Database - The Generic Recordset</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+The Generic Recordset
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:bobplace@bellsouth.com">Bob Place</A>.
+
+<br>
+
+<!-- The article... -->
+
+<p>I love the database classes.  They meet almost every need I have come up with
+when developing applications.  But there is something missing.  When I know in
+advance what I will need the classes are great, if I need a quick query, or
+something at run time then things get a little harder and more coding than I
+really feel I should have to do.  This is why I came up with the
+CGenericRecordset.
+
+<p>The heart of the CGenericRecordset is the simplification of using
+GetFieldValue.  As a matter of fact the only difference between a
+CDaoRecordset and my CGenericRecordset is wraping this function
+into different member functions.
+
+<p>Lets look at what the new class can do for you.  In this example I
+want to get the max of a particular column.  (I am obviously missing any
+error checking etc....) Here is the code to do that:
+
+<FONT COLOR="#990000"><TT><PRE>
+CGenericRecordset * MySet = new CGenericRecordset(*Some_DAO_DB);
+CString MySql = "SELECT MAX(emp_salary) FROM employeeInfo";
+double MyAnswer;
+MySet->Open(AFX_DAO_DEFAULT_TYPE,MySql);
+MyAnswer = MySet->GetDouble(0);
+</tt></PRE></FONT>
+
+<p>We could have just as easily done this:
+
+<FONT COLOR="#990000"><TT><PRE>
+CGenericRecordset * MySet = new CGenericRecordset(*Some_DAO_DB);
+CString MySql = "SELECT emp_salary, emp_id FROM employeeInfo";
+double MySAlary;
+CString MyId;
+MySet->Open(AFX_DAO_DEFAULT_TYPE,MySql);
+while(!MySet->IsEOF())
+{
+	MySalary = MySet->GetDouble("emp_salary");
+	MyId = MySet->GetCString("emp_id");
+	// do something with these variables
+	MySet->MoveNext();
+}
+</tt></PRE></FONT>
+
+<p>We use this new class when ever we have to do a simple query that does (or
+should not) require the creation of a CDaoRecordset with the added RFX.  It
+is simple and sweet.  It gives you the ability to get infromation from a
+table(s) with little coding overhead.  The meat in the CGenericRecordset is
+nothing special, I simply made it easier for the user to extract information
+from the columns.  Lets look at some of the code.
+
+<FONT COLOR="#990000"><TT><PRE>
+class CGenericRecordset : public CDaoRecordset
+{
+public:
+        // Our constructor uses CDaoRecordSet constructor
+	GenericRecordset(CDaoDatabase* pDatabase):CDaoRecordset(pDatabase){};
+
+	// New functions:
+	//Use with Column Names
+	CString GetCString(CString ColumnName);
+	short GetShort(CString ColumnName);
+	long GetLong(CString ColumnName);
+	double GetDouble(CString ColumnName);
+	float GetFloat(CString ColumnName);
+	DATE GetDate(CString ColumnName);
+	VARIANT GetColumn(CString ColumnName);
+
+	// Use with Column Numbers
+	CString GetCString(int ColumnNumber);
+	short GetShort(int ColumnNumber);
+	long GetLong(int ColumnNumber);
+	double GetDouble(int ColumnNumber);
+	float GetFloat(int ColumnNumber);
+	DATE GetDate(int ColumnNumber);
+	VARIANT GetColumn(int ColumnNumber);
+};
+</tt></PRE></FONT>
+
+<p>Thats it.  We inheret the CDaoRecordset and add a few new member functions
+(which by the way are virtually identical!). Here are the functions:
+
+<FONT COLOR="#990000"><TT><PRE>
+////////////////////////////////////////////////////////////////
+// GenericRecordset class
+
+// Get by Column Name
+CString GenericRecordset::GetCString(CString ColumnName)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	CString Holder;
+	GetFieldValue(ColumnName, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	Holder.Format("%s",vFieldValue->pbVal);
+	return Holder;
+};
+short GenericRecordset::GetShort(CString ColumnName)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnName, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->iVal;
+};
+long GenericRecordset::GetLong(CString ColumnName)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnName, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->lVal;
+};
+double GenericRecordset:: GetDouble(CString ColumnName)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnName, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->dblVal;
+};
+float GenericRecordset::GetFloat(CString ColumnName)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnName, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->fltVal;
+};
+DATE GenericRecordset::GetDate(CString ColumnName)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnName, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->date;
+};
+VARIANT GenericRecordset::GetColumn(CString ColumnName)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnName, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return *vFieldValue;
+};
+// Get by Column Number
+CString GenericRecordset::GetCString(int ColumnNumber)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	CString Holder;
+	GetFieldValue(ColumnNumber, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	Holder.Format("%s",vFieldValue->pbVal);
+	return Holder;
+};
+short GenericRecordset::GetShort(int ColumnNumber)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnNumber, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->iVal;
+};
+long GenericRecordset::GetLong(int ColumnNumber)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnNumber, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->lVal;
+};
+double GenericRecordset:: GetDouble(int ColumnNumber)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnNumber, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->dblVal;
+};
+float GenericRecordset::GetFloat(int ColumnNumber)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnNumber, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->fltVal;
+};
+DATE GenericRecordset::GetDate(int ColumnNumber)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnNumber, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return vFieldValue->date;
+};
+VARIANT GenericRecordset::GetColumn(int ColumnNumber)
+{
+	COleVariant covFieldValue;
+	VARIANT *vFieldValue;
+	GetFieldValue(ColumnNumber, covFieldValue);
+	vFieldValue = (LPVARIANT)covFieldValue;
+	return *vFieldValue;
+};
+</tt></PRE></FONT>
+
+<p>Yes there are many things I could have done differently, but this is simple,
+and gets the job done. If you have any questions send me some e-mail and I will
+do what I can to answer them.  If you have changes I would love to see them.
+
+
+<!-- Remember to update this -->
+<p>Last updated: 2 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

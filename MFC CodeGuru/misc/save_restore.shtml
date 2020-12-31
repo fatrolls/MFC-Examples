@@ -1,0 +1,306 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Save and Restore</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Save and Restore</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>.
+
+
+<h3>A general purpose manager for saving and restoring values and objects</h3>
+
+
+<p>Quite often when writing code, one needs to save a value or object, perform
+some operation on it, and then restore the original value.  This mean
+creating a variable to hold the saved state, and initialising it, at the
+beginning of a block, and then writing code to restore it at the end.
+Unfortunately, the code needed to save and restore an object is often
+dependant on the object itself.  For example, a device context (CDC) uses
+SaveDC and RestoreDC; the working directory uses ::GetCurrentDirectory and
+::SetCurrentDirectory; a document might serialise to/from an in-memory
+file.
+
+<p>The following two template classes encapsulate the save and restore
+procedure.  They are general enough for most situations.
+
+<p>The <b>TSaveAndRestoreGeneral</b> template class is, as the name implies, the more
+general of the two.  It requires that you write a global Save and Restore
+function for the object you are managing.  This template class has two
+paramters.  The first is the type of object to be managed, and the second
+the type of value used to hold the state information.  The state
+information may often not be the same type as the object being managed.
+For example, a CDC uses an int as its state value (using SaveDC and
+RestoreDC).
+
+<p>The <b>TSaveAndRestoreSimple</b> class is for the simpler cases where the object
+being managed and the state information are the same type.  In other words,
+one simply copies the original value to save, and copies it back to
+restore.  The class includes the simple Save and Restore functions so you
+don't need to write them yourself.
+
+<p>Here is the source code for these two template classes .
+
+<PRE><TT><FONT COLOR="#990000">
+// SaveAndRestore.h
+// (c) 1997 Roger Onslow
+#ifndef _TSaveAndRestore_
+#define _TSaveAndRestore_
+
+template <class T, class TSAVE> class TSaveAndRestoreGeneral {
+
+     // Write specific versions of these for the object type you want to manage
+public:
+     friend void Save(const T& t, TSAVE& savevalue);
+     friend void Restore(T& t, const TSAVE& savevalue);
+
+     // Management of save/restore - not usually directly called
+protected:
+     T& m_variable; // reference to variable we are managing here
+     TSAVE m_savevalue;  // the saved value
+public:
+     void SaveInto(TSAVE& savevalue) { ::Save(m_variable,savevalue); }
+     void SetFrom(const TSAVE& setvalue) { ::Restore(m_variable,setvalue); }
+     void RestoreNow() { SetFrom(m_savevalue); }
+
+     // Control auto-restore
+protected:
+     bool m_bKeep;  // is set, do NOT restore in constructor
+public:
+     void Keep() { m_bKeep = true; }
+     void NoKeep() { m_bKeep = false; }
+
+     // Constructor and destructor do the save and restore
+public:
+     TSaveAndRestoreGeneral(T& t) : m_variable(t), m_bKeep(false) { SaveInto(m_savevalue); }
+     ~TSaveAndRestoreGeneral() { if (! m_bKeep) RestoreNow(); }
+};
+
+template <class T> class AFX_EXT_CLASS TSaveAndRestoreSimple : public TSaveAndRestoreGeneral<T,T> {
+     // Simple save and restore functions just take current value
+     friend void Save(const T& t, T& savevalue) { savevalue = t; }
+     friend void Restore(T& t, const T& savevalue) { t = savevalue; }
+
+     // Constructor just calls base class
+public:
+     TSaveAndRestoreSimple(T& t) : TSaveAndRestoreGeneral(t) {}
+};
+
+#endif
+</FONT></TT></PRE>
+
+<p>The TSaveAndRestoreGeneral class includes some additional member functions
+to change the way the save and restore works.
+
+<p>Keep() turns off the automatic restore.  In other words, if you make a
+change to the managed object and want to keep it, rather that restore the
+previous value, then call the Keep() function.  This can be used for an
+undo/redo situation, where you may make a change and then optionally want
+to undo it.  NoKeep() is the opposite function, and turns the auto-restore
+back on.
+
+<p>RestoreNow() lets you restore the original value at any time, not just when
+the save/restore manager goes out of scope.
+
+<p>SetFrom() and SaveInto() let you save and restore the state to an external
+state variable.  These functions would not usually be called outside their
+use internally in the TSaveAndRestoreGeneral class, but have been made
+public "just in case".
+
+<p>Below is an example of how to define a save and restore manager for a
+simple class (like CString) using TSaveAndRestoreSimple.
+
+<PRE><TT><FONT COLOR="#990000">
+typedef TSaveAndRestoreSimple<CString> CSaveAndRestoreString;
+</FONT></TT></PRE>
+
+<p>And here is an example of how it would be used.
+
+<PRE><TT><FONT COLOR="#990000">
+class CMyClass {
+     CString m_mystring;
+     void MyFunc () {
+          CSaveAndRestoreString saveit(m_mystring);
+          // ...
+          // do things to m_mystring
+          // ...
+          // m_mystring is restored at the end
+     }
+};
+</FONT></TT></PRE>
+
+<p>When member function ?MyFunc? starts, the current value of ?m_mystring? is
+saved.  At the end of the function, when ?saveit? goes out of scope, the
+value of ?m_mystring? is restored.
+
+<p>A more complex example would is to save and restore a device context.  In
+this case, a simple copy of the object is not appropriate, so we use
+TSaveAndRestoreGeneral.  A CDC uses an int to save and restore its current
+state, so we use <CDC,int> as our template parameters.
+
+<PRE><TT><FONT COLOR="#990000">
+// SaveAndRestoreDC.h
+// (c) 1997 Roger Onslow
+#ifndef _CSaveAndRestoreDC_
+#define _CSaveAndRestoreDC_
+
+#include "SaveAndRestore.h"
+
+// Save and Restore a DC - encapulates SaveDC and RestoreDC
+inline void Save(const CDC& dc, int& savevalue) {
+     savevalue = const_cast<CDC*>(&dc)->SaveDC();
+}
+inline void Restore(CDC& dc, const int& savevalue) {
+     dc.RestoreDC(savevalue);
+}
+
+typedef TSaveAndRestoreGeneral<CDC,int> CSaveAndRestoreDC;
+
+#endif
+</FONT></TT></PRE>
+
+<p>Here, we have to write our Save and Restore functions.  Notice the
+const_cast required in the Save routine because, unfortunately, SaveDC is
+NOT a const function (even though it does not change the CDC object).
+
+<p>A more interesting example is to use these classes to save and restore the
+current working directory.
+
+<p>Firstly, we need a class that corresponds to, and encapsulates, the current
+directory functions.
+
+<PRE><TT><FONT COLOR="#990000">
+// CurrentDirectory.h
+// (c) 1997 Roger Onslow
+#ifndef _CCurrentDirectory_
+#define _CCurrentDirectory_
+
+class AFX_EXT_CLASS CCurrentDirectory {
+     // Construction
+public:
+     CCurrentDirectory() {}   // nothing to do
+     CCurrentDirectory(LPCTSTR dir) { *this = dir; }    // do an assignment
+
+     // Convert to/from string
+public:
+     operator CString() const;     // return current dir as a string
+     CCurrentDirectory& operator= (LPCTSTR dir);   // set current dir
+};
+
+#endif
+</FONT></TT></PRE>
+
+<p>This class lets you treat the current directory as a string.  You can
+assign a string to a variable of type CCurrentDirectory, and this will
+change the current directory.  Similarly you can use a value of type
+CCurrentDirectory whereever you need a CString, and it will return the
+current directory name.  Notice that this object does not require any
+storage - it has no member variables and no virtual functions.
+
+<p>Using this class, we can easily make a new class that saves and restores
+the current directory.
+
+<PRE><TT><FONT COLOR="#990000">
+// SaveAndRestoreCurrentDirectory.h
+// (c) 1997 Roger Onslow
+#ifndef _CSaveAndRestoreCurrentDirectory_
+#define _CSaveAndRestoreCurrentDirectory_
+
+#include "SaveAndRestore.h"
+#include "CurrentDirectory.h"
+
+// Save and Restore current directory
+inline void Save(const CCurrentDirectory& cd, CString& savevalue) 
+{savevalue = cd; }
+
+inline void Restore(CCurrentDirectory& cd, const CString& savevalue) 
+{ cd = savevalue; }
+
+class AFX_EXT_CLASS CSaveAndRestoreCurrentDirectory : 
+	public TSaveAndRestoreGeneral<CCurrentDirectory,CString> 
+{
+     CCurrentDirectory m_cd;
+public:
+     CSaveAndRestoreCurrentDirectory(LPCTSTR str) : m_cd(),
+		TSaveAndRestoreGeneral<CCurrentDirectory,CString>(m_cd) { m_cd = str; }
+};
+
+#endif
+</FONT></TT></PRE>
+
+<p>This class is slightly different to the previous classes in that the
+constructor takes the name of the temporary current directory required.
+
+<p>You can use this function in you OnFileOpen, OnFileSave and OnFileSaveAs
+functions to force these to look in a given directory.  For example
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyDoc::OnFileSave( ) {
+     CSaveAndRestoreCurrentDirectory saveandrestore(DATADIR);
+     CDocument::OnFileSave();
+}
+
+void CMyDoc::OnFileSaveAs( ) {
+     CSaveAndRestoreCurrentDirectory saveandrestore(DATADIR);
+     CDocument::OnFileSaveAs();
+}
+
+void CMyApp::OnFileNew( ) {
+     CSaveAndRestoreCurrentDirectory saveandrestore(DATADIR);
+     CWinApp::OnFileNew();
+}
+</FONT></TT></PRE>
+
+<p>Here, DATADIR would be defined as the directory for your data files.  For
+example, you might use a variable that is initialised from a registry
+setting.
+
+<p>In summary, these classes take a lot of the burden out of saving and
+restoring objects and values.  The specific logic to so for a given object
+type can be encapsulated in a class and reused whenever it is required.
+
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

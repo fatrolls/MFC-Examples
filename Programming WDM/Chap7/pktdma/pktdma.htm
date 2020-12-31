@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The PKTDMA Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The PKTDMA Sample</H2>
+<P>The PKTDMA Sample accompanies Chapter 7 and illustrates how to perform a DMA transfer with a bus-mastering PCI device.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>PKTDMA.SYS (SYS subdirectory) is a WDM driver for a simulated device based on the AMCC S5933 chip. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console application that tests the PKTDMA driver.</LI></UL>
+
+<H3>Building PKTDMA</H3>
+<P>To build PKTDMA.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named PKTDMA.DSP.</P>
+<P>To build TEST.EXE, follow <A HREF="../../wdmbook.htm#usermodebuild">the general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing PKTDMA</H3>
+<P>I recommend installing and testing the <A HREF="../pci42/pci42.htm#pci42test">PCI42 sample</A> first. The instructions for PCI42 explain how to install the PCI and ISA cards that are part of the AMCC S5933DK1 development kit and how to install the S5933DK1.SYS driver for the ISA card.</P>
+<P>If you follow the suggestion of trying out PCI42 first, you can use the Device Manager to update the driver for the S5933 development board. Point the installer to the PKTDMA\SYS subdirectory for the DEVICE.INF installation file.</P>
+<P>With both the S5933DK1 and PKTDMA drivers installed, open a command prompt and run TEST.EXE from the TEST\DEBUG subdirectory. TEST will write data to the PCI card and read the same data from the associated ISA card. The PKTDMA driver uses DMA to accomplish the transfer.</P></BODY>
+</HTML>

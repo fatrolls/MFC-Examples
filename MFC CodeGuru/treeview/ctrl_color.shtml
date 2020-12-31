@@ -1,0 +1,148 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CTreeCtrl - Setting a background color</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Setting a background color</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+Like any other control, you can handle the WM_CTLCOLOR message for the tree view control too. You can set the background color and it works - kind of. When the control draws the tree items, it ignores the color set by the WM_CTLCOLOR handler and uses the system color. The net effect is that portions of the control not covered by any tree item gets the custom color but the tree items have the system color as the background. I bet, that's not the kind of effect you are looking for.
+
+<p><img src="ctrl_color.gif" width="270" height="275"></p>
+
+<p>The approach we will take to get a uniform background color is that whenever the control needs painting, we will paint the background, we will let the control draw the items in a memory device context and then paint this image transparently onto the control surface.
+
+<h4>Step 1: Add handler function for WM_PAINT</h4>
+Whenever the control needs to be updated the OnPaint() function gets called. We first create a memory device context that matches the paint DC in terms of the bitmap selected in it and the clip region. We let the default window procedure of the control draw in the memory DC using the system color as the background color. 
+
+<p>Next we create a mask bitmap using yet another device context. A mask bitmap is a monochrome bitmap in which one color indicates the background color in the source bitmap and the other color indicates all the bits that are not the background color. We need the mask bitmap to copy only the foreground color from the memory DC to the paint DC.
+
+<p>Once we have the mask bitmap, we draw the background color using the 
+paint DC and then draw the image in the memory DC transparently over the 
+paint DC. I had initially used MaskBlt() for drawing the image transparently 
+but found out that it was supported on NT only and not Windows 95. Here's 
+what we do. The image in memDC is the foreground image. When drawing this 
+image we have to somehow make the background color have no effect. We achieve 
+this by setting the background to black using the mask bitmap. When we later use 
+the SRCPAINT raster operation, the black color has no effect on the destination 
+color. Similarly we use the mask bitmap to set the foreground color of the 
+image in the paint DC to black. We finally combine the two images.
+
+<p>Thanks to Matthias Kerkhoff from Germany for pointing out the problem with MaskBlt()
+and suggesting the new method for drawing the image transparently.
+
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::OnPaint() 
+{
+	CPaintDC dc(this);
+	
+	// Create a memory DC compatible with the paint DC
+	CDC memDC;
+	memDC.CreateCompatibleDC( &dc );
+
+	CRect rcClip, rcClient;
+	dc.GetClipBox( &rcClip );
+	GetClientRect(&rcClient);
+
+	// Select a compatible bitmap into the memory DC
+	CBitmap bitmap;
+	bitmap.CreateCompatibleBitmap( &dc, rcClient.Width(), rcClient.Height() );
+	memDC.SelectObject( &bitmap );
+	
+	// Set clip region to be same as that in paint DC
+	CRgn rgn;
+	rgn.CreateRectRgnIndirect( &rcClip );
+	memDC.SelectClipRgn(&rgn);
+	rgn.DeleteObject();
+	
+	// First let the control do its default drawing.
+	CWnd::DefWindowProc( WM_PAINT, (WPARAM)memDC.m_hDC, 0 );
+
+
+	// Now create a mask
+	CDC maskDC;
+	maskDC.CreateCompatibleDC(&dc);
+	CBitmap maskBitmap;
+
+	// Create monochrome bitmap for the mask
+	maskBitmap.CreateBitmap( rcClip.Width(), rcClip.Height(), 1, 1, NULL );
+	maskDC.SelectObject( &maskBitmap );
+	memDC.SetBkColor( ::GetSysColor( COLOR_WINDOW ) );
+
+	// Create the mask from the memory DC
+	maskDC.BitBlt( 0, 0, rcClip.Width(), rcClip.Height(), &memDC, 
+				rcClip.left, rcClip.top, SRCCOPY );
+
+	// Fill the background with custom color
+	// Use a protected member variable to save the color
+	// rather than hard coding it.
+	dc.FillRect(rcClip, &CBrush(RGB(255,255,192)) );
+	
+	// Copy the image in memDC transparently
+
+	// MaskBlt works in NT only - so we use another method
+	//	dc.MaskBlt( rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), &memDC, 
+	//			rcClip.left, rcClip.top, maskBitmap, 0, 0, 
+	//			MAKEROP4(SRCAND,SRCCOPY) );
+
+
+	// Set the background in memDC to black. Using SRCPAINT with black and any other
+	// color results in the other color, thus making black the transparent color
+	memDC.SetBkColor(RGB(0,0,0));          
+	memDC.SetTextColor(RGB(255,255,255));  
+	memDC.BitBlt(rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), &maskDC, rcClip.left, rcClip.top, SRCAND);
+
+	// Set the foreground to black. See comment above.
+	dc.SetBkColor(RGB(255,255,255));
+	dc.SetTextColor(RGB(0,0,0));
+	dc.BitBlt(rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), &maskDC, rcClip.left, rcClip.top, SRCAND);
+	
+	// Combine the foreground with the background
+	dc.BitBlt(rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), &memDC, 
+					rcClip.left, rcClip.top,SRCPAINT);
+}
+</FONT></TT></PRE>
+
+<h4>Step 2: Add handler for WM_ERASEBKGND</h4>
+Since we are already drawing the background in the OnPaint() function handling this function and simply returning TRUE ensures that the default window procedure does not erase the background. Adding this handler prevents extra updates to the control's client area and thus reduces flicker.
+
+<p>In actual production code, you'd probably check for a non default background color before returning TRUE;
+
+<PRE><TT><FONT COLOR="#990000">BOOL CTreeCtrlX::OnEraseBkgnd(CDC* pDC) 
+{
+ 	// To prevent flickering when using non default bkcolor
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

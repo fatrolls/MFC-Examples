@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The DEVPROP Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The DEVPROP Sample</H2>
+<P>The DEVPROP Sample accompanies Chapter 12 and illustrates how to determine standard device properties.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>DEVPROP.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a user-mode test program for DEVPROP.SYS.</LI></UL>
+
+<H3>Building DEVPROP</H3>
+<P>To build DEVPROP.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named DEVPROP.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing DEVPROP</H3>
+<P>First start a debugger or provide some other way of viewing debug messages. (You could download DbgView from <A HREF="http://www.sysinternals.com/">http://www.sysinternals.com</A>, for example.) Install DEVPROP.SYS. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF. During installation, the driver will issue a debug message containing the device description property. (The message is to the effect that AddDevice was called for the DEVPROP Sample device.)</P>
+<P>Open a command prompt and run TEST.EXE from the TEST\DEBUG subdirectory. It will display property information about DEVPROP and all other sample drivers that you happen to have installed. TEST actually enumerates the drivers that use GENERIC.SYS, so you can run it even without having DEVPROP installed.</P></BODY>
+</HTML>

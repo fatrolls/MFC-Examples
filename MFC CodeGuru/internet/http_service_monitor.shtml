@@ -1,0 +1,64 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - HTTP Service Monitor</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">HTTP Service Monitor</FONT></H3></CENTER>
+<HR>
+
+
+<p>This sample was contributed by <a href="mailto:aasif@khi.compol.com">Asif Rasheed</a></p>
+
+<p>Here is an implementation of my WinInet wrapper class. This small application serves
+two purposes,
+
+<ul>
+  <li>There are some ISPs who disconnect the connection if the client is idle for a particular
+    time. This application makes it busy. User only have to adjust the time at which it
+    iterates it attempts.</li>
+  <li>It can be used for monitoring the HTTP service on a particular server either it is
+    working or not. If HTTP service stops due to any reason it start the beeping.</li>
+</ul>
+
+<p>The application was written using MFC 4.2 and Visual C++ 5.0,&nbsp; It uses 
+
+<ul>
+  <li>WinInet class wrapper</li>
+  <li>CTrayIcon class by Chris Maunder. </li>
+</ul>
+
+<p>I am releasing this app into the public domain with no restrictions.</p>
+
+<p><a href="../cgi/redirect.cgi?url=http://www.codeguru.com/internet/URLChecker.ZIP">Download
+Files</a> The zip file is 36K. </p>
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

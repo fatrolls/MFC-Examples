@@ -1,0 +1,302 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Zafir Anjum">
+<title>Toolbars and Statusbars on Dialogs</title>
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td align="center"><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<h3 align="center"><font COLOR="#AOAO99">Toolbars and Statusbars on Dialogs </font></h3>
+
+<hr align="center">
+
+<p>This article was contributed by <a HREF="mailto:Cyril.C.Z.ZEKSER@TCC.thomson.fr">ZEKSER
+Cyril</a>. </p>
+
+<p>By default, MFC only allows you to add Toolbars and Statusbars on CFrameWnd subclassed
+objects. This is great, but if you want to add toolbars on dialogs, you're like an idiot,
+because you can't do this easily. </p>
+
+<p>The first problem is that every handler function expect the parent to be a CFrameWnd
+subclassed object, and another one is that you can only show tooltips or statusbar message
+when the dialog is in IDLE state. In fact, for the control bars to function properly,
+you'll have to catch some of the messages that the frame window uses. </p>
+
+<p>I'll have to dig a lot in the documentation to find something that helps me doing that.
+One issue was shown me by Mihai Filimon (see articles posted on Monday 16 march 1998),
+which was fine, but not very &quot;clean&quot; since you have to make room for the bar
+with an invisible static object. (I thanks a lot him for showing the light at the end of
+the tunnel). </p>
+
+<p>Let me expose you what to do if you want a toolbar (fixed, there is no other way
+possible) and a menu which can talk with any StatusBar in the application (even in the
+dialog but I think it will be the subject of another article). </p>
+
+<p>I&#146;ll only expose you how to add a Toolbar on a dialog (the menu is obvious since
+you only have to define one and add it on the resource editor). </p>
+
+<p>First, you&#146;ll have to develop your dialog (with its object) without bothering the
+place of the ToolBar, and subclass the CDialog class to use this dialog template (nothing
+new here). </p>
+
+<p>Then, add this code on the CDialog::OnInitDialog function (the m_wndToolBar variable is
+of type CToolBarEx) : </p>
+
+<pre><tt><font COLOR="#990000">
+BOOL CMyDlg::OnInitDialog() 
+{
+	// TODO: Add extra initialization here
+	CDialog::OnInitDialog();
+
+	// Add the ToolBar.
+	if (!m_wndToolBar.Create( this ) ||
+		!m_wndToolBar.LoadToolBar(IDR_CORPS_EMIS) )
+	{
+		TRACE0(&quot;Failed to create toolbar\n&quot;);
+		return -1;      // fail to create
+	}
+
+	// TODO: Remove this if you don't want tool tips or a resizeable toolbar
+	m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle() |
+		CBRS_TOOLTIPS | CBRS_FLYBY  );
+
+// We need to resize the dialog to make room for control bars.
+	// First, figure out how big the control bars are.
+	CRect rcClientStart;
+	CRect rcClientNow;
+	GetClientRect(rcClientStart);
+	RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 
+				   0, reposQuery, rcClientNow);
+	
+	// Now move all the controls so they are in the same relative
+	// position within the remaining client area as they would be
+	// with no control bars.
+	CPoint ptOffset(rcClientNow.left - rcClientStart.left,
+					rcClientNow.top - rcClientStart.top); 
+
+	CRect  rcChild;					
+	CWnd* pwndChild = GetWindow(GW_CHILD);
+	while (pwndChild)
+	{                               
+		pwndChild-&gt;GetWindowRect(rcChild);
+		ScreenToClient(rcChild);
+		rcChild.OffsetRect(ptOffset);
+		pwndChild-&gt;MoveWindow(rcChild, FALSE);
+		pwndChild = pwndChild-&gt;GetNextWindow();
+	}
+
+	// Adjust the dialog window dimensions
+	CRect rcWindow;
+	GetWindowRect(rcWindow);
+	rcWindow.right += rcClientStart.Width() - rcClientNow.Width();
+	rcWindow.bottom += rcClientStart.Height() - rcClientNow.Height();
+	MoveWindow(rcWindow, FALSE);
+	
+	// And position the control bars
+	RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+</font></tt></pre>
+
+<p>You can see that it is not obvious (I found it in a more complicated sample called
+DLGCBR32, and I work a lot to find out the functions that are compulsory, and the others) </p>
+
+<p>At that point, you have only a Toolbar in top of your dialog (you see that any toolbar
+can fit the requirements to be shown in a dialog, since the preceding code is generic
+enough). You can have many toolbars in your dialog, but you must manage the positions by
+yourself. </p>
+
+<p>Now, if you want tooltips on your Toolbar, you must handle the following messages
+TTN_NEEDTEXTA and TTN_NEEDTEXTW (for both ANSI and Unicode characters sets), in the
+following way : </p>
+
+<h4>1. Add the message handlers declaration...</h4>
+
+<pre><tt><font COLOR="#990000">
+BEGIN_MESSAGE_MAP(CMyDlg, CDialog)
+	...
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
+END_MESSAGE_MAP()
+</font></tt></pre>
+
+<h4>2. Declare the function in your header file that way :</h4>
+
+<pre><tt><font COLOR="#990000">
+// Generated message map functions
+//{{AFX_MSG(CMyDlg)
+afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
+//}}AFX_MSG
+</font></tt></pre>
+
+<h4>3. And finally code your OnToolTipText function that way (comes from MFC Sample) :</h4>
+
+<pre><tt><font COLOR="#990000">
+BOOL CMyDlg::OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult)
+{
+	ASSERT(pNMHDR-&gt;code == TTN_NEEDTEXTA || pNMHDR-&gt;code == TTN_NEEDTEXTW);
+
+	// allow top level routing frame to handle the message
+	if (GetRoutingFrame() != NULL)
+		return FALSE;
+
+	// need to handle both ANSI and UNICODE versions of the message
+	TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
+	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+	TCHAR szFullText[256];
+	CString cstTipText;
+	CString cstStatusText;
+
+	UINT nID = pNMHDR-&gt;idFrom;
+	if (pNMHDR-&gt;code == TTN_NEEDTEXTA &amp;&amp; (pTTTA-&gt;uFlags &amp; TTF_IDISHWND) ||
+		pNMHDR-&gt;code == TTN_NEEDTEXTW &amp;&amp; (pTTTW-&gt;uFlags &amp; TTF_IDISHWND))
+	{
+		// idFrom is actually the HWND of the tool
+		nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
+	}
+
+	if (nID != 0) // will be zero on a separator
+	{
+		AfxLoadString(nID, szFullText);
+			// this is the command id, not the button index
+		AfxExtractSubString(cstTipText, szFullText, 1, '\n');
+		AfxExtractSubString(cstStatusText, szFullText, 0, '\n');
+	}
+
+	// Non-UNICODE Strings only are shown in the tooltip window...
+	if (pNMHDR-&gt;code == TTN_NEEDTEXTA)
+		lstrcpyn(pTTTA-&gt;szText, cstTipText,
+            (sizeof(pTTTA-&gt;szText)/sizeof(pTTTA-&gt;szText[0])));
+	else
+		_mbstowcsz(pTTTW-&gt;szText, cstTipText,
+            (sizeof(pTTTW-&gt;szText)/sizeof(pTTTW-&gt;szText[0])));
+	*pResult = 0;
+
+	// bring the tooltip window above other popup windows
+	::SetWindowPos(pNMHDR-&gt;hwndFrom, HWND_TOP, 0, 0, 0, 0,
+		SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
+
+
+	return TRUE;    // message was handled
+}
+</font></tt></pre>
+
+<p>Now you have a toolbar with tooltips (the text shown in the tooltip box is defined the
+classic way, with the resource editor). (pheeew ;-) ). </p>
+
+<p>Now, if you want the mainframe's status bar to display the text that would normally be
+prompted, the only line (right, the ONLY one) of code you have to add is in the above
+function (it is useful for System modal dialog boxes since they are usually small), just
+before the return statement (it also assume that m_wndStatusBar is public) : </p>
+
+<pre><tt><font COLOR="#990000">
+// Display the text in the mainframe's status bar (assumes the Help pane text
+// is at the index zero.
+	((CMainFrame*)GetParent())-&gt;m_wndStatusBar.SetPaneText(0, cstStatusText);
+</font></tt></pre>
+
+<p>That's all for today. </p>
+
+<p>No, let me tell you just one more thing, if you want your dialog menu to display text
+in the mainframe's status bar (on in any other status bar you have created) you can add
+the following code to the handler of WM_MENUSELECT (window-type handler) : </p>
+
+<pre><tt><font COLOR="#990000">
+void CMyDlg::OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu) 
+{
+	CDialog::OnMenuSelect(nItemID, nFlags, hSysMenu);
+	
+	TCHAR szFullText[256];
+	CString cstStatusText;
+	// TODO: Add your message handler code here
+	// Displays in the mainframe's status bar
+	if (nItemID != 0) // will be zero on a separator
+	{
+		AfxLoadString(nItemID, szFullText);
+			// this is the command id, not the button index
+		AfxExtractSubString(cstStatusText, szFullText, 0, '\n');
+		((CMainFrame*)GetParent())-&gt;m_wndStatusBar.SetPaneText(0,cstStatusText);
+}
+}
+</font></tt></pre>
+
+<p><br>
+Note that you can't use the ON_UPDATE_COMMAND_UI message on this toolbar, since it can
+only be refresh when the dialog enters in idle state. To do so, you must subclass the
+CToolBar (or CStatusBar) class - in CMyToolBar for instance -, add the message handler for
+WM_IDLEUPDATECMDUI, and write the following code in this function : </p>
+
+<pre><tt><font COLOR="#990000">
+/////////////////////////////////////////////////////////////////////////////
+// CMyToolBar::OnIdleUpdateCmdUI
+//	OnIdleUpdateCmdUI handles the WM_IDLEUPDATECMDUI message, which is 
+//	used to update the status of user-interface elements within the MFC 
+//	framework.
+//
+// 	We have to get a little tricky here: CToolBar::OnUpdateCmdUI 
+//	expects a CFrameWnd pointer as its first parameter.  However, it
+//	doesn't do anything but pass the parameter on to another function
+//	which only requires a CCmdTarget pointer.  We can get a CWnd pointer
+//	to the parent window, which is a CCmdTarget, but may not be a 
+//	CFrameWnd.  So, to make CToolBar::OnUpdateCmdUI happy, we will call
+//	our CWnd pointer a CFrameWnd pointer temporarily.  	
+
+LRESULT CMyToolBar::OnIdleUpdateCmdUI(WPARAM wParam, LPARAM) 
+{
+	if (IsWindowVisible()) 
+	{
+		CFrameWnd *pParent = (CFrameWnd *)GetParent();
+		if (pParent)
+			OnUpdateCmdUI(pParent, (BOOL)wParam);
+	}
+	return 0L;
+}
+</font></pre>
+</tt>
+
+<p><br>
+In order to have the toolbar updated you MUST override the ContinueModal() function that
+way: </p>
+
+<pre><tt><font COLOR="#990000">
+BOOL CMyDlg::ContinueModal()
+{
+    m_wndToolbar.SendMessage( WM_IDLEUPDATECMDUI, WPARAM(TRUE), 0);
+
+
+    return CDialog::ContinueModal();
+}
+</font></pre>
+</tt>
+
+<p><br>
+For AfxLoadString to compile you must Include the file &quot;Afxpriv.h&quot; at the
+beginning of the CPP file. </p>
+
+<hr>
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1997 - 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+<!-- Counter -->
+
+
+</body>
+</html>

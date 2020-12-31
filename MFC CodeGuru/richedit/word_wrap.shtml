@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Rich Edit Control - Changing word wrap mode</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Changing word wrap mode</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+If you are using a CRichEditView derivative, you have built in support for three different word wrap modes. The three modes are:
+
+<p>
+<TABLE COLS=2 WIDTH="90%" BORDER=1>
+<TR><TD WIDTH="33%">WrapNone</TD>	<TD WIDTH="67%">Indicates no automatic word wrapping</TD></TR>
+<TR><TD WIDTH="33%">WrapToWindow</TD>	<TD WIDTH="67%">Indicates word wrapping based on the width of the window</TD></TR>
+<TR><TD WIDTH="33%">WrapToTargetDevice</TD>	<TD WIDTH="67%">Indicates word wrapping based on the characteristics of the target device</TD></TR>
+</TABLE>
+	
+<p>To change the mode you have to assign one of these values to the m_nWordWrap member and then call the WrapChanged() member function. If you don't call the WrapChanged() function the control window is not updated.
+
+<PRE><TT><FONT COLOR="#990000">	// Code to use with CRichEditView
+	// Turn word wrap on
+	m_nWordWrap = WrapToWindow;
+	WrapChanged();
+</FONT></TT></PRE>
+
+<p>If you are using the CRichEditCtrl class or a class derived from it, you have neither the m_nWordWrap member variable nor the WrapChanged() member functions. In this case you have to use the SetTargetDevice() function. Although the SetTargetDevice() function is documented, the first two usage shown below isn't, but it is used by MFC itself.
+
+<PRE><TT><FONT COLOR="#990000">	// Code to use with CRichEditCtrl
+	// To turn word wrap off
+	SetTargetDevice(NULL, 1);
+
+
+	// To turn word wrap on - based on window width
+	SetTargetDevice(NULL, 0);
+
+
+	// To turn word wrap on - based on target device (e.g. printer)
+	// m_dcTarget is the device context, m_lineWidth is the line width 
+	SetTargetDevice(m_dcTarget, m_lineWidth);
+</FONT></TT></PRE>
+
+
+
+
+
+
+<p>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

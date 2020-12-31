@@ -1,0 +1,101 @@
+[OPTIONS]
+Compatibility=1.1
+Compiled file=TestHTMLHelp.chm
+Contents file=TestHTMLHelp.hhc
+Default Window=main
+Default topic=html\default.htm
+Display compile progress=No
+Full-text search=Yes
+Index file=TestHTMLHelp.hhk
+Language=0x407 Deutsch (Deutschland)
+
+[WINDOWS]
+main="TestHTML","TestHTMLHelp.hhc","TestHTMLHelp.hhk","html\default.htm",,,,,,0x2520,,0x3006,[1,1,797,573],,,,0,,,
+
+
+[FILES]
+html\titelleiste.htm
+html\befehl_vorigerabschnitt.htm
+html\bildlaufleisten.htm
+html\default.htm
+html\dialog_datei_neu.htm
+html\dialog_dateioeffnen.htm
+html\dialog_drucken.htm
+html\dialog_druckereinrichtung.htm
+html\dialog_druckfortschrittsanzeige.htm
+html\dialog_ersetzen.htm
+html\dialog_farbewaehlen.htm
+html\dialog_schriftartwaehlen.htm
+html\dialog_speichernunter.htm
+html\dialog_suchen.htm
+html\dokument_aendern.htm
+html\keine_hilfe_verfuegbar.htm
+html\keine_hilfe_verfuegbar1.htm
+html\menu_ansicht_befehle.htm
+html\menu_ansicht_lineal.htm
+html\menu_ansicht_statusleiste.htm
+html\menu_ansicht_symbolleiste.htm
+html\menu_bearbeiten_allesloeschen.htm
+html\menu_bearbeiten_ausschneiden.htm
+html\menu_bearbeiten_befehle.htm
+html\menu_bearbeiten_einfuegen.htm
+html\menu_bearbeiten_ersetzen.htm
+html\menu_bearbeiten_kopieren.htm
+html\menu_bearbeiten_loeschen.htm
+html\menu_bearbeiten_rueckgaengig.htm
+html\menu_bearbeiten_suchen.htm
+html\menu_bearbeiten_wiederherstellen.htm
+html\menu_bearbeiten_wiederholen.htm
+html\menu_datei_beenden.htm
+html\menu_datei_befehle.htm
+html\menu_datei_befehle1234.htm
+html\menu_datei_drucken.htm
+html\menu_datei_druckereinrichten.htm
+html\menu_datei_nachrichtsenden.htm
+html\menu_datei_neu.htm
+html\menu_datei_oeffnen.htm
+html\menu_datei_schliessen.htm
+html\menu_datei_seiteeinrichten.htm
+html\menu_datei_seitenansicht.htm
+html\menu_datei_speichern.htm
+html\menu_datei_speichernunter.htm
+html\menu_datensatz_befehle.htm
+html\menu_datensatz_erster.htm
+html\menu_datensatz_letzter.htm
+html\menu_datensatz_loeschen.htm
+html\menu_datensatz_naechster.htm
+html\menu_datensatz_neu.htm
+html\menu_datensatz_voriger.htm
+html\menu_fenster_befehle.htm
+html\menu_fenster_befehle12.htm
+html\menu_fenster_horizontalanordnen.htm
+html\menu_fenster_nebeneinander.htm
+html\menu_fenster_neuesfenster.htm
+html\menu_fenster_symboleanordnen.htm
+html\menu_fenster_teilen.htm
+html\menu_fenster_ueberlappend.htm
+html\menu_fenster_vertikalanordnen.htm
+html\menu_hilfe_befehle.htm
+html\menu_hilfe_hilfeverwenden.htm
+html\menu_hilfe_index.htm
+html\menu_hilfe_info.htm
+html\menu_hilfe_verwenden.htm
+html\menu_system_groesseaendern.htm
+html\menu_system_naechstes.htm
+html\menu_system_schliessen.htm
+html\menu_system_symbol.htm
+html\menu_system_verschieben.htm
+html\menu_system_vollbild.htm
+html\menu_system_voriges.htm
+html\menu_system_wechselnzu.htm
+html\menu_system_wiederherstellen.htm
+html\statusleiste.htm
+html\symbolleiste.htm
+html\symbolleiste_seitenansicht.htm
+html\befehl_naechsterausschnitt.htm
+
+[ALIAS]
+0=html\default.htm
+
+[MAP]
+#include ..\..\resource.hm

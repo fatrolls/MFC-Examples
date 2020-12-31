@@ -1,0 +1,133 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CTreeCtrl - Keeping the indentation level with Drag & Drop</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Keeping the indentation level with Drag & Drop</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This article was contributed by <a href="mailto:nel.roelf@columbus.co.za">Roelf Nel</a>.
+
+
+
+<P>I can suggest an extension to the Drag and Drop of your TreeView
+control.    The standard drag and drop as in your control will add the drag
+branch as a child of the drop item.  Quite often during drag and drop
+operations parent items should stay parent items, child items should stay
+child items, grandchildren should stay grandchildren, etc, etc.
+
+<P>The following allows just that - with a few logical rules of course:
+<ol>
+<li>Dragging an item onto another item on the same indentation level (no
+matter in which branch), will add the dragitem as a sibling of the dropitem,
+directly following the dropitem.
+<li>Dragging an item onto an item of the next higher (parent-level)
+indentation, will add the dragitem as the last child of the dropitem.
+</ol>
+
+<P>Therefore the indentation level of the dragitem will stay the same after
+dropping it.  Dragging onto lower (child-level) indentation level, and
+dragging onto more than 1 higher (parent) indentations are not allowed.
+
+
+<P>Add a member variable:  
+
+<PRE><TT><FONT COLOR="#990000">   BOOL m_bKeepIndentLevel;
+</FONT></TT></PRE>
+
+
+<P>In the constructor, initialize this variable:
+
+<PRE><TT><FONT COLOR="#990000">   m_bKeepIndentLevel = FALSE;
+</FONT></TT></PRE>
+
+
+<P>When this member is FALSE, the drag and drop operation will work as it
+currently is.  To keep the indentation level, you can change this value to
+TRUE inside your program, either by directly accessing the variable, or by
+Get/Set functions.
+
+<P>In the OnLButtonUp() function, add/modify the lines indicated by <b>'->'</b> :
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnLButtonUp(UINT nFlags, CPoint point) 
+{
+      .
+      .
+      .
+
+      while ((htiParent = GetParentItem(htiParent)) != NULL)
+      {
+         if (htiParent == m_hDragItem) return;
+      }
+
+->    // check for same indentation level
+
+->    HTREEITEM htiPosition = TVI_LAST;
+
+->    if (m_bKeepIndentLevel)
+->    {
+->       int nDragIndent = GetIndentLevel(m_hDragItem);
+->       int nDropIndent = GetIndentLevel(m_hDropItem);
+->
+->       if (nDragIndent == nDropIndent)
+->       {
+->          // add after the drop item, as child of drop item's parent
+->          htiPosition = m_hDropItem;
+->          m_hDropItem = GetParentItem(m_hDropItem);
+->       }
+->       else if (nDragIndent == (nDropIndent + 1))
+->       {
+->          // if dropped on 'upper' indentation, add as last child of drop item
+->          htiPosition = TVI_LAST;
+->       }
+->       else
+->       {
+->          // invalid drop target
+->          return;
+->       }
+->    }
+
+      Expand (m_hDropItem,TVE_EXPAND);
+
+->    HTREEITEM htiNew = CopyBranch(m_hDragItem,m_hDropItem,htiPosition);
+      DeleteItem(m_hDragItem);
+      .
+      .
+      .
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

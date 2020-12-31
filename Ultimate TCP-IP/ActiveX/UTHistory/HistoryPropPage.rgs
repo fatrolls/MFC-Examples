@@ -1,0 +1,23 @@
+HKCR
+{
+	UTHistory.HistoryPropPage.1 = s 'HistoryPropPage Class'
+	{
+		CLSID = s '{8FAB369E-0EBF-11D3-A46F-0080C858F182}'
+	}
+	UTHistory.HistoryPropPage = s 'HistoryPropPage Class'
+	{
+		CLSID = s '{8FAB369E-0EBF-11D3-A46F-0080C858F182}'
+		CurVer = s 'UTHistory.HistoryPropPage.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {8FAB369E-0EBF-11D3-A46F-0080C858F182} = s 'HistoryPropPage Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

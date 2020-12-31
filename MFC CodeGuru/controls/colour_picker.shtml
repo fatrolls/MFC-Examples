@@ -1,0 +1,232 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Office 97 style Colour Picker control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Office 97 style Colour Picker control
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<p>
+This sample was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>,
+and extended by <A HREF="mailto:bischofb@informatik.tu-muenchen.de">Alexander Bischofberger</A>.
+
+<p>
+<img src="colour_picker.gif" border=0 width="286" height="206" alt="Colour Picker image" align="bottom">
+Download <A HREF="colour_picker_src.zip">source files</A> (12 Kb) or 
+<A HREF="colour_picker_demo.zip">sample project</a> (46 Kb).
+</p>
+
+<p><a href="colour_picker.shtml#Latest">Latest updates here.</a> (version 1.2)</p>
+
+<p><u>Environment</u>: win95, NT 4.0, VC 5.0</p>
+
+<p>In an effort to have the latest and greatest wizz-bang features in
+my programs I unashamedly ripped of the colour picker from Office 97.
+
+<p>Initially I tried to modify an owner drawn combo box and combine
+that with a multicolumn combobox, but current multicolumn combo
+boxes are really just a single column with dividing lines drawn in.
+I then decided to write the whole thing from scratch based on a button,
+since it would at least give me a BN_CLICKED notification to get
+things started.
+
+<p>The colour picker is in two parts: an owner drawn button that
+reflects the currently selected colour, and a popup colour chooser
+window to select this colour. When the user clicks on the button
+the popup window appears and all mouse messages are captured until
+the left mouse button is clicked, or until the Enter or Escape keys
+are pressed. The popup window can be navigated using the mouse or
+the keyboard and includes tooltips explaining what each colour is.
+
+<p>The control can be incorporated into a project like any other
+Cbutton derived control. Either Create the control manually, subclass
+an existing CButton or DDX_control it. The control also comes with
+a <strong>DDX_ColourPicker</strong> routine to get/set the colour of 
+the control using a variable of type <FONT COLOR="blue">COLORREF</Font>.
+
+<p>The Colour Picker is contained in the class <strong>CColourPicker</strong>.
+It uses the class <strong>CColourPopup</strong> for the popup window.
+These classes are contained in the file <A HREF="colour_picker_src.zip">
+colour_picker_src.zip</a>, and a sample project is contained in
+<A HREF="colour_picker_demo.zip">colour_picker_demo.zip</a>. 
+
+<p>CColourPicker only has the following public member functions:
+<PRE><TT><FONT COLOR="#990000">		void     SetColour(COLORREF crColour);
+		COLORREF GetColour();
+
+		void     SetDefaultText(LPCTSTR szDefaultText);
+		void     SetCustomText(LPCTSTR szCustomText);
+
+		void     SetSelectionMode(UINT nMode); // Either CP_MODE_TEXT or CP_MODE_BK
+		UINT     GetSelectionMode();
+
+		void     SetBkColour(COLORREF crColourBk);
+		COLORREF GetBkColour();
+    
+		void     SetTextColour(COLORREF crColourText);
+		COLORREF GetTextColour();
+</FONT></TT></PRE>
+
+<p><b>SetDefaultText</b> allows you to set the text that will appear in the "Default"
+area of the colour chooser. If you pass NULL, then the Default area will not be available
+to the user. If this area is availble and the user selects it, the value CLR_DEFAULT
+will be returned.
+
+<p><b>SetCustomText</b> allows you to set the text that will appear in the "Custom"
+area of the colour chooser. If you pass NULL, then the Custom area will not be available
+to the user. The Custom area allows the user to select a custom colour using the
+standard windows colour selection dialog.
+
+<p>You can choose whether the colour chosen using the dropdown colour chooser will
+affect the text or the background colour using the function
+<b>SetSelectionMode(int nMode)</b>. Possible values for nMode are CP_MODE_TEXT
+to make colour changes affect the text colour, and CP_MODE_BK to make changes
+affect the background (default). 
+
+<p><b>SetColour</b>, <b>GetColour</b> and the the DDX-function
+will set and get the colour according to the current selection mode. To access
+the text colour and the background colour directly use the Set/GetTextColour
+and Set/GetBkColour functions.
+
+<p>There are also a number of user messages that may be handled to
+get more information from the control. These are:
+
+<BR>&nbsp;
+<CENTER><TABLE BORDER WIDTH="90%" BGCOLOR="#FFFFCC" >
+<TR>
+<TH ALIGN=LEFT WIDTH="20%">Message</TH>
+<TH ALIGN=LEFT>Description</TH>
+</TR>
+
+<TR><TD WIDTH="30%">CPN_SELCHANGE</TD>     <TD>Colour Picker Selection change</TD></TR>
+<TR><TD WIDTH="30%">CPN_DROPDOWN</TD>      <TD>Colour Picker drop down</TD></TR>
+<TR><TD WIDTH="30%">CPN_CLOSEUP</TD>       <TD>Colour Picker close up</TD></TR>
+<TR><TD WIDTH="30%">CPN_SELENDOK</TD>      <TD>Colour Picker end OK</TD></TR>
+<TR><TD WIDTH="30%">CPN_SELENDCANCEL</TD>  <TD>Colour Picker end (cancelled)</TD></TR>
+
+</TABLE></CENTER>
+
+<p>These messages can be handled using <strong>ON_MESSAGE(&lt MESSAGE&gt, <em>MessageFn</em>)
+</strong> in you message map entries, where <strong>MessageFn</strong> is of
+the form<br>
+
+<PRE><TT><FONT COLOR="#990000">
+    afx_msg LONG MessageFn(UINT lParam, LONG wParam);
+</FONT></TT></PRE>
+
+<p>The demo program gives an example of how to do this.
+
+<br><br><HR><br><br>
+
+<H3>New in Version 1.1</H3>
+
+<p>
+The following changes have been made by <A HREF="mailto:bischofb@informatik.tu-muenchen.de">Alexander Bischofberger</a>.
+
+<p>
+The original version did not display a text inside the combo box. The current version
+now displays the button text (as set in the dialog resource, or via SetWindowText).
+
+You can choose whether the colour chosen using the dropdown colour chooser will
+affect the text or the background colour using the new member function
+<b>SetSelectionMode</b>:
+
+<PRE><TT><FONT COLOR="#990000">		#define CP_MODE_TEXT 1		// Colour selection affects text colour
+		#define CP_MODE_BK   2		// Colour selection affects background colour (default)
+
+		void     SetSelectionMode(UINT nMode);
+		UINT     GetSelectionMode();
+</FONT></TT></PRE>
+
+Two new member functions have been introduced to set the text colour and the
+background colour directly:
+
+<PRE><TT><FONT COLOR="#990000">		void     SetBkColour(COLORREF crColourBk);
+		COLORREF GetBkColour();
+    
+		void     SetTextColour(COLORREF crColourText);
+		COLORREF GetTextColour();
+</FONT></TT></PRE>
+
+<p><b>SetColour</b>, <b>GetColour</b> and the the DDX-function
+will set and get the colour according to the current selection mode.
+<p>
+Some minor changes were made in the drawing routine (now faster and able to show a
+pressed combo box button), the messaging (CPN_SELCHANGE now sent to the parent).
+
+<p>
+The following changes have been made by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">
+Chris Maunder</a>.
+
+<p>The button now stays pressed while colour choosing is in progress, and the initial
+colour sent to the drop down colour chooser is highlighted as in Office 97. Oh - and 
+a line now separates the Custom Text area from the colours. weee!
+
+<p>Palette support is now included so things don't look so bad in 256 colours.
+
+<br><br>
+<p>See the updated <A HREF="colour_picker_demo.zip">sample</A> how to use the new
+functionality. 
+
+<a name="Latest"><H3>New in Version 1.2</H3></a>
+
+<p>
+The following changes have been made by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">
+Chris Maunder</a>.
+
+<p>The picker now looks a little more like the office 97 version, although it
+does not as yet support the "cool" look. Any number of colours can now be used
+in the picker (although these are still hardwired in).
+
+<p>Two new functions were added:
+
+<PRE><TT><FONT COLOR="#990000">		void SetDefaultText(LPCTSTR szDefaultText);
+		void SetCustomText(LPCTSTR szCustomText);
+</FONT></TT></PRE>
+
+<p>These specify the text (if any) that will appear in the "Default" selection
+area and the "Custom colour" selection area. See main section of this doc for
+details.
+
+<H3>New in Version 1.21</H3></a>
+
+<p>Minor bug fix when losing focus to another application. Fix suggested by
+Paul Wilkerson.
+
+
+<p>Updated 30 June 1998
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

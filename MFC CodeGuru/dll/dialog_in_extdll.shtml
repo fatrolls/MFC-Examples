@@ -1,0 +1,170 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DLL - Export dialogs in MFC Extension DLLs</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Export dialogs in MFC Extension DLLs</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:aleitner@usa.net">Andreas Leitner</A>.
+
+
+
+  <P>
+   It seems to be quite easy to export dialogs from mfc-extension dll's. Just export the corresponding class with AFX_EXT_CLASS and your done. If you do so with an application and a dll you create from scratch you probably even will succeed. But if you insert more and more resources in both the application and the dll, you will get some serious bugs. Here is the reason:
+  </P>
+  <P>
+   The regular way to identify a specific resource is its ID. This is an integer constant defined by the resource editor. Now say you have got a resource (which is a string) called ID_MY_TEXT.
+  
+<PRE><TT><FONT COLOR="#990000">  
+	CString strText;
+	strText.LoadString( ID_MY_TEXT );
+	afxDump << strText;
+</FONT></TT></PRE>
+
+<P>Code like this prints the resource-string into the debug window. Sometimes you may get a wrong text and this happens only if the text is in a mfc-extension-dll (mfc-ext-dll). The reason for this error lies in the way the application gets a resource. Since both the application and the dll can have a resource file, IDs can be the same for different resources. (Which is very likely because the VC resource editor starts numbering the IDs at a certain value for each module.)
+  </P>
+  <P>
+   As you may guess the order the application searches for a resource is first in your application and afterwards in your dll(s) (and finally in the mfc-resources). We need to change the search order for resources.
+  </P>
+  <P>
+   There is another article on this site which deals with dialog exports from DLL's. But that (as far as I have tested) works only in regular-mfc-dlls.
+  </P>
+  <P>
+   I wrote a class that (with a little change in the dll main source file and the dialog) will enable you to freely call your dialog from wherever you want. Like:
+  </P>
+<PRE><TT><FONT COLOR="#990000">  
+CMyApp::OnDLLDialog()
+{
+    CDLLDialog dlg;
+    dlg.DoModal();
+}
+</FONT></TT></PRE>
+
+<P>As you see there is no need for an export function (which would not be very OO).
+  </P>
+  <P>
+   I wrote a simple class that sets the resource handle of the dll at its construction and sets back the previous handle at its destruction.
+  </P>
+  <P>Here it is:
+
+<PRE><TT><FONT COLOR="#990000">
+/////////////////////////////////////////////////////////////////////////////////////////////
+// File ExtDllState.h
+//////////////////////////////////////////////////////////////////////////////////////////// 
+#ifndef __EXTDLLSTATE_H__
+#define __EXTDLLSTATE_H__
+ 
+class CEXTDLLState
+{
+public:
+  CEXTDLLState();
+  ~CEXTDLLState();
+protected:
+  HINSTANCE m_hInstOld;
+};
+ 
+#endif
+////////////////////////////////////////////////////////////////////////////////////////////
+File ExtDllState.cpp
+//////////////////////////////////////////////////////////////////////////////////////////// 
+CEXTDLLState::CEXTDLLState()
+{
+  m_hInstOld = AfxGetResourceHandle();
+  AfxSetResourceHandle(extensionDLL.hModule);
+}
+ 
+CEXTDLLState::~CEXTDLLState()
+{
+  AfxSetResourceHandle(m_hInstOld);
+}
+//////////////////////////////////////////////////////////////////////////////////////
+</FONT></TT></PRE>
+
+
+
+<P>Quite short as you may see, but there is a little more to do:
+  </P>
+  <P>
+   Copy the class texts from above into the files ExtDllState.h and ExtDllState.cpp. Put BOTH files in a public include directory where every project can reach it. In your DLL go to the main source file (which is named after the DLL). Here you find something like this:
+  </P>
+<PRE><TT><FONT COLOR="#990000">
+static AFX_EXTENSION_MODULE MY_DLL_NAMEDLL = { NULL, NULL };
+</FONT></TT></PRE>
+
+   where MY_DLL_NAME your dll name is (:
+  </P>
+  <P>
+   Replace this variable name with &quot;extensionDLL&quot;. Below this line put the following lines:
+  </P>
+<PRE><TT><FONT COLOR="#990000"> 
+    #include &quot;EXTDLLState.h&quot;
+    #include &quot;ExtDllState.cpp&quot;
+</FONT></TT></PRE>
+
+<P>Look for occurrences of MY_DLL_NAMEDLL in the rest of the file and replace it with extensionDLL. Occurrences can only happen in this file since the variable is static.
+  </P>
+  <P>
+   Now if you want to export a Dialog go into the source file of the corresponding class and include EXTDLLState.h again. Override the function DoModal() (Best done with the ClassWizard). You should get something like:
+  </P>
+
+<PRE><TT><FONT COLOR="#990000">
+int CMyDLLDlg::DoModal()
+{
+&nbsp; // TODO: Add your specialized code here and/or call the base class
+&nbsp; return CDialog::DoModal();
+}
+</FONT></TT></PRE>
+
+   replace the TODO line with &quot;CEXTDLLState State;&quot;. Now it looks like
+  </P>
+<PRE><TT><FONT COLOR="#990000">
+int CDLLDlgDlg::DoModal()
+{
+&nbsp; CEXTDLLState State;
+&nbsp; return CDialog::DoModal();
+}
+</FONT></TT></PRE>
+
+<P>With this approach you got a comfortable way to export classes that use resources. Be aware that if you need resources in other places too, to define CEXTDLLState before use. (Especially this must be done with modeless dialogs!!!).
+  </P>
+  <P>
+   You can use CEXTDLLState everywhere you want to access resources in mfc-ext-dlls. You will always get the right thing. I hope this will help some of you, since I had some troubles till I found an easy and nice way to do handle this.
+  </P>
+  
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

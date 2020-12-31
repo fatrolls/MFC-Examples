@@ -1,0 +1,84 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>PropertySheet - Using a modeless property sheet as a 'view' in a Frame </TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Using a modeless property sheet as a 'view' in a Frame
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:JohnCz@wittnet.com">John Z. Czopowik</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<center><IMG SRC="propview.gif" BORDER=0 ALIGN=BOTTOM></center>
+
+<!-- The article... -->
+
+<p> Using a Property Sheet as a 'view' inside a child frame window
+turns out to be quite simple.
+<ol>
+  <li>Derive your own class from CPropertySheet.
+  <li>Override virtual OnInitDialog as follows.
+</ol>
+
+<pre><tt><font COLOR="#990000">
+BOOL CModelessPpsh::OnInitDialog()
+{
+	m_bModeless = FALSE;
+	BOOL bResult = CPropertySheet::OnInitDialog();
+	m_bModeless = TRUE;
+
+	return bResult;
+}
+</font></tt></pre>
+
+<p>
+This will do the trick, fooling CPropertySheet Class into thinking it
+deals with modeless type.  The HELP button will be shown only if you
+handle help commands in your project. For example: ON_COMMAND(ID_HELP,
+CMDIFrameWnd::OnHelp) etc.
+
+<p>
+Download the <A HREF="propview.zip">sample</A>. 
+This is only an example, I did not deal with View and Document classes.
+The sample contains a  project, and BMP of the app in a 53K zip file:
+
+
+<!-- Remember to update this -->
+<p>Last updated: 30 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

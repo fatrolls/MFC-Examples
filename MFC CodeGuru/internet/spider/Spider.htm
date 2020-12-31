@@ -1,0 +1,312 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Section - Title</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Pre-emptive Multithreading Web Spider
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:sim@ayersoft.com">Sim Ayers</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG SRC="article.gif">&nbsp;<A HREF="spider.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p> The Win32 API supports applications that are pre-emptively multithreaded. 
+This is a very useful and powerful feature of Win32 in writing MFC Internet Spiders. 
+The SPIDER project is an example of how to use preemptive multithreading 
+to gather information on the Web using a SPIDER/ROBOT with the MFC WinInet classes.
+<p>
+This project produces a spidering software program that checks 
+Web sites for broken URL links. Link verification is done only on
+href links. It displays a continously updated list of URLs in a CListView
+that reports the status of the href link. The project could be used as a template for
+gathering and indexing information to be stored in a database file for queries. 
+<p>
+Search engines gather information on the Web using programs called Robots. 
+Robots (also called Web Crawlers, Spiders, Worms, Web Wanderers, and Scooters) 
+automatically gather and index information from around the Web, and then put 
+that information into databases. (Note that a Robot will index a page, and then
+follow the links on that page as a source for new URLs to index.) Users can than 
+construct queries to search these databases to find the information they want. 
+
+<p>
+By using preemptive multithreading, you can index a Web page of URL links,
+start a new thread to follow each new URL link for a new source of URLs to index.
+
+<p>
+The project uses the MDI CDocument used with a
+custom MDI child frame to display a  CEditView when downloading
+Web pages and a  CListView when checking URL links. The project also uses the CObArray, 
+CInternetSession, CHttpConnection, CHttpFile, and CWinThread MFC classes. The CWinThread
+class is used to produce multiple threads instead of using the Asynchronous mode
+in CInternetSession, which is realy left over from the winsock 16 bit windows platform.
+<p>
+
+The SPIDER project use's simple worker threads to check URL links or download a Web page.
+The CSpiderThread class is derived from the CWinThread class so each
+CSpiderThread object can use the CwinThread MESSAGE_MAP() function.
+By declaring a 	"DECLARE_MESSAGE_MAP()" in the CSpiderThread class the
+user interface is still responsive to user input. This means you can
+check the URL links on one Web server and at the same time download and open
+a Web page from another Web Server. The only time the user interface will become
+unresponsive to user input is when the thread count exceedes MAXIMUM_WAIT_OBJECTS
+which is defined as 64.
+<p>
+
+In the constructor for each new CSpiderThread object  we supply the ThreadProc function and the
+thread Paramters to be passed to the ThreadProc function.
+<FONT COLOR="#990000"><TT><PRE>
+
+	CSpiderThread* pThread;
+	pThread = NULL;
+	pThread = new CSpiderThread(CSpiderThread::ThreadFunc,pThreadParams); // create a new CSpiderThread object
+
+
+</tt></PRE></FONT>
+In the CSpiderThread constructor we set the	CWinThread* m_pThread pointer in the thread Paramters structure so we can point to the
+correct instance of this thread;
+<FONT COLOR="#990000"><TT><PRE>
+pThreadParams->m_pThread = this;
+</tt></PRE></FONT>
+
+
+The CSpiderThread ThreadProc Function 
+<FONT COLOR="#990000"><TT><PRE>
+
+// simple worker thread Proc function
+UINT CSpiderThread::ThreadFunc(LPVOID pParam)
+{
+	ThreadParams * lpThreadParams = (ThreadParams*) pParam;
+	CSpiderThread* lpThread = (CSpiderThread*) lpThreadParams->m_pThread;
+	
+	lpThread->ThreadRun(lpThreadParams);
+
+	// Use  SendMessage instead of PostMessage here to keep the current thread count
+	// Synchronizied. If the number of threads is greater than MAXIMUM_WAIT_OBJECTS (64)
+	// the program will be come	 unresponsive to user input
+
+	::SendMessage(lpThreadParams->m_hwndNotifyProgress,
+		WM_USER_THREAD_DONE, 0, (LPARAM)lpThreadParams);  // deletes lpThreadParams and decrements the thread count
+
+	return 0;
+}
+</tt></PRE></FONT>
+The structure passed to the CSpiderThread ThreadProc Function
+<FONT COLOR="#990000"><TT><PRE>
+typedef struct tagThreadParams
+{
+	HWND m_hwndNotifyProgress;
+	HWND m_hwndNotifyView;
+	CWinThread* m_pThread;
+	CString m_pszURL;
+	CString m_Contents;
+	CString m_strServerName;
+	CString m_strObject;
+	CString m_checkURLName;
+	CString m_string;
+	DWORD m_dwServiceType;
+	DWORD  m_threadID;
+	DWORD m_Status;
+	URLStatus m_pStatus;
+	INTERNET_PORT  m_nPort;
+	int m_type;
+	BOOL m_RootLinks;
+
+}ThreadParams; 
+
+</tt></PRE></FONT>
+
+After the CSpiderThread object has been created we use the CreatThread function to start
+the execution of the new thread object.
+
+<FONT COLOR="#990000"><TT><PRE>
+
+	if (!pThread->CreateThread())   //  Starts execution of a CWinThread object
+	{
+		AfxMessageBox("Cannot Start New Thread");
+		delete pThread;
+		pThread = NULL;
+		delete pThreadParams;
+		return FALSE;
+	}    
+</tt></PRE></FONT>
+
+Once the new thread is running we use the ::SendMessage function to send messages to the CDocument's-> CListView with the status structure of the URL link.
+<FONT COLOR="#990000"><TT><PRE>
+
+	if(pThreadParams->m_hwndNotifyView != NULL)
+		::SendMessage(pThreadParams->m_hwndNotifyView,WM_USER_CHECK_DONE, 0, (LPARAM) &pThreadParams->m_pStatus);
+</tt></PRE></FONT>
+Sturcture used for URL status.
+<FONT COLOR="#990000"><TT><PRE>
+
+typedef struct tagURLStatus
+{
+	CString m_URL;
+	CString m_URLPage;
+	CString m_StatusString;
+	CString m_LastModified;
+	CString m_ContentType;
+	CString m_ContentLength;
+	DWORD	m_Status;
+}URLStatus, * PURLStatus;
+</tt></PRE></FONT>
+
+Each new thread creats a new  CMyInternetSession (derived from CInternetSession) object with EnableStatusCallback set to TRUE,
+so we can check the status on all  InternetSession callbacks. The dwContext ID for callbacks is set to the 
+thread ID.
+
+<FONT COLOR="#990000"><TT><PRE>
+
+BOOL CInetThread::InitServer()
+{
+	
+	try{
+		m_pSession = new CMyInternetSession(AgentName,m_nThreadID);
+		int ntimeOut = 30;  // very important, can cause a Server time-out if set to low
+							// or hang the thread if set to high.
+		/*
+		The time-out value in milliseconds to use for Internet connection requests. 
+		If a connection request takes longer than this timeout, the request is canceled.
+		The default timeout is infinite. */
+		m_pSession->SetOption(INTERNET_OPTION_CONNECT_TIMEOUT,1000* ntimeOut);
+		
+		/* The delay value in milliseconds to wait between connection retries.*/
+		m_pSession->SetOption(INTERNET_OPTION_CONNECT_BACKOFF,1000);
+		
+		/* The retry count to use for Internet connection requests. If a connection 
+		attempt still fails after the specified number of tries, the request is canceled.
+		The default is five. */
+		m_pSession->SetOption(INTERNET_OPTION_CONNECT_RETRIES,1);
+        m_pSession->EnableStatusCallback(TRUE);
+
+		}
+		catch (CInternetException* pEx)
+		{
+			// catch errors from WinINet
+			//pEx->ReportError();
+			m_pSession = NULL;
+			pEx->Delete();
+
+			return FALSE ;
+		}
+
+	return TRUE;
+}
+
+</tt></PRE></FONT>
+
+The key to using the MFC WinInet classes in a single or multithread program is to use a try 
+and catch block statement surrounding all MFC WinInet class functions.
+The internet is very unstable at times or the web page you are requesting no longer exist, which
+is guaranteed to throw a CInternetException Error.
+<FONT COLOR="#990000"><TT><PRE>
+
+
+	try
+	{
+			// some MFC WinInet class function
+	}
+	catch (CInternetException* pEx)
+	{
+		// catch errors from WinINet
+		//pEx->ReportError();
+		pEx->Delete();
+
+		return FALSE ;
+	}
+ </tt></PRE></FONT>
+
+<p>
+The maximum count of threads is initially set to 64, 
+but you can configure it to any number between 1 and 100. 
+A number that is too high will result in failed connections, 
+which means you will have to recheck the URL links. 
+<p>
+A rapid fire succession of HTTP requests in a /cgi-bin/ directory could bring a server to it's knees. 
+The SPIDER program sends out about 4 HTTP request a second. 4 * 60 = 240  a minute. This can also
+bring a server to it's knees. Be carefull about what server you are checking. Each server has
+a server log with the requesting Agent's IP address that requested the Web file. You might get some nasty
+email from a angry Web Server administrator.
+<p>
+You can prevent any directory from being indexed by creating a robots.txt file for 
+that directory. This mechanism is usually used to protect /cgi-bin/ directories. CGI scripts take more
+server resources to retrieve.
+<p>
+When the SPIDER program checks URL links it's goal is not requested too many documents too quickly. 
+The SPIDER program adheres somewhat to the standard for robot exclusion.
+This standard is a joint agreement between robot developers, that allows WWW sites to limit
+what URL's the robot requests. By using the standard to limit access, the robot will not 
+retrieve any documents that Web Server's wish to disallow.
+<p>
+Before checking the Root URL, the program checks to see if there is a robots.txt file
+in the main directory. If the SPIDER program finds a robots.txt file the program will
+abort the search. The program also checks for the META tag in all Web pages. If it finds
+a  META NAME="ROBOTS" CONTENT ="NOINDEX,NOFOLLOW"   tag it will not index the URLs
+on that page.
+<p>
+Build:
+<br>  Windows 95
+<br>  MFC/VC++ 5.0
+<br>  WinInet.h  dated 9/25/97
+<br>  WinInet.lib dated  9/16/97
+<br>  WinInet.dll  dated  9/18/97
+
+<p>
+Problems:
+<br> can't seem to keep the thread count below 64 at all times.
+<br> limit of 32,767 URL links in the CListView
+<br> wouldn't parse all URLs correctly,will crash program occasionally using CString functions with complex URLs.
+<p>
+Resources:
+<br>Internet tools - Fred Forester 
+<br><a href="http://www.amazon.com/exec/obidos/ISBN=0201634929/programcomA/">Multithreading Applications in Win32</a> 
+<br> <a href ="http://www.oreilly.com/catalog/multithread/">Win32 Multithreaded Programming</a>
+<!-- Remember to update this -->
+<p>Last updated: 25 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

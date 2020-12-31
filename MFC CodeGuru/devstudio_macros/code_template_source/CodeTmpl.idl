@@ -1,0 +1,60 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+//                           Public Domain.
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+//
+//  File     :   CodeTmpl.idl
+//
+//  Author   :   Darren Richards
+//
+//  Date     :   20th March 98
+//
+//  Synopsis :   IDL description of CodeTmpl add-in object.
+//               (ATL Wizard Generated)
+//
+////////////////
+
+/////////////////////////////////////////////////////////////////////////////
+//
+//  imports
+//
+///////////////
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(9EDADF6F-C069-11D1-A446-0000E8D2CD0A),
+		dual,
+		helpstring("ICTAddIn Interface"),
+		pointer_default(unique)
+	]
+	interface ICTAddIn : IDispatch
+	{
+		[id(1), helpstring("Insert code template.")] HRESULT CTInsCodeTmpl();
+	};
+[
+	uuid(9EDADF62-C069-11D1-A446-0000E8D2CD0A),
+	version(1.0),
+	helpstring("CodeTmpl Add-in Type Library")
+]
+library CODETMPLLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	importlib("devshl.dll");
+	importlib("ide\devdbg.pkg");
+
+	[
+		uuid(9EDADF70-C069-11D1-A446-0000E8D2CD0A),
+		helpstring("CodeTmpl - Code Template Add-in")
+	]
+	coclass CTAddIn
+	{
+		[default] interface ICTAddIn;
+	};
+};

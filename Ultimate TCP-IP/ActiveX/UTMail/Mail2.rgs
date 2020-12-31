@@ -1,0 +1,35 @@
+HKCR
+{
+	UTMail.Mail_B.1 = s 'Dundas Mail Control 4.0 (Blocking Mode)'
+	{
+		CLSID = s '{FCA758B5-D299-11d3-A550-0080C858F182}'
+		'Insertable'
+	}
+	UTMail.Mail_B = s 'Dundas Mail Control 4.0 (Blocking Mode)'
+	{
+		CLSID = s '{FCA758B5-D299-11d3-A550-0080C858F182}'
+		CurVer = s 'UTMail.Mail_B.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {FCA758B5-D299-11d3-A550-0080C858F182} = s 'Dundas Mail Control 4.0 (Blocking Mode)'
+		{
+			ProgID = s 'UTMail.Mail_B.1'
+			VersionIndependentProgID = s 'UTMail.Mail_B'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '132497'
+			}
+			'TypeLib' = s '{FCA758B3-D299-11d3-A550-0080C858F182}'
+			'Version' = s '1.4'
+		}
+	}
+}

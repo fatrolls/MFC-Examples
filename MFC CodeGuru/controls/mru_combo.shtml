@@ -1,0 +1,95 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - A Combo box to access the MRU file list</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A Combo box to access the MRU file list
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:arthura@connection.com">Arthur Amshukov</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="mru_combo.zip">Download Source Code</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>	I want to offer two simple classes: AIComboBox3 and AIComboBoxFontFamily.
+First provides MRU access, like MS Word's ComboBox, for selecting fonts in a toolbar.
+Second is just an example.
+
+<p>You can use AIComboBox3 on the following way:
+
+<FONT COLOR="#990000"><TT><PRE>
+	AIComboBox3 mycombo(AIComboBox3::DrawDoubleLine, 5);
+	mycombo.Create(this, rect, 100, WS_CHILD|WS_CLIPSIBLINGS|WS_VISIBLE);
+</tt></PRE></FONT>
+
+<p>A couple words about parameters. The first parametr is a type (DrawDoubleLine or
+DrawWaveLine) of the line, which will separate MRU part from the main part of the entity 
+of the ComboBox. The second parameter is quantity in MRU part.
+
+<p>The parameters for the function Create are obvious:
+
+<FONT COLOR="#990000"><TT><PRE>
+CWnd* parent, Crect& rect, int id_resource, DWORD style
+</tt></PRE></FONT>
+
+<p>The next class AIComboBoxFontFamily just illustrates usage of the previous class.
+
+<FONT COLOR="#990000"><TT><PRE>
+	AIComboBoxFontFamily mycombo(AIComboBox3::DrawDoubleLine, 5, 100, CF_NOVECTORFONTS|CF_NOSIMULATIONS, _T("Arial"),  DEFAULT_CHARSET);
+	mycombo.Create(this, rect, 100, WS_CHILD|WS_CLIPSIBLINGS|WS_VISIBLE);
+</tt></PRE></FONT>
+
+<p>The first three parameters are the same as above, fourth parameter is a set of flags
+for function EnumFontFamiliesEx. The fifth parameter is face name of a font. You can
+specify NULL, if you want to obtain information for all available fonts, and the last 
+parameter is character set. Of course, MS Word 97 does not use ComboBox directly. My 
+attempt just illustrates more one usage of ComboBox. 
+
+<!-- Remember to update this -->
+<p>Last updated: 9 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,61 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - Mail Checker</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Mail Checker</FONT></H3></CENTER>
+<HR>
+
+
+
+
+<p>This sample was contributed by <a
+href="mailto:aasif@khi.compol.com">Asif Rasheed</a></p>
+
+<p>Here is an implementation of my POP class. It retrieves mail
+statistics from any POP server. User can define the time duration
+for rechecking the mail, </p>
+
+<p>The application was written using MFC 4.2 and Visual C++
+5.0,&nbsp; It uses </p>
+
+<ul>
+    <li>WinInet class wrapper</li>
+    <li>CTrayIcon class by Chris Maunder (Chris, you did really a
+        nice work). </li>
+</ul>
+
+<p>I am releasing this app into the public domain with no
+restrictions.</p>
+
+<p><a href="../cgi-bin/redirect.pl?url=http://209.66.99.126/internet/mailchecker.zip">Download
+Files</a> The zip file is 53K. </p>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi-bin/counters/counter.cgi"--></FONT></CENTER>
+</BODY>
+</HTML>

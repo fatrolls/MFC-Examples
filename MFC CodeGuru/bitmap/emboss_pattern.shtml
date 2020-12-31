@@ -1,0 +1,250 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Apply a 3D bitmap pattern on text or other shapes</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#A0A099">Apply a 3D bitmap pattern on text or other shapes</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+
+
+
+
+
+Suppose you have some text and instead of using a single color to draw the text you want the text to be drawn using a bitmap pattern. This is best explained with pictures. The left most image is some text and a simple shape. The image in the middle is the bitmap we want to use to fill the interior of the letters and the shape. The result is shown in the third image. So, this topic will basically give you the code to achieve this result. As a bonus you get a 3D effect by making the text and the shape appear raised. The code also allows you to get a sunk-in effect rather than a raised effect.
+
+<p><img src="pattern.gif" width="573" height="184"></p>
+
+
+<p>The basic working of the EmbossPattern() function is similar to the Emboss() function that we have already covered in the previous topic. It draws the bitmap pattern to the result bitmap and uses a monochrome bitmap of the letters and shape to change the non-filled in area of the bitmap to the background color. It also creates a monochrome bitmap that represents the edges that need to be highlighted and it creates another monochrome bitmap of the edges that need a shadow. These two bitmaps are then used to draw the highlight and the shadow. 
+
+<p>To understand how this code works, study the explanation given in the previous topic <a href="emboss.shtml">"Emboss text and other shape on your bitmap"</a>.
+
+
+<PRE><TT><FONT COLOR="#990000">
+//prototype for default arguments - add this to your header file
+HBITMAP EmbossPattern( HBITMAP hBitmap, HBITMAP hbmPattern, HPALETTE hPal, 
+			BOOL bRaised = TRUE,
+			COLORREF clrHighlight = GetSysColor( COLOR_BTNHIGHLIGHT ), 
+			COLORREF clrShadow = GetSysColor( COLOR_BTNSHADOW ) );
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// EmbossPattern	- Creates a 3D effect and draws the pattern on the foreground
+//			  but leaves the background alone
+// Returns		- A new bitmap containing the resulting effect
+// hBitmap		- Bitmap that contains the basic text & shapes
+// hbmBackGnd		- Contains the color image 
+// hPal			- Handle of palette associated with hbmBackGnd
+// bRaised		- True if raised effect is desired. False for sunken effect
+// xDest		- x coordinate - used to offset hBitmap
+// yDest		- y coordinate - used to offset hBitmap
+// clrHightlight	- Color used for the highlight edge
+// clrShadow		- Color used for the shadow
+//
+// Note			- 1. Neither of the bitmap handles passed in should be selected 
+//			  in a device context.
+//			  2. The pixel at 0,0 in hBitmap is considered the background color
+//
+HBITMAP EmbossPattern( HBITMAP hBitmap, HBITMAP hbmPattern, HPALETTE hPal, 
+			   BOOL bRaised, COLORREF clrHighlight, COLORREF clrShadow)
+{
+	const DWORD PSDPxax = 0x00B8074A;
+	BITMAP   bmInfo ;
+	HBITMAP  hbmOld, hbmShadow, hbmHighlight, hbmResult, hbmOldMem, hbmMono ;
+	HBRUSH   hbrPat ;
+	HDC      hDC, hColorDC, hMonoDC, hMemDC ;
+
+	if( !bRaised )
+	{
+		// Swap the highlight and shadow color
+		COLORREF clrTemp = clrShadow;
+		clrShadow = clrHighlight;
+		clrHighlight = clrTemp;
+	}
+	
+	// We create three monochrome bitmaps. One of them will contain the
+	// monochrome version of the bitmap primary bitmap. One will contain
+	// highlighted edge and the third will contain the shadow. These
+	// bitmaps are then used to paint the highlight and shadow on the
+	// background image.
+	
+	hbmResult = NULL ;
+	hDC = GetDC( NULL ) ;
+
+	// Create a compatible DCs
+	hMemDC = ::CreateCompatibleDC( hDC );
+	hMonoDC = CreateCompatibleDC( hDC );
+	hColorDC = CreateCompatibleDC( hDC );
+
+	if( hMemDC == NULL || hMonoDC == NULL || hColorDC == NULL )
+	{
+		if( hMemDC ) DeleteDC( hMemDC );
+		if( hMonoDC ) DeleteDC( hMonoDC );
+		if( hColorDC ) DeleteDC( hColorDC );
+
+		return NULL;
+	}
+
+	// Select the Pattern image into memory DC so that we can draw it
+	hbmOldMem = (HBITMAP)::SelectObject( hMemDC, hbmPattern );
+	
+	// Get dimensions of the pattern image
+	BITMAP bm;
+	::GetObject( hbmPattern, sizeof( bm ), &bm );
+	
+	
+	
+	// Create the monochrome and compatible color bitmaps 
+	GetObject( hBitmap, sizeof( BITMAP ), (LPSTR) &bmInfo ) ;
+	hbmMono =
+		CreateBitmap( bmInfo.bmWidth, bmInfo.bmHeight, 1, 1, NULL ) ;
+	hbmShadow =
+		CreateBitmap( bmInfo.bmWidth, bmInfo.bmHeight, 1, 1, NULL ) ;
+	hbmHighlight =
+		CreateBitmap( bmInfo.bmWidth, bmInfo.bmHeight, 1, 1, NULL ) ;
+	hbmResult =
+		CreateCompatibleBitmap( hDC, bmInfo.bmWidth, bmInfo.bmHeight ) ;
+	
+	hbmOld = (HBITMAP)SelectObject( hColorDC, hBitmap ) ;
+	
+	// Set background color of bitmap for mono conversion
+	// We assume that the pixel in the top left corner has the background color
+	COLORREF clrBackGnd = GetPixel( hColorDC, 10, 10 );
+	SetBkColor( hColorDC, clrBackGnd ) ;
+	
+	// Create the monochrome version of the bitmap.
+	hbmMono = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmMono ) ;
+	BitBlt( hMonoDC, 0, 0, bmInfo.bmWidth, bmInfo.bmHeight,
+		hColorDC, 0, 0, SRCCOPY ) ;
+	hbmMono = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmMono ) ;
+
+	// Create the highlight bitmap.
+	hbmHighlight = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmHighlight ) ;
+	PatBlt( hMonoDC, 0, 0, bmInfo.bmWidth, bmInfo.bmHeight, WHITENESS ) ;
+	BitBlt( hMonoDC, 0, 0, bmInfo.bmWidth - 1, bmInfo.bmHeight - 1,
+		hColorDC, 1, 1, SRCCOPY ) ;
+	BitBlt( hMonoDC, 0, 0, bmInfo.bmWidth, bmInfo.bmHeight,
+		hColorDC, 0, 0, MERGEPAINT ) ;
+	hbmHighlight = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmHighlight ) ;
+
+	
+	// create the shadow bitmap
+	hbmShadow = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmShadow ) ;
+	PatBlt( hMonoDC, 0, 0, bmInfo.bmWidth, bmInfo.bmHeight, WHITENESS ) ;
+	BitBlt( hMonoDC, 1, 1, bmInfo.bmWidth-1, bmInfo.bmHeight-1,
+		hColorDC, 0, 0, SRCCOPY ) ;
+	BitBlt( hMonoDC, 0, 0, bmInfo.bmWidth, bmInfo.bmHeight,
+		hColorDC, 0, 0, MERGEPAINT ) ;
+	hbmShadow = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmShadow ) ;
+	
+	// Now let's start working on the final image
+	SelectObject( hColorDC, hbmResult ) ;
+	// Select and realize the palette if one is supplied
+	if( hPal && GetDeviceCaps(hDC, RASTERCAPS) & RC_PALETTE )
+	{
+		::SelectPalette( hColorDC, hPal, FALSE );
+		::RealizePalette(hColorDC);
+	}
+	// Draw the pattern image - tile it if needed
+	for( int w = 0; w < bmInfo.bmWidth; w += bm.bmWidth )
+	{
+		for( int h = 0; h < bmInfo.bmHeight; h += bm.bmHeight )
+			BitBlt(hColorDC, w, h, bm.bmWidth, bm.bmWidth, hMemDC, 
+					0, 0,SRCCOPY);
+	}
+	
+	// Restore the old bitmap in the hMemDC
+	::SelectObject( hMemDC, hbmOldMem );
+	
+	
+	// Set the background and foreground color for the raster operations
+	SetBkColor( hColorDC, RGB(0,0,0) ) ;
+	SetTextColor( hColorDC, RGB(255,255,255) ) ;
+
+	hbrPat = CreateSolidBrush( clrBackGnd ) ;
+	hbrPat = (HBRUSH)SelectObject( hColorDC, hbrPat ) ;
+	hbmMono = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmMono );
+	BitBlt( hColorDC, 0, 0, bmInfo.bmWidth, bmInfo.bmHeight,
+		hMonoDC, 0, 0, PSDPxax ) ;
+	DeleteObject( SelectObject( hColorDC, hbrPat ) ) ;
+	hbmMono = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmMono ) ;
+
+	
+	// Set the background and foreground color for the raster operations
+	SetBkColor( hColorDC, RGB(255,255,255) ) ;
+	SetTextColor( hColorDC, RGB(0,0,0) ) ;
+
+
+	// blt the highlight edge
+	hbrPat = CreateSolidBrush( clrHighlight ) ;
+	hbrPat = (HBRUSH)SelectObject( hColorDC, hbrPat ) ;
+	hbmHighlight = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmHighlight ) ;
+	BitBlt( hColorDC, 0, 0, bmInfo.bmWidth, bmInfo.bmHeight,
+		hMonoDC, 0, 0, PSDPxax ) ;
+	DeleteObject( SelectObject( hColorDC, hbrPat ) ) ;
+	hbmHighlight = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmHighlight ) ;
+	
+	// blt the shadow edge
+	hbrPat = CreateSolidBrush( clrShadow ) ;
+	hbrPat = (HBRUSH)SelectObject( hColorDC, hbrPat ) ;
+	hbmShadow = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmShadow ) ;
+	BitBlt( hColorDC, 0, 0, bmInfo.bmWidth, bmInfo.bmHeight,
+		hMonoDC, 0, 0, PSDPxax ) ;
+	DeleteObject( SelectObject( hColorDC, hbrPat ) ) ;
+	hbmShadow = (HBITMAP)SelectObject( hMonoDC, (HGDIOBJ) hbmShadow ) ;
+	
+	// select old bitmap into color DC 
+	SelectObject( hColorDC, hbmOld ) ;
+	
+	DeleteObject( (HGDIOBJ) hbmMono ) ;
+	DeleteObject( (HGDIOBJ) hbmShadow ) ;
+	DeleteObject( (HGDIOBJ) hbmHighlight ) ;
+	
+	ReleaseDC( NULL, hDC ) ;
+
+	return ( hbmResult ) ;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

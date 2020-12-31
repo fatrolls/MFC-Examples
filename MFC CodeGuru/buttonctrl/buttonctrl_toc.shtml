@@ -1,0 +1,64 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Button Controls - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various windows controls">
+   <META Name="keywords" Content="">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Button Controls - Table of Contents</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<HR>
+
+<p>This section is being maintained by <a href = "mailto:chris.maunder@codeguru.com">Chris Maunder</a>.
+<br>
+
+
+<UL>
+<LI><A HREF="btn_circular_button.shtml">Circular Push Button - Kunix</A></LI>
+<LI><A HREF="round_buttons.shtml">Round Buttons - Chris Maunder</A></LI>
+<LI><A HREF="bitmap_text_button.shtml">PushButton with bitmap & text - Michael Santoro</A></LI>
+<LI><A HREF="animated_button.shtml">AVI - Animated button - Oscar - R.Voska</A></LI>
+<LI><A HREF="triangle_button.shtml">Triangular Button - Janus Kjempff</A></LI>
+<LI><A HREF="button_color_picker.shtml">Button color picker (like Excel) - Benoit Dufort</A></LI>
+<LI><A HREF="button_color_picker2.shtml">A Color Picker - Luis Ortega</A></LI>
+<LI><A HREF="tracklook_button.shtml">CTrackLookButton, An IE 3.0 style button</A></LI>
+<LI><A HREF="color_button.shtml">Colored buttons - Bob Ryan</a></li> 
+<LI><A HREF="flat_button.shtml">Flat owner drawn buttons - Girish Bharadwaj</a></li> 
+<LI><A HREF="flat_button2.shtml">Flat (cool look) buttons (2) - Roger Onslow</a></li> 
+<LI><A HREF="3d_text.shtml">3D Text - Roger Onslow</a></li> 
+<LI><A HREF="mow.shtml">Motif Style option Widget - Suhas Kelkar</a></li>
+<LI><a href="stretch_round_button.shtml">Stretched rounded buttons - Philippe Dykmans</a></li> 
+<LI><a href="trick_button.shtml">An Unclickable Button - Chris Maunder</a></li> 
+<li><a href="nonrectangle_button.shtml">Non-rectangular Buttons - Hilton Campbell</a>
+</UL>
+
+
+<HR>
+
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

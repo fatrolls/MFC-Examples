@@ -1,0 +1,74 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: MEDIT.RC
+//
+#include "wpp.h"
+
+AppMenu MENU { 
+	POPUP "&File" { 
+		MENUITEM FileNew
+		MENUITEM FileOpen
+		MENUITEM SEPARATOR
+		MENUITEM FileSave
+		MENUITEM FileSaveAs
+		MENUITEM FileClose
+		MENUITEM SEPARATOR
+		MENUITEM FilePrint
+		MENUITEM SEPARATOR
+		MENUITEM FileExit
+	}
+
+	POPUP "&Edit" { 
+		MENUITEM EditUndo
+		MENUITEM SEPARATOR
+		MENUITEM EditCut
+		MENUITEM EditCopy
+		MENUITEM EditPaste
+		MENUITEM SEPARATOR
+		MENUITEM EditDelete
+	}
+
+	POPUP "&Window" { 
+		MENUITEM	WindowCascade
+		MENUITEM	WindowTile
+		MENUITEM	WindowArrange
+		MENUITEM	WindowCloseAll
+	}
+}
+
+AppAccel ACCELERATORS
+BEGIN
+    AccFileNew
+    AccFileOpen
+    AccFilePrint
+    AccFileSave
+    AccEditUndo
+    AccEditCut
+    AccEditCopy
+    AccEditPaste
+    AccWinCascade
+    AccWinTile
+    AccWinNext
+	 AccMemStats
+END
+
+STRINGTABLE {
+	WPIDM_EXIT, "Exit from program."
+	WPIDM_FILENEW, "Create a new file."
+	WPIDM_FILEOPEN, "Open an existing file."
+	WPIDM_FILESAVE, "Save current file on disk."
+	WPIDM_FILESAVEAS, "Save current file with a different name."
+	WPIDM_FILEPRINT, "Print current file."
+	WPIDM_FILECLOSE, "Close current file."
+	WPIDM_EDITUNDO, "Undo previous edit operation."
+	WPIDM_EDITCUT, "Delete selected text and transfer it to the clipboard."
+	WPIDM_EDITCOPY, "Copy selected text to the clipboard."
+	WPIDM_EDITPASTE, "Insert contents of clipboard at current location."
+	WPIDM_EDITDELETE, "Delete selected text without transferring it to the clipboard."
+	WPIDM_WINCASCADE, "Arrange windows like a card file."
+	WPIDM_WINTILE,		"Arrange windows like bathroom tiles."
+	WPIDM_WINARRANGE, "Arrange icons neatly."
+	WPIDM_WINCLOSEALL,"Close all windows."
+}
+
+#include "wpprint.dlg"

@@ -1,0 +1,12 @@
+TARGETNAME=usbiso
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+TARGETLIBS=\
+		..\..\..\generic\obj$(BUILD_ALT_DIR)\$(CPU)\generic.lib \
+		$(DDK_LIB_PATH)\usbd.lib
+USE_PDB=1
+INCLUDES=..\..\..\generic
+
+SOURCES= 	DriverEntry.cpp \
+		readwrite.cpp \
+		stddcls.cpp

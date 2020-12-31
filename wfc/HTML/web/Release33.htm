@@ -1,0 +1,56 @@
+<HTML>
+<!-- $Revision: 1 $ -->
+<H1>Release 33</H1>
+In summary, I've fixed some design problems
+with XML document creation and discovered where
+Microsoft screwed me again in the networking API.<P>
+I'm happy with the features of this release so I will
+now turn my attention to UNICODE problems. Look for
+Release 34 to address UNICODE issues.
+<H2>What's New</H2>
+<DL COMPACT>
+<DT><B><A HREF="CXMLArchive.htm">CXMLArchive</A></B><DD>This class
+is modeled after the CArchive MFC class. It allows
+you to serialize (or persist) objects to and from
+XML documents.
+<DT><B><A HREF="wfc_parse_iso_8601_string.htm">wfc_parse_iso_8601_string</A></B><DD>
+This function parses ISO8601 dates into a CTime or COleDateTime object.
+<DT><B>XMLUser Sample</B><DD>This
+sample program shows you how to use the
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+classes to
+create a document. It dumps the user database from
+one (or more) machines to an
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+file. It shows how to use the
+<A HREF="CXMLArchive.htm">CXMLArchive</A> class.
+</DL>
+<H2>Bug Fixes/Enhancements</H2>
+<B><A HREF="CXMLD.htm">CExtensibleMarkupLanguageDocument</A></B> - 
+Reviewed for const correctness.<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> - 
+Made it a lot easier (and possible) to create
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+documents. I also reviewed it for const correctness.
+I got so caught up in trying to get Release 32 out the door,
+I released a brain-dead object. You could parse
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+documents but you couldn't create them. Pretty silly.
+<P>
+
+<B><A HREF="CNetwork.htm">CNetwork</A></B> - Added a new protected data memeber
+because Microsoft changed (again) the personality of a networking API.<P>
+
+<B><A HREF="CSimpleSocket.htm">CSimpleSocket</A></B> - 
+Thanks go to zschen (zschen@ms.chttl.com.tw) for founding a bug in
+the Write( CString ) method where I wasn't sending the trailing NULL.
+It is fixed now.<P>
+
+<HR>
+<A HREF="Release32.htm">Release 32 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS>Internet: wfc@pobox.com</ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

@@ -1,0 +1,180 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_RCDATA
+//
+
+IDB_MB_YES_HOVER_BUTTON RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\YES_mo.gif"
+IDB_MB_CANCEL_HIT_BUTTON RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\cancel_hit.gif"
+IDB_MB_CANCEL_HOVER_BUTTON RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\cancel_mo.gif"
+IDB_MB_CONFIRMATION_ICON RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\confirm_icon.gif"
+IDB_MB_ERROR_ICON       RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\error_icon.gif"
+IDB_MB_INFORMATION_ICON RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\info_icon.gif"
+IDB_MB_NO_BUTTON        RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\no.gif"
+IDB_MB_NO_HIT_BUTTON    RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\no_hit.gif"
+IDB_MB_NO_HOVER_BUTTON  RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\no_mo.gif"
+IDB_MB_OK_BUTTON        RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\ok.gif"
+IDB_MB_OK_HIT_BUTTON    RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\ok_hit.gif"
+IDB_MB_OK_HOVER_BUTTON  RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\ok_mo.gif"
+IDB_MB_TOP_BAND         RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\top-band.gif"
+IDB_MB_WARNING_ICON     RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\warning_icon.gif"
+IDB_MB_YES_BUTTON       RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\YES.gif"
+IDB_MB_YES_HIT_BUTTON   RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\YES_hit.gif"
+IDB_MB_CANCEL_BUTTON    RT_RCDATA DISCARDABLE   "Gifs\\MessageBox\\cancel.gif"
+IDB_MM_RE_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\05_RE_normal.gif"
+IDB_MM_CI_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\01_CI_hover.gif"
+IDB_MM_CI_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\01_CI_normal.gif"
+IDB_MM_IT_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\02_IT_hover.gif"
+IDB_MM_IT_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\02_IT_normal.gif"
+IDB_MM_OT_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\03_OT_hover.gif"
+IDB_MM_OT_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\03_OT_normal.gif"
+IDB_MM_BI_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\04_BI_hover.gif"
+IDB_MM_BI_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\04_BI_normal.gif"
+IDB_MM_RE_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\05_RE_hover.gif"
+IDB_CI_CUSTOMERID_STATIC RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\customerID.gif"
+IDB_CI_COMPANYNAME_STATIC RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\companyName.gif"
+IDB_CI_CONTACTPERSON_STATIC RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\contactPerson.gif"
+IDB_CI_ADDRESS1_STATIC  RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\address1.gif"
+IDB_CI_ADDRESS2_STATIC  RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\address2.gif"
+IDB_CI_PHONER_STATIC    RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\phoneR.gif"
+IDB_CI_PHONEO_STATIC    RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\phoneO.gif"
+IDB_CI_CELL_STATIC      RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\cell.gif"
+IDB_CI_FAX_STATIC       RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\fax.gif"
+IDB_CI_EMAIL_STATIC     RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\email.gif"
+IDB_IT_CUSTOMERID_STATIC RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\customerID.gif"
+IDB_IT_SERIALNUMBER_STATIC RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\serialNumber.gif"
+IDB_IT_DATE_STATIC      RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\date.gif"
+IDB_IT_CATEGORY_STATIC  RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\category.gif"
+IDB_IT_SIZE_STATIC      RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\size.gif"
+IDB_IT_WEIGHT_STATIC    RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\weight.gif"
+IDB_IT_QUANTITY_STATIC  RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\quantity.gif"
+IDB_IT_STORAGELOCATION_STATIC RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\storageLocation.gif"
+IDB_DROPDOWN_NORMAL     RT_RCDATA DISCARDABLE   "Gifs\\Common\\dropdown_normal.gif"
+IDB_DROPDOWN_HIT        RT_RCDATA DISCARDABLE   "Gifs\\Common\\dropdown_hit.gif"
+IDB_BITMAP_SCROLLBAR_UP RT_RCDATA DISCARDABLE   "Gifs\\Common\\scroll_up.gif"
+IDB_BITMAP_SCROLLBAR_BACK RT_RCDATA DISCARDABLE   "Gifs\\Common\\scroll_back.gif"
+IDB_BITMAP_SCROLLBAR_DOWN RT_RCDATA DISCARDABLE   "Gifs\\Common\\scroll_down.gif"
+IDB_BITMAP_SCROLLBAR_BUTTON RT_RCDATA DISCARDABLE   "Gifs\\Common\\scroll.gif"
+IDB_OT_CUSTOMERID_STATIC RT_RCDATA DISCARDABLE   "Gifs\\OutwardTransactions\\customerID.gif"
+IDB_OT_SERIALNUMBER_STATIC RT_RCDATA DISCARDABLE   "Gifs\\OutwardTransactions\\serialNumber.gif"
+IDB_OT_DATE_STATIC      RT_RCDATA DISCARDABLE   "Gifs\\OutwardTransactions\\date.gif"
+IDB_OT_GATEPASSNUMBER_STATIC RT_RCDATA DISCARDABLE   "Gifs\\OutwardTransactions\\gatePassNumber.gif"
+IDB_OT_QUANTITY_STATIC  RT_RCDATA DISCARDABLE   "Gifs\\OutwardTransactions\\quantity.gif"
+IDB_BI_CUSTOMERID_STATIC RT_RCDATA DISCARDABLE   "Gifs\\BillingInfo\\customerID.gif"
+IDB_BI_SERIALNUMBER_STATIC RT_RCDATA DISCARDABLE   "Gifs\\BillingInfo\\serialNumber.gif"
+IDB_BI_RATE_STATIC      RT_RCDATA DISCARDABLE   "Gifs\\BillingInfo\\rate.gif"
+IDB_BI_FREQUENCY_STATIC RT_RCDATA DISCARDABLE   "Gifs\\BillingInfo\\frequency.gif"
+IDB_BI_DATE_STATIC      RT_RCDATA DISCARDABLE   "Gifs\\BillingInfo\\date.gif"
+IDB_BI_PAYMENTMODE_STATIC RT_RCDATA DISCARDABLE   "Gifs\\BillingInfo\\paymentMode.gif"
+IDB_BI_BILLNUMBER_STATIC RT_RCDATA DISCARDABLE   "Gifs\\BillingInfo\\billNumber.gif"
+IDB_SAVEDETAILS         RT_RCDATA DISCARDABLE   "Gifs\\Common\\savedetails.gif"
+IDB_SAVEDETAILS_HOVER   RT_RCDATA DISCARDABLE   "Gifs\\Common\\savedetails_mo.gif"
+IDB_SAVEDETAILS_HIT     RT_RCDATA DISCARDABLE   "Gifs\\Common\\savedetails_hit.gif"
+IDB_MM_BACKGROUND       RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\background.gif"
+IDB_CI_TOPBAND          RT_RCDATA DISCARDABLE   "Gifs\\CustomerInfo\\topband.gif"
+IDB_IT_TOPBAND          RT_RCDATA DISCARDABLE   "Gifs\\InwardTransactions\\topband.gif"
+IDB_OT_TOPBAND          RT_RCDATA DISCARDABLE   "Gifs\\OutwardTransactions\\topband.gif"
+IDB_BI_TOPBAND          RT_RCDATA DISCARDABLE   "Gifs\\BillingInfo\\topband.gif"
+IDB_TB_STRIP            RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\TopBandStrip.gif"
+IDB_TB_TITLEMAIN        RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\title_main.gif"
+IDB_TB_PIPE             RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\pipe.gif"
+IDB_TB_SUBTITLECI       RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\subtitle_customer.gif"
+IDB_TB_SUBTITLEIT       RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\subtitle_IT.gif"
+IDB_TB_SUBTITLEOT       RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\subtitle_OT.gif"
+IDB_TB_SUBTITLEBI       RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\subtitle_BI.gif"
+IDB_LN_STRIP            RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\LeftNavStrip.gif"
+IDB_COMMONSTRIP         RT_RCDATA DISCARDABLE   "Gifs\\Common\\CommonStrip.gif"
+IDB_LN_CI_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\CI_normal.gif"
+IDB_LN_IT_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\IT_normal.gif"
+IDB_LN_OT_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\OT_normal.gif"
+IDB_LN_BI_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\BI_normal.gif"
+IDB_LN_RE_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\RE_normal.gif"
+IDB_TB_CLOSE            RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\close.gif"
+IDB_LN_CI_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\CI_hover.gif"
+IDB_LN_IT_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\IT_hover.gif"
+IDB_LN_OT_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\OT_hover.gif"
+IDB_LN_BI_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\BI_hover.gif"
+IDB_TB_SUBTITLERE       RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\subtitle_RE.gif"
+IDB_LN_RE_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\RE_hover.gif"
+IDB_UNCHECK             RT_RCDATA DISCARDABLE   "Gifs\\Common\\wotick.gif"
+IDB_CHECK               RT_RCDATA DISCARDABLE   "Gifs\\Common\\tick.gif"
+IDB_RE_IT_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\Reports\\view_IT_normal.gif"
+IDB_RE_OT_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\Reports\\view_OT_normal.gif"
+IDB_RE_CI_NORMAL        RT_RCDATA DISCARDABLE   "Gifs\\Reports\\view_CI_normal.gif"
+IDB_LN_OT_BG            RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\OT_bg.gif"
+IDB_LN_RE_BG            RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\RE_bg.gif"
+IDB_LN_BI_BG            RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\BI_bg.gif"
+IDB_LN_IT_BG            RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\IT_bg.gif"
+IDB_LN_CI_BG            RT_RCDATA DISCARDABLE   "Gifs\\LeftNav\\CI_bg.gif"
+IDB_MM_STRIP            RT_RCDATA DISCARDABLE   "Gifs\\MainMenu\\mainStrip.gif"
+IDB_RE_CI_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\Reports\\view_CI_mo.gif"
+IDB_RE_IT_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\Reports\\view_IT_mo.gif"
+IDB_RE_OT_HOVER         RT_RCDATA DISCARDABLE   "Gifs\\Reports\\view_OT_mo.gif"
+IDB_TB_HOME             RT_RCDATA DISCARDABLE   "Gifs\\TopBand\\icon_home.gif"
+IDB_DELETE_NORMAL       RT_RCDATA DISCARDABLE   "Gifs\\Common\\delete_normal.gif"
+IDB_DELETE_HIT          RT_RCDATA DISCARDABLE   "Gifs\\Common\\delete_hit.gif"
+IDB_MODIFY_NORMAL       RT_RCDATA DISCARDABLE   "Gifs\\Common\\modify_normal.gif"
+IDB_MODIFY_HIT          RT_RCDATA DISCARDABLE   "Gifs\\Common\\modify_hit.gif"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

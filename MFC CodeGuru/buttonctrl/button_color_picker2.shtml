@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Controls - A Color Picker</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">A Color Picker</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:lortega@opentech.com.ve">Luis Ortega</a></p>
+<!-- start -->
+
+<p>This color picker behaves just like the ones in the "Appearance"
+tab of the Display properties dialog. Here is how the button looks
+like:</p>
+
+<p align="center"><img src="button_color_picker2.jpg"></p>
+
+<p>The picker has a "most recently used colors" feature. If you click
+on the "Other" button and select a color that is not in the current
+set, the least recently used color gets replaced.</p>
+
+<p>It is very easy to use.</p>
+
+<h4>How to include in your project</h4>
+
+<ol>
+<li>Copy ColorBtn.cpp and ColorBtn.h into your project directory.
+<li>Copy ColorBtn.rc into your res directory.
+<li>Add this line to your rc2 file:<br>
+	#include "ColorBtn.rc"</li>
+<li>Add ColorBtn.cpp to your project.
+</ol>
+
+<h4>How to use</h4>
+
+<ol>
+<li>Create a button on your dialog. Mark it as "Owner Draw".
+<li>Declare a variable in your dialog class, like this:<br>
+	CColorBtn colorbtn;
+<li>At OnInitDialog, call SubclassDlgItem, like this:<br>
+	colorbtn.SubclassDlgItem(IDC_BUTTON,this); // Use your button ID here
+<li>Repeat the process for each button you want. You'll end up with as many member variables as buttons.
+</ol>
+<p>You can set and read the selected color using the "currentcolor" member variable.</p>
+
+
+<h4>How to make your color table persistent</h4>
+
+<p>When the buttons start up, the color table is set to the standard 20 static colors. After using them for a while, those colors might have changed. If you want to preserve the modified color table, follow one of the these procedures.</p>
+
+<p>In a single application, all buttons share a single color table. Because of this, you don't have to do this for each button. Just use the static version of the desired function once (e.g. call CColorBtn::Load()).</p>
+
+<p>There are two ways to make your color table persistent. Application-wise and Document-wise. </p>
+
+<p>Application-wise means that you store the color table in the registry. This way, all documents share the same color table. CColorBtn provides two static functions to do this:</p>
+
+<ul>
+<li><strong>CColorBtn::Load()</strong><br>
+Gets the colors from the registry
+<li><strong>CColorBtn::Save()</strong><br>
+Stores the colors in the registry
+</ul>
+<p>These functions require that you call SetRegistryKey() before using them.</p>
+
+<p>Document-wise means that you store the color table in a file along
+with the rest of the document data. This way, each document has its
+own color table. Note that even in Document-wise fashion, all the
+buttons you use in a single application share their color table (this
+was at the artists' petition, I don't know, they seem to like it this
+way). CColorBtn provides two functions to do this:</p>
+
+<ul>
+<li><strong>Serialize(CArchive &amp;ar)</strong><br>
+Serializes the color table, you call this in your document's Serialize() function.
+<li><strong>Reset()</strong><br>
+Resets the color table back to the standard 20 static colors. You call this in your document's OnNewDocument() function.
+</ul>
+
+
+<p>Download <a href="button_color_picker2_source.zip">Source.</a></p>
+
+<P>Posted on: April 11, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

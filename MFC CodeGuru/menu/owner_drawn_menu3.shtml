@@ -1,0 +1,385 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Menu - Owner Drawn Menu with Icons (3)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Owner Drawn Menu with Icons (3)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:corkum@rocscience.com">Brent Corkum</A>. Brent has
+also made this page available at his web site at 
+<A HREF="http://www.rocscience.com/~corkum/BCMenu.html">http://www.rocscience.com/~corkum/BCMenu.html</A>
+where it is likely to get updated earlier than this page.
+
+
+
+<P><IMG SRC="owner_drawn_menu3.gif" ALIGN="LEFT" HSPACE=12 WIDTH=154 HEIGHT=241>
+
+
+&nbsp;<A HREF="bcmenu23.zip">Download Source Code and Example</A>
+<br>
+
+<p>This class, <b>BCMenu</b>, implements owner drawn menus derived from the CMenu class. The 
+purpose of which is to mimic the menu style used in Visual C++ 5.0 and MS Word. I can't 
+take credit for all the code, some portions of it were taken from code supplied by Ben
+Ashley and Girish Bharadwaj. The difference between their codes and this one is quite
+simple, this one makes it very easy to build those cool menus with bitmaps into your 
+application. I've removed the Icon loading stuff and replaced it with Bitmaps. The 
+bitmaps allow you to use the 16X15 toolbar bitmaps directly from your toolbars in the
+resource editor. As well, there is no scaling of the bitmaps so they always look good.
+You can also load Bitmap resources and define bitmaps for your check marks. I've also
+added the default checkmark drawing stuff, separators, proper alignment of keyboard 
+accelerator text, keyboard shortcuts, proper alignment of popup menu items, proper
+system color changes when the Display Appearance changes, plus bug fixes to the Ben
+Ashley's LoadMenu function for complex submenu systems. I made quite a few other
+modifications as well, too many to list or remember. I also use the disabled
+bitmap dithering function of Jean-Edouard Lachand-Robert to create the disabled
+state bitmaps. I must admit, it does a much better job then the DrawState() function. 
+If you find any bugs, memory leaks, or just better ways of doing things, please let me 
+know. I used Visual C++ 5.0 and I have not tested compatibility with earlier VC versions. 
+I've tested it on Win 95/NT at various resolutions and color palette sizes.</H4>
+
+<p>Well, enough of the boring stuff, lets talk about implementation. To make it easy 
+I'm first going to list step by step the method for implementing the menus into a MDI 
+application:
+
+<OL>
+
+<LI>Create your MDI application using the App Wizard.</LI>
+<LI>Insert the BCMenu.cpp and BCMenu.h files into your Workspace.</LI>
+<LI>Add the following public member functions to your CMainFrame class in the MainFrm.h header file:</LI>
+<FONT COLOR="#990000"><PRE>HMENU NewMenu();
+HMENU NewDefaultMenu();</PRE>
+</FONT><LI>Add the following public member variables to your CMainFrame class in the MainFrm.h header file:</LI>
+<FONT COLOR="#990000"><PRE>BCMenu m_menu,m_default;</PRE>
+</FONT><LI>Add the line:</LI>
+<FONT COLOR="#990000"><PRE>#include "BCMenu.h"</PRE>
+</FONT><P>to the top of the MainFrm.h header file.</P>
+<LI>Open the Mainfrm.cpp implementation file and add the NewMenu and NewDefaultMenu member 
+functions as listed below. <B>IMPORTANT:</B> Make sure you replace the IDR_MYMENUTYPE menu 
+id in the below LoadMenu call to the menu id associated with the menu's in your 
+application. Look in the menus folder of the Resources view.</LI>
+
+<FONT COLOR="#990000"><TT><PRE>
+HMENU CMainFrame::NewMenu()
+{
+  static UINT toolbars[]={
+      IDR_MAINFRAME,
+      IDR_TOOLBAR
+  };
+
+  // Load the menu from the resources
+  m_menu.LoadMenu(IDR_MYMENUTYPE);  // ****replace IDR_MENUTYPE with your menu ID****
+
+  // Use ModifyODMenu to add a bitmap to a menu options.The first parameter
+  // is the menu option text string.If it's NULL, keep the current text
+  // string.The second option is the ID of the menu option, or the menu
+  // option text (can use this for adding bitmaps to popup options) to change.
+  // The third option is the resource ID of the bitmap.This can also be a
+  // toolbar ID in which case the class searches the toolbar for the
+  // appropriate bitmap.Only Bitmap and Toolbar resources are supported.
+  m_menu.ModifyODMenu(NULL,ID_WINDOW_NEW,IDB_WINDOW_NEW);
+  m_menu.ModifyODMenu(NULL, "&amp;Tile",IDB_WINDOW_TILE);
+
+  // Another method for adding bitmaps to menu options is through the
+  // LoadToolbars member function.This method allows you to add all
+  // the bitmaps in a toolbar object to menu options (if they exist).
+  // The first function parameter is an array of toolbar id's.
+  // The second is the number of toolbar id's. There is also a
+  // function called LoadToolbar that just takes an id.
+  m_menu.LoadToolbars(toolbars,2);
+
+  return(m_menu.Detach());
+}
+
+HMENU CMainFrame::NewDefaultMenu()
+{
+  m_default.LoadMenu(IDR_MAINFRAME);
+  m_default.LoadToolbar(IDR_MAINFRAME);
+  return(m_default.Detach());
+}
+</PRE></FONT></tt>
+
+<LI>Edit the InitInstance() member function of your CWinApp derived class and add 
+following highlighted code in the position noted:</LI>
+
+<FONT COLOR="#990000"><TT><PRE>
+// create main MDI Frame window
+CMainFrame* pMainFrame = new CMainFrame;
+if (!pMainFrame-&gt;LoadFrame(IDR_MAINFRAME))
+   return FALSE;
+m_pMainWnd = pMainFrame;
+
+// This code replaces the MFC created menus with the Ownerdrawn versions 
+pDocTemplate-&gt;m_hMenuShared=pMainFrame-&gt;NewMenu();
+pMainFrame-&gt;m_hMenuDefault=pMainFrame-&gt;NewDefaultMenu();
+
+// This simulates a window being opened if you don't have
+// a default window displayed at startup
+pMainFrame-&gt;OnUpdateFrameMenu(pMainFrame-&gt;m_hMenuDefault);
+
+// Parse command line for standard shell commands, DDE, file open
+CCommandLineInfo cmdInfo;
+ParseCommandLine(cmdInfo);
+</PRE></font></tt>
+
+<LI>Add the message handlers for the WM_MEASUREITEM, WM_MENUCHAR, and WM_INITMENUPOPUP 
+messages to your CMainFrame class. Do this by right clicking on the CMainFrame class in 
+the ClassView and selecting <I>Add Windows Message Handler</I>. Choose the <I>Window</I> 
+option from the <I>Filter for messages available to class</I> combo box. Select the 
+message and add the handler. Then edit the handler and add the below code.</LI>
+
+<FONT COLOR="#990000"><TT><PRE>
+//This handler ensure that the popup menu items are drawn correctly
+void CMainFrame::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct) 
+{
+  BOOL setflag=FALSE;
+  if(lpMeasureItemStruct-&gt;CtlType==ODT_MENU){
+    if(IsMenu((HMENU)lpMeasureItemStruct-&gt;itemID)){
+      CMenu* cmenu=CMenu::FromHandle((HMENU)lpMeasureItemStruct-&gt;itemID);
+      if(m_menu.IsMenu(cmenu)||m_default.IsMenu(cmenu)){
+        m_menu.MeasureItem(lpMeasureItemStruct);
+        setflag=TRUE;
+      }
+    }
+  }
+  if(!setflag)CMDIFrameWnd::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
+}
+
+//This handler ensures that keyboard shortcuts work
+LRESULT CMainFrame::OnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu) 
+{
+  LRESULT lresult;
+  if(m_menu.IsMenu(pMenu)||m_default.IsMenu(pMenu))
+    lresult=BCMenu::FindKeyboardShortcut(nChar, nFlags, pMenu);
+  else
+    lresult=CMDIFrameWnd::OnMenuChar(nChar, nFlags, pMenu);
+  return(lresult);
+}
+
+//This handler updates the menus from time to time
+void CMainFrame::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu) 
+{
+  CMDIFrameWnd::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
+  if(!bSysMenu){
+    if(m_menu.IsMenu(pPopupMenu)||m_default.IsMenu(pPopupMenu))
+      BCMenu::UpdateMenu(pPopupMenu);
+  }
+}
+</PRE></FONT></TT>
+
+<LI>If you are debugging or you are mixing standard menus with the BCMenu's (maybe you 
+have different Document templates using the standard menu's) then you should turn on 
+RTTI in the project settings.</LI>
+
+</OL>
+
+<p>Well, that's it. Compile the program and look in the File menu. You should see the bitmaps.
+I've tried the menus with context menus and they seem to work fine. I also have a small 
+<A HREF="ftp://ftp.rocscience.com/bcmenu12.zip">sample program</A> (source+exe) that also 
+uses bitmaps for check marks and bitmaps for a few menu options and has a context menu 
+when you right click in a view.
+
+<H4>If you want to add the menus to a SDI application:</H4>
+
+<OL>
+<LI>Create your SDI application using the App Wizard.</LI>
+<LI>Insert the BCMenu.cpp and BCMenu.h files into your Workspace.</LI>
+<LI>Add the following public member function to your CMainFrame class in the MainFrm.h header file:</LI>
+
+<FONT COLOR="#990000"><TT><PRE>
+HMENU NewMenu();
+</font></pre></tt>
+
+<LI>Add the following public member variables to your CMainFrame class in the MainFrm.h header file:</LI>
+<FONT COLOR="#990000"><TT><PRE>
+BCMenu m_menu;
+</font></pre></tt>
+
+<LI>Add the line:</LI>
+<FONT COLOR="#990000"><TT><PRE>
+#include "BCMenu.h"
+</font></pre></tt>
+<P>to the top of the MainFrm.h header file.</P>
+
+<LI>Open the Mainfrm.cpp implementation file and add the NewMenu and NewDefaultMenu member 
+functions as listed below. <B>IMPORTANT:</B> Make sure you replace the IDR_MAINFRAME menu 
+id in the below LoadMenu call to the menu id associated with the menu's in your 
+application. Look in the menus folder of the Resources view.</LI>
+<FONT COLOR="#990000"><TT><PRE>
+HMENU CMainFrame::NewMenu()
+{
+  // Load the menu from the resources
+  m_menu.LoadMenu(IDR_MAINFRAME);  // ****replace IDR_MAINFRAME with your menu ID****
+
+  // Use ModifyODMenu to add a bitmap to a menu options.The first parameter
+  // is the menu option text string.If it's NULL, keep the current text
+  // string.The second option is the ID of the menu option to change.
+  // The third option is the resource ID of the bitmap.This can also be a
+  // toolbar ID in which case the class searches the toolbar for the
+  // appropriate bitmap.Only Bitmap and Toolbar resources are supported.
+  m_menu.ModifyODMenu(NULL,ID_ZOOM,IDB_ZOOM);
+
+  // Another method for adding bitmaps to menu options is through the
+  // LoadToolbar member function.This method allows you to add all
+  // the bitmaps in a toolbar object to menu options (if they exist).
+  // The function parameter is an the toolbar id.
+  // There is also a function called LoadToolbars that takes an
+  // array of id's.
+  m_menu.LoadToolbar(IDR_MAINFRAME);
+
+  return(m_menu.Detach());
+}
+</font></pre></tt>
+
+<LI>Edit the InitInstance() member function of your CWinApp derived class and add 
+following highlighted code in the position noted:</LI>
+
+<FONT COLOR="#990000"><TT><PRE>
+  // Dispatch commands specified on the command line
+  if (!ProcessShellCommand(cmdInfo))
+     return FALSE;
+
+  CMenu* pMenu = m_pMainWnd-&gt;GetMenu();
+  if (pMenu)pMenu-&gt;DestroyMenu();
+  HMENU hMenu = ((CMainFrame*) m_pMainWnd)-&gt;NewMenu();
+  pMenu = CMenu::FromHandle( hMenu );
+  m_pMainWnd-&gt;SetMenu(pMenu);
+  ((CMainFrame*)m_pMainWnd)-&gt;m_hMenuDefault = hMenu;
+</font></pre></tt>
+
+<LI>Add the message handlers for the WM_MEASUREITEM, WM_MENUCHAR, and WM_INITMENUPOPUP 
+messages to your CMainFrame class. Do this by right clicking on the CMainFrame class in 
+the ClassView and selecting <I>Add Windows Message Handler</I>. Choose the <I>Window</I> 
+option from the <I>Filter for messages available to class</I> combo box. Select the 
+message and add the handler. Then edit the handler and add the MDI code from above. 
+Replace the references to CMDIFrameWnd to CFrameWnd.</LI>
+
+<LI>If you are debugging or you are mixing standard menus with the BCMenu's (maybe you 
+have different Document templates using the standard menu's) then you should turn on 
+RTTI in the project settings.</LI>
+
+</OL>
+
+<FONT SIZE=5 COLOR="#ff0000"><P>Improvements and Bug Fixes</P>
+</FONT><FONT SIZE=4><P>Version 2.3 (courtesy of Stefan Kuhr)</P>
+<OL>
+
+</FONT><LI>Conversions from Unicode to ANSI and vice versa are now being made through the helper macros described in MFC Tech Note 059. Memory allocations for the conversions are now being made primarily on the stack, which is much safer and faster on Win32 than on the heap. And the code looks much better and shorter.</LI>
+<LI>The Unicode String in the BCMenuData is now to be allocated on the heap thus having only the memory footprint it needs to have. BCMenuData has new member functions for accessing the now private String variable wchar_t *m_szMenuText.</LI>
+<LI>Corrected a few situations in BCMenu code where portable constant strings (_T()) should be used.</LI>
+<LI>Improved look on the old shell. It really looks nice now on WinNT 3.51 and Win32s. You can now run the sample on NT3.51.</LI>
+<LI>The function 'IsNewShell' is now replaced by 'IsShellType'. BCMenu has a new static member function BOOL IsNewShell(void).</LI>
+<LI>Added Unicode project settings to the sample.</LI>
+<LI>Changed strings in the sample to portable versions by use of the _T() macro.</LI>
+<LI>Set warning level of all project settings in the sample to the highest level (W4) and corrected everything to compile cleanly without any warning being thrown by VC 5.</LI></OL>
+
+<FONT SIZE=4><P>Version 2.2</P>
+<OL>
+
+</FONT><LI>Fixed a memory leak in AddBitmapToImageList. This only affected floating popup menu's (right mouse button).</LI></OL>
+
+<FONT SIZE=4><P>Version 2.1</P>
+<OL>
+
+</FONT><LI>Was not deleting the disabled bitmap in DrawItem causing a resource leak. This has been fixed.</LI></OL>
+
+<FONT SIZE=4><P>Version 2.0</P>
+<OL>
+
+</FONT><LI>Version 1.9 had some problems with the new disabled look under different desktop color schemes. This has been fixed.</LI>
+<LI>There was a bug in the image list stuff. For non-default desktop color schemes, the 3D colors were not being done correctly to match the toolbar.</LI></OL>
+
+<FONT SIZE=4><P>Version 1.9</P>
+<OL>
+
+</FONT><LI>The disabled look of the menu icons now match the disabled look of the toolbar buttons in Joerg Koenig's flat toolbar class available from <A HREF="http://www.codeguru.com/">http://www.codeguru.com</A>. If you prefer the old look you can get it back through a call to the SetDisableOldStyle() member function.</LI></OL>
+
+<FONT SIZE=4><P>Version 1.8</P>
+<OL>
+
+</FONT><LI>Made a modification to support OCX controls.</LI></OL>
+
+<FONT SIZE=4><P>Version 1.7</P>
+<OL>
+
+</FONT><LI>Added UNICODE and Win32s old shell support (WIN 3.1 and WINNT 3.5).</LI>
+<LI>Added integrated radio and checked buttons.</LI>
+<LI>Now using AfxLoadSysColorBitmap to load the bitmaps. </LI>
+<LI>Now using the WM_INITMENUPOPUP message handler to update the menus instead of the OnUpdateWindowNew. </LI></OL>
+
+<FONT SIZE=4><P>Version 1.6</P>
+<OL>
+
+</FONT><LI>Multiple LoadMenu/DestroyMenu combinations crashed. This has been fixed.</LI></OL>
+
+<FONT SIZE=4><P>Version 1.5</P>
+<OL>
+
+</FONT><LI>Can now easily add bitmaps to popup options. See the CMainFrame::Newmenu member function in the sample application for implementation instructions.</LI>
+<LI>The UpdateMenu member function will now work to update menu's after a dynamic change in the menu's options text.</LI></OL>
+
+<FONT SIZE=4><P>Version 1.4</P>
+<OL>
+
+</FONT><LI>More work on the sizing and position of Accelerator text on menus.</LI></OL>
+
+<FONT SIZE=4><P>Version 1.3</P>
+<OL>
+
+</FONT><LI>Keyboard shortcuts did not work correctly with the active view menu options in the MDI Window popup.</LI>
+<LI>Keyboard shortcuts did not work correctly with the most-recently-used (MRU) file list. Menu options after this list could not be selected with keyboard shortcuts.</LI>
+<LI>For some reason MFC treats MeasureItem results differently for first level popups. The expanded tabs size calculation (GetTabbedTextExtent) works well for submenus but MFC seems to pad too much space onto the first level popups. I tried to be smart and reduce the size manually, but this messed up submenus. I've gone back to the original tabbed size calculation in MeasureItem.</LI></OL>
+
+<FONT SIZE=4><P>Version 1.2</P>
+<OL>
+
+</FONT><LI>The memory used to store the checkmark bitmaps was not being released when the menu was destroyed. This resulted in a memory leak. This has been fixed. </LI>
+<LI>Added the AddFromToolBar member function for loading all the bitmaps from a toolbar into menu options (if they exist). If you want ALL the bitmaps from a toolbar to be mapped to menu options, use this function. This replaces the many ModifyODMenu function calls that you would have to make. If you only want a few of the toolbar options mapped to menu options then you have to use the ModifyODMenu method.</LI></OL>
+
+<FONT SIZE=4><P>Version 1.1</P>
+<OL>
+
+</FONT><LI>When the user typed a keyboard shortcut that didn't exist the program crashed. </LI>
+<LI>The first item, if it contained a bitmap, was not drawn correctly when keyboard shortcuts were used. </LI>
+<LI>Large fonts caused some alignment problems, this has been fixed. </LI>
+<LI>The AppendODMenu and ModifODMenu member functions were prototyped incorrectly. </LI>
+<LI>The LoadMenu(LPCTSTR lpszResourceName) overloaded member function didn't work. </LI>
+<LI>Added RTTI checking in the code if it's defined in the project Settings. This is both helpful for debugging and is required if you mix standard menus with BCMenu's. </LI>
+<LI>Added Word 97 radio button style for checked menu options with bitmaps.</LI></OL>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

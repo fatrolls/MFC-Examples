@@ -1,0 +1,87 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Tooltip for disabled controls (2)</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Tooltip for disabled controls (2)
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:ray@apso.com">Ray Auchterlounie</A>.
+
+<!-- The article... -->
+<p>As an alternative to the <a href="tooltip_for_disabled_control.shtml">method</a>
+suggested by Ran Almog, you can replicate MFCs fix in the dialog's PreTranslateMessage override.
+
+<p>The MFC code to look at is in the function <tt>RelayToolTipMessage</tt> in the
+file TOOLTIP.CPP.
+
+<p>This method has the advantage that it uses the tooltip itself to find
+the child window, the relevant CToolTipCtrl function is
+CToolTipCtrl::OnWindowFromPoint()  - which has other fixes for special
+cases as well as the disabled control case. 
+
+<p><b>Example</b>: if using the DeveloperStudio Tooltip component, change the
+block it adds in <tt>PreTranslateMessage</tt> from:
+
+<FONT COLOR="#990000"><TT><PRE>
+	// CG: The following block was added by the ToolTips component.
+	{
+		// Let the ToolTip process this message.
+		m_tooltip.RelayEvent(pMsg);
+	}
+</tt></PRE></FONT>
+
+<p>to:
+
+<FONT COLOR="#990000"><TT><PRE>
+	// CG: The following block was added by the ToolTips component.
+	{
+		// transate the message based on TTM_WINDOWFROMPOINT
+		MSG msg = *pMsg;
+		msg.hwnd = (HWND)m_tooltip.SendMessage(TTM_WINDOWFROMPOINT, 0, (LPARAM)&msg.pt);
+		CPoint pt = pMsg->pt;
+		if (msg.message >= WM_MOUSEFIRST && msg.message <= WM_MOUSELAST)
+			::ScreenToClient(msg.hwnd, &pt);
+		msg.lParam = MAKELONG(pt.x, pt.y);
+
+		// Let the ToolTip process this message.
+		m_tooltip.RelayEvent(&msg);
+	}
+</tt></PRE></FONT>
+
+<!-- Remember to update this -->
+<p>Last updated: 22 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

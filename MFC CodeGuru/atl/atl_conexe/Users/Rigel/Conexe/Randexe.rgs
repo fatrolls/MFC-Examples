@@ -1,0 +1,22 @@
+HKCR
+{
+	Randexe.Randexe.1 = s 'Randexe Class'
+	{
+		CLSID = s '{AB2E5110-F9F8-11D1-A7D8-0060083404B6}'
+	}
+	Randexe.Randexe = s 'Randexe Class'
+	{
+		CurVer = s 'Randexe.Randexe.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AB2E5110-F9F8-11D1-A7D8-0060083404B6} = s 'Randexe Class'
+		{
+			ProgID = s 'Randexe.Randexe.1'
+			VersionIndependentProgID = s 'Randexe.Randexe'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{AB2E5103-F9F8-11D1-A7D8-0060083404B6}'
+		}
+	}
+}

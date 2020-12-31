@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Kirk Stowell">
+<title>Toolbar - Table of Contents</title>
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" bgproperties="fixed">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><h1><font COLOR="#a0a0ff">Toolbar</font></h1>
+    </td>
+    <td></td>
+    <td width="10%"></td>
+    <td align="right"> <!--#exec cgi="/cgi/ads.cgi"-->
+    </td>
+  </tr>
+</table>
+<hr>
+
+<!-- Author Email --><!-- Author Name -->
+<p>This section is now maintained by <a HREF="mailto:kstowel@sprynet.com">Kirk Stowell</a>.
+</p>
+
+
+<ul>
+Flat Toolbars
+  <li><a HREF="devstudio_like.shtml">Flat Toolbar (requires IE3+) - Roger Onslow</a></li>
+  <li><a HREF="flatbar.shtml">Another Flat ToolBar (does not require MSIE) - Joerg Koenig</a></li>
+  <li><a HREF="fix_for_ctoolbar.shtml">A Fix for CToolBar with IE4 - Roger Onslow</a></li>
+  <li><a HREF="VCMenu.shtml">Visual Studio/Office 97 style Flat Toolbar and Dockable Menu bar - Tony Hoyle</a></li>
+  <li><a HREF="demo_toolbar.shtml">Flat Toolbar with gripper handle - Kirk Stowell</a></li>
+</ul>
+
+<ul>
+Placing Controls in Toolbars
+  <li><a HREF="ctrls_in_tb.shtml">Place Controls on ToolBars - Randy More</a></li>
+  <li><a HREF="combo_in_flatbar.shtml">Using ComboBox on a Flat Toolbar - Kenneth Carter</a></li>
+  <li><a HREF="demo_toolbar.shtml#bookmark_1">Adding controls to flat toolbars - Kirk Stowell</a></li>
+  <li><a HREF="demo_toolbar.shtml#bookmark_2">Adding drop arrows to flat toolbars - Kirk Stowell</a></li>
+</ul>
+
+<ul>
+Customizing Toolbars
+  <li><a HREF="customizable_tb.shtml">Customizable toolbar - Doug Keith</a></li>
+  <li><a HREF="custom_tb.shtml">Customizable toolbar (2) - Stas Levin</a></li>
+  <li><a HREF="tb_custmsg_tips.shtml">Custom status messages and tooltips - Pål K. Tønder</a></li>
+  <li><a HREF="no_sysmenu.shtml">Remove system menu from floating toolbar - Sushil Saxena</a></li>
+</ul>
+
+<ul>
+Miscellaneous
+  <li><a HREF="256colors_in_toolbar.shtml">Using 256 color bitmaps in toolbar - Kevin Bentley</a></li>
+  <li><a HREF="demo_toolbar.shtml#bookmark_4">IE4 style toolbar ( grayscale to color ) uses 24-bit color - Kirk Stowell</a></li>
+  <li><a HREF="display_dialog_tooltips.shtml">How to display tooltips for a toolbar in a dialog - Randy More</a></li>
+  <li><a HREF="TextToolBar.shtml">Displaying text on a Toolbar - Michael Brannan</a></li>
+  <li><a HREF="demo_toolbar.shtml#bookmark_3">Docking toolbars all on the same row - Kirk Stowell</a></li>
+</ul>
+
+<hr align="center">
+
+<table COLS="3" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="34%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font> </td>
+    <td WIDTH="33%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+</body>
+</html>

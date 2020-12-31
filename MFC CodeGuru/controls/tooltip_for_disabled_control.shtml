@@ -1,0 +1,150 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Tooltip for disabled controls</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Tooltip for disabled controls</FONT></H3></CENTER>
+<HR>
+
+This sample was contributed by <A HREF="mailto:almog@notes.iet.co.il">Ran Almog</A>.
+
+
+<P>Tooltip Handler (located in TooltipHandler.h/cpp) is a utility function
+that handles MFC bug - disabled controls don't show tooltip. All that the
+programmer has to do is overwrite PreTranslateMessage() of the dialog box
+class, and to pass to the handler an array of the controls that may be
+disabled, a number of controls in the array and a pointer to the tooltip
+class - and it works !
+
+
+<H4>Header file</H4>
+
+<PRE><TT><FONT COLOR="#990000">
+#ifndef _TOOLTIP_HANDLER_H
+#define _TOOLTIP_HANDLER_H
+
+#include <afxcmn.h>
+
+// This function is a patch that overcomes MFC bug of
+// tooltips that don't show up on in disabled controls 
+// if modal dialogs. Call this function in your overidable of
+// PreTranslateMessage, before calling the inherited one.
+void HandleTooltipsActivation(MSG *pMsg, CWnd *This, CWnd *disabledCtrls[], int numOfCtrls, CToolTipCtrl *pTooltip);
+
+#endif
+</FONT></TT></PRE>
+
+<H4>CPP file</H4>
+
+<PRE><TT><FONT COLOR="#990000">
+#include "TooltipHandler.h"
+
+void HandleTooltipsActivation(MSG *pMsg, CWnd *This, CWnd *disabledCtrls[], int numOfCtrls, CToolTipCtrl *pTooltip)
+{
+      CRect  rect;
+      POINT  pt;
+
+      HWND   hWnd     = pMsg->hwnd;
+      LPARAM lParam   = pMsg->lParam;
+
+      //---------------------------------------------------------------------------
+      //      Disabled control do not show tool tips, in modal dialog
+      //
+      //
+      //      The hwnd of the WM_MOUSEMOVE above a disabled control
+      //      is the hWnd of the Dialog itself, this confuse the tooltip
+      //
+      //      To correct this, if we get WM_MOUSEMOVE and the hwnd is the dialog's hwnd
+      //
+      //      We check on all the controls that are Visible, but disabled if the point is in their
+      //  rectangle.
+      //
+      // In this case we alter the msg to the controls hWnd and coordinates before
+      // Relaying it to the toolTip control
+      //----------------------------------------
+
+    
+      if( (pMsg->message == WM_MOUSEMOVE) && (pMsg->hwnd == This->m_hWnd)) {
+
+              //---------------------------
+              // The point is in the dialog 
+              // client coordinates
+              //---------------------------
+              pt.x = LOWORD(pMsg->lParam);  // horizontal position of cursor 
+              pt.y = HIWORD(pMsg->lParam);  // vertical position of cursor 
+            
+              for (int i = 0; i < numOfCtrls; i++) {
+                            
+                              //---------------------------------
+                              // rect is the control rectangel in
+                              // Dialog client coordinates
+                              //----------------------------------
+                              disabledCtrls[i]->GetWindowRect(&rect);
+                              This->ScreenToClient(&rect);                                        
+                    
+                              if(rect.PtInRect(pt) ) {
+                                      //----------------------------------------------------------------
+                                      // The mouse is inside the control
+                                      //
+                                      // 1. We change the Msg hwnd    to the controls hWnd
+                                      // 2. We change the Msg lParam  to the controls client coordinates
+                                      //
+                                      //----------------------------------------------------------------
+
+                                      pMsg->hwnd = disabledCtrls[i]->m_hWnd;
+                            
+                                      This->ClientToScreen(&pt);
+                                      disabledCtrls[i]->ScreenToClient(&pt);
+                                      pMsg->lParam = MAKELPARAM(pt.x, pt.y);
+                                      break;
+                              }
+                      }
+              }
+
+
+      //---------------------------------------
+      //      Relay the msg to the tool tip control
+      //---------------------------------------
+      pTooltip->RelayEvent(pMsg);
+      pTooltip->Activate(TRUE);
+
+      //--------------------------------------
+      //      Restore the original msg
+      //--------------------------------------
+      pMsg->hwnd = hWnd;
+      pMsg->lParam = lParam;
+}
+
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

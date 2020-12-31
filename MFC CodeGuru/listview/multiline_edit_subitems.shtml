@@ -1,0 +1,712 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Multiline Editable Subitems</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Multiline Editable Subitems</FONT></H3></CENTER>
+<HR>
+
+
+This article was contributed by <A HREF="mailto:rex@surfutah.com">Rex Myer</A>.
+
+
+<P>This article illustrates two points:&nbsp; another method of implementing
+subitem editing and the multiline edit control used in place of the single
+line edit control.&nbsp; The basis of this implementation comes from the
+article, "<A HREF="http://www.codeguru.com/listview/edit_subitems.shtml">Editable
+Subitems</A>".
+
+<BR>Usage Tip: To insert a return in the edit control without finishing the edit,
+type Ctrl-Enter.
+
+<P><IMG SRC="multiedit.gif" BORDER=1>
+<P>This is part of an implementation for a custom drawn <A HREF="grid_list_control.shtml">grid list 
+control</A>.&nbsp; You
+can download the full gridlist control implementation at the bottom of
+the page. While this is based on the implementation of the Editable Subitems
+article, I chose to implement the newest (v4.72) common control features.
+In order to do the same, you will need to download the <A HREF="http://www.microsoft.com/msdn/downloads/files/40Comupd.htm">common
+control redistributable</A> in order to run the sample. In order to build 
+the sample, you will also
+need the <A HREF="http://www.microsoft.com/msdn/sdk/bldenv.htm">Platform
+SDK build environment</A>.&nbsp; There is also <A HREF="http://www.microsoft.com/msdn/sdk/inetsdk/help/itt/CommCtls/CommCtls.htm#book_cc">documentation</A>
+on the new common control features there as well.&nbsp; All you need from
+the build environment are the CommCtrl.h and the ComCtl32.lib files. Make these available to
+your VC++ build environment.&nbsp; I did this by backing up my old files
+and copying these into my include and lib directories respectively.
+<BR>In this explanation, I call out certain functions from the grid list control sample which 
+pertain to this article.
+<H4>
+Step 1: Derive a class from CListCtrl</H4>
+You will need to first derive a class from CListCtrl.&nbsp; I derived CGridListCtrl.
+You will need to add a member variable to keep track of the current column
+which the user is interacting with. This variable is the column number
+of the item also called the column order.&nbsp; Keep in mind that this may not be the same as the
+subitem when dragging the columns and changing their order.
+<PRE><TT><FONT COLOR="#990000">// Attributes
+public:
+&nbsp;&nbsp;&nbsp; // The current subitem or column number which is order based.&nbsp;
+&nbsp;&nbsp;&nbsp; int m_CurSubItem;</FONT></TT></PRE>
+
+<H4>
+Step 2: Enable user to edit the control</H4>
+In order to access the editing of the cell, the user can do it through the
+mouse or keyboard.&nbsp; For more information on the cell navigation with
+the keyboard see the article, "Grid List Control." For the mouse click,
+we must first determine which subitem was clicked.&nbsp; The new common
+controls have a message which is macro-ed as ListView_SubItemHitTest that
+does the job nicely.&nbsp; The function below also uses the Header_OrderToIndex
+macro to resolve the subitem clicked to an order variable. Also defined
+for this control is the IndexToOrder which goes the other direction in
+resolving the index to a column order.&nbsp; After we determine that we want
+to edit, we send a message to the parent indicating the beginning of label
+editing.
+<PRE><TT><FONT COLOR="#990000">void CGridListCtrl::OnLButtonDown(UINT nFlags, CPoint point)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LVHITTESTINFO ht;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ht.pt = point;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Test for which subitem was clicked.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Use macro since this is new and not in MFC.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int rval = ListView_SubItemHitTest( m_hWnd, &amp;ht );
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Store the old column number and set the new column value.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int oldsubitem = m_CurSubItem;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_CurSubItem = IndexToOrder( ht.iSubItem );
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Make the column fully visible.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // We have to take into account that the columns may be reordered
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MakeColumnVisible( Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem ) );
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Store old state of the item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int state = GetItemState( ht.iItem, LVIS_FOCUSED );
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Call default left button click is here just before we might bail.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Also updates the state of the item.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CListCtrl::OnLButtonDown(nFlags, point);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Bail if the state from before was not focused or the&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // user has not already clicked on this cell.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( !state&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || m_CurSubItem == -1&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || oldsubitem != m_CurSubItem ) return;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int doedit = 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // If we are in column 0 make sure that the user clicked on&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // the item label.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( 0 == ht.iSubItem )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( ht.flags &amp; LVHT_ONITEMLABEL ) doedit = 1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; doedit = 1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( !doedit ) return;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Send Notification to parent of ListView ctrl
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CString str;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; str = GetItemText( ht.iItem, ht.iSubItem );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LV_DISPINFO dispinfo;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dispinfo.hdr.hwndFrom = m_hWnd;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dispinfo.hdr.idFrom = GetDlgCtrlID();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dispinfo.hdr.code = LVN_BEGINLABELEDIT;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dispinfo.item.mask = LVIF_TEXT;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dispinfo.item.iItem = ht.iItem;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dispinfo.item.iSubItem = ht.iSubItem;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dispinfo.item.pszText = (LPTSTR)((LPCTSTR)str);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dispinfo.item.cchTextMax = str.GetLength();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetParent()->SendMessage( WM_NOTIFY, GetDlgCtrlID(),&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (LPARAM)&amp;dispinfo );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT></TT></PRE>
+
+<PRE><TT><FONT COLOR="#990000">int CGridListCtrl::IndexToOrder( int iIndex )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Since the control only provide the OrderToIndex macro,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // we have to provide the IndexToOrder.&nbsp; This translates
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // a column index value to a column order value.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int colcount = pHeader->GetItemCount();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int *orderarray = new int[ colcount ];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Header_GetOrderArray( pHeader->m_hWnd, colcount, orderarray );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int i;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for( i=0; i&lt;colcount; i++ )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( orderarray[i] == iIndex )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return i;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return -1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT></TT></PRE>
+The user should be able to start editing through the keyboard as well.
+The code below overrides the PreTranslateMessage function. As in Explorer,
+F2 commences nondestructive editing.
+<PRE><TT><FONT COLOR="#990000">
+BOOL CGridListCtrl::PreTranslateMessage(MSG* pMsg) 
+    {
+    if(pMsg->message == WM_KEYDOWN)
+        {
+        // Handle the keystrokes for the left and right keys
+        // to move the cell selection left and right.
+        // Handle F2 to commence edit mode from the keyboard.
+        // Only handle these if the grid control has the focus.
+        // (Messages also come through here for the edit control
+        // and we don't want them.
+        if( this == GetFocus() )
+            {
+            switch( pMsg->wParam )
+                {
+                case VK_LEFT:
+                    {
+                    // Decrement the order number.
+                    m_CurSubItem--;
+                    if( m_CurSubItem < -1 ) 
+                        {
+                        // This indicates that the whole row is selected and F2 means nothing.
+                        m_CurSubItem = -1;
+                        }
+                    else
+                        {
+                        CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+                        // Make the column visible.
+                        // We have to take into account that the header
+                        // may be reordered.
+                        MakeColumnVisible( Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem ) );
+                        // Invalidate the item.
+                        int iItem = GetNextItem( -1, LVNI_FOCUSED );
+                        if( iItem != -1 )
+                            {
+                            CRect rcBounds;
+                            GetItemRect(iItem, rcBounds, LVIR_BOUNDS);
+                            InvalidateRect( &rcBounds );
+                            }
+                        }
+                    }
+                    return TRUE;
+                case VK_RIGHT:
+                    {
+                    // Increment the order number.
+                    m_CurSubItem++;
+                    CHeaderCtrl* pHeader = (CHeaderCtrl*) GetDlgItem(0);
+                    int nColumnCount = pHeader->GetItemCount();
+                    // Don't go beyond the last column.
+                    if( m_CurSubItem > nColumnCount -1 ) 
+                        {
+                        m_CurSubItem = nColumnCount-1;
+                        }
+                    else
+                        {
+                        // We have to take into account that the header
+                        // may be reordered.
+                        MakeColumnVisible( Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem ) );
+                        int iItem = GetNextItem( -1, LVNI_FOCUSED );
+                        // Invalidate the item.
+                        if( iItem != -1 )
+                            {
+                            CRect rcBounds;
+                            GetItemRect(iItem, rcBounds, LVIR_BOUNDS);
+                            InvalidateRect( &rcBounds );
+                            }
+                        }
+                    }
+                    return TRUE;
+                case VK_F2: // Enter nondestructive edit mode.
+                    {
+                    int iItem = GetNextItem( -1, LVNI_FOCUSED );
+                    if( m_CurSubItem != -1 && iItem != -1 )
+                        {
+                        // Send Notification to parent of ListView ctrl
+                        CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+                        CString str;
+                        // We have to take into account that the header
+                        // may be reordered.
+                        str = GetItemText( iItem, Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem ) );
+                        LV_DISPINFO dispinfo;
+                        dispinfo.hdr.hwndFrom = m_hWnd;
+                        dispinfo.hdr.idFrom = GetDlgCtrlID();
+                        dispinfo.hdr.code = LVN_BEGINLABELEDIT;
+                        
+                        dispinfo.item.mask = LVIF_TEXT;
+                        dispinfo.item.iItem = iItem;
+                        // We have to take into account that the header
+                        // may be reordered.
+                        dispinfo.item.iSubItem = Header_OrderToIndex( pHeader->m_hWnd, m_CurSubItem );
+                        dispinfo.item.pszText = (LPTSTR)((LPCTSTR)str);
+                        dispinfo.item.cchTextMax = str.GetLength();
+                        // Send message to the parent that we are ready to edit.
+                        GetParent()->SendMessage( WM_NOTIFY, GetDlgCtrlID(), 
+                            (LPARAM)&dispinfo );
+                        }
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    
+    return CListCtrl::PreTranslateMessage(pMsg);
+    }
+
+
+</FONT></TT></PRE>
+&nbsp;
+<H4>
+Step 3: Add supporting function</H4>
+If the user clicks on a column that is not fully visible, make it visible.&nbsp;
+The function MakeColumnVisible makes the column visible by scrolling the control. It gets the current column ordering
+to do this.
+<PRE><TT><FONT COLOR="#990000">
+void CGridListCtrl::MakeColumnVisible(int nCol)
+	{
+	if( nCol < 0 )
+		return;
+	// Get the order array to total the column offset.
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+	int colcount = pHeader->GetItemCount();
+	ASSERT( nCol < colcount );
+	int *orderarray = new int[ colcount ];
+	Header_GetOrderArray( pHeader->m_hWnd, colcount, orderarray );
+	// Get the column offset
+	int offset = 0;
+	for( int i = 0; orderarray[i] != nCol; i++ )
+		offset += GetColumnWidth( orderarray[i] );
+	int colwidth = GetColumnWidth( nCol );
+	delete[] orderarray;
+	
+	CRect rect;
+	GetItemRect( 0, &rect, LVIR_BOUNDS );
+	
+	// Now scroll if we need to expose the column
+	CRect rcClient;
+	GetClientRect( &rcClient );
+	if( offset + rect.left < 0 || offset + colwidth + rect.left > rcClient.right )
+        {
+		CSize size;
+		size.cx = offset + rect.left;
+		size.cy = 0;
+		Scroll( size );
+		rect.left -= size.cx;
+        }
+	}
+</FONT></TT></PRE>
+<P>&nbsp;
+<H4>
+Step 4: Handle the scroll messages</H4>
+The CInPlaceEdit class sends the end label edit message when it loses focus. 
+Clicking on the scrollbars of the ListView
+control does not take away the focus from the edit control. We therefore
+add handlers for the scrollbar messages which force focus away from the
+edit control by setting the focus to the list view control itself.
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( GetFocus() != this ) SetFocus();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+void CMyListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( GetFocus() != this ) SetFocus();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
+}</FONT></TT></PRE>
+
+<H4>
+Step 5: Add positioning function for the editing control</H4>
+In case you have not noticed by now, the list control does not handle 
+the beginning and ending label edit messages.  This is unlike the "Edit Subitems" article.
+The reason for having the list control's parent handle the edit control 
+instantiation and destruction is so that controls that take a long time to instantiate
+can be instantiated once and reused by the parent control.  This might 
+come in handy if a combobox was used and had 2,000 entries for instance.
+Since the parent creates the editing control, the list control
+still needs to position the control in the cell it is editing.  That is
+what this function does.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CGridListCtrl::PositionControl( CWnd * pWnd, int iItem, int iSubItem )
+	{
+	ASSERT( pWnd && pWnd->m_hWnd );
+	ASSERT( iItem >= 0 );
+	// Make sure that the item is visible
+	if( !EnsureVisible( iItem, TRUE ) ) return NULL;
+	
+	// Make sure that nCol is valid
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+	int nColumnCount = pHeader->GetItemCount();
+	ASSERT( iSubItem >= 0 && iSubItem < nColumnCount );
+	if( iSubItem >= nColumnCount || 
+		// We have to take into account that the header may be reordered
+		GetColumnWidth(Header_OrderToIndex( pHeader->m_hWnd,iSubItem)) < 5 )
+		{
+		return 0;
+		}
+	
+	// Get the header order array to sum the column widths up to the selected cell.
+	int *orderarray = new int[ nColumnCount ];
+	Header_GetOrderArray( pHeader->m_hWnd, nColumnCount, orderarray );
+	int offset = 0;
+	int i;
+	for( i = 0; orderarray[i] != iSubItem; i++ )
+		offset += GetColumnWidth( orderarray[i] );
+	int colwidth = GetColumnWidth( iSubItem );
+	delete[] orderarray;
+	
+	CRect rect;
+	GetItemRect( iItem, &rect, LVIR_BOUNDS );
+	
+	// Scroll if we need to expose the column
+	CRect rcClient;
+	GetClientRect( &rcClient );
+	if( offset + rect.left < 0 || offset + colwidth + rect.left > rcClient.right )
+        {
+		CSize size;
+		size.cx = offset + rect.left;
+		size.cy = 0;
+		Scroll( size );
+		rect.left -= size.cx;
+        }
+	
+	rect.left += offset+4;
+	rect.right = rect.left + colwidth - 3 ;
+	// The right end of the control should not go past the edge 
+	// of the grid control.
+	if( rect.right > rcClient.right) 
+		rect.right = rcClient.right;
+	pWnd->MoveWindow( &rect );
+
+	return 1;	
+	}
+</FONT></TT></PRE>
+
+<H4>
+Step 6: Subclass the CEdit class</H4>
+While this CEdit subclass is similar to the CInPlaceEdit class from the 
+article "Editable Subitems," there are some differences worth mentioning here.
+In this implementation, the class is created by the parent of the 
+list control. Therefore the parent is also responsible for destroying (or hiding) it.
+The self-destruction has therefore been removed.  Some functionality is 
+introduced to handle the multiline capabilities.
+<UL>
+<LI>
+OnKillFocus still sends the parent of the list control the end label edit message,
+but it does not call the destroy window.
+<LI>
+OnChar still handles the return and escape, but it now calls a calculate size 
+method which resizes the control to fit the text.  This routine handles changes
+in height as well as width.  When the control would extend beyond the 
+bottom of the parent list control, it displays the edit window's 
+scrollbar.
+<LI>
+A subtle change in PreTranslateMessage is that when the multiline edit control
+receives an escape key down message, it normally sends a destroy window message
+to its parent.  It is bypassed here since we don't want to destroy the list control
+if the user decides to back out of cell editing changes.
+</UL>
+
+The CPP file contents are included here:
+
+
+<PRE><TT><FONT COLOR="#990000">
+// InPlaceEdit.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "InPlaceEdit.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CInPlaceEdit
+
+CInPlaceEdit::CInPlaceEdit(int iItem, int iSubItem, CString sInitText)
+:m_sInitText( sInitText )
+	{
+	m_iItem = iItem;
+	m_iSubItem = iSubItem;
+	m_bESC = FALSE;
+	}
+
+CInPlaceEdit::~CInPlaceEdit()
+	{
+	}
+
+
+BEGIN_MESSAGE_MAP(CInPlaceEdit, CEdit)
+        //{{AFX_MSG_MAP(CInPlaceEdit)
+        ON_WM_KILLFOCUS()
+        ON_WM_CHAR()
+        ON_WM_CREATE()
+        //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CInPlaceEdit message handlers
+
+BOOL CInPlaceEdit::PreTranslateMessage(MSG* pMsg)
+	{
+	if( pMsg->message == WM_KEYDOWN )
+        {
+		SHORT sKey = GetKeyState( VK_CONTROL);
+		if(pMsg->wParam == VK_RETURN
+			|| pMsg->wParam == VK_DELETE
+			|| pMsg->wParam == VK_ESCAPE
+			|| sKey
+			)
+			{
+			::TranslateMessage(pMsg);
+			/* Strange but true:
+			If the edit control has ES_MULTILINE and ESC
+			is pressed the parent is destroyed if the 
+			message is dispatched.  In this 
+			case the parent is the list control. */
+			if( !(GetStyle() & ES_MULTILINE) || pMsg->wParam != VK_ESCAPE )
+				{
+				::DispatchMessage(pMsg);
+				}
+			return TRUE;                    // DO NOT process further
+			}
+        }
+	
+	return CEdit::PreTranslateMessage(pMsg);
+	}
+
+
+void CInPlaceEdit::OnKillFocus(CWnd* pNewWnd)
+	{
+	CEdit::OnKillFocus(pNewWnd);
+	
+	CString str;
+	GetWindowText(str);
+	
+	// Send Notification to parent of ListView ctrl
+	LV_DISPINFO dispinfo;
+	dispinfo.hdr.hwndFrom = GetParent()->m_hWnd;
+	dispinfo.hdr.idFrom = GetDlgCtrlID();
+	dispinfo.hdr.code = LVN_ENDLABELEDIT;
+	
+	dispinfo.item.mask = LVIF_TEXT;
+	dispinfo.item.iItem = m_iItem;
+	dispinfo.item.iSubItem = m_iSubItem;
+	dispinfo.item.pszText = m_bESC ? NULL : LPTSTR((LPCTSTR)str);
+	dispinfo.item.cchTextMax = m_bESC ? 0 : str.GetLength();
+	
+	GetParent()->GetParent()->SendMessage( WM_NOTIFY, GetParent()->GetDlgCtrlID(), 
+		(LPARAM)&dispinfo );
+	
+	}
+
+
+void CInPlaceEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+	if( nChar == VK_ESCAPE || nChar == VK_RETURN)
+        {
+		if( nChar == VK_ESCAPE )
+			m_bESC = TRUE;
+		GetParent()->SetFocus();
+		return;
+        }
+	
+	CEdit::OnChar(nChar, nRepCnt, nFlags);
+	
+	// Resize edit control if needed
+	CalculateSize();
+	}
+
+int CInPlaceEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
+	{
+	if (CEdit::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	
+	// Set the proper font
+	CFont* font = GetParent()->GetFont();
+	SetFont(font);
+	
+	SetWindowText( m_sInitText );
+	SetFocus();
+	CalculateSize();
+	SetSel( 0, -1 );
+	return 0;
+	}
+
+void CInPlaceEdit::CalculateSize()
+	{
+	// Get text extent
+	CString str;
+	
+	GetWindowText( str );
+	CWindowDC dc(this);
+	CFont *pFont = GetParent()->GetFont();
+	CFont *pFontDC = dc.SelectObject( pFont );
+	CSize size;
+
+	// Get client rect
+	CRect rect, parentrect;
+	GetClientRect( &rect );
+	GetParent()->GetClientRect( &parentrect );
+	
+	// Transform rect to parent coordinates
+	ClientToScreen( &rect );
+	GetParent()->ScreenToClient( &rect );
+	
+	if( !(GetStyle() & ES_MULTILINE ) )
+		{
+		size = dc.GetTextExtent( str );
+		dc.SelectObject( pFontDC );
+		size.cx += 5;                           // add some extra buffer
+		}
+	else
+		{
+		CRect thinrect( rect );  // To measure the skinniest text box
+		CRect widerect( rect );  // To measure the wides text box
+		widerect.right = parentrect.right;
+		// Use the shortest of the two box sizes.
+		int thinheight = dc.DrawText( str, &thinrect, DT_CALCRECT|DT_NOPREFIX|DT_LEFT|DT_EXPANDTABS|DT_WORDBREAK );
+		int wideheight = dc.DrawText( str, &widerect, DT_CALCRECT|DT_NOPREFIX|DT_LEFT|DT_EXPANDTABS|DT_WORDBREAK );
+		if( thinheight >= wideheight )
+			{
+			size.cy = wideheight + 5;
+			size.cx = widerect.right - widerect.left + 5;
+			}
+		else
+			{
+			size.cy = thinheight + 5;
+			size.cx = thinrect.right - thinrect.left + 5;
+			}
+		}
+	
+	// Check whether control needs to be resized
+	// and whether there is space to grow
+	int changed = 0;
+	if( size.cx > rect.Width() )
+		{
+		if( size.cx + rect.left < parentrect.right-2 )
+			rect.right = rect.left + size.cx;
+		else
+			rect.right = parentrect.right-2;
+		changed = 1;
+		}
+	if( size.cy > rect.Height() )
+		{
+		if( size.cy + rect.top < parentrect.bottom-2 )
+			rect.bottom = rect.top + size.cy;
+		else
+			{
+			rect.bottom = parentrect.bottom-2;
+			ShowScrollBar( SB_VERT );
+			}
+		changed = 1;
+		}
+	// If the size became larger rposition the window.
+	if( changed )
+		MoveWindow( &rect );
+	}
+</FONT></TT></PRE>
+
+
+<H4>
+Step 7: Handle the begin and end label messages</H4>
+<p>
+The parent of the list control needs to handle the begin and end label
+edit messages sent by the list control.  The list control's parent must 
+create the edit control for editing and destroy it when done.  It could just
+as easily create the edit control once and destroy it when it is destroyed.
+This would enable the control to be reused.  Keep in mind that this
+method of editing items and subitems enables the application to determine
+the way a particular item/subitem is to be edited.  For instance
+one subitem may be edited with a single line edit control, another a multi line
+edit control, and yet another with a comobox.
+<p>
+Since the parent's handling of the beginning label edit includes the
+creation of an edit control, it does not need the list control to create 
+one as well. Therefore  it returns TRUE so that the lsit control does not 
+do a label edit.
+<p>
+After creating the edit control (with ES_MULTILINE and the list control
+as the parent window), the control is positioned in the cell and 
+sized to fit its content.
+<p>
+Here is the source for these two functions:
+
+<PRE><TT><FONT COLOR="#990000">
+void TestDlg::OnBeginlabeleditList(NMHDR* pNMHDR, LRESULT* pResult) 
+	{
+	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
+
+	CString str = pDispInfo->item.pszText;
+	int item = pDispInfo->item.iItem;
+	int subitem = pDispInfo->item.iSubItem;
+	// Construct and create the custom multiline edit control.
+	// We could just as well have used a combobox, checkbox, 
+	// rich text control, etc.
+	m_pListEdit = new CInPlaceEdit( item, subitem, str );
+	// Start with a small rectangle.  We'll change it later.
+	CRect  rect( 0,0,1,1 );
+	DWORD dwStyle = ES_LEFT;
+	dwStyle |= WS_BORDER|WS_CHILD|WS_VISIBLE|ES_MULTILINE|ES_AUTOVSCROLL;
+	m_pListEdit->Create( dwStyle, rect, &m_GridListCtrl, 103 );
+	// Have the Grid position and size the custom edit control
+	m_GridListCtrl.PositionControl( m_pListEdit, item, subitem );
+	// Have the edit box size itself to its content.
+	m_pListEdit->CalculateSize();
+	// Return TRUE so that the list control will NOT handle the edit label itself. 
+	*pResult = TRUE;
+	}
+
+void TestDlg::OnEndlabeleditList(NMHDR* pNMHDR, LRESULT* pResult) 
+	{
+	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	int item = pDispInfo->item.iItem;
+	int subitem = pDispInfo->item.iSubItem;
+	// This is coming from the grid list control notification.
+	if( m_pListEdit )
+		{
+		CString str;
+		if( pDispInfo->item.pszText )
+			m_GridListCtrl.SetItemText( item, subitem, pDispInfo->item.pszText );
+		delete m_pListEdit;
+		m_pListEdit = 0;
+		}
+	*pResult = 0;
+	}
+</FONT></TT></PRE>
+<P>
+<A HREF="GridList.zip">Download Sample/Code,<A>(95k)
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,249 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\HistoryComboDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXHistoryCombo.rc""  // History combo resources\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\HistoryComboDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_HISTORYCOMBODEMO_DIALOG DIALOGEX 0, 0, 270, 189
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "History Combo Demo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_HISTORY_COMBO,52,18,166,43,CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Use a small gap",IDC_USE_GAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,71,65,10
+    PUSHBUTTON      "&Move Toolbar",IDC_MOVE_TOOLBAR,14,83,50,14,WS_GROUP
+    PUSHBUTTON      "&Save",IDC_SAVE,14,114,50,14
+    PUSHBUTTON      "&Restore",IDC_RESTORE,14,134,50,14
+    GROUPBOX        "Type",IDC_STATIC,96,71,77,55,WS_GROUP
+    CONTROL         "&Simple",IDC_SIMPLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,103,83,37,10
+    CONTROL         "Drop&down",IDC_DROPDOWN,"Button",BS_AUTORADIOBUTTON,103,97,47,10
+    CONTROL         "Drop &List",IDC_DROP_LIST,"Button",BS_AUTORADIOBUTTON,103,111,43,10
+    LTEXT           "Max history",IDC_STATIC,97,139,37,8
+    EDITTEXT        IDC_MAX_COUNT,139,138,24,12,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "Spin1",IDC_MAX_COUNT_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,164,137,10,14
+    GROUPBOX        "Visibility",IDC_STATIC,195,70,59,85,WS_GROUP
+    CONTROL         "Button 1",IDC_BUTTON_1,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,201,78,40,10
+    CONTROL         "Button 2",IDC_BUTTON_2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,201,88,40,10
+    CONTROL         "Button 3",IDC_BUTTON_3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,201,98,40,10
+    CONTROL         "Button 4",IDC_BUTTON_4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,201,108,40,10
+    CONTROL         "Button 5",IDC_BUTTON_5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,201,118,40,10
+    CONTROL         "Button 6",IDC_BUTTON_6,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,201,128,40,10
+    PUSHBUTTON      "S&how",IDC_SHOW,201,139,38,12,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,109,162,50,14,WS_GROUP
+    LTEXT           "Persistent",IDC_STATIC,14,104,31,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "HISTORYCOMBODEMO MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "HISTORYCOMBODEMO"
+            VALUE "LegalCopyright", "Copyright © 1998 Dundas Software Ltd."
+            VALUE "OriginalFilename", "HISTORYCOMBODEMO.EXE"
+            VALUE "ProductName", "HISTORYCOMBODEMO Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_HISTORYCOMBODEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 263
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 182
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_HISTORYCOMBODEMO_DIALOG DLGINIT
+BEGIN
+    IDC_HISTORY_COMBO, 0x403, 6, 0
+0x6854, 0x7269, 0x0064, 
+    IDC_HISTORY_COMBO, 0x403, 7, 0
+0x6553, 0x6f63, 0x646e, "\000" 
+    IDC_HISTORY_COMBO, 0x403, 6, 0
+0x6946, 0x7372, 0x0074, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_HISTORY_COMBO_TEST TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_HISTORY_COMBO_NEW
+    BUTTON      ID_HISTORY_COMBO_DELETE
+    BUTTON      ID_HISTORY_COMBO_BROWSE
+    BUTTON      ID_HISTORY_COMBO_RESERVED_1
+    BUTTON      ID_HISTORY_COMBO_RESERVED_2
+    BUTTON      ID_HISTORY_TEST
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_HISTORY_COMBO_TEST  BITMAP                  "res\\HistComboTest.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About HistoryComboDemo..."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_HISTORY_TEST         "Delete All\nDelete All"
+    IDR_MAINRFAME           "HistoryComboDemo"
+    ID_DESCRIPTION_FILE     "HistorycomboInfo.rtf"
+END
+
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\HistoryComboDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXHistoryCombo.rc"  // History combo resources
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,11 @@
+; CompA.def : Declares the module parameters for the DLL.
+
+LIBRARY      "CompA"
+DESCRIPTION  'CompA Component Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+	DllGetClassObject @1 PRIVATE
+	DllRegisterServer @2 PRIVATE
+	DllUnregisterServer @3 PRIVATE
+	DllCanUnloadNow   @4 PRIVATE

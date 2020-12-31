@@ -1,0 +1,130 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>PropertySheet - Automaticaly arange visible controls below the tab control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<!-- Article Title -->
+
+<h3 align="center"><font COLOR="#AOAO99">Automaticaly arange visible controls below the
+tab control</font></h3>
+
+<hr align="center">
+<!-- Author and contact details -->
+
+<p>This article was contributed by <a HREF="mailto:michael.brannan@wxs.nl">Michael Brannan</a>.
+<!-- Sample image and source code/demo project --></p>
+
+<p>Here is some code for realigning the controls present on a property sheet. The code
+realigns the controls that are beneath the tab control, which have the WS_VISIBLE style.
+The controls are repositioned from right to left, in reverse tab order, and being
+separated by a standard distance. This is handy for realigning the controls after you have
+changed the visibile state of the buttons at the bottom of the property sheet. You can
+also use this function during OnInitDialog(..) as the visible state of the controls is
+obtained by checking the window style of the child control, and not by using
+IsWindowVisible(..).<font COLOR="#990000"><tt></p>
+
+<pre>
+void CPropertySheetDerivedClass::AutoArrangeButtons() 
+{
+	CWnd* pWnd = GetDlgItem(ID_APPLY_NOW);
+	
+	if (pWnd &amp;&amp; ::IsWindow(pWnd-&gt;m_hWnd))
+	{
+		// Get the last control in the tab order - (tab order is the same as creation order)
+		pWnd = pWnd-&gt;GetWindow(GW_HWNDLAST);
+
+		// Get the tab control
+		CTabCtrl* pTabCtrl = GetTabControl();
+
+		// Get the child identifier of the tab control
+		int nTabControlID = ::GetWindowLong(pTabCtrl-&gt;m_hWnd, GWL_ID);
+
+		// Child control identifier
+		int nControlID = 0;
+
+		// The window rect of the tab control.
+		CRect rcTAB(0, 0, 0, 0);
+
+		pTabCtrl-&gt;GetWindowRect(rcTAB);
+
+		ScreenToClient(rcTAB);
+
+		CRect rcTemp(0, 0, 0, 0);
+
+		GetClientRect(rcTemp);
+
+		int nLeft = rcTemp.right;
+		int nSpacing = rcTemp.right - rcTAB.right;
+
+		// do this bit while we have a control to do something with
+		while(pWnd)
+		{
+			// Get the ID of the current child control
+			nControlID = ::GetWindowLong(pWnd-&gt;m_hWnd, GWL_ID);
+			
+			// Do not make changes to the tab control!!
+			if (nControlID != nTabControlID)
+			{
+				// do some stuff
+				pWnd-&gt;GetWindowRect(rcTemp);
+
+				ScreenToClient(rcTemp);
+
+				// Is the child control visible? - Don't use IsWindowVisible as the parent
+				// also has to be visible for that to return TRUE;
+				BOOL bChildIsVisible = ((pWnd-&gt;GetStyle() &amp; WS_VISIBLE) == WS_VISIBLE);
+
+				// Make sure we are below the TAB control
+				if ((rcTemp.top &gt; rcTAB.bottom) &amp;&amp; bChildIsVisible)
+				{
+					// Move each control
+					nLeft -= nSpacing + rcTemp.Width();
+					
+					pWnd-&gt;MoveWindow(nLeft, rcTemp.top, rcTemp.Width(), rcTemp.Height());
+				}
+			}
+				
+			// Go back in the TAB order again
+			pWnd = pWnd-&gt;GetWindow(GW_HWNDPREV);
+		}
+	}
+}
+
+</tt></pre>
+</font><!-- Remember to update this -->
+
+
+<p>Last updated: 29 April 1998 </p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

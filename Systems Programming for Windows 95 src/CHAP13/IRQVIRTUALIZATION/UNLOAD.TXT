@@ -1,0 +1,18 @@
+a 100
+MOV     AX,1684
+MOV     BX,0027
+INT     2F
+MOV     [0200],DI
+MOV     [0202],ES
+MOV     AX,0002
+MOV     DX,0130
+MOV     BX,FFFF
+CALL    FAR [0200]
+MOV     AX,4C00
+INT     21
+
+e 130 'MYVXD',0
+r cx
+150
+w
+q

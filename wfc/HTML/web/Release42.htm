@@ -1,0 +1,145 @@
+<HTML>
+
+<BODY>
+
+<!-- $Revision: 2 $ -->
+<H1>Release 42</H1>
+2000-01-17<BR>
+
+<P>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="0" CELLSPACING="0">
+<TR><TD BGCOLOR="#0" VALIGN="MIDDLE">
+<FONT FACE="Arial" SIZE="3" COLOR="#FFFFFF">
+&nbsp;<I><B>Editorial</B></I></FONT>
+</TD></TR></TABLE>
+<P>
+
+Yes, updates have been coming more slowly.
+My new job is keeping me very busy. The work is
+challenging so I am usually mentally drained when
+I get home. That means there is little room in this
+geek's brain for WFC work.
+
+<P>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="0" CELLSPACING="0">
+<TR><TD BGCOLOR="#0" VALIGN="MIDDLE">
+<FONT FACE="Arial" SIZE="3" COLOR="#FFFFFF">
+&nbsp;<I><B>This Release</B></I></FONT>
+</TD></TR></TABLE>
+<P>
+
+I've been giving performance a look. Some things have
+been tweaked (like sockets) to give the user more
+options. Registry has an escape avenue now (as well
+as restoration of hives). Also, I'm beginnig to pull
+away from MFC. I'm finding it to be less and less useful
+in the applications I write. To that end, I have written
+an <CODE>MFC2STL.H</CODE> header file that will get rid
+of most of MFC (at least enough to get WFC to compile).
+Please feel free to test this version. I wrote the header
+(so I could use XML without MFC) but haven't really tested
+it.
+
+<P>
+
+I'm pulling away from MFC. I've begun to port utility
+classes to STL. STL is <I>almost</I> useful.
+
+<P>
+
+<P>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="0" CELLSPACING="0">
+<TR><TD BGCOLOR="#0" VALIGN="MIDDLE">
+<FONT FACE="Arial" SIZE="3" COLOR="#FFFFFF">
+&nbsp;<I><B>What's New</B></I></FONT>
+</TD></TR></TABLE>
+<P>
+
+<B>wfc_undocumented_get_system_process_list</B> - Uses
+the undocumented <B><CODE>NtQuerySystemInformation()</CODE></B>
+function to get a list of all processes on a system.<BR>
+<B>USE AT YOUR OWN RISK.!!</B>
+
+<P>
+<B><A HREF="wfc_enable_privilege.htm">wfc_enable_privilege</A></B> -
+Enables a single privilege by name.<P>
+
+<B><A HREF="wfc_enable_all_privileges.htm">wfc_enable_all_privileges</A></B> -
+Enables all known privileges on the system.<P>
+
+<B><A HREF="wfc_get_filename_from_handle.htm" TARGET="Explain">wfc_get_filename_from_handle</A></B> - 
+C function that returns the file name given a file's handle. It
+uses the partially documented <CODE>NtQueryInformationFile</CODE> to
+perform this magic.<P>
+
+<B><A HREF="wfc_set_thread_name.htm" TARGET="Explain">wfc_set_thread_name</A></B> -
+A function that allows you to set a string constant as the &quot;name&quot;
+of a thread. Really handy when debugging multi-threaded programs.<P>
+
+<B><A HREF="CFile64.htm">CFile64</A></B> - A variant of
+the MFC <CODE>CFile</CODE> class except it will allow
+you to access large files (larger than 4GB). It should
+work with files up to 18 billion terabytes in size. To be
+safe, I suggest using the class on files of only 9 billion
+terabytes in size (I may have a signed/unsigned
+problem somewhere). I wrote this in an effort to get
+a wonderful
+<A HREF="http://members.tripod.com/AndrewPhillips/">freeware hex editor</A>
+to handle large files.<P>
+
+<B>ListProcesses</B> - This sample program shows how to get a list of
+all running processes in the system.<P>
+
+
+<P>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="0" CELLSPACING="0">
+<TR><TD BGCOLOR="#0" VALIGN="MIDDLE">
+<FONT FACE="Arial" SIZE="3" COLOR="#FFFFFF">
+&nbsp;<I><B>Bug Fixes/Enhancements</B></I></FONT>
+</TD></TR></TABLE>
+<P>
+
+<B><A HREF="CDataFile.htm">CDataFile</A></B> -
+Now reads a data chunk in two Read() calls instead
+of three (helps in busy servers).
+
+<P>
+
+<B><A HREF="CQueue.htm">CQueue</A></B> - 
+Fixed a race condition.
+Thanks to Lou Franco (lfranco@spheresoft.com)
+for finding this nasty little bug. After putting his
+changes in, queue speed slowed to 289,000 operations
+per second (instead of 387,000 per second) but it no 
+longer locks up on multi-cpu systems. I ran a test over
+a weekend and performed over 64 billion queue operations.
+I think it is solid now.
+
+<P>
+
+<B><A HREF="CRandomNumberGenerator2.htm">CRandomNumberGenerator2</A></B> -
+Got rid of three static variables that were never used.
+
+<P>
+
+<B><A HREF="SOCKETS.HTM">CSimpleSocket</A></B> - 
+Updated <B>TranslateErrorCode()</B> to include
+quality of service error codes. Also fixed
+thunk initialization code to get rid of variables
+getting munched in multi-cpu machines. Also added a
+<B><CODE>SetSocketOption</CODE></B> method that
+snaps to <CODE>setsockopt.</CODE>
+
+<P>
+
+<B>CSimpleSocketFile</B> - Fixed a UNICODE compilation problem.
+
+<HR>
+<A HREF="Release41.htm">Release 41 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS><A HREF="mailto:wfc@pobox.com">wfc@pobox.com</A></ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+
+</BODY>
+
+</HTML>

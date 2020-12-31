@@ -1,0 +1,103 @@
+ <HTML>
+<HEAD>
+<TITLE>Rob's Jiggler ActiveX Control</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<H2><I>Rob's Jiggler ActiveX Control</I></H2>
+<HR>
+This is my new JIGGLER ActiveX control!! Pretty cool, eh?
+ It was inspired by the "Nervous Text" Java applet, but this was totally 
+ redesigned from scratch and written in C++ for ActiveX! It supports many 
+ background and text colors, and it's easily extensible, so go for it!
+<P>
+
+<!-- Create 3 Jiggler ActiveX controls -->
+
+<OBJECT 
+   ID       = "Jiggler1" 
+   WIDTH    = 0 
+   HEIGHT   = 0
+   CLASSID  = "CLSID:5CD2FC83-E7BD-11CF-A3BC-444553540000"
+   CODEBASE = "./ocx/Jiggler.ocx">
+
+   <PARAM NAME = "_Version"    VALUE = "65536">
+   <PARAM NAME = "_ExtentX"    VALUE = "11933">
+   <PARAM NAME = "_ExtentY"    VALUE = "1244">
+   <PARAM NAME = "_StockProps" VALUE = "11">
+   <PARAM NAME = "Caption"     VALUE = "ActiveX">
+   <PARAM NAME = "ForeColor"   VALUE = "255">
+   <PARAM NAME = "BackColor"   VALUE = "16777215">
+</OBJECT>
+
+<OBJECT 
+   ID       = "Jiggler2" 
+   WIDTH    = 0 
+   HEIGHT   = 0
+   CLASSID  = "CLSID:5CD2FC83-E7BD-11CF-A3BC-444553540000"
+   CODEBASE = "./ocx/Jiggler.ocx">
+
+   <PARAM NAME = "_Version"    VALUE = "65536">
+   <PARAM NAME = "_ExtentX"    VALUE = "11933">
+   <PARAM NAME = "_ExtentY"    VALUE = "1244">
+   <PARAM NAME = "_StockProps" VALUE = "11">
+   <PARAM NAME = "Caption"     VALUE = "Jiggling">
+   <PARAM NAME = "ForeColor"   VALUE = "65280">
+   <PARAM NAME = "BackColor"   VALUE = "16777215">
+</OBJECT>
+
+<OBJECT 
+   ID       = "Jiggler3" 
+   WIDTH    = 0 
+   HEIGHT   = 0
+   CLASSID  = "CLSID:5CD2FC83-E7BD-11CF-A3BC-444553540000"
+   CODEBASE = "./ocx/Jiggler.ocx">
+
+   <PARAM NAME = "_Version"    VALUE = "65536">
+   <PARAM NAME = "_ExtentX"    VALUE = "11933">
+   <PARAM NAME = "_ExtentY"    VALUE = "1244">
+   <PARAM NAME = "_StockProps" VALUE = "11">
+   <PARAM NAME = "Caption"     VALUE = "Text">
+   <PARAM NAME = "ForeColor"   VALUE = "16711680">
+   <PARAM NAME = "BackColor"   VALUE = "16777215">
+</OBJECT>
+
+<P>
+
+<!-- Program the controls with OLE Automation via VBScript -->
+
+<SCRIPT LANGUAGE="VBScript">
+<!--
+Sub window_onLoad()
+
+   rem Set the properties for Jiggler1
+   
+   Jiggler1.Interval           = 100
+   Jiggler1.DefaultFont.Name   = "Times New Roman"
+   Jiggler1.DefaultFont.Size   = 20
+   Jiggler1.DefaultFont.Italic = True
+   Jiggler1.DefaultFont.Bold   = True
+
+   rem Set the properties for Jiggler2
+
+   Jiggler2.Interval           = 75
+   Jiggler2.DefaultFont.Name   = "Arial"
+   Jiggler2.DefaultFont.Size   = 24
+   Jiggler2.DefaultFont.Italic = True
+   Jiggler2.DefaultFont.Bold   = True
+
+   rem Set the properties for Jiggler3
+
+   Jiggler3.Interval           = 50
+   Jiggler3.DefaultFont.Name   = "Courier New"
+   Jiggler3.DefaultFont.Size   = 30
+   Jiggler3.DefaultFont.Italic = True
+   Jiggler3.DefaultFont.Bold   = True
+
+end sub
+-->
+</SCRIPT>
+
+</BODY>
+</HTML>

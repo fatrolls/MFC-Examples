@@ -1,0 +1,108 @@
+// MailSend.odl : type library source for MailSend.exe
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (MailSend.tlb).
+
+[ uuid(48452B61-D40F-11CF-AA2E-00AA00489A36), version(1.0) ]
+library MailSend
+{
+	importlib("stdole32.tlb");
+	
+
+	//  Primary dispatch interface for CMail
+	
+	[ uuid(48452B66-D40F-11CF-AA2E-00AA00489A36) ]
+	dispinterface IMail
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CMail)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CMail)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CMail
+
+	[ uuid(48452B67-D40F-11CF-AA2E-00AA00489A36) ]
+	coclass MAIL
+	{
+		[default] dispinterface IMail;
+	};
+
+	//  Primary dispatch interface for CMailMessage
+	
+	[ uuid(48452B86-D40F-11CF-AA2E-00AA00489A36) ]
+	dispinterface IMailMessage
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CMailMessage)
+			[id(1)] BSTR Subject;
+			[id(2)] BSTR Content;
+			[id(3)] short AttachmentCount;
+			[id(4)] short LastError;
+			[id(5)] BSTR To;
+			[id(6)] BSTR Profile;
+			[id(7)] BSTR Password;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CMailMessage)
+			[id(8)] boolean AddAttachment(BSTR sFilePath);
+			[id(9)] BSTR GetAttachment(short nIndex);
+			[id(10)] boolean RemoveAttachment(short nIndex);
+			[id(11)] boolean Send();
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CMailMessage
+
+	[ uuid(48452B87-D40F-11CF-AA2E-00AA00489A36) ]
+	coclass CMailMessage
+	{
+		[default] dispinterface IMailMessage;
+	};
+
+	//  Primary dispatch interface for CCgiHandler
+	
+	[ uuid(48452B96-D40F-11CF-AA2E-00AA00489A36) ]
+	dispinterface ICgiHandler
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CCgiHandler)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CCgiHandler)
+			[id(1)] void OnGet(IDispatch* pCgiObj, BSTR sCommand);
+			[id(2)] void OnPost(IDispatch* pCgiObj, BSTR sInputType, BSTR sInputBuffer);
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CCgiHandler
+
+	[ uuid(48452B97-D40F-11CF-AA2E-00AA00489A36) ]
+	coclass CCgiHandler
+	{
+		[default] dispinterface ICgiHandler;
+	}
+
+
+	//{{AFX_APPEND_ODL}}
+};

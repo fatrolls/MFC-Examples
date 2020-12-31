@@ -1,0 +1,16 @@
+// DictComp.odl : type library source for DictComp.dll
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (DictComp.tlb).
+
+[ uuid(84B0BBF6-AD8B-11D2-A2DC-A31D6122660F), version(1.0) ]
+library DictComp
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

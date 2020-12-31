@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Tools - Understanding GDI mapping modes and other functions</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Understanding GDI mapping modes and other functions</FONT></H3></CENTER>
+
+<HR>
+<P>This tool was contributed by <A HREF="mailto:hansw@flash.net">Hans Wedemeyer</A>. 
+
+
+<P>MapMode.exe is an interactive tool that can help a programmer better understand
+various graphics functions and their interactions.
+
+<P>It demonstrates the interactions of
+
+<pre>
+SetMapMode()    // all eight modes
+SetWindowExt ()
+SetViewportExt ()
+SetViewportOrg ()
+CreateCompatibleBitmap()
+BitBlt( )
+</pre>
+
+<P>Have you ever wondered what a printed page will look like in a particular map
+mode, here's thre answer and you don't have to write code to find out !
+
+<P>Ever wondered what all those arguments to BitBlt() do ! now you can find out!
+
+<P>Open eight windows and compare all eight map modes at the same time !
+
+<P>When you run the program, there appears a "control panel", on it are various
+buttons to adjust the parameters for each function. as you adjust the screen
+is repainted and the change takes place immediately.
+
+<P>Consider these to be in the program's OnDraw()
+
+<PRE><TT><FONT COLOR="#990000">
+void MapMode::OnDraw(CDC* pDC )
+{
+    CRect rect;
+    GetClientRect(&rect);
+
+    if ( pDC->IsPrinting())
+    {
+        rect.left = 0;
+        rect.top = 0;
+        rect.right = pDC->GetDeviceCaps(HORZRES);
+        rect.bottom = pDC->GetDeviceCaps(VERTRES);
+    }
+
+    pDC->SetMapMode ( m_nMapMode );
+
+    pDC->SetWindowExt ( X, Y )
+
+    pDC->SetViewportExt ( X , Y );
+
+    pDC->SetViewportOrg ( X, Y );
+
+    bmp.CreateCompatibleBitmap( pDC, X, Y );
+
+   pDC->BitBlt( X1, Y1, X2, Y2, pBmpDC, X3, Y3, SRCCOPY );
+}
+</FONT></TT></PRE>
+
+<P>You may draw a line to better understand or locate various x,y coordinates.
+
+<H4>Additions made since the original tool.</H4>
+
+<P>Annotated origins for easy indentifaction.
+
+<P>Another new feature is "Find Origin" which help pin point in which direction the
+origin could be, useful if you loose the origin off screen.
+
+
+
+<P><A HREF="map_mode.zip">Download file</A>
+
+
+
+<P>Posted on: 3/15/98
+<P>Code updated on: 4/11/98 ( Four of the spin buttons did not spin, they do now ).
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

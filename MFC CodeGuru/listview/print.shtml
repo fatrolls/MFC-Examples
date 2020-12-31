@@ -1,0 +1,454 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Print the contents of the list control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Print the contents of the list control</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This code was contributed by <A HREF="mailto:rreddy@braintech.com">Ravi Reddy</A>.
+
+<P>I tried to use the Print code
+available in your site for List View Control. That was not good enough. The
+sample sends WM_PAINT message to itself after adjusting printer DC. The
+problem with this is this will only print currently visible items only and
+will not take care of Margins etc. It does not take care of number of pages
+etc also.
+
+<P>I wrote a slightly enhanced printing functionality here. This priting is
+divided into two main functions on the MFC line. OnBeginPrint and OnPrint
+as shiown in the following code. These will ideally be called form view
+OnFileBeginPrint and OnFilePrint functions.
+
+<P>I have a string list to take the header content. Each string in a string
+list will be painted in a separate row.
+
+<P>It has a DrawRow functions which will paint the row on screen (in case of
+Owner draw control fron OnDrawItem code) or on printer.
+As a matter of fact my CSapListControl has a lot of functionality like,
+full row selection, alternate color bands, TreeLike List controlwith expand
+and collpase features, virtaul function for Sorting, OnGetDispInfo etc. All
+these functions will be called depending on the flags set. For exaple it
+has OnDrawItem function, it will  not be called if the Owner draw flag is
+set. All my list controls in my project are derived from this. I will send
+you all the code for this class, when I get some time to write description
+for all the functions.
+
+<P>All the members starting with m_ are class variables.
+
+<PRE><TT><FONT COLOR="#990000">
+#define        HEADER_HEIGHT       4
+#define        FOOTER_HEIGHT       3
+#define        LEFT_MARGIN         8
+#define        RIGHT_MARGIN        4
+
+void CSAPListCtrl::OnBeginPrint(CDC *pDC, CPrintInfo *pInfo)
+{
+     // OnBeginPrinting() is called after the user has committed to
+     // printing by OK'ing the Print dialog, and after the framework
+     // has created a CDC object for the printer or the preview view.
+
+     // This is the right opportunity to set up the page range.
+     // Given the CDC object, we can determine how many rows will
+     // fit on a page, so we can in turn determine how many printed
+     // pages represent the entire document.
+
+     if(NULL == pDC || NULL == pInfo)
+          return;
+
+     int  nMaxRowCount = GetItemCount();
+     if(!nMaxRowCount)
+          return;
+
+     //let us do all dimesions in ListControl units (Device) rather than
+     //printer device units. Since we have more control on them
+     CDC  *pCtlDC = GetDC();
+     if(NULL == pCtlDC)
+          return ;
+     TEXTMETRIC tm;
+     pCtlDC->GetTextMetrics(&tm);
+     m_nCharWidth = tm.tmAveCharWidth;
+
+     pDC->SetMapMode(MM_ANISOTROPIC);
+
+     CRect     rc;
+     GetItemRect(0, &rc, LVIR_BOUNDS);
+     m_nRowHeight = rc.Height();
+
+     int nMargins = (LEFT_MARGIN+RIGHT_MARGIN)*m_nCharWidth;
+     //this will optimize the column widths. If we have more column than 
+     //screen width and horizontal scroll on List control
+     //this will reduce the column widths proportonately to fit all of them 
+     //on the page. If we have fewer column all the column
+     //widths will increased propertionately.
+     pDC->SetWindowExt(rc.Width() + nMargins, pCtlDC->GetDeviceCaps(LOGPIXELSX));
+
+     pDC->SetViewportExt(pDC->GetDeviceCaps(HORZRES),pDC->GetDeviceCaps(LOGPIXEL SX));
+     double d = (double)pDC->GetDeviceCaps(LOGPIXELSY)/(double)pCtlDC->GetDeviceCaps(LOGPIX ELSY);
+     ReleaseDC(pCtlDC);
+
+     nMargins = (int)(m_nRowHeight*d);
+     int nPageHeight     = pDC->GetDeviceCaps(VERTRES);
+     m_nRowsPerPage = nPageHeight/nMargins;   //nMargins reused
+     m_nRowsPerPage -= (HEADER_HEIGHT+FOOTER_HEIGHT);
+     m_nRowsPerPage -= 1; //adjustment for list control header
+     int nMaxPage = nMaxRowCount/m_nRowsPerPage + 1;
+     pInfo->SetMaxPage(nMaxPage);
+     pInfo->m_nCurPage = 1;  // start printing at page# 1
+}
+
+void CSAPListCtrl::OnPrint(CDC *pDC, CPrintInfo *pInfo)
+{
+     if(NULL == pDC || NULL == pInfo)
+          return;
+
+     // Draw as many rows as will fit on the printed page.
+     // Clip the printed page so that there is no partially shown
+     // row at the bottom of the page (the same row which will be fully
+     // shown at the top of the next page).
+     int       nStartRow = 0;
+     int       nEndRow = 0;
+     int       nMaxRowCount = GetItemCount();
+
+     nStartRow = (pInfo->m_nCurPage - 1)*m_nRowsPerPage;
+     nEndRow = nStartRow+m_nRowsPerPage;
+     if(nEndRow > nMaxRowCount)
+          nEndRow = nMaxRowCount;
+
+     //create bold font for header and footer
+     CFont     *pOldFont = NULL;
+     CFont     BoldFont;
+     LOGFONT  lf;
+     pOldFont = GetFont();;
+     pOldFont->GetLogFont(&lf);
+     lf.lfWeight = FW_BOLD;
+     BoldFont.CreateFontIndirect(&lf);
+
+     pOldFont = pDC->SelectObject(&BoldFont);
+     int nPrevBkMode = pDC->SetBkMode(TRANSPARENT);
+     //print the header
+     PrintHeader(pDC, pInfo);
+     //Print the footer
+     PrintFooter(pDC, pInfo);
+     pDC->SetBkMode(nPrevBkMode);
+     pDC->SelectObject(pOldFont);
+     BoldFont.DeleteObject();
+
+     //Set origin to print header and Header control. Keep Y position at 0 to
+     //print header information
+     //Change Y position of origin to print List control header
+     //Adjust the List control origin to start printing after page margins
+     pDC->SetWindowOrg(-1*(LEFT_MARGIN*m_nCharWidth), -1*HEADER_HEIGHT*m_nRowHeight);
+
+     //send a message to Header control to print itsef. There is little scope to improve printing header.
+     //I have m_HeaderCtrl in my class. If not take by HeaderCtrl = GetDlgItem(0);
+     m_HeaderCtrl.SendMessage(WM_PAINT, (WPARAM)pDC->m_hDC);
+
+     //Chage window position to take care of ListControl Horizontal scrolling.
+     //if List control is scrolled to left horizontally the above window origin
+     //will not start painting from first column, instead it starts painting from
+     //first visible column, because rcBounds etc are will have -ve left value
+     //Same thing with vertical scrolling also
+     CRect     rcBounds;
+     GetItemRect(nStartRow, &rcBounds, LVIR_BOUNDS);
+
+     //offset top margin of rcBounds by ListControl header
+     CRect     rc;
+     m_HeaderCtrl.GetClientRect(&rc);
+     rcBounds.OffsetRect(0, -rc.Height());
+     pDC->OffsetWindowOrg(rcBounds.left, rcBounds.top);
+     //start printing rows
+     for(int i = nStartRow; i < nEndRow; i++)
+          DrawRow(pDC, i);
+
+     //SetWindowOrg back for next page
+     pDC->SetWindowOrg(0,0);
+     return;
+}
+
+void CSAPListCtrl::PrintHeader(CDC *pDC, CPrintInfo *pInfo)
+{
+     CRect               rc(pInfo->m_rectDraw);
+     CString             sTemp;
+
+     //Print App title
+     rc.left += LEFT_MARGIN*m_nCharWidth;
+     rc.right -= RIGHT_MARGIN*m_nCharWidth;
+     rc.bottom = rc.top+m_nRowHeight;
+
+     //print App title on top right margin
+     sTemp.LoadString(AFX_IDS_APP_TITLE);
+     pDC->DrawText(sTemp, &rc, DT_RIGHT | DT_SINGLELINE | DT_NOPREFIX | DT_VCENTER);
+
+     //print Header. One row for each string
+     POSITION  pos = NULL;
+     pos = m_HeaderList.GetHeadPosition();
+     while(pos)
+     {
+          sTemp = m_HeaderList.GetNext(pos);
+          pDC->DrawText(sTemp, &rc, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_VCENTER);
+          rc.OffsetRect(0, m_nRowHeight);
+     }
+}
+
+//print footer with a line and date, and page number
+void CSAPListCtrl::PrintFooter(CDC *pDC, CPrintInfo *pInfo)
+{
+     CRect     rc(pInfo->m_rectDraw);
+
+     //draw line
+     rc.left += LEFT_MARGIN*m_nCharWidth;
+     rc.right -= RIGHT_MARGIN*m_nCharWidth;
+     rc.top = rc.bottom - FOOTER_HEIGHT*m_nRowHeight;
+     rc.bottom = rc.top + m_nRowHeight;
+     pDC->MoveTo(rc.left, rc.top);
+     pDC->LineTo(rc.right, rc.top);
+
+     //draw page number
+     CString   sTemp ;
+     rc.OffsetRect(0, m_nRowHeight/2);
+     sTemp.Format(IDS_PRINT_PAGE_TITLE, pInfo->m_nCurPage);
+     pDC->DrawText(sTemp,-1,rc, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP | DT_VCENTER);
+
+     CTime     t = CTime::GetCurrentTime();
+     sTemp = t.Format("%c");
+     pDC->DrawText(sTemp,-1,rc, DT_RIGHT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP | DT_VCENTER);
+}
+
+//this is drawing code copied RowList sample and from www.codeguru.com site
+int CSAPListCtrl::DrawRow(CDC *pDC, int nItem)
+{
+     CImageList          *pImageList = NULL;
+     CFont               *pOldFont = NULL;
+     CFont               BoldFont;
+     CString             sLabel;
+     UINT           dtFlags = DT_SINGLELINE|DT_NOPREFIX|DT_VCENTER;
+     int                 nSaveDC = pDC->SaveDC();
+
+     if(!pDC->IsPrinting())
+          dtFlags |= (DT_NOCLIP | DT_END_ELLIPSIS);     //no clip because we add ellipsis at the end
+     // get item data
+     LV_ITEM lvi;
+     lvi.mask = LVIF_IMAGE | LVIF_STATE | LVIF_INDENT;
+     lvi.iItem=nItem;
+     lvi.iSubItem=0;
+     lvi.stateMask=0xFFFF;         // get all state flags
+     GetItem(&lvi);
+
+     BOOL bHighlight = ((lvi.state & LVIS_DROPHILITED) || ((lvi.state & LVIS_SELECTED)
+                    && ((GetFocus() == this) || (GetStyle() & LVS_SHOWSELALWAYS))));
+
+     //Get rectangles for painting
+     CRect     rcBounds, rcLabel, rcIcon;
+     GetItemRect(nItem, rcBounds, LVIR_BOUNDS);
+     GetItemRect(nItem, rcLabel, LVIR_LABEL);
+     GetItemRect(nItem, rcIcon, LVIR_ICON);
+     CRect     rcCol(rcBounds);
+
+     CRect     rcWnd;
+     sLabel = GetItemText(nItem, 0);
+     //Label offset
+     int offset = pDC->GetTextExtent(_T(" "), 1).cx;
+
+     CRect     rcHighlight;
+     int       nExt = 0;
+     switch(m_nHighlight)
+     {
+     case HIGHLIGHT_NORMAL:
+          nExt = pDC->GetOutputTextExtent(sLabel).cx + offset;
+          rcHighlight = rcLabel;
+          if(rcLabel.left + nExt < rcLabel.right)
+               rcHighlight.right = rcLabel.left + nExt;
+          break;
+
+     case HIGHLIGHT_ALLCOLUMNS:
+          rcHighlight = rcBounds;
+          rcHighlight.left = rcLabel.left;
+          break;
+
+     case HIGHLIGHT_ROW:
+          GetClientRect(&rcWnd);
+          rcHighlight = rcBounds;
+          rcHighlight.left = rcLabel.left;
+          rcHighlight.right = rcWnd.right;
+          break;
+
+     default:
+          rcHighlight.left = rcLabel.left;
+          break;
+     }
+
+     //draw highlight. printing may not be required
+     if(bHighlight)
+     {
+          pDC->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+          pDC->SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
+          pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_HIGHLIGHT)));
+     }
+     else {
+          pDC->SetBkColor(::GetSysColor(COLOR_WINDOW));
+          pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_WINDOW)));
+     }
+
+     //set clip region
+     rcCol.right = rcCol.left + GetColumnWidth(0);
+
+     //Nice to have regions but they are not working on printer DC we may need
+     //to take get device caps to support regions. Does not seems to help much now
+     //CRgn    rgn;
+     //rgn.CreateRectRgnIndirect(&rcCol);
+     //pDC->SelectClipRgn(&rgn);
+     //rgn.DeleteObject();
+
+     //Draw state icon
+     if(lvi.state & LVIS_STATEIMAGEMASK)
+     {
+          int nImage = ((lvi.state & LVIS_STATEIMAGEMASK) >> 12) - 1;
+          pImageList = GetImageList(LVSIL_STATE);
+          //offset the state image icon indent levels.
+          nExt = rcCol.left + lvi.iIndent*rcIcon.Width();    //nExt reused
+          if(pImageList)
+               pImageList->Draw(pDC, nImage, CPoint(nExt, rcCol.top), ILD_TRANSPARENT);
+     }
+
+     //Draw Normal and overlay icon
+     pImageList = GetImageList(LVSIL_SMALL);  //assuming printing in report mode only
+     if(pImageList)
+     {
+          UINT nOvlImageMask = lvi.state & LVIS_OVERLAYMASK;
+          pImageList->Draw(pDC, lvi.iImage, CPoint(rcIcon.left, rcIcon.top), 
+			(bHighlight?ILD_BLEND50:0)|ILD_TRANSPARENT|nOvlImageMask);
+     }
+
+     //if state image mask is on and indent is 0 then consider it as Server row
+     if((lvi.state & LVIS_STATEIMAGEMASK) && !lvi.iIndent)
+     {
+          //create bold font
+          LOGFONT  lf;
+          pOldFont = GetFont();;
+          pOldFont->GetLogFont(&lf);
+          lf.lfWeight = FW_BOLD;
+          BoldFont.CreateFontIndirect(&lf);
+          pOldFont = pDC->SelectObject(&BoldFont);
+          rcLabel.right = rcBounds.right;     //draw server name to full row width
+     }
+
+     //Draw item label
+     rcLabel.left += offset/2;
+     rcLabel.right -= offset;
+     dtFlags |= DT_LEFT;
+     pDC->DrawText(sLabel, rcLabel, dtFlags);
+
+     if((lvi.state & LVIS_STATEIMAGEMASK) && !lvi.iIndent)
+     {
+          pOldFont = pDC->SelectObject(pOldFont);
+          BoldFont.DeleteObject();
+          //focus rect if required
+          if(lvi.state & LVIS_FOCUSED && (GetFocus() == this))
+               pDC->DrawFocusRect(rcHighlight);
+          pDC->RestoreDC(nSaveDC);
+          return 0;
+     }
+
+     //dRAW LABELS FOR REMAINING COLUMNS
+     LV_COLUMN lvc;
+     lvc.mask = LVCF_FMT|LVCF_WIDTH;
+
+     if(m_nHighlight == HIGHLIGHT_NORMAL)
+     {
+          pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
+          pDC->SetBkColor(::GetSysColor(COLOR_WINDOW));
+     }
+     rcBounds.right = rcHighlight.right > rcBounds.right ? rcHighlight.right:rcBounds.right;
+
+     //Nice to have regions but they are not working on printer DC we may need
+     //to take get device caps to support regions. Does not seems to help much now
+     //rgn.CreateRectRgnIndirect(&rcBounds);
+     //pDC->SelectClipRgn(&rgn);
+     //rgn.DeleteObject();
+
+     for(int nColumn = 1; GetColumn(nColumn, &lvc); nColumn++)
+     {
+          rcCol.left = rcCol.right;
+          rcCol.right += lvc.cx;
+
+          //draw background if needed
+          if(m_nHighlight == HIGHLIGHT_NORMAL)
+               pDC->FillRect(rcCol, &CBrush(::GetSysColor(COLOR_WINDOW)));
+
+          sLabel = GetItemText(nItem, nColumn);
+          if(sLabel.IsEmpty())
+               continue;
+
+          //Get the text justification
+          UINT nJustify = DT_LEFT;
+          switch(lvc.fmt & LVCFMT_JUSTIFYMASK)
+          {
+          case LVCFMT_RIGHT:
+               nJustify = DT_RIGHT;
+               break;
+
+          case LVCFMT_CENTER:
+               nJustify = DT_CENTER;
+               break;
+
+          default:
+               break;
+          }
+          rcLabel = rcCol;
+          rcLabel.left += offset;
+          rcLabel.right -= offset;
+
+          dtFlags &= ~DT_RIGHT;
+          dtFlags &= ~DT_CENTER;
+          dtFlags |= nJustify;
+          pDC->DrawText(sLabel, -1, rcLabel, dtFlags);
+     }
+     //focus rect if required
+     if(lvi.state & LVIS_FOCUSED && (GetFocus() == this))
+          pDC->DrawFocusRect(rcHighlight);
+
+     pDC->RestoreDC(nSaveDC);
+     return 0;
+}
+
+void CSAPListCtrl::SetHeaderString(CStringList *HeaderList)
+{
+     m_HeaderList.RemoveAll();
+     m_HeaderList.AddTail(HeaderList);
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <TITLE>CListCtrl - Initializing the image list</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Initializing the image list</FONT></H3></CENTER>
+
+<HR WIDTH="100%">The list view control should be initialized in the OnInitDialog()
+function of the CDialog or in the OnInitialUpdate() function of the CFormView.
+A list view control can have up to three image lists associated with it:
+two of them for icons and the third for state images.
+
+<P>Here are the steps involved
+<OL>
+<LI>
+Declare variables of the type CImageList in your CDialog or CFormView sub
+class.</LI>
+
+<LI>
+In the OnInitDialog() or OnInitialUpdate() function call the Create() function
+for the CImageList member variables.</LI>
+
+<LI>
+Call the SetImageList() member function of the list view control.</LI>
+</OL>
+Here is a sample code.
+<PRE>
+<TT><FONT COLOR="#990000">m_imgIcon.Create( IDB_LARGEICONS, 32, 1, (COLORREF)-1 ); //Create from bitmap resource&nbsp;
+m_listctrl.SetImageList( &amp;m_imgIcon, LVSIL_NORMAL );&nbsp; //Set the image list&nbsp;
+m_imgIconSmall.Create( IDB_SMALLICONS, 16, 1, (COLORREF)-1 );&nbsp;
+m_listctrl.SetImageList( &amp;m_imgIconSmall, LVSIL_SMALL );</FONT></TT></PRE>
+The image list set using LVSIL_NORMAL is used only for the LVS_ICON mode.
+For this mode a 32x32 icon is usually used. For all other view modes the
+image list set with LVSIL_SMALL is used. The standard icon size for this
+is 16x16 pixels. You do not have to use the standard sizes though. For that matter, 
+you do not have to use square images either, the images can have any aspect you want.
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="Window Styles" value="0x800025">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Inhalt">
+		<param name="Local" value="html\default.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Menus">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Datei">
+			<param name="Local" value="html\menu_datensatz_befehle.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Neu">
+				<param name="Local" value="html\menu_datei_neu.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Öffnen">
+				<param name="Local" value="html\menu_datei_oeffnen.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Schließen">
+				<param name="Local" value="html\menu_datei_schliessen.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Speichern">
+				<param name="Local" value="html\menu_datei_speichern.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Speichern unter">
+				<param name="Local" value="html\menu_datei_speichernunter.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Drucken">
+				<param name="Local" value="html\menu_datei_drucken.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Beenden">
+				<param name="Local" value="html\menu_datei_beenden.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Bearbeiten">
+			<param name="Local" value="html\menu_bearbeiten_befehle.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Rückgängig">
+				<param name="Local" value="html\menu_bearbeiten_rueckgaengig.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Ausschneiden">
+				<param name="Local" value="html\menu_bearbeiten_ausschneiden.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Kopieren">
+				<param name="Local" value="html\menu_bearbeiten_kopieren.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Einfügen">
+				<param name="Local" value="html\menu_bearbeiten_einfuegen.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Datensatz">
+			<param name="Local" value="html\menu_datensatz_befehle.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Erster Datensatz">
+				<param name="Local" value="html\menu_datensatz_erster.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Voriger Datensatz">
+				<param name="Local" value="html\menu_datensatz_voriger.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Nächster Datensatz">
+				<param name="Local" value="html\menu_datensatz_naechster.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="letzter Datensatz">
+				<param name="Local" value="html\menu_datensatz_letzter.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Datensatz löschen">
+				<param name="Local" value="html\menu_datensatz_loeschen.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Neuer Datensatz">
+				<param name="Local" value="html\menu_datensatz_neu.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="hier fehlen noch Einträge ...">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Datenbanken">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Dateneingabe">
+		<param name="ImageNumber" value="1">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="unsere Homepage">
+		<param name="Local" value="http://www.mediagreen.de">
+		<param name="ImageNumber" value="13">
+		</OBJECT>
+</UL>
+</BODY></HTML>

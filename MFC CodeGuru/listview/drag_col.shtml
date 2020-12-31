@@ -1,0 +1,425 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Dragging columns to rearrange column sequence</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Dragging columns to rearrange column sequence</FONT></H3></CENTER>
+
+<HR WIDTH="100%">Quite often the screen space available to the list view
+control is just not enough to display all the columns in the control. Also,
+very often, a user wants to rearrange the columns to his or her liking.
+The preferred way to deal with this is to allow dragging of the columns
+and thus allowing the user to rearrange the list.
+
+<P>There is no built in support for dragging columns although its likely
+to be introduced in the next release of the common controls. Here’s how
+you can support it now.
+<H4>
+Step 1: Create a custom header class</H4>
+We create a custom header class derived from CHeaderCtrl to manage column
+dragging, give visual feedback to the user and finally to call a member
+function of the CListCtrl class to let it rearrange the list.
+
+<P>First the header file listing.
+<PRE><TT><FONT COLOR="#990000">#if !defined(AFX_MYHEADERCTRL_H__CC3DDBF3_EF5E_11D0_82AD_9A0A48000000__INCLUDED_)
+#define AFX_MYHEADERCTRL_H__CC3DDBF3_EF5E_11D0_82AD_9A0A48000000__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// MyHeaderCtrl.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CMyHeaderCtrl window
+
+class CMyHeaderCtrl : public CHeaderCtrl
+{
+// Construction
+public:
+	CMyHeaderCtrl();
+	CMyHeaderCtrl(CWnd* pWnd, void (CWnd::*fpDragCol)(int, int));
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CMyHeaderCtrl)
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CMyHeaderCtrl();
+	void SetCallback(CWnd* pWnd, void (CWnd::*fpDragCol)(int, int));
+
+protected:
+	BOOL	m_bCheckForDrag;
+	BOOL	m_bDragging;
+	int	*m_pWidth;
+	int	m_nDragCol;
+	int	m_nDropPos;
+	CRect	marker_rect;
+	void	(CWnd::*m_fpDragCol)(int, int);
+	CWnd	*m_pOwnerWnd;
+
+
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CMyHeaderCtrl)
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_MYHEADERCTRL_H__CC3DDBF3_EF5E_11D0_82AD_9A0A48000000__INCLUDED_)</FONT></TT></PRE>
+The CMyHeaderCtrl is derived from CHeaderCtrl. You will notice that the
+non default constructor is somewhat unusual. It takes a pointer to the
+CListCtrl or CListView derived class and also a pointer to a member function
+to call when the user has completed dragging the column. A member function
+SetCallback() is also defined. This function can be used when you want
+to use the default constructor for the CMyListCtrl class.
+
+<P>Here’s a brief description of what the protected member variables are
+used for. The m_bCheckForDrag flag is set true by the WM_LBUTTONDOWN handler
+only when the user presses the left mouse button over a column header.
+Its used by the WM_MOUSEMOVE handler to decide whether it should check
+for a column drag situation. This is important since we want to drag the
+column only if the user initially pressed the mouse button over a column
+header.
+
+<P>The m_bDragging flag indicates that a column drag is in progress. The
+m_pWidth variable holds an array of column widths. This is used to determine
+the column that is the drop target. The array is dynamically allocated
+using the new operator. The m_nDragCol variable holds the column index
+of the column being dragged and m_nDropPos holds the column index of the
+new position. The marker_rect holds the enclosing rectangle for the marker
+used for visual feedback to the user. The marker is a triangle indicating
+the new position where the column will be dragged to. The marker_rect is
+used to erase the previous marker when the marker position changes.
+
+<P>The m_fpDragCol variable holds a pointer to the CListCtrl or CListView
+member function that gets called when the user finishes the drag operation.
+The m_pOwnerWnd variable holds the object for which the m_fpDragCol member
+function is called. Normally, this would be the parent window.
+
+<P>Now, onto the implementation file listing.
+<PRE><TT><FONT COLOR="#990000">// MyHeaderCtrl.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "MyHeaderCtrl.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CMyHeaderCtrl
+
+CMyHeaderCtrl::CMyHeaderCtrl()&nbsp;
+	: marker_rect(0,0,0,0)
+{
+	m_pWidth = NULL;
+	m_bDragging = FALSE;
+	m_bCheckForDrag = FALSE;
+	m_fpDragCol = NULL;
+	m_pOwnerWnd = NULL;
+}
+
+CMyHeaderCtrl::CMyHeaderCtrl(CWnd *pWnd, void (CWnd::*fpDragCol)(int, int))&nbsp;
+	: marker_rect(0,0,0,0)
+{
+	m_pWidth = NULL;
+	m_bDragging = FALSE;
+	m_bCheckForDrag = FALSE;
+	m_fpDragCol = fpDragCol;
+	m_pOwnerWnd = pWnd;
+}
+
+CMyHeaderCtrl::~CMyHeaderCtrl()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CMyHeaderCtrl, CHeaderCtrl)
+	//{{AFX_MSG_MAP(CMyHeaderCtrl)
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONUP()
+	ON_WM_LBUTTONDOWN()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CMyHeaderCtrl message handlers
+
+void CMyHeaderCtrl::OnMouseMove(UINT nFlags, CPoint point)&nbsp;
+{
+	if( (MK_LBUTTON &amp; nFlags) == 0)
+	{
+		// The left mouse button is not pressed - so reset flags
+		m_bCheckForDrag = FALSE;
+		m_bDragging = FALSE;
+	}
+	else if( m_bDragging )
+	{
+		// Get column number that falls under the mouse
+		int i=0, cx = 0;
+		if( point.x > 0 )
+			for( i = 0; i &lt; GetItemCount(); i++ )
+			{
+				if( point.x >= cx &amp;&amp; point.x &lt; cx + m_pWidth[i] )
+					break;
+				cx += m_pWidth[i];
+			}
+
+		if( i != m_nDropPos )
+		{
+			m_nDropPos = i;
+
+			CRect rect;
+			GetWindowRect( &amp;rect );
+
+			// Invalidate area occupied by previous marker
+			InvalidateRect( &amp;marker_rect );
+
+			// Draw a new marker
+			CClientDC dc(this);
+			POINT pts[3];
+			pts[0].x = cx; pts[1].x = cx -3; pts[2].x = cx +3;
+			pts[0].y = rect.Height(); pts[1].y = pts[2].y = rect.Height() -7;&nbsp;
+			dc.Polygon( pts, 3 );
+
+			// save marker information
+			marker_rect.left = cx - 4;
+			marker_rect.top = rect.Height() -8;
+			marker_rect.right = cx + 4;
+			marker_rect.bottom = rect.Height();
+		}
+		return;
+	}
+	else if( m_bCheckForDrag )
+	{
+		// The mouse button was pressed over a column header
+		// and now the mouse has moved - so start drag
+		m_bCheckForDrag = FALSE;
+
+		m_bDragging = TRUE;
+		m_nDropPos = m_nDragCol;
+
+		SetCapture();
+
+		// Store information for later use
+		int iCount = GetItemCount();
+		HD_ITEM hd_item;
+		m_pWidth = new int[iCount];
+		for( int i = 0; i &lt; iCount; i++ )
+		{
+			hd_item.mask = HDI_WIDTH;
+			GetItem( i, &amp;hd_item );
+			m_pWidth[i] = hd_item.cxy;
+
+		}
+		return;
+	}
+	
+	CHeaderCtrl::OnMouseMove(nFlags, point);
+}
+
+void CMyHeaderCtrl::OnLButtonUp(UINT nFlags, CPoint point)&nbsp;
+{
+	ASSERT( m_pOwnerWnd != NULL &amp;&amp; m_fpDragCol != NULL );
+
+	if( m_bDragging )
+	{
+		m_bDragging = FALSE;
+		delete[] m_pWidth;
+		ReleaseCapture();
+		Invalidate();
+
+		// Call the callback function.
+		if( m_nDragCol != m_nDropPos &amp;&amp; m_nDragCol != m_nDropPos -1 )
+
+			(m_pOwnerWnd->*m_fpDragCol)( m_nDragCol, m_nDropPos );
+	}
+	CHeaderCtrl::OnLButtonUp(nFlags, point);
+}
+
+
+void CMyHeaderCtrl::SetCallback( CWnd* pWnd, void (CWnd::*fpDragCol)(int, int) )
+{
+	m_fpDragCol = fpDragCol;
+	m_pOwnerWnd = pWnd;
+}
+
+void CMyHeaderCtrl::OnLButtonDown(UINT nFlags, CPoint point)&nbsp;
+{
+	// Determine if mouse was pressed over a column header
+	HD_HITTESTINFO hd_hittestinfo;
+	hd_hittestinfo.pt = point;
+	SendMessage(HDM_HITTEST, 0, (LPARAM)(&amp;hd_hittestinfo));
+	if( hd_hittestinfo.flags == HHT_ONHEADER )
+	{
+		m_nDragCol = hd_hittestinfo.iItem;
+		m_bCheckForDrag = TRUE;
+	}
+	
+	CHeaderCtrl::OnLButtonDown(nFlags, point);
+}</FONT></TT></PRE>
+The implementation of the CMyHeaderCtrl is fairly straight-forward. It
+essentially has handlers for three windows messages - WM_MOUSEMOVE, WM_LBUTTONDOWN
+and WM_LBUTTONUP.
+
+<P>OnLButtonDown() sets the value for m_nDragCol and sets the m_bCheckForDrag
+flag if the user pressed the mouse button over a column header.
+
+<P>OnMouseMove() is where the visual feedback is given. It first checks
+whether the left mouse button is down and resets the m_bCheckForDrag and
+the m_bDragging flags. If a drag is in process, the m_nDropPos value is
+set and the marker is drawn in the header. Finally, if the first two conditions
+fail, it checks whether a drag should be initiated.
+
+<P>OnLButtonUp() ends the drag process if there was a drag underway and
+calls the callback function with the drag column and the drop position
+as arguments.
+<BR>&nbsp;
+<H4>
+Step 2: Add a CMyHeaderCtrl member variable in the CListCtrl derived class</H4>
+Add a CMyHeaderCtrl member variable in the CListCtrl derived class. If
+you are using a CListView derivative, add the member variable to that class.
+<PRE><TT><FONT COLOR="#990000">	CMyHeaderCtrl&nbsp;&nbsp; m_headerctrl;</FONT></TT></PRE>
+
+<H4>
+Step 3: Initialize the CMyHeaderCtrl object</H4>
+Add the following statement in the constructor of the CListCtrl derived
+class.
+<PRE><TT><FONT COLOR="#990000">	m_headerctrl.SetCallback( this, (void (CWnd::*)(int, int))DragColumn );</FONT></TT></PRE>
+DragColumn is the callback function we will define in the next step.
+<H4>
+Step 4: Define a callback function for rearranging columns</H4>
+The CMyHeaderCtrl object needs a function pointer that it uses to call
+the function when the user has completed the drag operation. It is this
+callback function that is actually responsible for rearranging the columns.
+We used the name DragColumn in the previous step when initializing the
+CMyHeaderCtrl object.
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::DragColumn(int source, int dest)
+{
+	TCHAR sColText[160];
+
+	// Insert a column at dest
+	LV_COLUMN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lv_col;
+	lv_col.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM;
+	lv_col.pszText = sColText;
+	lv_col.cchTextMax = 159;
+	GetColumn( source, &amp;lv_col );
+	lv_col.iSubItem = dest;
+	InsertColumn( dest, &amp;lv_col );
+
+	// Adjust source col number since it might have changed&nbsp;
+	// because a new column was inserted
+	if( source > dest )&nbsp;
+		source++;
+
+	// Moving a col to position 0 is a special case
+	if( dest == 0 )
+		for( int i = GetItemCount()-1; i > -1 ; i-- )
+			SetItemText(i, 1, GetItemText( i, 0) );
+
+	
+	// Copy sub item from source to dest
+	for( int i = GetItemCount()-1; i > -1 ; i-- )
+		SetItemText(i, dest, GetItemText( i, source ) );
+
+	// Delete the source column, but not if it is the first
+	if( source != 0 )
+		DeleteColumn( source );
+	else
+	{
+		// If source col is 0, then copy col# 1 to col#0
+		// and then delete col# 1
+		GetColumn( 1, &amp;lv_col );
+		lv_col.iSubItem = 0;
+		SetColumn( 0, &amp;lv_col );
+		for( int i = GetItemCount()-1; i > -1 ; i-- )
+			SetItemText(i, 0, GetItemText( i, 1) );
+		DeleteColumn( 1 );
+	}
+
+	Invalidate();
+}</FONT></TT></PRE>
+The general approach we take in this function is that we insert a column
+at the right place, copy all sub-items from the source column and then
+delete the source column. The list view control doles out special treatment
+to the first column and therefore we also have to. Here are the special
+behaviour you have to be aware of when inserting or deleting a column.
+When you try to insert a column at position zero and the control already
+has atleast one column, then the new column is actually inserted as the
+second column. When you delete the first column then the result is that
+the column headers are shifted left by one and the last column is deleted.
+The DragColumn() function handles these two situations.
+<BR>&nbsp;
+<H4>
+Step 5: Subclass the header control</H4>
+Finally we need to subclass the header control. A good place to do this is in the 
+PreSubclassWindow() override of our list view control class. If you are using a 
+CListView derived class, you can place the sub-classing code in OnInitialUpdate(). 
+In either case, make sure you call the base class version of the function before 
+subclassing the header control. If the listview control was not created in the 
+report view mode, then you have to change the style of listview control before 
+trying the subclass the header control. You can use ModifyStyle() for this. The 
+reason why we need to change the style to the report view mode is that the header 
+control is created only when the listview control is first taken to the report view mode.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::PreSubclassWindow()&nbsp;
+{
+	CListCtrl::PreSubclassWindow();
+
+	// Add initialization code
+	m_headerctrl.SubclassWindow( ::GetDlgItem(m_hWnd,0) );
+}</FONT></TT></PRE>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

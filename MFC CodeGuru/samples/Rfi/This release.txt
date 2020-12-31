@@ -1,0 +1,7 @@
+This Release: US Version
+
+	- Database contains entries for New England only
+	- Run queries against database
+	- Database must exist in working directory
+	- Add, Delete, Edit database entries
+

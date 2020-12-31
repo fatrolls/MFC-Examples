@@ -1,0 +1,376 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Add a Font Property Page</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Add a Font Property Page</FONT>
+<HR></H3></CENTER>
+MFC provides three property page classes - CFontPropPage, CColorPropPage and CPicturePropPage. Unfortunately, these can be used with OLE Automation only. There's also been some discussion on the Usenet news groups about using the 'Choose Font' dialog as a property page. This too is a dead end. You can't use the 'Choose Font' dialog within a property sheet.
+
+<P>The solution is to implement the font property page yourself (or let someone else develop it for you). To allow you to customize the behaviour of the common dialogs, the SDK provides the dialog resources for these dialogs. The resource for the 'Choose Font' dialog is in the FONT.DLG file in the Include directory and the associated symbols can be found in the DLGS.H file. Using these files as a starting point, I created a resource for a Font Property Page and added a CPropertyPage derived class to use this resource. The implementation given below is somewhat limited but still useful. If you need to enhance this, you can look at the source file for CFontPropPage in the MFC source directory.
+<p><img src="font_page.gif" width="422"
+height="310"></p>
+
+
+<H4>Step 1: Add the dialog resource</H4>
+You can either open the rc file listed below in DevStudio and copy the dialog resource to you main resource file or you can include the rc file itself. 
+
+<P>To copy the resource, open the 'fontpage.rc' file in DevStudio and expand the resource outline. Then open up the ResourceView for your application so that the dialog resources are visible. Finally drag the IDD_FONTPAGE resource from the 'fontpage.rc' over to your application resources in the ResourceView.
+
+<P>To include the fontpage resource file, copy the files 'fontpage.rc' and 'fontpagerc.h' (listed below) to the 'res' directory under the project directory. Then add the following line to the 'rc2' file already in this directory. The resource image is also shown below.
+
+<PRE><TT><FONT COLOR="#990000">
+#include "fontpage.rc"	
+</FONT></TT></PRE>
+
+Listing of FontPage.rc
+
+<PRE><TT><FONT COLOR="#990000">
+/////////////////////////////////////////////////////////////////////////
+// Listing of FontPage.rc
+//
+#include "winresrc.h"
+#include "FontPageRc.h"
+
+
+IDD_FONTPAGE DIALOG DISCARDABLE  13, 54, 264, 133
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Font"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "&Font:",stc1,6,3,40,9
+    COMBOBOX        IDC_FONT,6,13,131,54,CBS_SIMPLE | CBS_AUTOHSCROLL | 
+                    CBS_SORT | CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Font St&yle:",stc2,153,3,44,9
+    COMBOBOX        IDC_STYLE,153,13,64,54,CBS_SIMPLE | CBS_DISABLENOSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Size:",stc3,224,3,30,9
+    COMBOBOX        IDC_FONTSIZE,224,13,32,54,CBS_SIMPLE | 
+                    CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Effects",grp1,6,72,84,34,WS_GROUP
+    CONTROL         "Stri&keout",IDC_STRIKEOUT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,82,49,10
+    CONTROL         "&Underline",IDC_UNDERLINE,"Button",BS_AUTOCHECKBOX,10,
+                    94,51,10
+    GROUPBOX        "Sample",grp2,98,72,160,49,WS_GROUP
+    CTEXT           "AaBbYyZz",IDC_SAMPLE,104,81,149,37,SS_NOPREFIX
+END
+/////////////////////////////////////////////////////////////////////////
+</FONT></TT></PRE>
+
+
+
+Listing of FontPageRc.h
+
+<PRE><TT><FONT COLOR="#990000">
+/////////////////////////////////////////////////////////////////////////
+// Listing of FontPageRc.h
+//
+#define IDC_STRIKEOUT                   0x0410
+#define IDC_UNDERLINE                   0x0411
+#define grp1                            0x0430
+#define grp2                            0x0431
+#define stc1                            0x0440
+#define stc2                            0x0441
+#define stc3                            0x0442
+#define IDC_SAMPLE                      0x0444
+#define IDC_FONT                        0x0470
+#define IDC_STYLE                       0x0471
+#define IDC_FONTSIZE                    0x0472
+#define IDD_FONTPAGE                    1543
+/////////////////////////////////////////////////////////////////////////
+</FONT></TT></PRE>
+
+
+<p><img src="font_rc.gif" width="402" height="241"></p>
+
+
+
+
+
+Step 2: Include the source files into your project
+The listing of the header and implementation files are listed below. Simply, include them into your project and you are all set to use the CFontPage class. The implementation of this class is fairly simple. The CFontPage constructor takes a pointer to a LOGFONT structure. It uses the information in this structure to initialize itself. If a LOGFONT structure is not supplied then the desktop window's font is used. In the OnInitDialog() function, we enumerate through the fonts and populate the 'Font' combobox. Whenever, any of the font characteristic changes, the OnSelChange() function gets called. All the entries in the message map point to this function. The OnSelChange() function updates the internal information and displays a sample text.
+
+Listing of  FontPage.h
+
+<PRE><TT><FONT COLOR="#990000">
+#if !defined(AFX_FONTPAGE_H__DE7EDEB3_056D_11D1_82DF_E2CDC9000000__INCLUDED_)
+#define AFX_FONTPAGE_H__DE7EDEB3_056D_11D1_82DF_E2CDC9000000__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// FontPage.h : header file
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CFontPage dialog
+
+class CFontPage : public CPropertyPage
+{
+	DECLARE_DYNCREATE(CFontPage)
+
+// Construction
+public:
+	void GetCurrentFont(LPLOGFONT lplf);
+	CFontPage(LOGFONT* plogfont = NULL);
+	~CFontPage();
+
+// Dialog Data
+	//{{AFX_DATA(CFontPage)
+	enum { IDD = IDD_FONTPAGE };
+	CStatic	m_staticSample;
+	CComboBox	m_comboStyle;
+	CComboBox	m_comboSize;
+	CComboBox	m_comboFont;
+	BOOL	m_bStrikeOut;
+	BOOL	m_bUnderline;
+	CString	m_sFont;
+	CString	m_sSize;
+	CString	m_sStyle;
+	//}}AFX_DATA
+
+
+// Overrides
+	// ClassWizard generate virtual function overrides
+	//{{AFX_VIRTUAL(CFontPage)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+	// Generated message map functions
+	//{{AFX_MSG(CFontPage)
+	virtual BOOL OnInitDialog();
+	afx_msg void OnSelChange();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+private:
+	CFont m_fontSample;
+	int m_cyPixelsPerInch;
+	static int CALLBACK FontEnumProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, 
+		int FontType, CFontPage* pFontPage );
+
+
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately 
+// before the previous line.
+
+#endif // !defined(AFX_FONTPAGE_H__DE7EDEB3_056D_11D1_82DF_E2CDC9000000__INCLUDED_)
+</FONT></TT></PRE>
+
+
+
+Listing of FontPage.cpp
+
+<PRE><TT><FONT COLOR="#990000">
+// FontPage.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "resource.h"
+#include "FontPage.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CFontPage property page
+
+IMPLEMENT_DYNCREATE(CFontPage, CPropertyPage)
+
+CFontPage::CFontPage(LOGFONT* plogfont /*= NULL*/) : CPropertyPage(CFontPage::IDD)
+{
+	//{{AFX_DATA_INIT(CFontPage)
+	//}}AFX_DATA_INIT
+
+	LOGFONT logfont;
+	CWindowDC dc(GetDesktopWindow() );
+	m_cyPixelsPerInch = GetDeviceCaps(dc, LOGPIXELSY);
+	if( plogfont == NULL )
+	{
+		CFont *pfont = dc.GetCurrentFont();
+		pfont->GetLogFont( &logfont );
+		plogfont = &logfont;
+	}
+	m_fontSample.CreateFontIndirect( plogfont );
+
+	m_bStrikeOut = plogfont->lfStrikeOut;
+	m_bUnderline = plogfont->lfUnderline;
+	m_sFont = plogfont->lfFaceName;
+	m_sSize.Format( "%d", MulDiv(plogfont->lfHeight, 72, m_cyPixelsPerInch) );
+	m_sStyle = _T("Regular");
+	if( plogfont->lfWeight >= 700 && plogfont->lfItalic)
+		m_sStyle = _T("Bold Italic");
+	else if( plogfont->lfItalic )
+		m_sStyle = _T("Italic");
+	else if ( plogfont->lfWeight >= 700 )
+		m_sStyle = _T("Bold");
+
+
+	
+}
+
+CFontPage::~CFontPage()
+{
+}
+
+void CFontPage::DoDataExchange(CDataExchange* pDX)
+{
+	CPropertyPage::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CFontPage)
+	DDX_Control(pDX, IDC_SAMPLE, m_staticSample);
+	DDX_Control(pDX, IDC_STYLE, m_comboStyle);
+	DDX_Control(pDX, IDC_FONTSIZE, m_comboSize);
+	DDX_Control(pDX, IDC_FONT, m_comboFont);
+	DDX_Check(pDX, IDC_STRIKEOUT, m_bStrikeOut);
+	DDX_Check(pDX, IDC_UNDERLINE, m_bUnderline);
+	DDX_CBString(pDX, IDC_FONT, m_sFont);
+	DDX_CBString(pDX, IDC_FONTSIZE, m_sSize);
+	DDV_MaxChars(pDX, m_sSize, LF_FACESIZE);
+	DDX_CBString(pDX, IDC_STYLE, m_sStyle);
+	//}}AFX_DATA_MAP
+}
+
+
+BEGIN_MESSAGE_MAP(CFontPage, CPropertyPage)
+	//{{AFX_MSG_MAP(CFontPage)
+	ON_CBN_SELCHANGE(IDC_FONT, OnSelChange)
+	ON_CBN_SELCHANGE(IDC_STYLE, OnSelChange)
+	ON_CBN_SELCHANGE(IDC_FONTSIZE, OnSelChange)
+	ON_BN_CLICKED(IDC_STRIKEOUT, OnSelChange)
+	ON_BN_CLICKED(IDC_UNDERLINE, OnSelChange)
+	ON_CBN_KILLFOCUS(IDC_FONT, OnSelChange)
+	ON_CBN_KILLFOCUS(IDC_STYLE, OnSelChange)
+	ON_CBN_KILLFOCUS(IDC_FONTSIZE, OnSelChange)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CFontPage message handlers
+
+
+BOOL CFontPage::OnInitDialog() 
+{
+	CPropertyPage::OnInitDialog();
+	
+	CWindowDC dc(this);
+	LOGFONT logfont;
+	logfont.lfCharSet = DEFAULT_CHARSET;
+	logfont.lfFaceName[0] = '\0';
+	logfont.lfPitchAndFamily = 0;
+	EnumFontFamiliesEx( dc.m_hDC, &logfont, (FONTENUMPROC)FontEnumProc, 
+			(LPARAM) this, 0 );
+	
+	// Fill Size combobox with "common" sizes
+	TCHAR* Defaults[] = { _T("8"), _T("9"), _T("10"), _T("11"), _T("12"), _T("14"),
+				_T("16"), _T("18"), _T("20"), _T("22"), _T("24"), _T("26"), 
+				_T("28"), _T("36"), _T("48") };
+	for (int i = 0; i < (sizeof(Defaults)/sizeof(Defaults[0])); i++)
+		m_comboSize.AddString(Defaults[i]);
+
+	// Fill Style combobox with "common" styles
+	m_comboStyle.AddString( _T("Regular") );
+	m_comboStyle.AddString( _T("Bold") );
+	m_comboStyle.AddString( _T("Italic") );
+	m_comboStyle.AddString( _T("Bold Italic") );
+
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+int CALLBACK CFontPage::FontEnumProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, 
+		int FontType, CFontPage* pFontPage )
+{
+
+	if( pFontPage->m_comboFont.FindStringExact( 0, (LPCTSTR)lpelfe->elfFullName ) == 
+					CB_ERR )
+	{
+		// Add to list
+		pFontPage->m_comboFont.AddString( (LPCTSTR)lpelfe->elfFullName );
+	}
+
+ 	return 1;
+}
+
+void CFontPage::OnSelChange() 
+{
+	// The selection hasn't changed yet, so change it
+	if( IsChild( GetFocus() ) && 
+			GetFocus()->GetParent()->IsKindOf( RUNTIME_CLASS( CComboBox ) ) )
+	{
+		CComboBox *cb = (CComboBox *)GetFocus()->GetParent();
+		CString sText;
+		if( cb->GetCurSel() != CB_ERR )
+		{
+			cb->GetLBText( cb->GetCurSel(), sText );
+			cb->SetWindowText( sText );
+		}
+	}
+
+	UpdateData(TRUE);
+	
+	LOGFONT logfont;
+	m_fontSample.GetLogFont( &logfont );
+	logfont.lfStrikeOut = m_bStrikeOut;
+	logfont.lfUnderline = m_bUnderline;
+	memcpy( logfont.lfFaceName, m_sFont, LF_FACESIZE );
+
+	logfont.lfHeight = MulDiv(atoi(m_sSize), m_cyPixelsPerInch, 72);
+	 
+	logfont.lfWeight = 400;			//Regular
+	logfont.lfItalic = FALSE;
+	if( m_sStyle.Find( _T("Italic") ) != -1 )
+		logfont.lfItalic = TRUE;
+	if( m_sStyle.Find( _T("Bold") ) != -1 )
+		logfont.lfWeight = 700;
+
+	m_fontSample.DeleteObject();
+	m_fontSample.CreateFontIndirect( &logfont );
+ 	m_staticSample.SetFont(&m_fontSample);	
+}
+
+void CFontPage::GetCurrentFont(LPLOGFONT lplf)
+{
+	m_fontSample.GetLogFont( lplf );
+}
+</FONT></TT></PRE>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

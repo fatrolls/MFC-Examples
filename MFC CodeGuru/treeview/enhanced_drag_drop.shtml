@@ -1,0 +1,204 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CTreeCtrl - Enhanced Drag & Drop</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Enhanced Drag & Drop</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:mgrinberg@impsat1.com.ar">Miguel Grinberg</A>
+
+
+
+<p>I modified the code for using drag & drop on tree controls. The idea 
+was to add three features found on the ClassView tree control of the 
+VC++ ide. With the following code you can disable the drag & drop 
+interface for certain items on the tree (the root item in ClassView, 
+for example), and you can decide whether an item is a valid drop 
+target or not, and in case not, provide an alternative item as a drop 
+target (behavior observed in ClassView when you drag classes between 
+folders; only folders are drop targets). Also, I update the cursor 
+shape to reflect the status of the drag & drop operation.
+
+<p>The member variables needed are:
+
+<PRE><TT><FONT COLOR="#990000">
+protected:
+	CImageList*     m_pDragImage;
+	BOOL            m_bLDragging;
+	HTREEITEM       m_hitemDrag,m_hitemDrop;
+	HCURSOR         m_dropCursor,m_noDropCursor;
+</FONT></TT></PRE>
+
+<p>Member variables m_dropCursor and m_noDropCursor must be initialized to
+the desired cursors.
+
+<p>Here is my version of OnBeginDrag:
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+
+	m_hitemDrag = pNMTreeView->itemNew.hItem;
+	m_hitemDrop = NULL;
+	SelectItem( m_hitemDrag );
+	if (!IsDropSource(m_hitemDrag))
+		return;
+
+	// get the image list for dragging 
+	m_pDragImage = CreateDragImage(m_hitemDrag);  
+	// CreateDragImage() returns NULL if no image list 
+	// associated with the tree view control 
+	if( !m_pDragImage )
+		return;
+
+	m_bLDragging = TRUE;
+	m_pDragImage->BeginDrag(0, CPoint(15, 15));
+	POINT pt = pNMTreeView->ptDrag;
+	ClientToScreen( &pt );
+	m_pDragImage->DragEnter(NULL, pt);
+	SetCapture();
+}
+</FONT></TT></PRE>
+
+<p>This member function calls IsDropSource() virtual function to decide 
+if the item can be a source of a drag & drop operation. If 
+IsDropSource() returns FALSE, the drag is cancelled. Here is the 
+default IsDropSource() member function:
+
+<PRE><TT><FONT COLOR="#990000">
+/* virtual */ BOOL CTreeCtrlX::IsDropSource(HTREEITEM hItem)
+{
+	return TRUE;  // all items are valid sources
+}
+</FONT></TT></PRE>
+
+<p>I also modified the OnMouseMove() handler:
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	HTREEITEM hitem;
+	UINT flags;
+
+	if (m_bLDragging)
+	{
+		POINT pt = point;
+		ClientToScreen( &pt );
+		CImageList::DragMove(pt);
+		if ((hitem = HitTest(point, &flags)) != NULL)
+		{
+			CImageList::DragShowNolock(FALSE);
+			m_hitemDrop = GetDropTarget(hitem);
+			SelectDropTarget(m_hitemDrop);
+			CImageList::DragShowNolock(TRUE);
+		}
+		else
+			m_hitemDrop = NULL;
+		if (m_hitemDrop)
+			SetCursor(m_dropCursor);
+		else
+			SetCursor(m_noDropCursor);
+	}
+
+	CTreeCtrl::OnMouseMove(nFlags, point);
+}
+</FONT></TT></PRE>
+
+<p>This version, calls GetDropTarget() virtual function to decide if the 
+item behind the cursor is a valid drop target. This function should 
+return NULL if the item is not a valid target for a drop. If the item 
+can accept a drop, it should return its HTREEITEM handle. As an 
+alternative, a different HTREEITEM can be returned to specify a 
+different drop target. This can be useful, for example, if you don't 
+accept drops on tree leafs, but want to direct the drop to the 
+parent. Also I change the cursor to reflect the status of the 
+operation (OnSetCursor is not called while mouse is captured, so the 
+cursor can be safely changed here).
+
+<p>Here is the default implemmentation of the GetDropTarget() virtual 
+function:
+
+<PRE><TT><FONT COLOR="#990000">
+/* virtual */ HTREEITEM CTreeCtrlX::GetDropTarget(HTREEITEM hItem)
+{
+	// inhibit drop on the drop source or its parent
+	if (hItem == m_hitemDrag || hItem == GetParentItem(m_hitemDrag))
+		return NULL;
+	return hItem;
+}
+</FONT></TT></PRE>
+
+<p>Finally, here is the OnLButtonUp() handler:
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnLButtonUp(UINT nFlags, CPoint point) 
+{
+	CTreeCtrl::OnLButtonUp(nFlags, point);
+
+	if (m_bLDragging)
+	{
+		m_bLDragging = FALSE;
+		CImageList::DragLeave(this);
+		CImageList::EndDrag();
+		ReleaseCapture();
+
+		delete m_pDragImage;
+
+		// Remove drop target highlighting
+		SelectDropTarget(NULL);
+
+		if( m_hitemDrag == m_hitemDrop || m_hitemDrop == NULL)
+			return;
+
+		// If Drag item is an ancestor of Drop item then return
+		HTREEITEM htiParent = m_hitemDrop;
+		while( (htiParent = GetParentItem( htiParent )) != NULL ) 
+		{
+			if( htiParent == m_hitemDrag ) return;
+		}
+
+		Expand( m_hitemDrop, TVE_EXPAND ) ;
+
+		HTREEITEM htiNew = CopyBranch(m_hitemDrag, m_hitemDrop, TVI_LAST ); 
+ 		DeleteItem(m_hitemDrag);
+		SelectItem( htiNew );
+	}
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

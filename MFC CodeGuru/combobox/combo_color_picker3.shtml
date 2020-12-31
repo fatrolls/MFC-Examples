@@ -1,0 +1,118 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="Author" CONTENT="Chris Maunder">
+	<meta name="DESCRIPTION" content="Modified Combo Box class, allows selection of standard and custom colors.">
+	<meta name="KEYWORDS" content="Color Picker, Combo Box, MFC, Class, James R. Twine">
+   <TITLE>Controls - Color Picker Combo Box (3)</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Color Picker Combo Box (3)
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+<p>This article was contributed by <a href="mailto:jtwine@jrtwine.com">James R. Twine</a>. 
+<br>(Based on earlier code by Baldvin Hansson.)
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG src="combo_color_picker3.gif" alt="CColorPickerCB Sample Images" width="605" height="279">
+<br><br>Download <A HREF="combo_color_picker3_src.zip">Source Code</a> and
+<A HREF="combo_color_picker3_demo.zip">Demo project</a>. 
+</p>
+<br>
+
+<!-- The article... -->
+
+<p><font size="1" face="Arial">© 1998 James R. Twine </font>
+
+<p>This class, <font color="#990000"><tt>CColorPickerCB</tt></font>,
+implements a Combobox that displays colors, as well as the name
+of the colors. Colors may be added or removed at runtime, and the
+control can be queried for the <font color="#990000"><tt>COLORREF</tt>
+</font> value, or the name of the
+selected color. You can also set the selected color. </p>
+
+<p>The control correctly handles selection, enabled and disabled
+drawing (see images below of the control is various states).
+Since the control uses strings for display, the colors can be
+sorted. </p>
+
+<p>To use this control, create a Drop List Combobox with the
+&quot;<font color="#990000"><tt>Owner Draw Fixed</tt></font>&quot;
+and &quot;<font color="#990000"><tt>Has Strings</tt></font>&quot;
+styles. Attach a <font color="#990000"><tt>CColorPickerCB
+</tt></font> to the control, and off
+you go! </p>
+
+<p>Note that the control will use 1/4 (one fourth) of its width
+for the color block, and the rest, minus a few pixels, for the
+color text. Be sure you make it wide enough. </p>
+
+<p>If you want the source code to make sense, be sure you are set
+to a Tab size of 4, or the comments and code will not line up
+correctly. </p>
+
+<p>Any questions or comments, please do not hesitate to EMail me.
+</p>
+
+<p>Here is a list of public functions in the <font color="#990000"><tt>CColorPickerCB</tt></font>
+class: </p>
+
+<p>
+
+<font color="#990000"><tt>COLORREF GetSelectedColorValue();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</tt></font>// Get Selected Color Value</font><br>
+
+<font color="#990000"><tt>CString GetSelectedColorName();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</tt></font>// Get Selected Color Name</font><br>
+
+<font color="#990000"><tt>void SetSelectedColorValue(COLORREF crColor);&nbsp;&nbsp;
+</tt></font>// Set Selected Color Value</font><br>
+
+<font color="#990000"><tt>void SetSelectedColorName(PCSTR cpColor);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</tt></font>// Set Selected Color Name</font><br>
+
+<font color="#990000"><tt>bool RemoveColor(PCSTR cpColor);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</tt></font>// Remove Color From List</font><br>
+
+<font color="#990000"><tt>bool RemoveColor(COLORREF crColor);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</tt></font>// Remove Color From List</font><br>
+
+<font color="#990000"><tt>bool AddColor(PCSTR cpName, COLORREF crColor);&nbsp;
+</tt></font>// Insert A New Color</font><br>
+
+<!-- Remember to update this -->
+<p>Last updated: 17 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

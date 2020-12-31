@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smile", "smile.vcxproj", "{E2161794-70F5-4DB3-BC94-B8A116E1B72D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		Static Debug Runtime|Win32 = Static Debug Runtime|Win32
+		Static Debug|Win32 = Static Debug|Win32
+		Static Release Runtime|Win32 = Static Release Runtime|Win32
+		Static Release|Win32 = Static Release|Win32
+		Unicode Debug|Win32 = Unicode Debug|Win32
+		Unicode Release|Win32 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Debug|Win32.Build.0 = Debug|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Release|Win32.ActiveCfg = Release|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Release|Win32.Build.0 = Release|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Static Debug Runtime|Win32.ActiveCfg = Static Debug Runtime|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Static Debug Runtime|Win32.Build.0 = Static Debug Runtime|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Static Debug|Win32.ActiveCfg = Static Debug|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Static Debug|Win32.Build.0 = Static Debug|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Static Release Runtime|Win32.ActiveCfg = Static Release Runtime|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Static Release Runtime|Win32.Build.0 = Static Release Runtime|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Static Release|Win32.ActiveCfg = Static Release|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Static Release|Win32.Build.0 = Static Release|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{E2161794-70F5-4DB3-BC94-B8A116E1B72D}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

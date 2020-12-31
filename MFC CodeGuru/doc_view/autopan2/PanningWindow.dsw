@@ -1,0 +1,56 @@
+Microsoft Developer Studio Workspace File, Format Version 5.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "OWnd"=.\OWnd\OWnd.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/tests/PanningWindow/OWnd", BGFAAAAA
+    .\ownd
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "PanningWindow"=.\PanningWindow.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/tests/PanningWindow", KEFAAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name OWnd
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+    begin source code control
+    "$/tests/PanningWindow", KEFAAAAA
+    .
+    end source code control
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

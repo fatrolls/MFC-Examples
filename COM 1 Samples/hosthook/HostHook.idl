@@ -1,0 +1,64 @@
+///////////////////////////////////////////////////
+//
+//  hosthook.idl - Copyright 1997, Don Box
+//  
+//  Description of host hook accessor interfaces
+//
+//
+
+
+import "objidl.idl";
+
+// ICallInfo describes the caller that invoked the current call
+[
+    uuid(F23ADD50-4992-11d1-991C-006097585A3C), 
+    object
+]
+interface ICallInfo : IUnknown
+{
+    [propget] HRESULT OriginalProcessID([out, retval] long *pVal);
+    [propget] HRESULT OriginalThreadID([out, retval] long *pVal);
+    [propget] HRESULT OriginalHostID([out, retval] long *pVal);
+    [propget] HRESULT OriginalHostName([out, retval] BSTR *pVal);
+
+    [propget] HRESULT DirectProcessID([out, retval] long *pVal);
+    [propget] HRESULT DirectThreadID([out, retval] long *pVal);
+    [propget] HRESULT DirectHostID([out, retval] long *pVal);
+    [propget] HRESULT DirectHostName([out, retval] BSTR *pVal);
+
+    [propget] HRESULT PseudoCausalityID([out, retval] GUID *pguid);
+}
+
+// IClientCallInfo describes the server that dispatched the last ORPC call
+[
+    uuid(F23ADD54-4992-11d1-991C-006097585A3C), 
+    object
+]
+interface IClientCallInfo : IUnknown
+{
+    [propget] HRESULT TargetProcessID([out, retval] long *pVal);
+    [propget] HRESULT TargetThreadID([out, retval] long *pVal);
+    [propget] HRESULT TargetHostID([out, retval] long *pVal);
+    [propget] HRESULT TargetHostName([out, retval] BSTR *pVal);
+}
+
+[
+    uuid(F23ADD51-4992-11d1-991C-006097585A3C), 
+    version(1.0), lcid(0),
+    helpstring("Call Info Library")
+]
+library CallInfoLib
+{
+    importlib("stdole32.tlb");
+
+// CallInfo is a singleton that returns information about the last/current call
+    [
+        uuid(F23ADD52-4992-11d1-991C-006097585A3C)
+    ]
+    coclass CallInfo
+    {
+        interface IUnknown;
+        interface ICallInfo;
+        interface IClientCallInfo;
+    }
+}

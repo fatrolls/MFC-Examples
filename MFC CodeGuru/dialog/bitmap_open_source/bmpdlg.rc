@@ -1,0 +1,15 @@
+5000 DIALOGEX 0, 0, 232, 94
+STYLE DS_3DLOOK | DS_NOFAILCREATE | DS_CONTROL | WS_CHILD | WS_VISIBLE | 
+    WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Preview",IDC_STATIC,8,2,68,8
+    CONTROL         "",5001,"Button",BS_OWNERDRAW | BS_NOTIFY | 
+                    WS_TABSTOP,7,12,90,77,WS_EX_CLIENTEDGE
+    LTEXT           "",5002,105,30,120,8
+    LTEXT           "",5003,105,43,120,8
+    LTEXT           "",5004,105,56,120,8
+    LTEXT           "",5005,105,69,120,8
+    CONTROL         "Show Preview",5006,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,104,14,121,10
+END

@@ -1,0 +1,597 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - A Cd-audio class to build a simple CD player</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+A Cd-audio class to build a simple CD player
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:giancarlo@saria.com">Giancarlo Iovino</A>.
+
+<!-- Sample image - gif or jpg -->
+<p><strong><img src="cd_audio_player.gif"
+alt="The simple CD player dialog" width="194" height="202"></strong>&nbsp;<a
+href="cd_audio.zip">Download Source Code and
+Example</a> </p>
+<!-- The article... --><strong>Introduction. What is the MCI interface?</strong></p>
+
+<p>The <strong>MCI</strong> (Media Control Interface) is the
+Windows API that gives programmer a high-level control on all
+multimedia devices and resource files. MCI provides applications
+with device-independent capabilities for controlling audio, video
+and visual peripherals. This API has two different interface
+levels: at the lower level (<em>command-message interface</em>)
+the programmer controls devices by calling the <strong>mciSendCommand()</strong>
+function. This function requires as its arguments the command to
+be sent and some other command-specific parameters. The higher
+level (<em>command-string interface</em>) is essentially a
+textual version of the first, meaning that each command is
+passed, together with its possible arguments, as a text string to
+the <strong>mciSendString()</strong> function. As you can easily
+imagine, the higher level offers a more friendly interface,
+keeping programmers away from flags and structures. Even if MCI
+is quite simple to use, I think that it should be a good thing if
+it was object-oriented, too.</p>
+
+<p>In this article, I'll try to explain how to build a simple
+CD-audio player, using my <strong>CCdAudio</strong> class. This
+class encapsulates the MCI command-message interface for
+CD-audio. I hope it can be a good starting point to write
+analogous classes for other multimedia devices: waveform-audio
+devices, MIDI sequencers, etc. Building the player, however,
+involves many other interesting issues. In particular, I'll show</p>
+
+<ul>
+    <li><a href="#1">How to use the asynchronous mode of MCI
+        commands: the MM_MCINOTIFY message</a>.</li>
+    <li><a href="#2">How to detect the events of opening and
+        closing the CD drawer</a>. </li>
+    <li><a href="#3">How to use the MSF and TMSF time formats</a>.</li>
+</ul>
+
+<p><strong>Wrapping the MCI</strong></p>
+
+<p><img src="cd_audio_mci_hyer.gif" align="right" hspace="0" width="182"
+height="151">Writing a set of classes to encapsulate the whole
+MCI interface isn't so simple as you can think. The main
+difficulty arises from the fact that it hasn't been thought in an
+object-oriented way. The best thing is to start writing a base
+class that implement a generic MCI device: this will be the base
+class for all the other specific devices (Fig. 1). </p>
+
+<p><strong>CMciDevice overview</strong></p>
+
+<p>I called this base class <strong>CMciDevice</strong>. Its <strong>SendCommand()</strong>
+protected member function hides the mciSendCommand() function,
+but has also the capability to handle possible errors: when the
+device is in the 'error report' mode, MCI errors are
+automatically displayed using the MessageBox() function. You can
+turn the error report on or off with the <a href="#REPORTERRORS"><strong>ReportErrors</strong></a><strong>()</strong>
+member function (the default is no error report). <br>
+In the CMciDevice class, as well as in CCdAudio, many of the
+functions that implements MCI commands return a DWORD value that
+is zero in case of success and a nonzero error code otherwise .
+You can use this value to perform your own error handling (if you
+want to know more about MCI error codes you can take a look at
+the documentation). Other functions, however, don't return any
+error code. In these cases, you can use the <a
+href="#GETLASTERROR"><strong>GetLastError</strong></a><strong>()</strong>
+function to get the code of the last occurred error.<br>
+The <a href="#GETDEVCAPS"><strong>GetDevCaps</strong></a><strong>()</strong>
+function 'queries' the device to know if it has specific
+capabilities (see the table below).<br>
+The <a href="#GETDEVCAPS"><strong>GetdevcapsCompound</strong></a>
+capability deserves some more explanation. MCI devices are
+divided in two categories: <em>simple</em> and <em>compound</em>
+devices. The difference is that a compound device needs a <em>media
+file</em> to work. Cd-audio is a typical simple device, while
+wave-recorder is a compound device since it needs a file (the
+waveform) to work. For more details on CMciDevice you can go to
+the <a href="#REFERENCE"><strong>reference guide</strong></a>
+below.</p>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#1">
+<!--webbot
+bot="HTMLMarkup" endspan --><strong>Synchronous vs asynchronous
+method</strong></p>
+
+<p>MCI supports both the synchronous and asynchronous operating
+mode. When a MCI operation is performed synchronously the <strong>mciSendCommand()</strong>
+function returns only when its task has been carried out. In the
+asynchronous mode, instead, the function returns immediately but
+a 'callback' window has to be designated by passing its handle as
+a parameter. When the required operation has been performed (with
+or without success), MCI notifies the callback window of the
+event sending it a <strong>MM_MCINOTIFY</strong> message. This
+message has a parameter whose values can be used to understand if
+the required operation has been successfully performed, aborted
+or failed (see the sample project code for details about how to
+do this). Asynchronous method is very convenient for long
+operations that might require much time to be completed such as
+playback or seek. This is the reason why, in CCdAudio, <a
+href="#PLAY"><strong>Play</strong></a><strong>()</strong> and <a
+href="#SEEK"><strong>Seek</strong></a><strong>()</strong> are
+asynchronous by default.</p>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#2"><!--webbot
+bot="HTMLMarkup" endspan --><strong>Detecting the CD drawer
+opening and closing</strong></p>
+
+<p>When you open the CD drawer or when you insert a new CD and
+close it, Windows sends applications a special
+&quot;plug-and-play&quot; message: <strong>WM_DEVICECHANGE</strong>.
+This message notifies an application or device driver of a change
+to the hardware configuration of a device or the computer. Its
+parameters are:</p>
+
+<p>Event = (UINT) wParam; <br>
+dwData = (DWORD) lParam;</p>
+
+<p>The opening of the CD drawer is signalled by the operating
+system as a DBT_DEVICEREMOVECOMPLETE event. Its closing, instead,
+is a DBT_DEVICEARRIVAL event. The dwData parameter points to an
+event-specific structure, but DEV_BROADCAST_HDR is a structure
+header common to all the structure types that dwData can point.
+The dbch_devicetype field distinguishes ports from logical
+devices: if it is equal to DBT_DEVTYP_VOLUME then dwData points
+to a DEV_BROADCAST_VOLUME structure. In this structure, the
+dbcv_flags field shows if the involved drive is a network drive
+or a physical device. To verify if it is really a CD we have to
+use the dbcv_unitmask field: it is an unsigned long value with a
+set bit for each drive that caused the event: the first
+(leftmost) bit for A, the second for B, and so on. For instance,
+if the CD drive is D: its value will be 8 (= 0...01000) since D
+is the fourth letter. Once we have obtained the drive letter,
+reading the volume label and verifying if it is really a CD drive
+is quite simple. Sample code follows:</p>
+
+<pre><font color="#800000">BOOL CMCISampleDlg::OnDeviceChange( UINT nEventType, DWORD dwData ) {
+	DEV_BROADCAST_HDR *pdbch = (DEV_BROADCAST_HDR *) dwData;
+
+	switch(nEventType) {
+	case DBT_DEVICEARRIVAL:					// CD drawer was closed
+		if (pdbch-&gt;dbch_devicetype == DBT_DEVTYP_VOLUME) {
+			PDEV_BROADCAST_VOLUME pdbcv = 
+				(PDEV_BROADCAST_VOLUME) dwData;
+			if (pdbcv-&gt;dbcv_flags == DBTF_MEDIA)
+			{
+				TCHAR szDrive[4];
+				// pdbcv-&gt;unitmask contains the drive bits
+				for (UINT i=0; !(pdbcv-&gt;dbcv_unitmask &amp; (1&lt;&lt;i)); i++);
+				wsprintf(szDrive, _T(&quot;%c:\\&quot;), 'A'+i);			
+				if (GetDriveType(szDrive) == DRIVE_CDROM) {					
+					UpdateControls();					
+				}
+			}
+			else {
+				// It is a network drive
+			}
+			break;
+		}
+	case DBT_DEVICEREMOVECOMPLETE:				// CD drawer was opened
+	break;
+	}
+
+	return TRUE;
+}</font>
+</pre>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#3"><!--webbot
+bot="HTMLMarkup" endspan --><strong>The MSF and TMSF time formats</strong></p>
+
+<p>Several MCI commands involve setting or getting a time. For
+instance, the <a href="#PLAY"><strong>Play</strong></a>()
+function requires two times: the time at which to start the
+playback and the time at which to stop it. Both are DWORDs but,
+however, MCI can interpret them in different ways, depending on
+which time format has been previously set with the MCI_SET
+command (or, in he CCdAudio class, with the <a
+href="#SETTIMEFORMAT"><strong>SetTimeFormat</strong></a><strong>()</strong>
+member function). The allowable time formats for CD-audio are
+milliseconds, MSF and TMSF. MSF stands for Minutes/Second/Frame
+while TMSF stands for Track/Minute/Second/Frame. MSF and TMSF
+times are packed in a single DWORD and special macros are used to
+pack/unpack them. To simplify programmer's life, I wrote two
+classes (CMsf and CTmsf ) for these time formats to eliminate the
+necessity of remembering (and using) these macros. Both have an
+overloaded operator DWORD to allow their use with those functions
+that require DWORD parameters. Here are the two classes as they
+are defined in the 'Mci.h' file:</p>
+
+<pre><font color="#800000">class CMsf {
+public:
+	CMsf() { m_dwMsf = 0; }
+
+	CMsf(DWORD dwMsf) { m_dwMsf = dwMsf; }
+
+	CMsf(BYTE minute, BYTE second, BYTE frame) {	
+		m_dwMsf = MCI_MAKE_MSF(minute, second, frame);
+	}
+
+	operator DWORD() const {return m_dwMsf;}
+
+	BYTE GetMinute() const { return MCI_MSF_MINUTE(m_dwMsf); }
+	BYTE GetSecond() const { return MCI_MSF_SECOND(m_dwMsf); }
+	BYTE GetFrame() const { return MCI_MSF_FRAME(m_dwMsf); }
+
+protected:
+	DWORD m_dwMsf;
+};
+
+class CTmsf {
+public:
+	CTmsf() { m_dwTmsf = 0; }
+
+	CTmsf(DWORD dwTmsf) { m_dwTmsf = dwTmsf; }
+
+	CTmsf(BYTE track, BYTE minute, BYTE second, BYTE frame) {	
+	m_dwTmsf = MCI_MAKE_TMSF(track, minute, second, frame);
+	}
+
+	operator DWORD() const {return m_dwTmsf;}
+
+	BYTE GetTrack() const { return MCI_TMSF_TRACK(m_dwTmsf); }
+	BYTE GetMinute() const { return MCI_TMSF_MINUTE(m_dwTmsf); }
+	BYTE GetSecond() const { return MCI_TMSF_SECOND(m_dwTmsf); }
+	BYTE GetFrame() const { return MCI_TMSF_FRAME(m_dwTmsf); }
+
+protected:
+	DWORD m_dwTmsf;
+};</font></pre>
+
+<p><strong>How to use CCdAudio</strong></p>
+
+<p>To use CCdAudio you have to copy the 'Mci.h', 'Mci.cpp',
+'CdAudio.cpp', and 'CdAudio.h' files in your project folder. Once
+you have copied these files, include 'Mci.cpp' and 'CdAudio.cpp'
+in your project. #include the CdAudio.h file at the beginning of
+the module that needs it. Be aware that you have to link your
+program with the 'winmm.lib' static library, or an error will
+occur at link-time. </p>
+
+<p>Using any MCI device requires the following steps:</p>
+
+<ol>
+    <li>Open the device using <a href="#OPEN"><strong>Open</strong></a><strong>()</strong>.</li>
+    <li>Set a callback window for asynchronous operations using <a
+        href="#SETCALLBACKWND"><strong>SetCallbackWnd</strong></a><strong>()
+        </strong>(optional).</li>
+    <li>Set a time format using <a href="#SETTIMEFORMAT"><strong>SetTimeFormat</strong></a><strong>()</strong>
+        (optional).</li>
+    <li>Perform a sequence of operations: (<a href="#PLAY"><strong>Play</strong></a><strong>()</strong>,
+        <a href="#STOP"><strong>Stop</strong></a><strong>()</strong>,
+        <a href="#SEEK"><strong>Seek</strong></a><strong>()</strong>,
+        ... etc.).</li>
+    <li>Close the device using <a href="#CLOSE"><strong>Close</strong></a>().</li>
+</ol>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#REFERENCE">
+<!--webbot
+bot="HTMLMarkup" endspan --><strong>REFERENCE GUIDE</strong></p>
+
+<p><strong>Operations for CMciDevice</strong></p>
+
+<ul>
+    <li>void <strong>Attach</strong>(UINT wDeviceID)<br>
+        Attaches the device to a MCI device already opened</li>
+    <li>MCIDEVICEID <strong>GetDeviceID</strong>() const<br>
+        Gets the device ID</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#MCIDEVICEOPEN">
+<!--webbot
+        bot="HTMLMarkup" endspan -->virtual DWORD <strong>Open</strong>(DWORD
+        dwDeviceType, BOOL bShareable = FALSE)<br>
+        virtual DWORD <strong>Open</strong>(LPCSTR lpstrName,
+        BOOL bShareable = FALSE); <br>
+        Opens the device. if <em>bShareable</em> is set to TRUE
+        the device can be shared with other applications that use
+        it. The device can be opened by a device type constant (<em>dwDeviceType</em>)
+        or by a driver name (<em>lpstrName</em>).</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#CLOSE">
+<!--webbot
+        bot="HTMLMarkup" endspan -->virtual DWORD <strong>Close</strong>()
+        <br>
+        Closes the device</li>
+    <li>static DWORD <strong>CloseAll</strong>() <br>
+        Static member function. Closes all MCI devices opened by
+        the application: wait until devices are closed</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#GETLASTERROR">
+<!--webbot
+        bot="HTMLMarkup" endspan -->MCIERROR <strong>GetLastError</strong>()<br>
+        Returns the code of the last error occurred.</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#GETDEVCAPS">
+<!--webbot
+        bot="HTMLMarkup" endspan -->DWORD <strong>GetDevCaps</strong>(DWORD
+        dwDevcaps, BOOL bItem = FALSE)<br>
+        Retrieves static information about the device. If <em>bItem</em>
+        is set to TRUE you can retrieve specific capabilities
+        (see the <a href="#GETDEVCAPS">table</a> below)</li>
+    <li>virtual DWORD <strong>GetStatus</strong>(DWORD
+        dwStatusItem)<br>
+        Retrieves information about the device (see the <a
+        href="#GETSTATUS">table</a> below)</li>
+    <li><font size="3">virtual DWORD <strong>GetInfo</strong>(DWORD
+        dwInfoString, LPSTR lpstrReturn, DWORD dwRetSize).<br>
+        </font>Retrieves a string information from the device
+        (see the <a href="#MCIDEVICEGETINFO">table</a> below);</li>
+    <li>virtual DWORD <strong>GetMode</strong>()<br>
+        Shortcut for GetStatus(CMciDevice::StatusMode) (see the <a
+        href="#GETMODE">table</a> below)</li>
+    <li>HWND <strong>GetCallbackHwnd</strong>() const<br>
+        Retrieves the handle of the callback window</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#SETCALLBACKWND">
+<!--webbot
+        bot="HTMLMarkup" endspan -->void <strong>SetCallbackWnd</strong>(CWnd*
+        pWnd)<br>
+        void <strong>SetCallbackWnd</strong>(HWND hWnd)<br>
+        Sets the callback Window.</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#REPORTERRORS">
+<!--webbot
+        bot="HTMLMarkup" endspan -->void <strong>ReportErrors</strong>(BOOL
+        bReport = TRUE)<br>
+        Sets error report on/off</li>
+</ul>
+
+<p><strong>Static constants</strong></p>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#GETDEVCAPS">
+<!--webbot
+bot="HTMLMarkup" endspan -->Values for <em>dwDevcaps</em> <strong>GetDevCaps()</strong>
+(bItem = FALSE)</p>
+
+<ul>
+    <li>DWORD <strong>GetdevcapsCompound</strong></li>
+    <li>DWORD <strong>GetdevcapsHasAudio</strong></li>
+    <li>DWORD <strong>GetdevcapsHasVideo</strong></li>
+    <li>DWORD <strong>GetdevcapsHasVideo</strong></li>
+    <li>DWORD<strong> GetdevcapsUsesFiles</strong></li>
+    <li>DWORD<strong> GetdevcapsDeviceType</strong></li>
+</ul>
+
+<p>Values for <em>dwDevcaps</em> <strong>GetDevCaps()</strong>
+(bItem = TRUE)</p>
+
+<ul>
+    <li>DWORD <strong>GetdevcapsCanEject</strong></li>
+    <li>DWORD <strong>GetdevcapsCanPlay</strong></li>
+    <li>DWORD <strong>GetdevcapsCanRecord</strong></li>
+    <li>DWORD <strong>GetdevcapsCanSave</strong></li>
+</ul>
+
+<p>Values returned by<strong> GetDevCaps</strong>(CMciDevice::GetdevcapsDeviceType)</p>
+
+<ul>
+    <li>DWORD <strong>DevtypeAnimation</strong></li>
+    <li>DWORD <strong>DevtypeCdaudio</strong></li>
+    <li>DWORD <strong>DevtypeDat</strong></li>
+    <li>DWORD <strong>DevtypeDigitalvideo</strong></li>
+    <li>DWORD <strong>DevtypeOther</strong></li>
+    <li>DWORD <strong>DevtypeOverlay</strong></li>
+    <li>DWORD <strong>DevtypeScanner</strong></li>
+    <li>DWORD <strong>DevtypeSequencer</strong></li>
+    <li>DWORD <strong>DevtypeVcr</strong></li>
+    <li>DWORD <strong>DevtypeVideodisc</strong></li>
+    <li>DWORD <strong>DevtypeWaveaudio</strong></li>
+</ul>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#GETSTATUS">
+<!--webbot
+bot="HTMLMarkup" endspan -->Values for <em>dwStatusItem</em> in <strong>GetStatus()</strong></p>
+
+<ul>
+    <li>DWORD <strong>StatusReady</strong></li>
+    <li>DWORD <strong>StatusMediaPresent</strong></li>
+    <li>DWORD <strong>StatusMode</strong></li>
+    <li>DWORD <strong>StatusNumberOfTracks</strong></li>
+</ul>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#GETMODE">
+<!--webbot
+bot="HTMLMarkup" endspan -->Values returned by <strong>GetMode()</strong>.</p>
+
+<ul>
+    <li>DWORD <strong>ModeNotReady</strong></li>
+    <li>DWORD <strong>ModePause</strong></li>
+    <li>DWORD <strong>ModePlay</strong></li>
+    <li>DWORD <strong>ModeStop</strong></li>
+    <li>DWORD <strong>ModeStop</strong></li>
+    <li>DWORD <strong>ModeRecord</strong></li>
+    <li>DWORD <strong>ModeSeek</strong></li>
+</ul>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#MCIDEVICEGETINFO">
+<!--webbot
+bot="HTMLMarkup" endspan --><font size="3">Values for <em>dwInfoString</em>
+in <strong>GetInfo()</strong></font></p>
+
+<ul>
+    <li><font size="3">DWORD <strong>InfoProduct</strong></font></li>
+</ul>
+
+<p><strong>Operations for CCdAudio</strong></p>
+
+<ul>
+    <li><font size="3">DWORD <strong>Open</strong>(BOOL
+        bShareable = FALSE)<br>
+        </font>Opens the device. <em>bShareable</em> has the same
+        meaning as in CMciDevice::<a href="MCIDEVICEOPEN">Open</a>()</li>
+    <li><font size="3">DWORD <strong>PlayTrack</strong>(BYTE
+        bTrack, BOOL bAsync = TRUE)<br>
+        </font>Plays a CD track asynchronously. If <em>bAsync</em>
+        is set to FALSE, the playback is performed synchronously.</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#PLAY">
+<!--webbot
+        bot="HTMLMarkup" endspan --><font size="3">DWORD <strong>Play</strong>(DWORD
+        dwFrom = 0L, DWORD dwTo = 0L, BOOL bAsync = TRUE)<br>
+        </font>Plays from the position <em>dwFrom</em> to the
+        position <em>dwTo</em> asynchronously. If <em>bAsync</em>
+        is set to FALSE, the playback is performed synchronously.</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#STOP">
+<!--webbot
+        bot="HTMLMarkup" endspan --><font size="3">DWORD <strong>Stop</strong>()<br>
+        </font>Stops playback</li>
+    <li><font size="3">DWORD <strong>Pause</strong>()<br>
+        </font>Pauses playback.</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#SEEK">
+<!--webbot
+        bot="HTMLMarkup" endspan --><font size="3">DWORD <strong>Seek</strong>(DWORD
+        dwTo, BOOL bAsync = FALSE)<br>
+        </font>Seek to the position <em>dwTo</em>. If bAsync is
+        set to FALSE, the operation is performed synchronously.<font
+        size="3"><br>
+        DWORD <strong>SeekToStart</strong>(BOOL bAsync = FALSE)<br>
+        DWORD <strong>SeekToEnd</strong>(BOOL bAsync = FALSE)</font></li>
+    <li><font size="3">DWORD <strong>OpenDoor</strong>(BOOL
+        bOpenDoor = TRUE)<br>
+        </font>Opens/Closes the CD drawer</li>
+    <li><font size="3">DWORD <strong>GetNumberOfTracks</strong>()<br>
+        </font>Retrieves the number of playable tracks. It is a
+        shortcut for GetStatus(MciDevice::StatusNumberOfTracks).</li>
+    <li><font size="3">DWORD <strong>GetCurrentTrack</strong>().<br>
+        </font>Retrieves the current track number. It is a
+        shortcut for GetStatus(CCdAudio::StatusCurrentTrack).</li>
+    <li><font size="3">DWORD <strong>GetMediaLenght</strong>().<br>
+        </font>Retrieves the total CD length. It is a shortcut
+        for GetStatus(CMciDevice::StatusMediaLenght).</li>
+    <li><font size="3">DWORD <strong>GetStartPos</strong>().<br>
+        </font>Retrieves the CD starting position. It is a
+        shortcut for GetStatus(CCdAudio::StatusStart).</li>
+    <li><font size="3">DWORD <strong>GetCurrentPos</strong>()<br>
+        </font>Retrieves the current player position. It is a
+        shortcut for GetStatus(CCdAudio::StatusPosition).</li>
+    <li><font size="3">BOOL <strong>IsReady</strong>()<br>
+        </font>Checks if the device is ready to be operated. It
+        is a shortcut for GetStatus(MciDevice::StatusReady).</li>
+    <li><font size="3">DWORD <strong>GetTrackLength</strong>(DWORD
+        dwTrack)<br>
+        </font>Retrieves the length of the CD track <em>dwTrack</em>.</li>
+    <li><font size="3">DWORD <strong>GetTrackPos</strong>(DWORD
+        dwTrack)<br>
+        </font>Retrieves the starting position of the CD track <em>dwTrack.</em></li>
+    <li><font size="3">DWORD <strong>GetTrackType</strong>(DWORD
+        dwTrack)<br>
+        </font>Retrieves the type of the CD track <em>dwTrack </em>(see
+        the <a href="#SETTIMEFORMAT">table</a> below).</li>
+    <li><font size="3">DWORD <strong>GetTimeFormat</strong>()<br>
+        </font>Retrieves the current time format (see the <a
+        href="#SETTIMEFORMAT">table</a> below).</li>
+    <li><!--webbot bot="HTMLMarkup" startspan --><A NAME="#SETTIMEFORMAT">
+<!--webbot
+        bot="HTMLMarkup" endspan --><font size="3">DWORD <strong>SetTimeFormat</strong>(DWORD
+        dwTimeFormat)<br>
+        </font>Sets a new time format for the device (see the <a
+        href="#SETTIMEFORMAT">table</a> below)..</li>
+</ul>
+
+<p><strong>Static constants</strong></p>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#SETTIMEFORMAT">
+<!--webbot
+bot="HTMLMarkup" endspan --><font size="3">Device specific time
+formats for <em>dwTimeFormat</em> in <strong>SetTimeFormat()</strong></font></p>
+
+<ul>
+    <li><font size="3">DWORD <strong>FormatMilliseconds</strong></font></li>
+    <li><font size="3">DWORD <strong>FormatMSF</strong></font></li>
+    <li><font size="3">DWORD <strong>FormatTMSF</strong></font></li>
+</ul>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#GETSTATUS">
+<!--webbot
+bot="HTMLMarkup" endspan --><font size="3">Device-specific status
+items for <strong>GetStatus()</strong></font></p>
+
+<ul>
+    <li><font size="3">DWORD <strong>StatusCurrentTrack</strong></font></li>
+    <li><font size="3">DWORD <strong>StatusLenght</strong></font></li>
+    <li><font size="3">DWORD <strong>StatusPosition</strong></font></li>
+    <li><font size="3">DWORD <strong>StatusStart</strong></font></li>
+</ul>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#GETTRACKTYPE">
+<!--webbot
+bot="HTMLMarkup" endspan --><font size="3">Values returned by <strong>GetTrackType()</strong></font></p>
+
+<ul>
+    <li><font size="3">DWORD <strong>TrackTypeAudio</strong></font></li>
+    <li><font size="3">DWORD <strong>TrackTypeOther</strong></font></li>
+</ul>
+
+<p><!--webbot bot="HTMLMarkup" startspan --><A NAME="#GETINFO">
+<!--webbot
+bot="HTMLMarkup" endspan --><font size="3">Values for <em>dwInfoString</em>
+in <strong>GetInfo()</strong></font></p>
+
+<ul>
+    <li><font size="3">DWORD <strong>InfoProduct</strong></font></li>
+    <li><font size="3">DWORD <strong>InfoMediaIdentity</strong></font></li>
+    <li><font size="3">DWORD <strong>InfoMediaUPC</strong></font></li>
+</ul>
+
+<p><font size="3"><strong>What's new in the latest release?</strong></font></p>
+
+<ul>
+    <li><font size="3">Some Getdevcap constant in CMciDevice was
+        added.</font></li>
+    <li><font size="3">Some bug fix in the CMciSendCommand
+        function: in the precedent version the error report
+        doesn't work fine. Now it works well also with the
+        CloseaAll() static function.</font></li>
+    <li><font size="3">The constant InfoProduct was added in
+        CCdAudio</font></li>
+</ul>
+
+<p><font size="3"><strong>Author's note</strong></font></p>
+
+<p>This is a work in progress: I 'm continuously working to
+improve it. I'll be grateful to you if you mail me your comments,
+advice, or bug apparition reports!.</p>
+
+<p>Last updated: 4 June 1998 </p>
+
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

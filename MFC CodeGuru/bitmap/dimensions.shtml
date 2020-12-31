@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Getting the dimensions of a bitmap</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Getting the dimensions of a bitmap</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+For CBitmap objects we can use the GetBitmap() function to determine the height and width of the bitmap.
+
+<PRE><TT><FONT COLOR="#990000">	// The variable bitmap is a CBitmap object
+	BITMAP bm;
+	bitmap.GetBitmap( &bm );
+	bmWidth = bm.bmWidth;
+	bmHeight = bm.bmHeight;
+</FONT></TT></PRE>
+
+<p>If you have a HBITMAP, you can attach it to a CBitmap object and use the method shown above or you can use
+
+<PRE><TT><FONT COLOR="#990000">	// The variable hBmp is a HBITMAP
+	BITMAP bm;
+	::GetObject( hBmp, sizeof( bm ), &bm );
+	bmWidth = bm.bmWidth;
+	bmHeight = bm.bmHeight;
+</FONT></TT></PRE>
+
+<p>For images in a BMP file, you can use something like
+
+<PRE><TT><FONT COLOR="#990000">	CFile file;
+	// sBMPFileName is the BMP filename
+	if( !file.Open( sBMPFileName, CFile::modeRead) )
+		return ;
+
+	BITMAPFILEHEADER bmfHeader;
+
+	// Read file header
+	if (file.Read((LPSTR)&bmfHeader, sizeof(bmfHeader)) != sizeof(bmfHeader))
+		return ;
+
+	// File type should be 'BM'
+	if (bmfHeader.bfType != ((WORD) ('M' << 8) | 'B'))
+		return ;
+
+	BITMAPINFOHEADER bmiHeader;
+	if (file.Read((LPSTR)&bmiHeader, sizeof(bmiHeader)) != sizeof(bmiHeader))
+		return ;
+
+
+	int bmWidth = bmiHeader.biWidth;
+	int bmHeight = bmiHeader.biHeight;
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,189 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - A Single-Instance Application Class</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+A Single-Instance Application Class
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <a href="mailto:giancarlo@saria.com">Giancarlo Iovino</a>.
+
+<!-- Text / source code -->
+<p><strong>Introduction</strong></p>
+
+<p>Making <em>single-instance </em>an application means enabling
+the application to recognize, at startup, if another running
+instance of itself exists so that, in this case, the application
+stops its execution. Generally, before quitting, the new instance
+retrieves the main window handle of the existing instance via the
+FindWindow() or FindWindowEx() function and uses this handle to
+bring the application window to foreground.<br>
+The problem can be solved in several ways. The most known
+solutions are:</p>
+
+<ul>
+    <li>Using a CMutex (a synchronization object global to the
+        system).</li>
+    <li>Using shared data sections.</li>
+</ul>
+
+<p>The small class described in this article, CSingleInstanceApp,
+uses the first method to implement the single-instance behaviour
+in a MFC application. It makes very simple to add the feature to
+a new project, eliminating the necessity of rewriting a
+consistent amount of code.</p>
+
+<p><strong>Comparison with other similar classes</strong></p>
+
+<p>In this section, I summarize the main features that
+distinguish my class from other similar classes you can find in
+this site. I hope this will help the reader to decide which code
+suits his needs better.</p>
+
+<ul>
+    <li>CSingleInstanceApp is an extension of CWinApp. This
+        reduces the work needed to add the single-instance
+        behaviour.</li>
+    <li>It uses a safe and stable method to build the class name,
+        avoiding conflicts with other running applications.</li>
+</ul>
+
+<p><strong>Implementation details</strong></p>
+
+<p>For details about how to use a CMutex to implement the
+single-instance you can read the article &quot;<a
+href="../../../../misc/single_instance.shtml">Single Instance of
+an application Class</a>&quot; by Kevin Lussier. In this article,
+I will discuss only the method I have used to build the window
+class name string. I assume that you know what a window class is
+and the reason why Windows requires the class registration before
+creating a window.<br>
+The key point to implement single-instance is that we need the
+registered class name to be the same in every instance of the
+application. Moreover, it is very important that two different
+applications don't use the same class name. The framework uses
+AfxRegisterWndClass() to register the window class but,
+unfortunately, this function registers a class name that is
+different in different instances of the same application (you can
+see it using the GetClassName() function). Thus, we cannot pass
+this string to FindWindow(). But <em>what is the class name
+registered by AfxRegisterWndClass()</em>?<br>
+To answer this question, once again, we have to browse in the MFC
+source code. We discover an interesting thing:
+AfxRegisterWndClass() generates a name for the class with the
+following code:</p>
+
+<pre><font color="#800000">// generate a synthetic name for this class
+HINSTANCE hInst = AfxGetInstanceHandle();
+	if (hCursor == NULL &amp;&amp; hbrBackground == NULL &amp;&amp; hIcon == NULL)
+		wsprintf(lpszName, _T(&quot;Afx:%x:%x&quot;), (UINT)hInst, nClassStyle);
+	else
+		wsprintf(lpszName, _T(&quot;Afx:%x:%x:%x:%x:%x&quot;), (UINT)hInst, nClassStyle,
+		(UINT)hCursor, (UINT)hbrBackground, (UINT)hIcon);</font></pre>
+
+<p><font size="3">Well, the idea behind the CSingleInstanceApp
+class is to mimic this way to generate the name string. <em>hInst</em>
+(the application instance handle), <em>nClassStyle</em> (the
+window class style), <em>hCursor</em> (the window cursor handle)
+and <em>hbrBackground</em> (the window background brush handle)
+are the same in every instance of the application. Only <em>hIcon</em>
+changes, so simply we cut it off from the class name string.
+Moreover, we have to make the class name application-dependent by
+adding to it the application name returned by the AfxGetAppName()
+function. This is exactly what the CheckSingleInstance() member
+function does. This is an excerpt from CheckSingleInstance():</font></p>
+
+<pre><font color="#800000" size="3">if (hCursor == NULL &amp;&amp; hbrBackground == NULL &amp;&amp; hIcon == NULL)
+	m_strClassName.Format(_T(&quot;%s:%x:%x&quot;), lpstrAppName,
+		(UINT)hInst, nClassStyle);
+else
+	m_strClassName.Format(_T(&quot;%s:%x:%x:%x:%x&quot;), lpstrAppName,
+		(UINT)hInst, nClassStyle, (UINT)hCursor, (UINT)hbrBackground);</font></pre>
+
+<p><strong>How to use CSingleInstanceApp</strong></p>
+
+<p>Using this class requires the following steps:</p>
+
+<ul>
+    <li>Include the &quot;CSingleInstanceApp.c&quot; and
+        &quot;.h&quot; in your project. </li>
+    <li>At the beginning of the application class header file
+        #include &quot;SingleInstanceApp.h&quot;. In the class
+        declaration replace CWinApp with CSingleInstanceApp.</li>
+    <li>Add the following as the first line of the InitInstance()
+        body of your application class:</li>
+</ul>
+
+<pre><font color="#800000">if (!CheckSingleInstance(IDR_MAINFRAME))
+	return FALSE;</font></pre>
+
+<ul>
+    <li>Add the following as the first line of the
+        PreCreateWindow() body of your frame window class:</li>
+</ul>
+
+<pre><font color="#800000">cs.lpszClass = ((CMyApp*)AfxGetApp())-&gt;GetClassName();</font></pre>
+
+<p><strong>Operations for CSingleInstanceApp</strong></p>
+
+<pre><font color="#800000">BOOL CheckSingleInstance(UINT nID);
+CString GetClassName() const;</font></pre>
+
+<h4>Author's note</h4>
+
+<p>I'm continuously working to improve this class. I'll be
+grateful to you if you mail me your comments, advice, or bug
+apparition reports!</p>
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="single_instance_app.zip">Download demo project and source - 36KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 10 June 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

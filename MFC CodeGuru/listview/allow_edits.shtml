@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Allowing items to be edited</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Allowing items to be edited</FONT></H3></CENTER>
+
+<HR WIDTH="100%">A list view control has to have the LVS_EDITLABELS style
+for it to be editable. This style can be set when creating the control
+or even later by using ModifyStyle(). Once we have
+set the LVS_EDITLABELS style, the user can set focus on an item and click
+on it again to begin editing the item. However, the default behaviour of
+the control ignores the changes once the edit is complete. To allow the
+edit changes to be accepted, we have to add a handler to the LVN_ENDLABELEDIT
+notification. Here is a sample of a reflected message handler (e.i. the
+message is handled by the list view control itself, rather than the parent
+window).
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *pResult = TRUE;
+}</FONT></TT></PRE>
+If we set *pLResult to FALSE, the changes are ignored. Allowing edits of
+sub items are not directly supported by the control but can be easily implemented.
+It is covered in a different section.
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

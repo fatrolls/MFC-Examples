@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Finding an item</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Finding an item</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+The tree view control does not have any built-in method for searching the
+entire tree for a label that contains a given sub-string. The GetItem()
+function listed below takes a sub-string to search for and searches the
+item labels for this sub-string. It also has arguments to specify whether
+to do a case sensitive search, whether to search in the down direction,
+whether to look for whole words only and which item to start looking from.
+It uses the <A HREF="get_next.shtml">GetNextItem()</A>, <A HREF="get_prev.shtml">GetPrevItem()</A>
+and <A HREF="get_last.shtml">GetLastItem()</A> described earlier. Note that
+when a matching item is found, the IsFindValid() function is called to
+determine if this item is acceptable. <A HREF="#IsFindValid">IsFindValid()</A>
+is a virtual function and can be overridden to implement a custom filter.
+The default implementation returns TRUE.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">
+// FindItem		- Finds an item that contains the search string
+// Returns		- Handle to the item or NULL
+// str			- String to search for
+// bCaseSensitive	- Should the search be case sensitive
+// bDownDir		- Search direction - TRUE for down
+// bWholeWord		- True if search should match whole words
+// hItem		- Item to start searching from. NULL for
+//			- currently selected item
+HTREEITEM CTreeCtrlX::FindItem(CString &amp;str,&nbsp;
+				BOOL bCaseSensitive /*= FALSE*/,&nbsp;
+				BOOL bDownDir /*= TRUE*/,&nbsp;
+				BOOL bWholeWord /*= FALSE*/,&nbsp;
+				HTREEITEM hItem /*= NULL*/)
+{
+	int lenSearchStr = str.GetLength();
+	if( lenSearchStr == 0 ) return NULL;
+
+	HTREEITEM htiSel = hItem ? hItem : GetSelectedItem();
+	HTREEITEM htiCur = bDownDir ? GetNextItem( htiSel ) : GetPrevItem( htiSel );
+	CString sSearch = str;
+
+	if( htiCur == NULL )
+	{
+		if( bDownDir )&nbsp; htiCur = GetRootItem();
+		else htiCur = GetLastItem( NULL );
+	}
+
+	if( !bCaseSensitive )
+		sSearch.MakeLower();
+
+	while( htiCur &amp;&amp; htiCur != htiSel )
+	{
+		CString sItemText = GetItemText( htiCur );
+		if( !bCaseSensitive )
+			sItemText.MakeLower();
+
+		int n;
+		while( (n = sItemText.Find( sSearch )) != -1 )
+		{
+			// Search string found
+			if( bWholeWord )
+			{
+				// Check preceding char
+				if( n != 0 )
+				{
+					if( isalpha(sItemText[n-1]) ||&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;	sItemText[n-1] == '_' ){
+						// Not whole word
+						sItemText = sItemText.Right(
+							sItemText.GetLength() - n -&nbsp;
+							lenSearchStr );
+						continue;
+					}
+				}
+
+				// Check succeeding char
+				if( sItemText.GetLength() > n + lenSearchStr
+					&amp;&amp; ( isalpha(sItemText[n+lenSearchStr]) ||
+					sItemText[n+lenSearchStr] == '_' ) )
+				{
+					// Not whole word
+					sItemText = sItemText.Right( sItemText.GetLength()&nbsp;
+							- n - sSearch.GetLength() );
+					continue;
+				}
+			}
+			
+			if( IsFindValid( htiCur ) )
+				return htiCur;
+			else break;
+		}
+
+
+		htiCur = bDownDir ? GetNextItem( htiCur ) : GetPrevItem( htiCur );
+		if( htiCur == NULL )
+		{
+			if( bDownDir )&nbsp; htiCur = GetRootItem();
+			else htiCur = GetLastItem( NULL );
+		}
+	}
+	return NULL;
+}
+
+<A NAME="IsFindValid"></A>
+// IsFindValid	- Virtual function used by FindItem to allow this
+//		  function to filter the result of FindItem
+// Returns	- True if item matches the criteria
+// Arg		- Handle of the item
+BOOL CTreeCtrlX::IsFindValid( HTREEITEM )
+{
+	return TRUE;
+}</FONT></TT></PRE>
+In the class declaration add the following.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">public:
+	virtual HTREEITEM FindItem(CString &amp;sSearch,&nbsp;
+				BOOL bCaseSensitive = FALSE,&nbsp;
+				BOOL bDownDir = TRUE,&nbsp;
+				BOOL bWholeWord = FALSE,&nbsp;
+				HTREEITEM hItem = NULL);
+protected:
+	virtual BOOL IsFindValid( HTREEITEM );</FONT></TT>
+</PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

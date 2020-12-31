@@ -1,0 +1,72 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Rama Krishna">
+   <TITLE>ATL Coding Helpers</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->ATL Coding Helpers
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:andien@geocities.com"><!-- Author Name -->Andrew Nosenko</A>.
+<p>Here I put a collection of helper and workaround classes/macros I developed through my
+experience with ATL and popularized at our site. I guess it might be useful to others.</p>
+
+<p>I don't pretend to be original or smartest and apologize if similar ideas or code were
+already appeared anywhere.
+<p><strong> What's included:</strong>
+<ul>	
+  <li>Yet another smart pointer class that frees your from using IID_*.</li>
+  <li>Seamless error handling, no more tiresome branches over right screen side!</li>
+  <li>Easy dynamic creation of ATL-based objects, allows to overcome an unavailability of
+    default constructor like in case <em>p = new CComObject&lt;CMyClass&gt;</em>.</li>
+  <li>Windows.x message crackers at <strong>CWindowImpl</strong> msg map.</li>
+  <li>Simple and efficient way to build multiple dispinterface event sinks at single object.</li>
+  <li><strong>CComEnum</strong> enhanced with bug fixed.</li>
+  <li>Automatic handling of critical section lock.</li>
+  <li>Many other useful helpers.</li>
+</ul>
+
+<p>The up-to-date version could be downloaded at:<br>
+<a href="http://www.geocities.com/SiliconValley/Peaks/6327/AtlAux.zip">http://www.geocities.com/SiliconValley/Peaks/6327/AtlAux.zip</a></p>
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+

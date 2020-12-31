@@ -1,0 +1,34 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|add_control_to_sheet.shtml||Adding a Control to the Property Sheet|
+1998/03/28|change_tab_font.shtml||Changing the Tab Label Font|
+1998/03/28|change_tab_label.shtml||Changing the Tab Label|
+1998/03/28|disable_tab.shtml||Disable Tab|Kevin Lussier
+1998/03/28|font_prop_page.shtml||Add a Font Property Page|
+1998/03/28|hide_apply.shtml||Hide Apply Button|
+1998/03/28|hide_standard_buttons.shtml||Hide Standard Buttons|
+1998/03/28|inside_dialog.shtml||Creating a Property Sheet Inside a Dialog|
+1998/03/28|inside_formview.shtml||Embedding inside Form View|
+1998/03/28|move_resize_page.shtml||Moving and Resizing the Property Pages|
+1998/03/28|move_standard_buttons.shtml||Moving the Standard Buttons|
+1998/03/28|move_standard_buttons2.shtml||Moving the Standard Buttons|Roger Onslow
+1998/03/28|resize_sheet.shtml||Resizing the Property Sheet|
+1998/03/28|resize_tab_ctrl.shtml||Resizing the Tab Control|
+1998/03/28|shortcut_keys.shtml||Using Shortcut Keys for Property Pages|
+1998/03/28|single_tab_row.shtml||Display only One Row of Tabs|
+1998/03/28|tab_image.shtml||Use Images with Tab Labels|
+1998/03/28|wizprop.shtml||Wizard Property Sheets and Pages|Lennart Steinke
+1998/03/28|creating_a_wizard.shtml||Creating a Wizard|Peter Pearson

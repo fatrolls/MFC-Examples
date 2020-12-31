@@ -1,0 +1,205 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - CDialog using animated control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">CDialog using animated control</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:almog@notes.iet.co.il">Ran Almog</A>
+
+<P>CAnimateDlg (located in AnimateDlg.h/cpp) is a simple class derived from
+CDialog in order to implement user designed animated control. The user of
+the class has to call SetAnimationProperties() method and to pass to it the
+ID of the static control that will use as an animation control, number of
+frames in the "movie", array of bitmap IDs in the application resource and
+the time-slice between frame (to set the animation speed).
+
+
+<H4>Header File</H4>
+<PRE><TT><FONT COLOR="#990000">
+#if !defined(AFX_ANIMATEDLG_H__64C0DD41_7BA0_11D1_8DC6_0000E8125FE5__INCLUDED_)
+#define AFX_ANIMATEDLG_H__64C0DD41_7BA0_11D1_8DC6_0000E8125FE5__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// AnimateDlg.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CAnimateDlg dialog
+
+class CAnimateDlg : public CDialog
+{
+// Construction
+public:
+	void StopAnimation();
+	void StartAnimation();
+	void SetAnimationProperties(UINT controlID,  BYTE nFrames, UINT *pImagesArray, UINT timeSliceBetweenFrames);
+	CAnimateDlg();   // standard constructor
+	~CAnimateDlg();
+
+// Dialog Data
+	//{{AFX_DATA(CAnimateDlg)
+		// NOTE: the ClassWizard will add data members here
+	//}}AFX_DATA
+
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CAnimateDlg)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+
+	// Generated message map functions
+	//{{AFX_MSG(CAnimateDlg)
+	afx_msg void OnTimer(UINT nIDEvent);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+private:
+	CBitmap m_CurrentBmp;
+	BYTE m_CurrentFrame;
+	UINT m_TimeInterval;
+	UINT* m_pFramesArray;
+	BYTE m_nFrames;
+	UINT m_TargetCtrl;
+	BOOL m_bPlayingNow;
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_ANIMATEDLG_H__64C0DD41_7BA0_11D1_8DC6_0000E8125FE5__INCLUDED_)
+</FONT></TT></PRE>
+
+
+<H4>CPP File</H4>
+<PRE><TT><FONT COLOR="#990000">
+// AnimateDlg.cpp : implementation file
+//
+
+#include <afxwin.h>
+#include "AnimateDlg.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CAnimateDlg dialog
+
+
+CAnimateDlg::CAnimateDlg()
+{
+	//{{AFX_DATA_INIT(CAnimateDlg)
+		// NOTE: the ClassWizard will add member initialization here
+	//}}AFX_DATA_INIT
+	m_TimeInterval = 0;
+	m_pFramesArray = NULL;
+	m_nFrames = 0;
+	m_TargetCtrl = 0;
+	m_CurrentFrame = 1;
+}
+
+CAnimateDlg::~CAnimateDlg()
+{
+	if (m_bPlayingNow)
+		StopAnimation();
+}
+
+
+void CAnimateDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CAnimateDlg)
+		// NOTE: the ClassWizard will add DDX and DDV calls here
+	//}}AFX_DATA_MAP
+}
+
+
+BEGIN_MESSAGE_MAP(CAnimateDlg, CDialog)
+	//{{AFX_MSG_MAP(CAnimateDlg)
+	ON_WM_TIMER()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CAnimateDlg message handlers
+
+void CAnimateDlg::SetAnimationProperties(UINT controlID, BYTE nFrames, UINT * pImagesArray, UINT timeSliceBetweenFrames)
+{
+	m_TimeInterval = timeSliceBetweenFrames;
+	m_pFramesArray = pImagesArray;
+	m_nFrames = nFrames;
+	m_TargetCtrl = controlID;	
+	m_bPlayingNow = FALSE;
+}
+
+void CAnimateDlg::StartAnimation()
+{
+	if (!m_bPlayingNow)
+		SetTimer(0, m_TimeInterval, NULL);
+}
+
+void CAnimateDlg::StopAnimation()
+{
+	if (m_bPlayingNow)
+		KillTimer(0);
+}
+
+void CAnimateDlg::OnTimer(UINT nIDEvent) 
+{
+	if (m_CurrentFrame > m_nFrames)
+		m_CurrentFrame = 1;
+
+	CStatic *pTargetCtrl = (CStatic *) GetDlgItem(m_TargetCtrl);
+	ASSERT(pTargetCtrl != NULL);
+	m_CurrentBmp.Detach();
+	m_CurrentBmp.LoadBitmap(m_pFramesArray[m_CurrentFrame - 1]);
+	pTargetCtrl->SetBitmap(m_CurrentBmp);
+	m_CurrentFrame++;
+	
+	CDialog::OnTimer(nIDEvent);
+}
+</FONT></TT></PRE>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

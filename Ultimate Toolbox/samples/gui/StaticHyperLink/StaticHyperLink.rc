@@ -1,0 +1,324 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""UTSampleAbout.rc""\r\n"
+    "#include ""OXBitmapButton.rc"" \r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\StaticHyperLink.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXHyperLinkAction.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\StaticHyperLink.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_STATICHYPERLINK_DIALOG DIALOGEX 0, 0, 185, 237
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "StaticHyperLink"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC_WEB_UT,7,7,20,20,0,WS_EX_CLIENTEDGE
+    LTEXT           "COXStatic && COXStaticHyperLink",IDC_SAMPLE_CAPTION,35,14,133,8
+    LTEXT           "If you don't like it write to our pal ",IDC_STATIC,7,37,104,8
+    LTEXT           "Bill Gates",IDC_STATIC_BILL_GATES,112,37,30,8
+    LTEXT           "about it",IDC_STATIC,143,37,24,8
+    LTEXT           "If you like it write to ",IDC_STATIC,7,49,63,8
+    LTEXT           "us",IDC_STATIC_EMAIL_ANDREI,70,49,8,8
+    LTEXT           "immediately, make us happy!",IDC_STATIC,80,49,91,8
+    LTEXT           "Here you will find some boring info ",IDC_STATIC,7,62,110,8
+    LTEXT           "About the sample",IDC_STATIC_ABOUT,117,62,56,8
+    LTEXT           "Check out The Code Project",IDC_STATIC,8,78,91,8
+    LTEXT           "www.codeproject.com",IDC_STATIC_WEB_DUNDAS,104,78,72,8
+    LTEXT           "The easiest way to check if your fax works properly:",IDC_STATIC,7,92,164,8
+    LTEXT           "1) Prepare a sheet with order of any Dundas product ",IDC_STATIC,7,103,168,8
+    LTEXT           "2) Fax it to: ",IDC_STATIC,7,114,38,8
+    LTEXT           "416.422.4801",IDC_STATIC_FAX,46,114,45,8
+    LTEXT           "Need an advice on how to save some money, here is ",IDC_STATIC,7,126,170,8
+    LTEXT           "sales@theUltimateToolbox.com",IDC_STATIC_EMAIL_SALES,68,142,100,8
+    LTEXT           "the address to ask:",IDC_STATIC,7,135,61,8
+    LTEXT           "This demo application has friendly user interface:",IDC_STATIC,7,154,154,8
+    LTEXT           "you don't have to go anywhere to run the ",IDC_STATIC,8,163,132,8
+    LTEXT           "Solitaire",IDC_STATIC_SOLITAIRE,140,163,26,8
+    CTEXT           "Close",IDC_STATIC_CLOSE,83,211,18,8,SS_CENTERIMAGE
+    LTEXT           "Hint:",IDC_STATIC_HINT,7,183,16,8
+    LTEXT           "right click over static control to customize it ",IDC_STATIC,28,183,138,8,SS_NOTIFY
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "StaticHyperLink MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "StaticHyperLink"
+            VALUE "LegalCopyright", "Copyright (C) 1998"
+            VALUE "OriginalFilename", "StaticHyperLink.EXE"
+            VALUE "ProductName", "StaticHyperLink Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_STATICHYPERLINK_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 230
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About StaticHyperLink..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "StaticHyperLink"
+    ID_DESCRIPTION_FILE     "StaticHyperLinkInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CUSTOMIZESTATICHYPERLINK_DIALOG DIALOG  0, 0, 264, 303
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Customize StaticHyperLink"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_WINDOW_TEXT,14,13,236,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_ACTION,68,37,154,57,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_FILE,85,64,154,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PARAMETERS,85,80,154,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DEFAULT_DIRECTORY,85,96,154,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_CALLBACK_MESSAGE_ID,85,113,58,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "&Unvisited...",IDC_BUTTON_CLR_UNVISITED,19,154,51,14
+    EDITTEXT        IDC_EDIT_UNVISITED_COLOR,77,155,51,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "&Visited...",IDC_BUTTON_CLR_VISITED,19,171,51,14
+    EDITTEXT        IDC_EDIT_VISITED_COLOR,77,172,51,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "&Font...",IDC_BUTTON_FONT,139,154,50,14
+    EDITTEXT        IDC_EDIT_FONT_NAME,140,172,111,12,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "U&se window text as file name ",IDC_CHECK_USE_WINDOW_TEXT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,193,109,10
+    CONTROL         "&Notify about errors during execution of HyperLinkAction",IDC_CHECK_ERROR_NOTIFY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,205,189,10
+    CONTROL         "Ad&just the size of window to match the size of the text",IDC_CHECK_FIT_TO_TEXT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,217,184,10
+    CONTROL         "&Use special cursor while moving mouse over the StaticHyperLink",IDC_CHECK_USE_SPECIAL_CURSOR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,229,219,10
+    CONTROL         "Show &Tooltip",IDC_CHECK_SHOW_TOOLTIP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,244,57,10
+    EDITTEXT        IDC_EDIT_TOOLTIP_TEXT,59,256,184,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,60,283,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,152,283,50,14
+    LTEXT           "&Action",IDC_STATIC,42,39,21,8
+    LTEXT           "&File",IDC_STATIC,15,67,12,8
+    LTEXT           "&Parameters",IDC_STATIC,15,83,36,8
+    LTEXT           "Default &Directory",IDC_STATIC,15,99,54,8
+    LTEXT           "Tooltip te&xt",IDC_STATIC,21,258,36,8
+    GROUPBOX        "Text Color",IDC_STATIC,14,144,121,46
+    GROUPBOX        "HyperLinkAction Parameters",IDC_STATIC,7,54,249,77
+    GROUPBOX        "StaticHyperLink Parameters",IDC_STATIC,7,135,249,143
+    GROUPBOX        "",IDC_STATIC,14,237,237,35
+    LTEXT           "&Callback message ID",IDC_STATIC,15,115,68,8
+    GROUPBOX        "Window Text",IDC_STATIC,7,3,250,28
+END
+
+IDD_CUSTOMIZESTATIC_DIALOG DIALOG  0, 0, 264, 178
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Customize OXStatic"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_WINDOW_TEXT,14,19,236,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Text &color...",IDC_BUTTON_COLOR,13,55,61,14
+    EDITTEXT        IDC_EDIT_COLOR,14,73,61,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "&Font...",IDC_BUTTON_FONT,88,54,61,14
+    EDITTEXT        IDC_EDIT_FONT_NAME,88,73,162,12,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "Ad&just the size of window to match the size of the text",IDC_CHECK_FIT_TO_TEXT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,93,184,10
+    CONTROL         "Show &Tooltip",IDC_CHECK_SHOW_TOOLTIP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,112,57,10
+    EDITTEXT        IDC_EDIT_TOOLTIP_TEXT,59,125,184,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,60,158,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,152,158,50,14
+    LTEXT           "Tooltip te&xt",-1,21,127,36,8
+    GROUPBOX        "OXStatic Parameters",-1,7,42,249,107
+    GROUPBOX        "",-1,14,103,236,40
+    GROUPBOX        "Window Text",-1,7,7,250,33
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CUSTOMIZESTATICHYPERLINK_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 257
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 297
+    END
+
+    IDD_CUSTOMIZESTATIC_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 257
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 172
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "UTSampleAbout.rc"
+#include "OXBitmapButton.rc" 
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\StaticHyperLink.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXHyperLinkAction.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

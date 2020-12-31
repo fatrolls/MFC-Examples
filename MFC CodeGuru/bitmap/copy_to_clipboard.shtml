@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Copying a bitmap to clipboard</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Copying a bitmap to clipboard</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+Copying a bitmap to the clipboard is fairly simple. The one thing to remember is that you should also copy the palette if the bitmap needs a palette to display properly.
+
+<h4>Function 1: Copy a device-dependent bitmap to clipboard</h4>
+The CopyBitmapToClipboard() function shown below copies the DDB to the clipboard. It also copies the palette to the clipboard if one is supplied. Note the calls to Detach() at the end. This is important since the ownership of the GDI object has been transferred to the clipboard.
+
+<PRE><TT><FONT COLOR="#990000">// CopyBitmapToClipboard	- Copies a device-dependent bitmap to clipboard
+// pWnd				- Pointer to window that opens the clipboard
+// bitmap			- The device-dependent bitmap
+// pPal				- Pointer to logical palette - Can be NULL
+// NOTE				- GDI objects are detached from bitmap & pPal
+//				  as the clipboard owns them after the copy
+void CopyBitmapToClipboard( const CWnd *pWnd, CBitmap& bitmap, CPalette* pPal )
+{
+	::OpenClipboard(pWnd->GetSafeHwnd());
+	::EmptyClipboard() ;
+	if( pPal )
+		::SetClipboardData (CF_PALETTE, pPal->GetSafeHandle() ) ;
+	::SetClipboardData (CF_BITMAP, bitmap.GetSafeHandle() ) ;
+	::CloseClipboard () ;
+	bitmap.Detach();
+	if( pPal )
+		pPal->Detach();
+}
+</FONT></TT></PRE>
+
+<h4>Function 2: Copy a device-independent bitmap to clipboard</h4>
+The CopyDIBToClipboard() function is very similar to the CopyBitmapToClipboard() function. The memory handle containing the BITMAPINFO and the bitmap bits should have been allocated using GlobalAlloc(). Once the DIB has been copied to the clipboard, the memory handle is owned by the clipboard and should not be released by your application.
+
+<PRE><TT><FONT COLOR="#990000">// CopyDIBToClipboard	- Copies a device-dependent bitmap to clipboard
+// pWnd			- Pointer to window that opens the clipboard
+// hDIB			- Memory handle that contains BITMAPINFO & bitmap bits
+// pPal			- Pointer to logical palette - Can be NULL
+// NOTE			- GDI objects are detached from bitmap & pPal
+//			  as the clipboard owns them after the copy
+void CopyDIBToClipboard( const CWnd *pWnd, HGLOBAL hDIB, CPalette* pPal )
+{
+	::OpenClipboard(pWnd->GetSafeHwnd());
+	::EmptyClipboard();
+	if( pPal )
+		::SetClipboardData (CF_PALETTE, pPal->GetSafeHandle() ) ;
+	::SetClipboardData (CF_DIB, hDIB ) ;
+	::CloseClipboard () ;
+	bitmap.Detach();
+	if( pPal )
+		pPal->Detach();
+}
+</FONT></TT></PRE>
+
+<h4>Function 3: Copy a window image to clipboard</h4>
+The CopyWndToClipboard() function copies the image of the window to the clipboard.
+
+<PRE><TT><FONT COLOR="#990000">void CopyWndToClipboard( CWnd *pWnd )
+{
+	CBitmap 	bitmap;
+	CClientDC	dc(pWnd);
+	CDC 		memDC;
+	CRect		rect;
+
+	memDC.CreateCompatibleDC(&dc); 
+
+	pWnd->GetWindowRect(rect);
+
+	bitmap.CreateCompatibleBitmap(&dc, rect.Width(),rect.Height() );
+	
+	CBitmap* pOldBitmap = memDC.SelectObject(&bitmap);
+	memDC.BitBlt(0, 0, rect.Width(),rect.Height(), &dc, 0, 0, SRCCOPY); 
+
+	pWnd->OpenClipboard() ;
+	EmptyClipboard() ;
+	SetClipboardData (CF_BITMAP, bitmap.GetSafeHandle() ) ;
+	CloseClipboard () ;
+
+	memDC.SelectObject(pOldBitmap);
+	bitmap.Detach();
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

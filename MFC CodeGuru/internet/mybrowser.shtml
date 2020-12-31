@@ -1,0 +1,63 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Rob Manderson">
+   <TITLE>A simple web browser using the IE4 components </TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">A simple web browser using the IE4 components </FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:doctor@med.auth.gr">Panagiotis Piperopoulos</A>.
+
+<P>Hello from Greece.
+
+<P>My Browser.zip is showing an easy way to create a web browser.  It uses Microsoft's ActiveX control for that purpose.  There is already an example in the site, but i think mine is easier.  That's because i use the Wizard to create the CWebBrowser class.  As you see all we need to do is:
+
+<P>0. Add the Web Browser ActiveX control to the project.  The AppWizard creates the CWebBrowser class for us.
+
+<P>1. We must create an instance of a CWebBrowser when OnCreate() Event occurs in our View class.
+
+<P>2. Use the OnSize() Event to size our control so that it covers the whole application's window.
+
+<P>3. Add some navigation buttons to the toolbar, with the appropriate handlers.
+
+<P>The job is very easy done because the AppWizard is creating the CWebBrowser class for us.
+
+<P>ATTENTION:  The example code loads the a.htm, which must be at the same folder as the program.
+
+<P>The example code cannot be executed from the VC environment because it receives a wrong directory when, it calls the GetCurrentDir(), inside OnCreate() function and it cannot load the a.htm page.
+
+<P>Bye from Greece - Panagiotis.
+
+<P><A href="MyBrowser.zip">Download Sample</a> (59 kb)</p>
+
+<p>Article added on June 21 1998
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

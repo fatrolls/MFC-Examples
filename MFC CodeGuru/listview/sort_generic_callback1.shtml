@@ -1,0 +1,206 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ListView - Sort list (numeric/text/float/date) using callback</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Sort list (numeric/text/float/date) using callback</FONT></H3></CENTER>
+<HR>
+
+
+This code was contributed by <A HREF="mailto:maxim@mindspring.com">Max Poliashenko</A>.
+
+<P>One of my friends refered me to your site. I like it!
+I have looked for an easy solution to sort a List control and found several 
+recepies on your site. Unfortunately, there was no nice, elegant, and 
+general solution there, so I took "Sort list (numeric/text) using callback" 
+article by Appolonio and redid it. Here is much more elegant class that in 
+addition to text and numeric will also sort float and time columns and is 
+extensible to other types. I hope, someone will benefit from it.
+
+
+<PRE><TT><FONT COLOR="#990000">
+////////////////////////////////////////////////////////////////////////  
+////////
+// by Max Poliashenko - rewritten version of class proposed by Iuri Applonio
+// This class will sort a List control by a column of text, integer, float or
+// date/time type. It could be easily extended for other data types.
+// February 11, 1998
+//
+
+class CSortClass
+{
+public:
+	enum EDataType {dtNULL, dtINT, dtSTRING, dtDATETIME, dtDEC};
+	
+	CSortClass(CListCtrl * _pWnd, const int _iCol);
+	virtual ~CSortClass();
+	void Sort(bool bAsc, EDataType _dtype);
+	
+protected:
+	CListCtrl * pWnd;
+	
+	static int CALLBACK Compare(LPARAM lParam1, LPARAM lParam2, LPARAM 
+		lParamSort);
+	
+	struct CSortItem
+	{
+		CSortItem(const DWORD _dw, const CString &_txt);
+		DWORD dw; 
+		CString txt;
+	};
+};
+
+
+////////////////////////////////////////////////////////////////////////  
+/////
+// CSortClass
+
+CSortClass::CSortClass(CListCtrl * _pWnd, const int _iCol)
+{
+	pWnd = _pWnd;
+	
+	ASSERT(pWnd);
+	int max = pWnd->GetItemCount();
+	DWORD dw;
+	CString txt;
+	
+	// replace Item data with pointer to CSortItem structure
+	for (int t = 0; t < max; t++)
+	{
+		dw = pWnd->GetItemData(t); // save current data to restore it later
+		txt = pWnd->GetItemText(t, _iCol); 
+		pWnd->SetItemData(t, (DWORD) new CSortItem(dw, txt));
+	}
+}
+
+CSortClass::~CSortClass()
+{
+	ASSERT(pWnd);
+	int max = pWnd->GetItemCount();
+	CSortItem * pItem;
+	for (int t = 0; t < max; t++)
+	{
+		pItem = (CSortItem *) pWnd->GetItemData(t);
+		ASSERT(pItem);
+		pWnd->SetItemData(t, pItem->dw);
+		delete pItem;
+	}
+}
+
+void CSortClass::Sort(bool _bAsc, EDataType _dtype)
+{
+	long lParamSort = _dtype;
+	
+	// if lParamSort positive - ascending sort order, negative - descending
+	if (!_bAsc)
+		lParamSort *= -1; 
+	
+	pWnd->SortItems(Compare, lParamSort);
+}
+
+int CALLBACK CSortClass::Compare(LPARAM lParam1, LPARAM lParam2, LPARAM 
+								 lParamSort)
+{
+	CSortItem * item1 = (CSortItem *) lParam1;
+	CSortItem * item2 = (CSortItem *) lParam2;
+	ASSERT(item1 && item2);
+	
+	// restore data type and sort order from lParamSort
+	// if lParamSort positive - ascending sort order, negative - descending
+	short   sOrder = lParamSort < 0 ? -1 : 1; 
+	EDataType dType  = (EDataType) (lParamSort * sOrder); // get rid of sign
+	
+	// declare typed buffers
+	COleDateTime t1, t2;
+	
+	switch (dType)
+	{
+	case  EDataType::dtINT:
+		return (atol(item1->txt) - atol(item2->txt))*sOrder;
+	case  EDataType::dtDEC:
+		return (atof(item1->txt) < atof(item2->txt) ? -1 : 1)*sOrder;
+	case  EDataType::dtDATETIME:
+		if (t1.ParseDateTime(item1->txt) && t2.ParseDateTime(item2->txt))
+			return (t1 < t2 ? -1 : 1 )*sOrder;
+		else
+			return 0;
+	case  EDataType::dtSTRING:
+		return item1->txt.CompareNoCase(item2->txt)*sOrder;
+		
+	default:
+		ASSERT("Error: attempt to sort a column without type.");
+		return 0;
+	}
+}
+
+
+CSortClass::CSortItem::CSortItem(const DWORD _dw, const CString & _txt)
+{
+	dw  = _dw;
+	txt = _txt;
+}
+</FONT></TT></PRE>
+
+<P>==========================================================================
+<br>Here is its usage:
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	static int  nSortedCol = -1;
+	static bool bSortAscending = true; 
+	
+	HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+	
+	if( phdn->iButton == 0 )
+	{
+		// User clicked on header using left mouse button
+		if( phdn->iItem == nSortedCol )
+			bSortAscending = !bSortAscending;
+		else
+			bSortAscending = TRUE;
+		
+		nSortedCol = phdn->iItem;
+		
+		CSortClass csc(&m_List, nSortedCol);
+		
+		csc.Sort(bSortAscending, (CSortClass::EDataType) 
+			m_arrColType[nSortedCol]); 
+	}
+	*pResult = 0;
+}
+</FONT></TT></PRE>
+
+
+<P>Posted: March, 8, 98
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+ 

@@ -1,0 +1,94 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Stopping flicker during updates</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Stopping flicker during updates</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This article was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A> from Australia.
+
+<p>When making major changes to a list control (and other controls) it is a
+good idea to turn off updating of the control.  To do this you would use
+SetRedraw(false) at the start of the change and SetRedraw(true) at the end,
+and then invalidate the control.
+
+<p>However, SetRedraw simply turns redraw on or off, it does not let you know
+whether or not redraw was on or off before the call.  And there is no
+function that can tell you this.
+
+<p>For this reason, I have my own SetRedraw function that counts the number of
+times you have turned it on and turned it off.
+
+<p>Define a member variable:
+<PRE><TT><FONT COLOR="#990000">     int m_redrawcount;
+</FONT></TT></PRE>
+
+<p>In your contructor do:
+
+<PRE><TT><FONT COLOR="#990000">     m_redrawcount = 0;
+</FONT></TT></PRE>
+
+<p>And then define the following function (in this case for a list control):
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::SetRedraw( BOOL bRedraw) {
+     if (! bRedraw) {
+          if (m_redrawcount++ <= 0) {
+               CListCtrl::SetRedraw(false);
+          }
+     } else {
+          if (--m_redrawcount <= 0) {
+               CListCtrl::SetRedraw(true);
+               m_redrawcount = 0;
+               Invalidate();
+          }
+     }
+}
+</FONT></TT></PRE>
+
+<p>The first time you turn redraw off, the real SetRedraw function is called
+to turn redrawing off.  Subsequently the function increases a counter when
+you requested redraw be turned off, and decreases it when you request
+redraw to be turned on again.  When the counter gets back down to zero, the
+real SetRedraw function is called to turn redrawing back on again and the
+control is invalidated (so that redrawing actually takes place).
+
+<p>This means you can not put SetRedraw(false) at the start of, and
+SetRedraw(true) and the end of, any function that makes large changes to
+the lsit control (like loading, sorting, changing with column widths or
+order etc).
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

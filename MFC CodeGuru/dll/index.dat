@@ -1,0 +1,19 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/12|dialog_in_dll.shtml||Dialogs in DLL|Randy More
+1998/04/12|dialog_in_extdll.shtml||Export dialogs in MFC Extension DLLs|Andreas Leitner
+1998/04/12|dll_version.shtml||Determine DLL version number|Eran Yariv
+1998/04/12|use_dll_in_dll.shtml||Using one extension DLL in another|Randy More

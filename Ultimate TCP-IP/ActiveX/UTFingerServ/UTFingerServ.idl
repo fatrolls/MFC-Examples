@@ -1,0 +1,145 @@
+// UTFingerServ.idl : IDL source for UTFingerServ.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (UTFingerServ.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+cpp_quote("#endif")  
+
+	//===========================================
+	//	IFingerServ interface
+	//===========================================
+
+	[
+		object,
+		uuid(1D8EC251-1E9E-11D3-A487-0080C858F182),
+		dual,
+		helpstring("IFingerServ Interface"),
+		pointer_default(unique)
+	]
+	interface IFingerServ : IDispatch
+	{
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_START					= 1;
+		const int DISPID_STOP					= 2;
+		const int DISPID_GET_ERROR_TEXT			= 3;
+		const int DISPID_PATH					= 4;
+		const int DISPID_CONNECTIONS			= 5;
+		const int DISPID_MAX_CONNECTIONS		= 6;
+		const int DISPID_PORT					= 7;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, id(DISPID_PATH), helpstring("Gets the path where the finger information is stored")] 
+			HRESULT Path([out, retval] BSTR *pVal);
+
+		[propput, id(DISPID_PATH), helpstring("Sets the path where the finger information is stored")] 
+			HRESULT Path([in] BSTR newVal);
+
+		[propget, id(DISPID_CONNECTIONS), helpstring("Gets the current number of connections")] 
+			HRESULT Connections([out, retval] long *pVal);
+
+		[propget, id(DISPID_MAX_CONNECTIONS), helpstring("Gets the maximum number of simultaneous connections")] 
+			HRESULT MaxConnections([out, retval] long *pVal);
+
+		[propput, id(DISPID_MAX_CONNECTIONS), helpstring("Gets the maximum number of simultaneous connections")] 
+			HRESULT MaxConnections([in] long newVal);
+
+		[propget, id(DISPID_PORT), helpstring("Gets the server port")] 
+			HRESULT Port([out, retval] long *pVal);
+
+		[propput, id(DISPID_PORT), helpstring("Sets the server port")] 
+			HRESULT Port([in] long newVal);
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_START), helpstring("Starts the server")] 
+			HRESULT Start([out, retval] long *Result);
+
+		[id(DISPID_STOP), helpstring("Stops the server")] 
+			HRESULT Stop();
+
+
+	};
+
+[
+	uuid(1D8EC240-1E9E-11D3-A487-0080C858F182),
+	version(1.0),
+	helpstring("Ultimate TCP/IP Finger Server Control 4.2")
+]
+library UTFINGERSERVLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//===========================================
+	//	FingerServ control Events interface
+	//===========================================
+	[
+		uuid(1D8EC252-1E9E-11D3-A487-0080C858F182),
+		helpstring("_IFingerServEvents Interface")
+	]
+	dispinterface _IFingerServEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnStatus")] HRESULT OnStatus([in] BSTR Message);
+		[id(2), helpstring("method OnConnect")] HRESULT OnConnect();
+		[id(3), helpstring("method OnMaxConnect")] HRESULT OnMaxConnect();
+		[id(4), helpstring("method OnCanAccept")] HRESULT OnCanAccept([in] BSTR Address, [out, retval] BOOL *Result);
+	};
+
+	[
+		uuid(00BDA8B4-EE5A-11D2-A444-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP Finger Server Class")
+	]
+	coclass FingerServ
+	{
+		[default] interface IFingerServ;
+		[default, source] dispinterface _IFingerServEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (5630B723-1EA7-11d3-A487-0080C858F182), helpstring("Finger Server Error Codes")]
+	enum FingerServErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Socket creation failed")]	ecSocketCreateFailed	= UTE_SOCK_CREATE_FAILED,
+		[helpstring("Binding failed")]			ecBindFailed			= UTE_SOCK_BIND_FAILED,
+		[helpstring("Listen afiled")]			ecListenFailed			= UTE_SOCK_LISTEN_ERROR
+	} FingerServErrorCodes;
+
+	[
+		uuid(1D8EC253-1E9E-11D3-A487-0080C858F182),
+		helpstring("FingerServProp Class")
+	]
+	coclass FingerServProp
+	{
+		interface IUnknown;
+	};
+};

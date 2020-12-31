@@ -1,0 +1,145 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Thread manager</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Thread manager</FONT></H3></CENTER>
+<HR>
+
+
+This article was contributed by <A HREF="mailto:SimonC@abcsystems.com">Simon Coghlan</A>.
+
+
+
+<H3>Introduction</H3>
+<H4>Overview</H4>
+There is need to have the thread resources that are available in win32 windows apps available in Console and DLL based apps. The previous solution was to use beginthread with a simple parameter list. This unfortunately has proved to be inadequate in that the function does not allocate separate work space for each of the threads, i.e. If thread created with the _beginthread function cause doserrno to be set and then another thread uses afunction that resets the doserrno to zero, therewill be no means of detecting the error state.
+
+<H4>Problems</H4>
+When using _beginthreadex for creating dynamic threads, you need to close thread down when the thread exits using the CloseHandle API. This can be little tricky in some environments when the application writer may be used to using the _beginthread or CWinThread classes to handle the thread environments. If the CloseHandle API is not used the program will exhibit all sorts of memory leaks and handle usage.
+
+<H4>Solution</H4>
+So there is a need to attempt to mimic the automatic closure of thread handles when a thread has exited its process space. The is one of the pre-requisites if the ThreadManager. The other, is that it can be used across DLL boundaries without any need for separate specific initialisation. This means that if the solution uses Mutex's or Events, they should be named in order for the system to find them.
+
+<H4>Other Benifits</H4>
+The _beginthreadex has other benefits that are used by CWinThread that become available to the users of ThreadManager by default :-
+
+<ul>
+<li>The thread is started up in a suspended state.
+<li>The thread must have an exit code which can be accessed through the thread handle.
+<li>The thread priority can be changed via the thread handle.
+</ul>
+
+<H3>Specifications</H3>
+<H4>High Level</H4>
+<ol>
+<li>Must be able to work in the Win32 environment.
+<li>Deal with Dll's and Console Apps Alike.
+<li>Use the MFC Extensions for compatibility.
+<li>Clean up handles created with _beginthreadex.
+<li>Expose usage for expandability using access members.
+<li>When using the code in a multithreaded environment, it must be data safe.
+</ol>
+
+<H4>How</H4>
+The DLL called ThreadManager is the root for all the work. This project is based upon the MFC wizard for creating a MFC Extension DLL.
+
+<P>The project will not be able to use things which require application window handles ( e.g. CWinThread type of things ) as these will not be available in Console Apps ( CGI's are included in this ).
+
+<P>The main purpose of this project is to minimise the amount of memory and handles a program uses during its lifetime, thus giving the operating system an easy time.
+
+<P>In order to do this a process must be created which will watch for the thread handles becoming redundant and then calling CloseHandle upon them. This means that the DLL will actually create a separate thread which will perform some work and at some time in the future will exit and not close its handle. This can be catered for in two ways, 1) Do nothing and let the OS tidy up this one stray, or 2) expose a function to the owner of the Dll which will allow the thread to be closed gracefully and close the handle, thus releasing all memory and handles used by this extra thread.
+Either of the above methods can be used, but the more exceptable is the later.
+
+<P>Because the code will be used in an environment where it will be possible for several processes as well several threads are accessing the classes, it will be necessary to add mutex's to sections of the code when adding and deleting thread description objects.
+
+<H4>Pseudo Code</H4>
+CareTaker functionality
+
+<PRE><TT><FONT COLOR="#990000">
+When the object is created :-
+Initialise the AddEvent to manual mode, and,
+Set the KeepGoing flag to true.
+The Mutex is created with the version string.
+
+When checking for the validity of the CareTaker object check for :-
+If the object pointer is NULL, and,
+	If the Object has a valid sized address space allocated.
+
+To Add a Thread handle to the CareTakers list :-
+Create a new handle definition object, and,
+Create a thread access lock,
+place on the end of a list,
+Release the locking mechanism,
+Pulse the event to check its status of the other handles.
+
+When checking for Closure of a thread handle :-
+Create a thread access locking mechanism
+For each Handle definition in the CareTakers list,
+	Check the Exit code status for a valid closure code,
+		If the Code is not still active then,
+			Remove the Handle object from the list
+			Call CloseHandle on the Thread handle,
+			Delete the memory allocated to the Thread Handle definition object.
+Unlock the thread access lock.
+
+The CareTaker Process :-
+The first thing the process for the CareTaker does is to lower the priority of the thread that it owns to perform the tidying up.
+It then creates the actual CareTaker object to perform the list holding.
+While the flag to KeepRunning is true the AddEvent is pulsed every 500 MilliSecs to CloseThreadHandles.
+</FONT></TT></PRE>
+
+
+Thread Manager Class
+
+<PRE><TT><FONT COLOR="#990000">
+To create a ThreadManager
+Pass the start address of routine that begins execution of new thread, [ this would have been declared as UINT APIPRIVATE A_Thread_Function( PVOID pvThreadData ), and a LPVOID pParam ( cannot be NULL) ]
+Create a CareTaker if it is not valid.
+Create a the processing thread for the function passed in a suspended state, and,
+add the thread handle to this new ThreadManager object for external use
+Add the new Thread handle to the CareTaker.
+It things failed for t he CareTaker then throw an assert.
+
+How to start the ThreadManager
+Call ::ResumeThread to make the thread for the function passed perform some work.
+</FONT></TT></PRE>
+
+<H4>Functional Flow</H4>
+This will be done from the viewpoint of a test program to demonstrate the functionality of the code.
+
+
+<P><img src="thread_manager.gif">
+
+<P><A HREF="thread_manager.zip">Download project</A> 46K
+
+<P>Posted : March 12, 98
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

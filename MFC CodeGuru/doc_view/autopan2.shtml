@@ -1,0 +1,123 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Doc/View - Autopan 2</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Microsoft Internet Explorer like Intellimouse AutoScroll
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:russf@dircon.co.uk"><!-- Author Name -->Russell
+Freeman</A>.
+
+<!-- Sample image - gif or jpg -->
+
+<P>This code provides a simple way of adding full AutoScroll capability
+to pretty much any window, I have provided a demo program which also incorporates
+the all of the code you need. I believe it works the same way as Internet
+Explorer, that is all of the behaviour I have seen from IE. The cursor
+changes in every direction just as it does in IE, it uses the pointers
+and origin bitmaps pretty much the same as IE, these are the cursors and
+bitmaps supplied with the Intellipoint SDK with slight modificatiosn to
+the bitmaps.
+<H3>
+How to use it</H3>
+OWnd is a DLL, I did it this way because it seemd the easiest way to use
+it without having to copy resource fiels etc all over the place, plus it
+really is a component that is shared amongst projects. Simply include the
+OWnd DLL project&nbsp; in as a subproject of yours, include the OWndDLL.h
+file in your relevant source files and call StartPanning(...) in your OnMButtonDown
+message handler. That's it really.
+<BR>Additionally you can respond to the registered message OWND_WINDOW_UPDATE
+if you want to perform extra scrolling, the registered message&nbsp; is
+sent every time a scroll event is issued, your message handler should look
+something like this:
+
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+static const UINT uOriginWindowUpdateMessage = ::RegisterWindowMessage( OWND_WINDOW_UPDATE );
+
+LRESULT CPanningWindowView::OnOriginWindowUpdate(WPARAM , LPARAM lParam) 
+//
+// Process the update message sent by the origin window.
+// You only need to respond to this message if you want to do extra or different scrolling
+{
+    //
+    // psizeDistance will contain the distance the cursor is from the origin. We then use
+    // this to calculate the new scroll position and the amount to scroll our window.
+    const CSize *psizeDistance = reinterpret_cast&lt;const CSize *>( lParam );
+#ifdef _DEBUG
+    afxDump&lt;&lt;_T("CPanningWindowView::OnOriginWindowUpdatesize")&lt;&lt;*psizeDistance&lt;&lt;_T("\n");
+#endif // _DEBUG
+    //
+    // Return 1 to signal to COriginWnd that you have handled the scrolling, return 0 if you
+    // want COriginWnd to perform the scrolling.
+    return 0;
+}
+
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+<P>The demo project shows all of this behaviour in the source file PanningWindowView.cpp.
+
+<P>This code imroves over the other examples posted to codeguru in the
+following areas:
+<UL>
+<LI>
+Much closer emulation of IE behaviour, I have tried to do exactly as IE
+does.</LI>
+
+<LI>
+More easily extended and altered, the other examples have way too many
+hardcoded values scattered throughout the code.</LI>
+
+<LI>
+Compiles at level four warnings with warnings as errors, it has been linted
+and it has been built and tested in UNICODE</LI>
+
+<LI>
+Less code.</LI>
+</UL>
+Please let me know of any bugs, fixes or modifications.
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="autopan2.zip">Download demo project and source code - 42KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->6/24/98
+<br>Posted by: <A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<P>
+<HR><!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<!-- Counter -->
+<CENTER><!--#exec cgi="../cgi/counters/counter.cgi"--></CENTER>
+
+</BODY>
+</HTML>

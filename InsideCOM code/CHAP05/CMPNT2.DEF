@@ -1,0 +1,9 @@
+;
+; Cmpnt2 module-definition file
+;
+
+LIBRARY         Cmpnt2.dll
+DESCRIPTION     '(c)1996-1997 Dale E. Rogerson'
+
+EXPORTS
+                CreateInstance @1	PRIVATE

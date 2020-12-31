@@ -1,0 +1,18 @@
+///////////////////////////////////////////////////////////////////
+// Resource script for BUTTONS.EXE
+//
+
+#include "resource.h"
+
+///////////////////////////////////////////////////////////////////
+// Bitmaps for CBitmapButtons
+
+IDR_BITMAP1UP     BITMAP  DISCARDABLE  "bmp1up.bmp"
+IDR_BITMAP1DOWN   BITMAP  DISCARDABLE  "bmp1dn.bmp"
+IDR_BITMAP2UP     BITMAP  DISCARDABLE  "bmp2up.bmp"
+IDR_BITMAP2DOWN   BITMAP  DISCARDABLE  "bmp2dn.bmp"
+IDR_BITMAP3UP     BITMAP  DISCARDABLE  "bmp3up.bmp"
+IDR_BITMAP3DOWN   BITMAP  DISCARDABLE  "bmp3dn.bmp"
+
+///////////////////////////////////////////////////////////////////
+

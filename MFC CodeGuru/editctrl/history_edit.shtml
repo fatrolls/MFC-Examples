@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - History Edit Control</TITLE>
+</HEAD>
+
+<!-- Set article properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">History Edit Control</FONT></H3></CENTER>
+
+<HR>
+
+This sample was contributed by <A HREF="http://members.xoom.com/ravib">Ravi Bhavnani</A>.
+
+<p>
+CHistoryEdit is a CEdit derived control that lets you to display a scrolling
+text history, much like Dev Studio's "Output" window during a compilation.
+Here's an example of the control (the "History" window) being used in a dialog box.
+
+<p>
+<img src="history_edit.gif" border=0 width=282 height=267 alt="CHistoryEdit demo">
+<p>
+
+CHistoryEdit's <tt><font color="#880000">AppendString()</font></tt> method appends a text
+string to the control and automatically scroll the most recent entry into view.  Two other
+methods, <tt><font color="#880000">AllowSelection()</font></tt> and
+<tt><font color="#880000">IsSelectable()</font></tt> allow you to control whether the user
+may select text in the control.
+
+<p>
+Using CHistoryEdit in a dialog is quite simple:
+
+<ol>
+  <li>  Include <tt>CHistoryEdit.h</tt> in your dialog class' header file.
+        <p>
+  <li>  Add member variables of type <tt>CHistoryEdit</tt> for every edit control
+        you want to subclass.
+        <p>
+  <li>  Subclass the edit controls in your dialog's <tt>OnInitDialog()</tt> method.
+        <p>
+        <tt><font color="#880000">
+        &nbsp;&nbsp;m_HistoryEdit.SubclassDlgItem (EDIT_HISTORY, this);
+        </font></tt>
+        <p>
+  <li>  Append text to the control by using <tt><font color="#880000">AppendString()</font></tt>.
+        <p>
+        <tt><font color="#880000">
+        &nbsp;&nbsp;m_HistoryEdit.AppendString ("Compiling D:\\XDA\\Test\\Mechanic.kb...");
+        </font></tt>
+</ol>
+
+<p>
+<a href="history_edit.zip">Download source files (2 K)</a> CHistoryEdit.cpp, CHistoryEdit.h
+<br>
+<a href="history_edit_demo.zip">Download demo project (14 K)</a> (includes sources)
+
+<!-- Remember to update this -->
+<p>Last updated: 11 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

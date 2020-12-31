@@ -1,0 +1,283 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Michael S. Scherotter">
+   <TITLE>CGDI - Simple GDI Set And Reset</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->
+CGDI - Simple GDI Set And Reset
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:mss@tartus.com">Michael S. Scherotter</A>.
+
+<!-- The article... -->
+
+<p>In MFC, GDI Objects need to be selected and then destroyed. CGDI and its derived classes
+take care of this by selecting the object in the constructor and deselecting it in the destructor.
+CGDIObject is a template class which takes as its parameter the CGdiObject-derived class.  This
+class library only accounts for a few of the set/get function pairs.  This could be extended by 
+creating classes for each of the CDC Set/Get functions.
+
+Examples:
+<FONT COLOR="#990000"><TT><PRE>
+
+// Example to draw a line using the BLACK_PEN stock object
+void DrawLine(CDC* pDC)
+{
+    CStockObject theObject(pDC, BLACK_PEN);
+
+    pDC->LineTo(100, 100);
+}
+
+// Example to draw a line using a custom pen
+void DrawLinesWithPen(CDC* pDC)
+{                                                         // Current Pen Selected
+    CPen thePen(PS_SOLID, 3, RGB(100, 200, 2));
+
+    CGDIObject&ltCPen&gt theObject(pDC, &thePen);                  // thePen Selected
+
+    pDC->LineTo(100, 100);
+
+    // Use brackets to nest calls
+    {
+        CPen theOtherPen(PS_SOLID, 3, RGB(200, 10, 2));         
+
+        CGDIObject&ltCPen&gt theOtherObject(pDC, &theOtherPen);    // theOtherPen Selected
+
+        pDC->LineTo(200, 200);
+    }                                                     // thePen Selected
+
+    pDC->LineTo(300, 300);
+}                                                         // Current Pen Selected
+
+
+
+
+// helper template function for unused parameters
+template &ltclass T&gt
+void Unused(T rT)
+{
+    static_cast&ltvoid&gt(rT);
+};
+
+
+class CGDI
+{
+protected:
+    CDC* m_pDC;
+
+    CGDI(CDC* pDC) : 
+      m_pDC(pDC)
+    {
+    }
+
+    virtual ~CGDI()
+    {
+        m_pDC = NULL;
+    }
+};
+
+// Class to select a stock object
+class CGDIStockObject : public CGDI
+{
+    CGdiObject* m_pLastObject;
+
+public:
+    CGDIStockObject(CDC* pDC, int nIndex) : CGDI(pDC),
+      m_pLastObject(NULL)
+    {
+        m_pLastObject = m_pDC->SelectStockObject(nIndex);
+    }
+
+    virtual ~CGDIStockObject()
+    {
+        if (m_pLastObject)
+        {
+            Unused(m_pDC->SelectObject(m_pLastObject));
+
+            m_pLastObject = NULL;
+        }
+    }
+};
+
+
+class CGDITextColor : public CGDI
+{
+    COLORREF m_LastColor;
+
+public:
+    CGDITextColor(CDC* pDC, COLORREF theColor) : CGDI(pDC),
+      m_LastColor(RGB(0,0,0))
+    {
+        m_LastColor = m_pDC->SetTextColor(theColor);
+    }
+
+    virtual ~CGDITextColor()
+    {
+        Unused(m_pDC->SetTextColor(m_LastColor));
+    }
+
+};
+
+class CGDIBackColor : public CGDI
+{
+    COLORREF m_LastColor;
+
+public:
+    CGDIBackColor(CDC* pDC, COLORREF theColor) : CGDI(pDC),
+      m_LastColor(RGB(0,0,0))
+    {
+        m_LastColor = m_pDC->SetBkColor(theColor);
+    }
+
+    virtual ~CGDIBackColor()
+    {
+        Unused(m_pDC->SetBkColor(m_LastColor));
+    }
+
+};
+
+class CGDIBackMode : public CGDI
+{
+    int m_LastMode;
+
+public:
+    CGDIBackMode(CDC* pDC, int theMode) : CGDI(pDC),
+	  m_LastMode(0)
+    {
+        m_LastMode = m_pDC->SetBkMode(theMode);
+    }
+
+    virtual ~CGDIBackMode()
+    {
+        Unused(m_pDC->SetBkMode(m_LastMode));
+    }
+
+};
+
+// This class can be used like this:
+// CGDIObject&ltCFont&gt(pDC, pFont);
+// CGDIObject&ltCPen&gt(pDC, pPen);
+
+template &ltclass T&gt
+class CGDIObject : public CGDI
+{
+T* m_pLast;
+
+public:
+    CGDIObject(CDC* pDC, T* pObject) : CGDI(pDC), 
+	  m_pLast(NULL)
+    {
+        if (pObject)
+        {
+            m_pLast = pDC->SelectObject(pObject);
+        }
+    }
+
+    virtual ~CGDIObject()
+    {
+        if (m_pLast)
+        {
+            Unused(m_pDC->SelectObject(m_pLast));
+
+            m_pLast = NULL;
+        }
+    }
+};
+
+class CGDITextAlign : public CGDI
+{
+UINT m_Last;
+
+public:
+    CGDITextAlign(CDC* pDC, UINT nTextAlign) : CGDI(pDC),
+	  m_Last(0)
+    {
+        m_Last = pDC->SetTextAlign(nTextAlign);
+    }
+
+    virtual ~CGDITextAlign()
+    {
+        Unused(m_pDC->SetTextAlign(m_Last));
+    }
+};
+
+
+class CGDIROP : public CGDI
+{
+int m_Last;
+
+public:
+    CGDIROP(CDC* pDC, int nROP) : CGDI(pDC),
+	  m_Last(0)
+    {
+        m_Last = pDC->SetROP2(nROP);
+    }
+
+    virtual ~CGDIROP()
+    {
+        Unused(m_pDC->SetROP2(m_Last));
+    }
+};
+
+class CGDIMapMode : public CGDI
+{
+int m_Last;
+
+public:
+    CGDIMapMode(CDC* pDC, int nMapMode) : CGDI(pDC),
+	  m_Last(0)
+    {
+        m_Last = pDC->SetMapMode(nMapMode);
+    }
+
+    virtual ~CGDIMapMode()
+    {
+        Unused(m_pDC->SetMapMode(m_Last));
+    }
+};
+
+</tt></PRE></FONT>
+
+<!-- Remember to update this -->
+<p>Last updated: 8 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+

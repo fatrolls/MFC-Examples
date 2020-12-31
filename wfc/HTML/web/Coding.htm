@@ -1,0 +1,797 @@
+<HTML>
+<HEAD>
+<TITLE>WFC Coding Guidelines</TITLE>
+</HEAD>
+<BODY>
+<CENTER><H1>Win32 Foundation Classes Coding Guidelines</H1></CENTER><HR>
+$Revision: 10 $
+
+<H1>Software Development In General</H1>
+
+<H2>Never, Never, Never Believe What Microsoft Says</H2>
+<P>
+Microsoft is chasing a whole bunch of rabbits at the same time.
+They don't deliberately set out to screw you up but they just
+can't seem to help it.
+
+<H2>Always, Always, Always Believe What Microsoft Does</H2>
+<UL>
+<LI>We have no choice.
+<LI>Microsoft usually announces APIs/technology way too soon.
+It may sound like a good idea at the time but they will turn
+on a dime to meet a new goal leaving you holding the bag
+(and missing deadlines).
+</UL>
+
+<H2>Never Completely Design a Program Before You Start Coding</H2>
+
+<UL>
+
+<LI>I call this &quot;rocket style&quot; development. You aim it,
+fire it and hope it hits the target. Tiny little miscalculations
+at launch will result in the rocket being off by miles.
+Use an iterative approach
+instead (kinda like a cruise missle). Design a little, code a
+little, deliver a little, over and over again. Believe it or not,
+this results in better components and a product that the users
+need. Only the simplest problems in the world lend themselves
+to pre-designing. Give your customers frequent, tangible, working
+results. When customers see what your perception of reality is
+they can correct you (like a cruise missile making course corrections
+when it drifts off course).
+
+<LI>Create your object model then implement that model but don't try
+to create a one-to-one mapping of your model to source code. Such detail
+in an object model hides the intentions of the model. A relationship
+between objects may result in several methods when coded in C++. Why
+cloud the model with these details?  Keep the model and the implementation
+of that model (in whatever programming language you wish) separate. I use
+<A HREF="http://www.oi.com/">Peter Coad</A>'s object methodology. The
+thing I like most about his method is it allows me to communicate
+with my customers in a language the customer understands.
+
+<LI>Software development, despite all the snake-oil salesmen and
+over-educated OOPsters, is nothing more than yet another application of
+
+<!-- This link keeps breaking, pretty soon, I'm going to have to
+copy someone's website -->
+<A HREF="http://www.scientificmethod.com/">The Scientific Method</A>.
+Remember when you were in the fifth grade? If not, here's a synopsis of the
+<A NAME="ScientificMethod">Scientific Method</A>:
+<OL>
+<LI>Observe
+<LI>Define
+<LI>Hypothesize
+<LI>Experiment
+<LI>Interpret Results
+<LI>Publish Findings
+<LI>Go to step 1.
+</OL>
+Seems so simple doesn't it? Software development is just another type
+of problem to be solved. Here's how the steps map to the software
+development process:
+
+<DL COMPACT>
+
+<DT><B>Observe</B><DD>Someone thinks we need software to solve a problem.
+
+<DT><B>Define</B><DD>Gather the requirements. Create your scenarios that
+describe the specific problems you are going to solve.
+
+<DT><B>Hypothesize</B><DD>Develop the object model. Brainstorm about ways
+to solve the defined problems. Go on a vision quest (i.e. get a clue).
+
+<DT><B>Experiment</B><DD>Implement the object model to see if it really works.
+It probably won't but that's why we implement them.
+
+<DT><B>Interpret Results</B><DD>When the model breaks <I>at implementation time</I>,
+figure out why. Is it a paradigm problem? Is it details that were left
+out of the model? Are the right requirements defined?
+
+<DT><B>Publish Findings</B><DD>This is communication, plain and simple. If you 
+don't publish your results, other programmers
+can't reuse the software you've written. The Web is a great way to do this.
+Lessons learned in this project can be used in others. 
+
+<DT><B>Go to step 1</B><DD>Iterate! Go through the process over
+and over again until you get it right.
+
+</DL>
+
+</UL>
+
+<H2>Code Ain't Art</H2>
+
+<UL>
+
+<LI>Code should be easy to understand. If a programmer writes
+code that you can't understand, fire them. You'll save money in
+the long run. Source code is a method of communicating <I>ideas</I>
+from one human to another.
+
+<LI>You should not have to be at the same level of technical expertise
+as the original author. Part of being a good programmer is the ability
+to express complex situations in terms anyone can understand. Sticking
+with the art theme, you shouldn't have to be painter to recogize the 
+<A HREF="http://mistral.culture.fr/louvre/img/photos/collec/peint/moyen/inv0779.jpg">Mona Lisa</A>.
+The more you know about art (i.e. more technically astute) the deeper your
+appreciation of artwork.
+
+<LI>Never fully employ all features of a programming language.
+Use only enough of the power of the language to get your job done.
+One of the dumbest things you can do as a programmer is to
+discover a new feature of a language and immediately use it in
+production code. &quot;Advanced&quot; features of a language are
+usually less portable between compilers. For example, C++ templates can
+work on one compiler just fine but break on another. By using these
+&quot;advanced&quot; features of a language, you raise the 
+sophistication level of the maintainer (or reuser) of the code.
+This means you must hire senior programmers in order to fix your bugs.
+Reuse is thrown right out the window. Just because you know how to
+call C++ destructors and constructors directly to avoid a memory
+allocation doesn't meant the next programmer will.
+
+<P>
+
+I'm a firm believer in
+<A HREF="http://linkage.rockefeller.edu/wli/zipf/">Zipf's Law</A>.
+It finds relationships in
+<A HREF="http://www.cut-the-knot.com/do_you_know/zipfLaw.html">things</A>
+that should not be related. This can be applied to features of a programming
+language. In a nutshell, you can say that if you use something once, there's
+a great chance that you will need to use it again in the near future. So,
+you will get the most return on your development dollar by using the most
+basic features of a programming language. Likewise, it is expensive to use
+(and <I>maintain</I>) advanced features of a language.
+
+</UL>
+
+<H2>Choose To Live</H2>
+
+<UL>
+
+<LI>Never use <I>structured</I> exception handling unless you are forced to.
+<I>Structured</I> exception handling is for lazy programmers and leads to
+rockets blowing up shortly after launch (witness the recent Ariane 5
+destruction because Ada threw an exception that no one caught).
+If something bad happens,
+make a note of it and return an &quot;an-error-happened&quot;
+code to the caller.
+
+<LI>Use exception handling. Seems like a contradiction doesn't it?
+Exception handling is a wonderful thing. <I>Structured</I> is a
+demon from hell waiting to snatch your soul. The difference between
+the two is who handles the exception. In <I>structured</I> exception
+handling, you throw an exception and hope someone (in your call stack)
+handles it. The problem with this approach is someone invariably doesn't
+handle it and your software dies. Plain old exception handling handles
+the exception at the lowest level and communicates to the caller that
+something bad happened (usually by setting an <B>errno</B>-type variable
+and returning FALSE).
+
+<LI><B>Every function fails, expect it.</B>
+
+</UL>
+
+<H2>Rarely Abbreviate</H2>
+
+<UL>
+
+<LI>Source code should read like a book. Your manager should be
+able to pick it up and understand what it is doing. Yes, that
+means you have to spell things out. Programmers that complain
+about &quot;all that typing&quot; are short sighted. The time
+it takes to type in source code is but a blink of an eye compared
+with the life cycle of a program. The time you &quot;saved&quot;
+by not typing all those characters is costing you dearly when
+you have to go back and modify the code. I actually had a programmer
+tell me with a straight face that the length of his variable names
+was inversely proportional to the scope of the variable. In lay
+terms, if a variable is used all over the place then it will have
+a short name, if it is used in only <i>one</i> place then it will have a
+long name.
+
+</UL>
+
+<H2>Trust No One</H2>
+
+<UL>
+
+<LI>Never have a &quot;Debug build&quot; and a &quot;Retail build.&quot;
+Developing this way leads to products that are susceptible to
+&quot;random&quot; errors. Do parameter checking on all public
+functions. If a function is going to be reused then it has to
+be bullet proof. If you're given a pointer, check it for validity
+before dereferencing it. Never put error checking in only
+one build of a project.
+
+</UL>
+
+<HR>
+
+<H1>C++ Coding Conventions</H1>
+
+<H2>Don't overload operators</H2>
+
+One of the neat things about C++ is the ability to redefine what
+operators mean. Like most power, it corrupts those who use it.
+When you must define operators for your classes, <i>keep it simple</i>.
+For example, the assignment operator (=).
+
+<P>
+
+Remember, source code is supposed to communicate ideas from one
+human to the next. If you redefine lots of operators then the next
+guy to come along and use your code will not know what is going on.
+
+<P>
+
+Also, don't put any logic into operator implementations.
+Have them call existing member methods. For
+example, the assignment operator (=) should call Copy().
+This keeps functionality in one place instead of many. You
+can overload this one function in a child class and not have
+to worry about all the other entry points being covered.
+
+<H2>In General</H2>
+
+<HR>
+<I><B>What:</B></I> Don't use friend.<BR>
+<I><B>Why:</B></I> This stems from my object-purist attitude. Friends break the rules
+of object oriented design. This means your code will be susceptible to 
+legal bugs (i.e. you are following the rules of the language which leads
+to undesired results). Friend functions allow you to circumvent the
+protections built into the class. Take the friend functions and make
+them members of the class.
+
+<P>
+
+<HR>
+
+<I><B>What:</B></I> Don't use initializers in constructors.<BR>
+<I><B>Why:</B></I> When using intializers, you never know when
+they are going to get called. Things get undefined when you
+start calling functions. The problem is the C++ specification
+doesn't make it clear exactly when initializers fire. All we
+know is that they happen before the body of the constructor
+is executed. Once you reach the body of the constructor, all
+constructors have been called. This behavior is defined. When
+given a choice, I'll go with defined behavior every time. This
+becomes a real problem when you switch compilers. Since the
+initializer behavior is undefined, nothing a compiler chooses
+to do is wrong. You can get very different results from different
+compilers which leads to debugging parties.<BR>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Bad Example
+class A
+{
+   private:
+
+      int m_X;
+
+   public:
+
+      A( int i ): m_X( i ) {};
+
+      int GetX( void ) const { return( m_X ); }
+      void SetX( int x ) { m_X = x; }
+};
+
+class B : public A
+{
+   public:
+
+      B() : A( GetY() ) {};
+
+      int GetY( void ) const { return( GetX() + 1 ); }
+};
+
+// Good Example
+class A
+{
+   private:
+
+      int m_X;
+
+   public:
+
+      A( int i ){ m_X = i; }
+
+      int GetX( void ) const { return( m_X ); }
+      void SetX( int x ) { m_X = x; }
+};
+
+class B : public A
+{
+   public:
+
+      B(){ SetX( GetY() ); }
+
+      int GetY( void ) const { return( GetX() + 1 ); }
+};</CODE></PRE>
+
+A little discussion about what the above examples are demonstrating is in
+order. The &quot;Bad&quot; example shows a perfectly legal use of initializers.
+However, it also contains a serious logic flaw. Since you can use an expression
+as an initializer argument, you can call a function. That function is a member
+of the <CODE>B</CODE> class. That <CODE>B</CODE> class member calls into the base
+class. We now have a situation where a member function <CODE>A</CODE> is being called
+before <CODE>A</CODE>'s constructor. This happens because the memory has been
+allocated for <CODE>B</CODE> which includes enough space for <CODE>A</CODE>.
+The code behind <CODE>GetX()</CODE> simply returns the value at an offset from
+the beginning of <CODE>A</CODE>. This is not something we want to do.
+The contents of <CODE>m_X</CODE> will be compiler dependent.<BR>
+The &quot;Good&quot; example does not compile. The compiler will say it can't find
+an appropriate constructor for <CODE>A</CODE>. The difference is the call to
+<CODE>GetY()</CODE> is in the <I>body</I> of <CODE>B</CODE>'s constructor.
+When you get to the first line of code in a constructor's body, all constructors
+have already been called up your inheritance tree. Since the parent's constructor
+must have returned before we can execute the child's constructor body, the compiler
+must locate a suitable constructor on the parent. It cannot so the logic error
+turns in to a compile error. I don't know about you but I would much prefer to
+catch errors at compile time rather than runtime. By not using an &quot;advanced&quot;
+feature of C++, we have avoided painful debugging time.
+
+<HR>
+<I><B>What:</B></I> Initialize variables when they are declared. When memory is freed, set
+the pointer to NULL.<BR>
+<I><B>Why:</B></I> Having variables in a known state greatly reduces the
+chance for bugs. Invalidating pointers after freeing the memory they
+point to greatly eases the identification of problems. There's nothing
+trickier than tracking down an errant pointer. If the pointer is set to NULL
+and then dereference, your program will blow up. This means it is easy
+to track down and squash the bug.<BR>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Bad Example
+
+void some_function( int x_coordinate )
+{
+   char * buffer;
+
+   if ( x_coordinate &gt; 100 )
+   {
+      buffer = new char[ 1024 ];
+   }
+   else if ( x_coordinate &lt; 100 )
+   {
+      buffer = new char[ 513 ];
+   }
+
+   if ( buffer != NULL )
+   {
+      delete buffer; // If x_coordinate was equal to 100, BLAMO!
+   }
+}
+
+// Good Example
+
+void some_function( int x_coordinate )
+{
+   char * buffer = NULL;
+
+   if ( x_coordinate &gt; 100 )
+   {
+      buffer = new char[ 1024 ];
+   }
+   else if ( x_coordinate &lt; 100 )
+   {
+      buffer = new char[ 513 ];
+   }
+
+   if ( buffer != NULL )
+   {
+      delete buffer;
+   }
+}</CODE></PRE>
+
+<HR>
+<I><B>What:</B></I> Never rely on defaults.<BR>
+<I><B>Why:</B></I> Defaults change. Never <I>assume</I> <B>void</B> as an argument list or return
+type for a function. Never <I>assume</I> class members are private.<BR>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Bad Example
+class string
+{
+   int m_Length;
+
+   public:
+
+      string();
+      int GetLength();
+};
+
+// Good Example
+
+class CString
+{
+   private:
+
+      int m_Length;
+
+   public:
+
+     CString();
+     int GetLength( void );
+};</CODE></PRE>
+
+<HR>
+
+<I><B>What:</B></I> Do one job in one place.<BR>
+<I><B>Why:</B></I> This is one of my pet peeves. Implement functionality in one place
+then have all other entry points to this functionality call the one
+that implements it. Copying of objects is a good example. There are
+three times when you want to copy the contents of one object into
+another:
+<OL>
+<LI>Copy Constructor
+<LI>Copy Method
+<LI>Assignment operator
+</OL>
+Instead of implementing the copy in three places, do it in one and
+have the others call it. You should have an = operator for every 
+class that has a copy constructor.<BR>
+<I><B>Example:</B></I>
+<PRE><CODE>// Bad Example
+
+class CMyValue
+{
+   protected:
+
+      int m_Value;
+
+   public:
+
+      CMyValue() { m_Value = 0; };
+      CMyValue( const CMyValue&amp; source ) { m_Value = source.m_Value; };
+     ~CMyValue() { m_Value = 0; };
+
+      void Copy( const CMyValue&amp; source ) { m_Value = source.m_Value; };
+      void SetValue( int new_value ) { m_Value = new_value; };
+      CMyValue& operator=( const CMyValue&amp; source ) { m_Value = source.Value; };
+};
+
+// Good Example
+
+class CMyValue
+{
+   protected:
+
+      int m_Value;
+
+   public:
+
+      CMyValue() { SetValue( 0 ); };
+      CMyValue( const CMyValue&amp; source ) { Copy( source ); };
+     ~CMyValue() { SetValue( 0 ); };
+
+      void Copy( const CMyValue&amp; source ) { SetValue( source.m_Value ); };
+      void SetValue( int new_value ) { m_Value = new_value; };
+      CMyValue& operator=( const CMyValue&amp; source ) { Copy( source ); };
+};</CODE></PRE>
+
+<BR>
+
+<I><B>What:</B></I> Validate every line of code where division is used.
+Whenever you use a division operator (<CODE><B>/</B></CODE>, <CODE><B>/=</B></CODE>,
+<CODE><B>%</B></CODE> or <CODE><B>%=</B></CODE>) you should precede that
+code with a check for zero.<BR>
+<I><B>Why:</B></I> Divide-by-zero errors are catastrophic.
+This is especially true when the divisor is passed as a function parameter.
+This type of error often makes it through testing. You program will run
+flawlessly for months and then blow up for no apparent reason.
+
+<BR>
+
+<I><B>Example:</B></I>
+<PRE><CODE>// Bad Example
+
+int get_random_number( int maximum_value )
+{
+   return( rand() % maximum_value );
+}
+
+// Good Example
+
+int get_random_number( int maximum_value )
+{
+   if ( maximum_value &gt; 0 )
+   {
+      return( rand() % maximum_value );
+   }
+
+   return( 0 );
+}</CODE></PRE>
+
+<I><B>What:</B></I> Never test floating point values for equality.<BR>
+<I><B>Why:</B></I> Floating point values (<CODE>float</CODE> and <CODE>double</CODE>
+data types) are never equal. They can be very close but the chances of them
+being equal are pretty slim.<BR>
+
+<I><B>Example:</B></I>
+<PRE><CODE>// Bad Example
+
+void take_action( double value_1, double value_2 )
+{
+   if ( value_1 == value_2 ) // OOPS! This will rarely happen
+   {
+      take_action_1();
+   }
+   else if ( value_1 > value_2 )
+   {
+      take_action_2();
+   }
+   else
+   {
+      take_action_3();
+   }
+}
+
+// Good Example
+
+bool are_doubles_equal( double value_1, double value_2, double tolerance )
+{
+   double difference = fabs( value_1 - value_2 );
+
+   if ( difference &gt; tolerance )
+   {
+      // The difference is outside tolerance levels
+      return( false );
+   }
+
+   return( true );
+}
+
+void take_action( double value_1, double value_2 )
+{
+   double tolerance = 0.0000000001; // Really close to zero
+
+   if ( are_doubles_equal( value_1, value_2, tolerance ) )
+   {
+      // Close enough to be considered equal
+      take_action_1();
+   }
+   else if ( value_1 &gt; value_2 )
+   {
+      take_action_2();
+   }
+   else
+   {
+      take_action_3();
+   }
+}</CODE></PRE>
+
+<H2>Naming Conventions</H2>
+
+<UL>
+
+<LI><B>In General</B><BR>
+
+<I><B>What:</B></I> Never abbreviate. Always spell out the entire word in variable/function names.<BR>
+<I><B>Why:</B></I> Source code is meant to be read by people. Most programmers think source code
+is for compilers. That is wrong. Source code is a medium by which humans communicate with
+compilers to produce executables. Compilers don't understand the ideas being communicated
+in source code, humans do. Therefore, source code should require as few brain cells as
+possible to communicate those ideas from human to human. Humans should not waste time
+trying to decipher another human's abbreviations.<BR>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Bad Example
+struct _me
+{
+   int ec;
+   int cbec;
+};
+
+// Good Example
+struct _MemoryError
+{
+   int error_code;
+   int number_of_bytes_that_caused_the_error;
+};</CODE></PRE>
+
+<LI><B>Class Names</B><BR>
+
+<I><B>What:</B></I> Class names should begin with a capital <B>C</B> and have capital letters
+separating words.<BR>
+<I><B>Why:</B></I> This follows Microsoft's convention (one of the few I agree with). 
+It will let the reader know they are looking at a class (as opposed to a structure).<BR>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Bad Example
+class string { void copy(); };
+
+// Good Example
+
+class CString
+{
+   public:
+
+      void Copy( void );
+};</CODE></PRE>
+
+<LI><B>Variable Names</B><BR>
+
+<UL>
+
+<LI><B>Class Members</B><BR>
+
+<B><I>What:</I></B> Public member methods and variables should have capital separating words.
+Private or protected should be prepended with the &quot;m_&quot; wart.<BR>
+<B><I>Why:</I></B> It immediately notifies the reader that there's something different
+about this variable. The &quot;<CODE>m_</CODE>&quot; wart lets the reader know they are dealing 
+with a special variable/function. It reduces confusion when trying to review code.<P>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Bad Example
+class string{ 
+protected:
+getbuffer();
+public:
+allocatebuffer();
+};
+
+// Good example
+
+class CString
+{
+   protected:
+
+      void m_GetBuffer( void );
+
+   public:
+
+      void AllocateBuffer( void );
+};</CODE></PRE><BR>
+
+<LI><B>Local Variables</B><BR>
+
+<I><B>What:</B></I> Local variables will consist of all lower case letters, words separated
+by underscores.<BR>
+<I><B>Why:</B></I> A slightly different coding style will let the programmer know which
+variables belong to a function and which ones belong to a class.<BR>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Class
+class CString
+{
+   public:
+
+      int BufferSize;
+
+      int GetBufferPages( void ) const;
+};
+
+//Bad Example
+int CString::GetBufferPages( void ) const
+{
+   int BufferPages = BufferSize / 4096;
+   return( BufferPages );
+}
+
+// Good Example
+int CString::GetBufferPages( void ) const
+{
+   int number_of_buffer_pages = BufferSize / 4096;
+   return( number_of_buffer_pages );
+}</CODE></PRE><BR>
+
+<LI><B>Global Variables</B><BR>
+<I><B>What:</B></I> Global variables should be avoided. But when they can't their names
+will consist of mixed case names with capital letters separating words. They will
+also be preceeded with the &quot;g_&quot; wart.<BR>
+<I><B>Why:</B></I> The &quot;g_&quot; let's the reader know there's something special
+about this variable. Global variables will cause you no end of heartache
+when writing multithreaded code.<BR>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Bad Example
+int ReferenceCount;
+
+// Good Example
+int g_ReferenceCount;</CODE></PRE><BR>
+
+<LI><B>Static Variables</B><BR>
+
+<I><B>What:</B></I> Static variables will have the first word of their variable
+name be &quot;static&quot; and capitalized appropriately.<BR>
+<I><B>Why:</B></I> Statics can get you in trouble. There's a valid need for
+them but we want the reader to always be cognizant of the static property
+of the variable. Static variables will cause you no end of heartache
+when writing multithreaded code.<BR>
+<I><B>Example:</B></I><BR>
+<PRE><CODE>// Bad Example
+
+class Zipity
+{
+   protected:
+
+      static int m_Dodah;
+};
+
+void dump( void )
+{
+   static int number_of_times_i_have_been_called;
+}
+
+// Good Example
+
+class Zipity
+{
+   protected:
+
+      static int m_StaticDodah;
+};
+
+void dump( void )
+{
+   static int static_number_of_times_i_have_been_called;
+}</CODE></PRE><BR>
+
+</UL>
+
+<LI><B>A Summary Of Warts</B><BR>
+
+Warts are those little things on variable names that aren't words.
+Hungarian notation (that Microsoft uses) is the most hideous form of
+warts known. In WFC, I've tried to minimize the confusion a wart can cause.
+The goal of my warting style is to give the reader a little more
+information than the words provide. In novels, authors can always
+separate their sentences with &quot;He said&quot or &quot;She said&quot;
+to let you know who is talking. As software authors, we are at the mercy
+of the programming language.
+
+</UL>
+
+<H2>Coding Considerations</H2>
+
+<UL>
+
+<LI><B>Choose to live</B><BR>
+If you have a choice between life and death, choose life.
+Never assume that a pointer is valid. If you are passed a pointer as a parameter,
+you should use exception handling to catch invalid pointers. Don't forget
+that arrays are pointers too. Always assume the value of a pointer parameter
+is the result of a <B>rand</B>() function call.
+<PRE><CODE>class Dumper
+{
+   protected:
+
+      DWORD m_ErrorCode;
+
+   public:
+
+      BOOL Dump( CSomeObject * object_p );
+};
+
+// Bad Example
+
+BOOL CDumper::Dump( CSomeObject * object_p )
+{
+   object_p-&gt;Dump( afxDump );
+   return( TRUE );
+}
+
+// Good Example
+
+BOOL CDumper::Dump( CSomeObject * object_p )
+{
+   // We were passed a pointer, don't trust it
+
+   try
+   {
+      object_p-&gt;Dump( object_p );
+      return( TRUE );
+   }
+   catch( ... ) // ... means catch all exceptions
+   {
+      m_ErrorCode = EXCEPTION_WAS_THROWN;
+      return( FALSE );
+   }
+}</CODE></PRE>
+
+</UL>
+
+</UL>
+
+</UL>
+
+<A HREF="http://ourworld.compuserve.com/homepages/Sam_Blackburn" >Return to Sam's Home Page</A>
+
+</BODY>
+
+</HTML>

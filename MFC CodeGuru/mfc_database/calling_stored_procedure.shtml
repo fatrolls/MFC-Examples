@@ -1,0 +1,491 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - Calling Stored Procedures</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Calling Stored Procedures</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:CoderMan@netrox.net">Craig Lucas</A>.
+
+<P>This article goes out to all MFC programmers who wish to improve their
+applications performance
+and those who have tried calling stored procedures and failed. 
+
+<P>Your first question may be, Why use stored procedures when I can just say,
+
+<PRE><TT><FONT COLOR="#990000">
+rs.Open( CRecordset::snapshot, "Select * from Clients where
+account_number = '1234567'");.
+</FONT></TT></PRE>
+
+<P>Well theres 2 answers that I can think of.  First off, stored procedures
+are tremendously
+fast. Secondly, stored procedures are more reliable. 
+
+<P>From what I've tested on a 200 record table, after the initial connection
+stored procedures return
+INSTANTLY!! Where an SQL statement returns in 500ms on the initial
+connection and 100ms thereafter.
+This can be very helpful in the Client/Server environment and in any
+application that is 
+database intensive.
+
+<P>This example calls a stored procedure with the following definition:
+
+<PRE><TT><FONT COLOR="#990000">
+CREATE PROCEDURE OutputParams @InputParam char(20) , @OutputParam
+char(20) = '' OUTPUT As
+
+SELECT @OutputParam = @InputParam
+RETURN 1
+</FONT></TT></PRE>
+
+<P>Basically all it does is return the same string you send it.  You can
+define all the 
+paramaters you like.  The reason for this example was to show how to return
+a character
+output parameter. MFC does not support it. So you have to create your own
+RFX_Text function 
+to support it. 
+
+<P>If you would like to call a stored procedure that returns a recordset, its
+not much different.
+The VC help files tell you exactly how to do it.  You can do a searh on
+"stored procedures and 
+recordsets".  
+
+<PRE><TT><FONT COLOR="#990000">
+// StoredProcedure.h : header file
+//
+
+/*
+Craig Lucas, CoderMan@netrox.net
+*/
+#include "afxdb.h"
+/////////////////////////////////////////////////////////////////////////////
+// StoredProcedure recordset
+
+class StoredProcedure : public CRecordset
+{
+public:
+	StoredProcedure(CDatabase* pDatabase = NULL);
+	DECLARE_DYNAMIC(StoredProcedure)
+		
+	// Field/Param Data
+	//{{AFX_FIELD(StoredProcedure, CRecordset)
+	long m_retRETURN_VALUE;
+	CString m_paramInputParam;  //The input param 
+	CString m_paramOutputParam; //The output param 
+	//}}AFX_FIELD
+	
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(StoredProcedure)
+public:
+	virtual CString GetDefaultConnect();    // Default connection string
+	virtual CString GetDefaultSQL();    // Default SQL for Recordset
+	virtual void DoFieldExchange(CFieldExchange* pFX);  // RFX support
+	virtual void Move( long nRows, WORD wFetchType = SQL_FETCH_RELATIVE );
+	//}}AFX_VIRTUAL
+	
+	// Implementation
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+};
+
+
+
+// StoredProcedure.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "StoredProcedure.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+
+void AFXAPI RFX_TextOut(CFieldExchange* pFX, LPCTSTR szName,
+CString& value, int nMaxLength, int nColumnType, short nScale);
+/////////////////////////////////////////////////////////////////////////////
+// StoredProcedure
+
+IMPLEMENT_DYNAMIC(StoredProcedure, CRecordset)
+
+StoredProcedure::StoredProcedure(CDatabase* pdb)
+: CRecordset(pdb)
+{
+	//{{AFX_FIELD_INIT(StoredProcedure)
+	m_retRETURN_VALUE = 0;
+	m_paramInputParam = _T("");
+	m_paramOutputParam = _T("");
+	m_nFields = 0;
+	//}}AFX_FIELD_INIT
+	m_nParams = 3;
+	m_nDefaultType = snapshot;
+}
+
+
+CString StoredProcedure::GetDefaultConnect()
+{
+	return _T("ODBC;DSN=CodeGuru;UID=sa;PWD=;");
+}
+
+CString StoredProcedure::GetDefaultSQL()
+{
+	return _T("{? = call OutputParams;1 (?,?)}"); 
+	// this is the SQL String to call a stored procedure
+	// 1 question mark for every parameter in the 
+	// stored procedure
+}
+
+void StoredProcedure::DoFieldExchange(CFieldExchange* pFX)
+{
+	//{{AFX_FIELD_MAP(StoredProcedure)
+	
+	//}}AFX_FIELD_MAP
+	
+	//Make sure these are put outside the AFX_FIELD_MAP comments
+	pFX->SetFieldType(CFieldExchange::outputParam); //set the field type to
+	outputParam for the return value
+		RFX_Long(pFX, "RETURN_VALUE", m_retRETURN_VALUE); //Bind the return value
+	to the variable 
+		pFX->SetFieldType(CFieldExchange::inputParam); //reset the field type to
+	inputParam
+		RFX_TextOut(pFX, "@InputParam", m_paramInputParam,255,SQL_CHAR,0); //call
+	the new RFX_Text to get the character output params
+		pFX->SetFieldType(CFieldExchange::inoutParam); // reset the field
+	type to receive the output param
+		RFX_TextOut(pFX, "@OutputParam", m_paramOutputParam,255,SQL_CHAR,0);
+	//bind the output parameter to the variable
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// StoredProcedure diagnostics
+
+#ifdef _DEBUG
+void StoredProcedure::AssertValid() const
+{
+	CRecordset::AssertValid();
+}
+
+void StoredProcedure::Dump(CDumpContext& dc) const
+{
+	CRecordset::Dump(dc);
+}
+#endif //_DEBUG
+
+void StoredProcedure::Move( long nRows, WORD wFetchType )
+{
+	// Protection so that if the procedure returns no result sets, no 
+	// fetch operations are attempted.
+	if (m_nFields)
+		CRecordset::Move(nRows, wFetchType);
+	else
+		m_bBOF = m_bEOF = TRUE;
+}
+
+void AFXAPI RFX_TextOut(CFieldExchange* pFX, LPCTSTR szName,
+						CString& value, int nMaxLength, int nColumnType, short nScale)
+{
+	//This is MFC's RFX_Text function with 2 modifications:
+	//   1. All unicode definitions are removed for brevity.
+	//   2. A fixed version of SQLBindParamaters() was inserted
+	
+	ASSERT(AfxIsValidAddress(pFX, sizeof(CFieldExchange)));
+	ASSERT(AfxIsValidString(szName));
+	ASSERT(AfxIsValidAddress(&value, sizeof(CString)));
+	
+	RETCODE nRetCode;
+	UINT nField;
+	if (!pFX->IsFieldType(&nField))
+		return;
+	
+	LONG* plLength = pFX->m_prs->GetFieldLengthBuffer(
+		nField - 1, pFX->m_nFieldType);
+	switch (pFX->m_nOperation)
+	{
+	default:
+		pFX->Default(szName, value.GetBuffer(0), plLength,
+			SQL_C_CHAR, value.GetLength(), nMaxLength);
+		value.ReleaseBuffer();
+		return;
+		
+	case CFieldExchange::BindParam:
+		{
+			// Preallocate to nMaxLength and setup binding address
+			value.GetBufferSetLength(nMaxLength);
+			void* pvParam = value.LockBuffer(); // will be overwritten if UNICODE
+			*plLength = pFX->m_prs->IsParamStatusNull(nField - 1) ?
+								SQL_NULL_DATA : SQL_NTS;
+			
+			// This is the new version of SQLBindParamaters with the 2nd to last
+			param fixed.
+				AFX_SQL_SYNC(::SQLBindParameter(pFX->m_hstmt, (UWORD)nField,
+				(SWORD)pFX->m_nFieldType, SQL_C_CHAR, (SWORD)nColumnType,
+				nMaxLength, nScale, pvParam, nMaxLength, plLength));
+			
+			//The reason character output params can not be returned was because
+			//MS had hardcoded the max_buffer length to 0.
+			
+			/*   This was the old version of SQLBindParamaters.
+			AFX_SQL_SYNC(::SQLBindParameter(pFX->m_hstmt, (UWORD)nField,
+			(SWORD)pFX->m_nFieldType, SQL_C_CHAR, (SWORD)nColumnType,
+			nMaxLength, nScale, pvParam, 0, plLength));
+			*/
+			
+			value.ReleaseBuffer();
+			
+			if (nRetCode != SQL_SUCCESS)
+				pFX->m_prs->ThrowDBException(nRetCode, pFX->m_hstmt);
+			
+			// Add the member address to the param map
+			pFX->m_prs->m_mapParamIndex.SetAt(&value, (void*)nField);
+		}
+		return;
+	case CFieldExchange::BindFieldToColumn:
+		{
+			// Assumes all bound fields BEFORE unbound fields
+			CODBCFieldInfo* pODBCInfo =
+				&pFX->m_prs->m_rgODBCFieldInfos[nField - 1];
+			UINT cbColumn = pODBCInfo->m_nPrecision;
+			
+			switch (pODBCInfo->m_nSQLType)
+			{
+			default:
+#ifdef _DEBUG
+				// Warn of possible field schema mismatch
+				if (afxTraceFlags & traceDatabase)
+					TRACE1("Warning: CString converted from SQL type %ld.\n",
+					pODBCInfo->m_nSQLType);
+#endif // _DEBUG
+				
+				// Add room for extra information like sign, decimal point, etc.
+				cbColumn += 10;
+				break;
+				
+			case SQL_LONGVARCHAR:case SQL_CHAR: case SQL_VARCHAR:
+				break;
+				
+			case SQL_FLOAT: case SQL_REAL:case SQL_DOUBLE:
+				// Add room for sign, decimal point and " E +XXX"
+				cbColumn += 10;
+				break;
+				
+			case SQL_DECIMAL:case SQL_NUMERIC:
+				// Add room for sign and decimal point
+				cbColumn += 2;
+				break;
+				
+			case SQL_TIMESTAMP: case SQL_DATE:case SQL_TIME:
+				// May need extra space, i.e. "{TS mm/dd/yyyy hh:mm:ss}"
+				cbColumn += 10;
+				break;
+				
+			case SQL_TINYINT:case SQL_SMALLINT: case SQL_INTEGER:case SQL_BIGINT:
+				// Add room for sign
+				cbColumn += 1;
+				break;
+			}
+			
+			// Constrain to user specified max length, subject to 256 byte min
+			if (cbColumn > (UINT)nMaxLength || cbColumn < 256)
+				cbColumn = nMaxLength;
+			
+			// Set up binding addres
+			void* pvData;
+			value.GetBufferSetLength(cbColumn+1);
+			pvData = value.LockBuffer();    // will be overwritten if UNICODE
+			
+			AFX_SQL_SYNC(::SQLBindCol(pFX->m_prs->m_hstmt, (UWORD)nField,
+				SQL_C_CHAR, pvData, cbColumn+1, plLength));
+			value.ReleaseBuffer();
+			if (!pFX->m_prs->Check(nRetCode))
+				pFX->m_prs->ThrowDBException(nRetCode);
+			
+			// Add the member address to the field map
+			pFX->m_prs->m_mapFieldIndex.SetAt(&value, (void*)nField);
+		}
+		return;
+		
+	case CFieldExchange::Fixup:
+		if (*plLength == SQL_NULL_DATA)
+		{
+			pFX->m_prs->SetNullFieldStatus(nField - 1);
+			value.GetBufferSetLength(0);
+			value.ReleaseBuffer();
+		}
+		else
+		{
+			LPTSTR lpsz = value.GetBuffer(0);
+			if (pFX->m_prs->m_pDatabase->m_bStripTrailingSpaces)
+			{
+				// find first trailing space
+				LPTSTR lpszFirstTrailing = NULL;
+				while (*lpsz != '\0')
+				{
+					if (*lpsz != ' ')
+						lpszFirstTrailing = NULL;
+					else
+					{
+						if (lpszFirstTrailing == NULL)
+							lpszFirstTrailing = lpsz;
+					}
+					lpsz = _tcsinc(lpsz);
+				}
+				// truncate
+				if (lpszFirstTrailing != NULL)
+					*lpszFirstTrailing = '\0';
+				
+			}
+			value.ReleaseBuffer();
+			*plLength = value.GetLength();
+		}
+		return;
+		
+	case CFieldExchange::SetFieldNull:
+		if ((pFX->m_pvField == NULL &&
+			pFX->m_nFieldType == CFieldExchange::outputColumn) ||
+			pFX->m_pvField == &value)
+		{
+			if (pFX->m_bField)
+			{
+				// Mark fields null
+				pFX->m_prs->SetNullFieldStatus(nField - 1);
+				// Set string 0 length
+				value.GetBufferSetLength(0);
+				value.ReleaseBuffer();
+				*plLength = SQL_NULL_DATA;
+			}
+			else
+			{
+				pFX->m_prs->ClearNullFieldStatus(nField - 1);
+				*plLength = SQL_NTS;
+			}
+#ifdef _DEBUG
+			pFX->m_nFieldFound = nField;
+#endif
+		}
+		return;
+		
+	case CFieldExchange::MarkForAddNew:
+		// can force writing of psuedo-null value (as a non-null) by setting
+		field dirty
+			if (!value.IsEmpty())
+			{
+				pFX->m_prs->SetDirtyFieldStatus(nField - 1);
+				pFX->m_prs->ClearNullFieldStatus(nField - 1);
+			}
+			return;
+			
+	case CFieldExchange::MarkForUpdate:
+		if (value.IsEmpty())
+			pFX->m_prs->SetNullFieldStatus(nField - 1);
+		else
+			pFX->m_prs->ClearNullFieldStatus(nField - 1);
+		pFX->Default(szName, &value, plLength,
+			SQL_C_CHAR, value.GetLength(), nMaxLength);
+		return;
+		
+	case CFieldExchange::LoadField:
+		{
+			// Get the field data
+			CFieldInfo* pInfo = &pFX->m_prs->m_rgFieldInfos[nField - 1];
+			CString* pStrCachedValue = (CString*)pInfo->m_pvDataCache;
+			
+			// Restore the status
+			pFX->m_prs->SetFieldStatus(nField - 1, pInfo->m_bStatus);
+			
+			// If not NULL, restore the value and length
+			if (!pFX->m_prs->IsFieldStatusNull(nField - 1))
+			{
+				value = *pStrCachedValue;
+				*plLength = value.GetLength();
+			}
+			else
+			{
+				*plLength = SQL_NULL_DATA;
+			}
+			
+#ifdef _DEBUG
+			// Buffer address must not change - ODBC's SQLBindCol depends upon this
+			void* pvBind;
+			
+#ifdef _UNICODE
+			pvBind = pFX->m_prs->m_pvFieldProxy[nField-1];
+#else // !_UNICODE
+			pvBind = value.GetBuffer(0);
+			value.ReleaseBuffer();
+#endif
+			
+			if (pvBind != pInfo->m_pvBindAddress)
+			{
+				TRACE1("Error: CString buffer (column %u) address has changed!\n",
+					nField);
+				ASSERT(FALSE);
+			}
+#endif // _DEBUG
+		}
+		return;
+		
+	case CFieldExchange::StoreField:
+		AfxStoreField(*pFX->m_prs, nField, &value);
+		return;
+		
+	case CFieldExchange::AllocCache:
+		{
+			CFieldInfo* pInfo = &pFX->m_prs->m_rgFieldInfos[nField - 1];
+			pInfo->m_pvDataCache = new CString;
+			pInfo->m_nDataType = AFX_RFX_TEXT;
+		}
+		return;
+		
+#ifdef _DEBUG
+	case CFieldExchange::DumpField:
+		*pFX->m_pdcDump << "\n" << szName << " = " << value;
+		return;
+#endif // _DEBUG
+		
+	}
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

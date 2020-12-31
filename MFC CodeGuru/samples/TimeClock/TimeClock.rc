@@ -1,0 +1,265 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\TimeClock.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\TimeClock.ico"
+IDI_IN                  ICON    DISCARDABLE     "res\\in.ico"
+IDI_OUT                 ICON    DISCARDABLE     "res\\out.ico"
+IDI_DOCTYPE             ICON    DISCARDABLE     "res\\doctype.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TIMECLOCK_DIALOG DIALOGEX 0, 0, 260, 217
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_ACCEPTFILES | WS_EX_APPWINDOW
+CAPTION "TimeClock"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Time Card:",IDC_STATIC,7,8,35,10
+    LTEXT           "Static",IDC_TIMECARDFILE,44,7,192,12,SS_SUNKEN,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "...",IDC_LOADTIMECARD,240,7,13,12
+    RTEXT           "Name:",IDC_STATIC,7,23,35,10
+    EDITTEXT        IDC_NAME,44,22,209,12,ES_AUTOHSCROLL
+    RTEXT           "Week:",IDC_STATIC,7,38,35,10
+    EDITTEXT        IDC_WEEK,44,36,209,12,ES_AUTOHSCROLL
+    RTEXT           "Vacation:",IDC_STATIC,7,52,35,10
+    EDITTEXT        IDC_VACATION,44,50,209,13,ES_AUTOHSCROLL
+    RTEXT           "Sick:",IDC_STATIC,7,66,35,10
+    EDITTEXT        IDC_SICK,44,64,209,13,ES_AUTOHSCROLL
+    RTEXT           "Other:",IDC_STATIC,7,80,35,10
+    EDITTEXT        IDC_OTHER,44,78,209,13,ES_AUTOHSCROLL
+    CONTROL         "List1",IDC_TIMECARD,"SysListView32",LVS_REPORT | 
+                    LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,7,105,246,64,WS_EX_CLIENTEDGE
+    LTEXT           "Wed",IDC_DAY,11,177,22,12,SS_SUNKEN,WS_EX_CLIENTEDGE
+    LTEXT           "59",IDC_HOURS,40,177,12,12,SS_SUNKEN,WS_EX_CLIENTEDGE
+    LTEXT           " :",IDC_STATIC,54,177,8,12
+    LTEXT           "59",IDC_MINUTES,62,177,12,12,SS_SUNKEN,WS_EX_CLIENTEDGE
+    LTEXT           " :",IDC_STATIC,77,177,8,12
+    LTEXT           "59",IDC_SECONDS,84,177,12,12,SS_SUNKEN,WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "PUNCH IN",IDC_PUNCHINOUT,108,174,145,17
+    PUSHBUTTON      "Print Time Slip",IDC_PRINTREPORT,7,195,246,14
+    LTEXT           "Double-click list to undo last clock-punch",IDC_STATIC,
+                    7,94,200,10
+END
+
+IDD_PRINT_PROPERTIES DIALOG DISCARDABLE  0, 0, 164, 151
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Print Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Totals for printed time-slip (modify if necessary):",
+                    IDC_STATIC,7,7,150,10
+    RTEXT           "Mon:",IDC_STATIC,7,21,30,11
+    EDITTEXT        IDC_MON,43,20,114,12,ES_AUTOHSCROLL
+    RTEXT           "Tue:",IDC_STATIC,7,34,30,11
+    EDITTEXT        IDC_TUE,43,33,114,12,ES_AUTOHSCROLL
+    RTEXT           "Wed:",IDC_STATIC,7,48,30,11
+    EDITTEXT        IDC_WED,43,46,114,12,ES_AUTOHSCROLL
+    RTEXT           "Thu:",IDC_STATIC,7,60,30,11
+    EDITTEXT        IDC_THU,43,59,114,12,ES_AUTOHSCROLL
+    RTEXT           "Fri:",IDC_STATIC,7,74,30,12
+    EDITTEXT        IDC_FRI,43,72,114,12,ES_AUTOHSCROLL
+    RTEXT           "Sat:",IDC_STATIC,7,87,30,11
+    EDITTEXT        IDC_SAT,43,85,114,12,ES_AUTOHSCROLL
+    RTEXT           "Sun:",IDC_STATIC,7,99,30,11
+    EDITTEXT        IDC_SUN,43,98,114,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Print",IDOK,7,115,150,14
+    PUSHBUTTON      "Cancel",IDCANCEL,7,131,150,14
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 293, 63
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About TimeClock"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,236,7,50,14
+    LTEXT           "This program is public domain (FREE) software.  This program and its source code may be freely distributed, used, and modified for any purpose as long as MY NAME REMAINS ON THIS DIALOG when distributing the original project.",
+                    IDC_STATIC,7,31,279,26
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
+    LTEXT           "Author: Eric Hoagland",IDC_STATIC,96,12,89,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "TIMECLOCK MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "TIMECLOCK\0"
+            VALUE "LegalCopyright", "Copyright © 1997\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "TIMECLOCK.EXE\0"
+            VALUE "ProductName", "TIMECLOCK Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TIMECLOCK_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 253
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 209
+    END
+
+    IDD_PRINT_PROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 157
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 286
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
+    IDS_ABOUTBOX            "&About TimeClock"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\TimeClock.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,105 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Dialog - Dialog with Splash Screen Example Code</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Dialog with Splash Screen Example Code...
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:kstowel@sprynet.com">Kirk Stowell</A>.
+
+<!-- Sample image and source code/demo project -->
+<P><IMG SRC="dialogspl.gif"></P>
+<p><A HREF="dialogspl.zip">Download Example Project - (142 kb)</A></P>
+
+<br>
+
+<!-- The article... -->
+
+<p>Follow these steps to add a splash screen to your dialog based application:
+
+<ul>
+
+<li>Copy the Splash.cpp and Splash.h files from this example project to your project.</li>
+ 
+<li>Add the following code to your applications InitInstance() method in the CWinApp 
+derived class:</li>
+
+<FONT COLOR="#990000"><TT><PRE>#include "Splash.h"
+
+BOOL CDialogsplApp::InitInstance()
+{
+  // CG: The following block was added by the Splash Screen component.
+  {
+     CCommandLineInfo cmdInfo;
+     ParseCommandLine(cmdInfo);
+
+     CSplashWnd::EnableSplashScreen(cmdInfo.m_bShowSplash);
+  }
+  ...
+  ...
+}
+</tt></PRE></FONT>
+
+<li>Next, use class wizard to add the OnCreate method to the CDialog
+derived class .cpp file, and add the following code to it:</li> 
+
+<FONT COLOR="#990000"><TT><PRE>#include "Splash.h"
+
+int CDialogsplDlg::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
+   if (CDialog::OnCreate(lpCreateStruct) == -1)
+      return -1;
+   
+   // CG: The following line was added by the Splash Screen component.
+   CSplashWnd::ShowSplashScreen(this);
+
+   return 0;
+}
+</tt></PRE></FONT>
+
+</ul>
+
+<!-- Remember to update this -->
+<p>Last updated: 29 March 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

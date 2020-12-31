@@ -1,0 +1,261 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - In-Program Evaluation</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+In-Program Evaluation
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><a href="mailto:Joachim.Raidl@iname.com">Joachim Raidl</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="evaluation.gif" >
+
+
+<!-- Text / source code -->
+<p>In my projects I often need to evaluate expressions. So I
+created a class that provides evaluation of expressions with the
+posibility to declare variables and easy functions. For this
+article I include the XEvaluate-class in a 'calculator'-dialog,
+but normaly, I use the class in my application like this: XString
+erg = Evaluate(&quot;1+2*sqr(3)&quot;).</p>
+
+<p>!!! The XString-class that XEvaluate uses, was also
+contributed at codeguru.</p>
+
+<p>You can use external variables in a XDoubleMap. This typedef
+is allready defined in XEvaluate.h (typedef CMap&lt;CString,
+LPCTSTR, double, double&gt; XDoubleMap;):</p>
+
+<pre><font color="#990000">	XDoubleMap var;
+	var[&quot;alpha&quot;] = 10;
+	var[&quot;beta&quot;] = 20;
+	var[&quot;test&quot;] = 1.234;
+
+	double erg = dtoa(Evaluate(&quot;alpha+beta&quot;, var));
+</font></pre>
+
+<p>It's possible to use userdefined functions with one argument
+(this argument has to be 'x')</p>
+
+<pre><font color="#990000">	Evaluate(&quot;f:=sin(x)+cos(x)&quot;);
+	double erg = dtoa(Evaluate(&quot;f(pi/2)&quot;));
+</font></pre>
+
+<p>You can also call Evaluate with more than one expression, if
+you divide the expressions by a semikolon:</p>
+
+<pre><font color="#990000">	double erg = dtoa(Evaluate(&quot;a=10;b=20;c=a+b&quot;);
+</font></pre>
+
+<p>The following functions and operations are included in
+XEvaluate:</p>
+
+<table border="1" cellspacing="1" width="100%">
+    <tr>
+        <td align="center">sin</td>
+        <td align="center">cos</td>
+        <td align="center">tan</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>trigonometric functions</td>
+    </tr>
+    <tr>
+        <td align="center">asin</td>
+        <td align="center">acos</td>
+        <td align="center">atan</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>inverse trigonometric functions</td>
+    </tr>
+    <tr>
+        <td align="center">rad</td>
+        <td align="center">deg</td>
+        <td align="center">gon</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>trigonometric calculation type</td>
+    </tr>
+    <tr>
+        <td align="center">pow</td>
+        <td align="center">sqr</td>
+        <td align="center">sqrt</td>
+        <td align="center">exp</td>
+        <td align="center">log</td>
+        <td align="center">log10</td>
+        <td>power, square, squareroot, exp, natural log, tenth
+        log</td>
+    </tr>
+    <tr>
+        <td align="center">abs</td>
+        <td align="center">int</td>
+        <td align="center">fract</td>
+        <td align="center">fak</td>
+        <td align="center">cube</td>
+        <td align="center">&nbsp;</td>
+        <td>absolute, integer part, factional part, n!, cube</td>
+    </tr>
+    <tr>
+        <td align="center">dec</td>
+        <td align="center">hex</td>
+        <td align="center">bin</td>
+        <td align="center">char</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>outputtype</td>
+    </tr>
+    <tr>
+        <td align="center">fix</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>set the decimal digits</td>
+    </tr>
+    <tr>
+        <td align="center">+</td>
+        <td align="center">-</td>
+        <td align="center">*</td>
+        <td align="center">/</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>add, sub, mul, div</td>
+    </tr>
+    <tr>
+        <td align="center">%</td>
+        <td align="center">&amp;</td>
+        <td align="center">|</td>
+        <td align="center">^</td>
+        <td align="center">!</td>
+        <td align="center">~</td>
+        <td>modulo, binary and, or, xor, not, binary not</td>
+    </tr>
+    <tr>
+        <td align="center">&lt;</td>
+        <td align="center">&gt;</td>
+        <td align="center">&lt;=</td>
+        <td align="center">&gt;=</td>
+        <td align="center">==</td>
+        <td align="center">!=</td>
+        <td>less, greater, less or equal, greater or equal,
+        equal, not equal</td>
+    </tr>
+    <tr>
+        <td align="center">=</td>
+        <td align="center">+=</td>
+        <td align="center">-=</td>
+        <td align="center">*=</td>
+        <td align="center">/=</td>
+        <td align="center">&nbsp;</td>
+        <td>variable setting</td>
+    </tr>
+    <tr>
+        <td align="center">@</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>old value (result of the last calculation)</td>
+    </tr>
+    <tr>
+        <td align="center">?</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>help (lists all functions)</td>
+    </tr>
+    <tr>
+        <td align="center">#</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>reset (delete all functions and variables)</td>
+    </tr>
+    <tr>
+        <td align="center">§</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>actual status (number of decimal digits,
+        trigonometric mode and output mode)</td>
+    </tr>
+    <tr>
+        <td align="center">$</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">&nbsp;</td>
+        <td>var and function list</td>
+    </tr>
+</table>
+
+<p>Use the sample program to find out what's possible with this
+class.</p>
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="evaluation_project.zip">Download demo project - 47KB</A>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="evaluation_source.zip">Download source - 8KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 10 June 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

@@ -1,0 +1,242 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CTreeCtrl - Setting color and font attribute for individual items</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Setting color and font attribute for individual items</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+Like any other window, you can set the font of the tree view control. This
+font is applied to all the item labels. Similarly, all the labels are of
+the same color. Although the next version of the tree view control will
+allow the ownerdraw style, for now you have to implement it yourself. Since
+the tree view control does not have any support for individual item color
+or font, we have to implement this as an after effect. In plain terms,
+we draw the labels to our liking after the control has already painted
+the control window.
+
+<p><img src="item_color_font.gif" width="272"
+height="274"></p>
+<P>There are some constraints that have to be adhered to. Since the tree
+view control computes the height of the items ( all items have the same
+height ) based on the window font, if we change the font size we can only
+decrease it so that the text does not overlap with the other labels. Also,
+the tree view control, automatically manages the horizontal scrollbar,
+so it is better to maintain the width of the label.
+<BR>&nbsp;
+<H4>
+Step 1: Add member variable to track font and color</H4>
+Since the control has no support for item font or color, we have to track
+this information within our program. We use a CMap object to associate
+these properties with the tree items. The map will contain information
+for only those items that we explicitly change. We define a nested structure
+that is used with the CMap object, to hold the color and the font information.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">protected:
+	struct Color_Font
+	{
+		COLORREF color;
+		LOGFONT&nbsp; logfont;
+	};
+	CMap&lt; void*, void*, Color_Font, Color_Font&amp; > m_mapColorFont ;</FONT></TT></PRE>
+
+<H4>
+Step 2: Add helper functions to get/set font and color</H4>
+Define the helper functions to get or set the item font or color. To set
+the font, we actually pass the logfont rather than a font handle. Also
+note that we have defined a pair of functions to get and set the bold attribute.
+There are two reasons for providing a separate function for the bold attribute
+although we can use the font function. The first reason is that the tree
+view control directly supports setting an item to bold. Secondly, using
+the built in support also maintains the proper setting for the horizontal
+scrollbar.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::SetItemFont(HTREEITEM hItem, LOGFONT&amp; logfont)
+{
+	Color_Font cf;
+	if( !m_mapColorFont.Lookup( hItem, cf ) )
+		cf.color = (COLORREF)-1;
+	cf.logfont = logfont;
+	m_mapColorFont[hItem] = cf;
+}
+
+void CTreeCtrlX::SetItemBold(HTREEITEM hItem, BOOL bBold)
+{
+	SetItemState( hItem, bBold ? TVIS_BOLD: 0, TVIS_BOLD );
+}
+
+void CTreeCtrlX::SetItemColor(HTREEITEM hItem, COLORREF color)
+{
+	Color_Font cf;
+	if( !m_mapColorFont.Lookup( hItem, cf ) )
+		cf.logfont.lfFaceName[0] = '\0';
+	cf.color = color;
+	m_mapColorFont[hItem] = cf;
+}
+
+BOOL CTreeCtrlX::GetItemFont(HTREEITEM hItem, LOGFONT * plogfont)
+{
+	Color_Font cf;
+	if( !m_mapColorFont.Lookup( hItem, cf ) )
+		return FALSE;
+	if( cf.logfont.lfFaceName[0] == '\0' )&nbsp;
+		return FALSE;
+	*plogfont = cf.logfont;
+	return TRUE;
+
+}
+
+BOOL CTreeCtrlX::GetItemBold(HTREEITEM hItem)
+{
+	return GetItemState( hItem, TVIS_BOLD ) &amp; TVIS_BOLD;
+}
+
+COLORREF CTreeCtrlX::GetItemColor(HTREEITEM hItem)
+{
+	// Returns (COLORREF)-1 if color was not set
+	Color_Font cf;
+	if( !m_mapColorFont.Lookup( hItem, cf ) )
+		return (COLORREF)-1;
+	return cf.color;
+
+}</FONT></TT></PRE>
+<h4>Step 3: Add WM_PAINT handler</h4>
+In this function we first let the control update a memory device context. We then redraw the visible labels using the user defined attributes. We let the control handle the highlighting of items, so before we update a label we make sure that it is not selected or drophilited. Also, if the items font or color attributes were not changed, we don't need to redraw it. Once all the updates are ready in the memory device context, we blit it to the actual device context.
+
+<p>In the first implementation, I let the control directly draw on the screen and then redrew the items that had a different font or color. This caused a visible flicker as the items got updated a second time. To overcome this we use a memory device context for all the updates and finally we copy this to the main device context. After creating a compatible DC, we add a compatible bitmap to the memory DC and set the clip region to be the same as the paint DC.
+
+<p>After the default window procedure for the control has updated the device context, we scan through all the visible items and update the items that have a user defined color or font.
+
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::OnPaint() 
+{
+	CPaintDC dc(this);
+
+	// Create a memory DC compatible with the paint DC
+	CDC memDC;
+	memDC.CreateCompatibleDC( &dc );
+
+	CRect rcClip, rcClient;
+	dc.GetClipBox( &rcClip );
+	GetClientRect(&rcClient);
+
+	// Select a compatible bitmap into the memory DC
+	CBitmap bitmap;
+	bitmap.CreateCompatibleBitmap( &dc, rcClient.Width(), rcClient.Height() );
+	memDC.SelectObject( &bitmap );
+	
+	// Set clip region to be same as that in paint DC
+	CRgn rgn;
+	rgn.CreateRectRgnIndirect( &rcClip );
+	memDC.SelectClipRgn(&rgn);
+	rgn.DeleteObject();
+	
+
+
+	// First let the control do its default drawing.
+	CWnd::DefWindowProc( WM_PAINT, (WPARAM)memDC.m_hDC, 0 );
+
+
+	HTREEITEM hItem = GetFirstVisibleItem();
+
+	int n = GetVisibleCount()+1;
+	while( hItem && n--)
+	{
+		CRect rect;
+
+		// Do not meddle with selected items or drop highlighted items
+		UINT selflag = TVIS_DROPHILITED | TVIS_SELECTED;
+		Color_Font cf;
+	
+		if ( !(GetItemState( hItem, selflag ) & selflag ) 
+			&& m_mapColorFont.Lookup( hItem, cf ))
+		{
+			CFont *pFontDC;
+			CFont fontDC;
+			LOGFONT logfont;
+
+			if( cf.logfont.lfFaceName[0] != '\0' ) 
+			{
+				logfont = cf.logfont;
+			}
+			else
+			{
+				// No font specified, so use window font
+				CFont *pFont = GetFont();
+				pFont->GetLogFont( &logfont );
+			}
+
+			if( GetItemBold( hItem ) )
+				logfont.lfWeight = 700;
+			fontDC.CreateFontIndirect( &logfont );
+			pFontDC = memDC.SelectObject( &fontDC );
+
+			if( cf.color != (COLORREF)-1 )
+				memDC.SetTextColor( cf.color );
+
+			CString sItem = GetItemText( hItem );
+
+			GetItemRect( hItem, &rect, TRUE );
+			memDC.SetBkColor( GetSysColor( COLOR_WINDOW ) );
+			memDC.TextOut( rect.left+2, rect.top+1, sItem );
+			
+			memDC.SelectObject( pFontDC );
+		}
+		hItem = GetNextVisibleItem( hItem );
+	}
+
+
+	dc.BitBlt( rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), &memDC, 
+				rcClip.left, rcClip.top, SRCCOPY );
+}
+
+</FONT></TT></PRE>
+
+
+<H4>Step 4: Go ahead and change the item font or color</H4>
+Here are some examples.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">	// Change the item color to red
+	SetItemColor( hItem, RGB(255,0,0));
+
+	// Change the item to italicized font and underlined
+	LOGFONT logfont;
+	CFont *pFont = GetFont();
+	pFont->GetLogFont( &amp;logfont );
+	logfont.lfItalic = TRUE;
+	logfont.lfUnderline = TRUE;
+	SetItemFont(hti, logfont );
+</FONT></TT></PRE>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

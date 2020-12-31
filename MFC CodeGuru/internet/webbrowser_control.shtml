@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - Using the Web Browser control (IE3)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Using the Web Browser control (IE3)</FONT></H3></CENTER>
+<HR>
+
+
+<p>This article was contributed by <a href="mailto:danielh@mail.matco.ro">Daniel Harth</a>.
+</p>
+
+
+<P><FONT>Internet Explorer 3+ comes with a Web Browser ActiveX
+control that you can use to add HTML viewing capabilities to your application.
+In fact, IExplore.exe is a very small application that is simply a host
+for this control. The most important interface that is used to interact
+with it is <B>IWebBrowser</B>, declared in the <B>exdisp.h</B> file that
+is included with Visual C 5.0. The newer <B>IWebBrowser2</B> interface
+adds a few new methods but is only supported by Internet Explorer 4, and
+its definition is not included with Visual C 5.0. However you can use Developer
+Studio to generate a wrapper class for it.</FONT>
+
+<P><FONT>The Visual C 5.0 <B>uuid.lib</B> doesn’t include the definition
+of IID_IWebBrowser and CLSID_WebBrowser, but these GUIDs can be easly found
+in <B>exdisp.h</B> or the registry. This is what I came up this:</FONT>
+
+<P><FONT COLOR="#800000"><FONT>/* EAB22AC1-30C1-11CF-A7EB-0000C05BAE0B
+*/</FONT></FONT>
+<BR><FONT COLOR="#800000"><FONT>IID const IID_IWebBrowser={0xEAB22AC1,
+0x30C1, 0x11CF, 0xA7, 0xEB, 0x00, 0x00, 0xC0, 0x5B, 0xAE, 0x0B};</FONT></FONT>
+
+<P><FONT COLOR="#800000"><FONT>/* 8856F961-340A-11D0-A96B-00C04FD705A2
+*/</FONT></FONT>
+<BR><FONT COLOR="#800000"><FONT>CLSID const CLSID_WebBrowser={0x8856F961,
+0x340A, 0x11D0, 0xA9, 0x6B, 0x00, 0xC0, 0x4F, 0xD7, 0x05, 0xA2};</FONT></FONT>
+
+<P><FONT>You can use an ActiveX control in you application by using
+CWnd::CreateControl. Make sure that you call <B>AfxEnableControlContainer()</B>
+in your <B>CWinApp::InitInstance()</B>. After you created it you can use
+CWnd::GetControlUnknown to retreive the control’s IUnknown and then you
+can QueryInterface it for IID_IWebBrowser.</FONT>
+
+<P><FONT COLOR="#800000"><FONT>m_wndBrowser.CreateControl(CLSID_WebBrowser,
+lpszWindowName, WS_VISIBLE|WS_CHILD, rect, this, AFX_IDW_PANE_FIRST);</FONT></FONT>
+<BR><FONT COLOR="#800000"><FONT>IUnknown *pUnk=m_wndBrowser.GetControlUnknown();</FONT></FONT>
+<BR><FONT COLOR="#800000"><FONT>IWebBrowser *pBrowser;</FONT></FONT>
+<BR><FONT COLOR="#800000"><FONT>HRESULT hr=pUnk->QueryInterface(IID_IWebBrowser,
+(void **)&amp;pBrowser);</FONT></FONT>
+
+<P><FONT>After the control is set up you can use the <B>Navigate</B>
+method to browse a page.</FONT>
+
+<P><FONT COLOR="#800000"><FONT>CString url("http://www.microsoft.com/");</FONT></FONT>
+<BR><FONT COLOR="#800000"><FONT>BSTR bUrl=url.AllocSysString();</FONT></FONT>
+<BR><FONT COLOR="#800000"><FONT>COleVariant vNull(LPCTSTR)NULL,
+VT_BSTR);</FONT></FONT>
+<BR><FONT COLOR="#800000"><FONT>hr=pBrowser->Navigate(bUrl, &amp;vNull,
+&amp;VNull, &amp;vNull, &amp;vNull);</FONT></FONT>
+
+<P><FONT>The example I wrote views a web page in a MDI child window.
+Click <A HREF="webbrowser_control.zip">here</A> to download it. For more information
+on this control download the Internet Client SDK documentation that is
+available at <A HREF="http://www.microsoft.com">Microsoft’s</A> web site.</FONT>
+<BR>
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

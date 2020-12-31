@@ -1,0 +1,232 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Jorge Lodos">
+   <TITLE>Section - Title</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A class to call stored procedures that do not return records
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:lodos@cigb.edu.cu">Jorge Lodos</A>.
+
+<!-- The article... -->
+
+<P>
+The class CRecordset provides a well documented way to call stored procedures that return records. If a stored procedure does not return records and has no output parameters, the CDatabase member ExecuteSQL can be used to call it. On the other hand, the documentation explicitly states that the MFC classes do not support for calling stored procedures that do not return records and have output parameters.
+</p>
+<P>
+The problem I was trying to solve when started this work, was to obtain the automatically generated value for an SQL Server identity column, after a CRecordset update. What I did was to create a stored procedure that does the INSERT and returns the desired value:
+</p>
+
+<FONT COLOR="#990000"><TT><PRE>
+CREATE PROCEDURE sp_insertrecord @record_id int OUTPUT, @field1 int, @field2 datetime, @field3 varchar
+AS
+INSERT INTO mytable(first_field, second_field, third_field) VALUES(@field1, @field2, @field3) 
+IF @@ERROR = 0
+BEGIN
+  SELECT @record_id = @@IDENTITY
+  RETURN 0
+END
+ELSE
+BEGIN
+  SELECT @record_id = 0
+  RETURN -100
+END
+</tt></PRE></FONT>
+
+<P>
+Then I "only" had to call the stored procedure and get the Id for the new record. Here was where I found that MFC classes do not support these kind of stored procedures, and started looking somewhere else, including www.codeguru.com.
+</p>
+<P>
+There is already an <A HREF = "http://www.codeguru.com/mfc_database/calling_stored_procedure.shtml">article in the database section (contributed by Craig Lucas)</a> that shows how to call stored procedures from a CRecordset derived class. The class presented here is an alternative to that of Craig, which IMHO is less prone to errors due to the use of private inheritance. The class is easy to use for those that have used the MFC database classes before. You just forget everything (members and functions) related with fields and use the SetFieldType function of the CFieldExchange class with care inside your DoFieldExchange override.
+</p>
+<P>  
+One final note before providing the source files and an example. The RFX_Text function can not be used for output parameters (see the article by Craig Lucas in the database section) so I modified it and renamed as RFX_String. You can use RFX_String everywhere in place of RFX_Text, or keep using RFX_Text for input parameters. For text return values or output parameters, you must use RFX_String. The function RFX_Date was overloaded to allow COleDateTime parameters. The overload provided is the same of the <A HREF="http://www.codeguru.com/mfc_database/rfx_oledatetime.shtml">article by Dan Querciagrossa</a> also in the database section, with some bugs corrected.
+</p>
+<P>
+Using the CStoredProcResult class to call sp_insertrecord stored procedure:
+</p>
+
+<FONT COLOR="#990000"><TT><PRE>
+#if !defined(_INSERTPROC_H_)
+#define _INSERTPROC_H_
+
+// RecordInsertProc.h : header file
+//
+
+///////////////////////////////////////////////////////////////////////
+// CRecordInsertProc stored procedure
+
+class CRecordInsertProc : public CStoredProcResult
+{
+public:
+	CRecordInsertProc(CDatabase* pDatabase = NULL);
+	DECLARE_DYNAMIC(CRecordInsertProc)
+
+// Param Data
+	long			m_record_id;
+	long			m_field1;
+	COleDateTime	m_field2;
+	CString		m_field3;
+
+	long m_result;
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CRecordInsertProc)
+	public:
+	virtual CString GetDefaultConnect();    // Default connection string
+	virtual CString GetDefaultSQL();    // Default SQL for Recordset
+	virtual void DoFieldExchange(CFieldExchange* pFX);  // RFX support
+	//}}AFX_VIRTUAL
+
+// Implementation
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(_INSERTPROC_H_)
+
+
+// RecordInsertProc.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "StoredProc.h"
+#include "RecordInsertProc.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CRecordInsertProc
+
+IMPLEMENT_DYNAMIC(CRecordInsertProc, CStoredProcResult)
+
+CRecordInsertProc::CRecordInsertProc(CDatabase* pdb)
+	: CStoredProcResult(pdb)
+{
+	m_record_id = 0;
+	m_field1 = 0;
+	m_field3 = _T("");
+	
+	m_result = 0;
+
+	m_nParams = 5;
+}
+
+
+CString CRecordInsertProc::GetDefaultConnect()
+{
+	return _T("ODBC;DSN=");
+}
+
+CString CRecordInsertProc::GetDefaultSQL()
+{
+	return _T("{? = call sp_insertRecord(?, ?, ?, ?)}");
+}
+
+void CRecordInsertProc::DoFieldExchange(CFieldExchange* pFX)
+{
+	pFX->SetFieldType(CFieldExchange::outputParam);
+	RFX_Long(pFX, _T("RETURN_VALUE"), m_result);
+
+	pFX->SetFieldType(CFieldExchange::inoutParam);
+	RFX_Long(pFX, _T("@record_id"), m_record_id);
+
+	pFX->SetFieldType(CFieldExchange::inputParam);
+	RFX_Long(pFX, _T("@field1"), m_field1);
+	RFX_Date(pFX, _T("@field2"), m_field2);
+	RFX_String(pFX, _T("@field3"), m_field3);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CRecordInsertProc diagnostics
+
+#ifdef _DEBUG
+void CRecordInsertProc::AssertValid() const
+{
+	CStoredProcResult::AssertValid();
+}
+
+void CRecordInsertProc::Dump(CDumpContext& dc) const
+{
+	CStoredProcResult::Dump(dc);
+}
+#endif //_DEBUG
+
+</tt></PRE></FONT>
+
+<P>
+Now you do the following to execute the stored procedure (no error checking):
+</p>
+
+<FONT COLOR="#990000"><TT><PRE>
+CRecordInsertProc InsertProc(&db); 
+
+InsertProc.m_field1 = intValue;
+InsertProc.m_field2 = COleDateTimeValue; 
+InsertProc.m_field3 = TextValue;
+InsertProc.Open()
+if InsertProc.m_result==0
+// record succesfully inserted, the id is in InsertProc.m_record_id
+else
+// error inserting record, InsertProc.m_result is -100
+</tt></PRE></FONT>
+
+<!-- Source code/demo project -->
+<P>
+<A HREF="storproc.zip">Download Source Code</A>
+</p>
+<br>
+
+<!-- Remember to update this -->
+<p>Last updated: 18 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

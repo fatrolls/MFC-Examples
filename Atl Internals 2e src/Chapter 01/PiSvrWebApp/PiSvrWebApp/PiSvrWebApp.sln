@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PiSvrWebApp", "PiSvrWebApp.vcxproj", "{B6F14CBF-24CD-4913-A6DB-0D96C443E6C2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PiSvrWebAppIsapi", "..\PiSvrWebAppIsapi\PiSvrWebAppIsapi.vcxproj", "{FD01C88C-D2C9-4BD4-863D-5D5E4B1EF5AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6F14CBF-24CD-4913-A6DB-0D96C443E6C2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B6F14CBF-24CD-4913-A6DB-0D96C443E6C2}.Debug|Win32.Build.0 = Debug|Win32
+		{B6F14CBF-24CD-4913-A6DB-0D96C443E6C2}.Release|Win32.ActiveCfg = Release|Win32
+		{B6F14CBF-24CD-4913-A6DB-0D96C443E6C2}.Release|Win32.Build.0 = Release|Win32
+		{FD01C88C-D2C9-4BD4-863D-5D5E4B1EF5AD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FD01C88C-D2C9-4BD4-863D-5D5E4B1EF5AD}.Debug|Win32.Build.0 = Debug|Win32
+		{FD01C88C-D2C9-4BD4-863D-5D5E4B1EF5AD}.Release|Win32.ActiveCfg = Release|Win32
+		{FD01C88C-D2C9-4BD4-863D-5D5E4B1EF5AD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

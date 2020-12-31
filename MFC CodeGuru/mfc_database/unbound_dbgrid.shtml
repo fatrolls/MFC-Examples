@@ -1,0 +1,296 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - Using DBGrid in unbound mode</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using DBGrid in unbound mode</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This sample was contributed by Adrian Roman</A>.
+
+
+
+<P>It took me some time to notice all this, and because I couldn't find anywhere documentation
+about DBGrid unbound programming in VC++ (only in VB), I think that will be nice to share
+my observations with others.
+
+&nbsp;
+<P>First, even documentation says that it accepts (almost) any type of Variant as bookmark, it
+seems that it is not true. DaoRecordsets have SAFEARRAY as bookmarks (GetBookmark returns
+Variant which contains VT_ARRAY | VT_UI1), and did not work with DBGrid (the grid simply
+converts the variant to VT_BSTR).
+
+<P>It may work with VT_I4, or something like this, but because somewhere it says that strings
+are the best, I used them. Of course, I converted the bookmarks to strings and back.
+
+<P>SchedQ is a dynaset (CDaoRecordset) resulted from a query.
+
+If you find any bugs or have some ideas, please share your findings with me.
+
+<P>And, I almost forgotten! IMPORTANT! If you generate RowBuffer class from OCX' s type
+library, modify the constructor that gets LPDISPACH as parameter to call base class
+constructor with the second one setted to FALSE (it is implicitly TRUE). Or else, the whole
+thing will crash when RowBuffer object gets destroyed.
+
+<P>Some supplementary tips: use BeforeColUpdate and KeyPress events to validate a field and,
+respectively, to filter key input.
+
+<P>Please don't send me e-mails with questions about using it in bound mode. Just add on the
+dialog the Microsoft Remote Data Control before inserting the dbgrid, and play a little
+with properties. You'll figure out how to use it.
+
+<P>For those who want to modify columns at run-time: The generated GetColumns() member
+function of dbgrid's class is really a GetColumn function (returns a LPDISPATCH to a single
+column - so you can use this LPDISPATCH to construct Column objects, not Columns). If you
+want to obtain the LPDISPATCH to Columns collection, rename it as GetColumn, and rewrite
+GetColumns like this one:
+
+<PRE><TT><FONT COLOR="#990000">
+LPDISPATCH CMsDgridCtrl::GetColumns()
+{
+	LPDISPATCH result;
+	InvokeHelper(0x8,DISPATCH_PROPERTYGET,VT_DISPATCH,(void*)&amp;result,NULL,NULL);
+	return result;
+}
+</FONT></TT></PRE>
+
+<P>You can use the returned LPDISPATCH to construct the Columns object.
+
+<P>Now, the code for feeding the grid with data, deletind records, and obtaining data back
+when writes occur:
+
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyView::OnUnboundReadDataDbgridMy(LPDISPATCH RowBuf, VARIANT FAR* StartLocation, BOOL ReadPriorRows) 
+
+{
+	// TODO: Add your control notification handler code here
+	RowBuffer buf(RowBuf); 
+	VARIANT varbok;
+	varbok.vt=VT_ARRAY | VT_UI1;
+	long Row,RowsFetched;
+	VARIANT var;
+	RowsFetched=0;
+	if(StartLocation-&gt;vt==VT_NULL){
+		if(ReadPriorRows){
+			try{
+				SchedQ-&gt;MoveLast();
+			}catch(CDaoException* e){
+				e-&gt;Delete();
+			}
+		}else{
+			try{
+				SchedQ-&gt;MoveFirst();
+			}catch(CDaoException* e){
+				e-&gt;Delete();
+			}
+		}
+	}else{
+		// Find the position to start reading based on the
+		// StartLocation bookmark and ReadPriorRows parameter
+		try{
+			VectorFromBstr(StartLocation-&gt;bstrVal,&amp;varbok.parray);
+			SchedQ-&gt;SetBookmark(COleVariant(varbok));
+			if(ReadPriorRows)SchedQ-&gt;MovePrev();
+			else SchedQ-&gt;MoveNext();
+		}catch(CDaoException* e){
+			e-&gt;Delete();
+		}
+	}
+	// Transfer data from our data set array to the RowBuf 
+	// object which DBGrid uses to display the data
+	for(Row = 0; Row&lt;buf.GetRowCount() ;Row++){
+		if(SchedQ-&gt;IsEOF() || SchedQ-&gt;IsBOF())break;
+		var.vt=VT_I4;
+		var.lVal=SchedQ-&gt;m_WorkCodeID;
+		if(buf.GetColumnCount()&gt;0)buf.SetValue(Row, 0,var);
+		COleVariant olvi(SchedQ-&gt;m_TimeIn);
+		var=*((LPVARIANT)olvi);
+		if(buf.GetColumnCount()&gt;1)buf.SetValue(Row, 1,var);
+		COleVariant olvo(SchedQ-&gt;m_TimeOut);
+		var=*((LPVARIANT)olvo);
+		if(buf.GetColumnCount()&gt;2)buf.SetValue(Row, 2,var);
+		// Set bookmark using CurRow which is also our
+		// array index
+		var.vt=VT_BSTR;
+		BstrFromVector(((LPVARIANT)SchedQ-&gt;GetBookmark())-&gt;parray,&amp;var.bstrVal);
+		buf.SetBookmark(Row,var);
+		RowsFetched++;
+		if(ReadPriorRows)SchedQ-&gt;MovePrev();
+		else SchedQ-&gt;MoveNext();
+	}
+	buf.SetRowCount(RowsFetched);
+}
+
+&nbsp;
+void CMyView::OnUnboundWriteDataDbgridMy(LPDISPATCH RowBuf, VARIANT FAR* WriteLocation)
+{
+	// TODO: Add your control notification handler code here
+	RowBuffer buf(RowBuf);
+	VARIANT varbok;
+	varbok.vt=VT_ARRAY | VT_UI1;
+	COleVariant var;
+	CString str;
+	try{
+		VectorFromBstr(WriteLocation-&gt;bstrVal,&amp;varbok.parray);
+		SchedQ-&gt;SetBookmark(COleVariant(varbok));
+	}catch(CDaoException* e){
+		e-&gt;Delete();
+		buf.SetRowCount(0);
+		return;
+	}
+	&nbsp;
+	//**********************************************************************
+	//Here was a portion of code that validated the record
+	&nbsp;
+	//************************************************
+	// Only columns that have been changed will be
+	// updated. Otherwise, the value will be set to NULL
+	try{
+		SchedQ-&gt;Edit();
+	}
+	catch(CDaoException* e){
+		e-&gt;Delete();
+		buf.SetRowCount(0);
+		return;
+	} 
+	if(buf.GetValue(0L, 0).vt!=VT_NULL){
+		var=buf.GetValue(0, 0);
+		str=CString(var.bstrVal);
+		SchedQ-&gt;m_WorkCodeID=atol(str);
+	}
+	if(buf.GetValue(0L, 1).vt!=VT_NULL){
+		var=buf.GetValue(0, 1);
+		str=CString(var.bstrVal);
+		SchedQ-&gt;m_TimeIn.ParseDateTime(str);
+	}
+	if(buf.GetValue(0L, 2).vt!=VT_NULL){
+		var=buf.GetValue(0, 2);
+		str=CString(var.bstrVal);
+		SchedQ-&gt;m_TimeOut.ParseDateTime(str);
+	}
+	try{
+		SchedQ-&gt;Update();
+	}catch(CDaoException *e){
+		SchedQ-&gt;CancelUpdate();
+		e-&gt;Delete();
+		buf.SetRowCount(0);
+	}
+}
+
+
+void CMyView::OnUnboundAddDataDbgridMy(LPDISPATCH RowBuf, VARIANT FAR* NewRowBookmark) 
+{
+	// TODO: Add your control notification handler code here
+	RowBuffer buf(RowBuf);
+	COleVariant var;
+	CString str;
+	NewRowBookmark-&gt;vt=VT_NULL;
+	&nbsp;
+	//**********************************************************************
+	//Here was a portion of code that validated the record
+	//**********************************************************************
+	try{
+		SchedQ-&gt;AddNew();
+		SchedQ-&gt;Update();
+		SchedQ-&gt;SetBookmark(SchedQ-&gt;GetLastModifiedBookmark());
+		SchedQ-&gt;Edit();
+	}catch(CDaoException* e){
+		e-&gt;Delete();
+		buf.SetRowCount(0);
+		return;
+	} 
+	SchedQ-&gt;m_EmployeeID=m_pSet-&gt;m_EmployeeID;
+	try{
+		if(buf.GetValue(0L, 0).vt!=VT_NULL){ 
+			var=buf.GetValue(0, 0);
+		}else{
+			var.vt=VT_I4; 
+			var.lVal=0;
+			Column col(m_SchedGrid.GetColumns(var));
+			var=col.GetDefaultValue();
+		}
+		str=(char*)_bstr_t(var.bstrVal);
+		SchedQ-&gt;m_WorkCodeID=atol(str);
+		if(buf.GetValue(0L, 1).vt!=VT_NULL){
+			var=buf.GetValue(0, 1);
+		}else{
+			var.vt=VT_I4; 
+			var.lVal=1;
+			Column col(m_SchedGrid.GetColumns(var));
+			var=col.GetDefaultValue();
+		}
+		str=(char*)_bstr_t(var.bstrVal);
+		SchedQ-&gt;m_TimeIn.ParseDateTime(str);
+		if(buf.GetValue(0L, 2).vt!=VT_NULL){
+			var=buf.GetValue(0, 2);
+		}else{
+			var.vt=VT_I4; 
+			var.lVal=2;
+			Column col(m_SchedGrid.GetColumns(var));
+			var=col.GetDefaultValue();
+		}
+		str=(char*)_bstr_t(var.bstrVal);
+		SchedQ-&gt;m_TimeOut.ParseDateTime(str);
+		var.vt=VT_I4;
+		SchedQ-&gt;Update();
+	}catch(CDaoException *e){
+		e-&gt;Delete();
+		SchedQ-&gt;CancelUpdate();
+		SchedQ-&gt;Delete();
+		buf.SetRowCount(0);
+	}
+	NewRowBookmark-&gt;vt=VT_BSTR;
+	BstrFromVector(((LPVARIANT)SchedQ-&gt;GetBookmark())-&gt;parray,&amp;(NewRowBookmark-&gt;bstrVal));
+}
+
+&nbsp;
+void CMyView::OnUnboundDeleteRowDbgridMy(VARIANT FAR* Bookmark) 
+{
+	// TODO: Add your control notification handler code here
+	VARIANT varbok;
+	varbok.vt=VT_ARRAY | VT_UI1;
+	VectorFromBstr(Bookmark-&gt;bstrVal,&amp;varbok.parray);
+	try{
+		SchedQ-&gt;SetBookmark(COleVariant(varbok));
+		SchedQ-&gt;Delete();
+	}catch(CDaoException* e){
+		Bookmark-&gt;vt=VT_NULL;
+		e-&gt;Delete();
+	} 
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

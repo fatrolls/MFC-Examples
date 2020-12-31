@@ -1,0 +1,132 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Menu - Owner Drawn Menu with Icons (4)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Owner Drawn Menu With Free Color &amp; Font</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:lsg6509@pub.sy.lnpta.net.cn">ShiGui Lu</A>. 
+
+<body>
+
+<p align="center"><img src="freemenu.gif" width="210" height="207"
+alt="defaul1.gif.gif (4096 bytes)"></p>
+
+<p align="center"><a HREF="freemenu.zip">Download Source 
+Code and Example</a> 35K</p>
+
+<strong>CFreeMenu:</strong>This class is a owner 
+drawn menu, You will be able to:<br>
+1. Set the menu position<br>
+2. Set the menu background color<br>
+3. Set the menu bar's edge color<br>
+4. Set the menu text color<br>
+5. Set the menu text font<br>
+6. Set the first level menu as horizontal or vertical<br>
+7.Develop the class to implement menuitem with icon,and cool background menubar (as wood, metal ,or other picture etc.)<br>
+
+<p>In order to use it,you need add the file freemenu.cpp 
+,freemenu.h,menuitemwnd.cpp and menuitemwnd.h to your project.If you don't change any of 
+the code,you can get the 1-6 function.To redraw the CFreeMenu's method DrawMenu you can 
+develop it.</p>
+
+<p>In the beginning of&nbsp; .H file add those code:</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<font face="Arial" color="#990000">#include &quot;freemenu.h&quot;</font></p>
+
+<p>In the containing class add those code:</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<font face="Arial" color="#990000">CFreeMenu *m_Menu;</font></p>
+
+<p>In the .CPP file of the class where you want use the 
+menu add those code:</p>
+
+<p>1. In initialization part(as CDialog class' 
+OnInitDialog method,the CFreeMenu need a parent window) add those code:</p>
+
+<p>&nbsp;&nbsp;&nbsp; <font face="Arial" size="3" color="#990000">m_menu = new 
+CFreeMenu(IDR_MENU1,&nbsp;&nbsp;&nbsp;&nbsp; //The menu ID</font></p>
+
+<p><font face="Arial" size="3" color="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+CPoint(10,10),this, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //The Menu position and 
+it's parent window<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RGB(192,192,192), &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //The Color of the menu bar's 
+background<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RGB(255,225,255), &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //The Color of the menu bar's left 
+and up edge<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RGB(128,128,128), &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //The Color of the menu bar's right 
+and down edge<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+RGB(0,0,0),&amp;font,0); &nbsp;&nbsp;&nbsp; //The Color and font of the menu text, when 
+the</font></p>
+
+<p><font face="Arial" size="3" color="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+// last parameter is 0 the first level of the menu if</font></p>
+
+<p><font face="Arial" size="3" color="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+// </font><font face="Arial" color="#990000">horizontal</font><font face="Arial" size="3"
+color="#990000">,1 meant vertical</font></p>
+
+<p>2.Where you need the menu you add those code:<br>
+<font face="Arial" size="3" color="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+m_menu-&gt;DrawMenu();</font></p>
+
+<p>3.In your class derive the WindowProc 
+method to call the function:</p>
+
+<p><font face="Arial" color="#990000">void CTestdiDlg::OnMenuitem32782() <br>
+{<br>
+&nbsp;&nbsp;&nbsp; AfxMessageBox(&quot;Test menu&quot;);&nbsp;&nbsp;&nbsp; <br>
+}<br>
+<br>
+LRESULT CTestdiDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) <br>
+{<br>
+&nbsp;&nbsp;&nbsp; if(message==ID_MENUITEM32782)<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OnMenuitem32782();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; return CDialog::WindowProc(message, wParam, lParam);<br>
+}</font></p>
+</body>
+
+<P><A HREF="freemenu.zip">Download demo project</A> 35K
+<p>Last updated: 26 June 1998 </p>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</html>

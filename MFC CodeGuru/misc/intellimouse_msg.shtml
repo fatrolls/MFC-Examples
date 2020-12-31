@@ -1,0 +1,132 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Getting messages from the IntelliMouse</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Getting messages from the IntelliMouse</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+
+<P>The IntelliMouse (the mouse with the wheel in the center) is pretty neat. You can register to get the wheel messages from it in yor top level frame. If you want to handle the message in a view you must passs the message down manually as is illustrated. To get messages from the wheel add the following to your application:
+
+ 
+
+<P>(1) To make the wheel act like a simple middle button just add handlers for:
+
+<PRE><TT><FONT COLOR="#990000">
+WM_MBUTTONDOWN
+
+WM_MBUTTONUP
+</FONT></TT></PRE>
+
+<P>and so-on just like left and right buttons. You won't find this in the class wizzard but you can add them manually.
+
+ 
+
+<P>(2) For wheel messages do the following: 
+
+<br>Declare a global in your app as follows: 
+<PRE><TT><FONT COLOR="#990000">
+UINT uMSH_MOUSEWHEEL;
+</FONT></TT></PRE>
+
+<P>and everyplace else declare an external so you can get at it
+
+<PRE><TT><FONT COLOR="#990000">
+extern UINT uMSH_MOUSEWHEEL;
+</FONT></TT></PRE>
+
+ 
+
+<P>(3) In your initialization code register the following message
+
+<PRE><TT><FONT COLOR="#990000">
+uMSH_MOUSEWHEEL = RegisterWindowMessage("MSWHEEL_ROLLMSG");
+</FONT></TT></PRE>
+
+ 
+
+<P>(4) In the MAIN FRAME add the following:
+
+<br>To the message map in the .H file add
+
+<PRE><TT><FONT COLOR="#990000">afx_msg LONG OnWheel(UINT a, LONG b); 
+</FONT></TT></PRE>
+
+<P>To the message map in the .CPP file add 
+
+<PRE><TT><FONT COLOR="#990000">ON_REGISTERED_MESSAGE(uMSH_MOUSEWHEEL,OnWheel) 
+</FONT></TT></PRE>
+
+<br>And then add the message handler as follows 
+
+<PRE><TT><FONT COLOR="#990000">
+LONG CMainFrame::OnMouseWheel(UINT nFlags, LONG pValue) 
+{
+	if(nFlags & 0x0100) //Rolled in
+	{
+		//do rolled in stuff here
+	}
+	else //Rolled out
+	{
+		//do rolled out stuff here
+	}
+	return 0;
+}
+</FONT></TT></PRE>
+
+ 
+
+<P>(5) if you want to receive this message in a view then add the same handlers shown above to your view and then do the following in your main frame.
+
+<PRE><TT><FONT COLOR="#990000">
+LONG CMainFrame::OnWheel(UINT a, LONG b)
+{
+	BOOL yn;
+	MDIChildWnd* aw = (MDIChildWnd*)MDIGetActive(&yn); 
+	if(aw)
+	{
+		CView * junk;
+		junk = aw->GetActiveView();
+		if(junk) junk->SendMessage(uMSH_MOUSEWHEEL,a,b);
+	}
+	return 0;
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

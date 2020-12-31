@@ -1,0 +1,79 @@
+#ifndef _UTMAILSERVCP_H_
+#define _UTMAILSERVCP_H_
+
+template <class T>
+class CProxy_IMailServEvents : public IConnectionPointImpl<T, &DIID__IMailServEvents, CComDynamicUnkArray>
+{
+	//Warning this class may be recreated by the wizard.
+public:
+	HRESULT Fire_OnStatus(BSTR Message)
+	{
+		CComVariant varResult;
+		T* pT = static_cast<T*>(this);
+		int nConnectionIndex;
+		CComVariant* pvars = new CComVariant[1];
+		int nConnections = m_vec.GetSize();
+		
+		for (nConnectionIndex = 0; nConnectionIndex < nConnections; nConnectionIndex++)
+		{
+			pT->Lock();
+			CComPtr<IUnknown> sp = m_vec.GetAt(nConnectionIndex);
+			pT->Unlock();
+			IDispatch* pDispatch = reinterpret_cast<IDispatch*>(sp.p);
+			if (pDispatch != NULL)
+			{
+				VariantClear(&varResult);
+				pvars[0] = Message;
+				DISPPARAMS disp = { pvars, NULL, 1, 0 };
+				IDispatch* pMarshaledDispatch = pT->GetMarshaledInterface(pDispatch);
+				if(pMarshaledDispatch) {
+					pMarshaledDispatch->Invoke(0x1, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &disp, &varResult, NULL, NULL);
+					pMarshaledDispatch->Release();
+					}
+
+			}
+		}
+		delete[] pvars;
+		return varResult.scode;
+	
+	}
+	HRESULT Fire_OnCanAccept(BSTR Address, VARIANT_BOOL * Result)
+	{
+		CComVariant varResult;
+		T* pT = static_cast<T*>(this);
+		int nConnectionIndex;
+		CComVariant* pvars = new CComVariant[2];
+		int nConnections = m_vec.GetSize();
+		
+		for (nConnectionIndex = 0; nConnectionIndex < nConnections; nConnectionIndex++)
+		{
+			pT->Lock();
+			CComPtr<IUnknown> sp = m_vec.GetAt(nConnectionIndex);
+			pT->Unlock();
+			IDispatch* pDispatch = reinterpret_cast<IDispatch*>(sp.p);
+			if (pDispatch != NULL)
+			{
+				VARIANT	var;
+				var.vt = VT_BOOL | VT_BYREF;
+				var.pboolVal = Result;
+
+				VariantClear(&varResult);
+				pvars[1] = Address;
+				pvars[0] = var;
+				DISPPARAMS disp = { pvars, NULL, 2, 0 };
+				IDispatch* pMarshaledDispatch = pT->GetMarshaledInterface(pDispatch);
+				if(pMarshaledDispatch) {
+					pMarshaledDispatch->Invoke(0x2, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &disp, &varResult, NULL, NULL);
+					pMarshaledDispatch->Release();
+					}
+
+			}
+		}
+		delete[] pvars;
+		return varResult.scode;
+	
+	}
+
+
+};
+#endif

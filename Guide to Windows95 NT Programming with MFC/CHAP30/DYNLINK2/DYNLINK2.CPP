@@ -1,0 +1,38 @@
+///////////////////////////////////////////////////////////////////
+//  Module   : DYNLINK2.CPP
+//
+//  Purpose  : Implementation of the DYNLINK2.DLL.
+//
+//  Comments : This DLL has one exported function that simply 
+//             displays a dialog box.
+//
+//  Author   : Rob McGregor, rob_mcgregor@compuserve.com
+//        
+//  Date     : 06-02-96
+///////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "resource.h"	// main symbols
+#include "dynlink2.h"
+
+///////////////////////////////////////////////////////////////////
+// CDynLink2App::CDynLink2App() - constructor
+
+CDynLink2App::CDynLink2App()
+{
+}
+
+///////////////////////////////////////////////////////////////////
+// Multiply2Floats()
+
+extern "C" DllExport FLOAT Multiply2Floats(FLOAT f1, FLOAT f2)
+{
+   return f1 * f2;
+}
+
+///////////////////////////////////////////////////////////////////
+// CDynLink2App object
+
+CDynLink2App MyDll;
+
+///////////////////////////////////////////////////////////////////

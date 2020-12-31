@@ -1,0 +1,198 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Flat Scroll Bar Common Control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Flat Scroll Bar Common Control
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+<p>This article was contributed by <a href="mailto:dims@geocities.com">Davanum Srinivas</a>. 
+
+<!-- Sample image and source code/demo project -->
+<p><img src="flat_scrollbar1.gif" width="32" height="32">&nbsp;
+<a href="flat_scrollbar.zip">Download Source Code and Example</a> </p>
+
+
+<!-- Environment -->
+<u>Environment:</u> VC++ 5.0 SP3, commctrl.dll 4.71 or above.<br>
+Up to date commctrl.h/comctl32.lib (From Latest Platform SDK)<br>
+</p>
+
+
+<!-- The article... -->
+<p>Microsoft® Internet Explorer Version 4.0 introduces a new
+visual technology called <i>flat scroll bars</i>. Functionally,
+flat scroll bars behave just like normal scroll bars. The only
+difference is they are not displayed three-dimensionally. Flat
+scroll bar APIs are implemented in version 4.71 and later of
+Comctl32.dll.</p>
+
+<p><img src="flat_scrollbar2.gif" width="200" height="200"></p>
+
+<p>Here's a Thin Wrapper around the Flat ScrollBar API.</p>
+
+<br><h4>Header File</h4>
+
+<pre><font color="#990000"><tt>
+class CFlatScrollBar 
+{
+// Construction
+public:
+	CFlatScrollBar();
+
+// Attributes
+public:
+	CWnd *m_pWnd;
+
+// Operations
+public:
+	BOOL EnableScrollBar(int, UINT);
+	BOOL ShowScrollBar(int code, BOOL);
+
+	BOOL GetScrollRange(int code, LPINT, LPINT);
+	BOOL GetScrollInfo(int code, LPSCROLLINFO);
+	int  GetScrollPos(int code);
+	BOOL GetScrollProp(int propIndex, LPINT);
+
+	int  SetScrollPos(int code, int pos, BOOL fRedraw);
+	int  SetScrollInfo(int code, LPSCROLLINFO, BOOL fRedraw);
+	int  SetScrollRange(int code, int min, int max, BOOL fRedraw);
+	BOOL SetScrollProp(UINT index, int newValue, BOOL);
+
+	BOOL InitializeFlatSB(CWnd *);
+	HRESULT UninitializeFlatSB();
+
+// Implementation
+public:
+	virtual ~CFlatScrollBar();
+
+protected:
+};
+</tt></font></pre>
+
+<br><h4>Implementation File</h4>
+
+<pre><font color="#990000"><tt>
+CFlatScrollBar::CFlatScrollBar()
+{
+	m_pWnd = NULL;
+}
+
+CFlatScrollBar::~CFlatScrollBar()
+{
+	m_pWnd = NULL;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CFlatScrollBar message handlers
+
+BOOL CFlatScrollBar::EnableScrollBar(int wSBflags,UINT wArrows)
+{
+	return ::FlatSB_EnableScrollBar(m_pWnd-&gt;GetSafeHwnd(),wSBflags,wArrows);
+}
+
+BOOL CFlatScrollBar::ShowScrollBar(int code, BOOL bShow)
+{
+	return ::FlatSB_ShowScrollBar(m_pWnd-&gt;GetSafeHwnd(),code, bShow);
+}
+
+BOOL CFlatScrollBar::GetScrollRange(int code, LPINT lpMinPos, LPINT lpMaxPos)
+{
+	return ::FlatSB_GetScrollRange(m_pWnd-&gt;GetSafeHwnd(),code,lpMinPos,lpMaxPos);
+}
+
+BOOL CFlatScrollBar::GetScrollInfo(int code, LPSCROLLINFO lpsi)
+{
+	return ::FlatSB_GetScrollInfo(m_pWnd-&gt;GetSafeHwnd(),code,lpsi);
+}
+
+int  CFlatScrollBar::GetScrollPos(int code)
+{
+	return ::FlatSB_GetScrollPos(m_pWnd-&gt;GetSafeHwnd(),code);
+}
+
+BOOL CFlatScrollBar::GetScrollProp(int propIndex, LPINT pValue)
+{
+	return ::FlatSB_GetScrollProp(m_pWnd-&gt;GetSafeHwnd(),propIndex, pValue);
+}
+
+int  CFlatScrollBar::SetScrollPos(int code, int pos, BOOL fRedraw)
+{
+	return ::FlatSB_SetScrollPos(m_pWnd-&gt;GetSafeHwnd(),code,pos,fRedraw);
+}
+
+int  CFlatScrollBar::SetScrollInfo(int code, LPSCROLLINFO lpsi, BOOL fRedraw)
+{
+	return ::FlatSB_SetScrollInfo(m_pWnd-&gt;GetSafeHwnd(),code,lpsi,fRedraw);
+}
+
+int  CFlatScrollBar::SetScrollRange(int code, int min, int max, BOOL fRedraw)
+{
+	return ::FlatSB_SetScrollRange(m_pWnd-&gt;GetSafeHwnd(),code,min,max,fRedraw);
+}
+
+BOOL CFlatScrollBar::SetScrollProp(UINT index, int newValue, BOOL fRedraw)
+{
+	return ::FlatSB_SetScrollProp(m_pWnd-&gt;GetSafeHwnd(),index,newValue,fRedraw);
+}
+
+BOOL CFlatScrollBar::InitializeFlatSB(CWnd *pWnd)
+{
+	m_pWnd = pWnd;
+	return ::InitializeFlatSB(pWnd-&gt;GetSafeHwnd());
+}
+
+HRESULT CFlatScrollBar::UninitializeFlatSB()
+{
+	return ::UninitializeFlatSB(m_pWnd-&gt;GetSafeHwnd());
+}
+</tt></font></pre>
+
+<br><p>To use CFlatScrollBar on a CEdit Control inside a CDialog:</p>
+
+<pre><font color="#990000"><tt>BOOL CFlatScrollDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	...
+	scrollbar.InitializeFlatSB(&amp;m_edit);
+	scrollbar.EnableScrollBar(SB_BOTH,ESB_ENABLE_BOTH);
+	...
+}
+</tt></font></pre>
+
+<!-- Remember to update this -->
+<p>Last updated: 16 June 1998 </p>
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

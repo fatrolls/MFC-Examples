@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The AutoLaunch Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The AUTOLAUNCH Sample</H2>
+<P>The AUTOLAUNCH Sample accompanies Chapter 12 and illustrates how to launch an application automatically upon device attachment.</P>
+<P>The sample includes four components:</P>
+
+<UL>
+<LI>AUTOLAUNCH.EXE and ALNCH98.EXE (AutoLaunch subdirectory) are user-mode service modules for Windows 2000 and Windows 98, respectively. </LI>
+<LI>TSTLNCH.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>ALTEST.EXE (ALTEST subdirectory) is a Win32 application that will be invoked automatically whenever a new TSTLNCH device is detected. </LI>
+<LI>STARTSERVICE.DLL (STARTSERVICE subdirectory) is a DLL for use during Windows 2000 installations in order to get the AUTOLAUNCH service running the very first time.</LI></UL>
+
+<H3>Building AUTOLAUNCH</H3>
+<P>To build TSTLNCH.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named TSTLNCH.DSP in the SYS subdirectory.</P>
+<P>To build the other components, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project files are named AUTOLAUNCH.DSP, ALTEST.DSP, and STARTSERVICE.DSP in the AUTOLAUNCH, ALTEST, and STARTSERVICE subdirectories, respectively.</P>
+<P>The AUTOLAUNCH project contains subprojects for the Windows 2000 service and the Windows 98 pseudo-service. Don't forget to build both subprojects.</P>
+<H3>Testing AUTOLAUNCH</H3>
+<P>Install the TSTLNCH "device." Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF.</P>
+<P>Installing the TSTLNCH device automatically starts the AUTOLAUNCH or ALNCH98 service, which in turn automatically invokes ALTEST. You should expect to see a dialog box on the screen indicating the automatic invocation of ALTEST.</P>
+<P>To prevent the AUTOLAUNCH service from running in this and future sessions of Windows 2000, open a command prompt and issue these two commands:</P><DIR>
+<DIR>
+
+<P>C:\&gt;<U>net stop autolaunch</U><BR>
+C:\&gt;<U>autolaunch -unregister</P></DIR>
+</DIR>
+
+</U><P>To prevent the ALNCH98 applet from running in this and future sessions of Windows 98, follow this procedure:</P>
+<OL>
+
+<LI>Right-click on the ALNCH98 icon in the icon tray. Select the Close choice and answer the ensuing dialog question in the affirmative.</LI>
+<LI>Remove the entry named AutoLaunchService from the registry key HKEY_LOCAL_MACHINE\ Software\Microsoft\Windows\CurrentVersion\Run".</LI></OL>
+
+<H3>Redistributing AUTOLAUNCH</H3>
+<P>AUTOLAUNCH is an exception to the blanket license to use the sample programs for this book. The author will grant a royalty-free license to anyone to redistribute AUTOLAUNCH as part of a WDM driver package. The license will, however, include conditions designed to insure the consistency and quality of AUTOLAUNCH on end user machines. Send e-mail to <A HREF="mailto:waltoney@oneysoft.com">waltoney@oneysoft.com</A> for information about obtaining this conditional license.</P></BODY>
+</HTML>

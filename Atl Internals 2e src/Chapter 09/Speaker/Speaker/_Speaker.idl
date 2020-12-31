@@ -1,0 +1,121 @@
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\prsht.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtml.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dimm.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dispex.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtmhst.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\docobj.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\exdisp.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\objsafe.idl";
+
+const int DISPID_VOLUME         = 1;
+const int DISPID_SPEECH         = 2;
+const int DISPID_SPEAK          = 3;
+[
+	object,
+	uuid(4C5AC360-51D5-4DA2-84F2-992D8584B807),
+	dual,
+	helpstring("ISpeaker Interface"),
+	pointer_default(unique)
+] 
+#line 20 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\codemagogue.h"
+interface ISpeaker : IDispatch {
+#line 22 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\codemagogue.h"
+	[propget,id(1),helpstring("property Volume")] HRESULT  Volume([out,retval] LONG *pVal);
+	[propput,id(1),helpstring("property Volume")] HRESULT  Volume([in] LONG newVal);
+	[propget,id(2),helpstring("property Speech")] HRESULT  Speech([out,retval] BSTR *pVal);
+	[propput,id(2),helpstring("property Speech")] HRESULT  Speech([in] BSTR newVal);
+	[id(3),helpstring("method Speak")] HRESULT  Speak();
+};
+
+const int DISPID_NAME           = 1;
+[
+	object,
+	uuid(450D6780-FC73-11d1-8CC3-00A0C9C8E50D),
+	dual,
+	helpstring("INamedObject Interface"),
+	pointer_default(unique)
+] 
+#line 39 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\codemagogue.h"
+interface INamedObject : IDispatch {
+#line 41 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\codemagogue.h"
+	[propget,id(1),helpstring("property Name")] HRESULT  Name([out,retval] BSTR *pVal);
+	[propput,id(1),helpstring("property Name")] HRESULT  Name([in] BSTR newVal);
+};
+
+const int DISPID_ONWHISPER      = 1;
+const int DISPID_ONTALK         = 2;
+const int DISPID_ONYELL         = 3;
+#line 9 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\coearpolitic.h"
+typedef enum SpeakerRole {
+	Defendant = 0,
+	Plaintiff = 1,
+} SpeakerRole;
+
+[
+	object,
+	uuid(CC46569D-9123-435E-AE10-06DF0FCA6767),
+	dual,
+	helpstring("IListener Interface"),
+	pointer_default(unique)
+] 
+#line 16 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\coearpolitic.h"
+interface IListener : IDispatch {
+#line 18 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\coearpolitic.h"
+	[id(1),helpstring("method ListenTo")] HRESULT  ListenTo([in] enum SpeakerRole role, [in] IUnknown *pSpeaker);
+	[id(2),helpstring("method StopListening")] HRESULT  StopListening([in] enum SpeakerRole role, [in] IUnknown *pSpeaker);
+};
+
+
+[ version(1.0), uuid(C46C911C-AC08-4B50-925A-0342801AA934), helpstring("Speaker 1.0 Type Library") ]
+library Speaker
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		uuid(EF75866F-28FA-4411-8A7D-AE7B65BB7F95),
+		helpstring("_ISpeakerEvents Interface")
+	] 
+#line 58 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\codemagogue.h"
+	dispinterface _ISpeakerEvents {
+	properties:
+
+	methods:
+		[id(1),helpstring("method OnWhisper")] HRESULT  OnWhisper([in]BSTR bstrSpeech);
+		[id(2),helpstring("method OnTalk")] HRESULT  OnTalk([in]BSTR bstrSpeech);
+		[id(3),helpstring("method OnYell")] HRESULT  OnYell([in]BSTR bstrSpeech);
+	};
+
+	[
+		version(1.0),
+		uuid(798AC41B-03D6-45A7-8311-8056A7EF0CFD),
+		helpstring("Demagogue Class")
+	] 
+#line 78 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\codemagogue.h"
+	coclass CDemagogue {
+		interface ISpeaker;
+		[default]	interface INamedObject;
+		[default, source]	interface _ISpeakerEvents;
+	};
+
+	[
+		version(1.0),
+		uuid(D6C76965-DF46-45B7-A6BE-8D4A943C39A1),
+		helpstring("EarPolitic Class")
+	] 
+#line 36 "d:\\vc++\\atl internals 2e src\\chapter 09\\speaker\\speaker\\coearpolitic.h"
+	coclass CEarPolitic {
+		interface IListener;
+	};
+
+	[
+		uuid(56A463B9-5BBE-3862-AFAD-00AE7AFBA291),
+		version(1.0),
+		noncreatable
+	] 
+	coclass __Impl__ISpeakerEvents {
+		[default] interface IUnknown;
+	};
+
+}
+

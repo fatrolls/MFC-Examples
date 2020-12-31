@@ -1,0 +1,52 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+Provider="Walter Oney Software"
+
+[Manufacturer]
+"Walter Oney Software"=WCO
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+
+[SourceDisksFiles]
+wmiextra.sys=1
+
+[SourceDisksNames]
+1="Install disk",,,objchk\i386
+
+[WCO]
+"wmiextra Sample"=wmiextraInstall,*WCO1002
+
+[wmiextraInstall]
+AddReg=wmiextra.AddReg
+CopyFiles=wmiextra.CopyFiles
+
+[wmiextra.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,wmiextra.sys
+
+[wmiextra.CopyFiles]
+wmiextra.sys,,,2
+
+[wmiextraInstall.hw]
+AddReg=wmiextraHwAddReg
+
+[wmiextraHwAddReg]
+HKR,,SampleInfo,,"%wdmbook%\chap10\wmiextra\wmiextra.htm"
+
+[wmiextraInstall.NT]
+CopyFiles=wmiextra.CopyFiles
+
+[wmiextraInstall.NT.Services]
+AddService=wmiextra,2,wmiextraService
+
+[wmiextraService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\wmiextra.sys
+
+[wmiextrainstall.nt.hw]
+AddReg=wmiextraHwAddReg

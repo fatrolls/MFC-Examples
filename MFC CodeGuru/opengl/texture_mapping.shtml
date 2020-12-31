@@ -1,0 +1,56 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>OpenGL - Starting Texture Mapping</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Starting Texture Mapping</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:pierre.alliez@cnet.francetelecom.fr">Pierre ALLIEZ</A>.
+
+</B></FONT><P><A HREF="texture.zip">Download project files</A> 707KB
+
+
+<P>This is the smallest example to map texture on an object.
+This sample create an OpenGL rendering context in a dialog box and map
+a texture on a cube. We can manipulate the object with the mouse, and change
+texture file with a popup menu item. A timer animate a rotation. Texture
+files are .RAW files (256 x 256 x 8 bits) and can be editable using Paint
+Shop Pro.</FONT>
+<BR><FONT SIZE=-1>&nbsp;</FONT>
+<CENTER><IMG SRC="cube1.gif" NOSAVE HEIGHT=216 WIDTH=206></CENTER>
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

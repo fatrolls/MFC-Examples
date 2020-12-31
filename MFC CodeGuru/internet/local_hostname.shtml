@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - Get hostname and ip address of local computer</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Get hostname and ip address of local computer</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:jlundgre@igate.sprint.com">Jeff Lundgren</A>. 
+
+
+
+
+<P>This code will get the host name and ip for the computer on which the
+code is run.  This works in Visual C++ 5 SP1/2 on NT4 and 95.
+
+<P>Requirements
+<PRE><TT><FONT COLOR="#990000">
+#include &ltwinsock2.h>
+</FONT></TT></PRE>
+
+<P>Link with Wsock32.lib
+
+<P>That's It.
+
+
+
+<PRE><TT><FONT COLOR="#990000">
+{
+      WORD wVersionRequested;
+      WSADATA wsaData;
+      char name[255];
+      CString ip;
+      PHOSTENT hostinfo;
+      wVersionRequested = MAKEWORD( 2, 0 );
+
+      if ( WSAStartup( wVersionRequested, &wsaData ) == 0 )
+      {
+
+            if( gethostname ( name, sizeof(name)) == 0)
+            {
+                  if((hostinfo = gethostbyname(name)) != NULL)
+                  {
+                        ip = inet_ntoa (*(struct in_addr *)*hostinfo->h_addr_list);
+                  }
+            }
+            
+            WSACleanup( );
+      } 
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi-bin/counters/counter.cgi"--></FONT></CENTER>
+</BODY>
+</HTML>

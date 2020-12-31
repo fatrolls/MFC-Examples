@@ -1,0 +1,366 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ToolBar - DevStudio like Flat Toolbar</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">DevStudio like Flat Toolbar</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>.
+The toolbar class discussed in this article works with the standard MFC CToolBar.
+
+<p><b>NOTE:</b> You must also have new the COMCTL32.DLL (version 4.7 or later).  This
+is installed with Internet Explorer 3 and will come standard with the new
+Windows 98. So if you are using VC++ 5 then you probably already have this DLL.
+
+
+<h4>Here is a toolbar enhancement that gives you DevStudio-like toolbars.</h4>
+
+<p>These have a flat look with a "gripper" on the left hand side and separator
+lines between groups.  As the mouse moves over the toolbar, the tools get a
+button created around them.
+
+<p>There are a number of issues that needed to be addressed here.
+
+<p>MFC uses the style bits that control the flat look for its own purposes.
+So you cannot set this style when creating the toolbar, but must modify the
+style afterwards.  To do this, I have added a SetFlatLookStyle() function.
+
+<p>Flat look toolbars are painted transparently.  Unfortunately, MFC has not
+been written with transparent toolbars in mind, so one needs to repaint the
+background.  This is done on size and move messages, for example when
+draggin a docked toolbar.  They are also done when the tool button's style
+changes.  For example, when a button changes from pushed to released, the
+background needs to be repainted.
+
+<p>The toolbar control does not draw the separators between groups of toolbar
+buttons, but instead leaves a gap.  The class intecepts the WM_PAINT method
+and adds separators at the correct position.
+
+<p>The toolbar control also does not support the gripper at the left or top
+end of the toolbar.  The class adjusts the client area and draws the
+gripper approriately.
+
+<p>To use this class, simply change your use of CToolBar to CFlatToolBar and
+call the SetFlatLookStyle() function after creating the toolbar itself (ie.
+after toolbar bitmaps are loaded).
+
+
+
+<PRE><TT><FONT COLOR="#990000">
+// FlatToolBar.h
+// (c) 1997, Roger Onslow
+class CFlatToolBar : public CToolBar 
+{
+	DECLARE_DYNAMIC(CFlatToolBar);
+public:
+	void SetFlatLookStyle();
+	void RepaintBackground();
+	void DrawSeparators();
+	void DrawSeparators(CClientDC* pDC);
+	void EraseNonClient();
+	void DrawGripper(CWindowDC *pDC, CRect& rectWindow);
+protected:
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CFlatToolBar)
+	virtual void OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler);
+	//}}AFX_VIRTUAL
+	// Message Handlers
+protected:
+	//{{AFX_MSG(CFlatToolBar)
+	afx_msg void OnWindowPosChanging(LPWINDOWPOS lpWndPos);
+	afx_msg void OnPaint();
+	afx_msg void OnNcPaint();
+	afx_msg void OnNcCalcSize( BOOL bCalcValidRects, NCCALCSIZE_PARAMS*	lpncsp );
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP();
+};
+
+
+
+
+
+//***************************************************************
+// FlatToolBar.cpp
+// (c) 1997, Roger Onslow
+
+#include "stdafx.h"
+#include "flattoolbar.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+#define new DEBUG_NEW
+static char BASED_CODE THIS_FILE[] = __FILE__;
+#endif
+
+BEGIN_MESSAGE_MAP(CFlatToolBar, CToolBar)
+//{{AFX_MSG_MAP(CFlatToolBar)
+ON_WM_WINDOWPOSCHANGING()
+ON_WM_PAINT()
+ON_WM_NCPAINT()
+ON_WM_NCCALCSIZE()
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+IMPLEMENT_DYNAMIC(CFlatToolBar,CToolBar)
+
+
+// Must set after creation, as MFC wipes out extra style bits
+void CFlatToolBar::SetFlatLookStyle() {
+	// Set flat style (transparent)
+	ModifyStyle(0,TBSTYLE_FLAT);
+	// others are...
+	// #define TBSTYLE_TOOLTIPS        0x0100
+	// #define TBSTYLE_WRAPABLE        0x0200
+	// #define TBSTYLE_ALTDRAG         0x0400
+	// #define TBSTYLE_FLAT            0x0800
+	// #define TBSTYLE_LIST            0x1000
+}
+
+// Because buttons are transparent, we need to repaint the background
+void CFlatToolBar::RepaintBackground() {
+     // get parent window (there should be one)
+     CWnd* pParent = GetParent();
+     if (pParent) {
+          // get rect for this toolbar
+          CRect rw; GetWindowRect(&rw);
+          // convert rect to parent coords
+          CRect rc = rw; pParent->ScreenToClient(&rc);
+          // invalidate this part of parent
+          pParent->InvalidateRect(&rc);
+          // now do all the other toolbars (etc) that belong to the parent
+          for (
+               CWnd* pSibling = pParent->GetWindow(GW_CHILD);
+               pSibling;
+               pSibling = pSibling->GetNextWindow(GW_HWNDNEXT)
+          ) {
+               // but do not draw ourselves
+               if (pSibling == this) continue;
+               // convert rect to siblings coords
+               CRect rc = rw; pSibling->ScreenToClient(&rc);
+               // invalidate this part of sibling
+               pSibling->InvalidateRect(&rc);
+          }
+     }
+}
+
+// Draw the separators in the client area
+void CFlatToolBar::DrawSeparators() {
+     // get a dc for the client area
+     CClientDC dc(this);
+     // draw the separators on it
+     DrawSeparators(&dc);
+}
+
+// Draw the separators
+void CFlatToolBar::DrawSeparators(CClientDC* pDC) {
+     // horizontal vs vertical
+     bool ishorz = (m_dwStyle & CBRS_ORIENT_HORZ) != 0;
+     // get number of buttons
+     int nIndexMax = (int)DefWindowProc(TB_BUTTONCOUNT, 0, 0);
+     int nIndex;
+     // try each button
+     for (nIndex = 0; nIndex < nIndexMax; nIndex++) {
+          UINT dwStyle = GetButtonStyle(nIndex);
+          UINT wStyle = LOWORD(dwStyle);
+          // if it is a separator
+          if (wStyle == TBBS_SEPARATOR) {
+               // get it's rectangle and width
+               CRect rect;
+               GetItemRect(nIndex,rect);
+               // if small enough to be a true separator
+               int w = rect.Width();
+               if (w <= 8) {
+                    if (ishorz) {
+                         // draw the separator bar in the middle
+                         CRect rectbar = rect;
+                         int x = (rectbar.left+rectbar.right)/2;
+                         rectbar.left = x-1; rectbar.right = x+1;
+                         pDC->Draw3dRect(rectbar,::GetSysColor(COLOR_3DSHADOW),::GetSysColor(COLOR_3DHILIGHT));
+                    } else {
+                         // draw the separator bar in the middle
+                         CRect rectbar = rect;
+                         rectbar.left = rectbar.left - m_sizeButton.cx;
+                         rectbar.right = rectbar.left + m_sizeButton.cx;
+                         rectbar.top = rectbar.bottom+1;
+                         rectbar.bottom = rectbar.top+3;
+                         int y = (rectbar.top+rectbar.bottom)/2;
+                         rectbar.top = y-1; rectbar.bottom = y+1;
+                         pDC->Draw3dRect(rectbar,::GetSysColor(COLOR_3DSHADOW),::GetSysColor(COLOR_3DHILIGHT));
+                    }
+               }
+          }
+     }
+}
+
+// Draw the gripper at left or top
+void CFlatToolBar::DrawGripper(CWindowDC *pDC, CRect& rectWindow) {
+     // get the gripper rect (1 pixel smaller than toolbar)
+     CRect gripper = rectWindow;
+     gripper.DeflateRect(1,1);
+     if (m_dwStyle & CBRS_FLOATING) {
+          // no grippers
+     } else if (m_dwStyle & CBRS_ORIENT_HORZ) {
+          // gripper at left
+          gripper.right = gripper.left+3;
+          pDC->Draw3dRect(gripper,::GetSysColor(COLOR_3DHIGHLIGHT),::GetSysColor(COLOR_3DSHADOW));
+          gripper.OffsetRect(+4,0);
+          pDC->Draw3dRect(gripper,::GetSysColor(COLOR_3DHIGHLIGHT),::GetSysColor(COLOR_3DSHADOW));
+          rectWindow.left += 8;
+     } else {
+          // gripper at top
+          gripper.bottom = gripper.top+3;
+          pDC->Draw3dRect(gripper,::GetSysColor(COLOR_3DHIGHLIGHT),::GetSysColor(COLOR_3DSHADOW));
+          gripper.OffsetRect(0,+4);
+          pDC->Draw3dRect(gripper,::GetSysColor(COLOR_3DHIGHLIGHT),::GetSysColor(COLOR_3DSHADOW));
+          rectWindow.top += 8;
+     }
+}
+
+// Erase the non-client area (borders) - copied from MFC implementation
+void CFlatToolBar::EraseNonClient() {
+     // get window DC that is clipped to the non-client area
+     CWindowDC dc(this);
+     CRect rectClient;
+     GetClientRect(rectClient);
+     CRect rectWindow;
+     GetWindowRect(rectWindow);
+     ScreenToClient(rectWindow);
+     rectClient.OffsetRect(-rectWindow.left, -rectWindow.top);
+     dc.ExcludeClipRect(rectClient);
+
+     // draw borders in non-client area
+     rectWindow.OffsetRect(-rectWindow.left, -rectWindow.top);
+     DrawBorders(&dc, rectWindow);
+
+     // erase parts not drawn
+     dc.IntersectClipRect(rectWindow);
+     SendMessage(WM_ERASEBKGND, (WPARAM)dc.m_hDC);
+
+     DrawGripper(&dc, rectWindow); // <-- my addition to draw gripper
+}
+
+// Because buttons are transparaent, we need to repaint background if style changes
+void CFlatToolBar::OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler) {
+     static CUIntArray styles;
+     // get the number of buttons
+     int nIndexMax = (int)DefWindowProc(TB_BUTTONCOUNT, 0, 0);
+     int nIndex;
+     // save styles
+     for (nIndex = 0; nIndex < nIndexMax; nIndex++) {
+          UINT dwStyle = GetButtonStyle(nIndex);
+          styles.SetAtGrow(nIndex,dwStyle);
+     }
+     // do base class processing
+     CToolBar::OnUpdateCmdUI(pTarget,bDisableIfNoHndler);
+     // make checked button appear pushed in
+     for (nIndex = 0; nIndex < nIndexMax; nIndex++) {
+          UINT dwStyle = GetButtonStyle(nIndex);
+          if (dwStyle & TBBS_DISABLED) {
+               // don't touch if disabled (avoids flicker)
+          } else if (dwStyle & TBBS_CHECKBOX) {
+               UINT dwStyleWas = dwStyle;
+               // if checked, make it pressed, else not pressed
+               if (dwStyle & TBBS_CHECKED) {
+                    dwStyle |= TBBS_PRESSED;
+               } else if (!(styles[nIndex]&TBBS_CHECKED) && (styles[nIndex]&TBBS_PRESSED)) {
+                    dwStyle |= TBBS_PRESSED;
+               } else {
+                    dwStyle &= ~TBBS_PRESSED;
+               }
+               // set new style if changed
+               if (dwStyleWas != dwStyle) SetButtonStyle(nIndex,dwStyle);
+          }
+     }
+     // check for changes to style (buttons presssed/released)
+     for (nIndex = 0; nIndex < nIndexMax; nIndex++) {
+          UINT dwStyle = GetButtonStyle(nIndex);
+          if (styles[nIndex] != dwStyle) {
+               // repaint whole toolbar (not just this button)
+               Invalidate();
+               // no need to check any more
+               break;
+          }
+     }
+}
+
+// Because buttons are transparent, we need to repaint background on size or move
+void CFlatToolBar::OnWindowPosChanging(LPWINDOWPOS lpwp) {
+     // default processing
+     CToolBar::OnWindowPosChanging(lpwp);
+     RepaintBackground();
+}
+
+// Paint the toolbar
+void CFlatToolBar::OnPaint() {
+     // standard tolbar
+     CToolBar::OnPaint();
+     // erase the background
+     EraseNonClient();
+     // plus separators
+     DrawSeparators();
+}
+
+// Paint the non-client area - copied from MFC implementatios
+void CFlatToolBar::OnNcPaint() {
+     //   EraseNonClient(); don't do it here
+}
+
+// Calculate the non-client area - adjusting for grippers
+void CFlatToolBar::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp) {
+     CToolBar::OnNcCalcSize(bCalcValidRects,lpncsp);
+     // adjust non-client area for gripper at left or top
+     if (m_dwStyle & CBRS_FLOATING) {
+          // no grippers
+     } else if (m_dwStyle & CBRS_ORIENT_HORZ) {
+          // move 2 pixels right to make room
+          lpncsp->rgrc[0].left += 2;
+          lpncsp->rgrc[0].right += 2;
+     } else {
+          // move 4 pixels downto make room
+          lpncsp->rgrc[0].top += 4;
+          lpncsp->rgrc[0].bottom += 4;
+     }
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

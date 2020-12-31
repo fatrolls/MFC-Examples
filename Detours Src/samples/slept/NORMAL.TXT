@@ -1,0 +1,178 @@
+
+-------- Should not load slept.dll --------------------------------------
+
+C:\\Detours\samples\slept>..\bin\sleepold.exe
+sleepold.exe: Starting.
+  Original = 77e61be6
+    77e61be6: 6a 00                                           [00000000]
+    77e61be8: ff 74 24 08                                     [00000000]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 77e61be6
+    ... unchanged ...
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+sleepold.exe: Calling Sleep for 1 second.
+sleepold.exe: Done sleeping.
+
+
+-------- Adding slept.dll to sleepold.exe -------------------------------
+
+C:\\Detours\samples\slept>..\bin\setdll.exe -d:slept.dll ..\bin\sleepold.exe 
+Adding slept.dll to binary files.
+  ..\bin\sleepold.exe:
+    slept.dll
+    KERNEL32.dll -> KERNEL32.dll
+
+-------- Should load slept.dll statically -------------------------------
+
+C:\\Detours\samples\slept>..\bin\sleepold.exe
+slept.dll: Starting.
+  Original = 77e61be6
+    77e61be6: 6a 00                                           [00000000]
+    77e61be8: ff 74 24 08                                     [00000000]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 77e61be6
+    ... unchanged ...
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+
+sleepold.exe: Starting.
+  Original = 77e61be6
+    77e61be6: e9 d1 f5 19 98                                  [100011bc]
+    77e61beb: cc                                              [ffffffff]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 100011bc
+    100011bc: 55                                              [00000000]
+    100011bd: 8b ec                                           [00000000]
+    100011bf: 83 ec 08                                        [00000000]
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+sleepold.exe: Calling Sleep for 1 second.
+sleepold.exe: Done sleeping.
+
+slept.dll: Removed Sleep() trampoline, slept 1000 ticks.
+
+-------- Removing slept.dll from sleepold.exe ---------------------------
+
+C:\\Detours\samples\slept>..\bin\setdll.exe -r ..\bin\sleepold.exe 
+Removing extra DLLs from binary files.
+  ..\bin\sleepold.exe:
+    KERNEL32.dll -> KERNEL32.dll
+
+-------- Should not load slept.dll --------------------------------------
+
+C:\\Detours\samples\slept>..\bin\sleepold.exe
+sleepold.exe: Starting.
+  Original = 77e61be6
+    77e61be6: 6a 00                                           [00000000]
+    77e61be8: ff 74 24 08                                     [00000000]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 77e61be6
+    ... unchanged ...
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+sleepold.exe: Calling Sleep for 1 second.
+sleepold.exe: Done sleeping.
+
+
+-------- Should load slept.dll dynamically using withdll.exe ------------
+
+C:\\Detours\samples\slept>..\bin\withdll.exe -d:slept.dll ..\bin\sleepold.exe 
+withdll.exe: Starting: `..\bin\sleepold.exe'
+
+slept.dll: Starting.
+  Original = 77e61be6
+    77e61be6: 6a 00                                           [00000000]
+    77e61be8: ff 74 24 08                                     [00000000]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 77e61be6
+    ... unchanged ...
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+
+sleepold.exe: Starting.
+  Original = 77e61be6
+    77e61be6: e9 d1 f5 19 98                                  [100011bc]
+    77e61beb: cc                                              [ffffffff]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 100011bc
+    100011bc: 55                                              [00000000]
+    100011bd: 8b ec                                           [00000000]
+    100011bf: 83 ec 08                                        [00000000]
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+sleepold.exe: Calling Sleep for 1 second.
+sleepold.exe: Done sleeping.
+
+slept.dll: Removed Sleep() trampoline, slept 1000 ticks.
+
+-------- Should load slept.dll dynamically using injdll.exe ------------
+
+C:\\Detours\samples\slept>..\bin\sleepinj.exe /i:..\bin\injdll.exe /d:slept.dll ..\bin\sleepold.exe -wait  
+sleepinj: Starting child: `..\bin\sleepold.exe -wait'
+
+sleepold.exe: Starting.
+  Original = 77e61be6
+    77e61be6: 6a 00                                           [00000000]
+    77e61be8: ff 74 24 08                                     [00000000]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 77e61be6
+    ... unchanged ...
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+sleepold.exe: Waiting for detours_inject_test_event to be set.
+sleepinj: Starting inject: `..\bin\injdll.exe /p:1988 /d:slept.dll'
+
+injdll.exe: Injecting slept.dll into process 1988.
+slept.dll: Starting.
+  Original = 77e61be6
+    77e61be6: 6a 00                                           [00000000]
+    77e61be8: ff 74 24 08                                     [00000000]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 77e61be6
+    ... unchanged ...
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+
+
+sleepinj: Resuming execution through shared event...
+
+sleepold.exe: Calling Sleep for 1 second.
+sleepold.exe: Done sleeping.
+
+slept.dll: Removed Sleep() trampoline, slept 1000 ticks.
+
+-------- Should load slept.dll statically -------------------------------
+
+C:\\Detours\samples\slept>..\bin\sleepnew.exe
+slept.dll: Starting.
+  Original = 77e61be6
+    77e61be6: 6a 00                                           [00000000]
+    77e61be8: ff 74 24 08                                     [00000000]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 77e61be6
+    ... unchanged ...
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+
+sleepnew.exe: Starting.
+  Original = 77e61be6
+    77e61be6: e9 d1 f5 19 98                                  [100011bc]
+    77e61beb: cc                                              [ffffffff]
+    77e61bec: e8 71 59 01 00                                  [77e77562]
+  DetourGetFinalCode w/ Skip JMP = 100011bc
+    100011bc: 55                                              [00000000]
+    100011bd: 8b ec                                           [00000000]
+    100011bf: 83 ec 08                                        [00000000]
+  DetourGetFinalCode w/o Skip JMP = 77e61be6
+    ... unchanged ...
+sleepnew.exe: Calling Sleep for 1 second.
+sleepnew.exe: Calling TimedSleep for 1 second.
+sleepnew.exe: Calling UntimedSleep for 1 second.
+sleepnew.exe: Done sleeping.
+
+sleepnew.exe: GetSleptTicks() = 2000
+
+slept.dll: Removed Sleep() trampoline, slept 2000 ticks.
+
+-------- Test completed. ------------------------------------------------

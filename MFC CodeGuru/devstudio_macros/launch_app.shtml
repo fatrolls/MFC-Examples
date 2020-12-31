@@ -1,0 +1,165 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Jaroslav Pisk">
+   <TITLE>DevStudio Macros - Application Launcher</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT color=#a0a099>Application Launcher</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This article was contributed by <A href="mailto:ofrancis@ansi.org">Omar Francisco</A>
+
+<P>As I develop my code, I find myself constantly looking for information about 
+a particular API in the MSDN CD-ROMs, the Microsoft web site and sometimes all 
+over the Internet. When I find links relevant to the work at hand, I copy and 
+paste them as comment into my code. Whenever I want to reference this 
+information again, I copy the link into my browser and away it goes. After doing 
+this a few times, I knew there had to be a better way, that is how the LaunchApp 
+macro was born. LauchApp allows you to fire up links from within a comment block 
+to Word, Excel, Access, Power Point, Visio and Html files. The macro can be 
+extended to handle any file type (PDF, Corel Draw, etc) you or your team include 
+in your code documentation. The following code fragment shows a typical use of 
+the macro.</P>
+
+<P><PRE><TT>
+/*CustomRecipient
+Creates a custom recipient in MS Exchange Global address list. For more
+information on the technique used in this function and other aspects of
+DAPI see [mk:@ivt:kb/source/mapi/q165931.htm].
+For information on the interface design for this class see [d:\data\xfiles\myproject.doc].
+For a quick solution to send email see the code guru site. [http://www.codeguru.com/internet/imapi.shtml]
+<BR>
+CustomRecipient(LPSTR strRecipient)
+{
+	// Your code goes here
+}
+*/
+</P></TT></PRE>
+
+<P>To access any of the links embeded in your comment, all you need to do is place the cursor
+anywhere within the [ ] pair and lauch the LaunchApp macro.  The macro will bring the proper
+application with the document or link loaded.  Needless to say that you will save time by adding
+this macro to a tool bar or keyboard pair of keys.</P>
+
+<PRE><TT><FONT COLOR="#990000">
+Sub LaunchApp()
+'DESCRIPTION: Launch link or document embeded in comment block
+	
+	'Get the current cursor positon
+	cpos = ActiveDocument.Selection.CurrentColumn
+
+	'Select, capture current line and convert tabs to spaces
+	ActiveDocument.Selection.SelectLine
+	ActiveDocument.Selection.Untabify
+	Link = ActiveDocument.Selection.Text
+
+	'Restore tabs
+	ActiveDocument.Undo
+  
+
+	'Delete return&amp;linefeed at the end of line
+	Link = Left(Link,Len(Link)-2)
+
+	' Split selected line at cpos - Check for Rpos at end of line
+	Rpos = Len(link)-cpos
+	if Rpos &lt;= 0 then
+		Rside = &quot;&quot;
+	else
+		Rside = Right(Link,Len(Link) - cpos)
+	end if 
+	Lside = Left(Link, cpos)
+
+
+	' Get text within [ ] pair
+	bpos = InstrRev(Rside, &quot;]&quot;, -1)
+	if bpos &gt; 0 then
+		Rside = Left(Rside,  bpos - 1  )
+	else
+	    Rside = &quot;&quot;	
+		Lside = Left(Lside, Len(Lside) - 1) ' ] is included in left side
+	end if
+
+	Lside = Right(Lside,Len(Lside) - InstrRev(Lside, &quot;[&quot;, -1))
+	Link = Lside &amp; Rside
+
+	' Open link - If no application is found default is web browser
+	if Link &lt;&gt; &quot;&quot; then
+
+		' Trim tab and spaces from selected text.
+		Do While InStr(Link, vbTab) &lt;&gt; 0
+			Link = Right(Link, Len(Link) - InStr(Link, vbTab)) 
+		Loop 
+		Link = Trim(Link)
+
+		' Determine file type by looking at the extension
+		ExtPos = InstrRev(Link, &quot;.&quot;, -1, 1)
+
+		' An extension must exist in order to process the selected text
+		if ExtPos &gt; 0 then
+			Ext = LCase(Right(Link,Len(Link)-ExtPos))
+
+			' This is the object to handle the selected application.  See
+			' [mk:@ivt:project/project/pssvba/mod3les3.htm] for object information
+			' TODO$: Use Shell or Explorer object to handle any registered file format.
+			Dim AppObject
+
+			Select Case Ext
+				Case &quot;doc&quot;, &quot;rtf&quot;		'MS word
+					Set AppObject = CreateObject(&quot;Word.Basic&quot;)
+					AppObject.AppShow
+					AppObject.FileOpen Link
+
+				Case &quot;xls&quot;				'MS Excel
+					Set AppObject = CreateObject(&quot;Excel.Application&quot;)
+					AppObject.Visible = True
+					AppObject.Workbooks.Open Link
+					
+				Case &quot;ppt&quot;				'MS Power Point
+					Set AppObject = CreateObject(&quot;PowerPoint.Application&quot;)
+					AppObject.Visible = True
+					AppObject.Presentations.Open Link
+
+				Case &quot;mdb&quot;				'MS Access
+					Set AppObject = CreateObject(&quot;Access.Application&quot;)
+					AppObject.Visible = True
+					AppObject.OpenCurrentDatabase Link
+					
+				Case &quot;vsd&quot;				'Visio
+				    Set AppObject = CreateObject(&quot;visio.application&quot;)
+					AppObject.Documents.Open Link	
+
+				Case Else				' Internet Explorer
+					Set AppObject = CreateObject(&quot;InternetExplorer.Application.1&quot;)
+					AppObject.Visible = True
+					AppObject.Navigate(Link)
+			End Select
+
+		else
+			MsgBox(&quot;The text you have selected does not have a valid file extension.&quot;)			
+		end if
+	end if
+End Sub
+</FONT></TT></PRE>
+
+<P>Posted on: May 25, 1998.</P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

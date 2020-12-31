@@ -1,0 +1,119 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Masked Edit control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Masked Edit control
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:sam.claret@dial.pipex.com">Sam Claret</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="masked_edit.zip">Download Source Code</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>I got this masked edit control code from someone (I can't remember whom
+it was). If anyone wishes to lay claim to the original they are more than welcome.
+I have found this quite useful. So I can't lay claim to doing all or even most of this.
+However I have enhanced the code to deal with times as well as dates.
+
+<p>I have also added validation of the keystrokes so that invalid times i.e. &gt;
+23:59 are not allowed. (I have limited the time validation to minutes. It would be no 
+great effort to add in the seconds. Validation for dates is a little more difficult. 
+Validation is limited to months &lt; 13 and days &lt; 32.
+
+<p>i.e you can put in 31/02/1998 for example.
+
+<p>Ok how to make it work. There are three classes
+
+<ul>
+<li>CMaskEdit
+<li>CDateEdit
+<li>CTimeEdit
+</ul>
+
+<p>Include the two files MASKED.CPP and MASKED.H in your project.
+Also include &lt;afxdao.h&gt; for the COleDateTime features if you already
+haven't. Modify the include line that says #include "myproj" to point to your
+project. Create a CEdit control and declare a control variable in your dialog
+then modify the CEdit declaration in the class header to say either
+CDateEdit or CTimeEdit
+
+<h4>CDateEdit:</h4>
+
+<p>Pass your time to CDateEdit with
+
+<FONT COLOR="#990000"><TT><PRE>	CDateEdit myeditctrl;
+	myeditctrl.SetDate(COleDateTime var);
+</tt></PRE></FONT>
+
+<p>and get the edited result back with
+
+<FONT COLOR="#990000"><TT><PRE>	COleDateTime var = myeditctrl.GetDate();
+</tt></PRE></FONT>
+
+<h4>CTimeEdit:</h4>
+
+<p>Pass your time to CTimeEdit with
+
+<FONT COLOR="#990000"><TT><PRE>	CTimeEdit myeditctrl;
+	myeditctrl.SetTime(COleDateTime var);
+</tt></PRE></FONT>
+
+<p>and get the edited result back with
+
+<FONT COLOR="#990000"><TT><PRE>	COleDateTime var = myeditctrl.GetTime();
+</tt></PRE></FONT>
+
+<p>and there you have it.
+
+<p>Please feel free to modify any modifications I have made. These are stated
+with //added this
+
+<!-- Remember to update this -->
+<p>Last updated: 15 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

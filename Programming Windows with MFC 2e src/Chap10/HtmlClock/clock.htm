@@ -1,0 +1,47 @@
+<HTML>
+<HEAD><TITLE>DHTML Clock Demo</TITLE></HEAD>
+<BODY BGCOLOR="#FF0000">
+<H1 STYLE="font-family:comic sans ms" ALIGN=center>DHTML Clock</H1>
+<DIV ID=Clock ALIGN=center STYLE="font-family:arial; font-size:64; color:#FFFFFF">&nbsp;</DIV>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function tick() {
+    var hours, minutes, seconds, ampm;
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+
+    if (h < 12) { 
+        hours = h + ":";
+        ampm = "A.M.";
+    }
+    else if (h == 12) {
+        hours = "12:";
+        ampm = "P.M.";
+    }
+    else {
+        h = h - 12;
+        hours = h + ":";
+        ampm = "P.M.";
+    }
+
+    if (m < 10)
+        minutes = "0" + m + ":";
+    else
+        minutes = m + ":";
+
+    if (s < 10)
+        seconds = "0" + s + " ";
+    else
+        seconds = s + " ";
+
+    Clock.innerHTML = hours + minutes + seconds + ampm;
+    window.setTimeout("tick();", 100);
+}
+window.onload = tick;
+-->
+</SCRIPT>
+</BODY>
+</HTML>

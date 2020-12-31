@@ -1,0 +1,949 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+$$IF(PROJTYPE_MDI)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_MAINFRAME$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&New\t\21N",                  ID_FILE_NEW
+		MENUITEM "&Open...\t\21O",              ID_FILE_OPEN
+$$IF(PRINT)
+		MENUITEM SEPARATOR
+		MENUITEM "Page Setup...",				ID_FILE_PRINT_SETUP
+$$ENDIF //PRINT
+$$IF(HAS_MRU)
+		MENUITEM SEPARATOR
+		MENUITEM "Recent File",                 ID_FILE_MRU_FILE1,GRAYED
+$$ENDIF //HAS_MRU
+		MENUITEM SEPARATOR
+		MENUITEM "Quit\t\21Q",                  ID_APP_EXIT
+	END
+$$IF(TOOLBAR || STATUSBAR)
+	POPUP "&View"
+	BEGIN
+$$IF(TOOLBAR)
+		MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+$$ENDIF //TOOLBAR
+$$IF(STATUSBAR)
+		MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+$$ENDIF //STATUSBAR
+	END
+$$ENDIF //TOOLBAR || STATUSBAR
+$$IF(HELP)
+    POPUP "&Help", HELP
+	BEGIN
+		MENUITEM "&Help Topics",                ID_HELP_FINDER
+	END
+$$ENDIF //HELP
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_$$DOC$$TYPE$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_$$DOC$$TYPE MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_$$DOC$$TYPE MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&New\t\21N",                  ID_FILE_NEW
+		MENUITEM "&Open...\t\21O",              ID_FILE_OPEN
+		MENUITEM "&Close\t\21W",                ID_FILE_CLOSE
+		MENUITEM "&Save\t\21S",                 ID_FILE_SAVE
+		MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+$$IF(PRINT)
+		MENUITEM SEPARATOR
+		MENUITEM "Page Setup...",				ID_FILE_PRINT_SETUP
+		MENUITEM "&Print...\t\21P",             ID_FILE_PRINT
+		MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+$$ENDIF //PRINT
+$$IF(HAS_MRU)
+		MENUITEM SEPARATOR
+		MENUITEM "Recent File",                 ID_FILE_MRU_FILE1,GRAYED
+$$ENDIF //HAS_MRU
+		MENUITEM SEPARATOR
+		MENUITEM "Quit\t\21Q",                  ID_APP_EXIT
+	END
+	POPUP "&Edit"
+	BEGIN
+		MENUITEM "&Undo\t\21Z",                 ID_EDIT_UNDO
+		MENUITEM SEPARATOR
+		MENUITEM "Cu&t\t\21X",                  ID_EDIT_CUT
+		MENUITEM "&Copy\t\21C",                 ID_EDIT_COPY
+		MENUITEM "&Paste\t\21V",                ID_EDIT_PASTE
+$$IF(CONTAINER || CONTAINER_SERVER)
+        MENUITEM "Paste &Special...",           ID_EDIT_PASTE_SPECIAL
+$$IF(CRichEditView)
+        MENUITEM "Select A&ll\t\21A",           ID_EDIT_SELECT_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\t\21F",              ID_EDIT_FIND
+        MENUITEM "F&ind Next\t\21G",            ID_EDIT_REPEAT
+        MENUITEM "R&eplace\t\21H",              ID_EDIT_REPLACE
+$$ENDIF //CRichEditView
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &New Object...",       ID_OLE_INSERT_NEW
+        MENUITEM "Lin&ks...",                   ID_OLE_EDIT_LINKS
+$$IF(CRichEditView)
+        MENUITEM "Object P&roperties",          ID_OLE_EDIT_PROPERTIES
+$$ENDIF //CRichEditView
+        MENUITEM "<<OLE VERBS GO HERE>>",       ID_OLE_VERB_FIRST
+$$ENDIF //CONTAINER || CONTAINER_SERVER
+	END
+$$IF(CRecordView || CDaoRecordView)
+	POPUP "&Record"
+	BEGIN
+		MENUITEM "&First Record"				ID_RECORD_FIRST
+		MENUITEM "&Previous Record"				ID_RECORD_PREV
+		MENUITEM "&Next Record"					ID_RECORD_NEXT
+		MENUITEM "&Last Record"					ID_RECORD_LAST
+	END
+$$ENDIF //CRecordView || CDaoRecordView
+$$IF(TOOLBAR || STATUSBAR)
+	POPUP "&View"
+	BEGIN
+$$IF(TOOLBAR)
+		MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+$$ENDIF //TOOLBAR
+$$IF(STATUSBAR)
+		MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+$$ENDIF //STATUSBAR
+	END
+$$ENDIF //TOOLBAR || STATUSBAR
+	POPUP "&Window"
+	BEGIN
+		MENUITEM "&New Window",                 ID_WINDOW_NEW
+		MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+		MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+$$IF(SPLITTER)
+		MENUITEM "S&plit",                      ID_WINDOW_SPLIT
+$$ENDIF //SPLITTER
+	END
+$$IF(HELP)
+    POPUP "&Help", HELP
+	BEGIN
+		MENUITEM "&Help Topics",                ID_HELP_FINDER
+	END
+$$ENDIF //HELP
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/ALPHA
+
+$$IF(CONTAINER || CONTAINER_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_$$DOC$$TYPE_CNTR_IP$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_$$DOC$$TYPE_CNTR_IP MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_$$DOC$$TYPE_CNTR_IP MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&New\t\21N",                  ID_FILE_NEW
+		MENUITEM "&Open...\t\21O",              ID_FILE_OPEN
+		MENUITEM "&Close\t\21W",                ID_FILE_CLOSE
+		MENUITEM "&Save\t\21S",                 ID_FILE_SAVE
+		MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+$$IF(PRINT)
+		MENUITEM SEPARATOR
+		MENUITEM "Page Setup...",				ID_FILE_PRINT_SETUP
+		MENUITEM "&Print...\t\21P",             ID_FILE_PRINT
+		MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+$$ENDIF //PRINT
+$$IF(HAS_MRU)
+		MENUITEM SEPARATOR
+		MENUITEM "Recent File",                 ID_FILE_MRU_FILE1,GRAYED
+$$ENDIF //HAS_MRU
+		MENUITEM SEPARATOR
+		MENUITEM "Quit\t\21Q",                  ID_APP_EXIT
+	END
+	MENUITEM SEPARATOR
+	MENUITEM SEPARATOR
+	POPUP "&Window"
+	BEGIN
+		MENUITEM "&New Window",                 ID_WINDOW_NEW
+		MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+		MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+$$IF(SPLITTER)
+		MENUITEM "S&plit",                      ID_WINDOW_SPLIT
+$$ENDIF //SPLITTER
+	END
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/ALPHA
+$$ENDIF//CONTAINER || CONTAINER_SERVER
+
+$$IF(MINI_SERVER || FULL_SERVER || CONTAINER_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_$$DOC$$TYPE_SRVR_EMB$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_$$DOC$$TYPE_SRVR_EMB MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_$$DOC$$TYPE_SRVR_EMB MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&New\t\21N",                  ID_FILE_NEW
+		MENUITEM "&Open...\t\21O",              ID_FILE_OPEN
+		MENUITEM "&Close\t\21W",                ID_FILE_CLOSE
+		MENUITEM "&Update\t\21S",        		ID_FILE_UPDATE
+$$IF(MINI_SERVER)
+$$ELSE		
+		MENUITEM "Save Copy &As...",            ID_FILE_SAVE_COPY_AS
+$$ENDIF		
+$$IF(PRINT)
+		MENUITEM SEPARATOR
+		MENUITEM "Page Setup...",				ID_FILE_PRINT_SETUP
+		MENUITEM "&Print...\t\21P",             ID_FILE_PRINT
+		MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+$$ENDIF //PRINT
+$$IF(HAS_MRU)
+		MENUITEM SEPARATOR
+		MENUITEM "Recent File",                 ID_FILE_MRU_FILE1,GRAYED
+$$ENDIF //HAS_MRU
+		MENUITEM SEPARATOR
+		MENUITEM "Quit\t\21Q",                  ID_APP_EXIT
+	END
+	POPUP "&Edit"
+	BEGIN
+		MENUITEM "&Undo\t\21Z",                 ID_EDIT_UNDO
+		MENUITEM SEPARATOR
+		MENUITEM "Cu&t\t\21X",                  ID_EDIT_CUT
+		MENUITEM "&Copy\t\21C",                 ID_EDIT_COPY
+		MENUITEM "&Paste\t\21V",                ID_EDIT_PASTE
+$$IF(CONTAINER || CONTAINER_SERVER)
+        MENUITEM "Paste &Special...",           ID_EDIT_PASTE_SPECIAL
+$$IF(CRichEditView)
+        MENUITEM "Select A&ll\t\21A",           ID_EDIT_SELECT_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\t\21F",              ID_EDIT_FIND
+        MENUITEM "F&ind Next\t\21G",            ID_EDIT_REPEAT
+        MENUITEM "R&eplace\t\21H",              ID_EDIT_REPLACE
+$$ENDIF //CRichEditView
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &New Object...",       ID_OLE_INSERT_NEW
+        MENUITEM "Lin&ks...",                   ID_OLE_EDIT_LINKS
+$$IF(CRichEditView)
+        MENUITEM "Object P&roperties",          ID_OLE_EDIT_PROPERTIES
+$$ENDIF //CRichEditView
+        MENUITEM "<<OLE VERBS GO HERE>>",       ID_OLE_VERB_FIRST
+$$ENDIF //CONTAINER || CONTAINER_SERVER
+	END
+$$IF(CRecordView || CDaoRecordView)
+	POPUP "&Record"
+	BEGIN
+		MENUITEM "&First Record"				ID_RECORD_FIRST
+		MENUITEM "&Previous Record"				ID_RECORD_PREV
+		MENUITEM "&Next Record"					ID_RECORD_NEXT
+		MENUITEM "&Last Record"					ID_RECORD_LAST
+	END
+$$ENDIF //CRecordView || CDaoRecordView
+$$IF(TOOLBAR || STATUSBAR)
+	POPUP "&View"
+	BEGIN
+$$IF(TOOLBAR)
+		MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+$$ENDIF //TOOLBAR
+$$IF(STATUSBAR)
+		MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+$$ENDIF //STATUSBAR
+	END
+$$ENDIF //TOOLBAR || STATUSBAR
+	POPUP "&Window"
+	BEGIN
+		MENUITEM "&New Window",                 ID_WINDOW_NEW
+		MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+		MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+$$IF(SPLITTER)
+		MENUITEM "S&plit",                      ID_WINDOW_SPLIT
+$$ENDIF //SPLITTER
+	END
+$$IF(HELP)
+    POPUP "&Help", HELP
+	BEGIN
+		MENUITEM "&Help Topics",                ID_HELP_FINDER
+	END
+$$ENDIF //HELP
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_$$DOC$$TYPE_SRVR_IP$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_$$DOC$$TYPE_SRVR_IP MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_$$DOC$$TYPE_SRVR_IP MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	POPUP "&Edit"
+	BEGIN
+		MENUITEM "&Undo\t\21Z",                 ID_EDIT_UNDO
+		MENUITEM SEPARATOR
+		MENUITEM "Cu&t\t\21X",                  ID_EDIT_CUT
+		MENUITEM "&Copy\t\21C",                 ID_EDIT_COPY
+		MENUITEM "&Paste\t\21V",                ID_EDIT_PASTE
+$$IF(CONTAINER || CONTAINER_SERVER)
+        MENUITEM "Paste &Special...",           ID_EDIT_PASTE_SPECIAL
+$$IF(CRichEditView)
+        MENUITEM "Select A&ll\t\21A",           ID_EDIT_SELECT_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\t\21F",              ID_EDIT_FIND
+        MENUITEM "F&ind Next\t\21G",            ID_EDIT_REPEAT
+        MENUITEM "R&eplace\t\21H",              ID_EDIT_REPLACE
+$$ENDIF //CRichEditView
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &New Object...",       ID_OLE_INSERT_NEW
+        MENUITEM "Lin&ks...",                   ID_OLE_EDIT_LINKS
+$$IF(CRichEditView)
+        MENUITEM "Object P&roperties",          ID_OLE_EDIT_PROPERTIES
+$$ENDIF //CRichEditView
+        MENUITEM "<<OLE VERBS GO HERE>>",       ID_OLE_VERB_FIRST
+$$ENDIF //CONTAINER || CONTAINER_SERVER
+	END
+$$IF(CRecordView || CDaoRecordView)
+	POPUP "&Record"
+	BEGIN
+		MENUITEM "&First Record"				ID_RECORD_FIRST
+		MENUITEM "&Previous Record"				ID_RECORD_PREV
+		MENUITEM "&Next Record"					ID_RECORD_NEXT
+		MENUITEM "&Last Record"					ID_RECORD_LAST
+	END
+$$ENDIF //CRecordView || CDaoRecordView
+$$IF(TOOLBAR)
+	POPUP "&View"
+	BEGIN
+		MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+	END
+$$ENDIF //TOOLBAR
+	MENUITEM SEPARATOR
+	MENUITEM SEPARATOR
+$$IF(HELP)
+    POPUP "&Help", HELP
+	BEGIN
+		MENUITEM "&Help Topics",                ID_HELP_FINDER
+	END
+$$ENDIF //HELP
+END
+$$IF(TARGET_MIPS || TARGET_INTEL || TARGET_ALPHA)
+#endif
+$$ENDIF //MIPS/INTEL/ALPHA
+$$ENDIF//MINI_SERVER || FULL_SERVER || CONTAINER_SERVER
+
+$$ELSE // SDI
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_MAINFRAME$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+$$IF(MINI_SERVER)
+	POPUP "&File"
+	BEGIN
+		MENUITEM "Quit\t\21Q",                  ID_APP_EXIT
+		MENUITEM SEPARATOR
+		MENUITEM "&About $$Root$$...",         ID_APP_ABOUT
+	END
+$$ELSE
+	POPUP "&File"
+	BEGIN
+$$IF(!DB_NO_FILE)
+		MENUITEM "&New\t\21N",                  ID_FILE_NEW
+		MENUITEM "&Open...\t\21O",              ID_FILE_OPEN
+		MENUITEM "&Save\t\21S",                 ID_FILE_SAVE
+		MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+$$ENDIF //!DB_NO_FILE
+$$IF(PRINT)
+$$IF(!DB_NO_FILE)
+		MENUITEM SEPARATOR
+$$ENDIF //!DB_NO_FILE
+		MENUITEM "Page Setup...",				ID_FILE_PRINT_SETUP
+		MENUITEM "&Print...\t\21P",             ID_FILE_PRINT
+		MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+$$ENDIF //PRINT
+$$IF(DB_NO_FILE)
+$$IF(PRINT)
+		MENUITEM SEPARATOR
+$$ENDIF //PRINT
+		MENUITEM "Quit\t\21Q",					ID_APP_EXIT
+$$ELSE  //!DB_NO_FILE
+$$IF(HAS_MRU)
+		MENUITEM SEPARATOR
+		MENUITEM "Recent File",                 ID_FILE_MRU_FILE1,GRAYED
+$$ENDIF //HAS_MRU
+		MENUITEM SEPARATOR
+		MENUITEM "Quit\t\21Q",                  ID_APP_EXIT
+$$ENDIF //DB_NO_FILE
+	END
+	POPUP "&Edit"
+	BEGIN
+		MENUITEM "&Undo\t\21Z",                 ID_EDIT_UNDO
+		MENUITEM SEPARATOR
+		MENUITEM "Cu&t\t\21X",                  ID_EDIT_CUT
+		MENUITEM "&Copy\t\21C",                 ID_EDIT_COPY
+		MENUITEM "&Paste\t\21V",                ID_EDIT_PASTE
+$$IF(CONTAINER || CONTAINER_SERVER)
+        MENUITEM "Paste &Special...",           ID_EDIT_PASTE_SPECIAL
+$$IF(CRichEditView)
+        MENUITEM "Select A&ll\t\21A",           ID_EDIT_SELECT_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\t\21F",              ID_EDIT_FIND
+        MENUITEM "F&ind Next\t\21G",            ID_EDIT_REPEAT
+        MENUITEM "R&eplace\t\21H",              ID_EDIT_REPLACE
+$$ENDIF //CRichEditView
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &New Object...",       ID_OLE_INSERT_NEW
+        MENUITEM "Lin&ks...",                   ID_OLE_EDIT_LINKS
+$$IF(CRichEditView)
+        MENUITEM "Object P&roperties",          ID_OLE_EDIT_PROPERTIES
+$$ENDIF //CRichEditView
+        MENUITEM "<<OLE VERBS GO HERE>>",       ID_OLE_VERB_FIRST
+$$ENDIF //CONTAINER || CONTAINER_SERVER
+	END
+$$IF(CRecordView || CDaoRecordView)
+	POPUP "&Record"
+	BEGIN
+		MENUITEM "&First Record"				ID_RECORD_FIRST
+		MENUITEM "&Previous Record"				ID_RECORD_PREV
+		MENUITEM "&Next Record"					ID_RECORD_NEXT
+		MENUITEM "&Last Record"					ID_RECORD_LAST
+	END
+$$ENDIF //CRecordView || CDaoRecordView
+$$IF(TOOLBAR || STATUSBAR || SPLITTER)
+	POPUP "&View"
+	BEGIN
+$$IF(TOOLBAR)
+		MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+$$ENDIF //TOOLBAR
+$$IF(STATUSBAR)
+		MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+$$ENDIF //STATUSBAR
+$$IF(SPLITTER)
+		MENUITEM "S&plit",                      ID_WINDOW_SPLIT
+$$ENDIF //SPLITTER
+	END
+$$ENDIF //TOOLBAR || STATUSBAR
+$$IF(HELP)
+    POPUP "&Help", HELP
+	BEGIN
+		MENUITEM "&Help Topics",                ID_HELP_FINDER
+	END
+$$ENDIF //HELP
+$$ENDIF//!MINI_SERVER
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/INTEL/ALPHA
+
+$$IF(CONTAINER || CONTAINER_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_CNTR_INPLACE$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_CNTR_INPLACE MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_CNTR_INPLACE MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&New\t\21N",                  ID_FILE_NEW
+		MENUITEM "&Open...\t\21O",              ID_FILE_OPEN
+		MENUITEM "&Save\t\21S",                 ID_FILE_SAVE
+		MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+$$IF(PRINT)
+		MENUITEM SEPARATOR
+		MENUITEM "Page Setup...",				ID_FILE_PRINT_SETUP
+		MENUITEM "&Print...\t\21P",             ID_FILE_PRINT
+		MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+$$ENDIF //PRINT
+$$IF(HAS_MRU)
+		MENUITEM SEPARATOR
+		MENUITEM "Recent File",                 ID_FILE_MRU_FILE1,GRAYED
+$$ENDIF //HAS_MRU
+		MENUITEM SEPARATOR
+		MENUITEM "Quit\t\21Q",                  ID_APP_EXIT
+	END
+	MENUITEM SEPARATOR
+	MENUITEM SEPARATOR
+END
+$$IF(TARGET_MIPS || TARGET_INTEL || TARGET_ALPHA)
+#endif
+$$ENDIF //MIPS/INTEL/ALPHA
+$$ENDIF//CONTAINER || CONTAINER_SERVER
+
+$$IF(MINI_SERVER || FULL_SERVER || CONTAINER_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_SRVR_INPLACE$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_SRVR_INPLACE MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_SRVR_INPLACE MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	POPUP "&Edit"
+	BEGIN
+		MENUITEM "&Undo\t\21Z",                 ID_EDIT_UNDO
+		MENUITEM SEPARATOR
+		MENUITEM "Cu&t\t\21X",                  ID_EDIT_CUT
+		MENUITEM "&Copy\t\21C",                 ID_EDIT_COPY
+		MENUITEM "&Paste\t\21V",                ID_EDIT_PASTE
+$$IF(CONTAINER || CONTAINER_SERVER)
+        MENUITEM "Paste &Special...",           ID_EDIT_PASTE_SPECIAL
+$$IF(CRichEditView)
+        MENUITEM "Select A&ll\t\21A",           ID_EDIT_SELECT_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\t\21F",              ID_EDIT_FIND
+        MENUITEM "F&ind Next\t\21G",            ID_EDIT_REPEAT
+        MENUITEM "R&eplace\t\21H",              ID_EDIT_REPLACE
+$$ENDIF //CRichEditView
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &New Object...",       ID_OLE_INSERT_NEW
+        MENUITEM "Lin&ks...",                   ID_OLE_EDIT_LINKS
+$$IF(CRichEditView)
+        MENUITEM "Object P&roperties",          ID_OLE_EDIT_PROPERTIES
+$$ENDIF //CRichEditView
+        MENUITEM "<<OLE VERBS GO HERE>>",       ID_OLE_VERB_FIRST
+$$ENDIF //CONTAINER || CONTAINER_SERVER
+	END
+$$IF(CRecordView || CDaoRecordView)
+	POPUP "&Record"
+	BEGIN
+		MENUITEM "&First Record"				ID_RECORD_FIRST
+		MENUITEM "&Previous Record"				ID_RECORD_PREV
+		MENUITEM "&Next Record"					ID_RECORD_NEXT
+		MENUITEM "&Last Record"					ID_RECORD_LAST
+	END
+$$ENDIF //CRecordView || CDaoRecordView
+$$IF(TOOLBAR)
+	POPUP "&View"
+	BEGIN
+		MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+	END
+$$ENDIF //TOOLBAR
+	MENUITEM SEPARATOR
+	MENUITEM SEPARATOR
+$$IF(HELP)
+    POPUP "&Help", HELP
+	BEGIN
+		MENUITEM "&Help Topics",                ID_HELP_FINDER
+	END
+$$ENDIF //HELP
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_SRVR_EMBEDDED$(_MAC) MENU PRELOAD DISCARDABLE 
+#else
+IDR_SRVR_EMBEDDED MENU PRELOAD DISCARDABLE 
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_SRVR_EMBEDDED MENU PRELOAD DISCARDABLE 
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	POPUP "&File"
+	BEGIN
+		MENUITEM "&Update\t\21S",        		ID_FILE_UPDATE
+$$IF(!MINI_SERVER)
+		MENUITEM "Save Copy &As...",            ID_FILE_SAVE_COPY_AS
+$$ENDIF		
+$$IF(PRINT)
+		MENUITEM SEPARATOR
+		MENUITEM "Page Setup...",				ID_FILE_PRINT_SETUP
+		MENUITEM "&Print...\t\21P",             ID_FILE_PRINT
+		MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+$$ENDIF //PRINT
+		MENUITEM SEPARATOR
+		MENUITEM "Quit\t\21Q",                  ID_APP_EXIT
+	END
+	POPUP "&Edit"
+	BEGIN
+		MENUITEM "&Undo\t\21Z",                 ID_EDIT_UNDO
+		MENUITEM SEPARATOR
+		MENUITEM "Cu&t\t\21X",                  ID_EDIT_CUT
+		MENUITEM "&Copy\t\21C",                 ID_EDIT_COPY
+		MENUITEM "&Paste\t\21V",                ID_EDIT_PASTE
+$$IF(CONTAINER || CONTAINER_SERVER)
+        MENUITEM "Paste &Special...",           ID_EDIT_PASTE_SPECIAL
+$$IF(CRichEditView)
+        MENUITEM "Select A&ll\t\21A",           ID_EDIT_SELECT_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\t\21F",              ID_EDIT_FIND
+        MENUITEM "F&ind Next\t\21G",            ID_EDIT_REPEAT
+        MENUITEM "R&eplace\t\21H",              ID_EDIT_REPLACE
+$$ENDIF //CRichEditView
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &New Object...",       ID_OLE_INSERT_NEW
+        MENUITEM "Lin&ks...",                   ID_OLE_EDIT_LINKS
+$$IF(CRichEditView)
+        MENUITEM "Object P&roperties",          ID_OLE_EDIT_PROPERTIES
+$$ENDIF //CRichEditView
+        MENUITEM "<<OLE VERBS GO HERE>>",       ID_OLE_VERB_FIRST
+$$ENDIF //CONTAINER || CONTAINER_SERVER
+	END
+$$IF(CRecordView || CDaoRecordView)
+	POPUP "&Record"
+	BEGIN
+		MENUITEM "&First Record"				ID_RECORD_FIRST
+		MENUITEM "&Previous Record"				ID_RECORD_PREV
+		MENUITEM "&Next Record"					ID_RECORD_NEXT
+		MENUITEM "&Last Record"					ID_RECORD_LAST
+	END
+$$ENDIF //CRecordView || CDaoRecordView
+$$IF(TOOLBAR || STATUSBAR || SPLITTER)
+	POPUP "&View"
+	BEGIN
+$$IF(TOOLBAR)
+		MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+$$ENDIF //TOOLBAR
+$$IF(STATUSBAR)
+		MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+$$ENDIF //STATUSBAR
+$$IF(SPLITTER)
+		MENUITEM "S&plit",                      ID_WINDOW_SPLIT
+$$ENDIF //SPLITTER
+	END
+$$ENDIF //TOOLBAR || STATUSBAR
+$$IF(HELP)
+    POPUP "&Help", HELP
+	BEGIN
+		MENUITEM "&Help Topics",                ID_HELP_FINDER
+	END
+$$ENDIF //HELP
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/ALPHA
+$$ENDIF(MINI_SERVER || FULL_SERVER || CONTAINER_SERVER)
+$$ENDIF //SDI
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+$$IF(!MINI_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_MAINFRAME$(_MAC) ACCELERATORS PRELOAD MOVEABLE
+#else
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+$$IF(!DB_NO_FILE)
+	"N",            ID_FILE_NEW,            VIRTKEY,ALT
+	"O",            ID_FILE_OPEN,           VIRTKEY,ALT
+	"S",            ID_FILE_SAVE,           VIRTKEY,ALT
+	"W",            ID_FILE_CLOSE,          VIRTKEY,ALT
+	"Q",            ID_APP_EXIT,            VIRTKEY,ALT
+$$ENDIF //!DB_NO_FILE
+$$IF(PRINT)
+	"P",            ID_FILE_PRINT,          VIRTKEY,ALT
+$$ENDIF //PRINT
+	"Z",            ID_EDIT_UNDO,           VIRTKEY,ALT
+	"X",            ID_EDIT_CUT,            VIRTKEY,ALT
+	"C",            ID_EDIT_COPY,           VIRTKEY,ALT
+	"V",            ID_EDIT_PASTE,          VIRTKEY,ALT
+$$IF(CRichEditView)
+	"A",            ID_EDIT_SELECT_ALL,     VIRTKEY,ALT
+	"F",            ID_EDIT_FIND,           VIRTKEY,ALT
+	"G",            ID_EDIT_REPEAT,         VIRTKEY,ALT
+	"H",            ID_EDIT_REPLACE,        VIRTKEY,ALT
+$$ENDIF //CRichEditView
+	VK_BACK,        ID_EDIT_UNDO,           VIRTKEY,ALT
+	VK_DELETE,      ID_EDIT_CUT,            VIRTKEY,SHIFT
+	VK_INSERT,      ID_EDIT_COPY,           VIRTKEY,ALT
+	VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY,SHIFT
+	VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+	VK_F6,          ID_PREV_PANE,           VIRTKEY,SHIFT
+$$IF(HELP)
+	VK_F1,          ID_CONTEXT_HELP,        VIRTKEY,SHIFT
+	VK_F1,          ID_HELP,                VIRTKEY
+$$ENDIF //HELP
+$$IF(CONTAINER || CONTAINER_SERVER)
+    VK_ESCAPE,      ID_CANCEL_EDIT_CNTR,   	VIRTKEY,NOINVERT
+$$ENDIF    
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/ALPHA
+$$ENDIF
+
+$$IF(PROJTYPE_MDI)
+$$IF(CONTAINER || CONTAINER_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_$$DOC$$TYPE_CNTR_IP$(_MAC) ACCELERATORS PRELOAD MOVEABLE
+#else
+IDR_$$DOC$$TYPE_CNTR_IP ACCELERATORS PRELOAD MOVEABLE
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_$$DOC$$TYPE_CNTR_IP ACCELERATORS PRELOAD MOVEABLE
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	"N",            ID_FILE_NEW,            VIRTKEY,ALT
+	"O",            ID_FILE_OPEN,           VIRTKEY,ALT
+	"S",            ID_FILE_SAVE,           VIRTKEY,ALT
+	"W",            ID_FILE_CLOSE,          VIRTKEY,ALT
+	"Q",            ID_APP_EXIT,            VIRTKEY,ALT
+$$IF(PRINT)
+	"P",            ID_FILE_PRINT,          VIRTKEY,ALT
+$$ENDIF //PRINT
+	VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+	VK_F6,          ID_PREV_PANE,           VIRTKEY,SHIFT
+$$IF(HELP)
+	VK_F1,          ID_CONTEXT_HELP,        VIRTKEY,SHIFT
+	VK_F1,          ID_HELP,                VIRTKEY
+$$ENDIF //HELP
+$$IF(CONTAINER || CONTAINER_SERVER)
+    VK_ESCAPE,      ID_CANCEL_EDIT_CNTR,   	VIRTKEY,NOINVERT
+$$ENDIF    
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/ALPHA
+$$ENDIF//CONTAINER || CONTAINER_SERVER
+
+$$IF(MINI_SERVER || FULL_SERVER || CONTAINER_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_$$DOC$$TYPE_SRVR_IP$(_MAC) ACCELERATORS PRELOAD MOVEABLE
+#else
+IDR_$$DOC$$TYPE_SRVR_IP ACCELERATORS PRELOAD MOVEABLE
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_$$DOC$$TYPE_SRVR_IP ACCELERATORS PRELOAD MOVEABLE
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	"Z",            ID_EDIT_UNDO,           VIRTKEY,ALT
+	"X",            ID_EDIT_CUT,            VIRTKEY,ALT
+	"C",            ID_EDIT_COPY,           VIRTKEY,ALT
+	"V",            ID_EDIT_PASTE,          VIRTKEY,ALT
+$$IF(CRichEditView)
+	"A",            ID_EDIT_SELECT_ALL,     VIRTKEY,ALT
+	"F",            ID_EDIT_FIND,           VIRTKEY,ALT
+	"G",            ID_EDIT_REPEAT,         VIRTKEY,ALT
+	"H",            ID_EDIT_REPLACE,        VIRTKEY,ALT
+$$ENDIF //CRichEditView
+	VK_BACK,        ID_EDIT_UNDO,           VIRTKEY,ALT
+	VK_DELETE,      ID_EDIT_CUT,            VIRTKEY,SHIFT
+	VK_INSERT,      ID_EDIT_COPY,           VIRTKEY,ALT
+	VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY,SHIFT
+$$IF(HELP)
+	VK_F1,          ID_CONTEXT_HELP,        VIRTKEY,SHIFT
+	VK_F1,          ID_HELP,                VIRTKEY
+$$ENDIF //HELP
+    VK_ESCAPE,      ID_CANCEL_EDIT_SRVR,   	VIRTKEY,NOINVERT
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_$$DOC$$TYPE_SRVR_EMB$(_MAC) ACCELERATORS PRELOAD MOVEABLE
+#else
+IDR_$$DOC$$TYPE_SRVR_EMB ACCELERATORS PRELOAD MOVEABLE
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_$$DOC$$TYPE_SRVR_EMB ACCELERATORS PRELOAD MOVEABLE
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	"N",            ID_FILE_NEW,            VIRTKEY,ALT
+	"O",            ID_FILE_OPEN,           VIRTKEY,ALT
+	"S",            ID_FILE_UPDATE,         VIRTKEY,ALT
+	"W",            ID_FILE_CLOSE,          VIRTKEY,ALT
+	"Q",            ID_APP_EXIT,            VIRTKEY,ALT
+$$IF(PRINT)
+	"P",            ID_FILE_PRINT,          VIRTKEY,ALT
+$$ENDIF //PRINT
+	"Z",            ID_EDIT_UNDO,           VIRTKEY,ALT
+	"X",            ID_EDIT_CUT,            VIRTKEY,ALT
+	"C",            ID_EDIT_COPY,           VIRTKEY,ALT
+	"V",            ID_EDIT_PASTE,          VIRTKEY,ALT
+$$IF(CRichEditView)
+	"A",            ID_EDIT_SELECT_ALL,     VIRTKEY,ALT
+	"F",            ID_EDIT_FIND,           VIRTKEY,ALT
+	"G",            ID_EDIT_REPEAT,         VIRTKEY,ALT
+	"H",            ID_EDIT_REPLACE,        VIRTKEY,ALT
+$$ENDIF //CRichEditView
+	VK_BACK,        ID_EDIT_UNDO,           VIRTKEY,ALT
+	VK_DELETE,      ID_EDIT_CUT,            VIRTKEY,SHIFT
+	VK_INSERT,      ID_EDIT_COPY,           VIRTKEY,ALT
+	VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY,SHIFT
+	VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+	VK_F6,          ID_PREV_PANE,           VIRTKEY,SHIFT
+$$IF(HELP)
+	VK_F1,          ID_CONTEXT_HELP,        VIRTKEY,SHIFT
+	VK_F1,          ID_HELP,                VIRTKEY
+$$ENDIF //HELP
+$$IF(CONTAINER_SERVER)
+    VK_ESCAPE,      ID_CANCEL_EDIT_CNTR,   	VIRTKEY,NOINVERT
+$$ENDIF    
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/ALPHA
+$$ENDIF//MINI_SERVER || FULL_SERVER || CONTAINER_SERVER
+
+$$ELSE
+$$IF(CONTAINER || CONTAINER_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_CNTR_INPLACE$(_MAC) ACCELERATORS PRELOAD MOVEABLE
+#else
+IDR_CNTR_INPLACE ACCELERATORS PRELOAD MOVEABLE
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_CNTR_INPLACE ACCELERATORS PRELOAD MOVEABLE
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	"N",            ID_FILE_NEW,            VIRTKEY,ALT
+	"O",            ID_FILE_OPEN,           VIRTKEY,ALT
+	"S",            ID_FILE_SAVE,           VIRTKEY,ALT
+	"W",            ID_FILE_CLOSE,          VIRTKEY,ALT
+	"Q",            ID_APP_EXIT,            VIRTKEY,ALT
+$$IF(PRINT)
+	"P",            ID_FILE_PRINT,          VIRTKEY,ALT
+$$ENDIF //PRINT
+	VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+	VK_F6,          ID_PREV_PANE,           VIRTKEY,SHIFT
+$$IF(HELP)
+	VK_F1,          ID_CONTEXT_HELP,        VIRTKEY,SHIFT
+	VK_F1,          ID_HELP,                VIRTKEY
+$$ENDIF //HELP
+$$IF(CONTAINER || CONTAINER_SERVER)
+    VK_ESCAPE,      ID_CANCEL_EDIT_CNTR,   	VIRTKEY,NOINVERT
+$$ENDIF    
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/ALPHA
+$$ENDIF//CONTAINER || CONTAINER_SERVER
+
+$$IF(MINI_SERVER || FULL_SERVER || CONTAINER_SERVER)
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_SRVR_INPLACE$(_MAC) ACCELERATORS PRELOAD MOVEABLE
+#else
+IDR_SRVR_INPLACE ACCELERATORS PRELOAD MOVEABLE
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_SRVR_INPLACE ACCELERATORS PRELOAD MOVEABLE
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	"Z",            ID_EDIT_UNDO,           VIRTKEY,ALT
+	"X",            ID_EDIT_CUT,            VIRTKEY,ALT
+	"C",            ID_EDIT_COPY,           VIRTKEY,ALT
+	"V",            ID_EDIT_PASTE,          VIRTKEY,ALT
+$$IF(CRichEditView)
+	"A",            ID_EDIT_SELECT_ALL,     VIRTKEY,ALT
+	"F",            ID_EDIT_FIND,           VIRTKEY,ALT
+	"G",            ID_EDIT_REPEAT,         VIRTKEY,ALT
+	"H",            ID_EDIT_REPLACE,        VIRTKEY,ALT
+$$ENDIF //CRichEditView
+	VK_BACK,        ID_EDIT_UNDO,           VIRTKEY,ALT
+	VK_DELETE,      ID_EDIT_CUT,            VIRTKEY,SHIFT
+	VK_INSERT,      ID_EDIT_COPY,           VIRTKEY,ALT
+	VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY,SHIFT
+$$IF(HELP)
+	VK_F1,          ID_CONTEXT_HELP,        VIRTKEY,SHIFT
+	VK_F1,          ID_HELP,                VIRTKEY
+$$ENDIF //HELP
+    VK_ESCAPE,      ID_CANCEL_EDIT_SRVR,   	VIRTKEY,NOINVERT
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(_MAC)
+#if defined(APSTUDIO_INVOKED)
+IDR_SRVR_EMBEDDED$(_MAC) ACCELERATORS PRELOAD MOVEABLE
+#else
+IDR_SRVR_EMBEDDED ACCELERATORS PRELOAD MOVEABLE
+#endif
+$$ELSE //!TARGET/MIPS/INTEL/ALPHA
+IDR_SRVR_EMBEDDED ACCELERATORS PRELOAD MOVEABLE
+$$ENDIF //TARGET/MIPS/INTEL/ALPHA
+BEGIN
+	"S",            ID_FILE_UPDATE,         VIRTKEY,ALT
+	"Q",            ID_APP_EXIT,            VIRTKEY,ALT
+$$IF(PRINT)
+	"P",            ID_FILE_PRINT,          VIRTKEY,ALT
+$$ENDIF //PRINT
+	"Z",            ID_EDIT_UNDO,           VIRTKEY,ALT
+	"X",            ID_EDIT_CUT,            VIRTKEY,ALT
+	"C",            ID_EDIT_COPY,           VIRTKEY,ALT
+	"V",            ID_EDIT_PASTE,          VIRTKEY,ALT
+$$IF(CRichEditView)
+	"A",            ID_EDIT_SELECT_ALL,     VIRTKEY,ALT
+	"F",            ID_EDIT_FIND,           VIRTKEY,ALT
+	"G",            ID_EDIT_REPEAT,         VIRTKEY,ALT
+	"H",            ID_EDIT_REPLACE,        VIRTKEY,ALT
+$$ENDIF //CRichEditView
+	VK_BACK,        ID_EDIT_UNDO,           VIRTKEY,ALT
+	VK_DELETE,      ID_EDIT_CUT,            VIRTKEY,SHIFT
+	VK_INSERT,      ID_EDIT_COPY,           VIRTKEY,ALT
+	VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY,SHIFT
+	VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+	VK_F6,          ID_PREV_PANE,           VIRTKEY,SHIFT
+$$IF(HELP)
+	VK_F1,          ID_CONTEXT_HELP,        VIRTKEY,SHIFT
+	VK_F1,          ID_HELP,                VIRTKEY
+$$ENDIF //HELP
+$$IF(CONTAINER_SERVER)
+    VK_ESCAPE,      ID_CANCEL_EDIT_CNTR,   	VIRTKEY,NOINVERT
+$$ENDIF    
+END
+$$IF(TARGET_INTEL || TARGET_MIPS || TARGET_ALPHA)
+#endif
+$$ENDIF //INTEL/MIPS/ALPHA
+$$ENDIF//MINI_SERVER || FULL_SERVER || CONTAINER_SERVER
+
+$$ENDIF

@@ -1,0 +1,568 @@
+// =================================================================
+//  
+// UTImap4.idl : IDL source for UTImap4.dll
+//  
+//  Purpose:
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTImap4.tlb) and marshalling code.
+//
+// =================================================================
+// Ultimate TCP/IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// =================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+// Include the message header fields enumeration in the generated header
+cpp_quote("#include \"UTMessage.h\" ")
+// Include the IMAP4 header enumerations in the generated header
+cpp_quote("#define __midl")
+cpp_quote("#include \"imap4_c.h\" ")
+cpp_quote("#undef __midl ")
+
+// Avoid redeclaration of enumerations
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+#include "UTMessage.h"
+#include "imap4_c.h"
+cpp_quote("#endif")  
+
+
+[
+	uuid(807D529B-2A6D-11D3-A499-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP IMAP4 Control 4.2")
+]
+library UTIMAP4Lib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//===========================================
+	//	IMAP4 control events
+	//===========================================
+	[
+		uuid(807D52AB-2A6D-11D3-A499-0080C858F182),
+		helpstring("_IIMAP4Events Interface")
+	]
+	dispinterface _IIMAP4Events
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnAlert")] HRESULT OnAlert([in] BSTR Message);
+		[id(2), helpstring("method OnExpunge")] HRESULT OnExpunge([in] long MsgID);
+		[id(3), helpstring("method OnRecent")] HRESULT OnRecent([in] long MsgNumber);
+		[id(4), helpstring("method OnExists")] HRESULT OnExists([in] long MsgNumber);
+		[id(5), helpstring("method OnConnect")] HRESULT OnConnect([in] long Result);
+		[id(6), helpstring("method OnClose")] HRESULT OnClose([in] long Result);
+		[id(7), helpstring("method OnNoop")] HRESULT OnNoop([in] long Result);
+		[id(8), helpstring("method OnMailBoxSelect")] HRESULT OnMailBoxSelect([in] long Result);
+		[id(9), helpstring("method OnMailBoxExamine")] HRESULT OnMailBoxExamine([in] long Result);
+		[id(10), helpstring("method OnMailBoxCreate")] HRESULT OnMailBoxCreate([in] long Result);
+		[id(11), helpstring("method OnMailBoxDelete")] HRESULT OnMailBoxDelete([in] long Result);
+		[id(12), helpstring("method OnMailBoxSubscribe")] HRESULT OnMailBoxSubscribe([in] long Result);
+		[id(13), helpstring("method OnMailBoxUnsubscribe")] HRESULT OnMailBoxUnsubscribe([in] long Result);
+		[id(14), helpstring("method OnMailBoxRename")] HRESULT OnMailBoxRename([in] long Result);
+		[id(15), helpstring("method OnMailBoxList")] HRESULT OnMailBoxList([in] long Result);
+		[id(16), helpstring("method OnMailBoxLSub")] HRESULT OnMailBoxLSub([in] long Result);
+		[id(17), helpstring("method OnMailBoxAppend")] HRESULT OnMailBoxAppend([in] long Result);
+		[id(18), helpstring("method OnMailBoxCheck")] HRESULT OnMailBoxCheck([in] long Result);
+		[id(19), helpstring("method OnMailBoxClose")] HRESULT OnMailBoxClose([in] long Result);
+		[id(20), helpstring("method OnMailBoxStatus")] HRESULT OnMailBoxStatus([in] long Result);
+		[id(21), helpstring("method OnMessageExpunge")] HRESULT OnMessageExpunge([in] long Result);
+		[id(22), helpstring("method OnMessageSearch")] HRESULT OnMessageSearch([in] long Result);
+		[id(23), helpstring("method OnMessageCopy")] HRESULT OnMessageCopy([in] long Result);
+		[id(24), helpstring("method OnMessageFetch")] HRESULT OnMessageFetch([in] long Result);
+		[id(25), helpstring("method OnMessageStore")] HRESULT OnMessageStore([in] long Result);
+		[id(26), helpstring("method OnFetch")] HRESULT OnFetch();
+	};
+
+	[
+		uuid(807D52AA-2A6D-11D3-A499-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP IMAP4 Control 4.2")
+	]
+	coclass IMAP4
+	{
+		[default] interface IIMAP4;
+		[default, source] dispinterface _IIMAP4Events;
+	};
+
+	[
+		uuid(807D52AC-2A6D-11D3-A499-0080C858F182),
+		helpstring("IMAP4PropPage Class")
+	]
+	coclass IMAP4PropPage
+	{
+		interface IUnknown;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (5B6D42E1-2A6F-11d3-A499-0080C858F182), helpstring("IMAP4 Error Codes")]
+	enum IMAP4ErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Error")]					ecError					= UTE_ERROR,
+		[helpstring("Unknown command")]			ecCommandUnknown		= UTE_UNKNOWN_COMMAND,
+		[helpstring("User or password invalid")] ecLoginFailed			= UTE_LOGIN_FAILED,
+		[helpstring("You must login first")]	ecAuthSelectedSatetRequired			= UTE_AUTH_OR_SELECTED_STATE_REQUIRED,
+		[helpstring("You must select the mailbox first")] ecSelectedSatetRequired	= UTE_SELECTED_STATE_REQUIRED,
+		[helpstring("Invalid address format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Not connected")]			ecNoConnection			= UTE_NOCONNECTION,
+		[helpstring("Connection failed")]		ecConnectionFailed		= UTE_CONNECT_FAILED,
+		[helpstring("Connection rejected")]		ecConnectionRejected	= UTE_CONNECT_REJECTED,
+		[helpstring("Connection terminated")]	ecConnectionTerminated	= UTE_CONNECT_TERMINATED,
+		[helpstring("No responce")]				ecNoResponce			= UTE_NO_RESPONSE,
+		[helpstring("Invalid responce")]		ecInvalidResponce		= UTE_INVALID_RESPONSE,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("Timed out")]				ecTimeOut				= UTE_CONNECT_TIMEOUT,
+		[helpstring("File open failed")]		ecFileOpenFailed		= UTE_DS_OPEN_FAILED,
+		[helpstring("File write failed")]		ecFileWriteFailed		= UTE_DS_WRITE_FAILED,
+		[helpstring("File close failed")]		ecFileCloseFailed		= UTE_DS_CLOSE_FAILED,
+		[helpstring("Wrong file type used")]	ecFileTypeError			= UTE_FILE_TYPE_ERROR,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR,
+		[helpstring("Index is out of range")]	ecIndexOutOfRange		= UTE_INDEX_OUTOFRANGE,
+		[helpstring("Message body is too big")]	ecMsgBodyTooBig			= UTE_MSG_BODY_TOO_BIG,
+		[helpstring("Failed to add message attachment")]	ecMsgAttachmentAddFailed	= UTE_MSG_ATTACHMENT_ADD_FAILED,
+		[helpstring("Invalid parameter")]		ecInvalidParameter		= UTE_PARAMETER_INVALID_VALUE,
+		[helpstring("Socket opened or in use")]	ecSocketAlredyOpen		= UTE_SOCK_ALREADY_OPEN,
+		[helpstring("Socket creation failed")]	ecSocketCreateFailed	= UTE_SOCK_CREATE_FAILED,
+		[helpstring("Socket connection failed")]ecSocketConnectFailed	= UTE_SOCK_CONNECT_FAILED,
+		[helpstring("File format error")]		ecFileFormatError		= UTE_FILE_FORMAT_ERROR,
+		[helpstring("Socket time out")]			ecSocketTimeOut			= UTE_SOCK_TIMEOUT
+	} IMAP4ErrorCodes;
+
+
+	//===========================================
+	//	Message Header Fields enumeration
+	//===========================================
+	typedef [uuid (3C732EA0-2A78-11d3-A499-0080C858F182), helpstring("Message Header Fields")]
+	enum MsgHeaderFields
+	{
+		[helpstring("All types of fields")]			hfAll				= UTM_ALL_FIELDS,
+		[helpstring("Message ID")]					hfMsgID				= UTM_MESSAGE_ID,
+		[helpstring("To")]							hfTo				= UTM_TO,
+		[helpstring("CC")]							hfCc				= UTM_CC,
+		[helpstring("BCC")]							hfBcc				= UTM_BCC,
+		[helpstring("From")]						hfFrom				= UTM_FROM,
+		[helpstring("Subject")]						hfSubject			= UTM_SUBJECT,
+		[helpstring("Date")]						hfDate				= UTM_DATE,
+		[helpstring("NewsGroups")]					hfNewsGroups		= UTM_NEWSGROUPS,
+		[helpstring("XRef")]						hfXRef				= UTM_XREF,
+		[helpstring("Reply-To")]					hfReplyTo			= UTM_REPLY_TO,
+		[helpstring("X-Newsreader")]				hfXNewsreader		= UTM_XNEWS_READER,
+		[helpstring("References")]					hfReferences		= UTM_REFERENCES,
+		[helpstring("Custom field")]				hfCustom			= UTM_CUSTOM_FIELD
+	} MsgHeaderFields;
+
+	//===========================================
+	//	IMAP4 System flags
+	//===========================================
+	typedef [uuid (F69095F5-2B07-11d3-A49A-0080C858F182), helpstring("IMAP4 System flags")]
+	enum IMAP4SystemFlags
+	{
+		[helpstring("Answered flag")]				sfAnswered			= SYS_FLAG_ANSWERED,
+		[helpstring("Flagged flag")]				sfFlagged			= SYS_FLAG_FLAGGED,
+		[helpstring("Deleted flag")]				sfDeleted			= SYS_FLAG_DELETED,
+		[helpstring("Seen flag")]					sfSeen				= SYS_FLAG_SEEN,
+		[helpstring("Draft flag")]					sfDraft				= SYS_FLAG_DRAFT,
+		[helpstring("Recent flag")]					sfRecent			= SYS_FLAG_RECENT,
+		[helpstring("Special flag")]				sfSpecial			= SYS_FLAG_SPECIAL
+	} IMAP4SystemFlags;
+
+	//===========================================
+	//	IMAP4 Client states
+	//===========================================
+	typedef [uuid (85A30ECF-2B0E-11d3-A49A-0080C858F182), helpstring("IMAP4 Client states")]
+	enum IMAP4ClientState
+	{
+		[helpstring("Non authenticated state")]		csNonAuthenticated	= STATE_NON_AUTHENTICATED,
+		[helpstring("Authenticated state")]			csAuthenticated		= STATE_AUTHENTICATED,
+		[helpstring("Selected state")]				csSelected			= STATE_SELECTED,
+		[helpstring("Logout state")]				csLogout			= STATE_LOGOUT
+	} IMAP4ClientState;
+
+	//===========================================
+	//	IMAP4 items to fetch
+	//===========================================
+	typedef [uuid (604E0588-2B2D-11d3-A49A-0080C858F182), helpstring("IMAP4 items to fetch")]
+	enum IMAP4FetchItem
+	{
+		[helpstring("Message body")]				fiBody				= MSG_BODY,
+		[helpstring("Message text")]				fiBodyText			= MSG_BODY_TEXT,
+		[helpstring("Message header")]				fiBodyHeader		= MSG_BODY_HEADER
+	} IMAP4FetchItem;
+
+	//===========================================
+	//	IMAP4 store types
+	//===========================================
+	typedef [uuid (B75FC64A-2B2D-11d3-A49A-0080C858F182), helpstring("IMAP4 store types")]
+	enum IMAP4StoreType
+	{
+		[helpstring("Replace")]						stReplace			= STORE_FLAG_REPLACE,
+		[helpstring("Replace with no return")]		stReplaceNoReturn	= STORE_FLAG_REPLACE_NO_RETURN,
+		[helpstring("Add")]							stAdd				= STORE_FLAG_ADD,
+		[helpstring("Add with no return")]			stAddNoReturn		= STORE_FLAG_ADD_NO_RETURN,
+		[helpstring("Remove")]						stRemove			= STORE_FLAG_REMOVE,
+		[helpstring("Remove with no return")]		stRemoveNoReturn	= STORE_FLAG_REMOVE_NO_RETURN
+	} IMAP4StoreType;
+
+	//===========================================
+	//	IMAP4 name attributes
+	//===========================================
+	typedef [uuid (4BD44E59-2B34-11d3-A49A-0080C858F182), helpstring("IMAP4 name attributes")]
+	enum IMAP4NameAttrib
+	{
+		[helpstring("No Inferiors")]				naNoInferiors			= NAME_ATTRIB_NOINFERIORS,
+		[helpstring("No Select")]					naNoSelect				= NAME_ATTRIB_NOSELECT,
+		[helpstring("Marked")]						naMarked				= NAME_ATTRIB_MARKED,
+		[helpstring("Unmarked")]					naUnMarked				= NAME_ATTRIB_UNMARKED
+	} IMAP4NameAttrib;
+
+};
+
+
+	[
+		object,
+		uuid(807D52A9-2A6D-11D3-A499-0080C858F182),
+		dual,
+		helpstring("IIMAP4 Interface"),
+		pointer_default(unique)
+	]
+	interface IIMAP4 : IDispatch
+	{
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_CONNECT_TIME_OUT			= 1;
+		const int DISPID_RECEIVE_TIME_OUT			= 2;
+		const int DISPID_BLOCKING_MODE				= 3;
+		const int DISPID_GET_ERROR_TEXT				= 4;
+		const int DISPID_CANCEL						= 5;
+		const int DISPID_HOST_NAME					= 6;
+		const int DISPID_USER_NAME					= 7;
+		const int DISPID_USER_PASSWORD				= 8;
+		const int DISPID_CONNECT					= 9;
+		const int DISPID_CLOSE						= 10;
+		const int DISPID_NEW_MAIL_CHECK_INER		= 11;
+		const int DISPID_MAIL_BOX_WRITE_ACCESS		= 12;
+		const int DISPID_MAIL_BOX_MSG_NUMBER		= 13;
+		const int DISPID_MAIL_BOX_MSG_RECENT		= 14;
+		const int DISPID_MAIL_BOX_MSG_UNSEEN		= 15;
+		const int DISPID_MAIL_BOX_SYSTEM_FLAGS		= 16;
+		const int DISPID_MAIL_BOX_FLAGS				= 17;
+		const int DISPID_MAIL_BOX_PERM_SYSTEM_FLAGS	= 18;
+		const int DISPID_MAIL_BOX_PERM_FLAGS		= 19;
+		const int DISPID_MAIL_BOX_UID				= 20;
+		const int DISPID_CAPABILITY					= 21;
+		const int DISPID_CLIENT_STATE				= 22;
+		const int DISPID_GET_ATTACH_NUMBER			= 23;
+		const int DISPID_GET_DECODED_MSG_BODY		= 24;
+		const int DISPID_GET_ATTACH_NAME			= 25;
+		const int DISPID_GET_ATTACH_TYPE			= 26;
+		const int DISPID_DECODE_MSG_ATTACH			= 27;
+		const int DISPID_GET_MSG_HEADER				= 28;
+		const int DISPID_GET_MSG_HEADER_NAME		= 29;
+		const int DISPID_GET_MSG_SEQUENCE_NUMBER	= 30;
+		const int DISPID_GET_MSG_SIZE				= 31;
+		const int DISPID_GET_MSG_FLAGS				= 32;
+		const int DISPID_GET_MSG_SYSTEM_FLAGS		= 33;
+		const int DISPID_GET_MSG_DATE				= 34;
+		const int DISPID_GET_MSG_UID				= 35;
+		const int DISPID_NOOP						= 36;
+		const int DISPID_MAIL_BOX_SELECT			= 37;
+		const int DISPID_MAIL_BOX_EXAMINE			= 38;
+		const int DISPID_MAIL_BOX_CREATE			= 39;
+		const int DISPID_MAIL_BOX_DELETE			= 40;
+		const int DISPID_MAIL_BOX_SUBSCRIBE			= 41;
+		const int DISPID_MAIL_BOX_UNSUBSCRIBE		= 42;
+		const int DISPID_MAIL_BOX_RENAME			= 43;
+		const int DISPID_MAIL_BOX_LIST				= 44;
+		const int DISPID_MAIL_BOX_LSUB				= 45;
+		const int DISPID_MAIL_BOX_APPEND			= 46;
+		const int DISPID_MAIL_BOX_CHECK				= 47;
+		const int DISPID_MAIL_BOX_CLOSE				= 48;
+		const int DISPID_GET_MAIL_BOX_LIST_SIZE		= 49;
+		const int DISPID_GET_MAIL_BOX_LIST_NAME		= 50;
+		const int DISPID_GET_MAIL_BOX_LIST_DELIMITER= 51;
+		const int DISPID_GET_MAIL_BOX_LIST_ATTRIB	= 52;
+		const int DISPID_MESSAGE_EXPUNGE			= 53;
+		const int DISPID_MESSAGE_SEARCH				= 54;
+		const int DISPID_MESSAGE_COPY				= 55;
+		const int DISPID_MESSAGE_FETCH				= 56;
+		const int DISPID_MESSAGE_STORE				= 57;
+		const int DISPID_GET_SEARCH_RESULT_SIZE		= 58;
+		const int DISPID_GET_SEARCH_RESULT_ITEM		= 59;
+		const int DISPID_GET_MESSAGE_LIST_SIZE		= 60;
+		const int DISPID_SET_CURRENT_MESSAGE		= 61;
+		const int DISPID_GET_STATUS_RESULT_NAME		= 62;
+		const int DISPID_GET_STATUS_RESULT_NUMBER	= 63;
+		const int DISPID_GET_STATUS_RESULT_RECENT	= 64;
+		const int DISPID_GET_STATUS_RESULT_UNSEEN	= 65;
+		const int DISPID_GET_STATUS_RESULT_UID		= 66;
+		const int DISPID_GET_STATUS_RESULT_UIVV		= 67;
+		const int DISPID_FLAGS_TO_STRING			= 68;
+		const int DISPID_MAIL_BOX_STATUS			= 69;
+		const int DISPID_GET_LAST_COMMAND_TEXT		= 70;
+
+
+	
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_HOST_NAME), helpstring("Get/Set IMAP4 host name")] 
+			HRESULT HostName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_HOST_NAME), helpstring("Get/Set IMAP4 host name")] 
+			HRESULT HostName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_USER_NAME), helpstring("Get/Set user name")] 
+			HRESULT UserName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_USER_NAME), helpstring("Get/Set user name")] 
+			HRESULT UserName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_USER_PASSWORD), helpstring("Get/Set user password")] 
+			HRESULT UserPassword([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_USER_PASSWORD), helpstring("Get/Set user password")] 
+			HRESULT UserPassword([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_NEW_MAIL_CHECK_INER), helpstring("property NewMailCheckInterval")] 
+			HRESULT NewMailCheckInterval([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_NEW_MAIL_CHECK_INER), helpstring("property NewMailCheckInterval")] 
+			HRESULT NewMailCheckInterval([in] long newVal);
+
+		[propget, id(DISPID_MAIL_BOX_WRITE_ACCESS), helpstring("property MailBoxWriteAccess")] 
+			HRESULT MailBoxWriteAccess([out, retval] VARIANT_BOOL *pVal);
+
+		[propget, id(DISPID_MAIL_BOX_MSG_NUMBER), helpstring("property MailBoxMsgNumber")] 
+			HRESULT MailBoxMsgNumber([out, retval] long *pVal);
+
+		[propget, id(DISPID_MAIL_BOX_MSG_RECENT), helpstring("property MailBoxMsgRecent")] 
+			HRESULT MailBoxMsgRecent([out, retval] long *pVal);
+
+		[propget, id(DISPID_MAIL_BOX_SYSTEM_FLAGS), helpstring("property MailBoxSystemFlags")] 
+			HRESULT MailBoxSystemFlags([out, retval] long *pVal);
+
+		[propget, id(DISPID_MAIL_BOX_FLAGS), helpstring("property MailBoxFlags")] 
+			HRESULT MailBoxFlags([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_MAIL_BOX_PERM_SYSTEM_FLAGS), helpstring("property MailBoxPermSystemFlags")] 
+			HRESULT MailBoxPermSystemFlags([out, retval] long *pVal);
+
+		[propget, id(DISPID_MAIL_BOX_PERM_FLAGS), helpstring("property MailBoxPermFlags")] 
+			HRESULT MailBoxPermFlags([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_MAIL_BOX_UID), helpstring("property MailBoxUID")] 
+			HRESULT MailBoxUID([out, retval] long *pVal);
+
+		[propget, id(DISPID_MAIL_BOX_MSG_UNSEEN), helpstring("property MailBoxMsgUnseen")] 
+			HRESULT MailBoxMsgUnseen([out, retval] long *pVal);
+
+		[propget, id(DISPID_CAPABILITY), helpstring("property Capability")] 
+			HRESULT Capability([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_CLIENT_STATE), helpstring("property ClientState")] 
+			HRESULT ClientState([out, retval] IMAP4ClientState *pVal);
+
+		//===========================================
+		//	Generic Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_CANCEL), helpstring("Cancel request")] 
+			HRESULT Cancel();
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+
+		//===========================================
+		//	IMAP4 Interface methods
+		//===========================================
+
+		[id(DISPID_CONNECT), helpstring("Connect to the IMAP4 server")] 
+			HRESULT Connect([out, retval] long * Result);
+
+		[id(DISPID_CLOSE), helpstring("Close connection to IMAP4 server")] 
+			HRESULT Close([out, retval] long * Result);
+
+		[id(DISPID_GET_ATTACH_NUMBER), helpstring("Gets the number of attachments in the message")] 
+			HRESULT GetAttachNumber([out, retval] long *AttachNumber);
+
+		[id(DISPID_GET_DECODED_MSG_BODY), helpstring("Gets the decoded message body")] 
+			HRESULT GetDecodedMsgBody([out, retval] BSTR *MsgBody);
+
+		[id(DISPID_GET_ATTACH_NAME), helpstring("Gets the file name of an attachment")] 
+			HRESULT GetAttachName([in] long AttachIndex, [out, retval] BSTR *Name);
+
+		[id(DISPID_GET_ATTACH_TYPE), helpstring("Gets the type of attachment")] 
+			HRESULT GetAttachType([in] long AttachIndex, [out, retval] BSTR *Type);
+
+		[id(DISPID_DECODE_MSG_ATTACH), helpstring("Decodes a message attachment")] 
+			HRESULT DecodeMsgAttach([in] long AttachIndex, [in] BSTR DestFileName, [out, retval] long *Result);
+
+		[id(DISPID_GET_MSG_HEADER), helpstring("Gets the message header")] 
+			HRESULT GetMsgHeader([in] MsgHeaderFields Type, [out, retval] BSTR *Header);
+
+		[id(DISPID_GET_MSG_HEADER_NAME), helpstring("Gets a message header's field name")] 
+			HRESULT GetMsgHeaderFieldName([in] MsgHeaderFields Type, [out,retval] BSTR *Name);
+
+		[id(DISPID_GET_MSG_SEQUENCE_NUMBER), helpstring("method GetMsgSequenceNumber")] 
+			HRESULT GetMsgSequenceNumber([out, retval] long *Result);
+
+		[id(DISPID_GET_MSG_SIZE), helpstring("method GetMsgSize")] 
+			HRESULT GetMsgSize([out, retval] long *Result);
+
+		[id(DISPID_GET_MSG_FLAGS), helpstring("method GetMsgFlags")] 
+			HRESULT GetMsgFlags([out, retval] BSTR *Result);
+
+		[id(DISPID_GET_MSG_SYSTEM_FLAGS), helpstring("method GetMsgSystemFlags")] 
+			HRESULT GetMsgSystemFlags([out, retval] long *Result);
+
+		[id(DISPID_GET_MSG_DATE), helpstring("method GetMsgDate")] 
+			HRESULT GetMsgDate([out, retval] BSTR *Result);
+
+		[id(DISPID_GET_MSG_UID), helpstring("method GetMsgUID")] 
+			HRESULT GetMsgUID([out, retval] long *Result);
+
+		[id(DISPID_NOOP), helpstring("method Noop")] 
+			HRESULT Noop([out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_SELECT), helpstring("method MailBoxSelect")] 
+			HRESULT MailBoxSelect([in] BSTR MailBoxName, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_EXAMINE), helpstring("method MailBoxExamine")] 
+			HRESULT MailBoxExamine([in] BSTR MailBoxName, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_CREATE), helpstring("method MailBoxCreate")] 
+			HRESULT MailBoxCreate([in] BSTR MailBoxName, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_DELETE), helpstring("method MailBoxDelete")] 
+			HRESULT MailBoxDelete([in] BSTR MailBoxName, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_SUBSCRIBE), helpstring("method MailBoxSubscribe")] 
+			HRESULT MailBoxSubscribe([in] BSTR MailBoxName, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_UNSUBSCRIBE), helpstring("method MailBoxUnSubscribe")] 
+			HRESULT MailBoxUnSubscribe([in] BSTR MailBoxName, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_RENAME), helpstring("method MailBoxRename")] 
+			HRESULT MailBoxRename([in] BSTR MailBoxName, [in] BSTR MailBoxNewName, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_LIST), helpstring("method MailBoxList")] 
+			HRESULT MailBoxList([in] BSTR Reference, [in] BSTR MailBoxName, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_LSUB), helpstring("method MailBoxLSub")] 
+			HRESULT MailBoxLSub([in] BSTR Reference, [in] BSTR MailBoxName, [out, retval] long *Result);
+
+		[id(DISPID_GET_MAIL_BOX_LIST_SIZE), helpstring("method GetMailBoxListSize")] 
+			HRESULT GetMailBoxListSize([out, retval] long *Result);
+
+		[id(DISPID_GET_MAIL_BOX_LIST_NAME), helpstring("method GetMailBoxListName")] 
+			HRESULT GetMailBoxListName([in] long Index, [out, retval] BSTR *Name);
+
+		[id(DISPID_GET_MAIL_BOX_LIST_DELIMITER), helpstring("method GetMailBoxListDelimiter")] 
+			HRESULT GetMailBoxListDelimiter([in] long Index, [out, retval] BSTR *Delimiter);
+
+		[id(DISPID_GET_MAIL_BOX_LIST_ATTRIB), helpstring("method GetMailBoxListAttrib")] 
+			HRESULT GetMailBoxListAttrib([in] long Index, [out, retval] long *Attrib);
+
+		[id(DISPID_MAIL_BOX_APPEND), helpstring("method MailBoxAppend")] 
+			HRESULT MailBoxAppend([in] BSTR MailBoxName, [in] BSTR FileName, [in, defaultvalue("")] BSTR Flags, [in, defaultvalue("")] BSTR DateTime, [out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_CHECK), helpstring("method MailBoxCheck")] 
+			HRESULT MailBoxCheck([out, retval] long *Result);
+
+		[id(DISPID_MAIL_BOX_CLOSE), helpstring("method MailBoxClose")] 
+			HRESULT MailBoxClose([out, retval] long *Result);
+
+		[id(DISPID_MESSAGE_EXPUNGE), helpstring("method MessageExpunge")] 
+			HRESULT MessageExpunge([out, retval] long *Result);
+
+		[id(DISPID_MESSAGE_SEARCH), helpstring("method MessageSearch")] 
+			HRESULT MessageSearch([in] BSTR SearchString, [in, defaultvalue(FALSE)] VARIANT_BOOL UseUID, [out, retval] long *Result);
+
+		[id(DISPID_GET_SEARCH_RESULT_SIZE), helpstring("method GetSearchResultSize")] 
+			HRESULT GetSearchResultSize([out, retval] long *Result);
+
+		[id(DISPID_GET_SEARCH_RESULT_ITEM), helpstring("method GetSearchResultItem")] 
+			HRESULT GetSearchResultItem([in] long Index, [out, retval] long *MessageID);
+
+		[id(DISPID_MESSAGE_COPY), helpstring("method MessageCopy")] 
+			HRESULT MessageCopy([in] BSTR MessageSet, [in] BSTR DestMailBoxName, [in, defaultvalue(FALSE)] VARIANT_BOOL UseUID, [out, retval] long *Result);
+
+		[id(DISPID_MESSAGE_FETCH), helpstring("method MessageFetch")] 
+			HRESULT MessageFetch([in] BSTR MessageSet, [in] IMAP4FetchItem Item, [in, defaultvalue(FALSE)] VARIANT_BOOL SetSeenFlag, [in, defaultvalue(FALSE)] VARIANT_BOOL UseUID, [out, retval] long *Result);
+
+		[id(DISPID_GET_MESSAGE_LIST_SIZE), helpstring("method GetMessageListSize")] 
+			HRESULT GetMessageListSize([out, retval] long *Size);
+
+		[id(DISPID_SET_CURRENT_MESSAGE), helpstring("method SetCurrentMessage")] 
+			HRESULT SetCurrentMessage([in] long Index, [out, retval] long *Result);
+
+		[id(DISPID_MESSAGE_STORE), helpstring("method MessageStore")] 
+			HRESULT MessageStore([in] BSTR MessageSet, [in] IMAP4StoreType Type, [in] BSTR Flags, [in,defaultvalue(FALSE)] VARIANT_BOOL UseUID,  [out, retval] long *Result);
+
+		[id(DISPID_FLAGS_TO_STRING), helpstring("method FlagsToString")] 
+			HRESULT FlagsToString([in] long Flags, [out, retval] BSTR *Result);
+
+		[id(DISPID_MAIL_BOX_STATUS), helpstring("method MailBoxStatus")] 
+			HRESULT MailBoxStatus([in] BSTR MailBoxName, [in] BSTR StatusName, [out, retval] long *Result);
+
+		[id(DISPID_GET_STATUS_RESULT_NAME), helpstring("method GetStatusResultName")] 
+			HRESULT GetStatusResultName([out, retval] BSTR *Name);
+
+		[id(DISPID_GET_STATUS_RESULT_NUMBER), helpstring("method GetStatusResultMsgNumber")] 
+			HRESULT GetStatusResultMsgNumber([out, retval] long *Number);
+
+		[id(DISPID_GET_STATUS_RESULT_RECENT), helpstring("method GetStatusResultMsgRecent")] 
+			HRESULT GetStatusResultMsgRecent([out, retval] long *RecentNumber);
+
+		[id(DISPID_GET_STATUS_RESULT_UNSEEN), helpstring("method GetStatusResultMsgUnseen")] 
+			HRESULT GetStatusResultMsgUnseen([out, retval] long *UnseenNumber);
+
+		[id(DISPID_GET_STATUS_RESULT_UID), helpstring("method GetStatusResultNextUID")] 
+			HRESULT GetStatusResultNextUID([out, retval] long *UID);
+
+		[id(DISPID_GET_STATUS_RESULT_UIVV), helpstring("method GetStatusResultUIVV")] 
+			HRESULT GetStatusResultUIVV([out, retval] long *UIVV);
+		
+		[id(DISPID_GET_LAST_COMMAND_TEXT), helpstring("method GetLastCommandResponseText")] 
+			HRESULT GetLastCommandResponseText([out, retval] BSTR *Text);
+	};

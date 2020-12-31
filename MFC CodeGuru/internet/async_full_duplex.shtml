@@ -1,0 +1,136 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Rob Manderson">
+   <TITLE>Internet - Asynchronous full-duplex connection class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Asynchronous full-duplex connection class</FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:pbarvinko@yahoo.com">Paul Barvinko</A>.
+
+<P>CInOutConnection is a class that encapsulates Client/Server connection node. It works in asynchronous full-duplex 
+mode. After initialization it creates four threads: receiving, sending, working and service threads. First two are 
+obvious, working thread waits for a message to be posted into input queue and then processes it and service thread 
+could break connection on inactivity timeout or could be used for performing idle periodic tasks. 
+
+<P>For keeping input and output queues in multithreaded environment I created CMessageQueue, which is simply 
+wrapper under <vector> class from STL. The main difference is that before inserting or removing messages from the 
+queue one should call CMessageQueue::BlockQueue() and then CMessageQueue::UnBlockQueue() in order to get 
+exclusive access to the queue. For single message it could be done via CMessageQueue::GetFirstMessage() or 
+CMessageQueue::AddSingleMessage() functions. To determine if there are messages in the queue one should call 
+CMessageQueue::IsQueueFull(). 
+
+<P>Class termination.
+
+<P>To initiate connection termination, function CInOutConnection::SetTerminate() should be called. To check if it’s 
+time to terminate, application could call CInOutConnection::Terminate() function. 
+
+<P>Message exchange.
+
+<P>To be independent of network providers class exposes two virtual functions: cioReceiveMessage(int* Error, int* 
+length) and cioSendMessage(void* msg, int msg_size). They need to be overwritten in derived class for work with 
+specific network providers. Depending on result of these functions network connection could be considered as 
+broken and shutdown could be initiated.
+
+<P>After message was successfully received it will be stick into input queue. Working thread, that checks for messages 
+in input queue will be triggered automatically and will extract message from queue for processing. Currently there 
+are three ways of message processing:
+
+<P>1. Application can register callback function within the class and this function will be called for every incoming 
+message. Callback function is defined like this:
+typedef void (InOutCallbackFunc)(void* param), where param is pointer to “this” of the CInOutConnection 
+class.
+
+<P>2. Application can register callback window within the class. In case of message arrival WN_COMMAND 
+message will be sent to window. LParam in this case will be set to CInOutConnection::this and WParam will 
+point to user-registered message Id.
+
+<P>3. If there is no callback function and callback window registered, 
+CInOutConnection::ProcessCurrentMessage(void* msg, DWORD length) will be called. Application can 
+overwrite this function or CInOutConnection::ProcessMessage() to gain specific functionality for message 
+processing.
+
+<P>Message exchange protocol.
+
+<P>CinOutConnection class provides basic functionality for message exchange protocol support. On receiving stage 
+several functions are called to ensure, that incoming message is not garbage and has some useful information:).
+
+<P>They are: 
+<PRE><TT><FONT COLOR="#990000">
+		virtual int GetHeaderLength();
+		virtual BOOL IsCorrectHeader(char* header);
+		virtual int GetMessageSizeFromHeader(char* header);
+</FONT></TT></PRE>
+
+<P>Message receiving works as follows:
+
+<P>Receive function calls GetHeaderLength() first to know the length of the initial packet of data (header). Then it 
+passes received header to IsCorrectHeader() and GetMessageSizeFromHeader() respectively to find out, if message 
+is valid one and to find out the size of the actual message. Then it tries to receive message of the length, returned by 
+GetMessageSizeFromHeader() function.
+
+<P>Function PrepareMessageToSend(void* msg, DWORD length, DWORD& len) is used for preparation on message 
+to be sent. It can add header to the message, convert it to uuencode format or perfom any action, needed by 
+application.
+
+<P>Thread behavior could be controlled by overriding InitXXXThread(), XXXThreadTerminated(), 
+OnXXXThreadError() and OnXXXThreadIdle() functions.
+
+<P>CInOutConnection::OnServiceTimer() could be used to perform background periodical tasks. It is called every 
+second from Service Thread. (Be aware of using shared resources!).
+
+<P>CTcpIpConnection class.
+
+<P>CtcpIpConnection is class derived from CinOutConnection, modified to work with Win32 TCP/IP networking. You 
+need couple of connected sockets (one for receiving and one for transmission) to initialize class.  
+CioReceiveMessage and cioSendMessage adjusted to work properly with sockets, as well as ResetConnection() and 
+SetTerminate() functions.
+
+<P>Node creation from application point of view:
+
+<P>To create connected node, following tasks should be performed:
+
+<P>1. Derive class from CinOutConnection to implement specific network provider functionality and message 
+transmission format. (You can use CtcpIpConnection for TCP/IP Windows sockets).
+
+<P>2. Initialize connection. (for CtcpIpConnection: Get couple of connected sockets and call InitConnection function)
+
+<P>3. !!! Thread, that initialized CinOutConnection creation, must wait for it to finish on thread’s exit. In other words 
+this thread MUST call WaitForTermination() class function on it’s exit.
+
+
+<P><A HREF="async_full_duplex.zip">Download source</A>
+
+<P>Article updated on June 21 1998
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi-bin/counters/counter.cgi"--></FONT></CENTER>
+</BODY>
+</HTML>

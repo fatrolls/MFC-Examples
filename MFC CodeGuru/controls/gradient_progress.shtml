@@ -1,0 +1,93 @@
+<html>
+
+<!-- Header information-->
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Chris Maunder">
+<title>Controls - Gradient Fill Progress Control</title>
+</head>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<!-- Article Title -->
+<h3 align="center"><font COLOR="#AOAO99">Gradient Fill Progress Control </font></h3>
+
+<hr align="center">
+
+<!-- Author and contact details -->
+<p>This article was contributed by <a HREF="mailto:mweagle@redrose.net">Matt Weagle</a>. 
+
+<!-- Sample image and source code/demo project --> </p>
+<p><img src="gradient_progress.gif" alt="Gradient Progress Control (7961 bytes)"
+WIDTH="391" HEIGHT="308">&nbsp; <a HREF="gradient_progress_demo.zip">Download Source Code
+and Example</a> </p>
+
+<p>Development Environment: VC5, 95</p>
+
+<!-- The article... -->
+<p>This is a simple class to display a gradient fill progress control.&nbsp; It works just
+like the normal progress control. The main enhancements are that you can customize the
+colors and toggle the percentage caption's visibility.&nbsp; </p>
+
+<p>The control can be incorporated into a project like any other CProgressCtrl derived
+control. Either create the control manually, subclass an existing CProgressCtrl, or use
+ClassWizard to DDX_control it.&nbsp; The actual code for the progress control is located
+in GradientProgressCtrl.h and GradientProgressCtrl.cpp. I haven't fully tested it's
+robustness, although I don't suspect that it will fail miserably.&nbsp; Most of the work
+happens in the DrawGradient(...) function, which also uses Keith Rule's MemDC class.&nbsp;
+The sample project also uses Chris Maunder's ColourPicker.&nbsp; Both of these classes are
+included in the sample project and can be downloaded elsewhere at this site. </p>
+
+<p>It is derived from CProgressCtrl so all standard CProgressCtrl functions are
+available.&nbsp; Additional functions are listed below. </p>
+
+<p>I hope someone gives it a good home :).&nbsp; Please let me know of any problems or
+improvements.&nbsp; Thanks and good luck. </p>
+
+<p><b>Member Set Functions</b> </p>
+
+<pre><tt><font COLOR="#990000">	void SetTextColor(COLORREF color)           // Set the percentage text color
+	void SetBkColor(COLORREF color)             // Set background color
+	void SetStartColor(COLORREF color)          // Set starting color
+	void SetEndColor(COLORREF color)            // Set ending color
+	void ShowPercent(BOOL bShowPercent = TRUE)  // Show the percent caption?
+</font></pre>
+</tt>
+
+<p><b>Member Get Functions</b> </p>
+
+<pre><tt><font COLOR="#990000">	COLORREF GetTextColor(void)		    
+	COLORREF GetBkColor(void)	
+	COLORREF GetStartColor(void)	
+	COLORREF GetEndColor(void)
+</font></pre>
+</tt>
+
+<p>&nbsp;</p>
+<!-- Remember to update this -->
+
+<p>Last updated: 18 May 1998 </p>
+
+<hr>
+
+<!-- Codeguru contact details -->
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+<!-- Counter -->
+
+
+</body>
+</html>

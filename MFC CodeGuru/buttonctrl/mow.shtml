@@ -1,0 +1,70 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Miscellaneous - Motif Option Widget</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Motif Option Widget
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:sak@vx.com">Suhas Kelkar</A>.
+
+<P>
+
+<!-- The article... -->
+
+It is a Motif Option Menu Widget. This particular widget would be very
+useful to developers porting their application natively on NT/Windows
+from Unix/Motif environment.  (You would see the documentation about
+it in the main application window)
+
+<center><IMG SRC="mow2.gif" ALT="Widget Sample" BORDER=1 ALIGN=BOTTOM></center>
+<p>
+The option button looks like this:
+<center><IMG SRC="mow1.gif" ALT="Motif Option Button" BORDER=0 ALIGN=BOTTOM></center>
+<p>
+After you have clicked on it, it looks like this:
+<center><IMG SRC="mow3.gif" ALT="Expanded button" BORDER=0 ALIGN=BOTTOM></center>
+
+Download the <A HREF="mow_source.zip">source</A></p>.
+
+<!-- Remember to update this -->
+<p>Last updated: 19 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+</BODY>
+</HTML>

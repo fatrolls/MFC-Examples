@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>OpenGL - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various windows controls">
+   <META Name="keywords" Content="">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+This section is maintained by <a href="mailto:mikael_aronsson@hotmail.com">Mikael Aronsson</a>
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">OpenGL</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><A HREF="http://www.codeguru.com/cgi/ads.cgi?advert=genitor"><IMG SRC="http://www.codeguru.com/banners/genitor.gif" HEIGHT=60 WIDTH=468 ALT="Genitor - award-winning Object Construction Suite for C/C++ development, documentation, and maintainance" BORDER=2></A><BR><SMALL><A HREF="http://www.codeguru.com/cgi/ads.cgi?advert=genitor">Click here to get a trial copy of Genitor V3.1</A></SMALL><td>
+</tr>
+</table>
+
+<HR>
+
+
+<UL>
+<LI><A HREF="palette_editor.shtml">Palette editor - Pierre ALLIEZ</A>
+<LI><A HREF="start.shtml">Starting Rendering Modes - Pierre ALLIEZ</A>
+<LI><A HREF="texture_mapping.shtml">Starting Texture Mapping - Pierre ALLIEZ</A>
+<LI><A HREF="zooming.shtml">Zooming and Panning an Orthographic Projection - Sam Fugarino</A>
+<LI><A HREF="printing.shtml">Printing OpenGL in MFC - John Wagner</A>
+<LI><A HREF="oglwrapperclass.shtml">OpenGL enabled view for MDI - Alessandro Falappa</A>
+
+
+</UL>
+
+
+<HR>
+
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,17 @@
+[Form Page Header]
+NumPages=1
+Page 0=testpage
+
+[testpage]
+Rect=100,100,2000,2800
+Static=0,0,1900,150,Test Form Demo,,,bold,italic,,Bang LET,48,-1,ffffff,000000,000000,0,0,1,37
+Static=0,300,300,400,Field 1:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=350,300,900,400,m_Field1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=0,400,300,500,Field 2:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=350,400,900,500,m_Field2,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=900,300,1200,400,Field 3:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=1250,300,1900,400,m_Field3,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Static=900,400,1200,500,Field 4:,,,bold,,,Arial,8,-1,ffffff,000000,000000,0,0,1,2
+Edit=1250,400,1900,500,m_Field4,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+HLine=0,150,1900,200,,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0
+Image=1600,0,1900,150,m_Image1,,,,,,Arial,8,-1,ffffff,000000,000000,0,0,1,0

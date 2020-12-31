@@ -1,0 +1,193 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Enumerating Running Processes in Win95 and WinNT</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Enumerating Running Processes in Win95 and WinNT
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <a href="mailto:tpetel@snet.net">Tomer Petel</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="win32proc.jpg" >
+
+<p><br>
+<font size="4"><u>Overview </u></font></p>
+
+<p>While developing an application, I encountered the need to get
+a list of all running processes (programs). Ok, so all advanced
+Win32 programmers know that for such a task one uses the
+performance data in WinNT or the ToolHelp functions in Win95.
+BUT, In my case my application had to run <font size="4">both
+under NT and 95, without conditional compilation</font><font
+size="3">, i.e without having two seperate versions of the
+executable, one for win95 and one for NT. So, to solve this
+problem I wrote a C++ class, calles Win32Process that gets a list
+of all currently running applications, in a &quot;platform
+independent&quot; way (independent between windows 95 and NT, and
+of course it's using MFC, that's why I put it in quotes). More
+accuratly, the class detects if its running under NT or 95, and
+accordingly invokes the correct functions.</font></p>
+
+<p><font size="3">More-Over, the code for the class is written in
+such a way, that when platform-dependent functions from a dll are
+used, these functions are loaded dynamically, so that you do not
+have to link statically to a .lib file, thereby making your code
+(or at least your project settings) different if compiling on NT
+or on 95. for instance, if we are compiling on NT, but we need to
+use the Win 95-specific ToolHelp function Process32Next( ), there
+is no problem - the project will compile, link and run
+successfully.</font></p>
+
+<p><font size="3"><strong>So, in summary, all you need to do is
+drop this class into your current VC++ 5.0 project - without
+changing ANY of your current project settings, and then you'll be
+able to enumerate all running processes </strong><strong><u>without
+worrying if the code will be executed/compiled on win95 or NT</u></strong><strong>.
+The class will automatically do this for you.</strong></font></p>
+
+<p><font size="4"><u>Using Win32Process.cpp</u></font></p>
+
+<p><font size="3">To use this class, include it's header where
+you want to use it. Then, instantiate it:</font></p>
+
+<blockquote>
+    <p align="left"><font color="#990000" size="3"><tt>Win32Process
+    m_win32proc;</tt></font></p>
+</blockquote>
+
+<p><font size="3">Then, before using it (for example in
+OnInitDialog of you application), Initiate it:</font></p>
+
+<blockquote>
+    <pre><font color="#990000" size="3"><tt>if(!m_win32proc.Init())
+	AfxMessageBox(m_win32proc.GetLastError());</tt></font></pre>
+</blockquote>
+
+<p><font size="3">The initiation gets the needed function
+pointers if running on 95. If running on NT it doesnt do much but
+still must be called. <br>
+Note that EVERY method returns false if it fails and true if it
+succeeds, and to get the cause of the error you simply call </font><font
+color="#990000" size="3">GetLastError( )</font><font size="3">,
+in return for which you get a CString describing the nature of
+the error.</font></p>
+
+<p><font size="3">Now, to get a list of all the processes, do:</font></p>
+
+<blockquote>
+    <pre><font color="#990000" size="3"><tt>if (!m_win32proc.EnumAllProcesses())
+{
+	AfxMessageBox(m_win32proc.GetLastError());
+	return;</tt></font>
+<font color="#990000" size="3"><tt>}</tt></font> </pre>
+</blockquote>
+
+<p><font size="4">And you're all set!</font><font size="3"> Now a
+CStringArray member in Win32Process.cpp contains all the names of
+the currently running processes.<br>
+(Note that the AfxMessageBox is just for debugging. When actually
+using it you may do anything you like with the error string. (BTW
+I havent had an error yet using this class)).</font></p>
+
+<p><font size="3">To display these names (for example in a list
+box) you may do something like this:</font><font color="#990000"><tt>
+</tt></font></p>
+
+<blockquote>
+    <pre><font color="#990000" size="3"><tt>//populate the list box
+int size=m_win32proc.GetAllProcessesNames()-&gt;GetSize();
+for (int i=0;i&lt;size;i++)
+	m_ctrlProcLB.AddString(m_win32proc.GetAllProcessesNames()-&gt;GetAt(i));
+</tt></font></pre>
+</blockquote>
+
+<p><font size="3">Where the m_ctrlProcLB is a list box in this
+case. (See the enclosed Demo)<br>
+Simple, isnt it? and remember that you use the same code
+regardless if its running on NT or 95. Also, none of your project
+settings have to be changed.</font></p>
+
+<p><font size="3">It is also possible to check if one certain
+process is running using the member</font><font color="#990000"
+size="3"> GetProcessStatus( )</font><font size="3"> as follows:</font></p>
+
+<blockquote>
+    <pre><font color="#990000" size="3">if (!m_win32proc.GetProcessStatus(&amp;m_strProcessToCheck,&amp;bStatus))
+{
+	AfxMessageBox(m_win32proc.GetLastError());
+	return;
+}
+if (bStatus)
+	AfxMessageBox(m_strProcessToCheck+&quot; is running!&quot;);
+else	
+	AfxMessageBox(m_strProcessToCheck+&quot; is NOT running!&quot;);
+</font></pre>
+</blockquote>
+
+<p><font size="3">Note that </font><font color="#990000" size="3">GetProcessStatus(
+) </font><font color="#000000" size="3">does not return TRUE if
+the process is running, but rather, it returns TRUE if it was
+successful. You get the info about the process by passing a
+pointer to a boolean (see </font><font color="#990000" size="3">bStatus</font><font
+color="#000000" size="3"> above)</font></p>
+
+<p><font size="4"><u>The Demo</u></font></p>
+
+<p><font size="3">Enclosed is also a demo program that
+exemplifies the usage of this class. The demo is a simple VC++
+5.0 project. The demo also shows how you can test whether a
+specific process is running, using the Win32Process class.</font></p>
+
+<p><font size="3">To use the class, copy the file
+Win32Process.cpp and Win32Process.h from the demo directory into
+your project directory, and add them to your project.</font></p>
+
+<p><a href="win32proc.zip">Download Source Code and Example</a>- 107KB </p>
+
+<pre>Last updated: 27 June 1998 </pre>
+
+<HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

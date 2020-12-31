@@ -1,0 +1,9 @@
+LIBRARY App8Hook
+
+DESCRIPTION 'Applicad 8 System-Wide Message Hook DLL'
+
+EXETYPE WINDOWS
+
+EXPORTS
+    ClientGetMsgProc       @2
+    ClientCallWndProc      @3

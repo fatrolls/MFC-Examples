@@ -1,0 +1,271 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_ABOUT DIALOG DISCARDABLE  0, 0, 227, 149
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "About Ultimate TCP/IP Quick Mailer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,88,126,50,14
+    CTEXT           "Ultimate TCP/IP Quick Mailer ver. 1.1\r\n\r\nCopyright © The Ultimate Toolbox 1995-2007, \r\nall rights reserved.",
+                    IDC_STATIC,45,10,175,35
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,2,72,215,49
+    RTEXT           "Phone:",IDC_STATIC,7,86,26,8
+    RTEXT           "Fax:",IDC_STATIC,7,105,26,8
+    RTEXT           "EMail:",IDC_STATIC,108,87,29,8
+    RTEXT           "WWW:",IDC_STATIC,108,97,30,8
+    LTEXT           "1 (416) 467-9100",IDC_STATIC,40,95,55,8
+    LTEXT           "1 (800) 463 - 1492",IDC_STATIC,40,86,59,8
+    LTEXT           "1 (416) 422-4801",IDC_STATIC,40,105,55,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,143,87,67,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,143,97,67,8
+    ICON            IDI_ICON_QUICK_MAILER_SMALL,IDC_STATIC,13,14,20,20,
+                    SS_CENTERIMAGE
+    CTEXT           "For more Info right click on the system tray Icon",
+                    IDC_STATIC,46,50,166,14
+END
+
+IDD_DIALOG_MAIN DIALOGEX 0, 0, 116, 113
+STYLE WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Ultimate TCP/IP Quick Mailer"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LISTBOX         IDC_LIST_NAMES,0,0,115,115,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_DIALOG_ADDMAILRECIPIENT DIALOG DISCARDABLE  0, 0, 262, 55
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Add Mail Recipients"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Mail recipient information ",IDC_STATIC,5,5,185,45
+    RTEXT           "&Name:",IDC_STATIC,10,18,59,8
+    EDITTEXT        IDC_EDIT_NAME,75,15,110,14,ES_AUTOHSCROLL
+    RTEXT           "&E-mail address:",IDC_STATIC,10,33,59,8
+    EDITTEXT        IDC_EDIT_ADDRESS,75,30,110,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Add",IDOK,205,12,50,14,WS_DISABLED
+    PUSHBUTTON      "Exit",IDCANCEL,205,29,50,14
+END
+
+IDD_DIALOG_PROPERTIES DIALOG DISCARDABLE  0, 0, 247, 90
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Ultimate TCP/IP Quick Mailer Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " &Send mail from this e-mail address: ",IDC_STATIC,5,5,
+                    175,30
+    EDITTEXT        IDC_EDIT_FROM,10,16,165,14,ES_AUTOHSCROLL
+    GROUPBOX        " Mail Server Name: (optional) ",IDC_STATIC,5,40,175,30
+    EDITTEXT        IDC_EDIT_SERVER,10,50,165,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,190,10,50,14,WS_DISABLED
+    PUSHBUTTON      "Cancel",IDCANCEL,190,25,50,14
+    CONTROL         "Run on start up.",IDC_CHECK_AUTO_RUN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,75,165,10
+END
+
+IDD_DIALOG_SEND DIALOG DISCARDABLE  0, 0, 282, 181
+STYLE DS_SYSMODAL | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Ultimate TCP/IP Quick Mailer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_MESSAGE,5,40,270,110,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | 
+                    WS_VSCROLL | WS_HSCROLL
+    DEFPUSHBUTTON   "&Send",IDOK,85,159,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,150,159,50,14
+    RTEXT           "Send to:",IDC_STATIC,0,8,50,8
+    EDITTEXT        IDC_EDIT_SEND_TO,55,5,220,14,ES_AUTOHSCROLL
+    RTEXT           "Subject:",IDC_STATIC,0,23,50,8
+    COMBOBOX        IDC_COMBO_SUBJECT,55,20,220,109,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_SPLASH DIALOGEX 0, 0, 180, 126
+STYLE DS_CENTER | WS_POPUP
+EXSTYLE WS_EX_TRANSPARENT
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         115,IDC_STATIC,"Static",SS_BITMAP,0,0,180,126
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 220
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+    END
+
+    IDD_DIALOG_MAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 109
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 106
+    END
+
+    IDD_DIALOG_ADDMAILRECIPIENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 255
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_DIALOG_PROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 240
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 83
+    END
+
+    IDD_DIALOG_SEND, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 275
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_TASKBAR_ICON MENU DISCARDABLE 
+BEGIN
+    POPUP "TaskBar"
+    BEGIN
+        MENUITEM "&Add Mail Recipients...",     ID_TASKBAR_ADDMAILRECIPIENT
+        MENUITEM "&Properties...",              ID_TASKBAR_PROPERTIES
+        MENUITEM SEPARATOR
+        MENUITEM "&Help",                       ID_TASKBAR_HELP
+        MENUITEM "A&bout",                      ID_TASKBAR_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "&Exit",                       ID_TASKBAR_EXIT
+    END
+END
+
+IDR_MENU_LIST MENU DISCARDABLE 
+BEGIN
+    POPUP "List"
+    BEGIN
+        MENUITEM "&Send mail...",               ID_TASKBAR_SENDMAIL
+        MENUITEM SEPARATOR
+        MENUITEM "&Add Mail Recipients...",     ID_TASKBAR_ADDMAILRECIPIENT
+        MENUITEM "Edit &Mail Recipient...",     ID_TASKBAR_EDITMAILRECIPIENT
+        MENUITEM "&Delete Mail Recipients",     ID_TASKBAR_DELETEMAILRECIPIENTS
+
+        MENUITEM "&Properties...",              ID_TASKBAR_PROPERTIES
+        MENUITEM SEPARATOR
+        MENUITEM "&Help",                       ID_TASKBAR_HELP
+        MENUITEM "A&bout",                      ID_TASKBAR_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "&Exit",                       ID_TASKBAR_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_QUICK_MAILER   ICON    DISCARDABLE     "icon1.ico"
+IDI_ICON_QUICK_MAILER_SMALL ICON    DISCARDABLE     "small2.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP  DISCARDABLE     "SplashQM.BMP"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

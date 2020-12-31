@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The PNPMON Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The PNPMON Sample</H2>
+<P>The PNPMON Sample accompanies Chapter 6 and illustrates how to intercept Plug and Play events in kernel mode. It also incidentally illustrates how to dynamically load a kernel-mode driver from a user-mode application and how to call NT kernel services from a Windows 98 VxD.</P>
+<P>The sample includes three components:</P>
+
+<UL>
+<LI>TEST.EXE (TEST subdirectory) is a user-mode test program for PNPMON.SYS and PNPMON.VXD. </LI>
+<LI>PNPMON.SYS (SYS subdirectory) is a kernel-mode driver that doesn’t service any hardware at all. It extends the operating system for the benefit of the TEST application under Windows 2000. </LI>
+<LI>PNPMON.VXD (VXD subdirectory) is a virtual device driver (a VxD) that doesn’t service any hardware at all. It extends the operating system for the benefit of the TEST application under Windows 98.</LI></UL>
+
+<H3>Building PNPMON</H3>
+<P>To build PNPMON.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named PNPMON.DSP in the SYS subdirectory.</P>
+<I><P>Note: At press time, WDM.LIB did not define all of the symbols that PNPMON.SYS imports. The build script therefore includes NTOSKRNL.LIB, which is not normally used for a WDM driver project. I expect that the final release of the DDL will have a library that </I>does<I> define all necessary symbols, and you should be able to modify the project settings accordingly.</P>
+</I><P>To build PNPMON.VXD, open the Microsoft Visual C++ project named PNPMON in the VXD subdirectory. Select the Build command from the Build menu. The build script depends on your having set the 98DDK environment variable to the directory where you installed the Windows 98 DDK. Depending on which version of the DDK you have, you may need to adjust the include or library paths in the project settings.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing PNPMON</H3>
+<P>If you're testing in Windows 98, and if you built the PNPMON.VXD project, the build script will have copied PNPMON.VXD to your system directory. If you didn't perform a build, you should copy PNPMON.VXD from the VXD\DEBUG subdirectory to the system directory by hand.</P>
+<P>If you're testing in Windows 2000, and if you built the PNPMON.SYS project, the build script will have copied PNPMON.SYS to your Drivers directory. If you didn't perform a build, you should copy PNPMON.SYS from the SYS\OBJCHK\I386 subdirectory to the Drivers directory by hand.</P>
+<P>Launch the TEST.EXE program from the TEST\DEBUG subdirectory. TEST will present a simple dialog box with the title "PnP Kernel-Mode Notification Monitor". You should also have the TEST program for the <A HREF="../pnpevent/pnpevent.htm">PNPEVENT sample</A> simultaneously active.</P>
+<P>Follow the PNPEVENT testing instructions and notice that the PNPMON\TEST program also logs messages about PnP events. These events are being collected by the kernel-mode driver (PNPMON.SYS or PNPMON.VXD, depending on which platform you use for testing) and retrieved by TEST.</P>
+<P>In Windows 2000 only, you can try an additional test. With both test programs active and a PNPEVENT device in the system, press the Send Event button in PNPEVENT\TEST’s dialog. The button causes PNPEVENT.SYS to send a custom PnP notification via IoReportTargetDeviceChangeAsynchronous. Target device changing reporting is not supported in Windows 98, so the button has no effect there.</P></BODY>
+</HTML>

@@ -1,0 +1,231 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - Using a Virtual CListView with a Dynaset</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using a Virtual CListView with a Dynaset</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+
+<p>This article was contributed by <a href="mailto:kepler@bellsouth.net">Sam Fugarino</a>. </p>
+
+<p>This example illustrates how to use an Access database file
+with an IE 4.0 virtual list view. </p>
+
+<P><A HREF="virtual_dblist.zip">Download sample project</A> 63KB.
+
+<p>Loading large amounts of data into a CListView derived class
+is a very slow process, even when the data is maintained in
+memory. Accessing data in a database slows the process down even
+further. One of new features of a list view control is the
+ability to load data when it is needed. Below are the steps
+envolved.</p>
+
+<p>You must have a version of COMCTL32.DLL that came with IE 3.0
+or later.</p>
+
+<p><strong>Open up you database file.</strong></p>
+
+<p>Use your document object to open your database, and record
+set. In this example I use a dynaset type recordset. This allows
+me to set the relative record number of a recordset object's
+current record by using CDaoRecordSet's SetAbsolutePosition
+member function. Pass the a pointer to the recordset to your view
+class in an appropriate manner.</p>
+
+<pre>
+<font color="#990000">
+BOOL CVirtualListDoc::OnOpenDocumentFile(LPCTSTR lpszPathname)
+{
+	CString m_FileName = lpszPathname;
+	pDBase = new CDaoDatabase;
+	pDBase-&gt;Open(m_FileName);
+	CString strSQL = &quot;SELECT * FROM TableName ORDER BY ColumnName&quot;;//Set up SQL statement
+	pRecordSet = new CDaoRecordset(pDBase);
+	pRecordSet-&gt;Open(dbOpenDynaset, strSQL);//Open recordset using SQL statement
+	pRecordSet-&gt;MoveLast();//you have to access the records in the dynaset to get GCDaoRecordSet::etRecordCount() to work
+}
+</font></pre>
+
+<p><strong>Set the ListView's style to LVS_OWNERDATA:</strong></p>
+
+<pre><font color="#990000">BOOL CVirtualListView::PreCreateWindow(CREATESTRUCT&amp; cs)
+{
+	cs.lpszName = WC_LISTVIEW;
+	cs.style &amp;= ~LVS_TYPEMASK;
+	cs.style |= LVS_REPORT;
+	cs.style |= LVS_EDITLABELS;
+	cs.style |= LVS_OWNERDATA;
+	CListView::PreCreateWindow(cs);
+}</font></pre>
+
+<p><strong>Set number of items in list:</strong></p>
+
+<p>You have to tell the list view how many items it will contain.
+This is done by sending a LVM_SETITEMCOUNT to the list control.
+Do this and set up the list views columns in the views
+OnInitialUpdate() member function. You can send a<font
+color="#000000"> LVM_SETEXTENDEDLISTVIEWSTYLE message to the
+control to set any of the new extended listview styles.</font></p>
+
+<pre>
+<font color="#990000">void CVirtualListView::OnInitialUpdate()
+{
+	CListView::OnInitialUpdate();
+	/*set number of items in list to number of items in RecordSet*/
+	
+	/* create image list*/
+	imageList.Create(IDB_IMAGELIST, 16, 1, RGB(0,0,0));
+	GetListCtrl().SetImageList(&amp;imageList, LVSIL_SMALL);
+
+	/* set extended stlyes*/
+	DWORD dwExStyle = LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | /*LVS_EX_SUBITEMIMAGES |*/
+						LVS_EX_HEADERDRAGDROP | LVS_EX_TRACKSELECT;
+	GetListCtrl().SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, LPARAM(dwExStyle));
+	
+	LV_COLUMN lvColumn;
+	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
+	lvColumn.fmt = LVCFMT_LEFT;
+	lvColumn.cx = 120;
+	for(int i = 0; i &lt; GetFieldCount(); i++) // set up columns
+	{
+		CDaoFieldInfo fieldinfo;
+		pRecordSet-&gt;GetFieldInfo(i, fieldinfo);//get field name
+		int len = fieldinfo.m_strName.GetLength();
+		CString temp = fieldinfo.m_strName;
+		TCHAR* szBuffer = new TCHAR[len + 1];
+		strcpy(szBuffer, temp.GetBuffer(len));
+		temp.ReleaseBuffer();
+		lvColumn.pszText = szBuffer;
+		GetListCtrl().InsertColumn(i, &amp;lvColumn);//insert column
+		delete szBuffer;
+	}
+	/*set number of items in ListView*/
+	count = pRecordSet-&gt;GetRecordCount();//Get number of records
+	GetListCtrl().SendMessage(LVM_SETITEMCOUNT, (WPARAM)count, (LPARAM)LVSICF_NOINVALIDATEALL);
+}
+</font></pre>
+
+<p><font color="#000000"><strong>Create a handler to handle
+LVN_GETDISPINFO messages:</strong></font></p>
+
+<pre>
+<font color="#990000">void CVirtualListViewView::OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
+	TCHAR szValue[MAX_PATH];
+	COleVariant varValue;		
+	long index = pDispInfo-&gt;item.iItem;
+	long subItem = 	pDispInfo-&gt;item.iSubItem;
+	if(pDispInfo-&gt;item.mask &amp; LVIF_TEXT)
+	{
+		try
+		{
+			pRecordSet-&gt;SetAbsolutePosition(index);//Set the file to desired index
+		}
+		catch(CDaoException* e)
+		{
+			return;		
+		}
+		
+		try
+		{
+			if(subItem)	
+				pRecordSet-&gt;GetFieldValue(subItem, varValue);
+			else
+				pRecordSet-&gt;GetFieldValue(0, varValue);
+		}
+		catch(CDaoException* e)
+		{
+			return;
+		}
+
+		const VARIANT* variant = LPCVARIANT(varValue);
+		switch(variant-&gt;vt)
+		{
+			case VT_I2:{	wsprintf(szValue, &quot;%d&quot;, variant-&gt;iVal);
+							break;
+					   }
+			case VT_I4:{	wsprintf(szValue, &quot;%d&quot;, variant-&gt;lVal);
+							break;
+					   }
+			case VT_R4:{	wsprintf(szValue, &quot;%f&quot;, variant-&gt;fltVal);
+							break;
+					   }	
+			case VT_R8:{	wsprintf(szValue, &quot;%f&quot;, variant-&gt;dblVal);
+							break;
+					   }
+			case VT_CY:{	COleCurrency c(varValue);
+							CString s = c.Format();//ie. 1.00
+							strcpy(szValue, s.GetBuffer(s.GetLength()));
+							s.ReleaseBuffer();
+							break;
+					   }
+			case VT_DATE:{	COleDateTime t(variant-&gt;date);
+							CString s = t.Format( &quot;%A, %B %d, %Y&quot; );//Day of Week, Month Day, Year
+							strcpy(szValue, s.GetBuffer(s.GetLength()));
+							s.ReleaseBuffer();
+							break;
+						 }
+			case VT_BSTR:{  CString str = V_BSTRT( &amp;varValue );//convert BSTR to CString
+							strcpy(szValue, str.GetBuffer(str.GetLength()));
+							str.ReleaseBuffer();
+							break;
+						}
+			case VT_BOOL:{	if(variant-&gt;boolVal)
+								strcpy(szValue, &quot;TRUE&quot;);
+							else
+								strcpy(szValue, &quot;FALSE&quot;);
+							break;
+						 }
+			case VT_UI1:{	strcpy(szValue, (char*)variant-&gt;bVal);
+							break;
+						}
+
+			default: break;
+
+		}
+		
+		lstrcpyn(pDispInfo-&gt;item.pszText, szValue, pDispInfo-&gt;item.cchTextMax);//set item text
+	}
+	
+	if(pDispInfo-&gt;item.mask &amp; LVIF_IMAGE)
+		pDispInfo-&gt;item.iImage = 0;//set image to first in list
+
+	*pResult = 0;
+} 
+</font></pre>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

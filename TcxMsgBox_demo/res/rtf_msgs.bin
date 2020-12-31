@@ -1,0 +1,10 @@
+{\rtf1\ansi\ansicpg1252\deff0\deftab720{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman\fcharset2 Symbol;}{\f2\fswiss\fprq2 Arial;}{\f3\froman Times New Roman;}}
+{\colortbl\red0\green0\blue0;}
+\deflang1031\pard\plain\f2\fs16\cf0 A corresponding workspace
+\par \plain\f2\fs16\cf0\b '%s\\\plain\f2\fs16\cf0\b\ul %s\plain\f2\fs16\cf0\b '\plain\f2\fs16\cf0 
+\par has been found and will be opened instead of the specified project
+\par \pard\plain\f2\fs16\cf0\b '%s\\\plain\f2\fs16\cf0\b\ul %s\plain\f2\fs16\cf0\b '\plain\f2\fs16\cf0 .
+\par 
+\par \plain\f2\fs16\cf0\i Note: If you wish to create a workspace containing only the specified project, you can do so by creating a blank workspace with the Worspace tab on the New dialog and then adding the project to that workspace using Insert Projects into Workspace.
+\par \plain\f2\fs16\cf0 
+\par };

@@ -1,0 +1,35 @@
+COMMCTRL.H(166):#define MCN_FIRST               (0U-750U)       // monthcal
+COMMCTRL.H(167):#define MCN_LAST                (0U-759U)
+COMMCTRL.H(3733):// MCN_SELCHANGE is sent whenever the currently displayed date changes
+COMMCTRL.H(3744):#define MCN_SELCHANGE       (MCN_FIRST + 1)
+COMMCTRL.H(3746):// MCN_GETDAYSTATE is sent for MCS_DAYSTATE controls whenever new daystate
+COMMCTRL.H(3763):#define MCN_GETDAYSTATE     (MCN_FIRST + 3)
+COMMCTRL.H(3765):// MCN_SELECT is sent whenever a selection has occured (via mouse or keyboard)
+COMMCTRL.H(3770):#define MCN_SELECT          (MCN_FIRST + 4)
+Searching for 'DTN_'...
+COMMCTRL.H(169):#define DTN_FIRST               (0U-760U)       // datetimepick
+COMMCTRL.H(170):#define DTN_LAST                (0U-799U)
+COMMCTRL.H(3834)://   will determine how to display information. Such apps must support DTN_WMKEYDOWN,
+COMMCTRL.H(3835)://   DTN_FORMAT, and DTN_FORMATQUERY.
+COMMCTRL.H(3856):// between DTN_DROPDOWN and DTN_CLOSEUP notifications.
+COMMCTRL.H(3871):#define DTS_APPCANPARSE     0x0010 // allow user entered strings (app MUST respond to DTN_USERSTRING)
+COMMCTRL.H(3874):#define DTN_DATETIMECHANGE  (DTN_FIRST + 1) // the systemtime has changed
+COMMCTRL.H(3882):#define DTN_USERSTRINGA  (DTN_FIRST + 2) // the user has entered a string
+COMMCTRL.H(3883):#define DTN_USERSTRINGW  (DTN_FIRST + 15)
+COMMCTRL.H(3901):#define DTN_USERSTRING          DTN_USERSTRINGW
+COMMCTRL.H(3905):#define DTN_USERSTRING          DTN_USERSTRINGA
+COMMCTRL.H(3911):#define DTN_WMKEYDOWNA  (DTN_FIRST + 3) // modify keydown on app format field (X)
+COMMCTRL.H(3912):#define DTN_WMKEYDOWNW  (DTN_FIRST + 16)
+COMMCTRL.H(3930):#define DTN_WMKEYDOWN           DTN_WMKEYDOWNW
+COMMCTRL.H(3934):#define DTN_WMKEYDOWN           DTN_WMKEYDOWNA
+COMMCTRL.H(3940):#define DTN_FORMATA  (DTN_FIRST + 4) // query display for app format field (X)
+COMMCTRL.H(3941):#define DTN_FORMATW  (DTN_FIRST + 17)
+COMMCTRL.H(3961):#define DTN_FORMAT             DTN_FORMATW
+COMMCTRL.H(3965):#define DTN_FORMAT             DTN_FORMATA
+COMMCTRL.H(3971):#define DTN_FORMATQUERYA  (DTN_FIRST + 5) // query formatting info for app format field (X)
+COMMCTRL.H(3972):#define DTN_FORMATQUERYW (DTN_FIRST + 18)
+COMMCTRL.H(3988):#define DTN_FORMATQUERY         DTN_FORMATQUERYW
+COMMCTRL.H(3992):#define DTN_FORMATQUERY         DTN_FORMATQUERYA
+COMMCTRL.H(3998):#define DTN_DROPDOWN    (DTN_FIRST + 6) // MonthCal has dropped down
+COMMCTRL.H(3999):#define DTN_CLOSEUP     (DTN_FIRST + 7) // MonthCal is popping up
+ 

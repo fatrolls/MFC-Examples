@@ -1,0 +1,264 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 7, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\AutoComplete.rc2""  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen\r\n"
+    "#include ""l.deu\\afxres.rc""          // Standardkomponenten\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\AutoComplete.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Info über AutoComplete"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "AutoComplete Version 1.2",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2002",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_AUTOCOMPLETE_DIALOG DIALOGEX 0, 0, 221, 303
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "AutoComplete V1.2"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT2,11,98,93,14,ES_AUTOHSCROLL | ES_WANTRETURN
+    EDITTEXT        IDC_EDIT1,11,23,93,14,ES_AUTOHSCROLL | ES_WANTRETURN
+    LISTBOX         IDC_LIST1,125,10,87,112,LBS_NOINTEGRALHEIGHT | LBS_NOSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Known words",IDC_STATIC,117,0,54,10
+    LTEXT           "Separator: \\",IDC_STATIC,13,13,59,8
+    COMBOBOX        IDC_COMBO1,11,117,93,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO2,11,40,93,83,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT3,11,56,93,24,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    WS_VSCROLL
+    LTEXT           "Separator: < /      prefix char: <",IDC_STATIC,11,147,
+                    89,8
+    EDITTEXT        IDC_EDIT4,11,157,198,14,ES_AUTOHSCROLL | ES_WANTRETURN
+    GROUPBOX        "Simple completion",IDC_STATIC,7,87,104,46
+    GROUPBOX        "Multiple completion",IDC_STATIC,7,3,104,81
+    GROUPBOX        "",IDC_STATIC,7,137,207,37
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,119,9,1,119
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,119,127,95,1
+    EDITTEXT        IDC_EDIT5,11,201,198,14,ES_AUTOHSCROLL
+    GROUPBOX        "File system",IDC_STATIC,7,180,207,119
+    LTEXT           "e.g. C:\\Programme",IDC_STATIC,11,191,61,8
+    EDITTEXT        IDC_EDIT6,11,230,99,14,ES_AUTOHSCROLL
+    LTEXT           "(Files only)",IDC_STATIC,11,218,99,8
+    EDITTEXT        IDC_EDIT7,111,230,99,14,ES_AUTOHSCROLL
+    LTEXT           " (Dirs only)",IDC_STATIC,111,218,99,8
+    LTEXT           "Start-Dir:",IDC_STATIC,11,255,30,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT8,42,255,156,13,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT9,11,281,99,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON2,198,255,11,13
+    EDITTEXT        IDC_EDIT10,111,281,98,14,ES_AUTOHSCROLL
+    LTEXT           "Show all",IDC_STATIC,11,269,26,8
+    LTEXT           "Show files only",IDC_STATIC,111,270,45,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,13,249,193,1
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,2,0,0
+ PRODUCTVERSION 1,2,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040704b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "MFC-Anwendung AutoComplete\0"
+            VALUE "FileVersion", "1, 2, 0, 0\0"
+            VALUE "InternalName", "AutoComplete\0"
+            VALUE "LegalCopyright", "Copyright (C) 2002\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "AutoComplete.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Anwendung AutoComplete\0"
+            VALUE "ProductVersion", "1, 2, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x407, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_AUTOCOMPLETE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 214
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 296
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_AUTOCOMPLETE_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 9, 0
+0x7453, 0x6972, 0x676e, 0x3120, "\000" 
+    IDC_COMBO1, 0x403, 9, 0
+0x7453, 0x6972, 0x676e, 0x3220, "\000" 
+    IDC_COMBO1, 0x403, 9, 0
+0x7453, 0x6972, 0x676e, 0x3320, "\000" 
+    IDC_COMBO2, 0x403, 9, 0
+0x7453, 0x6972, 0x676e, 0x3120, "\000" 
+    IDC_COMBO2, 0x403, 9, 0
+0x7453, 0x6972, 0x676e, 0x3220, "\000" 
+    IDC_COMBO2, 0x403, 9, 0
+0x7453, 0x6972, 0x676e, 0x3320, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "Inf&o über AutoComplete..."
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE 7, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\AutoComplete.rc2"  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen
+#include "l.deu\afxres.rc"          // Standardkomponenten
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,197 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Class for displaying system error messages</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Class for displaying system error messages</FONT></H3></CENTER>
+<HR>
+
+
+
+
+<p>This code was contributed by <a href="mailto:gem@wirehub.nl">Gert Rijs</a>. </p>
+
+
+<P>The attached zip contains a small class I use regularly. It is an interface
+to the win32 FormatMessage api for error-reporting.
+
+<P>It's use is very simple:
+when you detect a win32 error (could not open file for example):
+
+<PRE><TT><FONT COLOR="#990000">
+FILE *f = fopen("idontexist.txt", "r");
+if(!f)
+{
+   CErrorMessage em;  // initializes with the current ::GetLastError
+   if(em.MessageBox("problem opening file, cause:", "file:idontexist.txt\nRetry?", MB_YESNO)== IDYES)
+   {
+	...
+   }
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>Header file.
+
+<PRE><TT><FONT COLOR="#990000">
+// ErrorMessage.h: interface for the CErrorMessage class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#if !defined(AFX_ERRORMESSAGE_H__51CAC9F1_9ECE_11D1_A06C_0000832CDDC7__INCLUDED_)
+#define AFX_ERRORMESSAGE_H__51CAC9F1_9ECE_11D1_A06C_0000832CDDC7__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+class CErrorMessage  
+{
+public:
+		// default ctor: calls GetLastError to get the current errorcode
+	CErrorMessage();
+		// specify your own errorcode
+	CErrorMessage(DWORD theError);
+	~CErrorMessage();
+
+		//	setup a new error (0=call GetLastError)
+	void	setError(DWORD error=0);
+
+	CString	getMessage() const		{return themsg;}
+	DWORD	getMessageCode() const	{return dwError;}
+		//	AfxMessageBox with the text pfxtext + "\n" + themsg + "\n" + suftext
+	int		MessageBox(const char* pfxtext=NULL, const char* suftext=NULL, UINT nType=MB_OK) const;
+protected:
+	DWORD	dwError;
+	CString	themsg;
+		//	get the messagestring from the system
+	void	getCurrentMessage();
+
+};
+
+#endif // !defined(AFX_ERRORMESSAGE_H__51CAC9F1_9ECE_11D1_A06C_0000832CDDC7__INCLUDED_)
+</FONT></TT></PRE>
+ 
+
+
+<P>Implementation file.
+<PRE><TT><FONT COLOR="#990000">
+// ErrorMessage.cpp: implementation of the CErrorMessage class.
+//
+//////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
+#include "ErrorMessage.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+/*
+	default ctor
+	gets the current system-error
+*/
+CErrorMessage::CErrorMessage()
+{
+	dwError		=	::GetLastError();
+	getCurrentMessage();
+}
+/*
+	ctor
+	you specify the system-error
+*/
+CErrorMessage::CErrorMessage(DWORD theError)
+{
+	dwError		=	theError;
+	getCurrentMessage();
+}
+
+CErrorMessage::~CErrorMessage()
+{
+}
+/*
+	reuse an existing CErrorMessage by setting a new system-error
+*/
+void	CErrorMessage::setError(DWORD error)
+{
+	if(dwError==0)
+		dwError=::GetLastError();
+	else
+		dwError=error;
+	getCurrentMessage();
+}
+/*
+	show a message-box with the error-message
+	you can specify a prefix- and suffix-line to the message
+*/
+int CErrorMessage::MessageBox(const char* pfxtext, const char* suftext, UINT nType) const
+{
+	CString	msg	=	"";
+	if(pfxtext)	msg	=	CString(pfxtext) + "\n";
+	msg	+=	themsg;
+	if(suftext)	msg	=	msg + "\n" + suftext;
+	return AfxMessageBox(msg, nType);
+}
+/*
+	get the message from the current errorcode in the user's language
+*/
+void CErrorMessage::getCurrentMessage()
+{
+	LPTSTR	lpBuf;
+	if(::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
+						FORMAT_MESSAGE_ALLOCATE_BUFFER
+					,	NULL
+					,	dwError
+					,	MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT)
+					,	(LPTSTR)&lpBuf
+					,	0
+					,	NULL)!=0)
+	{
+		themsg	=	lpBuf;
+		::LocalFree(lpBuf);
+	}
+	else
+	{
+		themsg.Format("Error %i occurred (no further info)", dwError);
+	}
+}
+</FONT></TT></PRE>
+ 
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

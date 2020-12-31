@@ -1,0 +1,30 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+HKEY_CLASSES_ROOT\.32A = Ex32a.Document
+HKEY_CLASSES_ROOT\Ex32a.Document\shell\open\command = EX32A.EXE %1
+HKEY_CLASSES_ROOT\Ex32a.Document\shell\open\ddeexec = [open("%1")]
+HKEY_CLASSES_ROOT\Ex32a.Document\shell\open\ddeexec\application = EX32A
+    ; note: the application is optional
+    ;  (it defaults to the app name in "command")
+
+HKEY_CLASSES_ROOT\Ex32a.Document = Ex32a Document
+HKEY_CLASSES_ROOT\Ex32a.Document\protocol\StdFileEditing\server = EX32A.EXE
+HKEY_CLASSES_ROOT\Ex32a.Document\protocol\StdFileEditing\verb\0 = &Edit
+HKEY_CLASSES_ROOT\Ex32a.Document\Insertable =
+HKEY_CLASSES_ROOT\Ex32a.Document\CLSID = {3B87F8D1-2B78-11D0-847F-00400526305B}
+
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B} = Ex32a Document
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\DefaultIcon = EX32A.EXE,1
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\LocalServer32 = EX32A.EXE
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\ProgId = Ex32a.Document
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\MiscStatus = 32
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\AuxUserType\3 = ex32a
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\AuxUserType\2 = Ex32a
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\Insertable = 
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\verb\1 = &Open,0,2
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\verb\0 = &Edit,0,2
+HKEY_CLASSES_ROOT\CLSID\{3B87F8D1-2B78-11D0-847F-00400526305B}\InprocHandler32 = ole32.dll

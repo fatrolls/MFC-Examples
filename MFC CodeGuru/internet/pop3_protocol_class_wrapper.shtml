@@ -1,0 +1,502 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - POP3 Protocol wrapper class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">POP3 Protocol wrapper class</FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:aasif@khi.compol.com">Asif
+Rasheed</A>.
+
+<P>On the Internet, electronic mail (e-mail) is the most widely used application.
+According to experts, of all TCP connections that Internet users establish,
+about one-half are for sending and receiving e-mail messages. So it is
+impossible for any Internet programmer to leave this area.
+
+<P>Usually e-mail systems use SMTP as a mail sending Protocol and POP3
+as a mail receiving Protocol. For details about these Protocols you can
+refere to RCF 821 (for SMTP) and RFC 1225 (for POP3). Since in Windows
+environment we have MAPI for e-mail handling but it do not provide enough
+power to commuincate with e-mail server directly.
+
+<P>Here I developed a class for POP 3 protocol. In this class I used CSocket
+as class member (surperise not inherent it), so that I can used it in Threads.
+POP Class has methods which are resembled with POP 3 protocol commands.
+Following is code of the class with comments.
+
+
+<P><FONT COLOR="#990000">/*--------------------------------------------------------------------</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp; Pop.h : main header
+file for the POP application</FONT>
+<BR><FONT COLOR="#990000">-----------------------------------------------------------------------*/</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">#if !defined(AFX_POP_H__A44B38B6_697C_11D1_881E_00001C302581__INCLUDED_)</FONT>
+<BR><FONT COLOR="#990000">#define AFX_POP_H__A44B38B6_697C_11D1_881E_00001C302581__INCLUDED_</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">#define CONNECTION_CHECK 0</FONT>
+<BR><FONT COLOR="#990000">#define USER_CHECK&nbsp; 1</FONT>
+<BR><FONT COLOR="#990000">#define PASSWORD_CHECK 2</FONT>
+<BR><FONT COLOR="#990000">#define QUIT_CHECK&nbsp; 3</FONT>
+<BR><FONT COLOR="#990000">#define DELETE_CHECK 4</FONT>
+<BR><FONT COLOR="#990000">#define RSET_CHECK&nbsp; 5</FONT>
+<BR><FONT COLOR="#990000">#define STAT_CHECK&nbsp; 6</FONT>
+<BR><FONT COLOR="#990000">#define NOOP_CHECK&nbsp; 7</FONT>
+<BR><FONT COLOR="#990000">#define LIST_CHECK&nbsp; 8</FONT>
+<BR><FONT COLOR="#990000">#define RETR_CHECK&nbsp; 9</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">/////////////////////////////////////////////////////////////////////////////</FONT>
+<BR><FONT COLOR="#990000">class CPop</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">public:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL List();</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CWordArray m_SizeOfMsg;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString GetErrorMessage();&nbsp;&nbsp;&nbsp;
+// If there is any error this will return it method</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString GetPassword();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Getting Password stored in class</FONT>
+<BR><FONT COLOR="#990000">&nbsp;void SetPassword(CString&amp; Password);&nbsp;&nbsp;&nbsp;
+// Setting Password in class</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString GetUser();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Getting user name stored in class</FONT>
+<BR><FONT COLOR="#990000">&nbsp;void SetUser(CString&amp; User);&nbsp;
+// Setting user name in class</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString GetHost();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Getting Host name (email server name) stored in class</FONT>
+<BR><FONT COLOR="#990000">&nbsp;void SetHost(CString&amp; Host);&nbsp;&nbsp;&nbsp;
+// Setting Host name (email server name) in class</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL Connect();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Connecting to email server</FONT>
+<BR><FONT COLOR="#990000">&nbsp;int GetTotalMailSize();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// it returns the Total Mail Size</FONT>
+<BR><FONT COLOR="#990000">&nbsp;int GetNumberOfMails();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// It return the number of mails</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString GetMsgContents();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL Statistics();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// issue the STAT command on email server</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL Retrieve(int MsgNumber);&nbsp;&nbsp;&nbsp;
+// Getting any particular mail message</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL Reset();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// issue the reset command on email server</FONT>
+<BR><FONT COLOR="#990000">&nbsp;int&nbsp; GetMessageSize(int MsgNumber);&nbsp;&nbsp;&nbsp;
+// Return a size of any particular mail</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL Noop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// issue the NOOP command on email server</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL Disconnect();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// issue the QUIT command on email server</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL Delete(int&amp; MsgNumber); // Deleteing
+a particular message from email server</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL Connect(CString&amp; Host, CString&amp;
+User, CString&amp; Password);</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CPop();</FONT>
+<BR><FONT COLOR="#990000">&nbsp;virtual ~CPop();</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">private:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString m_ErrorMessage;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;BOOL CheckResponse(int ResponseType);</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString m_Password;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString m_User;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString m_Host;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CString m_MsgContents;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;int m_TotalSize;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;int m_NumberMail;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;CSocket m_PopServer;</FONT>
+<BR><FONT COLOR="#990000">};</FONT>
+<BR><FONT COLOR="#990000">/#endif // !defined(AFX_POP_H__A44B38B6_697C_11D1_881E_00001C302581__INCLUDED_)</FONT>
+<BR><FONT COLOR="#990000"></FONT>&nbsp;<FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">/*-----------------------------------------------------------------------------------------------</FONT>
+<BR><FONT COLOR="#990000">// Pop.cpp : Defines the class behaviors for
+the application.</FONT>
+<BR><FONT COLOR="#990000">---------------------------------------------------------------------------------------------------*/</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">#include "stdafx.h"</FONT>
+<BR><FONT COLOR="#990000">#include "Pop.h"</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">#ifdef _DEBUG</FONT>
+<BR><FONT COLOR="#990000">#define new DEBUG_NEW</FONT>
+<BR><FONT COLOR="#990000">#undef THIS_FILE</FONT>
+<BR><FONT COLOR="#990000">static char THIS_FILE[] = __FILE__;</FONT>
+<BR><FONT COLOR="#990000">#endif</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">////////////////////////////////////////////////////////////////////</FONT>
+<BR><FONT COLOR="#990000">// CPop Class</FONT>
+<BR><FONT COLOR="#990000">//////////////////////////////////////////////////////////////////////</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">//////////////////////////////////////////////////////////////////////</FONT>
+<BR><FONT COLOR="#990000">// Construction/Destruction</FONT>
+<BR><FONT COLOR="#990000">//////////////////////////////////////////////////////////////////////</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">CPop::CPop()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Create();</FONT>
+<BR><FONT COLOR="#990000">}</FONT>
+<BR><FONT COLOR="#990000">//{4EEC1C91-6BE1-11d1-8824-00001C302581}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">CPop::~CPop()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Close();</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::Connect(CString &amp; Host, CString
+&amp; User, CString &amp; Password)</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [512];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;if (!m_PopServer.Connect(Host,110)) // 110
+Pop3 Port</FONT>
+<BR><FONT COLOR="#990000">&nbsp;{</FONT>
+<BR><FONT COLOR="#990000">&nbsp; m_ErrorMessage = _T("Server cannot be
+connected");</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;}</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp;{</FONT>
+<BR><FONT COLOR="#990000">&nbsp; if(CheckResponse(CONNECTION_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; return FALSE;</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp; wsprintf (buf, "USER %s\r\n", (LPCSTR)
+User);</FONT>
+<BR><FONT COLOR="#990000">&nbsp; m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp; if(CheckResponse(USER_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; return FALSE;</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp; wsprintf (buf, "PASS %s\r\n", (LPCSTR)
+Password);</FONT>
+<BR><FONT COLOR="#990000">&nbsp; m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp; if (CheckResponse(PASSWORD_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; return FALSE;</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::Delete(int &amp; MsgNumber)</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [512];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;wsprintf (buf, "DELE %d\r\n",MsgNumber );</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;if (CheckResponse(DELETE_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::Disconnect()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [512];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;wsprintf (buf, "QUIT \r\n");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;if (CheckResponse(QUIT_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::Noop()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [512];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;wsprintf (buf, "NOOP&nbsp; \r\n");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;if (CheckResponse(NOOP_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">// Return the Msg Size for given msg number</FONT>
+<BR><FONT COLOR="#990000">int CPop::GetMessageSize(int MsgNumber)</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;if(m_SizeOfMsg.GetSize() &lt; MsgNumber+1)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return 0;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return m_SizeOfMsg[MsgNumber+1];</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::Reset()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [512];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;wsprintf (buf, "RSET \r\n");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;if (CheckResponse(RSET_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">// MsgContents will hold the msg body</FONT>
+<BR><FONT COLOR="#990000">BOOL CPop::Retrieve(int&nbsp; MsgNumber)</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [512];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;wsprintf (buf, "RETR %d\r\n",MsgNumber );</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;if (CheckResponse(RETR_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::Statistics()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [512];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;wsprintf (buf, "STAT \r\n");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;if (CheckResponse(STAT_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">CString CPop::GetMsgContents()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return m_MsgContents;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">int CPop::GetNumberOfMails()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return m_NumberMail;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">int CPop::GetTotalMailSize()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return m_TotalSize;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::Connect()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;Connect(m_Host, m_User, m_Password);</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">void CPop::SetHost(CString &amp; Host)</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_Host = Host;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">CString CPop::GetHost()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return m_Host;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">void CPop::SetUser(CString &amp; User)</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_User = User;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">CString CPop::GetUser()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return m_User;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">void CPop::SetPassword(CString &amp; Password)</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_Password = Password;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">CString CPop::GetPassword()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return m_Password;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::CheckResponse(int ResponseType)</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [1000];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;for (int i=0;i&lt;512;i++)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; buf[i]='\0';</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;m_PopServer.Receive(buf, sizeof(buf));</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;switch (ResponseType)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;{</FONT>
+<BR><FONT COLOR="#990000">&nbsp; case CONNECTION_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Bad Connection");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp; case USER_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Bad User
+Name");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT>
+<BR><FONT COLOR="#990000">&nbsp; case PASSWORD_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Bad Password
+Name");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT>
+<BR><FONT COLOR="#990000">&nbsp; case QUIT_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Error
+occured during QUIT");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT>
+<BR><FONT COLOR="#990000">&nbsp; case DELETE_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Error
+occured during DELE");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT>
+<BR><FONT COLOR="#990000">&nbsp; case RSET_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Error
+occured during RSET");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT>
+<BR><FONT COLOR="#990000">&nbsp; case STAT_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Error
+occured during STAT");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; else</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; BOOL EmailNumber = TRUE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; for (char *p = buf; *p !=
+'\0'; p++)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp; if (*p == '\t' || *p
+== ' ')</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(EmailNumber
+== TRUE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_NumberMail
+= atoi(p);</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EmailNumber
+= FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_TotalSize
+= atoi(p);</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; }</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT>
+<BR><FONT COLOR="#990000">&nbsp; case NOOP_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Error
+occured during NOOP");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp; case LIST_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Error
+occured during LIST");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; else</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_PopServer.Receive(buf, sizeof(buf));</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; for (char *p = buf; *p != '.';
+p++)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp; if (*p == '\t' || *p
+== ' ')</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_SizeOfMsg.Add(atoi(p));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT>
+<BR><FONT COLOR="#990000">&nbsp; case RETR_CHECK:</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; if (strnicmp(buf,"-ERR", 4) == 0)</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_ErrorMessage = _T("Error
+occured during RETR");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; else</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; {</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; char temp[9000];</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_PopServer.Receive(temp,
+sizeof(temp));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; m_MsgContents = temp;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; }</FONT>
+<BR><FONT COLOR="#990000">&nbsp;&nbsp; break;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;}</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">CString CPop::GetErrorMessage()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;return m_ErrorMessage;</FONT>
+<BR><FONT COLOR="#990000">}</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">BOOL CPop::List()</FONT>
+<BR><FONT COLOR="#990000">{</FONT>
+<BR><FONT COLOR="#990000">&nbsp;char buf [512];</FONT><FONT COLOR="#990000"></FONT>
+
+<P><FONT COLOR="#990000">&nbsp;wsprintf (buf, "LIST&nbsp; \r\n");</FONT>
+<BR><FONT COLOR="#990000">&nbsp;m_PopServer.Send(buf, strlen (buf));</FONT>
+<BR><FONT COLOR="#990000">&nbsp;if (CheckResponse(LIST_CHECK)==FALSE)</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return FALSE;</FONT>
+<BR><FONT COLOR="#990000">&nbsp;else</FONT>
+<BR><FONT COLOR="#990000">&nbsp; return TRUE;</FONT>
+<BR><FONT COLOR="#990000">}</FONT>
+<BR><FONT COLOR="#990000"></FONT>&nbsp;
+<BR><FONT COLOR="#990000"></FONT>&nbsp;
+<BR><FONT COLOR="#990000"></FONT>&nbsp;<FONT COLOR="#990000"></FONT>
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

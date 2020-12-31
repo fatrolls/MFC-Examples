@@ -1,0 +1,17 @@
+REGEDIT
+; 此 .REG 文件可能由 SETUP 程序使用。
+;   如果 SETUP 程序不可用，则调用
+;   CWinApp::RegisterShellFileTypes 和 COleObjectFactory::UpdateRegistryAll
+;   在 InitInstance 中对下列项自动进行注册。
+
+
+HKEY_CLASSES_ROOT\ReadWriteExcel.Application = ReadWriteExcel Application
+
+
+HKEY_CLASSES_ROOT\ReadWriteExcel.Application\CLSID = {B2359DC3-377F-45D3-AF2A-77278B400702}
+
+HKEY_CLASSES_ROOT\CLSID\{B2359DC3-377F-45D3-AF2A-77278B400702} = ReadWriteExcel Application
+HKEY_CLASSES_ROOT\CLSID\{B2359DC3-377F-45D3-AF2A-77278B400702}\ProgId = ReadWriteExcel.Application
+
+
+HKEY_CLASSES_ROOT\CLSID\{B2359DC3-377F-45D3-AF2A-77278B400702}\LocalServer32 = ReadWriteExcel.EXE

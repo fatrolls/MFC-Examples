@@ -1,0 +1,142 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PSAPIWorkingSetDemo DIALOG DISCARDABLE  0, 0, 339, 247
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "进程内存查看器"
+FONT 8, "Courier New"
+BEGIN
+    LISTBOX         IDC_LB_PROCESS_LIST,4,4,240,66,WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "刷新进程列表",IDC_BUTTON_REFRESH_PROCESS_LIST,250,56,85,
+                    14,BS_CENTER
+    LISTBOX         IDC_LB_WORKING_SET_DETAILS,4,82,330,50,LBS_USETABSTOPS | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "清空 working set",IDC_BUTTON_EMPTY_WORKING_SET,23,137,
+                    70,16,BS_CENTER
+    PUSHBUTTON      "开始 Delta",IDC_BUTTON_START_DELTA,97,137,70,16,
+                    BS_CENTER
+    PUSHBUTTON      "结束 Delta",IDC_BUTTON_END_DELTA,171,137,70,16,
+                    BS_CENTER | WS_DISABLED
+    PUSHBUTTON      "保存到文件",IDC_SAVEWORKSET,245,137,70,16
+    LTEXT           "总内存",IDC_TOTAL_MEMORY,250,4,87,8,NOT WS_GROUP
+    LTEXT           "私有内存",IDC_PRIVATE_MEMORY,250,13,86,8,NOT WS_GROUP
+    LTEXT           "共享内存",IDC_SHARED_MEMORY,250,22,86,8,NOT WS_GROUP
+    LTEXT           "页表",IDC_PAGE_TABLES,250,31,86,8,NOT WS_GROUP
+    LTEXT           "内存标记: RO-只读,E-可执行,RW-可读,可写,CW-copy-on-write,S-共享,P-私有",
+                    IDC_STATIC,4,127,266,8
+    LTEXT           "地址(Hex):",IDC_STATIC,4,169,38,8
+    EDITTEXT        IDC_ADDR,42,167,81,12,ES_AUTOHSCROLL
+    LTEXT           "长度(Bytes):",IDC_STATIC,135,169,47,8
+    EDITTEXT        IDC_LENGTH,181,167,79,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "显示",IDC_READ,271,166,30,14,WS_DISABLED
+    EDITTEXT        IDC_CONTENT,4,183,331,56,ES_MULTILINE | WS_VSCROLL
+    PUSHBUTTON      "保存",IDC_SAVEMEMORY,304,166,30,14,WS_DISABLED
+    GROUPBOX        "地址        大小   属性    所有者",IDC_STATIC,1,73,336,
+                    84
+    PUSHBUTTON      "载入进程",IDC_BUTTON_LOAD_PROCESS,250,40,85,14,
+                    BS_CENTER
+    GROUPBOX        "内存内容",IDC_STATIC,1,159,336,84
+END
+
+IDD_PSAPIWorkingSetDelta DIALOG DISCARDABLE  10, 10, 288, 120
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Working Set Delta"
+FONT 8, "Courier New"
+BEGIN
+    PUSHBUTTON      "确定",IDOK,89,103,50,14,BS_CENTER
+    LISTBOX         IDC_LB_DELTA,4,12,280,84,LBS_USETABSTOPS | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "VA        PC",-1,6,2,152,9,NOT WS_GROUP
+    PUSHBUTTON      "保存到文件",IDC_SAVEDELTA,149,102,50,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resource.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PSAPIWorkingSetDemo, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 244
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

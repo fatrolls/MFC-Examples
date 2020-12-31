@@ -1,0 +1,401 @@
+// UTFtp.idl : IDL source for UTFtp.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (UTFtp.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+cpp_quote("#endif")  
+
+
+[
+	uuid(7C303390-06E5-11D3-A467-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP FTP Control 4.2")
+]
+library UTFTPLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(7C3033A2-06E5-11D3-A467-0080C858F182),
+		helpstring("_IFtpEvents Interface")
+	]
+	dispinterface _IFtpEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnReceiveStatus")] HRESULT OnReceiveStatus([in] long BytesReceived);
+		[id(2), helpstring("method OnSendStatus")] HRESULT OnSendStatus([in] long BytesSend);
+		[id(3), helpstring("method OnCdUp")] HRESULT OnCdUp([in] long Result);
+		[id(4), helpstring("method OnChDir")] HRESULT OnChDir([in] long Result);
+		[id(5), helpstring("method OnConnect")] HRESULT OnConnect([in] long Result);
+		[id(6), helpstring("method OnDeleteFile")] HRESULT OnDeleteFile([in] long Result);
+		[id(7), helpstring("method OnGetDirInfo")] HRESULT OnGetDirInfo([in] long Result);
+		[id(8), helpstring("method OnGetHelp")] HRESULT OnGetHelp([in] long Result);
+		[id(9), helpstring("method OnMkDir")] HRESULT OnMkDir([in] long Result);
+		[id(10), helpstring("method OnNOOP")] HRESULT OnNOOP([in] long Result);
+		[id(11), helpstring("method OnReceiveFile")] HRESULT OnReceiveFile([in] long Result);
+		[id(12), helpstring("method OnRenameFile")] HRESULT OnRenameFile([in] long Result);
+		[id(13), helpstring("method OnRemDir")] HRESULT OnRemDir([in] long Result);
+		[id(14), helpstring("method OnSendFile")] HRESULT OnSendFile([in] long Result);
+		[id(15), helpstring("method OnGetCurDir")] HRESULT OnGetCurDir([in] long Result, [in] BSTR Directory);
+		[id(16), helpstring("method OnClose")] HRESULT OnClose([in] long Result);
+		[id(17), helpstring("method OnSetTransferMode")] HRESULT OnSetTransferMode([in] long Result);
+		[id(18), helpstring("method OnSetTransferStructure")] HRESULT OnSetTransferStructure([in] long Result);
+		[id(19), helpstring("method OnSetTransferType")] HRESULT OnSetTransferType([in] long Result);
+		[id(20), helpstring("method OnResumeFile")] HRESULT OnResumeFile([in] long Result);
+		[id(21), helpstring("method OnQuote")] HRESULT OnQuote([in] long Result);
+	};
+
+	[
+		uuid(7C3033A1-06E5-11D3-A467-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP FTP Control 4.2")
+	]
+	coclass Ftp
+	{
+		[default] interface IFtp;
+		[default, source] dispinterface _IFtpEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (4D1A7A9B-06F0-11d3-A467-0080C858F182), helpstring("Ftp Error Codes")]
+	enum FtpErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Error")]					ecError					= UTE_ERROR,
+		[helpstring("Invalid Address Format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid Address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Connection Failed")]		ecConnectionFailed		= UTE_CONNECT_FAILED,
+		[helpstring("Connection Rejected")]		ecConnectionRejected	= UTE_CONNECT_REJECTED,
+		[helpstring("Connection Terminated")]	ecConnectionTerminated	= UTE_CONNECT_TERMINATED,
+		[helpstring("No Response")]				ecNoResponse			= UTE_NO_RESPONSE,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("Timed out")]				ecTimeOut				= UTE_CONNECT_TIMEOUT,
+		[helpstring("File open failed")]		ecFileOpenFailed		= UTE_DS_OPEN_FAILED,
+		[helpstring("File write failed")]		ecFileWriteFailed		= UTE_DS_WRITE_FAILED,
+		[helpstring("Request denied")]			ecSrvRequestDenied		= UTE_SVR_REQUEST_DENIED,
+		[helpstring("Invalid parameter")]		ecInvalidParameter		= UTE_PARAMETER_INVALID_VALUE,
+		[helpstring("PORT command failed")]		ecPORTFailed			= UTE_PORT_FAILED,
+		[helpstring("Failed to connect on the data port")]		ecSrvDataConnFailed		= UTE_SVR_DATA_CONNECT_FAILED,
+		[helpstring("LIST command failed")]		ecLISTFailed			= UTE_LIST_FAILED,
+		[helpstring("Index out of range")]		ecIndexOutOfRange		= UTE_INDEX_OUTOFRANGE,
+		[helpstring("RETR command failed")]		ecRETRFailed			= UTE_RETR_FAILED,
+		[helpstring("Data port could not be opened")]		ecDataPortFailed		= UTE_DATAPORT_FAILED,
+		[helpstring("RNFR command failed")]		ecRNFRFailed			= UTE_RNFR_NA,
+		[helpstring("RNTO command failed")]		ecRNTOFailed			= UTE_RNTO_NA,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR
+	} FtpErrorCodes;
+
+
+	//===========================================
+	//	Transfer modes enumeration
+	//===========================================
+	typedef [uuid (4D1A7A9E-06F0-11d3-A467-0080C858F182), helpstring("Ftp Transfer Mode")]
+	enum FtpTransferMode
+	{
+		[helpstring("Stream mode. The data is transmitted as a stream of bytes.")]				
+			tmStream,
+
+		[helpstring("Block mode. The file is transmitted as a series of data blocks preceded by one or more header bytes.")]	
+			tmBlock,
+
+		[helpstring("Compressed mode. The file is transmitted as series of bytes of the size specified by the BYTE command.")]			
+			tmCompressed
+
+	} FtpTransferMode;
+
+
+	//===========================================
+	//	Transfer structures enumeration
+	//===========================================
+	typedef [uuid (12E83370-06F1-11d3-A467-0080C858F182), helpstring("Ftp Transfer Structure")]
+	enum FtpTransferStructure
+	{
+		[helpstring("File Transfer Structure")]				
+			tsFile,
+
+		[helpstring("Record Transfer Structure")]	
+			tsRecord,
+
+		[helpstring("Page Transfer Structure")]			
+			tsPage
+
+	} FtpTransferStructure;
+
+
+	//===========================================
+	//	Transfer types enumeration
+	//===========================================
+	typedef [uuid (292F2C60-06F1-11d3-A467-0080C858F182), helpstring("Ftp Transfer Type")]
+	enum FtpTransferType
+	{
+		[helpstring("ASCII Transfer Type")]				
+			ttASCII,
+
+		[helpstring("Image Transfer Type")]	
+			ttImage,
+
+	} FtpTransferType;
+
+
+
+	[
+		uuid(7C3033A4-06E5-11D3-A467-0080C858F182),
+		helpstring("FtpPropPage Class")
+	]
+	coclass FtpPropPage
+	{
+		interface IUnknown;
+	};
+};
+
+	//===========================================
+	//	IFtp interface
+	//===========================================
+
+	[
+		object,
+		uuid(7C3033A0-06E5-11D3-A467-0080C858F182),
+		dual,
+		helpstring("IFtp Interface"),
+		pointer_default(unique)
+	]
+	interface IFtp : IDispatch
+	{
+
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_CONNECT_TIME_OUT		= 1;
+		const int DISPID_BLOCKING_MODE			= 2;
+		const int DISPID_GET_ERROR_TEXT			= 3;
+		const int DISPID_CANCEL_FTP				= 4;
+		const int DISPID_CDUP					= 5;
+		const int DISPID_CHDIR					= 6;
+		const int DISPID_CLOSE					= 7;
+		const int DISPID_CONNECT				= 8;
+		const int DISPID_DELETE_FILE			= 9;
+		const int DISPID_GET_DIR_INFO			= 10;
+		const int DISPID_GET_HELP				= 11;
+		const int DISPID_MK_DIR					= 12;
+		const int DISPID_NOOP					= 13;
+		const int DISPID_RECEIVE_FILE			= 14;
+		const int DISPID_RENAME_FILE			= 15;
+		const int DISPID_REMOVE_DIR				= 16;
+		const int DISPID_SEND_FILE				= 17;
+		const int DISPID_GET_CUR_DIR			= 18;
+		const int DISPID_RESET_DIR_ENTRY_ENUM	= 19;
+		const int DISPID_ENUM_DIR_ENTRY			= 20;
+		const int DISPID_GET_MULTILINE_RESPONSE	= 21;
+		const int DISPID_FIREWALL_MODE			= 22;
+		const int DISPID_TRANSFER_MODE			= 23;
+		const int DISPID_TRANSFER_STRUCTURE		= 24;
+		const int DISPID_TRANSFER_TYPE			= 25;
+		const int DISPID_ML_RESPONSE_LINE_COUNT	= 26;
+		const int DISPID_HOST_NAME				= 27;
+		const int DISPID_USER_NAME				= 28;
+		const int DISPID_USER_PASSWORD			= 29;
+		const int DISPID_ACCOUNT				= 30;
+		const int DISPID_DIR_ENTRY_NAME			= 31;
+		const int DISPID_DIR_ENTRY_SIZE			= 32;
+		const int DISPID_DIR_ENTRY_DAY			= 33;
+		const int DISPID_DIR_ENTRY_MONTH		= 34;
+		const int DISPID_DIR_ENTRY_YEAR			= 35;
+		const int DISPID_DIR_ENTRY_HOUR			= 36;
+		const int DISPID_DIR_ENTRY_MINUTE		= 37;
+		const int DISPID_DIR_ENTRY_IS_DIR		= 38;
+		const int DISPID_SET_TRANSFER_MODE		= 39;
+		const int DISPID_SET_TRANSFER_STRUCTURE	= 40;
+		const int DISPID_SET_TRANSFER_TYPE		= 41;
+		const int DISPID_QUOTE					= 42;
+		const int DISPID_RESUME_FILE			= 43;
+		const int DISPID_CURRENT_DIR			= 44;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_FIREWALL_MODE), helpstring("Determines if FireWallMode is enabled")] 
+			HRESULT FireWallMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_FIREWALL_MODE), helpstring("Enables or disables FileWallMode")] 
+			HRESULT FireWallMode([in] VARIANT_BOOL newVal);
+
+		[propget, id(DISPID_TRANSFER_MODE), helpstring("Gets the transfer mode")] 
+			HRESULT TransferMode([out, retval] FtpTransferMode *pVal);
+
+		[propget, id(DISPID_TRANSFER_STRUCTURE), helpstring("Set/Get the structure (0=FILE  1=RECORD  2=PAGE)")] 
+			HRESULT TransferStructure([out, retval] FtpTransferStructure *pVal);
+
+		[propget, id(DISPID_TRANSFER_TYPE), helpstring("Set/Get the transfer type (0=ASCII 1=IMAGE)")] 
+			HRESULT TransferType([out, retval] FtpTransferType *pVal);
+
+		[propget, id(DISPID_ML_RESPONSE_LINE_COUNT), helpstring("The number of lines in the multiline response list")] 
+			HRESULT MultilineResponseLineCount([out, retval] long *pVal);
+
+		[propget, bindable, requestedit, id(DISPID_HOST_NAME), helpstring("Get/Set host name")] 
+			HRESULT HostName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_HOST_NAME), helpstring("Get/Set host name")] 
+			HRESULT HostName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_USER_NAME), helpstring("Get/Set user name")] 
+			HRESULT UserName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_USER_NAME), helpstring("Get/Set user name")] 
+			HRESULT UserName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_USER_PASSWORD), helpstring("Get/Set user password")] 
+			HRESULT UserPassword([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_USER_PASSWORD), helpstring("Get/Set user password")] 
+			HRESULT UserPassword([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_ACCOUNT), helpstring("Get/Set account")] 
+			HRESULT Account([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_ACCOUNT), helpstring("Get/Set account")] 
+			HRESULT Account([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_CURRENT_DIR), helpstring("Get Current Server Directory")] 
+			HRESULT CurrentDir([out, retval] BSTR *pVal);
+
+
+		//===========================================
+		//	Directory Entry properies Get methods
+		//===========================================
+
+		[propget, id(DISPID_DIR_ENTRY_NAME), helpstring("Get the directory entry name")] 
+			HRESULT DirEntryName([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_DIR_ENTRY_SIZE), helpstring("Get the directory entry size")] 
+			HRESULT DirEntrySize([out, retval] long *pVal);
+
+		[propget, id(DISPID_DIR_ENTRY_DAY), helpstring("Get the directory entry day")] 
+			HRESULT DirEntryDay([out, retval] int *pVal);
+
+		[propget, id(DISPID_DIR_ENTRY_MONTH), helpstring("Get the directory entry month")] 
+			HRESULT DirEntryMonth([out, retval] int *pVal);
+
+		[propget, id(DISPID_DIR_ENTRY_YEAR), helpstring("Get the directory entry year")] 
+			HRESULT DirEntryYear([out, retval] int *pVal);
+
+		[propget, id(DISPID_DIR_ENTRY_HOUR), helpstring("Get the directory entry hour")] 
+			HRESULT DirEntryHour([out, retval] int *pVal);
+
+		[propget, id(DISPID_DIR_ENTRY_MINUTE), helpstring("Get the directory entry minute")] 
+			HRESULT DirEntryMinute([out, retval] int *pVal);
+
+		[propget, id(DISPID_DIR_ENTRY_IS_DIR), helpstring("True if entry is a directory")] 
+			HRESULT DirEntryIsDir([out, retval] VARIANT_BOOL *pVal);
+			
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_CANCEL_FTP), helpstring("Cancel Ftp request")] 
+			HRESULT CancelFtp();
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_CDUP), helpstring("executes the FTP command: CdUp")] HRESULT 
+			CdUp([out, retval] long * Result);
+
+		[id(DISPID_CHDIR), helpstring("executes the FTP command: ChDir")] HRESULT 
+			ChDir([in] BSTR DirName, [out, retval] long * Result);
+
+		[id(DISPID_CLOSE), helpstring("Closes an active connection")] 
+			HRESULT Close([out, retval] long * Result);
+
+		[id(DISPID_CONNECT), helpstring("Connects to a server")] 
+			HRESULT Connect([out, retval] long * Result);
+
+		[id(DISPID_DELETE_FILE), helpstring("Deletes a file from the server")] 
+			HRESULT DeleteFile([in] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_GET_DIR_INFO), helpstring("Gets directory information")] 
+			HRESULT GetDirInfo([out, retval] long * Result);
+
+		[id(DISPID_GET_HELP), helpstring("executes the FTP command: Help")] 
+			HRESULT GetHelp([in, defaultvalue("")] BSTR Param, [out, retval] long * Result);
+
+		[id(DISPID_MK_DIR), helpstring("executes the FTP command: MkDir")] 
+			HRESULT MkDir([in] BSTR Directory, [out, retval] long * Result);
+
+		[id(DISPID_NOOP), helpstring("executes the FTP command: NoOp")] 
+			HRESULT NoOp([out, retval] long * Result);
+
+		[id(DISPID_RECEIVE_FILE), helpstring("Receives a file from the server")] 
+			HRESULT ReceiveFile([in] BSTR SourceFileName, [in] BSTR DestFileName, [out, retval] long * Result);
+
+		[id(DISPID_RENAME_FILE), helpstring("Renames a file on the server")] 
+			HRESULT RenameFile([in] BSTR SourceFileName, [in] BSTR DestFileName, [out, retval] long * Result);
+
+		[id(DISPID_REMOVE_DIR), helpstring("Removes a directory from the server")] 
+			HRESULT RemoveDir([in] BSTR Directory, [out, retval] long * Result);
+
+		[id(DISPID_SEND_FILE), helpstring("Sends a file to the server")] 
+			HRESULT SendFile([in] BSTR SourceFileName, [in] BSTR DestFileName, [out, retval] long * Result);
+
+		[id(DISPID_GET_CUR_DIR), helpstring("Gets the Current Server Directory")] 
+			HRESULT GetCurDir([out, retval] long * Result);
+
+		[id(DISPID_RESET_DIR_ENTRY_ENUM), helpstring("Resets the directory enumeration")] 
+			HRESULT ResetDirEntryEnum();
+
+		[id(DISPID_ENUM_DIR_ENTRY), helpstring("Enumerates through each directory entry")] 
+			HRESULT EnumDirEntry([out, retval] long * Result);
+
+		[id(DISPID_GET_MULTILINE_RESPONSE), helpstring("Gets a multiline response from the server")] 
+			HRESULT GetMultilineResponse([in] long Index, [out, retval] BSTR * Result);
+		
+		[id(DISPID_SET_TRANSFER_MODE), helpstring("Sets the transfer mode")] 
+			HRESULT SetTransferMode([in] FtpTransferMode TransferMode, [out, retval] long *Result);
+
+		[id(DISPID_SET_TRANSFER_STRUCTURE), helpstring("Sets the transfer structure")] 
+			HRESULT SetTransferStructure([in] FtpTransferStructure TransferStructure, [out, retval] long *Result);
+
+		[id(DISPID_SET_TRANSFER_TYPE), helpstring("Sets the transfer type")] 
+			HRESULT SetTransferType([in] FtpTransferType TransferType, [out, retval] long *Result);
+		
+		[id(DISPID_QUOTE), helpstring("executes the FTP command: Quote")] 
+			HRESULT Quote([in] BSTR Command, [out, retval] long * Result);
+
+		[id(DISPID_RESUME_FILE), helpstring("Resumes transfering a file that was previously aborted")] 
+			HRESULT ResumeFile([in] BSTR SourceFileName, [in] BSTR DestFileName, [out, retval] long * Result);
+	
+
+	};
+

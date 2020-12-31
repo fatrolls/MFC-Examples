@@ -1,0 +1,1011 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Hans Buehler">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (WinNT; I) [Netscape]">
+   <TITLE>cdxCSizingDialog documentation</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+
+<CENTER>&nbsp;</CENTER>
+
+<CENTER><TABLE>
+<TR>
+<TD>
+<CENTER><FONT SIZE=+2>The codex design MFC extension classes</FONT></CENTER>
+<FONT SIZE=-1>(w)April.1998 codex design: Hans B&uuml;hler</FONT><FONT SIZE=-1></FONT>
+
+<P><FONT SIZE=-1>[ <A HREF="http://www.codex.ro/">http://www.codex.ro/</A>
+| <A HREF="mailto:hb@codex.ro">mailto:hb@codex.ro</A> ]</FONT></TD>
+
+<TD><IMG SRC="black_logo_small.gif" ALT="codex design" HEIGHT=66 WIDTH=68></TD>
+</TR>
+</TABLE></CENTER>
+
+<CENTER><FONT SIZE=-1></FONT>&nbsp;</CENTER>
+
+<CENTER><FONT SIZE=-1></FONT></CENTER>
+
+<HR noshade>
+<CENTER><FONT SIZE=+2>cdxCSizingDialog[CDialog],</FONT></CENTER>
+
+<CENTER><FONT SIZE=+2>cdxCSizingPropSheet[CPropertySheet] and cdxCSizingPropPage[CPropertyPage]</FONT></CENTER>
+
+<CENTER>[ <A HREF="#Introduction">Introduction</A> | <A HREF="#Requirements">Requirements</A>
+| <A HREF="#Files">Files</A> | <A HREF="#HowTo">How to use</A> | <A HREF="#Function">Function
+reference</A> | <A HREF="#Tutorial">Tutorial</A> ]</CENTER>
+
+<CENTER></CENTER>
+
+<CENTER>(Documentation; release 1; 1.5.1998)</CENTER>
+
+<H2>
+<A NAME="Introduction"></A>Introduction:</H2>
+<FONT SIZE=+1><B>Q:</B> What is the difference between the following two
+dialogs ?</FONT>
+<CENTER><IMG SRC="example_small.gif" HEIGHT=180 WIDTH=287><IMG SRC="example_big.gif" HEIGHT=245 WIDTH=377></CENTER>
+
+
+<P><FONT SIZE=+1><B>A: </B>There is <I>no</I> difference !</FONT>
+
+<P>The <TT>cdxCSizingDialog</TT> class is a class derived from <TT>CDialog</TT>
+making it <I>very</I> easy to implement sizable dialogs. I really missed
+that feature in VC++ (and IMHO it's a shame to the MFC that it doesn't
+provide an easy to use way to solve this problem).
+<BR>However, now it is possible to make your dialogs sizable - you can
+add this to an existing dialog <A HREF="#HowTo">in three steps</A> !
+
+<P>In addition to <TT>cdxCSizingDialog</TT>, you will even find both <B><TT>cdxCSizingPropSheet</TT></B>
+and <B><TT>cdxCSizingPropPage</TT></B> in the two files that are part
+<BR>of the zip, but these are considered to be in <I>beta</I> stadium for
+now (they seem to work ... I only have problems with the sizing icon).
+
+<P>The most important features of <TT>cdxCSizingDialog </TT>are:
+<UL>
+<LI>
+Easy to add even to already existing dialog classes.</LI>
+
+<LI>
+Several ways controls may react on window size changes, from a simple <I>nothing</I>
+to a percentage-value;</LI>
+
+<LI>
+Automatic creation of a standard-windows sizing icon (as used by the explorer's
+windows) in the lower right corner of your dialog.</LI>
+
+<LI>
+Support to load/store window position to the registry.</LI>
+</UL>
+
+<H2>
+<A NAME="Requirements"></A>Requirements:</H2>
+
+<UL>
+<LI>
+Tested and used with Visual C++ 5.0.</LI>
+</UL>
+
+<H2>
+<A NAME="Files"></A>Files:</H2>
+
+<UL>
+<LI>
+cdxCSizingDialog.h (header)</LI>
+
+<LI>
+cdxCSizingDialog.cpp (implementation)</LI>
+
+<LI>
+Sample application</LI>
+</UL>
+
+<H2>
+<A NAME="HowTo"></A>How to use:</H2>
+
+<UL><I><U>Make your dialog sizable in 3 steps !!</U></I></UL>
+
+<OL>
+<LI>
+Every control on our dialog needs a DDX value of class <I>control </I>(use
+Class Wizard in the resource editor).</LI>
+
+<LI>
+In both the header and implementation file, replace all strings "<TT>CDialog</TT>"
+by "<TT>cdxCSizingDialog</TT>" and insert an <TT>#include "cdxCSizingDialog.h"</TT>
+to your header file.</LI>
+
+<LI>
+In <TT>OnInitDialog()</TT>, make a call to <TT>AddSzControl()</TT> for
+each control you want to resize/reposition if the dialog's size changes.</LI>
+</OL>
+
+<OL><A HREF="#Tutorial">A little tutorial can be found below.</A></OL>
+
+<HR noshade>
+<H2>
+<A NAME="Function"></A>Function reference:</H2>
+
+<UL>
+<H3>
+cdxCSizingDialog</H3>
+</UL>
+
+<BLOCKQUOTE>
+<UL>
+<LI>
+<A HREF="#cdxCSizingDialog()">cdxCSizingDialog()</A> - define in which
+directions your dialog might be resized.</LI>
+
+<LI>
+<A HREF="#OnInitDialog()">OnInitDialog()</A> - sets up the minimum size
+of your dialog.</LI>
+
+<LI>
+<A HREF="#AddSzControl()">AddSzControl()</A> - make a control react if
+the dialog's size changes (simple version).</LI>
+
+<LI>
+<A HREF="#AddSzControlEx()">AddSzControlEx()</A> - the same as <TT>AddSzControl()</TT>
+but far more powerful (advanced).</LI>
+
+<LI>
+<A HREF="#RestoreWindowPosition()">RestoreWindowPosition()</A>/<A HREF="#StoreWindowPosition()">StoreWindowPosition()</A>
+- load/store window position to registry.</LI>
+
+<LI>
+<A HREF="#StretchWindow()">StrechWindow()</A> - increase window size.</LI>
+</UL>
+
+<H3>
+<A HREF="#cdxCSizingPropSheet">cdxCSizingPropSheet</A></H3>
+
+<UL>
+<LI>
+cdxCSizingPropSheet() - construct a sizable property sheet.</LI>
+
+<LI>
+OnInitDialog() - sets up the minimum size of your property sheet.</LI>
+
+<LI>
+AddPage() - add a property page derived from <TT>cdxCSizingPropPage</TT></LI>
+
+<LI>
+RestoreWindowPosition()/StoreWindowPosition() - load/store window position
+to registry.</LI>
+
+<LI>
+StrechWindow() - increase window size.</LI>
+</UL>
+
+<H3>
+<A HREF="#cdxCSizingPropSheet">cdxCSizingPropPage</A></H3>
+
+<UL>
+<LI>
+cdxCSizingPropPage() - construct a sizable property page.</LI>
+
+<LI>
+GetSheet() - get the associated property sheet.</LI>
+
+<LI>
+OnInitDialog() - sets up the minimum size of your property page.</LI>
+
+<LI>
+AddSzControl() - make a control react if the dialog's size changes (simple
+version).</LI>
+
+<LI>
+AddSzControlEx() - the same as AddSzControl() but far more powerful (advanced).</LI>
+</UL>
+</BLOCKQUOTE>
+
+<H3>
+<U>Construction/Initialization:</U></H3>
+
+<BLOCKQUOTE>
+<H3>
+<A NAME="cdxCSizingDialog()"></A><FONT SIZE=+1>cdxCSizingDialog::cdxCSizingDialog():</FONT></H3>
+
+<BLOCKQUOTE>
+<H4>
+Synopsis:</H4>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE><TT><FONT SIZE=+0>cdxCSizingDialog(UINT idd, CWnd *pParent
+= NULL, Freedom fd = fdAll, bool mkSizeIcon = true);</FONT></TT>
+<BR><I><TT><FONT SIZE=+0>[protected]</FONT></TT></I></BLOCKQUOTE>
+
+<H4>
+Task:</H4>
+
+<BLOCKQUOTE>Constructs the dialog class with the given Resource ID and
+parent window (see documentation of <TT>CDialog::CDialog()</TT> for further
+details).
+<BR>Additionally, the <B>freedom</B> parameter allows you to decide whether
+you want your dialog class being sizable in both x and y direction or in
+only one of them and the <B>mkSizeIcon</B> boolean enables creation of
+a windows-style size icon in the lower right corner of your window.</BLOCKQUOTE>
+
+<H4>
+Parameters:</H4>
+
+<BLOCKQUOTE>
+<DIR>
+<LI>
+<B><TT>UINT idd</TT></B></LI>
+
+<BR>The resource ID of the dialog resource.
+<LI>
+<B><TT>CWnd *pParent</TT></B></LI>
+
+<BR>Pointer to the parent window or NULL.
+<LI>
+<B><TT>Freedom fd</TT></B></LI>
+
+<BR><TT>Freedom</TT> is an embedded enumerator of <TT>cdxCSizingDialog</TT>.
+It may have the following values:
+<DIR>
+<LI>
+<B><TT>fdAll</TT></B></LI>
+
+<BR>The dialog's size can be changed in both x and y direction.
+<LI>
+<B><TT>fdHoriz</TT></B></LI>
+
+<BR>The dialog's size can only be changed in width.
+<LI>
+<B><TT>fdVert</TT></B></LI>
+
+<BR>The dialog's size can only be changed in height.</DIR>
+
+<LI>
+<B><TT>bool mkSizeIcon</TT></B></LI>
+
+<BR>Set this to <TT>false</TT> if you don't like/need the icon (just leave
+it true to see what it is :^).</DIR>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<H3>
+<A NAME="OnInitDialog()"></A><FONT SIZE=+1>cdxCSizingDialog::OnInitDialog():</FONT></H3>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<H4>
+Synopsis:</H4>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<BLOCKQUOTE><TT>virtual BOOL OnInitDialog(UINT addSzByPcnt);</TT>
+<BR><TT>virtual BOOL OnInitDialog();</TT>
+
+<P><I><TT><FONT SIZE=+0>[protected]</FONT></TT></I></BLOCKQUOTE>
+
+<H4>
+Task:</H4>
+
+<BLOCKQUOTE>Sets up the base <TT>cdxCSizingDialog</TT> object.
+<BR><I>Must</I> be called before using <TT><A HREF="#AddSzControl()">AddSzControl()</A></TT>!
+
+<P><A NAME="MinSize"></A><U>Some word to the minimum size of your window:</U>
+
+<P>This function sets up various data which it gets from your dialog -
+it creates the dialog and reads its size which will be taken as the minimum
+size of the dialog.
+<BR>This convention had been made in order to allow you to design your
+dialog in a way that looks great even if the dialog is reduced to its minum
+size.
+<BR>On the other hand, this way also has a disadvantage: Most dialogs would
+look much nicer (and would be more easy to handle) if they get a reasonable
+bigger size than the minimum one.
+<BR>To solve this problem, next to the standard <TT>OnInitDialog(void)</TT>
+function exported by <TT>CDialog</TT>, you even find a second form allowing
+you to pass the <TT>addSzByPcnt</TT> parameter to the function. This parameter
+allows you to increase the size of the dialog automatically (thus the dialog
+won't appear in its minimum width but slightly bigger).
+
+<P><TT>OnInitDialog(void) </TT>is a short-cut to <TT>OnInitDialog(UINT
+addSzByPcnt)</TT> passing <TT>cdxCSizingDialog::DEF_STRETCH</TT> (which
+is 10) to it.</BLOCKQUOTE>
+
+<H4>
+Parameters:</H4>
+
+<BLOCKQUOTE>
+<UL>
+<LI>
+<B><TT>addSzByPcnt</TT></B></LI>
+
+<BR>This parameter will be passed to <TT>StrechWindow()</TT> if non-zero,
+increasing the size of the window by
+<BR>newSize = originalSize + (originalSize * <TT>addSzByPcnt</TT>) / 100.
+<BR>See <TT>StretchWindow()</TT> for more information.</UL>
+</BLOCKQUOTE>
+
+<H4>
+Remarks:</H4>
+
+<BLOCKQUOTE>Since the size of the dialog may change during the call to
+<TT>OnInitDialog()</TT> (and to a subsequent call to <TT>RestoreWindowposition()</TT>
+if you use this function), I recommend to design your dialog without the
+<TT>WS_VISIBLE</TT> flag and to use <TT>CDialog::ShowWIndow(SH_SHOW)</TT>
+just before you finish your own <TT>OnInitDialog()</TT>.
+
+<P><U>An example code would could like:</U>
+<BLOCKQUOTE><B><TT>BOOL MyDialog::OnInitDialog()</TT></B>
+<BR><TT>{</TT>
+<BR><TT>&nbsp; BOOL b = <B>cdxCSizingDialog::OnInitDialog</B>();</TT>
+
+<P><TT>&nbsp; <FONT SIZE=-1>// add your controls</FONT></TT>
+
+<P><TT>&nbsp; <A HREF="#AddSzControl()">AddSzControl</A>(m_wndAnyControl,mdRepos,mdRepos);</TT>
+<BR><TT>&nbsp; ...</TT>
+
+<P><TT>&nbsp; <FONT SIZE=-1>// modify controls (add columns to controls
+etc...)</FONT></TT>
+
+<P><TT>&nbsp; ...</TT>
+
+<P><TT>&nbsp; <FONT SIZE=-1>// load window position from registry</FONT></TT>
+
+<P><TT>&nbsp; <A HREF="#RestoreWindowPosition()">RestoreWindowPosition</A>(_T("MyDialog_Position"));</TT>
+
+<P><TT>&nbsp; <FONT SIZE=-1>// finally, show window</FONT></TT>
+
+<P><TT>&nbsp; <B>ShowWindow(SW_SHOW);</B></TT>
+
+<P><TT>&nbsp; return b;</TT>
+<BR><TT>}</TT></BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<H4>
+See also:</H4>
+
+<BLOCKQUOTE><A HREF="#cdxCSizingDialog()">cdxCSizingDialog()</A>, <A HREF="#AddSzControl()">AddSzControl()</A>,
+<A HREF="#RestoreWindowPosition()">RestoreWindowPosition()</A>, <A HREF="#StretchWindow()">StretchWindow()</A>,
+CDialog::ShowWindow()</BLOCKQUOTE>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<H3>
+<U>Adding controls:</U></H3>
+
+<BLOCKQUOTE>
+<H3>
+<A NAME="AddSzControl()"></A><FONT SIZE=+1>cdxCSizingDialog::AddSzControl():</FONT></H3>
+
+<BLOCKQUOTE>
+<H4>
+Synopsis:</H4>
+
+<BLOCKQUOTE><TT>void AddSzControl(CWnd &amp; ctrl, Mode modeX = mdNone,
+Mode modeY = mdNone);</TT>
+<BR><TT>void AddSzXControl(CWnd &amp; ctrl, Mode modeX);</TT>
+<BR><TT>void AddSzYControl(CWnd &amp; ctrl, Mode modeY);</TT>
+<BR><I><TT>[protected]</TT></I></BLOCKQUOTE>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<H4>
+Task:</H4>
+
+<BLOCKQUOTE>Tells the underlaying <TT>cdxCSizingDialog</TT> about a dialog
+control that should react on changes to the size of the dialog. You have
+to call this function for each control that should change its position
+and/or size in x and/or y direction.
+<BR><B><TT>AddSzXControl()</TT></B> and <B><TT>AddSzYControl()</TT></B>
+are simple short-cut inlines for <B><TT>AddSzControl()</TT></B>.</BLOCKQUOTE>
+
+<H4>
+Parameters:</H4>
+
+<BLOCKQUOTE>
+<UL>
+<LI>
+<B><TT>CWnd &amp; ctrl</TT></B></LI>
+
+<BR>The control.
+<LI>
+<B><TT>Mode modeX</TT></B></LI>
+
+<BR>Defines the way the control reacts on changes to the dialog's width;
+for possible values see below.
+<LI>
+<B><TT>Mode modeY</TT></B></LI>
+
+<BR>Defines the way the control reacts on changes to the dialog's height;
+for possible values see below.
+<BR><TT>Mode</TT> is an embedded enumerator of <TT>cdxCSizingDialog</TT>.
+<BR>It may have the following values (given we talk about the x-dimension,
+i.e. the width of the dialog):
+<UL>
+<LI>
+<B><TT>mdNone</TT></B></LI>
+
+<BR>Nothing. The control remains in its position and size ("control sticks
+to the left of the dialog").
+<LI>
+<B><TT>mdRepos</TT></B></LI>
+
+<BR>The control moves to the right if the control's width increases ("control
+sticks to the right of the dialog").
+<LI>
+<B><TT>mdResize</TT></B></LI>
+
+<BR>The control's width grows if the dialog's width grows ("sizing the
+dialog even sizes the control").
+<LI>
+<B><TT>mdRelative</TT></B></LI>
+
+<BR>The control's position will be kept relative to the dialog's width;
+its size won't change ("keeps centered controls being centered"): If the
+dialog's width increases by 100, the control will be moved to the left
+by 50.</UL>
+</UL>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE><I>Even note the description in the <A HREF="#Tutorial">tutorial</A>,
+if things are not clear yet.</I></BLOCKQUOTE>
+
+<H4>
+Remarks:</H4>
+
+<UL>
+<LI>
+<U>Important:</U></LI>
+
+<BR><I>You have to</I> call <TT><A HREF="OnInitDialog()">cdxCSizingDialog::OnInitDialog()</A></TT>
+before using this function.
+<LI>
+If you call <TT>AddSzControl()</TT> with both <B><TT>modeX</TT></B> and
+<B><TT>modeY</TT></B> set to <TT>mdNone</TT>, this function does nothing
+(except tracing a warning if you run it in the debugger).</LI>
+
+<BR>For further details on the <B><TT>Mode</TT></B> parameters, see <TT><A HREF="#AddSzControlEx()">AddSzControlEx()</A></TT>
+below.</UL>
+
+<H4>
+See also:</H4>
+
+<BLOCKQUOTE><A HREF="#OnInitDialog()">OnInitDialog()</A>, <A HREF="#AddSzControlEx()">AddSzControlEx()</A></BLOCKQUOTE>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<H3>
+<A NAME="AddSzControlEx()"></A><FONT SIZE=+1>cdxCSizingDialog::</FONT>AddSzControlEx():</H3>
+
+<BLOCKQUOTE>
+<H4>
+Synopsis:</H4>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<BLOCKQUOTE><TT>void AddSzControlEx(CWnd &amp; ctrl, BYTE dX1pcnt, BYTE
+dX2pcnt, BYTE dY1pcnt, BYTE dY2pcnt);</TT>
+<BR><TT>void AddSzXControlEx(CWnd &amp; ctrl, BYTE dX1pcnt, BYTE dX2pcnt);</TT>
+<BR><TT>void AddSzYControlEx(CWnd &amp; ctrl, BYTE dY1pcnt, BYTE dY2pcnt);</TT>
+<BR><I><TT>[protected]</TT></I></BLOCKQUOTE>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<H4>
+Task:</H4>
+
+<BLOCKQUOTE>This is the advanced version of <TT><A HREF="#AddSzControl()">AddSzControl()</A></TT>,
+which makes use of this function.</BLOCKQUOTE>
+
+<BLOCKQUOTE><B><TT>AddSzXControlEx()</TT></B> and <B><TT>AddSzYControlEx()</TT></B>
+are simple short-cut inlines for <B><TT>AddSzControlEx()</TT></B>.</BLOCKQUOTE>
+
+<H4>
+Parameters:</H4>
+
+<BLOCKQUOTE>
+<UL>
+<LI>
+<B><TT>CWnd &amp; ctrl</TT></B></LI>
+
+<BR>The control.
+<LI>
+<B><TT>BYTE dX1pcnt, BYTE dX2pcnt, BYTE dY1pcnt, BYTE dY2pcnt</TT></B></LI>
+
+<BR>These values describe how to manipulate the four position values left
+(x1), top (y1), right (x2) and bottom (y2) of the control <TT>ctrl</TT>.
+<BR>These values are positive percent values. If the dialog changes its
+size, the difference between its initial (i.e. <A HREF="#MinSize">minimum</A>)
+size will be calculated (deltaX and deltaY) and the values x1-y2 will be
+set to their initial values plus <TT>pcnt</TT> percent of the appropiate
+delta value.
+
+<P>Use the value <TT>cdxCSizingDialog::exIgnore(0)</TT> to say that a value
+should not be used (the appropiate position value will stay untouched in
+all cases) or <TT>cdxCSizingDialog::exMaximum(100) </TT>to apply the maximum
+value.</UL>
+<U>An example:</U>
+
+<P>Let's say the initial left position (x1) of the control is 10, the initial
+size of the dialog is 100 and you set the appropiate <TT>pcnt</TT> value
+(<TT>dX1pcnt</TT>) to 50.
+<UL>
+<LI>
+Now the dialog's widht changes from 100 to 140:</LI>
+
+<LI>
+The difference between the initial widht and the current one is 140-100
+= 40.</LI>
+
+<BR><TT>dX1pcnt</TT> percent of 40 means 50 percent of 40 = 20.
+<BR>=> Therefore the left position of the control will be set to 10(<TT>x1</TT>)
++ 20(<TT>deltaX*dX1pcnt/100</TT>) = 30.</UL>
+In short, the following formulas are used:
+<UL>
+<LI>
+<TT>x1 = init_x1 + ( (dlg_cur_wid - dlg_init_wid) * dX1pcnt ) / 100</TT></LI>
+
+<LI>
+<TT>x2 = init_x2 + ( (dlg_cur_wid - dlg_init_wid) * dX2pcnt ) / 100</TT></LI>
+
+<LI>
+<TT>wid = init_wid + ( ( dlg_cur_wid - dlg_init_wid) * (dX2pcnt - dX1pcnt)
+) / 100</TT></LI>
+
+<LI>
+<TT>y1 = init_y1 + ( (dlg_cur_hi - dlg_init_hi) * dY1pcnt ) / 100</TT></LI>
+
+<LI>
+<TT>y2 = init_y2 + ( (dlg_cur_hi - dlg_init_hi) * dY2pcnt ) / 100</TT></LI>
+
+<LI>
+<TT>hi = init_hi + ( ( dlg_cur_hi - dlg_init_hi) * (dY2pcnt - dY1pcnt)
+) / 100</TT></LI>
+</UL>
+Where <TT>init_x1,...,init_y2</TT> describe the initial position of the
+control, <TT>dlg_init_hi</TT> and <TT>dlg_init_wid</TT> is the initial
+and <TT>dlg_cur_wid and dlg_cur_hi</TT> the current size of the dialog
+itself (all client-rect).</BLOCKQUOTE>
+
+<H4>
+Remarks:</H4>
+
+<BLOCKQUOTE>Here's which values <TT>AddSzControl()</TT> will pass to <TT>AddSzControlEx()</TT>
+depending on the <TT>cdxCSizingDialog::Mode modeX</TT> value used (explanation
+for the x dimension; will be similar for y):</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>&nbsp;
+<TABLE BORDER CELLSPACING=0 CELLPADDING=4 >
+<TR>
+<TD>&nbsp;</TD>
+
+<TD><B>dX1pcnt</B></TD>
+
+<TD><B>dX2pcnt</B></TD>
+</TR>
+
+<TR>
+<TD><B>mdNone</B></TD>
+
+<TD>0</TD>
+
+<TD>0</TD>
+</TR>
+
+<TR>
+<TD><B>mdRepos</B></TD>
+
+<TD>100</TD>
+
+<TD>100</TD>
+</TR>
+
+<TR>
+<TD><B>mdResize</B></TD>
+
+<TD>0</TD>
+
+<TD>100</TD>
+</TR>
+
+<TR>
+<TD><B>mdRelative</B></TD>
+
+<TD>50</TD>
+
+<TD>50</TD>
+</TR>
+</TABLE>
+&nbsp;</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE><U>Important:</U>
+<BR>This function will <U>not</U> check the validity of the values you
+provide - for example if you set <TT>dX1pcnt </TT>to 100 and <TT>dX2pcnt</TT>
+to 0 and the dialog will be enlarged by more than the initial width of
+your <I>control</I>, the control will be tried to be sized to a <I>negative
+width</I> !!!!!
+<BR>To ensure that your values never cause trouble, I recommend that <TT>dX1pcnt</TT>
+is always smaller or eqal to <TT>dX2pcnt</TT> (similar with <TT>dY1pcnt</TT>
+and <TT>dY2pcnt</TT>, of course :).</BLOCKQUOTE>
+
+<H4>
+See also:</H4>
+
+<BLOCKQUOTE><A HREF="#OnInitDialog()">OnInitDialog()</A>, <A HREF="#AddSzControlEx()">AddSzControlEx()</A></BLOCKQUOTE>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<H3>
+<U>Additional utility functions:</U></H3>
+
+<BLOCKQUOTE>
+<H3>
+<A NAME="RestoreWindowPosition()"></A><FONT SIZE=+1>cdxCSizingDialog::</FONT>RestoreWindowPosition():<BR>
+<A NAME="StoreWindowPosition()"></A><FONT SIZE=+1>cdxCSizingDialog::</FONT>StoreWindowPosition():</H3>
+
+<BLOCKQUOTE>
+<H4>
+Synopsis:</H4>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<BLOCKQUOTE><TT>bool RestoreWindowPosition(const CString &amp; profileSec,
+bool withState = false);</TT>
+<BR><TT>bool StoreWindowPosition(const CString &amp; profileSec);</TT>
+
+<P><TT>bool RestoreWindowPosition(UINT strId, bool withState = false);</TT>
+<BR><TT>bool StoreWindowPosition(UINT strId);</TT>
+<BR><I><TT>[public]</TT></I></BLOCKQUOTE>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<H4>
+Task:</H4>
+
+<BLOCKQUOTE>This pair of function might be used to store and load the position
+and size of the dialog window to allow the user keep its preferred positioning
+available between two sessions with your program.
+<BR>As you may guess, <TT>StoreWindowPosition()</TT> saves the current
+window's coordinates and <TT>RestoreWindowPosition()</TT> is able to restore
+them, later.</BLOCKQUOTE>
+
+<BLOCKQUOTE><TT><U>RestoreWindowPosition():</U></TT>
+<BR>This function should be used from within your dialog's <TT>OnInitDialog()</TT>
+function.
+<BR>Additionally, you should design your dialog without the WS_VISIBLE
+style and use <TT>CWnd::ShowWindow(SW_SHOW)</TT> to make it visible after
+calling this function (or you use <TT>withState = true</TT>).
+
+<P><TT><U>StoreWindowPosition():</U></TT>
+<BR>This function is recommended be used from within <TT>OnOK()</TT>, <TT>OnCancel()</TT>
+and <TT>OnClose()</TT> to ensure the position is saved in all cases.</BLOCKQUOTE>
+
+<H4>
+Parameters:</H4>
+
+<BLOCKQUOTE>
+<UL>
+<LI>
+<B><TT>const CString &amp; profileSec</TT></B></LI>
+
+<BR>A string that identifies the registry-section where the dialog's coordinates
+might be stored in.
+<BR>Inside the section, some values like "Left", "Top" etc. will be used.
+Note that you may even define several sub-sections by providing a string
+like "Document_1\\Properties\\Window" - see <TT>CWinApp::GetProfileString()</TT>
+for further details on profile sections.
+<LI>
+<B><TT>UINT strId</TT></B></LI>
+
+<BR>Allows you to use a resource string ID instead of <TT>profileSec</TT>.
+<LI>
+<B><TT>bool withState</TT></B></LI>
+
+<BR>If true, <TT>ResoreWindowPosition()</TT> even restores the states of
+the window (visible, minimized, maximized etc.), otherwise not.</UL>
+</BLOCKQUOTE>
+
+<H4>
+Return values:</H4>
+
+<BLOCKQUOTE><TT>true</TT> if successful, <TT>false</TT> otherwise.</BLOCKQUOTE>
+
+<H4>
+See also:</H4>
+
+<BLOCKQUOTE><A HREF="#OnInitDialog()">OnInitDialog()</A></BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<H3>
+<A NAME="StretchWindow()"></A><FONT SIZE=+1>cdxCSizingDialog::StretchWindow():</FONT></H3>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<H4>
+Synopsis:</H4>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<BLOCKQUOTE><TT>void StretchWindow(UINT addSzByPcnt = DEF_STRETCH);</TT>
+<BR><I><TT>[public]</TT></I></BLOCKQUOTE>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<BLOCKQUOTE>
+<H4>
+Task:</H4>
+
+<BLOCKQUOTE>This function might be used to increase the window's size by
+a percentage value.</BLOCKQUOTE>
+
+<H4>
+Parameters:</H4>
+
+<BLOCKQUOTE>
+<UL>
+<LI>
+<B><TT>UINT addSzByPcnt</TT></B></LI>
+
+<BR>How many percent of the current widht [heigt] shall be added to the
+width [height] of the dialog ?
+<BR>If you use 20, and the dialog is 100 pixels wide it will get 120 pixels
+wide.
+<BR>The default is <TT>cdxCSizingDialog::DEF_STRETCH</TT>, which currently
+is 10.</UL>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+
+<HR noshade>
+<H3>
+<A NAME="cdxCSizingPropSheet"></A><U>cdxCSizingPropSheet, cdxCSizingPropPage:</U></H3>
+
+<UL>Both classes are in beta-stadium yet.
+<BR>However, if you want to use them (I will hardly try to avoid changes
+in the interfaces and if I'm forced to make some, I'll properly document
+how to adapt existing sizable property sheets !), here are some information:
+<OL>
+<LI>
+Derive your property sheet from <TT>cdxCSizingPropSheet</TT>, not from
+<TT>CPropertySheet</TT>.<BR>
+The constructor of the <U>sheet</U> controls whether the sheet is sizable
+and in which directions.</LI>
+
+<LI>
+All pages you use must be derived from <TT>cdxCSizingPropPage</TT>, not
+from <TT>CPropertyPage</TT>.</LI>
+
+<LI>
+Continue as you are used to and - as if you would use <TT>cdxCSizingDialog</TT>
+- , call <TT>AddSzControl()</TT> for each control of a sizable property
+page.</LI>
+
+<LI>
+Everything else is like if you use a <TT>cdxCSizingDialog</TT> :)</LI>
+</OL>
+Known problems:
+<UL>
+<LI>
+The sizing-icon overlays some of the standard-controls (and is not activated
+if you use the default constructor if the <TT>cdxCSizingPropSheet</TT>).</LI>
+
+<LI>
+Using <TT>StoreWindowPosition()</TT> is quite difficult since the sheet
+itself doesn't get a WM_CLOSE message.<BR>
+I think, I've to make the <I>pages</I> call that function.</LI>
+</UL>
+</UL>
+
+<H3>
+
+<HR NOSHADE WIDTH="100%"></H3>
+
+<H3>
+<A NAME="Tutorial"></A><U>A quick tutorial:</U></H3>
+
+<BLOCKQUOTE>
+<H4>
+A. Setting it up</H4>
+
+<OL>
+<LI>
+We need Visual C++ ready.</LI>
+
+<LI>
+Create a new Workspace with a "dialog-based application" called <B>Test</B>.</LI>
+
+<BR>Among others, you will get the files <I>TestDlg.h</I> and <I>TestDlg.cpp</I>
+which describe your main dialog, <I>CTestDlg</I> which is associated to
+a dialog resource called IDD_TEST_DIALOG.
+<LI>
+Compile this project the first time to generate the procompiled header
+file.</LI>
+</OL>
+
+<H4>
+B. Installing the files and preparing the dialog class</H4>
+
+<OL>
+<LI>
+Copy the files <I>cdxCSizingDialog.h </I>and <I>cdxCSizingDialog.cpp</I>
+into your project's file directory.</LI>
+
+<LI>
+Open your Workspace-List "Files", select the treeview item <I>Test files</I>
+and use your right mouse-button to <I>"Add files to project..."</I>.</LI>
+
+<LI>
+Select <I>cdxCSizingDialog.h </I>and <I>cdxCSizingDialog.cpp</I>.</LI>
+
+<LI>
+Open both <I>TestDlg.h</I> and <I>TestDlg.cpp </I>and open the "Search
+and replace"-dialog (Ctrl+h).</LI>
+
+<BR>Replace the string <I>CDialog</I> by <I>cdxCSizingDialog</I> in both
+files.
+<LI>
+Open the dialog's resource IDD_TEST_DIALOG, select the dialog and display
+its properties.</LI>
+
+<BR>Switch to the <I>Styles</I> tab and change the border from <I>Dialog
+frame</I> to <I>Resizing</I>.
+<LI>
+Compile your project and run the application - you can size your dialog
+and you see a little sizing icon in its lower right corner :)</LI>
+
+<BR>Moreover, the dialog won't be sizable smaller than it has been in the
+resource editor.</OL>
+
+<H4>
+C. Moving buttons</H4>
+
+<OL>
+<LI>
+Now we make the OK and Cancel button stick to the right side of your dialog:</LI>
+
+<BR>Open IDD_TEST_DIALOG in the resource editor (if you closed it before)
+and run the Class Wizard.
+<LI>
+Select the <I>Member variables</I> tab and double-click on the IDOK item
+to add a member variable:</LI>
+
+<BR>Name: <I>m_wndOK</I>
+<BR>Category: <I>Control</I>
+<BR>Type: <I>CButton</I>
+<LI>
+Do the same with IDCANCEL (Name: m_wndCancel).</LI>
+
+<LI>
+Switch to the <I>Message Maps</I> tab and double-click <I>OnInitDialog()</I>
+in the lower list-view.</LI>
+
+<LI>
+Scroll down until you find the // TO DO comment.</LI>
+
+<LI>
+Past the comment, add the following lines to the function:</LI>
+
+<UL>
+<LI>
+AddSzXControl(m_wndOK,mdRepos);</LI>
+
+<BR>AddSzXControl(m_wndCancel,mdRepos);</UL>
+
+<LI>
+Compile and run your application.... fine, isn't it ??</LI>
+</OL>
+
+<H4>
+D. More advanced resizing and repositioning</H4>
+
+<OL>
+<LI>
+Change the lines you just added into:</LI>
+
+<UL>&nbsp;
+<LI>
+AddSzControl(m_wndOK,mdResize,mdRelative);</LI>
+
+<BR>AddSzControl(m_wndCancel,mdRepos,mdRelative); -- Note that its not
+AddSz<B><U>X</U></B>Control any more !!!</UL>
+
+<LI>
+Run...</LI>
+
+<LI>
+What is it doing ?</LI>
+
+<BR>Well, <I>AddSzControl()</I> (or AddSzXControl()/AddSzYControl()) takes
+the control and automatically repositiones it in the x and y direction
+(the first parameter of AddSzControl() describes what to do if the width
+of the dialog changes, the second what to do if the height changes).
+<BR>That's what we needed, isn't it ?
+<BR>Of course, in addition to <A HREF="#AddSzControl()">AddSzControl()</A>
+there is a much more powerful function <A HREF="#AddSzControlEx()">AddSzControlEx()</A>
+which allows more precise positioning and resizing of controls (AddSzControl()
+takes the types mdNone, mdRepos, mdResize and mdRelative).</OL>
+
+<H4>
+E. Changing sizing freedom</H4>
+
+<OL>
+<LI>
+Open <I>CTestDlg::TestDlg</I>. It should look like this:</LI>
+
+<UL>
+<LI>
+&nbsp;CTestDlg::CTestDlg(CWnd* pParent /*=NULL*/)</LI>
+
+<BR>: cdxCSizingDialog(CTestDlg::IDD, pParent)
+<BR>{
+<BR>...
+<BR>}
+<BR>Now Change the second line into "cdxCSizingDialog(CTestDlg::IDD, pParent,
+fdHoriz, false)"</UL>
+
+<LI>
+Run... now the dialog's size is only changeable horizontally and the little
+sizing-icon has gone.</LI>
+</OL>
+
+<H4>
+F. Storing its position and size</H4>
+
+<OL>
+<LI>
+Open <I>CTestApp::OnInitInstance()</I>, scroll down and before the line
+that contains "CTestDlg dlg;", add the line:</LI>
+
+<UL>
+<LI>
+CWinApp::SetRegistryKey(_T("codex design")); -- You can of couse chooose
+another company than <I>codex design</I> :)</LI>
+</UL>
+
+<LI>
+Open <I>CTestDlg::OnInitDialog()</I> again and - past your previously added
+lines, add the following line:</LI>
+
+<UL>
+<LI>
+RestoreWindowPosition(_T("Main\\Window"));</LI>
+</UL>
+
+<LI>
+Use the Class Wizard (via the resource editor) to add a message handler
+for IDOK/MB_CLICKED.</LI>
+
+<LI>
+Open <I>CTestDlg::OnOK()</I> and before <I>cdxCSizingDialog::OnOK() </I>is
+called, add the line</LI>
+
+<UL>
+<LI>
+StoreWindowPosition(_T("Main\\Window"));</LI>
+</UL>
+
+<LI>
+Run your application, resize the window, click OK and restart it ...</LI>
+</OL>
+&nbsp;</BLOCKQUOTE>
+
+</BODY>
+</HTML>

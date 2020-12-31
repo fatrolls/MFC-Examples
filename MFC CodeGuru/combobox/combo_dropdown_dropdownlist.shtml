@@ -1,0 +1,268 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - ComboBox - Switch between drop down & drop list mode</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">ComboBox - Switch between drop down & drop list mode</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:R.Cremer@gmx.net">Robert Cremer</A>.
+
+
+<P>I took the hint of Moshe Stolar to display black text in a disabled ComboBox to
+develope a small class whith more color control.
+In addition it can act like a drop down list an You may switch between
+drop down box mode and drop list mode with a simple call to SetReadOnly().
+
+
+<PRE><TT><FONT COLOR="#990000">
+//////////////////////////////////////////////////////////////////////////////////////
+#if !defined(AFX_MYCOMBOBOX_H__75106EA1_6649_11D1_95E5_0060971F6E1E__INCLUDED_)
+#define AFX_MYCOMBOBOX_H__75106EA1_6649_11D1_95E5_0060971F6E1E__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// MyComboBox.h : header file
+//
+
+// CMyComboBox window
+
+// Author: Robert Cremer
+
+// A ComboBox with easy to switch between edit mode and non edit mode.
+// (i. e. works like a drop down or a drop list)
+// The ComboBox has real coloring, working in drop down and drop list mode.
+// !!! The Box must not be a drop list (CBS_DROPDOWNLIST) !!!
+// Working as a drop list can be done with a call to SetReadOnly()
+// or with the CTor param false.
+class CMyComboBox : public CComboBox
+{
+// Attributes
+private:
+   // default colors
+   enum
+   {
+      ENABLED_FG = RGB(0,0,0), // black
+      ENABLED_BG = RGB(255,255,255), // white
+      DISABLED_FG = RGB(0,0,0), // black
+      DISABLED_BG = RGB(192,192,192), // light grey
+   };
+
+   // edit mode
+   bool m_bEditable; 
+
+   // the actual colors
+   COLORREF m_crFGEnabled;
+   COLORREF m_crBGEnabled;
+   COLORREF m_crFGDisabled;
+   COLORREF m_crBGDisabled;
+
+   // Background brush
+   CBrush *m_pbrushDisabled;
+   // Foreground brush
+   CBrush *m_pbrushEnabled;
+
+// Operations
+public:
+   void SetReadOnly(bool bReadOnly = true);
+   void SetEnabledColor(COLORREF crFG = ENABLED_FG, COLORREF crBG = ENABLED_BG);
+   void SetDisabledColor(COLORREF crFG = DISABLED_FG, COLORREF crBG =
+DISABLED_BG);
+
+// Overrides
+// ClassWizard generated virtual function overrides
+//{{AFX_VIRTUAL(CMyComboBox)
+//}}AFX_VIRTUAL
+
+// Implementation
+public:
+   // Construction
+   CMyComboBox(bool bEditable = true);
+   virtual ~CMyComboBox();
+
+   // Generated message map functions
+protected:
+   //{{AFX_MSG(CMyComboBox)
+   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+   afx_msg void OnEnable(BOOL bEnable);
+   //}}AFX_MSG
+
+   DECLARE_MESSAGE_MAP()
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately
+before the previous line.
+
+#endif //
+!defined(AFX_MYCOMBOBOX_H__75106EA1_6649_11D1_95E5_0060971F6E1E__INCLUDED_)
+
+//////////////////////////////////////////////////////////////////////////////////////
+// MyComboBox.cpp : implementation file
+//
+
+#include "MyComboBox.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+// CMyComboBox
+
+CMyComboBox::CMyComboBox(bool bEditable)
+{
+   // defaults
+   m_bEditable = bEditable;
+   m_crFGEnabled = ENABLED_FG;
+   m_crBGEnabled = ENABLED_BG;
+   m_crFGDisabled = DISABLED_FG;
+   m_crBGDisabled = DISABLED_BG;
+
+   // to changes the colors dynamic
+   m_pbrushEnabled = new CBrush;
+   m_pbrushDisabled = new CBrush;
+   m_pbrushEnabled->CreateSolidBrush(m_crBGEnabled);
+   m_pbrushDisabled->CreateSolidBrush(m_crBGDisabled);
+}
+
+CMyComboBox::~CMyComboBox()
+{
+   delete m_pbrushEnabled;
+   delete m_pbrushDisabled;
+}
+
+BEGIN_MESSAGE_MAP(CMyComboBox, CComboBox)
+   //{{AFX_MSG_MAP(CMyComboBox)
+   ON_WM_CTLCOLOR()
+   ON_WM_DESTROY()
+   ON_WM_CTLCOLOR_REFLECT()
+   ON_WM_ENABLE()
+   //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+// CMyComboBox message handlers
+
+HBRUSH CMyComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+{
+   // Setting color in en- disabled mode
+   if(IsWindowEnabled())
+   {
+      pDC->SetTextColor(m_crFGEnabled);
+      pDC->SetBkColor(m_crBGEnabled);
+      return *m_pbrushEnabled;
+   }
+   else
+   {
+      pDC->SetTextColor(m_crFGDisabled);
+      pDC->SetBkColor(m_crBGDisabled);
+      return *m_pbrushDisabled;
+   }
+}
+
+HBRUSH CMyComboBox::CtlColor(CDC* pDC, UINT nCtlColor) 
+{
+   // Setting color in en- disabled mode
+   if(IsWindowEnabled())
+   {
+      pDC->SetTextColor(m_crFGEnabled);
+      pDC->SetBkColor(m_crBGEnabled);
+      return *m_pbrushEnabled;
+   }
+   else
+   {
+      pDC->SetTextColor(m_crFGDisabled);
+      pDC->SetBkColor(m_crBGDisabled);
+      return *m_pbrushDisabled;
+   }
+   return NULL;
+}
+
+void CMyComboBox::OnEnable(BOOL bEnable) 
+{
+   CComboBox::OnEnable(bEnable);
+
+   // TODO: Add your message handler code here
+
+   // The first child is the CEdit
+   CEdit* pComboEdit=(CEdit*)GetWindow(GW_CHILD);
+
+   // Setting the edit ctrl always to enable
+   pComboEdit->EnableWindow(TRUE);
+   pComboEdit->SetReadOnly(!(m_bEditable && bEnable));
+   Invalidate();
+}
+
+void CMyComboBox::SetReadOnly(bool bReadOnly)
+{
+   m_bEditable = !bReadOnly;
+
+   // The first child is the CEdit
+   CEdit* pComboEdit=(CEdit*)GetWindow(GW_CHILD);
+
+   // Setting the edit ctrl always to enable
+   pComboEdit->EnableWindow(TRUE);
+   pComboEdit->SetReadOnly(!(m_bEditable && IsWindowEnabled()));
+   Invalidate();
+}
+
+void CMyComboBox::SetEnabledColor(COLORREF crFG, COLORREF crBG)
+{
+   // Setting the colors and the brush
+   m_crFGEnabled = crFG;
+   m_crBGEnabled = crBG;
+   delete m_pbrushEnabled;
+   m_pbrushEnabled = new CBrush;
+   m_pbrushEnabled->CreateSolidBrush(m_crBGEnabled);
+}
+
+void CMyComboBox::SetDisabledColor(COLORREF crFG, COLORREF crBG)
+{
+   // Setting the colors and the brush
+   m_crFGDisabled = crFG;
+   m_crBGDisabled = crBG;
+   delete m_pbrushDisabled;
+   m_pbrushDisabled = new CBrush;
+   m_pbrushDisabled->CreateSolidBrush(m_crBGDisabled);
+}
+
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The IOCTL Sample</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The IOCTL Sample</H2>
+<P>The IOCTL Sample accompanies Chapter 9 and illustrates how to perform I/O Control operations.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>IOCTL.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console program that tests IOCTL.SYS.</LI></UL>
+
+<H3>Building IOCTL</H3>
+<P>To build IOCTL.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named IOCTL.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing IOCTL</H3>
+<P>Install IOCTL.SYS. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF.</P>
+<P>Now open a command prompt and execute TEST.EXE from the TEST\DEBUG subdirectory. TEST will issue three I/O Control operations that IOCTL services, and it will print the results.</P></BODY>
+</HTML>

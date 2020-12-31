@@ -1,0 +1,6 @@
+LIBRARY dynclass.dll
+EXPORTS
+	CreateMyClass               @2 PRIVATE          ; object creation
+	DeleteMyClass               @3 PRIVATE          ; object destruction
+	GetClassMethod              @4 PRIVATE          ; method access
+

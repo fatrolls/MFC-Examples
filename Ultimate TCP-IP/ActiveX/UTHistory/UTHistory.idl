@@ -1,0 +1,190 @@
+// =================================================================
+//  File:  UTHistory.idl
+//  
+//  Purpose:
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTHistory.tlb) and marshalling code.
+//
+// =================================================================
+// Ultimate TCP/IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// =================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+
+[
+	uuid(8FAB3686-0EBF-11D3-A46F-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP History Control 4.2")
+]
+library UTHISTORYLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(8FAB3696-0EBF-11D3-A46F-0080C858F182),
+		helpstring("_IHistoryEvents Interface")
+	]
+	dispinterface _IHistoryEvents
+	{
+		properties:
+		methods:
+	};
+
+	[
+		uuid(8FAB3695-0EBF-11D3-A46F-0080C858F182),
+		helpstring("Ultimate TCP/IP History Control 4.2")
+	]
+	coclass History
+	{
+		[default] interface IHistory;
+		[default, source] dispinterface _IHistoryEvents;
+	};
+
+	[
+		uuid(8FAB369E-0EBF-11D3-A46F-0080C858F182),
+		helpstring("HistoryPropPage Class")
+	]
+	coclass HistoryPropPage
+	{
+		interface IUnknown;
+	};
+
+	//===========================================
+	//	Aligment types enumeration
+	//===========================================
+	typedef [uuid (C239E795-0EFB-11d3-A46F-0080C858F182), helpstring("Alignment Type")]
+	enum AlignmentType
+	{
+		[helpstring("Left")]		alLeft		= 0,
+		[helpstring("Center")]		alCenter	= 6,
+		[helpstring("Right")]		alRight		= 2
+
+	} AlignmentType;
+
+
+};
+
+	[
+		object,
+		uuid(8FAB3694-0EBF-11D3-A46F-0080C858F182),
+		dual,
+		helpstring("IHistory Interface"),
+		pointer_default(unique)
+	]
+	interface IHistory : IDispatch
+	{
+
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_LOG_NAME			= 1;
+		const int DISPID_ENABLE_LOG			= 2;
+		const int DISPID_TIME_STAMPED_LOG	= 3;
+		const int DISPID_ALIGNMENT			= 4;
+		const int DISPID_MARGIN				= 5;
+		const int DISPID_TIME_STAMP_FORMAT	= 6;
+		const int DISPID_MAX_HISTORY_LENGTH	= 7;
+		const int DISPID_ADD_LINE			= 8;
+		const int DISPID_ADD_STAMPED_LINE	= 9;
+		const int DISPID_APPEND_TO_LINE		= 10;
+		const int DISPID_CLEAR_HISTORY		= 11;
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propput, bindable, requestedit, id(DISPID_BACKCOLOR)]
+			HRESULT BackColor([in]OLE_COLOR clr);
+
+		[propget, bindable, requestedit, id(DISPID_BACKCOLOR)]
+			HRESULT BackColor([out,retval]OLE_COLOR* pclr);
+
+		[propputref, bindable, requestedit, id(DISPID_FONT)]
+			HRESULT Font([in]IFontDisp* pFont);
+
+		[propput, bindable, requestedit, id(DISPID_FONT)]
+			HRESULT Font([in]IFontDisp* pFont);
+
+		[propget, bindable, requestedit, id(DISPID_FONT)]
+			HRESULT Font([out, retval]IFontDisp** ppFont);
+
+		[propput, bindable, requestedit, id(DISPID_FORECOLOR)]
+			HRESULT ForeColor([in]OLE_COLOR clr);
+
+		[propget, bindable, requestedit, id(DISPID_FORECOLOR)]
+			HRESULT ForeColor([out,retval]OLE_COLOR* pclr);
+
+		[propget, bindable, requestedit, id(DISPID_LOG_NAME), helpstring("Log file name")] 
+			HRESULT LogName([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_LOG_NAME), helpstring("Log file name")] 
+			HRESULT LogName([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_ENABLE_LOG), helpstring("Enable Log flag")] 
+			HRESULT EnableLog([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_ENABLE_LOG), helpstring("Enable Log flag")] 
+			HRESULT EnableLog([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_TIME_STAMPED_LOG), helpstring("Time Stamped Log flag")] 
+			HRESULT TimeStampedLog([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_TIME_STAMPED_LOG), helpstring("Time Stamped Log flag")] 
+			HRESULT TimeStampedLog([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_ALIGNMENT), helpstring("Text alignment")] 
+			HRESULT Alignment([out, retval] AlignmentType *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_ALIGNMENT), helpstring("Text alignment")] 
+			HRESULT Alignment([in] AlignmentType newVal);
+
+		[propget, bindable, requestedit, id(DISPID_MARGIN), helpstring("Text margin")] 
+			HRESULT Margin([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_MARGIN), helpstring("Text margin")] 
+			HRESULT Margin([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_TIME_STAMP_FORMAT), helpstring("Time Stamp Format")] 
+			HRESULT TimeStampFormat([out, retval] BSTR *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_TIME_STAMP_FORMAT), helpstring("Time Stamp Format")] 
+			HRESULT TimeStampFormat([in] BSTR newVal);
+
+		[propget, bindable, requestedit, id(DISPID_MAX_HISTORY_LENGTH), helpstring("Max. History Length")] 
+			HRESULT MaxHistoryLength([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_MAX_HISTORY_LENGTH), helpstring("Max. History Length")] 
+			HRESULT MaxHistoryLength([in] long newVal);
+
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+
+		[id(DISPID_ADD_LINE), helpstring("Adds line to the history control")] 
+			HRESULT AddLine([in] BSTR String, [in, defaultvalue(0xFFFFFFFF)] OLE_COLOR TextColor, [in, defaultvalue(0xFFFFFFFF)] OLE_COLOR BackColor, [in, defaultvalue(TRUE)] BOOL AddToLog);
+
+		[id(DISPID_ADD_STAMPED_LINE), helpstring("Adds stamped line to the history control")] 
+			HRESULT AddStampedLine([in] BSTR String, [in, defaultvalue(0xFFFFFFFF)] OLE_COLOR TextColor, [in, defaultvalue(0xFFFFFFFF)] OLE_COLOR BackColor, [in, defaultvalue(TRUE)] BOOL AddToLog);
+
+		[id(DISPID_APPEND_TO_LINE), helpstring("Appends text to the last line")] 
+			HRESULT AppendToLine([in] BSTR String, [in, defaultvalue(TRUE)] BOOL AddToLog);
+
+		[id(DISPID_CLEAR_HISTORY), helpstring("Clear history control")] 
+			HRESULT ClearHistory();
+
+		[id(DISPID_ABOUTBOX), helpstring("Show About box")] 
+			HRESULT AboutBox();
+
+	};
+

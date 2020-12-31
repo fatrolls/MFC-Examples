@@ -1,0 +1,62 @@
+///////////////////////////////////////////////////////////
+//
+//
+// Visual_i.idl	-	ITangramVisual Interface Description.
+//
+//
+///////////////////////////////////////////////////////////
+//
+// Forwards
+//
+interface ITangramModel ;
+interface ITangramGdiWorld ;
+
+///////////////////////////////////////////////////////////
+//
+// Imports
+//
+import "world_i.idl" ;
+
+///////////////////////////////////////////////////////////
+//
+// Interface ITangramVisual
+//
+[
+	object,
+	uuid(b53313c6-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramVisual Interface"),
+	pointer_default(unique)
+]
+interface ITangramVisual : IUnknown
+{
+	import "unknwn.idl" ; 
+
+	HRESULT GetModel(	[in] REFIID iid, 
+						[out, iid_is(iid)] IUnknown** ppI);
+	HRESULT SetSelected([in] BOOL bSelected) ;
+};
+
+///////////////////////////////////////////////////////////
+//
+// Interface ITangramGdiVisual
+//
+[
+	object,
+	uuid(b53313c7-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramGdiVisual Interface"),
+	pointer_default(unique)
+]
+interface ITangramGdiVisual : ITangramVisual 
+{
+	import "unknwn.idl" ; 
+	// Canvas Interface
+	import "canvas_i.idl" ;
+	// TangramModel
+	import "model_i.idl" ;
+
+
+	HRESULT Initialize([in] ITangramModel* pModel, [in] ITangramGdiWorld* pWorld) ;
+	HRESULT IsPtIn([in] POINT pt) ;
+	HRESULT GetBoundingRect([out] RECT* pBoundingRect) ;
+	HRESULT DrawOn([in] ITangramCanvas* pCanvas) ;    
+};

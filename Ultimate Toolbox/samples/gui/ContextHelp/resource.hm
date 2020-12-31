@@ -1,0 +1,12 @@
+// Microsoft Developer Studio generated Help ID include file.
+// Used by ContextHelp.rc
+//
+#define HIDCANCEL                       0x80640002
+#define HIDC_BITMAP                     0x806403e9
+#define HIDC_CHECK1                     0x806403ed
+#define HIDC_COMBO1                     0x806403ef
+#define HIDC_EDIT1                      0x806403ea
+#define HIDC_SCROLLBAR1                 0x806403f1
+#define HIDC_STATIC1                    0x806403eb
+#define HIDC_STATIC2                    0x806403f5
+#define HIDOK                           0x80640001

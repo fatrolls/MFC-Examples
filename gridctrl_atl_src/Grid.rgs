@@ -1,0 +1,33 @@
+HKCR
+{
+	ATLNewGrid.Grid.1 = s 'Grid Class'
+	{
+		CLSID = s '{466C80A0-58C4-11D3-B221-006097FEBF00}'
+	}
+	ATLNewGrid.Grid = s 'Grid Class'
+	{
+		CLSID = s '{466C80A0-58C4-11D3-B221-006097FEBF00}'
+		CurVer = s 'ATLNewGrid.Grid.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {466C80A0-58C4-11D3-B221-006097FEBF00} = s 'Grid Class'
+		{
+			ProgID = s 'ATLNewGrid.Grid.1'
+			VersionIndependentProgID = s 'ATLNewGrid.Grid'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{1A6B8660-58C4-11D3-B221-006097FEBF00}'
+			'Version' = s '1.0'
+		}
+	}
+}

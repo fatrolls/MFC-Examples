@@ -1,0 +1,233 @@
+// ===================================================================
+// UTHttp.idl : IDL source for UTHttp.dll
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTHttp.tlb) and marshalling code.
+//
+// ===================================================================
+// Ultimate TCP-IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// ===================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+cpp_quote("#endif")  
+
+
+	//===========================================
+	//	IHttp interface
+	//===========================================
+	[
+		object,
+		uuid(E1F1FA2A-047D-11D3-A466-0080C858F182),
+		dual,
+		helpstring("IHttp Interface"),
+		pointer_default(unique)
+	]
+	interface IHttp : IDispatch
+	{
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_CONNECT_TIME_OUT		= 1;
+		const int DISPID_BLOCKING_MODE			= 2;
+		const int DISPID_GET_ERROR_TEXT			= 3;
+		const int DISPID_GET					= 4;
+		const int DISPID_HEAD					= 5;
+		const int DISPID_COMMAND_LINE			= 6;
+		const int DISPID_ADD_SEND_HEADER_TAG	= 7;
+		const int DISPID_CLEAR_SEND_HEADER_TAG	= 8;
+		const int DISPID_CLEAR_RECEIVED_DATA	= 9;
+		const int DISPID_GET_BODY_LINE			= 10;
+		const int DISPID_GET_HEADER_LINE		= 11;
+		const int DISPID_GET_LINK_TAG			= 12;
+		const int DISPID_SAVE_TO_FILE			= 13;
+		const int DISPID_BODY_LINE_COUNT		= 14;
+		const int DISPID_HEADER_LINE_COUNT		= 15;
+		const int DISPID_LINK_TAG_COUNT			= 16;
+		const int DISPID_MODIFIED_DATE			= 17;
+		const int DISPID_CONTENT_TYPE			= 18;
+		const int DISPID_CANCEL_HTTP			= 19;
+		const int DISPID_MAX_LINES_TO_STORE		= 20;
+		const int DISPID_PROXY_SERVER			= 21;
+		const int DISPID_PUT					= 22;
+		const int DISPID_DEL_FILE				= 23;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+		[propget, id(DISPID_BODY_LINE_COUNT), helpstring("Number of received body lines")] 
+			HRESULT BodyLineCount([out, retval] long *pVal);
+
+		[propget, id(DISPID_HEADER_LINE_COUNT), helpstring("Number of received header lines")] 
+			HRESULT HeaderLineCount([out, retval] long *pVal);
+
+		[propget, id(DISPID_LINK_TAG_COUNT), helpstring("Number of received link tags")] 
+			HRESULT LinkTagCount([out, retval] long *pVal);
+
+		[propget, id(DISPID_MODIFIED_DATE), helpstring("Modified date from header")] 
+			HRESULT ModifiedDate([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_CONTENT_TYPE), helpstring("Content type from header")] 
+			HRESULT ContentType([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_MAX_LINES_TO_STORE), helpstring("Maximum number of lines to store")] 
+			HRESULT MaxLinesToStore([out, retval] long *pVal);
+
+		[propput, id(DISPID_MAX_LINES_TO_STORE), helpstring("Maximum number of lines to store")] 
+			HRESULT MaxLinesToStore([in] long newVal);
+
+		[propget, id(DISPID_PROXY_SERVER), helpstring("Proxy server name")] 
+			HRESULT ProxyServer([out, retval] BSTR *pVal);
+
+		[propput, id(DISPID_PROXY_SERVER), helpstring("Proxy server name")] 
+			HRESULT ProxyServer([in] BSTR newVal);
+
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_GET), helpstring("GET command")] 
+			HRESULT GET([in] BSTR URL, [in, defaultvalue("")] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_HEAD), helpstring("HEAD command")] 
+			HRESULT HEAD([in] BSTR URL, [out, retval] long * Result);
+
+		[id(DISPID_COMMAND_LINE), helpstring("Command line")] 
+			HRESULT CommandLine([in] BSTR Command, [in] BSTR URL, [in, defaultvalue("")] BSTR Data, [out, retval] long * Result);
+
+		[id(DISPID_ADD_SEND_HEADER_TAG), helpstring("Adds send header tag")] 
+			HRESULT AddSendHeaderTag([in] BSTR Tag, [out, retval] long * Result);
+
+		[id(DISPID_CLEAR_SEND_HEADER_TAG), helpstring("Clears send header tags")] 
+			HRESULT ClearSendHeaderTags();
+
+		[id(DISPID_CLEAR_RECEIVED_DATA), helpstring("Clears all received data")] 
+			HRESULT ClearReceivedData();
+
+		[id(DISPID_GET_BODY_LINE), helpstring("Returns body line by index")] 
+			HRESULT GetBodyLine([in] long Index, [out, retval] BSTR * Result);
+
+		[id(DISPID_GET_HEADER_LINE), helpstring("Returns header line by index")] 
+			HRESULT GetHeaderLine([in] long Index, [out, retval] BSTR * Result);
+
+		[id(DISPID_GET_LINK_TAG), helpstring("Returns link tag line by index")] 
+			HRESULT GetLinkTag([in] long Index, [out, retval] BSTR *Result);
+
+		[id(DISPID_SAVE_TO_FILE), helpstring("Saves received data to the file")] 
+			HRESULT SaveToFile([in] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_CANCEL_HTTP), helpstring("Cancel Http request")] 
+			HRESULT CancelHttp();
+
+		[id(DISPID_PUT), helpstring("method PUT")] 
+			HRESULT PUT([in] BSTR URL, [in] BSTR FileName, [out, retval] long * Result);
+
+		[id(DISPID_DEL_FILE), helpstring("method DeleteFile")] 
+			HRESULT DeleteFile([in] BSTR URL, [out, retval] long *Result);
+
+	};
+
+[
+	uuid(E1F1FA1C-047D-11D3-A466-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP HTTP Control 4.2")
+]
+library UTHTTPLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(E1F1FA2C-047D-11D3-A466-0080C858F182),
+		helpstring("_IHttpEvents Interface")
+	]
+	dispinterface _IHttpEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnGET")] HRESULT OnGET([in] long Result);
+		[id(2), helpstring("method OnHEAD")] HRESULT OnHEAD([in] long Result);
+		[id(3), helpstring("method OnCommandLine")] HRESULT OnCommandLine([in] long Result);
+		[id(4), helpstring("method OnPUT")] HRESULT OnPUT([in] long Result);
+		[id(5), helpstring("method OnDeleteFile")] HRESULT OnDeleteFile([in] long Result);
+	};
+
+	[
+		uuid(E1F1FA2B-047D-11D3-A466-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP HTTP Control 4.2")
+	]
+	coclass Http
+	{
+		[default] interface IHttp;
+		[default, source] dispinterface _IHttpEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (8354DE01-048B-11d3-A466-0080C858F182), helpstring("Http Error Codes")]
+	enum HttpErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Error")]					ecError					= UTE_ERROR,
+		[helpstring("Invalid Address Format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid Address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Connection Failed")]		ecConnectionFailed		= UTE_CONNECT_FAILED,
+		[helpstring("Connection Rejected")]		ecConnectionRejected	= UTE_CONNECT_REJECTED,
+		[helpstring("Connection Terminated")]	ecConnectionTerminated	= UTE_CONNECT_TERMINATED,
+		[helpstring("No Response")]				ecNoResponse			= UTE_NO_RESPONSE,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("Timed out")]				ecTimeOut				= UTE_CONNECT_TIMEOUT,
+		[helpstring("File open failed")]		ecFileOpenFailed		= UTE_DS_OPEN_FAILED,
+		[helpstring("File write failed")]		ecFileWriteFailed		= UTE_DS_WRITE_FAILED,
+		[helpstring("Bad URL")]					ecBadURL				= UTE_BAD_URL,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR
+
+	} HttpErrorCodes;
+
+
+
+	[
+		uuid(E1F1FA31-047D-11D3-A466-0080C858F182),
+		helpstring("HttpPropPage Class")
+	]
+	coclass HttpPropPage
+	{
+		interface IUnknown;
+	};
+};

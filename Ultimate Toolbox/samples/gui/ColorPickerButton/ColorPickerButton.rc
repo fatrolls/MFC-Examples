@@ -1,0 +1,226 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\ColorPickerButton.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXBitmapButton.rc""         // BitmapButton resources\r\n"
+    "#include ""utsampleabout.rc""\r\n"
+    "#include ""OXPopupBarCtrl.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ColorPickerButton.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COLORPICKERBUTTON_DIALOG DIALOGEX 0, 0, 206, 229
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ColorPickerButton"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "\nColor Picker Button",IDC_BUTTON_COLOR_PICKER,"Button",BS_OWNERDRAW | WS_TABSTOP,71,30,64,22
+    CONTROL         "&Tooltip",IDC_CHECK_TOOLTIP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,79,37,10
+    CONTROL         "T&rack look",IDC_CHECK_TRACKLOOK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,92,50,10
+    CONTROL         "&Hyper look",IDC_CHECK_HYPERLOOK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,105,50,10
+    CONTROL         "&Disabled",IDC_CHECK_DISABLED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,118,43,10
+    CONTROL         "&Multiline",IDC_CHECK_MULTILINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,131,41,10
+    CONTROL         "&Auto resize",IDC_CHECK_AUTORESIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,144,51,10
+    CONTROL         "&Image",IDC_CHECK_IMAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,157,37,10
+    CONTROL         "",IDC_RADIO_LEFTTOP,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,69,85,16,8
+    CONTROL         "",IDC_RADIO_CENTERTOP,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,88,85,16,8
+    CONTROL         "",IDC_RADIO_RIGHTTOP,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,108,85,16,8
+    CONTROL         "",IDC_RADIO_LEFTCENTER,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,69,97,16,8
+    CONTROL         "",IDC_RADIO_CENTERCENTER,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,88,97,16,8
+    CONTROL         "",IDC_RADIO_RIGHTCENTER,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,108,97,16,8
+    CONTROL         "",IDC_RADIO_LEFTBOTTOM,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,69,109,16,8
+    CONTROL         "",IDC_RADIO_CENTERBOTTOM,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,88,109,16,8
+    CONTROL         "",IDC_RADIO_RIGHTBOTTOM,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,108,109,16,8
+    CONTROL         "&Normal",IDC_RADIO_ARROWNORMAL,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,139,85,38,10
+    CONTROL         "&Right",IDC_RADIO_ARROWRIGHT,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,139,97,38,10
+    CONTROL         "N&o arrow",IDC_RADIO_ARROWNONE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,139,109,45,10
+    EDITTEXT        IDC_EDIT_TEXT,61,134,113,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Set",IDC_BUTTON_SETTEXT,179,132,20,15
+    EDITTEXT        IDC_EDIT_TOOLTIP,61,158,113,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Set",IDC_BUTTON_SETTOOLTIP,180,156,20,15
+    COMBOBOX        IDC_COMBO_NUMCOLORS,7,182,129,54,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Font - Color",IDC_BUTTON_FONTCOLOR,150,181,49,14
+    GROUPBOX        "Button Alignment",IDC_STATIC,61,75,66,46
+    GROUPBOX        "Arrow Orientation",IDC_STATIC,133,75,66,46
+    LTEXT           "Colors in Popup Bar",IDC_STATIC,8,172,63,8
+    LTEXT           "Text",IDC_STATIC,61,125,15,8
+    LTEXT           "Tooltip Text",IDC_STATIC,61,150,38,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "ColorPickerButton MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "ColorPickerButton"
+            VALUE "LegalCopyright", "Copyright (C) 1998"
+            VALUE "OriginalFilename", "ColorPickerButton.EXE"
+            VALUE "ProductName", "ColorPickerButton Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_COLORPICKERBUTTON_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 199
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 222
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_IMAGE               BITMAP                  "res\\bitmap1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ColorPickerButton..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "ColorPickerButton"
+    ID_DESCRIPTION_FILE     "ColorPickerButtonInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\ColorPickerButton.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXBitmapButton.rc"         // BitmapButton resources
+#include "utsampleabout.rc"
+#include "OXPopupBarCtrl.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

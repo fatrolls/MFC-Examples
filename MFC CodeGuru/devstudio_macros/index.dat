@@ -1,0 +1,25 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/12|comment_uncomment.shtml||DevStudio Macros - Comment / Uncomment macros|Guy Gascoigne - Piggford
+1998/04/12|comment_uncomment2.shtml||DevStudio Macros - Comment / Uncomment and other macros |Adam Solesby
+1998/04/12|open_header.shtml||DevStudio Macros - Open current header file|Jignesh Patel
+1998/04/12|open_stdafx.shtml||DevStudio Macros - Open stdafx.h and other macros|Ian Southwell
+1998/04/12|user_msg_macro.shtml||DevStudio Macros - WM_COMMAND user message macro|John Christian Lonningdal
+1998/04/12|keyboard_recorder.shtml||DevStudio Macros - VC4.2 style keyboard macro recorder for DevStudio 97|Darren Richards
+1998/04/12|renumber_resources.shtml||DevStudio Macros - Sequentially Renumber Resource ID's|Corey House
+1998/04/12|code_template.shtml||DevStudio Macros - Code Template add-in for Visual C++ 5.0|Darren Richards
+1998/04/12|export_makefile.shtml||DevStudio Macros - Export Makefile|Joseph Dziedzic
+1998/04/03|invert_assigment.shtml||DevStudio Macro - Inverting Assignment Operations|Paul Thompson

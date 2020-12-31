@@ -1,0 +1,101 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>C++ & MFC - Smart Pointers and other Pointer classes</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Smart Pointers and other Pointer classes</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:Poul@wizsoft.com">Poul Costinsky</A>. You can also
+find this and other articles at his web site at <A HREF="http://www.wizsoft.com/~poul/srs/">http://www.wizsoft.com/~poul/srs/</A>
+
+<P>
+Because copy has different meaning with different classes, there are several pointer
+classes here. 
+  <li><a name="SmartPointersClasses"></a><b>Smart pointers classes</b>. Replace the now
+    obsolete CWizPtr, BaseMultiRefPtr, and MultiRefPtr.(I don't remove them for convenience
+    only). <b><font size="+1">No plain C/C++ pointers again!</font></b> <br>
+    File <a href="SmartPointers.h">SmartPointers.h</a> defines the following classes: <ul>
+      <li>CWizSmartPtr - trivial base class for all others;</li>
+      <li>CWizSafePtr - smart pointer class which basic garbage collections (i.e. knows to<br>
+        delete the pointer in destructor). <b><i>From here and later every pointer class must hold</i></b>
+        <b><i>a pointer allocated from heap only</i></b>! Copy operator attaches the object to the
+        pointer and then detaches it from previous pointer - &quot;pessimistic shadow copy&quot;. </li>
+      <li>CWizSafeArray - simple array of objects.</li>
+      <li>CWizDuplPtr - implements deep copy semantics for copy constructor/operator.<br>
+        Requires from an object to have a copy constructor. No polymorphism. </li>
+      <li>CWizClonePtr - implements deep copy semantics for copy constructor/operator, with
+        support for polymorphism in pointed object. Requires from an object to have a Clone()
+        function. In the case of polymorphism a Clone() function must be virtual function
+        returning pointer to the root of hierarchy. <br>
+        An example: <p><tt>class A</tt> <br>
+        <tt>{</tt> <br>
+        <tt>A(const A&amp; a);</tt> <br>
+        <tt>virtual A* Clone() const { return new A(*this); }</tt> <br>
+        <tt>};</tt> </p>
+        <p><tt>class B</tt> <br>
+        <tt>{</tt> <br>
+        <tt>B(const B&amp; a);</tt> <br>
+        <tt>virtual A* Clone() const { return new B(*this); }</tt> <br>
+        <tt>};</tt> </p>
+      </li>
+      <li>CWizBaseMultiRefPtr - <b>Multiply pointer</b> classes with <b>reference counting</b> and
+        polymorphism.<br>
+        Class implements basic machinery of reference counting, but doesn't implement a counter. <br>
+        Class CWizMultiRefPtr uses <b>int</b> as counter (the simplest solution). <br>
+        Implement garbage collection with reference counting, shadow copy, polymorphism. </li>
+      <li>CWizCounterMultiRefPtr - optimized <b>Multiply pointer</b> classes with <b>reference
+        counting</b> and polymorphism. Differs from CWizBaseMultiRefPtr in implementing reference
+        counting,<br>
+        which shifted to the managed class itself. It minimizes memory fragmentation, but requires
+        access to the managed classes, which is not always possible. <br>
+        &nbsp;</li>
+    </ul>
+    <p>File <a href="SmartPointersSerialize.h">SmartPointersSerialize.h</a> defines <b>StoreSmartPtr()</b>
+    and <b>LoadSmartPtr()</b> functions for serializing to/from MFC CArchive.<br>
+    File <a href="SmartPointerArrays.h">SmartPointerArrays.h </a>defines arrays of smart
+    pointers. All arrays are derived from CArray of MFC.<br>
+    File <a href="SmartPointerArraysSerialize.h">SmartPointerArraysSerialize.h</a> defines
+    template function <b>SerializeArray() </b>for serializing to/from MFC CArchive.<br>
+    File <a href="SmartPointerArraysSort.h">SmartPointerArraysSort.h</a> defines template
+    function <b>SerializeArray() </b>for serializing to/from MFC CArchive.<br>
+    File <a href="SerializeVersion.h">SerializeVersion.h</a> defines function
+    SortSmartPrtArray(). </p>
+  </li>
+<P>
+  <li><b>Multiply pointer</b> class with <b>reference counting</b> CWizMultiPtr.<br>
+    Designed to hold objects of one class (no polymorphism). Several pointers can point to the
+    same object; the object deleted when destroying the last pointer to it. By the nature uses
+    shallow copy. <br>
+    File <a href="MULTIPTR.H">MULTIPTR.H</a> . </li>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

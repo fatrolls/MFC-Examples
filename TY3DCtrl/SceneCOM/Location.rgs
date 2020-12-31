@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.Location.1 = s 'Location Class'
+	{
+		CLSID = s '{63BAE670-2FBF-4EEA-923D-1B35C1FF45A6}'
+	}
+	TY3DCtrl.Location = s 'Location Class'
+	{		
+		CurVer = s 'TY3DCtrl.Location.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {63BAE670-2FBF-4EEA-923D-1B35C1FF45A6} = s 'Location Class'
+		{
+			ProgID = s 'TY3DCtrl.Location.1'
+			VersionIndependentProgID = s 'TY3DCtrl.Location'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{0F12A734-4D76-4E8F-B7B3-A2ECDC7CCC93}'
+			Version = s '1.0'
+		}
+	}
+}

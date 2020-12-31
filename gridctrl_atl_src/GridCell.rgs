@@ -1,0 +1,25 @@
+HKCR
+{
+	ATLNewGrid.GridCell.1 = s 'GridCell Class'
+	{
+		CLSID = s '{67C165D5-BE9B-11D3-9942-006097FEBF00}'
+	}
+	ATLNewGrid.GridCell = s 'GridCell Class'
+	{
+		CLSID = s '{67C165D5-BE9B-11D3-9942-006097FEBF00}'
+		CurVer = s 'ATLNewGrid.GridCell.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {67C165D5-BE9B-11D3-9942-006097FEBF00} = s 'GridCell Class'
+		{
+			ProgID = s 'ATLNewGrid.GridCell.1'
+			VersionIndependentProgID = s 'ATLNewGrid.GridCell'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1A6B8660-58C4-11D3-B221-006097FEBF00}'
+		}
+	}
+}

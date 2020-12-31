@@ -1,0 +1,177 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Sasha Djolich">
+   <TITLE>Section - Title</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Navigating the Windows Registry in C++
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:djolic@netinfo.ubc.ca">Sasha Djolich</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="registrydemo.zip">Download Source Code and Example</A><br>
+Displays a dialog with an edit box. Position of the dialog and
+the text in the edit box are stored in the registry.
+</p>
+<br>
+
+<!-- The article... -->
+
+<h4>CRegistry</h4>
+
+<p>A bit on terminology first. While Microsoft refers to the registry as being essentially a
+tree of keys where each key contains a number of values, I find this a bit confusing and prefer
+to think of the registry as consisting of sections rather than keys. Every section has a number
+of key-value pairs. This sets the background for explaining what makes the CRegistry class I 
+wrote different from the ones already on Code Guru. Three items immediately stand out, namely
+navigation, iteration, and access.
+
+<h5>Navigation</h5>
+<p>The class provides a handy way of accessing data in three most commonly used areas of the 
+registry. These are the defaults for all users and the overriden settings for the currently 
+logged on one as well as the properties for the local machine (the one on which the program is
+currently executing). By passing one of modeCurrentUserPrefs, modeDefUserPrefs, and modeLocalMachineProps
+to the constructor of CRegistry (together with you application's name) you will effectively be
+instructing a newly created instance of the class to operate in an appropriate part of the
+registry. For modeCurrentUserPrefs the section taken to be the current one is
+"HKEY_CURRENT_USER\Software\YourAppName". Navigating back and forth is achieved through a stack-like
+interface -- Descend(const char* Section) and Ascend(). This is useful for ensuring that each
+part of an application stores its settings in a private portion of the registry. You would
+typically create a single instance of CRegistry for the whole app and then instruct each high level
+app object to serialize into the current section. These objects would then Descend() into areas of their
+own, access settings, instruct their children to do the same, and then Ascend() back to their 
+parents' sections.
+
+<p>It is possible to query for an existance of a key or a subsection within the current section by
+using KeyExists(const char* Key) and SectionExists(const char* Section) methods. Note that
+Descend(const char* Section) will create the desired section if one does not already exist.
+
+<h5>Iteration</h5>
+<p>Enumerating subsections and keys in the current section is possible through the use of
+GetFirst...() and GetNext...() methods. These are similar to GetHeadPosition() and GetNext()
+methods in the MFC's CObList class.
+
+<h5>Access</h5>
+<p>Accessing the keys and their values is done through Store(..) and Restore(..) methods.
+All of the basic types (signed/unsigned, char, short, int, long, float, double) plus CString
+are supported. These are almost identical to the types supported by MFC's CArchive class.
+If you can serialize to a CArchive you can store the same information in a similar manner in
+a CRegistry.
+
+<p>The following are the important parts of the CRegistry header:
+
+<FONT COLOR="#990000"><TT><PRE>
+class CRegistry
+{
+public:
+	enum
+	{
+		modeCurrentUserPrefs = 0,
+		modeDefUserPrefs,
+		modeLocalMachineProps,
+		
+		accessRead  = 0x1,
+		accessWrite = 0x2,
+	};
+
+// Construction/Destruction
+public:
+	CRegistry(const char* ApplicationName, int Mode = modeCurrentUserPrefs, int Access = accessRead | accessWrite);
+	CRegistry(HKEY Area, const char* RootSection, int Access = accessRead | accessWrite);
+	~CRegistry();
+	
+// Attributes
+public:
+	void SetRootSection(const char* ApplicationName, int Mode = modeCurrentUserPrefs);
+	void SetRootSection(HKEY Area, const char* RootSection);
+
+	void SetAccess(int Access = accessRead | accessWrite);
+
+// Iteration
+public:
+	POSITION	GetFirstKeyPos();
+	CString		GetNextKey(POSITION& Pos);
+
+	POSITION	GetFirstSectionPos();
+	CString		GetNextSection(POSITION& Pos);
+
+// Operations
+public:
+	void Descend(const char* Section);
+	void Ascend();
+
+	bool KeyExists(const char* Key);
+	bool SectionExists(const char* Section);
+
+	void Store(const char* Key, signed char Value);
+	void Store(const char* Key, unsigned char Value);
+	void Store(const char* Key, signed short Value);
+	void Store(const char* Key, unsigned short Value);
+	void Store(const char* Key, signed int Value);
+	void Store(const char* Key, unsigned int Value);
+	void Store(const char* Key, signed long Value);
+	void Store(const char* Key, unsigned long Value);
+	void Store(const char* Key, float Value);
+	void Store(const char* Key, double Value);
+	void Store(const char* Key, const CString& Value);
+
+	void Restore(const char* Key, signed char& Value);
+	void Restore(const char* Key, unsigned char& Value);
+	void Restore(const char* Key, signed short& Value);
+	void Restore(const char* Key, unsigned short& Value);
+	void Restore(const char* Key, signed int& Value);
+	void Restore(const char* Key, unsigned int& Value);
+	void Restore(const char* Key, signed long& Value);
+	void Restore(const char* Key, unsigned long& Value);
+	void Restore(const char* Key, float& Value);
+	void Restore(const char* Key, double& Value);
+	void Restore(const char* Key, CString& Value);
+
+private:
+	...
+};
+</tt></PRE></FONT>
+<!-- Remember to update this -->
+<p>Last updated: 24 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

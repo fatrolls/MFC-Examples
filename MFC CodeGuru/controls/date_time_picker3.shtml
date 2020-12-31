@@ -1,0 +1,235 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - A class for the IE3 DateTime Picker</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A class for the IE3 DateTime Picker
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG SRC="date_time_picker3.gif" ALT="DateTimeCtrl image" BORDER=0 ALIGN=BOTTOM>
+Download <A HREF="date_time_picker3.zip">source</A> files or 
+<A HREF="date_time_picker3_demo.zip">sample project</A>.
+
+<!-- The article... -->
+<P>The DateTimeCtrl is implemented in the IE3 common controls (v 4.70).
+Those with MS Visual C++ 5.0 will have this installed and hence will have
+access to the control, but unfortunately not to a simple MFC wrapper for
+the control.
+
+<P>The CDateTimeCtrl presented here is a simple class that provides an
+MFC wrapper, as well as a few overridables in order to deal with some of
+the window messages sent by the control. More info on the DateTime control
+can be found at <a href="http://www.microsoft.com/msdn/sdk/inetsdk/help/itt/CommCtls/DateTime/DateTime.htm#ch_dtp_make">
+Microsoft</a>.
+
+<P>To use the control in a dialog, create a custom control with classname
+"SysDateTimePick32", and then subclass the control with a member variable
+of type CDateTimeCtrl. Alternatively, the control can be created at run-time
+using CDateTimeCtrl::Create
+
+<P>DateTimeCtrl styles available:
+<BR>&nbsp;
+<CENTER><TABLE BORDER WIDTH="90%" BGCOLOR="#FFFFCC" >
+<TR>
+<TH ALIGN=LEFT WIDTH="20%">Style</TH>
+
+<TH ALIGN=LEFT>Description</TH>
+</TR>
+
+<TR>
+<TD WIDTH="30%">DTS_UPDOWN</TD>
+
+<TD>Use UPDOWN instead of MONTHCAL&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>DTS_SHOWNONE</TD>
+
+<TD>Allow a NONE selection&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>DTS_SHORTDATEFORMAT</TD>
+
+<TD>Use the short date format (app must forward WM_WININICHANGE messages)&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>DTS_LONGDATEFORMAT</TD>
+
+<TD>Use the long date format (app must forward WM_WININICHANGE messages)</TD>
+</TR>
+
+<TR>
+<TD>DTS_TIMEFORMAT</TD>
+
+<TD>Use the time format (app must forward WM_WININICHANGE messages)&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>DTS_APPCANPARSE</TD>
+
+<TD>Allow user entered strings (app MUST respond to DTN_USERSTRING)&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>DTS_RIGHTALIGN</TD>
+
+<TD>Right-align popup instead of left-align it</TD>
+</TR>
+</TABLE></CENTER>
+
+<br>&nbsp;
+Operations:
+<PRE><TT><FONT COLOR="#990000">	CTime    GetDateTime();
+	COleDateTime GetOleDateTime();
+	BOOL     SetDateTime(const CTime&amp; time);
+	BOOL     SetDateTime(const COleDateTime&amp; time);
+	COLORREF SetMonthCalColour(int nColIndex, COLORREF colour);
+	COLORREF GetMonthCalColour(int nColIndex);
+	BOOL     SetFormat(LPCTSTR szFmt);
+	void     SetMonthCalFont(CFont&amp; font, BOOL bRedraw = TRUE);
+	CFont*   GetMonthCalFont();
+	BOOL     SetRange(CTime* pMinTime, CTime* pMaxTime);
+	BOOL     SetRange(COleDateTime* pMinTime, COleDateTime* pMaxTime);
+	DWORD    GetRange(CTime* pMinTime, CTime* pMaxTime);
+	DWORD    GetRange(COleDateTime* pMinTime, COleDateTime* pMaxTime);
+</FONT></TT></PRE>
+
+<p>Set and GetDateTime set and retrieve the date and time for the control,
+SetRange/GetRange set the valid date ranges, and SetFormat sets the date
+display format (see GetDateFormat and GetTimeFormat for the format of szFmt).
+
+<P>SetMonthCalColour/GetMonthCalColour get and set the colour of the monthcal
+dropdown. The following values of nColIndex are used to set the different
+colours:
+<BR>&nbsp;
+
+<CENTER><TABLE BORDER COLS=2 WIDTH="90%" BGCOLOR="#FFFFCC" >
+<TR>
+<TH ALIGN=LEFT WIDTH="25%">Value of nColIndex</TH>
+
+<TH ALIGN=LEFT>Meaning</TH>
+</TR>
+
+<TR>
+<TD>MCSC_BACKGROUND</TD>
+
+<TD>The background color (between months)</TD>
+</TR>
+
+<TR>
+<TD WIDTH="30%">MCSC_TEXT</TD>
+
+<TD>The dates</TD>
+</TR>
+
+<TR>
+<TD>MCSC_TITLEBK</TD>
+
+<TD>Background of the title</TD>
+</TR>
+
+<TR>
+<TD>MCSC_TITLETEXT&nbsp;</TD>
+
+<TD>Title text</TD>
+</TR>
+
+<TR>
+<TD>MCSC_MONTHBK</TD>
+
+<TD>Background within the month cal</TD>
+</TR>
+
+<TR>
+<TD>MCSC_TRAILINGTEXT</TD>
+
+<TD>The text color of header &amp; trailing days</TD>
+</TR>
+</TABLE></CENTER>
+
+<p>
+The following notification messages are used with the DateTimeCtrl.
+<PRE><TT>        <B>Notification        Description</B>
+        DTN_DATETIMECHANGE  Signals a change within the DTP control. Must return 0.
+        DTN_DROPDOWN        Indicates that the drop-down month calendar is about to be 
+                            displayed.
+        DTN_CLOSEUP         Indicates that the drop-down month calendar is about to be 
+                            removed. 
+        DTN_USERSTRING      Signals the end of a user's edit operation within the control.
+                            This notification is sent only by DTP controls that use the 
+                            DTS_APPCANPARSE style. Must return 0. 
+        DTN_WMKEYDOWN       Signals that the user has pressed a key in a callback field of
+                            the DTP control.  Must return 0. 
+        DTN_FORMAT          Requests text to display in a portion of the format string 
+                            described as a callback field.  Must return 0. 
+        DTN_FORMATQUERY     Requests information about the maximum allowable size of the 
+                            text to be displayed in a callback field.  Must return 0. 
+</tt></pre>
+
+<br>&nbsp;
+To handle illustrate how to handle these messages (and for convenience), a number of 
+virtual functions are included:
+<PRE><TT><FONT COLOR="#990000">	virtual BOOL OnDateTimeChangeNotify(LPNMDATETIMECHANGE dtmh, LRESULT* result);
+	virtual BOOL OnDropDown(NMHDR * pNotifyStruct, LRESULT* result);
+	virtual BOOL OnCloseUp(NMHDR * pNotifyStruct, LRESULT* result);
+	virtual BOOL OnUserString(NMDATETIMESTRING* lpDTstring, LRESULT* pResult);
+	virtual BOOL OnKeyDown(NMDATETIMEWMKEYDOWN* lpDTKeystroke, LRESULT* pResult);
+	virtual BOOL OnFormat(NMDATETIMEFORMAT* lpNMFormat, LRESULT* pResult);
+	virtual BOOL OnFormatQuery(NMDATETIMEFORMATQUERY* lpNMFormat, LRESULT* pResult);
+</FONT></TT></PRE>
+
+<p>These functions return FALSE to allow the parent window to see the notification
+message, and TRUE to block it. A final function
+<PRE><TT><FONT COLOR="#990000">	virtual void DoDateTimeChange();
+</FONT></TT></PRE>
+has been provided to handle changes in the date or time of the control.
+
+<!-- Remember to update this -->
+<p>Last updated: 5 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

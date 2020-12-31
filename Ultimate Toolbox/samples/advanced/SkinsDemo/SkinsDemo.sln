@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkinsDemo", "SkinsDemo.vcproj", "{368A240D-155A-4971-A79C-EF524AEB5567}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		Unicode Debug|Win32 = Unicode Debug|Win32
+		Unicode Release|Win32 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{368A240D-155A-4971-A79C-EF524AEB5567}.Debug|Win32.ActiveCfg = Debug|Win32
+		{368A240D-155A-4971-A79C-EF524AEB5567}.Debug|Win32.Build.0 = Debug|Win32
+		{368A240D-155A-4971-A79C-EF524AEB5567}.Release|Win32.ActiveCfg = Release|Win32
+		{368A240D-155A-4971-A79C-EF524AEB5567}.Release|Win32.Build.0 = Release|Win32
+		{368A240D-155A-4971-A79C-EF524AEB5567}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{368A240D-155A-4971-A79C-EF524AEB5567}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{368A240D-155A-4971-A79C-EF524AEB5567}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{368A240D-155A-4971-A79C-EF524AEB5567}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

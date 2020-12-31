@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The WMIEXTRA Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The WMIEXTRA Sample</H2>
+<P>The WMIEXTRA Sample accompanies Chapter 10 and illustrates some more advanced features of WMI, including:</P>
+
+<UL>
+<LI>Firing a WMI event </LI>
+<LI>Collecting "expensive" statistics </LI>
+<LI>Executing a method routine</LI></UL>
+
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>WMIEXTRA.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a user-mode test program that accesses WMI42’s schema.</LI></UL>
+
+<H3>Building WMIEXTRA</H3>
+<P>To build WMIEXTRA.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named WMIEXTRA.DSP.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory. To build this test program, you need to have the INCLUDE directory from the Platform SDK in the directories path.</P>
+<P>Depending on which version of the Platform SDK you've installed, you may need to take the following additional steps to build TEST.EXE:</P>
+
+<UL>
+<LI>Download the WMI SDK from <A HREF="http://www.microsoft.com/developer/sdk">http://msdn.microsoft.com/developer/sdk</A>. </LI>
+<LI>Add WBEMCLI.H to the list of header files included by TEST.CPP. </LI>
+<LI>Add WBEMUUID.LIB to the list of libraries used by the linker.</LI>
+<LI>Figure out where the files MOFCOMP.EXE and WMIMOFCK.EXE have ended up on your system and alter the project settings (specifically, the custom build step for the .MOF file) accordingly.</LI></UL>
+
+<H3>Testing WMIEXTRA</H3>
+<P>Install WMIEXTRA.SYS. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\WMIEXTRA.INF.</P>
+<P>If you're testing in Windows 98, please refer to the general instructions for <A HREF="../../wdmbook.htm#wmi98">WMI in Windows 98</A> for additional information.</P>
+<P>Once you’ve installed WMIEXTRA, open a command prompt and launch TEST.EXE (in the TEST\DEBUG subdirectory). It will perform a few operations involving WMIEXTRA’s schema and report the results.</P></BODY>
+</HTML>

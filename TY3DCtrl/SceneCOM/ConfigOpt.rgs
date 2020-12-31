@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.ConfigOpt.1 = s 'ConfigOpt Class'
+	{
+		CLSID = s '{7F13FDCC-872B-45C9-9513-58465DFC82ED}'
+	}
+	TY3DCtrl.ConfigOpt = s 'ConfigOpt Class'
+	{		
+		CurVer = s 'TY3DCtrl.ConfigOpt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7F13FDCC-872B-45C9-9513-58465DFC82ED} = s 'ConfigOpt Class'
+		{
+			ProgID = s 'TY3DCtrl.ConfigOpt.1'
+			VersionIndependentProgID = s 'TY3DCtrl.ConfigOpt'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{40937355-B66F-40ED-815C-32F09B862F13}'
+			Version = s '1.0'
+		}
+	}
+}

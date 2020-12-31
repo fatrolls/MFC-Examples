@@ -1,0 +1,63 @@
+[Version]
+Signature=$CHICAGO$
+Class=Unknown
+ClassGuid={4D36E97E-E325-11CE-BFC1-08002BE10318}
+Provider=%MFGNAME%
+
+[Manufacturer]
+%MFGNAME%=DeviceList
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+
+[SourceDisksFiles]
+ChildA.sys=1
+
+[SourceDisksNames]
+1=%INSTDISK%,,,debug
+
+[DeviceList]
+%DESCRIPTION%=DriverInstall,b
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.NT]
+CopyFiles=DriverCopyFiles
+; TODO Add a LogConfig command and section if this is a legacy device
+
+[DriverCopyFiles]
+ChildA.sys,,,2
+
+[DriverInstall.NT.Services]
+AddService=CHILDA,2,DriverService
+
+[DriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\ChildA.sys
+
+;------------------------------------------------------------------------------
+;  Windows 98 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall]
+AddReg=DriverAddReg
+CopyFiles=DriverCopyFiles
+; TODO Add a LogConfig command and section if this is a legacy device
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,ChildA.sys
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="a"
+INSTDISK="a Installation Disc"
+DESCRIPTION="c"
+

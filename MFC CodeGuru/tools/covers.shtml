@@ -1,0 +1,122 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Tools - COVERS 3.1a</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">COVERS 3.1a</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:covers@xjtek.com">Experimental Object Technologies</a></p>
+<!-- start -->
+
+<p>COVERS 3.1a - visual object-oriented modeling, code generation and
+simulation software. Supports development of real-time applications
+and can be used with Microsoft Visual C++ 5.0
+
+<a href="http://www.xjtek.com">[http://www.xjtek.com]</a>
+
+<h4>Area of application:</h4>
+
+<p>includes reactive systems like:
+<ul>
+  <li> Real-time applications
+  <li> Distributed algorithms
+  <li> Communication systems and protocols
+</ul>
+
+<h4>Scenario of using COVERS:</h4>
+
+<ol>
+  <li> The user specifies the system under development as a set of Active Object
+   classes using COVERS visual structure and behavior editors.
+
+  <li>  COVERS generates a C++ class for  each Active Object class. The C++ code
+   is open for the user modifications at this stage.
+
+  <li>  COVERS compiles the generated code using the built-in compiler and links
+   it with either
+       <ul>
+	 <li> virtual time engine to produce an interactive visual simulation model
+	 <li> real-time engine to produce a real-time application.
+       </ul>
+  <li>  Alternatively to step 3, the user can include the generated C++ files and
+   the library containing monitor in MS Visual C++ 5.0 project as a part of a
+   bigger application.
+
+</ol>
+
+<h4>Features:</h4>
+
+<ul>
+  <li> OBJECT-ORIENTED MODELING LANGUAGE for building hierarchical
+  models of arbitrary complexity and scale.
+
+  <li>  VISUAL. All stages of model development are performed within a
+  single visual environment with wide debugging and animation
+  capabilities.
+
+  <li>  STATECHARTS are supported - an advanced notation for object
+  behavior description included in the Unified Modeling Language.
+
+  <li>  FORMAL SEMANTICS. COVERS simulation engine is build according to
+  the formally defined language semantics and treats correctly the
+  subtle aspects of concurrent system behavior, such as
+  nondeterminism, atomicity or racing.
+
+  <li>  LIBRARIES of frequently used objects (e.g. resources, networks)
+  are supplied with COVERS. The user can create his own libraries
+  of reusable components.
+
+  <li>  FULL ONLINE DOCUMENTATION on the Web.
+
+</ul>
+
+<h4>Operating systems:</h4>
+
+<ul>
+  <li> MS Windows 95
+  <li> MS Windows NT
+  <li> MS Windows 3.1
+</ul>
+
+<h4>Contact:</h4>
+
+<dl>
+  <dd>Experimental Object Technologies
+  <dd>Email: covers@xjtek.com
+  <dd>WWW:   http://www.xjtek.com
+</dl>
+
+<p><strong>Free Of Charge For Non-Commercial Use! (see COVERS 3.1a License Policy)</strong>
+
+<!-- end -->
+
+<P>Posted on: April 14, 98, Updated on : June 30, 1998
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

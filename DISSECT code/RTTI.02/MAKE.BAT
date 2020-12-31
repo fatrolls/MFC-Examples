@@ -1,0 +1,2 @@
+cl /GR rtti.cpp
+

@@ -1,0 +1,13 @@
+TARGETNAME=s5933dk1
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+INCLUDES=..\..\..\generic
+TARGETLIBS=..\..\..\generic\obj$(BUILD_ALT_DIR)\$(CPU)\generic.lib \
+
+SOURCES= 	DriverEntry.cpp \
+		ReadWrite.cpp \
+		Control.cpp \
+		Workitem.cpp \
+		stddcls.cpp \
+		driver.rc

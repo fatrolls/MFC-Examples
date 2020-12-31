@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - Class for simple MAPI email</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Class for simple MAPI email</FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:ultramaroon@email.msn.com">Rob Manderson</A>.
+
+ 
+<P>I needed the ability to create and send email from within my application (it's an online trivia game called MindProbe).  After messing around with the various OCX based solutions available I settled on a cut and paste of the code embedded deep within CDocument to access MAPI.  I changed things a lot and abstracted it into it's own class.  This class handles multiple attached files as well as multiple recipients and multiple cc recipients.
+ 
+<P>This class only handles sending email - that's all I needed at this stage.  Usage couldn't be easier.
+ 
+<PRE><TT><FONT COLOR="#990000">
+#include &lt;mapi.h&gt;
+#include "imapi.h"
+
+void CBugReport::OnOK() 
+{
+	 CIMapi  mail;
+ 
+	 mail.To("UltraMaroon@email.msn.com");				//  Set recipient name
+	 mail.To("someoneelse@somewhereelse.com");			//  Second recipient
+	 mail.Cc("cc@cc.com");						//  CC recipient
+	 mail.From("user@somewhere.com"); 				//  Identify sender (not strictly necessary since MAPI will fill this in for you)
+	 mail.Subject("Test Email");					//  Subject of this email
+	 mail.Attach("somefilename");					//  Attaching a file
+	 mail.Attach("someotherfile", "different_name_for_recipient");  //  Attach another file but give it a different name inside the email itself 
+ 
+	 // Put text of message in body
+	 mail.Text("Body text for this email"); 			//  Set body text
+	 mail.Send();							//  Now send the mail! 
+	 CDialog::OnOK();
+} 
+</FONT></TT></PRE>
+
+<P>Notes:
+<P>I used calloc(),  realloc() and free() for memory allocation for the recipient and attachment lists.  This is primarily because the corresponding members in the MAPI structures are pointers to arrays of structures and it didn't make much sense to manipulate separate data structures simply to be 'pure' and stay within the confines of new and delete.  In addition,  I rely on the Microsoft C runtime library behaviour with regard to realloc() and free().  The library allows NULL pointers without causing errors - in the case of free() it simply returns;  in the case of realloc() it treats a realloc() with a NULL pointer as though it was a calloc().  If your run time library behaves differently you may need to examine the code in the CIMapi destructor.
+<P>You need to have a default simple MAPI client defined on your system for this class to work.  I use Outlook Express exclusively for my email and have it set as the default simple MAPI client. 
+
+
+
+<P><A HREF="imapi.zip">Download source</A>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

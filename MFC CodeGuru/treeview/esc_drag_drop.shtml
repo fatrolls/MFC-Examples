@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Using ESC to cancel drag and drop</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using ESC to cancel drag and drop</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+To escape out of a drag and drop operation we can look for the ESCAPE key
+in the PreTranslateMessage() and terminate the operation without moving
+any item..
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">
+BOOL CTreeCtrlX::PreTranslateMessage(MSG* pMsg)
+{
+	if( pMsg->message == WM_KEYDOWN &amp;&amp; pMsg->wParam == VK_ESCAPE&nbsp;
+					&amp;&amp; m_bLDragging)
+	{
+		m_bLDragging = 0;
+		CImageList::DragLeave(NULL);
+		CImageList::EndDrag();
+		ReleaseCapture();
+		SelectDropTarget(NULL);
+		delete m_pDragImage;
+		return TRUE;		// DO NOT process further
+	}
+
+	return CTreeCtrl::PreTranslateMessage(pMsg);
+}
+</FONT></TT>
+</PRE>
+
+
+<P>There is one more thing you need to for this to work properly - call SetFocus() in your WM_LBUTTONDOWN handler. If the control doesn't already have focus when the user begins the drag and drop operation, then the control doesn't receive focus and if the control doesn't have the focus, it doesn't receive the WM_KEYDOWN message.
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

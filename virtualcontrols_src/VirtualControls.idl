@@ -1,0 +1,139 @@
+// VirtualControls.idl : IDL source for VirtualControls.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (VirtualControls.tlb) and marshalling code.
+
+import "oaidl.idl";
+#include "olectl.h"
+import "ocidl.idl";
+	
+// Due to a bad declare we force this here...
+// If you get errors with the OLE_COLOR type, just delete this line
+typedef [uuid(66504301-BE0F-101A-8BBB-00AA00300CAB), public] unsigned long OLE_COLOR;
+
+
+[
+	uuid(19DBFA01-8A29-11D3-82A4-0080AD509054),
+	version(1.0),
+	helpstring("Bjarke Viksoe's Virtual Controls 1.1")
+]
+library VIRTUALCONTROLSLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		object,
+		uuid(19DBFA0D-8A29-11D3-82A4-0080AD509054),
+		dual,
+		helpstring("IVirtualList Interface"),
+		pointer_default(unique)
+	]
+	interface IVirtualList : IDispatch
+	{
+		[propput, id(DISPID_BACKCOLOR)]
+		HRESULT BackColor([in] OLE_COLOR clr);
+		[propget, id(DISPID_BACKCOLOR)]
+		HRESULT BackColor([out, retval] OLE_COLOR* pclr);
+
+		[propput, id(DISPID_BORDERSTYLE)]
+		HRESULT BorderStyle([in] long style);
+		[propget, id(DISPID_BORDERSTYLE)]
+		HRESULT BorderStyle([out, retval] long* pstyle);
+
+		[propputref, id(DISPID_FONT)]
+		HRESULT Font([in] IFontDisp* pFont);
+
+		[propput, id(DISPID_FONT)]
+		HRESULT Font([in] IFontDisp* pFont);
+
+		[propget, id(DISPID_FONT)]
+		HRESULT Font([out,  retval] IFontDisp** ppFont);
+
+		[propput, id(DISPID_FORECOLOR)]
+		HRESULT ForeColor([in] OLE_COLOR clr);
+		[propget, id(DISPID_FORECOLOR)]
+		HRESULT ForeColor([out, retval] OLE_COLOR* pclr);
+
+		[propput, id(DISPID_ENABLED)]
+		HRESULT Enabled([in] VARIANT_BOOL vbool);
+		[propget, id(DISPID_ENABLED)]
+		HRESULT Enabled([out, retval] VARIANT_BOOL* pbool);
+
+		[propget, id(DISPID_HWND)]
+		HRESULT Window([out, retval] long* phwnd);
+
+		[propput, id(DISPID_TABSTOP)]
+		HRESULT TabStop([in]VARIANT_BOOL vbool);
+		[propget, id(DISPID_TABSTOP)]
+		HRESULT TabStop([out, retval] VARIANT_BOOL* pbool);
+
+		[propput, id(DISPID_CAPTION)]
+		HRESULT Caption([in] BSTR strCaption);
+		[propget, id(DISPID_CAPTION)]
+		HRESULT Caption([out,retval] BSTR* pstrCaption);
+
+		[id(1), helpstring("Removes all items from the list.")] 
+		HRESULT Clear();
+		
+		[propget, id(DISPID_LISTINDEX), nonbrowsable, helpstring("Returns/sets the current List Index.")] 	
+		HRESULT ListIndex([out, retval] long *pVal);
+		[propput, id(DISPID_LISTINDEX), nonbrowsable] 
+		HRESULT ListIndex([in] long newVal);
+
+		[propget, id(DISPID_LISTCOUNT), helpstring("Returns/sets the number of items in the List.")] 
+		HRESULT ListCount([out, retval] long *pVal);
+		[propput, id(DISPID_LISTCOUNT)] 
+		HRESULT ListCount([in] long newVal);
+
+		[propget, id(3), helpstring("Returns/sets the grid style.")] 
+		HRESULT GridLines([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(3)] 
+		HRESULT GridLines([in] VARIANT_BOOL newVal);
+
+		[propget, id(4), helpstring("Returns/sets the number of lines to scroll on page scroll.")] 
+		HRESULT PageStep([out, retval] long *pVal);
+		[propput, id(4)] 
+		HRESULT PageStep([in] long newVal);
+
+		[propget, id(5), helpstring("Returns/sets the Top List Index.")] 
+		HRESULT TopIndex([out, retval, nonbrowsable] long *pVal);
+		[propput, id(5)] 
+		HRESULT TopIndex([in, nonbrowsable] long newVal);
+
+		[propget, id(6), helpstring("Returns/sets the track select style.")] 
+		HRESULT TrackSelect([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(6)] 
+		HRESULT TrackSelect([in] VARIANT_BOOL newVal);
+	};
+	
+
+	[
+		uuid(C16ACCF9-922F-11D3-82B0-0080AD509054),
+		helpstring("_IVirtualListEvents Interface")
+	]
+	dispinterface _IVirtualListEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("Asks for the name of the item.")] 
+		HRESULT GetItem([in] long Index, [out, retval] BSTR *Name);
+		[id(2), helpstring("Selection changed.")] 
+		HRESULT SelChange([in] long Index);
+		[id(DISPID_CLICK)] 
+		void Click();
+		[id(DISPID_DBLCLICK)] 
+		void DblClick();
+	};
+
+	[
+		uuid(19DBFA10-8A29-11D3-82A4-0080AD509054),
+		helpstring("VirtualList Control")
+	]
+	coclass VirtualList
+	{
+		[default] interface IVirtualList;
+		[default, source] dispinterface _IVirtualListEvents;
+	};
+};

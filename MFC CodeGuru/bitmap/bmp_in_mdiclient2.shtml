@@ -1,0 +1,84 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap - Bitmap background in MDI Client (2)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Bitmap background in MDI Client (2)</FONT></H3></CENTER>
+
+<HR>
+
+
+
+<P>This code was contributed by <A HREF="mailto:David_Simpson@cwb.com">David Simpson</A>. 
+
+
+<P>The zipped up project is an extended version of the code provided
+by <b>Neil A. Van Note</b>. I initially used Neil's code, but ran into a problem
+initially as the code did not properly handle 256 color bitmap
+The CMdiClient code has been changed to load a bitmap from a file or
+a resource as a DIB. Many classes have been written that implement
+DIBs, however these provide far more functionality than is required here.
+Thus reading and loading DIBs is handled directly by the CMdiClient
+class, and thus this sample also provides a good example of how to do
+this. The code for reading a bitmap from file is lifted directly from
+the WinCap sample from MSDN. Most of the DIB handling is done
+directly through the SDK calls merely for convenience in this instance.
+
+<P>The sample also implements a property sheet for setting, previewing
+and applying the background bitmaps. The options property page allows
+the user to assign a background from a selection of resources or to
+use an external bitmap file, much in the same way as the Windows
+desktop. You also have the option to tile or centre the bitmap.
+
+<P>A property sheet was used here in my own app which has many user option
+sheets, but this could easily be implemented in a dialog. All the settings
+for the user are preserved in the registry.
+
+<P>In my own implemetation of this, I also have an option to define a
+background color as well as the bitmap. The code is included in this sample
+but is commented out as the property page uses one of Stingray's Toolkit
+controls, the SECColorWell button. You can easilly implement your own
+version of this, but I can definitely recommend the Stingray libraries
+for any serious users.
+
+<P>This code is far from perfect and any comments are welcome. One thing
+I know I haven't bothered doing is providing a preview facility for
+external bitmaps, but it should be trivial to do.
+
+<P>As ever your welcome to use this code in any way you like, but neither
+I nor the company I work for are liable for nasty things it might
+decide to do.
+
+<P><A HREF="bmp_in_mdiclient2.zip">Download project files</A> 59KB
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

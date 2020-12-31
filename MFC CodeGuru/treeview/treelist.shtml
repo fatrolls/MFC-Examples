@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>TreeList : Multi column tree control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">TreeList : Multi column tree control</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+This code was contributed by <a href="mailto:davidlan@luckynet.co.il">David Lantsman</a>.
+
+<p><img src="treelist.gif"></p>
+
+<p><strong>Here's the description of the classes that are used:</strong> 
+
+<ul>
+  <li>CTLFrame - derived from CWnd, this class is the frame class for the treelist control. It
+    is used&nbsp; to include the header control, the tree itself, and the horizontal scroll
+    bar. It looks like this:</li>
+</ul>
+
+<p><img src="treelist_structure.gif" width="200" height="200"
+alt="structure.gif (1528 bytes)"> 
+
+<ul>
+  <li><p align="left">CNewHeaderCtrl - derived from CHeaderCtrl. Used as the header in the
+    TreeList.</p>
+  </li>
+  <li><p align="left">CNewTreeListCtrl - derived from CTreeCtrl, used as the main tree in the
+    TreeList.</p>
+  </li>
+  <li><p align="left">CTLItem - represents each item inside the tree.</p>
+  </li>
+  <li><p align="left">SSortType - structure that's used to indicate whether the sort of the
+    tree is in an ascending order or descending, and which column is being sorted.</p>
+  </li>
+</ul>
+
+<p align="left"><strong>How to insert TreeList into your project?</strong></p>
+
+<p>1.Insert the following files into your project: 
+
+<ol>
+  <ul>
+    <li>TLFrame.cpp, TLFrame.h</li>
+    <li>NewTreeListCtrl.cpp, NewTreeListCtrl.h</li>
+    <li>NewHeaderCtrl.cpp, NewHeaderCtrl.h</li>
+  </ul>
+</ol>
+
+<p>2. Include the file &quot;TLFrame.h&quot; in the app file (where the InitInstance
+function is) and insert the following line in the InitInstance&nbsp; function:</p>
+
+<p>....</p>
+
+<p>CTLFrame::RegisterClass();</p>
+
+<p>....</p>
+
+<p>3. Layout a user-defined control inside the dialog into which the control is supposed
+to be intserted. In the class field type: &quot;LANTIVTREELISTCTRL&quot;</p>
+
+<p>4. Include &quot;TLFrame.h&quot; in the dialog's header file, and add a member
+variable: CTLFrame m_wndMyTreeList;</p>
+
+<p>5. In your OnInitDialog() or OnCreate() functions subclass the control:</p>
+
+<p>....</p>
+
+<p>m_wndMyTreeList.SubclassDlgItem(IDC_TREE_LIST, this);</p>
+
+<p>// IDC_TREE_LIST is the ID of the user-defined control you inserted into the dialog</p>
+
+<p>....</p>
+
+<p>That's it !</p>
+
+<p><strong>Using the TreeListCtrl</strong></p>
+
+<p>The use of the control is simple. It's a tree, so treat it as one (HTREEITEM etc.). In
+addition, there are functions like InsertColumn, SetItemText, SetItemColor, SetItemBold,
+GetItemText.</p>
+
+<p><strong>Implementation</strong></p>
+<P>Here's my approach to implementing the TreeList.
+First of all, I had to create a frame window, that
+would include the 3 objects: header, tree, horz
+scroll bar. That's what CTLFrame is for. In addition,
+this CWnd derived class helps during the scroll: the
+header is clipped after it's repositioned, so there's a 
+feeling of scrolling.
+
+<P>The class CNewHeaderCtrl was created only to put
+the 3d triangles in it. I decided to include sorting since
+it's needed in 9/10 cases, and it's a shame every 
+programmer needs to insert it by himself.
+Finally, CNewTreeListCtrl is the more complicated
+part. Every item inside the tree, has a DWORD data
+associated with it, that stores a pointer to a CTLItem
+class. CTLItem stores the information about each item-
+its columns' strings, whether the item is bold, the item's
+color, and the item data that the user wishes to associate
+with the item. All the functions that deal with the items, like
+InsertItem, DeleteItem, SetItemText etc. were overridden
+in order to use the CTLItem technique.
+
+<P>I had some difficulties with the scrolling part, since there
+are many different conditions for the scroll bars: vertical
+scroll is shown and then the horz becomes shorter, it's
+hidden so the horz should become larger again; what
+happens if the users changed some column's size... and
+problems like that. I believe I handle each of these cases
+so I think there won't be any problems with this part.
+
+<P><a href="http://www.codeguru.com/cgi/redirect.cgi?url=http://www.codeguru.com/treeview/Treelist.zip&log=treelist">Download Sample/Code</a>(TreeList.zip 60K).
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

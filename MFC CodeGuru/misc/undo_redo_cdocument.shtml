@@ -1,0 +1,180 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Add Undo - Redo support to CDocument</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Add Undo - Redo support to CDocument</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:keithr@europa.com">Keith Rule</A>. 
+<br><a href="undo.zip">Download</a> the source. The zip file is 2KB.
+
+<h3>Adding Undo to an Existing Application</h3>
+For me, the utility of a new class often depends on how easy it is to add to an existing application. I really like the Scribble tutorial that is found on the Visual C++ CD-ROM so I'm going to use the Scribble application as an example application for adding undo support.
+<p>There are four steps necessary to add undo to an application.
+<ol>
+<li>Add CUndo to the project by adding the undo.h header to stdafx.h and by adding a reference to this class in the CDocument derived classes that you wish to support undo.
+<li>Add new code to save the current state of the project whenever the user makes a change worthy of noting.
+<li>Wire Undo/Redo into the menuing system.
+</ol>
+
+<h4>Adding CUndo to Scribble</h4>
+The first step is to either move the undo.h include into your project directory or to add the directory that contains undo.h to the include search directory. I prefer moving the undo.h file into the project directory. That way if I want to give someone access to my project I don't have to remember to include pieces of code in several directories.
+
+<p>The next step is to make undo.h available to the files that need it. You could do this by adding an include command at the top of each file that refers to undo.h. I tend to be a bit lazy and just add the line to the stdafx.h file. This causes undo.h to be included into most of the files in the project. I would add the following line to the stdafx.h file:
+
+<PRE><TT><FONT COLOR="#990000">#include "undo.h"
+</FONT></TT></PRE>
+
+<p>Now the project knows about the CUndo class. To make the functionality of CUndo available to the Scribble application we must add a reference to this class in the definition of the ScribbleDoc class. To do this we must edit one line in the file scribdoc.h. That line is changed from:
+<PRE><TT><FONT COLOR="#990000">class CScribbleDoc : public COleServerDoc
+</FONT></TT></PRE>
+
+<p>to
+
+<PRE><TT><FONT COLOR="#990000">class CScribbleDoc : public COleServerDoc, public CUndo
+</FONT></TT></PRE>
+
+<p>At this point, the CScribbleDoc class contains support for undo/redo, all we need to do is take advantage of it.
+
+<h4>Add Code to Save the Undo State</h4>
+The key to making undo useful is deciding when to save the state of the application. I won't kid you, in many applications this can be a difficult decision. However, in the Scribble application we will save the state whenever a stroke is completed and in a couple of other special places.
+<p>In the Scribble application, the stroke is saved in the OnLButtonUp()member function of the CScribView class. The logical place to save the state would be to save it after the stroke has been added to the CScribbleDoc. The OnLButtonUp() member functions looks like this (minus a bunch of comments):
+
+<PRE><TT><FONT COLOR="#990000">void CScribbleView::OnLButtonUp(UINT, CPoint point) 
+{
+	if (GetCapture() != this)
+		return; 
+
+	CScribbleDoc* pDoc = GetDocument();
+
+	CClientDC dc(this);
+	OnPrepareDC(&dc);  
+	dc.DPtoLP(&point);
+
+	CPen* pOldPen = dc.SelectObject(pDoc->GetCurrentPen());
+	dc.MoveTo(m_ptPrev);
+	dc.LineTo(point);
+	dc.SelectObject(pOldPen);
+	m_pStrokeCur->m_pointArray.Add(point);
+
+	m_pStrokeCur->FinishStroke();
+
+	pDoc->UpdateAllViews(this, 0L, m_pStrokeCur);
+
+	ReleaseCapture();   
+	pDoc->NotifyChanged();
+	return;
+}
+</FONT></TT></PRE>
+
+<p>The natural place to save the state would be after the m_pStrokeCur->FinishStroke() statement. To save the state add the following line of code after that statement:
+
+<PRE><TT><FONT COLOR="#990000">pDoc->CheckPoint();
+</FONT></TT></PRE>
+
+<p>The CheckPoint() member function saves the current state. Placing a CheckPoint() command here saves the state after every stroke is completed.
+<p>At first glance, this may seem like all the states that need to be saved for undo/redo support. However, it turns out there are a couple of other cases that are important. When the CScribbleDoc class is first instantiated or when the file is newed or opened it is necessary to save the state, otherwise you won't be able to undo to the initial document state.
+<p>To do this, we need to execute the CheckPoint() member function in both the CScribbleDoc::OnNewDocument() member function and the CScribbleDoc::OnOpenDocument() member function. Both of these member functions implementation are similar. The CheckPoint() member function should be added after the statement containing the reference to InitDocument(). The following code shows the updated functions:
+
+<PRE><TT><FONT COLOR="#990000">BOOL CScribbleDoc::OnNewDocument()
+{
+	if (!COleServerDoc::OnNewDocument())
+		return FALSE;
+	InitDocument();
+	CheckPoint();
+	return TRUE;
+}
+
+BOOL CScribbleDoc::OnOpenDocument(LPCTSTR lpszPathName) 
+{
+	if (!COleServerDoc::OnOpenDocument(lpszPathName))
+		return FALSE;
+	InitDocument(); 
+	CheckPoint();
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<p>After this change, the undo/redo commands are implemented. All that is necessary to make undo/redo work is to add menu support so that the user can access this functionality.
+
+<h4>Add Undo/Redo Menu Support</h4>
+Most applications created using the AppWizard in Visual C++ have a menu selection for undo. However, they don't provide a menu selection for redo. To make redo available we need to add a redo menu item following the undo item in all of the edit menus defined in the application (and there are several of them). I used the identifier ID_EDIT_REDO and define the caption as "&Redo\tCtrl+Y". As the caption suggests, I also define the accelerator Ctrl+Y for each of the redo menu entries.
+<p>Using the ClassWizard, we can now add the skeleton code that implements undo and redo. To do this select the Message Maps tab and CScribbleView class. Add functions for both the COMMAND and UPDATE_COMMAND_UI message to the ID_EDIT_UNDO and ID_EDIT_REDO Object identifier's. This will create skeleton functions for OnEditUndo(), OnEditRedo(), OnUpdateEditRedo(), and OnUpdateEditUndo(). The implementation for each of these functions follow:
+
+<PRE><TT><FONT COLOR="#990000">void CScribbleView::OnEditRedo() 
+{
+	CScribbleDoc* pDoc = GetDocument();
+	pDoc->Redo();	
+	pDoc->UpdateAllViews(NULL);
+}
+
+void CScribbleView::OnUpdateEditRedo(CCmdUI* pCmdUI) 
+{
+	CScribbleDoc* pDoc = GetDocument();
+	pCmdUI->Enable(pDoc->CanRedo());
+}
+
+void CScribbleView::OnEditUndo() 
+{
+	CScribbleDoc* pDoc = GetDocument();
+	pDoc->Undo();
+	pDoc->UpdateAllViews(NULL);
+}
+
+void CScribbleView::OnUpdateEditUndo(CCmdUI* pCmdUI) 
+{
+	CScribbleDoc* pDoc = GetDocument();
+	pCmdUI->Enable(pDoc->CanUndo());
+}
+</FONT></TT></PRE>
+
+<p>Undo/Redo is now fully implemented all that is necessary is to test the result.
+
+<h4>Taking a Quick Test Drive</h4>
+We now have an application that has undo/redo working. Figure 5 shows the application running with five strokes. Each stroke is a number that was drawn in numeric order. Notice only the undo selection is available initially.
+<p><img src="undo_redo1.gif" width="574" height="417">
+<br>Figure 5 - Scribble with 5 strokes on the screen.
+
+<p>Figure 6 shows the application after undo has been selected the first time. Notice that now both the undo menu item and the redo menu items available.
+<p><img src="undo_redo2.gif" width="573" height="416">
+<br>Figure 6 - Scribble application after undo is selected the first time. Notice that both undo and redo are available now.
+<p>Figure 7 shows the screen after a new stroke (a box) has been added. Notice that only the undo menu item is enabled. This is because the redo list is cleared every time the CheckPoint() member function is called.
+<p><img src="undo_redo3.gif" width="574" height="416">
+<br>Figure 7 - Scribble application after a new stroke (the box) has been added. Notice that redo is no longer enabled.
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

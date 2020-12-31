@@ -1,0 +1,48 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Visual C++ Tips - Editor Tips</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Editor Tips</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+Many of these tips have been gleaned for the tip of the day in DevStudio. You can modify and add to the list of tips that DevStudio will show you by editing the file 'MSDEV.TIP' and 'VCXX.TIP' in the IDE directory under the BIN directory.
+
+<ul>
+<li>You can convert tab to spaces or vice versa using the Tabify and Untabify commands. You can find this command in the "Edit | Advanced" menu.</li>
+<li>You can start an incremental search by pressing Ctrl-I. </li>
+<li>To open the .RC file as text, click the Open command on the File menu and change the Open As option to Text.</li>
+<li>You can automatically indent and format your C/C++ code with the "Smart Indent" feature turned on. You can find this feature on the Tabs tab in the Options dialog. If you already have code that is not indented properly, select the code and pick the "Edit | Advanced | Format Selection".</li>
+</ul>
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

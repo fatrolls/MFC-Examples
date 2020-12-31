@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Menu - Inserting submenus in an existing SDI menu</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Inserting submenus in an existing SDI menu</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:jamos@technotoys.com">Jim Johnson</A>.
+
+
+
+
+
+<P>In the SDI app I am working on, I needed to be able to insert a new submenu
+in the apps main menu based on the currently selected object. (My app uses
+the nested splitter code found elsewhere on CodeGuru to provide multiple
+views into a selected sound on an advanced MIDI soundcard). I found no
+information on how to do it, so after a bit of trial and error I came up
+with the technique shown in the following code. Please note that this code
+is NOT directly reusable; but it should give you an idea of what needs to
+be done. The submenus are all contained in a separate menubar,
+IDR_OBJECT_MENUS; everything else should be clear to the experienced MFC
+user :')
+
+
+<PRE><TT><FONT COLOR="#990000">
+// Add a an additional popup menu to the main menu which is 
+// specific to the currently selected object type. If pViewClass is NULL,
+// no menu is added.
+void CMainFrame::AddViewMenu(CRuntimeClass* pViewClass)
+{
+	const int INSERT_POSITION = 3;
+	const int DEFAULT_MENU_COUNT = 6; // INCOMPLETE - change when test menu is
+	removed!
+		enum { PROGRAM_MENU, LAYER_MENU, KEYMAP_MENU, SAMPLE_MENU };
+	
+	CMenu* pMenu = GetMenu();
+	ASSERT(pMenu->GetMenuItemCount() == DEFAULT_MENU_COUNT
+		|| pMenu->GetMenuItemCount() == DEFAULT_MENU_COUNT + 1);
+	
+	// If there is already an extra menu present, remove it
+	if (pMenu->GetMenuItemCount() == DEFAULT_MENU_COUNT + 1)
+		pMenu->RemoveMenu(INSERT_POSITION, MF_BYPOSITION);
+	
+	// Now based on the specific view type, add the appropriate menu
+	int iMenuToAdd = -1;
+	if (pViewClass == RUNTIME_CLASS(CProgramView))
+		iMenuToAdd = PROGRAM_MENU;
+	else if (pViewClass == RUNTIME_CLASS(CLayerView))
+		iMenuToAdd = LAYER_MENU;
+	else if (pViewClass != NULL)
+		ASSERT(FALSE); // INCOMPLETE - other types!
+	
+	if (iMenuToAdd != -1)
+	{
+		// get the menu to add
+		CMenu objectMenu;
+		objectMenu.LoadMenu(IDR_OBJECT_MENUS);
+		CMenu* pPopupMenu = objectMenu.GetSubMenu(iMenuToAdd);
+		ASSERT(pPopupMenu != NULL);
+		
+		// get its string - *^&) Windows can't figure it out for itself
+		CString strMenuItem;
+		objectMenu.GetMenuString(iMenuToAdd, strMenuItem, MF_BYPOSITION);
+		
+		// Add it
+		VERIFY(pMenu->InsertMenu(INSERT_POSITION, MF_BYPOSITION | MF_POPUP, 
+			(UINT)pPopupMenu->GetSafeHmenu(), strMenuItem));
+		
+		// remove from the other menu!
+		objectMenu.RemoveMenu(iMenuToAdd, MF_BYPOSITION);
+	}
+	
+	DrawMenuBar();
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

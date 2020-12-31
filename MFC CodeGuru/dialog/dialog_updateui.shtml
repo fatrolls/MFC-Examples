@@ -1,0 +1,108 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Dialog - Using ON_UPDATE_COMMAND_UI with dialogs (2)</TITLE>
+</HEAD>
+
+
+<BODY BGCOLOR="#FFFFFF">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Using ON_UPDATE_COMMAND_UI with dialogs (2)
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This code was contributed by <A HREF="mailto:tim.mccoll@computershare.com.au">Tim McColl</a>
+
+<p>afxpriv.h has a message, WM_KICKIDLE, that is sent during idle
+processing.  To get dialogs to work with the ON_UPDATE_COMMAND_UI
+message maps, you need to trap the kick idle message and call
+UpdateDialogControls.
+
+<p>In a dalog class header, add the following in the message map:
+<PRE><TT><FONT COLOR="#990000">	afx_msg LRESULT OnKickIdle(WPARAM , LPARAM );
+</PRE></TT></FONT>
+
+<p>In the implementation file:
+<PRE><TT><FONT COLOR="#990000">	#include &lt;afxpriv.h>
+</PRE></TT></FONT>
+
+<p>In the message map add:
+<PRE><TT><FONT COLOR="#990000">	ON_MESSAGE(WM_KICKIDLE, OnKickIdle)
+</PRE></TT></FONT>
+
+<p>Implement the function:
+<PRE><TT><FONT COLOR="#990000">	LRESULT CMyDlg::OnKickIdle(WPARAM wParam, LPARAM lParam)
+	{
+		UpdateDialogControls(this, FALSE);
+		return 0;
+	}
+</PRE></TT></FONT>
+
+<p>I leave the bDisableIfNoHndler flag as FALSE so buttons without message
+map entries are not disabled.
+
+<p>You can now use ON_UPDATE_COMMAND_UI message maps for enabling/disabling
+controls, setting static text, etc.
+
+<p>It works really well when you have two or more radio buttons that
+enable/disable different groups of controls.  Just have one OnUpdate...
+function for each group of controls that enables/disables depending on
+the radio button selected, use IsDlgButtonChecked.  Then add a message
+map entry for each control.
+
+<h4>To use ON_UPDATE_COMMAND_UI in form views.</h4>
+
+<p>The kick idle message doesn't work in form views, but there's another
+message in afxpriv.h called WM_IDLEUPDATECMDUI, that does.
+
+<p>In a form view class header, add the following in the message map:
+<PRE><TT><FONT COLOR="#990000">	afx_msg LRESULT OnIdleUpdateCmdUI(WPARAM , LPARAM );
+</PRE></TT></FONT>
+
+<p>In the implementation file:
+<PRE><TT><FONT COLOR="#990000">	#include &lt;afxpriv.h>
+</PRE></TT></FONT>
+
+<p>In the message map add:
+<PRE><TT><FONT COLOR="#990000">	ON_MESSAGE(WM_IDLEUPDATECMDUI, OnIdleUpdateCmdUI)
+</PRE></TT></FONT>
+
+<p>Implement the function:
+<PRE><TT><FONT COLOR="#990000">	LRESULT CMyFormView::OnIdleUpdateCmdUI(WPARAM wParam, LPARAM)
+	{
+		UpdateDialogControls(this, FALSE);
+		return 0L;
+	}
+</PRE></TT></FONT>
+
+<p>ON_UPDATE_COMMAND_UI can now be used as described above.
+
+<P>
+
+<p>Updated 21 March 1998
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%"><TR>
+
+<TD WIDTH="33%">
+<FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR></TABLE>
+
+
+
+</BODY>
+</HTML>

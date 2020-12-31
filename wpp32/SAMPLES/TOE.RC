@@ -1,0 +1,34 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: TOE.RC
+//
+#include "wpp.h"
+
+xcursor CURSOR toe.cur
+
+AppIcon ICON toe.ico
+
+AppMenu MENU { 
+	POPUP "&File" { 
+		MENUITEM HelpAbout
+		MENUITEM FileExit
+	}
+}
+
+AppAccel ACCELERATORS
+BEGIN
+	AccMemStats
+END
+
+DLGABOUT DIALOG  8,20,143,56
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS
+CAPTION "About TOE"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL "&OK",IDOK,"Button",BS_DEFPUSHBUTTON | WS_TABSTOP | WS_CHILD | WS_VISIBLE,56,35,30,14
+    CONTROL "TOE written using Windows++",-1,"static",SS_CENTER | WS_CHILD,17,10,119,9
+    CONTROL "by Paul DiLascia (C) 1997",-1,"static",SS_CENTER | WS_CHILD,34,20,85,8
+    CONTROL "appicon",-1,"static",SS_ICON | WS_CHILD,5,10,16,16
+END
+
+

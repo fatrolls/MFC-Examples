@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Moving the Standard Buttons</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Moving the Standard Buttons - 2</FONT>
+<HR></H3></CENTER>
+This suggestion and code was contributed by <b><A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</a></b>.
+
+<p>Your method for moving _standard_ buttons is fine - if they are all that
+needs moving (eg. you forgot ID_HELP).  But this is not much good if you've
+added your own controls to the property sheet and need to move them too.
+(for example, I have a couple of different groups of pages that I want to
+select between, rather than having lots and lots of tabs all at once, so I
+have a combo box at the bottom of my property sheet that selects the group
+of pages I want).
+
+<p>A better sort of solution is to go thru the child window list and move all
+children (except perhaps the tab control)
+Here is code that moves all the controls (other than the tab itself) by a
+given dx and dy..
+
+<PRE><TT><FONT COLOR="#990000">
+     // calculate dx and dy to move the controls
+     // this could correspond to an increase in sheet size
+     CTabCtrl* pTabCtrl = GetTabControl();
+     for (CWnd* pChild = GetWindow(GW_CHILD); pChild; pChild =
+			pChild->GetNextWindow(GW_HWNDNEXT)) 
+     {
+          if (pChild == pTabCtrl) continue;
+          CRect rectControlWnd;
+          pChild->GetWindowRect(rectControlWnd);
+          ScreenToClient(rectControlWnd);
+          rectControlWnd.top.OffsetRect(dx,dy);
+          pChild->MoveWindow(rectControlWnd);
+     }
+</FONT></TT></PRE>
+
+<p>Because I use this code in a CPropertySheet-derived class that I use to
+base my own property sheets on, I don't know in advance exactly what
+control are going to be on the sheet (because some of my other property
+sheet classes add extra controls).  This way ALL my control move to make
+room.
+
+<p>Another improvement could be to compare the control position of the control
+to the tab control and only move those controls which are, say, below the
+tab.
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

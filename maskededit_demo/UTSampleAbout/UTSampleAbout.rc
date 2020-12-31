@@ -1,0 +1,145 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "UTSampleAboutResource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "UTSampleAboutResource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\UTSampleAbout.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SAMPLE_ABOUT_LOGO   BITMAP  DISCARDABLE     "UTSampleAbout\\res\\DUNDAS.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_UT_SAMPLE_ABOUTBOX DIALOGEX 0, 0, 314, 202
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About UTSampleAbout"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         20002,IDC_STATIC,"Static",SS_BITMAP,4,7,130,42,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Copyright (C) 1997",IDC_STATIC,4,62,129,8
+    GROUPBOX        "Contacting Dundas Software",IDC_STATIC,146,6,164,64,0,
+                    WS_EX_DLGMODALFRAME
+    LTEXT           "Fax",IDC_STATIC,154,33,12,8
+    LTEXT           "EMail",IDC_STATIC,153,45,18,8
+    LTEXT           "Phone",IDC_STATIC,154,22,22,8
+    LTEXT           "WWW",IDC_STATIC,153,56,23,8
+    LTEXT           "416.239.7472",IDC_STATIC,250,22,45,8
+    LTEXT           "800.463.1492",IDC_STATIC,184,22,45,8
+    LTEXT           "416.239.2183",IDC_STATIC,184,33,45,8
+    LTEXT           "sales@dundas.com",IDC_STATIC,184,45,63,8
+    LTEXT           "www.dundas.com",IDC_STATIC,184,56,71,8
+    LTEXT           "or",IDC_STATIC,236,22,8,8
+    CTEXT           "Static",IDC_SAMPLE_TITLE,4,52,129,8,NOT WS_GROUP
+    CONTROL         "",IDC_SAMPLE_DESCRIPTION,"RICHEDIT",ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL,4,75,306,120,
+                    WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_UT_SAMPLE_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 310
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 195
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\UTSampleAbout.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

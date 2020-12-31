@@ -1,0 +1,235 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""Panel3d.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Screaming Tiki (tm) Interactive\0"
+            VALUE "FileDescription", "Panel3d OLE Control\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "PANEL3D\0"
+            VALUE "LegalCopyright", "Copyright © 1996 Rob McGregor\0"
+            VALUE "OriginalFilename", "PANEL3D.OCX\0"
+            VALUE "ProductName", "Panel3d OLE Control\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ABOUTDLL            ICON    DISCARDABLE     "Panel3d.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_PANEL3D             BITMAP  DISCARDABLE     "Panel3dC.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX_PANEL3D DIALOG DISCARDABLE  34, 22, 260, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Panel3d Control"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDI_ABOUTDLL,IDC_STATIC,10,10,18,20
+    LTEXT           "Panel3d Control, Version 1.0",IDC_STATIC,40,10,170,8
+    LTEXT           "Copyright © 1996, Rob McGregor",IDC_STATIC,40,25,170,8
+    DEFPUSHBUTTON   "OK",IDOK,221,7,32,14,WS_GROUP
+END
+
+IDD_PROPPAGE_PANEL3D DIALOG DISCARDABLE  0, 0, 250, 110
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "None",IDC_RADIONONE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,15,20,38,10
+    CONTROL         "Inset",IDC_RADIOINSET,"Button",BS_AUTORADIOBUTTON,15,30,
+                    60,10
+    CONTROL         "Raised",IDC_RADIORAISED,"Button",BS_AUTORADIOBUTTON,15,
+                    40,38,10
+    EDITTEXT        IDC_EDIT_CAPTION,145,10,85,15,ES_AUTOHSCROLL | WS_GROUP
+    EDITTEXT        IDC_EDIT_BEVELWIDTH,145,30,40,15,ES_AUTOHSCROLL
+    COMBOBOX        IDC_CBTEXTALIGN,10,71,175,119,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Use Embossed (3D) Text",IDC_CHK3D,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,90,100,10
+    CONTROL         "Draw Border",IDC_CHKDRAWBORDER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,120,90,100,10
+    GROUPBOX        "Bevel Style",IDC_STATIC,10,10,70,45
+    LTEXT           "Caption",IDC_STATIC,90,10,45,10
+    LTEXT           "BevelWidth:",IDC_STATIC,90,35,45,10
+    LTEXT           "Text Alignment",IDC_STATIC,10,60,85,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX_PANEL3D, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 253
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_PROPPAGE_PANEL3D, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_PROPPAGE_PANEL3D DLGINIT
+BEGIN
+    IDC_CBTEXTALIGN, 0x403, 8, 0
+0x654c, 0x7466, 0x6f54, 0x0070, 
+    IDC_CBTEXTALIGN, 0x403, 11, 0
+0x654c, 0x7466, 0x6543, 0x746e, 0x7265, "\000" 
+    IDC_CBTEXTALIGN, 0x403, 11, 0
+0x654c, 0x7466, 0x6f42, 0x7474, 0x6d6f, "\000" 
+    IDC_CBTEXTALIGN, 0x403, 10, 0
+0x6543, 0x746e, 0x7265, 0x6f54, 0x0070, 
+    IDC_CBTEXTALIGN, 0x403, 9, 0
+0x6543, 0x746e, 0x7265, 0x6465, "\000" 
+    IDC_CBTEXTALIGN, 0x403, 13, 0
+0x6543, 0x746e, 0x7265, 0x6f42, 0x7474, 0x6d6f, "\000" 
+    IDC_CBTEXTALIGN, 0x403, 9, 0
+0x6952, 0x6867, 0x5474, 0x706f, "\000" 
+    IDC_CBTEXTALIGN, 0x403, 12, 0
+0x6952, 0x6867, 0x4374, 0x6e65, 0x6574, 0x0072, 
+    IDC_CBTEXTALIGN, 0x403, 12, 0
+0x6952, 0x6867, 0x4274, 0x746f, 0x6f74, 0x006d, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PANEL3D             "Panel3d Control"
+    IDS_PANEL3D_PPG         "Panel3d Property Page"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PANEL3D_PPG_CAPTION "General"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "Panel3d.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

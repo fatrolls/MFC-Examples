@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Resizing the Tab Control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Resizing the Tab Control</FONT>
+<HR></H3></CENTER>
+Resizing the tab control within the property sheet is the same as resizing any other window. The following code resizes the tab control increasing its width by 100 pixels. It should be noted that the controls within the property pages are not repositioned or resized by this operation. Reducing the width of the tab control could hide some of the controls within the property pages.
+<PRE><TT><FONT COLOR="#990000">
+	CRect rectWnd;
+	GetTabControl()->GetWindowRect(rectWnd);
+	GetTabControl()->SetWindowPos(NULL, 0, 0,
+		rectWnd.Width() + 100,
+		rectWnd.Height(),
+		SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

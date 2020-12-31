@@ -1,0 +1,49 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+;=======================================================================
+; Help Project File: HELP1.HPJ
+;=======================================================================
+
+[OPTIONS]
+HCW=0
+ERRORLOG=help.log
+LCID=0x409 0x0 0x0 ;English (United States)
+REPORT=No
+TITLE=HELP1 Help
+COPYRIGHT=Copyright © 1996 Screaming Tiki (tm) Interactive.
+PREFIX=IDHxxx
+BMROOT=.
+BMROOT=..
+ROOT=.
+ROOT=..
+HLP=.\HELP1.HLP
+
+[FILES]
+help1.rtf
+
+[MAP]
+;=======================================================================
+; These context mappings link the help topics with the application.
+; The context IDs are taken from the RESOURCE.H file for user-interface
+; objects.
+;=======================================================================
+; Topic ID           Context ID
+;=======================================================================
+Exit_Button          10
+Help_Button          20
+Single_Line_Edit     30
+Multiple_Line_Edit   40
+Check_Box_1          50
+Check_Box_2          60
+Check_Box_3          70
+User_Interface       80
+Help_Overview        90
+
+[WINDOWS]
+main="Sample Help",(522,0,501,1022),60673,(r15532031),(r12632256),1
+(w95sec)="Help Guide",,20740,(r14417919),(r14417919),f2
+
+[CONFIG]
+BrowseButtons()
+CreateButton(9,`About', About())
+RegisterRoutine(`winmm.dll', `PlaySound', `S')

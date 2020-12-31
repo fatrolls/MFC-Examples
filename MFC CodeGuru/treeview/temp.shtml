@@ -1,0 +1,156 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>CTreeCtrl: Adding Simple Checkbox for each Item</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Adding Simple Checkbox for each Item</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+You can check items in a treeview control by using either an overlay image
+or a couple of state images. Both the techniques are fairly simple, but
+using a state image allows us to show a checkbox and makes it obvious to
+the user.
+
+<P>In this section we allow an item to have only two states. Either it
+is checked or it is not. For a tree this is not always the best choice.
+We may also want imformation as to whether any of the child or descendant
+items are checked or not. We will cover that in the next topic.
+<H4>
+Step 1: Create bitmap with checkbox images</H4>
+Create a bitmap with an image of an unchecked checkbox and an image with
+a checked checkbox. Since we will be using this bitmap for the state image
+list, the first image will not be used. So the sequence of images in the
+bitmap is - blank image, empty checkbox and checked checkbox.
+
+<P><IMG SRC="simple_check_bitmap.gif" HEIGHT=15 WIDTH=41>
+<H4>
+Step 2: Initialize the state image list</H4>
+Setting up state images has been covered in a previous topic. If the tree
+control class has a member variable m_imageState then here's how to set
+the image list.
+<PRE><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_tree.m_imageState.Create( IDB_STATE, 13, 1, RGB(255,255,255) );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_tree.SetImageList( &amp;(m_tree.m_imageState), TVSIL_STATE );</FONT></TT></PRE>
+
+<H4>
+Step 3: Insert items with the checkbox as a state image</H4>
+If you are using TV_INSERTSTRUCT to insert an item into the tree control,
+then specify the state and the stateMask in the TV_ITEM member. The index
+of the state image is specified by using the macro INDEXTOSTATEIMAGEMASK.
+You can also use the SetItemState() function.
+
+<P><TT><FONT COLOR="#990000">SetItemState( hItem, INDEXTOSTATEIMAGEMASK(1),
+TVIS_STATEIMAGEMASK );</FONT></TT>
+<H4>
+Step 4: Add code to OnLButtonDown to toggle checkbox</H4>
+When the user clicks on the checkbox, then the checkbox state has to be
+toggled. We use the HitTest() function to determine if the click was on
+the checkbox. When we get the state image index to determine whether the
+item is checked or not, the GetItemState() function returns the value in
+the form used internally by the tree control. Shifting the value by 12
+bit places to the right gives us the proper index value. We then toggle
+the state of the item.
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::OnLButtonDown(UINT nFlags, CPoint point)&nbsp;
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UINT uFlags=0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HTREEITEM hti = HitTest(point,&amp;uFlags);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( uFlags &amp; TVHT_ONITEMSTATEICON )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int iImage = GetItemState( hti, TVIS_STATEIMAGEMASK )>>12;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetItemState( hti, INDEXTOSTATEIMAGEMASK(iImage == 1 ? 2 : 1),&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TVIS_STATEIMAGEMASK );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+}</FONT></TT></PRE>
+
+<H4>
+Step 5: Add code to OnKeyDown to toggle checkbox</H4>
+This step provides the keyboard interface for checking and unchecking an
+item. The key used is usually the space key, so we will use the space key.
+The code is nearly the same as in the previous step. Instead of using HitTest()
+to determine the item handle, we use the function GetSelectedItem().
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)&nbsp;
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( nChar == VK_SPACE )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HTREEITEM hti = GetSelectedItem();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int iImage = GetItemState( hti, TVIS_STATEIMAGEMASK )>>12;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetItemState( hti, INDEXTOSTATEIMAGEMASK(iImage == 1 ? 2 : 1),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TVIS_STATEIMAGEMASK );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+}</FONT></TT></PRE>
+
+<H4>
+Step 6: Define helper functions</H4>
+Define helper functions to determine whether an item is checked or not
+and to iterate through the checked items. The purpose of the functions
+is very clear from the function names.
+<PRE><TT><FONT COLOR="#990000">BOOL CTreeCtrlX::IsItemChecked(HTREEITEM hItem)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return GetItemState( hItem, TVIS_STATEIMAGEMASK )>>12 == 2;
+}
+
+HTREEITEM CTreeCtrlX::GetFirstCheckedItem()
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for ( HTREEITEM hItem = GetRootItem(); hItem!=NULL; hItem = GetNextItem( hItem ) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( IsItemChecked(hItem) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return hItem;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return NULL;
+}
+
+HTREEITEM CTreeCtrlX::GetNextCheckedItem( HTREEITEM hItem )
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for ( hItem = GetNextItem( hItem ); hItem!=NULL; hItem = GetNextItem( hItem ) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( IsItemChecked(hItem) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return hItem;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return NULL;
+}
+
+HTREEITEM CTreeCtrlX::GetPrevCheckedItem( HTREEITEM hItem )
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for ( hItem = GetPrevItem( hItem ); hItem!=NULL; hItem = GetPrevItem( hItem ) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( IsItemChecked(hItem) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return hItem;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return NULL;
+}</FONT></TT></PRE>
+
+<PRE><TT><FONT COLOR="#990000"></FONT></TT></PRE>
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com../cgi-bin">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<CENTER>&nbsp;</CENTER>
+
+</BODY>
+</HTML>

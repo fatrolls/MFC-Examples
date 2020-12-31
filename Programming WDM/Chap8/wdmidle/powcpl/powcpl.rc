@@ -1,0 +1,181 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_page1 DIALOG DISCARDABLE  0, 0, 235, 204
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Other Devices"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Devices",IDC_STATIC,7,7,27,8
+    LISTBOX         IDC_DEVICELIST,7,22,221,50,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "When computer is:",IDC_STATIC,7,86,60,8
+    ICON            IDI_PLUGGED,IDC_STATIC,76,80,20,20
+    LTEXT           "Plugged In",IDC_STATIC,104,86,35,8
+    ICON            IDI_UNPLUGGED,IDC_STATIC,155,80,20,20
+    LTEXT           "Not Plugged In",IDC_STATIC,179,79,38,22
+    LTEXT           "&Turn off:",IDC_STATIC,7,106,28,8
+    COMBOBOX        IDC_IDLEPLUGGED,76,104,70,73,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_IDLEUNPLUGGED,155,104,70,74,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKRECT | SS_SUNKEN,7,179,
+                    221,1
+    CONTROL         "&Wakeup enabled",IDB_WAKEUP,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,187,71,10
+    PUSHBUTTON      "&Idle Now",IDB_IDLENOW,93,154,50,14
+    LTEXT           "Device is currently idle",IDC_ISIDLE,7,130,72,8,NOT 
+                    WS_VISIBLE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_page1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 197
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_CONTEXTMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Context"
+    BEGIN
+        MENUITEM "Placeholder",                 40000
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_PLUGGED             ICON    DISCARDABLE     "plugged.ico"
+IDI_UNPLUGGED           ICON    DISCARDABLE     "unplugge.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_page1 DLGINIT
+BEGIN
+    IDC_IDLEPLUGGED, 0x403, 6, 0
+0x654e, 0x6576, 0x0072, 
+    IDC_IDLEPLUGGED, 0x403, 13, 0
+0x6641, 0x6574, 0x2072, 0x3031, 0x7320, 0x6365, "\000" 
+    IDC_IDLEPLUGGED, 0x403, 12, 0
+0x6641, 0x6574, 0x2072, 0x2031, 0x694d, 0x006e, 
+    IDC_IDLEPLUGGED, 0x403, 13, 0
+0x6641, 0x6574, 0x2072, 0x2032, 0x694d, 0x736e, "\000" 
+    IDC_IDLEPLUGGED, 0x403, 13, 0
+0x6641, 0x6574, 0x2072, 0x2031, 0x6f48, 0x7275, "\000" 
+    IDC_IDLEUNPLUGGED, 0x403, 6, 0
+0x654e, 0x6576, 0x0072, 
+    IDC_IDLEUNPLUGGED, 0x403, 13, 0
+0x6641, 0x6574, 0x2072, 0x3031, 0x5320, 0x6365, "\000" 
+    IDC_IDLEUNPLUGGED, 0x403, 12, 0
+0x6641, 0x6574, 0x2072, 0x2031, 0x694d, 0x006e, 
+    IDC_IDLEUNPLUGGED, 0x403, 13, 0
+0x6641, 0x6574, 0x2072, 0x2032, 0x694d, 0x736e, "\000" 
+    IDC_IDLEUNPLUGGED, 0x403, 13, 0
+0x6641, 0x6574, 0x2072, 0x2031, 0x6f48, 0x7275, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    102                     "Placeholder"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

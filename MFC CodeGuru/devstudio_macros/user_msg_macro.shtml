@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DevStudio Macros - WM_COMMAND user message macro</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">WM_COMMAND user message macro</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+These macros were contributed by <A HREF="mailto:johncl@online.no">John Christian Lonningdal</A>
+
+<P>Here is a nice macro that works very nice if you are
+working on an MFC project involving user messages.
+I always got irritated every time I had to add user
+messages, and sometimes forgot what parameters should
+be used. This macro pops up a nice dialog box where you
+just enter your user message (e.g. WM_MYMESSAGE) and
+it inserts the message body + the line in the AFX_MSG_MAP
+as well as the line in the header file under AFX_MSG.
+
+<P>It creates the name based on the message, so if it finds
+"WM_" in the beginning, this is stripped away and replaced
+with the word "On" just like all the other MFC messages
+are defined.
+
+<P>It uses another macro you have on your web page called
+<A HREF="open_header.shtml">ToggleHandCPP</A>. It should probably be refined better so
+that it doesn't spew garbage when it is unable to find
+the header file.
+
+<P>BTW, you have to be in the CPP file to run the macro,
+if not a message box will pop up. (The macro can be 
+extended to do this switch automatically of course.)
+
+<P>I've been using this for a while and it seems to work just
+fine. Please report any bugs if you find them.
+
+<PRE><TT><FONT COLOR="#990000">
+Sub AddMessage()
+'DESCRIPTION: Adds user messages to MFC project (WM_COMMAND)
+
+	ext = ActiveDocument.Name
+	pos = Instr(ext, ".")
+	if pos > 0 then
+		Do While pos <> 1
+			ext = Mid(ext, pos, Len(ext) - pos + 1)
+			pos = Instr(ext, ".")
+		Loop
+		ext = LCase(ext)
+	end if
+	If ext = ".cpp" Then
+		msg = InputBox ("Write the message ID:")
+		If msg <> "" Then
+			'func = LCase(msg)
+			If Left(msg, 3) = "WM_" Then
+				func = "On" + Mid(msg,4,1) + Mid(LCase(msg),5)
+			End If
+
+			ActiveDocument.Selection.EndOfDocument
+			ActiveDocument.Selection.FindText "AFX_MSG_MAP", dsMatchBackward
+			ActiveDocument.Selection.FindText "AFX_MSG_MAP", dsMatchBackward
+			ActiveDocument.Selection.CharRight dsMove, 2
+			ActiveDocument.Selection.WordRight dsExtend
+			ActiveDocument.Selection.Copy
+			ActiveDocument.Selection.EndOfLine
+			ActiveDocument.Selection.NewLine
+			ActiveDocument.Selection = "ON_MESSAGE("+msg+", "+func+")"
+			ActiveDocument.Selection.EndOfDocument
+			ActiveDocument.Selection.NewLine
+			ActiveDocument.Selection = "LONG "
+			ActiveDocument.Selection.Paste
+			ActiveDocument.Selection = "::"+func+"( UINT uParam, LONG lParam )"
+			ActiveDocument.Selection.NewLine
+			ActiveDocument.Selection = "{"
+			ActiveDocument.Selection.NewLine
+			ActiveDocument.Selection = "return 0;"
+			ActiveDocument.Selection.NewLine
+			ActiveDocument.Selection.CharLeft
+			ActiveDocument.Selection = "}"
+			ActiveDocument.Selection.NewLine
+			ActiveDocument.Selection.LineUp
+			ActiveDocument.Selection.LineUp
+			ActiveDocument.Selection.LineUp
+			ActiveDocument.Selection.EndOfLine
+			ActiveDocument.Selection.NewLine
+			ToggleHandCPP
+			ActiveDocument.Selection.EndOfDocument
+			ActiveDocument.Selection.FindText "AFX_MSG", dsMatchBackward
+			ActiveDocument.Selection.LineUp
+			ActiveDocument.Selection.EndOfLine
+			ActiveDocument.Selection.NewLine
+			ActiveDocument.Selection = "afx_msg LONG "+func+"( UINT uParam, LONG lParam );"
+			ToggleHandCPP
+		End If
+	Else
+		MsgBox "File is not a .cpp file"
+	End If
+End Sub
+</FONT></TT></PRE>
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

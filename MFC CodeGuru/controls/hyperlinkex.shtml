@@ -1,0 +1,309 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - An improved hyperlink control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+An improved hyperlink control
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<hr>
+<!-- Author and contact details -->
+<p>This article was contributed by <a
+href="mailto:giancarlo@saria.com">Giancarlo Iovino</a>. <!-- Sample image and source code/demo project --> </p>
+
+<p><img src="hyperlinkex.gif"
+alt="The CHyperlink example project dialog" width="366"
+height="235">&nbsp; Download <a href="hyperlinkex.zip">Source
+Code</a> and <a href="hyperlinkex_demo.zip">Demo</a> </p>
+
+<p><br>
+<!-- The article... --></p>
+
+<h4>Introduction</h4>
+
+<p>After having tried some hyperlink controls, I felt the
+necessity to write my own control that was more flexible and had
+a more consistent programming interface. My intention was to
+create an hyperlink that could be used not only with text but
+also with icons and bitmaps, and that supported dynamic
+modification of its style and font. Moreover, I wanted that my
+control had the look and feel of an usual web page hyperlink. Why
+cannot hyperlinks have the input focus? Why cannot I move the
+focus from an hyperlink to another using the &quot;tab&quot; key
+as if they were normal dialog buttons and activate them pressing
+the spacebar?</p>
+
+<p>Well, here is an hyperlink control that makes all these
+beautiful things possible. It was realized with the help of some
+articles written by Paul DiLascia on MSJ and Stuart Patterson on
+Windows Developer's Journal. It's rightful to tell that I think
+at my control as an improvement of the homonymous control
+developed by Chris Maunder, whose work was excellent.</p>
+
+<h4>Comparison with existing hyperlinkcontrols</h4>
+
+<p>In this section, I summarize the main features that
+distinguish my control from other similar controls you can find
+in this site. I hope this will help you to decide which code
+suits your needs better. </p>
+
+<ul>
+    <li>You can set the hyperlink on any type of static control
+        (bitmaps and icons above all!).</li>
+    <li>The hyperlink can get the input focus (a special color is
+        used to show the focus state) and can be activated with
+        the spacebar like normal dialog buttons.</li>
+    <li>The hyperlink maintains the correct aspect when you
+        change its style, text or font.</li>
+    <li>Control resizing works correctly even if it has a
+        nonclient border.</li>
+    <li>Simplified programming interface.</li>
+</ul>
+
+<h4>Using the control</h4>
+
+<p>To use the hyperlink control, first create a static control
+with your resource editor (text, icon, or bitmap), then give it a
+control ID (e.g. IDC_HYPERLINK). If you want your control to be
+able to get the focus, you have to set the &quot;tabstop&quot;
+style, since for static controls it is not the default. I advice
+to set it only with text controls, which can change color when
+focused. Then, attach it to a member variable of type CHyperLink
+(ClassWizard makes this very simple). Don't forget to include the
+&quot;HyperLink.h&quot; file in your dialog class implementation
+file. The member function SetURL() allows to specify the link
+URL. However, setting an explicit URL is not obligatory for text
+controls: if you specify a caption text, this is taken as URL.
+Vice versa, if you don't specify a caption text, but 'manually'
+set the URL with SetURL(), then the text is set equal to the URL.
+For all other types of static controls instead, you have the
+responsibility to set the URL using SetURL() (usually in the
+OnInitDialog() member function of your dialog class), or
+otherwise a debug assertion will occur. The default link colors
+are blue, dark cyan, purple and red, respectively for normal,
+focused, visited and &quot;cursor over&quot; states.</p>
+
+<h4>Customizing the hyperlink</h4>
+
+<p>The hyperlink styles are static class constants. They are
+shown in the following table</p>
+
+<table border="1" cellpadding="0" cellspacing="0" width="100%"
+bgcolor="#F5FDBD">
+    <tr>
+        <th width="30%">Style</th>
+        <th width="80%">Meaning</th>
+        <th width="10">Default</th>
+    </tr>
+    <tr>
+        <td width="30%"><font face="Courier">StyleUnderline</font></td>
+        <td width="80%">The link is underlined</td>
+        <td width="10">YES</td>
+    </tr>
+    <tr>
+        <td width="30%"><font face="Courier">StyleAutoSize</font></td>
+        <td width="80%">The control resizes itself automatically
+        when text or font changes</td>
+        <td width="10">YES</td>
+    </tr>
+    <tr>
+        <td width="30%"><font face="Courier">StyleUseHover</font></td>
+        <td width="80%">The link use the &quot;hand over&quot;
+        color </td>
+        <td width="10">NO</td>
+    </tr>
+    <tr>
+        <td width="30%"><font face="Courier">StyleDownClick</font></td>
+        <td width="80%">The link is activated when mouse button
+        &quot;goes down&quot;</td>
+        <td width="10">NO</td>
+    </tr>
+    <tr>
+        <td width="30%"><font face="Courier">StyleGetFocusOnClick</font></td>
+        <td width="80%">The link gets the input focus when
+        clicked</td>
+        <td width="10">NO</td>
+    </tr>
+    <tr>
+        <td width="30%"><font face="Courier">StyleNoHandCursor</font></td>
+        <td width="80%">The link doesn't use the default hand
+        cursor</td>
+        <td width="10">NO</td>
+    </tr>
+    <tr>
+        <td width="30%"><font face="Courier">StyleNoActiveColor</font></td>
+        <td width="80%">The link doesn't change color when
+        activated (i.e. when it get the focus)</td>
+        <td width="10">NO</td>
+    </tr>
+</table>
+
+<ul>
+    <li>To modify link style call the member function
+        ModifyLinkStyle(dwRemove, dwAdd) where <em>dwRemove</em>
+        is a bitwise OR of the styles you want to remove and <em>dwAdd</em>
+        is a bitwise OR of the styles you want to add (strange
+        but true!).</li>
+</ul>
+
+<p>Setting the <em>StyleAutoSize</em>, the control will
+automatically resize itself to fit the size of the caption (even
+while it is visible!). The resizing occurs also if you set a new
+window caption text or font. Remember that this style applies to
+text controls only. For icons and bitmaps, auto-resizing is a
+default characteristic, and <em>StyleAutoSize</em> becomes
+meaningless. The resizing will honour the SS_CENTERIMAGE,
+SS_LEFT, SS_RIGHT and SS_CENTER static control flags. If you
+don't want the style change to be dinamically applied to the
+control, ModifyLinkStyle() has a third optional boolean
+parameter: just set it to FALSE (the default is TRUE).</p>
+
+<ul>
+    <li>To mark/unmark a link as visited call the SetVisited()
+        member function.</li>
+</ul>
+
+<ul>
+    <li>To modify link colors, call the SetColors() member
+        function, in the following way:</li>
+</ul>
+
+<pre><font color="#990000"><tt>    SetColors(crLinkColor, crActiveColor, crVisitedColor, crHoverColor);
+</tt></font></pre>
+
+<p>The last parameter is optional: if not specified the system
+default highlight color will be used. Alternatively, fill a
+HYPERLINKCOLORS structure (a typedef defined in
+&quot;HyperLink.h&quot;) and pass it to the overloaded version of
+SetColors(). This structure is also used by GetColors() to
+retrieve the current link colors.<br>
+SetColors() is a static member function: the color change has
+effect on all instances of CHyperLink and you need to redraw your
+control in order that the new colors to be applied.</p>
+
+<ul>
+    <li>To set a mouse cursor different from the default hand,
+        call SetLinkCursor(). This function requires a unique
+        argument: the handle of a new cursor. It is a static
+        function and has effect on all hyperlinks, just like
+        SetColors().</li>
+</ul>
+
+<p>All the &quot;set&quot; functions above have their natural
+&quot;get&quot; counterparts. See the following section. </p>
+
+<h4>Operations for CHyperLink:</h4>
+
+<p>Here is an excerpt from the class declaration </p>
+
+<pre><font color="#990000"><tt>
+// Operations
+public:	
+	static void GetColors(HYPERLINKCOLORS&amp; linkColors);
+
+	static HCURSOR GetLinkCursor();
+	static void SetLinkCursor(HCURSOR hCursor);
+    
+	static void SetColors(COLORREF crLinkColor, COLORREF crActiveColor, 
+	   		   COLORREF crVisitedColor, COLORREF crHoverColor = -1);
+	static void SetColors(HYPERLINKCOLORS&amp; colors);
+
+	void SetURL(CString strURL);
+	CString GetURL() const;
+
+	DWORD GetLinkStyle() const;
+	BOOL ModifyLinkStyle(DWORD dwRemove, DWORD dwAdd, BOOL bApply=TRUE);	
+    
+	void SetWindowText(LPCTSTR lpszText);
+	void SetFont(CFont *pFont);
+	
+	BOOL IsVisited() const;
+	void SetVisited(BOOL bVisited = TRUE);
+	
+	// Use this if you want to subclass and also set different URL
+	BOOL SubclassDlgItem(UINT nID, CWnd* pParent, LPCTSTR lpszURL=NULL) {
+		m_strURL = lpszURL;
+		return CStatic::SubclassDlgItem(nID, pParent);
+	}
+</tt></font></pre>
+
+<h4>Implementation details</h4>
+
+<p>Some notes about implementation. I used the MFC <em>message
+reflection</em> to set the text color for the control (see the
+ON_WM_CTLCOLOR_REFLECT() macro in the message map). Message
+reflection can be a very complicated argument. Briefly, many
+controls notifies some event messages to their parent window, so
+that the latter has a chance to handle them. When the parent
+window sends back the message to the control we have the
+so-called message reflection. This mechanism is well implemented
+in MFC. Reflected messages appear preceded by an equal sign in
+ClassWizard.</p>
+
+<p>Reading the code, you may be surprised that the control works
+without the SS_NOTIFY style. Normally, a static control does not
+get mouse events unless it has the SS_NOTIFY style. However, as
+Paul DiLascia asserts, handling the WM_NCHITTEST message and
+making the OnNcHitTest() functions returns the hit-test value
+HTCLIENT achieves the same effect as SS_NOTIFY, but requires
+fewer lines of code and is more reliable than turning on
+SS_NOTIFY in OnCtlColor because Windows doesn't send WM_CTLCOLOR
+to bitmap static controls.</p>
+
+<p>For dynamic text and font modification I supplied special
+versions of SetFont() and SetWindowText() functions. These
+functions perform their operations while the window is kept
+hidden to maintain the correct link aspect.</p>
+
+<h4>Author's note</h4>
+
+<p>I'm continuously working to improve this control. I'll be
+grateful to you if you mail me your comments, advices, or bug
+apparition reports!.</p>
+
+<h4>Latest additions</h4>
+
+<ul>
+    <li>Link styles are now static class constants.</li>
+    <li>Colors and cursor and their relative get/set functions,
+        are now static class members. </li>
+    <li>Many bug fixes in resizing and color management. </li>
+</ul>
+<!-- Remember to update this -->
+<p>Last updated: 20 May 1998 </p>
+
+<hr>
+<!-- Codeguru contact details -->
+<table border="0" width="100%">
+    <tr>
+        <td width="33%"><a href="http://www.codeguru.com"><font
+        size="2">Goto HomePage</font></a></td>
+        <td align="center" width="33%"><font size="1">© 1997
+        Zafir Anjum</font>&nbsp; </td>
+        <td align="right" width="34%"><font size="2">Contact me: </font><a
+        href="mailto:zafir@home.com"><font size="2">zafir@home.com</font></a><font
+        size="2">&nbsp;</font> </td>
+    </tr>
+</table>
+
+<!-- Counter -->
+
+
+</body>
+</html>

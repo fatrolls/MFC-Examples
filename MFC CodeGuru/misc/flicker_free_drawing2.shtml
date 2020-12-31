@@ -1,0 +1,183 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Misc - Flicker free drawing (2)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">Flicker free drawing (2)</FONT></H3></CENTER>
+
+<HR>
+
+
+
+<P>This class was contributed by <A HREF="mailto:aleitner@usa.net">Andreas Leitner</A>.
+
+<P>This is a small class that makes it easy to create windows that are
+updated flicker-free. Once I had to code a window that displayed "hard
+to calculate" data. Since I needed to update the contents in constant time
+(say every second) I got this ugly flickering on my machine.
+
+<P>There is an article dealing with the same problem on this site (<I>Flicker
+free drawing using memory DC by&nbsp; Keith Rule</I>). The main difference
+between our approaches is that Keith extends the class CDC and I extended
+CWnd. I think both versions have got advantages and disadvantages. <A HREF="#Difference">I
+will try to point out the difference at the end of this article.</A>
+
+<P>What I needed was a window that displayed its contents without flickering.
+I archieve the flicker free mode with a well known trick: First paint everything
+on a bitmap, then copy the bitmap into the the window. Since this aproach
+is a bit slower than the common way, I decided that the end-user may decide
+wether to use the fast mode (in case that his machine is good enough that
+even this mode doesn't flicker), or the flicker-free mode.
+
+<P>The new class is called <FONT COLOR="#000099">CadvWnd</FONT> (based
+on <FONT COLOR="#000099">CWnd</FONT>):
+<BR>The first 2 attributes that came on my mind were:
+
+<PRE><TT><FONT COLOR="#990000">
+void SetFlickerFree(BOOL bFlickerFree); 
+BOOL IsFlickerFree(); 
+</FONT></TT></PRE>
+
+
+<P>I think it is rather easy to guess what those functions should do. What
+I needed further was a sort of <FONT COLOR="#000099">OnPaint</FONT> function.
+But since I will need this function-name for internal use I took an other
+function (in fact two again to definitly force a difference between foreground
+and background).
+
+<PRE><TT><FONT COLOR="#990000">
+ virtual void InternalRedrawFG(CDC* pDC, CRect rcPaint); 
+ virtual void InternalRedrawBG(CDC* pDC, CRect rcPaint); 
+</FONT></TT></PRE>
+
+
+<P><FONT COLOR="#000099">InternalRedrawFG</FONT> should be overridded for
+foreground drawing and <FONT COLOR="#000099">InternalRedrawBG </FONT>for
+the background. Once the bitmap is painted it will be copied into the window
+every time it needs to be updated. Of course the window checks messages
+like WM_SIZE and recreates and repaints the bitmap. But how does the client
+tell the window that the contents has changes and the bitmap needs to be
+repainted or even recreated?
+
+<PRE><TT><FONT COLOR="#990000">
+void ReCreateBitmap(); 
+void SetContentsChanged(BOOL yes = TRUE); 
+BOOL IsContentsChanged(); 
+</FONT></TT></PRE>
+
+<P><FONT COLOR="#000099">ReCreateBitmap</FONT> is the direct way to recreate
+the bitmap (Mabe you as a client of the class will never need to call this
+one:). More often you will have to call <FONT COLOR="#000099">SetContentsChanged(TRUE)</FONT>.
+When you do this, the next time the window will be repainted, the bitmap
+also will be. Just call this function if the data changes on which the
+window contents is based.
+
+<P>This class has even got a few extra features. I thought it is often
+the case that you need a special background color so I made also this available
+easy (of course you can add a mode for a background picture too). By now
+there are two background modes: <FONT COLOR="#000099">BM_DEF_WND_COL</FONT>
+and <FONT COLOR="#000099">BM_CUST_COL</FONT>. If you select <FONT COLOR="#000099">SetBackgroundMode(
+0, BM_DEF_WND_COL )</FONT> the window will behave like default, but if
+you call <FONT COLOR="#000099">SetBackgroundMode( RGB(255,0,0), BM_CUST_COL
+)</FONT> the background will be painted red. Here come the function declarations:
+
+<PRE><TT><FONT COLOR="#990000">
+const int GetBackgroundMode(); 
+void SetBackgroundMode(COLORREF Color, int Mode = BM_CUST_COL); // To set the std mode just set col black and change the mode value 
+COLORREF GetBackgroundColor(); 
+</FONT></TT></PRE>
+
+
+<BR>&nbsp;
+<BR>&nbsp;There is also a nice new function that you should override in
+your derived class if you have child windows in your window.
+
+<PRE><TT><FONT COLOR="#990000">
+virtual BOOL CreateChildren();
+</FONT></TT></PRE>
+
+
+<P>This function will be called in the right moment regardless if you create
+this window through subclassing (often used in dialogs) or through a "create"
+call (often used if you make it a child of another <FONT COLOR="#000099">CWnd</FONT>
+(derived) class).
+<BR>&nbsp;
+<H4>
+What do you need to derive a class from CadvWnd?</H4>
+Be sure to include the header of <FONT COLOR="#000099">CadvWnd</FONT> in
+your new class and derive it as public from it. A minimal implementation
+just needs to override <FONT COLOR="#000099">InternalRedrawFG </FONT>as
+shown in the following example.
+
+<PRE><TT><FONT COLOR="#990000">
+#include "advWnd.h" 
+class CMyWnd : public CadcWnd 
+{ 
+    public: 
+    virtual void InternalRedrawFG(CDC* pDC, CRect rcPaint) 
+    { 
+        pDC->TextOut( 10, 10, "Nonsense rulez ?!?"); 
+    } 
+}; 
+</FONT></TT></PRE>
+
+
+<H4>
+<A NAME="Difference"></A>But what is the difference between CadvWnd and
+CMemDC (by Keith Rule)?</H4>
+As I mentioned at the begining Keith Rule deals also with the "flickering"
+topic in his artice called <I>"Flicker free drawing using memory DC<B>".
+</B></I>The main advantage of <FONT COLOR="#000099">CMemDC </FONT>in my
+opinion is that you can use it everytime it comes to painting. CadvWnd
+will cause you some problems using a <FONT COLOR="#000099">CView </FONT>derived
+class, because here you have to override <FONT COLOR="#000099">OnDraw to
+</FONT>change the drawing behavior of your window. I think one would have
+to derive <FONT COLOR="#000099">CView </FONT>from <FONT COLOR="#000099">CadvWnd
+</FONT>to solve this, but (to be honest) I never tried. Therefore the advantage
+of <FONT COLOR="#000099">CadvWnd </FONT>is that you just override <FONT COLOR="#000099">InternalRedrawFG
+</FONT>and then can easiely switch between fast and flickering mode. (Which
+is sure a nice option in the main settings dialog). You can use <FONT COLOR="#000099">InternalRedrawFG
+</FONT>just like OnPaint without any difference. Also in some cases <FONT COLOR="#000099">CadvWnd
+</FONT>is faster than the pure <FONT COLOR="#000099">CMemDC</FONT> implementation,
+because <FONT COLOR="#000099">CadvWnd </FONT>only recreates the offscreen
+bitmap when you force it too (via <FONT COLOR="#000099">SetContentsChanged</FONT>,
+or <FONT COLOR="#000099">ReCreateBitmap</FONT>). This is an important issue
+if you need a long time to caclulate the image. Plus <FONT COLOR="#000099">CadvWnd</FONT>
+offers a few other things that make life easier like the unified creation
+method with <FONT COLOR="#000099">CreateChildren</FONT> and the additional
+virtual function for background painting (inclusiv the extra background
+mode with a predefined color).
+
+<P><A HREF="flicker_free_drawing2.zip">Finaly here is the source</A>. I used this class
+a few times and saw no remaining bugs by now, if you see some (: please
+mail me. Have fun!
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

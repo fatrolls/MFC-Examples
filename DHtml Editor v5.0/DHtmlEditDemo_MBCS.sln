@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DHtmlEditDemo", "DHtmlEditDemo_MBCS.vcproj", "{DEAA8DEF-8E11-42BE-B851-B79E723D9750}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{DEAA8DEF-8E11-42BE-B851-B79E723D9750}.Debug.ActiveCfg = Debug|Win32
+		{DEAA8DEF-8E11-42BE-B851-B79E723D9750}.Debug.Build.0 = Debug|Win32
+		{DEAA8DEF-8E11-42BE-B851-B79E723D9750}.Release.ActiveCfg = Release|Win32
+		{DEAA8DEF-8E11-42BE-B851-B79E723D9750}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

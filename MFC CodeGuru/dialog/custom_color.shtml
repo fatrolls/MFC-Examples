@@ -1,0 +1,187 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - Color Dialog with Persistent Custom Colors</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Color Dialog with Persistent Custom Colors</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>.
+
+
+<p>The MFC CColorDialog class encapulates the standard Color common dialog
+box.  This dialog allows you to select a standard color, pick from a list
+of custom colors, or expand the dialog to create a color.
+
+<p>However, although you can define a custom color, the MFC implmentation does not
+save your custom colors for later use.
+
+<p>The following class, derived from CColorDialog, lets you do just this.
+
+<PRE><TT><FONT COLOR="#990000">
+// ColorDialog.h : header file
+// (c) 1997 Roger Onslow
+
+#ifndef _CMyColorDialog_
+#define _CMyColorDialog_
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CMyColorDialog dialog
+
+class AFX_EXT_CLASS CMyColorDialog : public CColorDialog {
+     DECLARE_DYNCREATE(CMyColorDialog);
+     // Construction
+public:
+     CMyColorDialog( COLORREF clrInit = 0, DWORD dwFlags = 0, CWnd*
+pParentWnd = NULL );
+     // Statics
+protected:
+     enum { NCUSTCOLORS = 16 };
+     static COLORREF c_CustColors[NCUSTCOLORS];
+     static COLORREF c_LastCustColors[NCUSTCOLORS];
+     static bool c_NeedToInitCustColors;
+protected:
+     static void InitCustColors();
+     static void SaveCustColors();
+     // Dialog Data
+protected:
+     //{{AFX_DATA(CMyColorDialog)
+     //}}AFX_DATA
+     // Overrides
+protected:
+     // ClassWizard generate virtual function overrides
+     //{{AFX_VIRTUAL(CMyColorDialog)
+public:
+     virtual int DoModal();
+protected:
+     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+     //}}AFX_VIRTUAL
+     // Implementation
+protected:
+     // Generated message map functions
+     //{{AFX_MSG(CMyColorDialog)
+     //}}AFX_MSG
+     DECLARE_MESSAGE_MAP()
+};
+
+#endif
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
+// ColorDialog.cpp - auto load/save of custom colors CColorDialog extension
+// (c) 1997 Roger Onslow
+
+#include "stdafx.h"
+#include "ColorDialog.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char BASED_CODE THIS_FILE[] = __FILE__;
+#endif
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CMyColorDialog property page
+
+IMPLEMENT_DYNCREATE(CMyColorDialog, CColorDialog)
+
+bool CMyColorDialog::c_NeedToInitCustColors = true;
+COLORREF CMyColorDialog::c_CustColors[];
+COLORREF CMyColorDialog::c_LastCustColors[];
+
+#define SECTION _T("Custom Colors")
+
+void CMyColorDialog::InitCustColors() {
+     for (int i = 0; i < NCUSTCOLORS; i++) {
+          CString entry; entry.Format("%d",i);
+          c_LastCustColors[i] = c_CustColors[i] =
+		::AfxGetApp()->GetProfileInt(SECTION,entry,RGB(255,255,255));
+     }
+     c_NeedToInitCustColors= false;
+}
+
+void CMyColorDialog::SaveCustColors() {
+     for (int i = 0; i < NCUSTCOLORS; i++) {
+          if (c_LastCustColors[i] != c_CustColors[i]) {
+               CString entry; entry.Format("%d",i);
+               if (c_CustColors[i] == RGB(255,255,255)) {
+                    ::AfxGetApp()->WriteProfileString(SECTION,entry,NULL);
+               } else {
+                    ::AfxGetApp()->WriteProfileInt(SECTION, entry,c_CustColors[i]);
+               }
+               c_LastCustColors[i] = c_CustColors[i];
+          }
+     }
+}
+
+CMyColorDialog::CMyColorDialog( COLORREF clrInit, DWORD dwFlags, 
+		CWnd* pParentWnd) : CColorDialog(clrInit,dwFlags,pParentWnd)
+{
+     //{{AFX_DATA_INIT(CMyColorDialog)
+     //}}AFX_DATA_INIT
+     if (c_NeedToInitCustColors) {
+          InitCustColors();
+     }
+     m_cc.lpCustColors = c_CustColors;
+}
+
+int CMyColorDialog::DoModal() {
+     int code = CColorDialog::DoModal();
+     SaveCustColors();
+     return code;
+}
+
+void CMyColorDialog::DoDataExchange(CDataExchange* pDX) {
+     // overridden (calls this base class)
+     CColorDialog::DoDataExchange(pDX);
+     //{{AFX_DATA_MAP(CMyColorDialog)
+     //}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CMyColorDialog, CColorDialog)
+//{{AFX_MSG_MAP(CMyColorDialog)
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

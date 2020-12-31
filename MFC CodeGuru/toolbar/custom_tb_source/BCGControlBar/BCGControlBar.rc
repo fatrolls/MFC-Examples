@@ -1,0 +1,323 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "BCGControlBar DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "BCGControlBar\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "BCGControlBar.DLL\0"
+            VALUE "ProductName", "BCGControlBar Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\BCGControlBar.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_DELETE              CURSOR  DISCARDABLE     "res\\delete.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BUTTON_PROPS DIALOG DISCARDABLE  0, 0, 254, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Button Appearance"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "&Image only",IDC_IMAGE,"Button",BS_AUTORADIOBUTTON,7,7,
+                    50,10
+    CONTROL         "&Text only",IDC_TEXT,"Button",BS_AUTORADIOBUTTON,7,20,
+                    45,10
+    CONTROL         "Image &and text",IDC_IMAGE_TEXT,"Button",
+                    BS_AUTORADIOBUTTON,7,34,63,10
+    GROUPBOX        "Images: ",IDC_STATIC,73,7,173,118
+    CONTROL         "Images",IDC_IMAGE_LIST,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,79,19,121,98
+    PUSHBUTTON      "&New...",IDC_ADD_IMAGE,205,19,36,14
+    PUSHBUTTON      "&Edit...",IDC_EDIT_IMAGE,205,36,36,14,WS_DISABLED
+    DEFPUSHBUTTON   "OK",IDOK,145,132,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,197,132,50,14
+    LTEXT           "Description:",IDC_STATIC,7,54,38,8
+    LTEXT           "&Button text:",IDC_STATIC,7,134,37,8
+    EDITTEXT        IDC_BUTTON_TEXT,48,132,88,14,ES_AUTOHSCROLL
+    LTEXT           "<descr>",IDC_BUTTON_DESCR,7,65,54,59
+END
+
+IDD_IMAGE_EDITOR DIALOG DISCARDABLE  0, 0, 257, 154
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Edit Button Image"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Picture:",IDC_STATIC,7,7,25,8
+    CONTROL         "Draw",IDC_DRAW_AREA,"Button",BS_OWNERDRAW | WS_TABSTOP,
+                    7,17,110,110
+    PUSHBUTTON      "&Copy",IDC_COPY,7,133,36,14
+    PUSHBUTTON      "&Paste",IDC_PASTE,45,133,36,14
+    PUSHBUTTON      "Clear",IDC_CLEAR,84,133,36,14
+    LTEXT           "Colors:",IDC_STATIC,136,7,22,8
+    CONTROL         "Colors",IDC_COLORS,"Button",BS_OWNERDRAW | WS_TABSTOP,
+                    138,17,66,82
+    GROUPBOX        "Preview: ",IDC_STATIC,139,105,65,43
+    CONTROL         "",IDC_PREVIEW_AREA,"Static",SS_GRAYRECT | NOT 
+                    WS_VISIBLE,158,118,33,23
+    DEFPUSHBUTTON   "OK",IDOK,214,7,36,14
+    PUSHBUTTON      "Cancel",IDCANCEL,214,25,36,14
+END
+
+IDD_PROPPAGE1 DIALOGEX 0, 0, 265, 146
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Commands"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Category:",IDC_STATIC,7,7,31,8
+    COMBOBOX        IDC_CATEGORY,7,19,82,95,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    GROUPBOX        "Buttons:",IDC_STATIC,97,7,161,108
+    CONTROL         "Button1",IDC_BUTTONS_LIST,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,106,21,144,88
+    LTEXT           "Hint: Select a category. Click a button to see its description, or drag it into the tollbar.",
+                    IDC_STATIC,97,119,161,19,0,WS_EX_STATICEDGE
+    LTEXT           "<descr>",IDC_BUTTON_DESCR,7,50,82,88
+    LTEXT           "Description:",IDC_STATIC,7,39,38,8
+    LISTBOX         IDC_USER_TOOLS,105,21,145,88,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_PROPPAGE2 DIALOG DISCARDABLE  0, 0, 265, 146
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Toolbars"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Toolbars:",IDC_STATIC,7,7,30,8
+    LISTBOX         IDC_TOOLBAR_LIST,7,19,142,119,LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Show Tool Tips",IDC_SHOW_TOOLTIPS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,170,20,65,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_POPUP_BCGTOOL_BAR MENU DISCARDABLE 
+BEGIN
+    POPUP "_POPUP_"
+    BEGIN
+        MENUITEM "&Delete",                     ID_TOOLBAR_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Button Appearance...",       ID_TOOLBAR_APPEARANCE
+        MENUITEM "&Image",                      ID_TOOLBAR_IMAGE
+        MENUITEM "&Text",                       ID_TOOLBAR_TEXT
+        MENUITEM "&Image &and Text",            ID_TOOLBAR_IMAGE_AND_TEXT
+        MENUITEM SEPARATOR
+        MENUITEM "&Start Group",                ID_TOOLBAR_START_GROUP
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_BUTTON_PROPS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 247
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 146
+    END
+
+    IDD_IMAGE_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_PROPPAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 258
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 138
+    END
+
+    IDD_PROPPAGE2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 258
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 138
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_ARROWS              BITMAP  DISCARDABLE     "res\\arrows.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDP_IMAGE_IS_REQUIRED   "You should select an image!"
+    IDP_TEXT_IS_REQUIRED    "You should enter a text!"
+    IDP_CANNT_CREATE_IMAGE  "Can't create a new image!"
+    IDP_CANT_PASTE_BITMAP   "Can't paste bitmap image from the clipboard!"
+    IDS_WRONG_IMAGE_SIZE    "You can paste bitmap with the size (%d x %d) only!"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROPSHT_CAPTION     "Customize Toolbars"
+    IDS_UNTITLED_TOOLBAR    "<Untitled>"
+    IDS_CLOSE               "Close"
+END
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\BCGControlBar.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

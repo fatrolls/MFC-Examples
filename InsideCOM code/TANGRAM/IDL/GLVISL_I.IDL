@@ -1,0 +1,41 @@
+///////////////////////////////////////////////////////////
+//
+//
+// GLVisl_i.idl	- Interface Descriptions for ITangramGLVisual
+//
+//
+///////////////////////////////////////////////////////////
+//
+// Forwards
+//
+interface ITangramModel ;
+interface ITangramGLWorld ;
+
+///////////////////////////////////////////////////////////
+//
+// Imports
+//
+import "GLwrld_i.idl" ;
+
+///////////////////////////////////////////////////////////
+//
+// Interface ITangramGLVisual
+//
+[
+	object,
+	uuid(b53313d5-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramGLVisual Interface"),
+	pointer_default(unique)
+]
+interface ITangramGLVisual : ITangramVisual 
+{
+	import "unknwn.idl" ; 
+	// Canvas Interface
+	import "canvas_i.idl" ;
+	// TangramModel
+	import "model_i.idl" ;
+
+
+	HRESULT Initialize([in] ITangramModel* pModel, [in] ITangramGLWorld* pWorld) ;
+	HRESULT DrawOn([in] ITangramCanvas* pCanvas) ;    
+};

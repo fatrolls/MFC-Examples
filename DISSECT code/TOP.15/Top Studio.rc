@@ -1,0 +1,234 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (Taiwan) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHT)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
+#pragma code_page(950)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "#include ""afxres.rc""  // Standard components\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "TOP STUDIO AppWizard\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "TOP STUDIO\0"
+            VALUE "LegalCopyright", "Copyright \0","\0","\0","\0","\0","\0","\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "TOP STUDIO.DLL\0"
+            VALUE "ProductName", "Top Studio AppWizard\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CUSTOM1 DIALOG DISCARDABLE  0, 0, 303, 197
+STYLE DS_CONTROL | WS_CHILD | WS_TABSTOP
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Created by :",IDC_STATIC,28,23,52,14
+    LTEXT           "Comment :",IDC_STATIC,30,52,43,18
+    EDITTEXT        IDC_EDIT_AUTHOR,82,23,133,16,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_COMMENT,83,55,131,92,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEMPLATE
+//
+
+NEWPROJ.INF             TEMPLATE DISCARDABLE    "template\\newproj.inf"
+CONFIRM.INF             TEMPLATE DISCARDABLE    "template\\confirm.inf"
+LOC_ENU.RC              TEMPLATE DISCARDABLE    "template\\loc_enu.rc"
+DLGLOC_ENU.RC           TEMPLATE DISCARDABLE    "template\\dlgloc_enu.rc"
+MACLOC_ENU.RC           TEMPLATE DISCARDABLE    "template\\macloc_enu.rc"
+DOC_ENU.ICO             TEMPLATE DISCARDABLE    "template\\doc_enu.ico"
+ROOT_ENU.CNT            TEMPLATE DISCARDABLE    "template\\root_enu.cnt"
+ROOT_ENU.HPJ            TEMPLATE DISCARDABLE    "template\\root_enu.hpj"
+MACROOT_ENU.HPJ         TEMPLATE DISCARDABLE    "template\\macroot_enu.hpj"
+AFXDLG_ENU.RTF          TEMPLATE DISCARDABLE    "template\\afxdlg_enu.rtf"
+AFXCORE_ENU.RTF         TEMPLATE DISCARDABLE    "template\\afxcore_enu.rtf"
+AFXCRMAC_ENU.RTF        TEMPLATE DISCARDABLE    "template\\afxcrmac_enu.rtf"
+AFXPRINT_ENU.RTF        TEMPLATE DISCARDABLE    "template\\afxprint_enu.rtf"
+AFXPTMAC_ENU.RTF        TEMPLATE DISCARDABLE    "template\\afxptmac_enu.rtf"
+AFXOLECL_ENU.RTF        TEMPLATE DISCARDABLE    "template\\afxolecl_enu.rtf"
+AFXOLESV_ENU.RTF        TEMPLATE DISCARDABLE    "template\\afxolesv_enu.rtf"
+AFXDB_ENU.RTF           TEMPLATE DISCARDABLE    "template\\afxdb_enu.rtf"
+SCMENU_ENU.BMP          TEMPLATE DISCARDABLE    "template\\scmenu_enu.bmp"
+APPEXIT_ENU.BMP         TEMPLATE DISCARDABLE    "template\\appexit_enu.bmp"
+HLPSBAR_ENU.BMP         TEMPLATE DISCARDABLE    "template\\hlpsbar_enu.bmp"
+DLGROOT.CLW             TEMPLATE DISCARDABLE    "template\\dlgroot.clw"
+ROOT.CLW                TEMPLATE DISCARDABLE    "template\\root.clw"
+README.TXT              TEMPLATE DISCARDABLE    "template\\readme.txt"
+DLGROOT.H               TEMPLATE DISCARDABLE    "template\\dlgroot.h"
+DLGROOT.CPP             TEMPLATE DISCARDABLE    "template\\dlgroot.cpp"
+DIALOG.H                TEMPLATE DISCARDABLE    "template\\dialog.h"
+DIALOG.CPP              TEMPLATE DISCARDABLE    "template\\dialog.cpp"
+ROOT.H                  TEMPLATE DISCARDABLE    "template\\root.h"
+ROOT.CPP                TEMPLATE DISCARDABLE    "template\\root.cpp"
+STDAFX.H                TEMPLATE DISCARDABLE    "template\\stdafx.h"
+STDAFX.CPP              TEMPLATE DISCARDABLE    "template\\stdafx.cpp"
+FRAME.H                 TEMPLATE DISCARDABLE    "template\\frame.h"
+FRAME.CPP               TEMPLATE DISCARDABLE    "template\\frame.cpp"
+CHILDFRM.H              TEMPLATE DISCARDABLE    "template\\childfrm.h"
+CHILDFRM.CPP            TEMPLATE DISCARDABLE    "template\\childfrm.cpp"
+DOC.H                   TEMPLATE DISCARDABLE    "template\\doc.h"
+DOC.CPP                 TEMPLATE DISCARDABLE    "template\\doc.cpp"
+VIEW.H                  TEMPLATE DISCARDABLE    "template\\view.h"
+VIEW.CPP                TEMPLATE DISCARDABLE    "template\\view.cpp"
+ROOT.REG                TEMPLATE DISCARDABLE    "template\\root.reg"
+MACROOT.REG             TEMPLATE DISCARDABLE    "template\\macroot.reg"
+ROOT.ODL                TEMPLATE DISCARDABLE    "template\\root.odl"
+RECSET.H                TEMPLATE DISCARDABLE    "template\\recset.h"
+RECSET.CPP              TEMPLATE DISCARDABLE    "template\\recset.cpp"
+SRVRITEM.H              TEMPLATE DISCARDABLE    "template\\srvritem.h"
+SRVRITEM.CPP            TEMPLATE DISCARDABLE    "template\\srvritem.cpp"
+IPFRAME.H               TEMPLATE DISCARDABLE    "template\\ipframe.h"
+IPFRAME.CPP             TEMPLATE DISCARDABLE    "template\\ipframe.cpp"
+CNTRITEM.H              TEMPLATE DISCARDABLE    "template\\cntritem.h"
+CNTRITEM.CPP            TEMPLATE DISCARDABLE    "template\\cntritem.cpp"
+ROOT.R                  TEMPLATE DISCARDABLE    "template\\root.r"
+DLGRES.H                TEMPLATE DISCARDABLE    "template\\dlgres.h"
+DLGALL.RC               TEMPLATE DISCARDABLE    "template\\dlgall.rc"
+RESOURCE.H              TEMPLATE DISCARDABLE    "template\\resource.h"
+ALL.RC                  TEMPLATE DISCARDABLE    "template\\all.rc"
+ROOT.RC2                TEMPLATE DISCARDABLE    "template\\root.rc2"
+ROOT.ICO                TEMPLATE DISCARDABLE    "template\\root.ico"
+TBA__.BMP               TEMPLATE DISCARDABLE    "template\\tba__.bmp"
+TBA_I.BMP               TEMPLATE DISCARDABLE    "template\\tba_i.bmp"
+TBAH_.BMP               TEMPLATE DISCARDABLE    "template\\tbah_.bmp"
+TBAHI.BMP               TEMPLATE DISCARDABLE    "template\\tbahi.bmp"
+TBD__.BMP               TEMPLATE DISCARDABLE    "template\\tbd__.bmp"
+TBDH_.BMP               TEMPLATE DISCARDABLE    "template\\tbdh_.bmp"
+TBR__.BMP               TEMPLATE DISCARDABLE    "template\\tbr__.bmp"
+TBR_I.BMP               TEMPLATE DISCARDABLE    "template\\tbr_i.bmp"
+TBRH_.BMP               TEMPLATE DISCARDABLE    "template\\tbrh_.bmp"
+TBRHI.BMP               TEMPLATE DISCARDABLE    "template\\tbrhi.bmp"
+DLGROOT.CNT             TEMPLATE DISCARDABLE    "template\\dlgroot.cnt"
+MAKEHELP.BAT            TEMPLATE DISCARDABLE    "template\\makehelp.bat"
+MACCMD.BMP              TEMPLATE DISCARDABLE    "template\\maccmd.bmp"
+FILENEW.BMP             TEMPLATE DISCARDABLE    "template\\filenew.bmp"
+FILEOPEN.BMP            TEMPLATE DISCARDABLE    "template\\fileopen.bmp"
+FILEPRNT.BMP            TEMPLATE DISCARDABLE    "template\\fileprnt.bmp"
+FILESAVE.BMP            TEMPLATE DISCARDABLE    "template\\filesave.bmp"
+EDITCOPY.BMP            TEMPLATE DISCARDABLE    "template\\editcopy.bmp"
+EDITCUT.BMP             TEMPLATE DISCARDABLE    "template\\editcut.bmp"
+EDITPAST.BMP            TEMPLATE DISCARDABLE    "template\\editpast.bmp"
+EDITUNDO.BMP            TEMPLATE DISCARDABLE    "template\\editundo.bmp"
+CURARW4.BMP             TEMPLATE DISCARDABLE    "template\\curarw4.bmp"
+CURARW2.BMP             TEMPLATE DISCARDABLE    "template\\curarw2.bmp"
+CURHELP.BMP             TEMPLATE DISCARDABLE    "template\\curhelp.bmp"
+SCMAX.BMP               TEMPLATE DISCARDABLE    "template\\scmax.bmp"
+SCMIN.BMP               TEMPLATE DISCARDABLE    "template\\scmin.bmp"
+BULLET.BMP              TEMPLATE DISCARDABLE    "template\\bullet.bmp"
+HLPTBAR.BMP             TEMPLATE DISCARDABLE    "template\\hlptbar.bmp"
+RECFIRST.BMP            TEMPLATE DISCARDABLE    "template\\recfirst.bmp"
+RECPREV.BMP             TEMPLATE DISCARDABLE    "template\\recprev.bmp"
+RECNEXT.BMP             TEMPLATE DISCARDABLE    "template\\recnext.bmp"
+RECLAST.BMP             TEMPLATE DISCARDABLE    "template\\reclast.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_TOPSTUDIO           ICON    DISCARDABLE     "res\\Top Studio.ico"
+#endif    // Chinese (Taiwan) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+#include "afxres.rc"  // Standard components
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,41 @@
+///////////////////////////////////////////////////////////////////
+// Module  : RAWHTML.CPP
+//
+// Purpose : The application class for the RAWHTML program.
+//
+// Author  : Rob McGregor, rob_mcgregor@compuserve.com
+//        
+// Date    : 07-13-96
+///////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "RawHtm2.h"
+#include "Htm2Dlg.h"
+
+///////////////////////////////////////////////////////////////////
+// CRawHtmlApp construction
+
+CRawHtmlApp::CRawHtmlApp()
+{
+}
+
+///////////////////////////////////////////////////////////////////
+// CRawHtmlApp initialization
+
+BOOL CRawHtmlApp::InitInstance()
+{
+   // Allocate and display main dialog window
+   CRawHtmlDlg dlg;
+   m_pMainWnd = &dlg;
+   dlg.DoModal();
+
+   // Return FALSE so that we exit the application
+   return FALSE;
+}
+
+///////////////////////////////////////////////////////////////////
+// The CRawHtmlApp object
+
+CRawHtmlApp MyApp;
+
+///////////////////////////////////////////////////////////////////

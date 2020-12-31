@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Visual C++ Tips - Set syntax coloring for user-defined keywords</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Set syntax coloring for user-defined keywords</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This tip was proposed by Sairama Jamalapuram. 
+
+
+<p>Syntax coloring for user-defined keywords is used for C++ files only.
+
+
+<p>Here are the steps you need to take to enable syntax coloring for user-defined keywords. The steps
+are taken from the online help.
+
+<ol>
+<li>In the same directory as msdev.exe, use the Text editor or Windows Notepad to create a text-only 
+file named usertype.dat.
+<li>Add your keywords to usertype.dat, one keyword per line. Note: The usertype.dat file is read during 
+initialization. It cannot be renamed, nor can it be reloaded during an editing session. 
+The syntax coloring mechanism checks the usertype.dat file last. Thus, all previously defined color 
+settings take precedence over the user-defined keywords.
+<li>Save the file as a text-only file, exit, and then restart Visual Studio.
+<li>From the Tools menu, choose Options.
+<li>Select the Format tab.
+<li>In the Colors box, select User Defined Keywords.
+<li>Set the font, font size, foreground color, and background color to your preferences. 
+<li>Click OK.
+<li>Restart DevStudio.
+</ol>
+
+<p>This tip requires you to create a text file with
+the keywords. This can mean a lot of typing so I created one from the MFC browse file. This is 
+a huge file but surprisingly DevStudio doesn't seem to be any slower. I do have 128MB RAM though.
+The USERTYPE.DAT file I created contains all the symbols used by MFC including the Windows functions,
+Windows constants such as messages and styles, MFC classes and member functions and a whole lot of 
+other identifiers I don't even recognize. Feel free to trim down the file if you want.
+
+<p><a href="usertype.zip">Download</a> keyword file. This file is 181KB zipped and expands to 638KB.
+
+
+<P>Updated on: April 11, 98. <a href="keithk@vds.com">Keith A. Kudlac</a> removed the duplicates in the download reducing it's size considerably.
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

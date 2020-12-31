@@ -1,0 +1,64 @@
+8
+
+dir
+83
+http://cmoo.svn.cvsdude.com/ChartCtrl/ColourPicker
+http://cmoo.svn.cvsdude.com/ChartCtrl
+
+
+
+2009-03-07T10:19:54.268441Z
+83
+cmoo
+
+
+svn:special svn:externals svn:needs-lock
+
+ColourPicker.cpp
+file
+
+
+
+
+2006-08-11T20:09:23.562500Z
+0c6f00637febd0e020a035b038d3c079
+2009-03-07T10:19:54.268441Z
+83
+cmoo
+
+ColourPicker.h
+file
+
+
+
+
+2006-08-11T20:09:23.906250Z
+79edec4d1b9b0b97f25a6191c5d251e3
+2009-03-07T10:19:54.268441Z
+83
+cmoo
+
+ColourPopup.cpp
+file
+
+
+
+
+2006-08-11T20:09:24.046875Z
+28c086351741700c27175e3c21ef0f28
+2009-03-07T10:19:54.268441Z
+83
+cmoo
+
+ColourPopup.h
+file
+
+
+
+
+2006-08-11T20:09:23.828125Z
+560ab89b8991772c31cfa09f4d7d2e13
+2009-03-07T10:19:54.268441Z
+83
+cmoo
+

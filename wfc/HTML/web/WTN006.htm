@@ -1,0 +1,99 @@
+<HTML>
+
+<HEAD>
+<TITLE>WFC - Technical Note 006 - Funny Memory Values</TITLE>
+</HEAD>
+<BODY>
+
+<H1>WFC Technical Note 006 - Funny Memory Values</H1>
+$Revision: 1 $ Last Modified $Date: 3/26/00 11:01a $<BR><HR>
+
+<H2>Introduction</H2>
+
+Microsoft has put quite a lot of memory leak detection
+helpers in Windows NT. They have not done a good job of
+advertising it. This document describes some of the things
+I've deciphered while debugging code.
+
+<H2>Funny Memory Values</H2>
+
+Many times while debugging programs, I will come across
+memory that is filled with &quot;funny&quot; values. After
+some playing around (i.e. hacking) with the Win32 API, I was
+able to figure out what they meant. Some of these values have
+been documented in places but never all together. The values
+for the tags presented here are hexadecimal because that's the
+way Developer's Studio presents them in the memory window.
+
+<TABLE BORDER=1>
+
+<TR>
+   <TD ALIGN=CENTER>&nbsp;Value&nbsp</TD>
+   <TD ALIGN=CENTER>&nbsp;Meaning&nbsp;</TD>
+</TR>
+
+<TR>
+   <TD ALIGN=CENTER><CODE>&nbsp;0xAB&nbsp;</CODE><BR>or<BR>&nbsp;<CODE>0xABAB</CODE>&nbsp;<BR>or<BR>&nbsp;<CODE>0xABABABAB</CODE>&nbsp;</TD>
+   <TD ALIGN=LEFT>&nbsp;Memory following a block allocated by <CODE><B>LocalAlloc()</B></CODE>.&nbsp;</TD>
+</TR>
+
+<TR>
+   <TD ALIGN=CENTER><CODE>&nbsp;0xBAADF00D&nbsp;</CODE></TD>
+   <TD ALIGN=LEFT>&nbsp;Bad Food. Get it? This is memory allocated via
+                    <CODE><B>LocalAlloc( LMEM_FIXED, ... )</B></CODE>.
+                    It is memory that has been allocated but not yet
+                    written to.&nbsp;</TD>
+</TR>
+
+<TR>
+   <TD ALIGN=CENTER><CODE>&nbsp;0xFEEE&nbsp;</CODE><BR><CODE>&nbsp;0xFEEEFEEE&nbsp;</CODE></TD>
+   <TD ALIGN=LEFT>&nbsp;This seems to be memory that has been dedicated to a heap
+                    but not yet allocated by <CODE><B>HeapAlloc()</B></CODE>
+                    or <CODE><B>LocalAlloc()</B></CODE>.&nbsp;</TD>
+</TR>
+
+<TR>
+   <TD ALIGN=CENTER><CODE>&nbsp;0xCC&nbsp;</CODE><BR>or<BR><CODE>&nbsp;0xCCCC&nbsp;</CODE><BR>or<BR><CODE>&nbsp;0xCCCCCCCC&nbsp;</CODE></TD>
+   <TD ALIGN=LEFT>&nbsp;Microsoft Visual C++ compiled code with the <CODE><B>/GZ</B></CODE>
+                    is automatically initialized the uninitialized variable with this value.&nbsp;</TD>
+</TR>
+
+<TR>
+   <TD ALIGN=CENTER><CODE>&nbsp;0xCD&nbsp;</CODE><BR>or<BR><CODE>&nbsp;0xCDCD&nbsp;</CODE><BR>or<BR><CODE>&nbsp;0xCDCDCDCD&nbsp;</CODE></TD>
+   <TD ALIGN=LEFT>&nbsp;Microsoft Visual C++ compiled code with memory leak detection
+   turned on. Usually, <CODE><B>DEBUG_NEW</B></CODE> was defined.
+   Memory with this tag signifies memory that has been allocated (by <CODE><B>malloc()</B></CODE>
+   or <CODE><B>new</B></CODE>) but never written to the application.&nbsp;</TD>
+</TR>
+
+<TR>
+   <TD ALIGN=CENTER><CODE>&nbsp;0xDD&nbsp;</CODE><BR>or<BR><CODE>&nbsp;0xDDDD&nbsp;</CODE><BR>or<BR><CODE>&nbsp;0xDDDDDDDD&nbsp;</CODE></TD>
+   <TD ALIGN=LEFT>&nbsp;Microsoft Visual C++ compiled code with memory leak detection
+   turned on. Usually, <CODE><B>DEBUG_NEW</B></CODE> was defined.
+   Memory with this tag signifies memory that has been freed (by <CODE><B>free()</B></CODE>
+   or <CODE><B>delete</B></CODE>) by the application. It is how you can detect writing
+   to memory that has already been freed. For example, if you look at an allocated
+   memory structure (or C++ class) and most of the members contain this tag value,
+   you are probably writing to a structure that has been freed.&nbsp;</TD>
+</TR>
+
+<TR>
+   <TD ALIGN=CENTER><CODE>&nbsp;0xFD&nbsp;</CODE><BR>or<BR><CODE>&nbsp;0xFDFD&nbsp;</CODE><BR>or<BR><CODE>&nbsp;0xFDFDFDFD&nbsp;</CODE></TD>
+   <TD ALIGN=LEFT>&nbsp;Microsoft Visual C++ compiled code with memory leak detection
+   turned on. Usually, <CODE><B>DEBUG_NEW</B></CODE> was defined.
+   Memory with this tag signifies memory that is in &quot;no-mans-land.&quot;
+   These are bytes just before and just after an allocated block. They are used
+   to detect array-out-of-bounds errors. This is great for detecting off-by-one
+   errors.&nbsp;</TD>
+</TR>
+
+</TABLE>
+
+<P>
+<HR>
+
+<A HREF="mailto:wfc@pobox.com">Samuel R. Blackburn</A>
+
+</BODY>
+
+</HTML>

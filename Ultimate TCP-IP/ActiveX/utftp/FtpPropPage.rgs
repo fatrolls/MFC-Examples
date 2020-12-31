@@ -1,0 +1,23 @@
+HKCR
+{
+	UTFtp.FtpPropPage.1 = s 'FtpPropPage Class'
+	{
+		CLSID = s '{7C3033A4-06E5-11D3-A467-0080C858F182}'
+	}
+	UTFtp.FtpPropPage = s 'FtpPropPage Class'
+	{
+		CLSID = s '{7C3033A4-06E5-11D3-A467-0080C858F182}'
+		CurVer = s 'UTFtp.FtpPropPage.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7C3033A4-06E5-11D3-A467-0080C858F182} = s 'FtpPropPage Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

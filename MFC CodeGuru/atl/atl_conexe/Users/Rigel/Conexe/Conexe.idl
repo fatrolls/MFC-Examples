@@ -1,0 +1,55 @@
+// Conexe.idl : IDL source for Conexe.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Conexe.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(AB2E510F-F9F8-11D1-A7D8-0060083404B6),
+		dual,
+		helpstring("IRandexe Interface"),
+		pointer_default(unique)
+	]
+	interface IRandexe : IDispatch
+	{
+		import "oaidl.idl";
+		HRESULT Start([out]long* pnID);
+		HRESULT Stop([in]long nID);
+		HRESULT StopAll();
+	};
+	[
+		object,
+		uuid(AB2E5111-F9F8-11D1-A7D8-0060083404B6),
+		dual,
+		helpstring("IRandexeEvent Interface"),
+		pointer_default(unique)
+	]
+	interface IRandexeEvent : IDispatch
+	{
+		import "oaidl.idl";
+		HRESULT Fire([in]long nID);
+	};
+[
+	uuid(AB2E5102-F9F8-11D1-A7D8-0060083404B6),
+	version(1.0),
+	helpstring("Conexe 1.0 Type Library")
+]
+library CONEXELib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(AB2E5110-F9F8-11D1-A7D8-0060083404B6),
+		helpstring("Randexe Class")
+	]
+	coclass Randexe
+	{
+		[default] interface IRandexe;
+		[default,source] interface IRandexeEvent;
+	};
+};

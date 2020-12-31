@@ -1,0 +1,12 @@
+:Base Help.hlp
+1 Menus
+2 File menu=menu_file
+2 Edit menu=menu_edit
+2 View menu=menu_view
+2 Window menu=menu_window
+2 Help menu=menu_help
+1 Help Tests
+2 Help Test A=help_test_A
+2 Help Test B=help_test_B
+2 Help Test C=help_test_C
+2 Help Test D=help_test_D

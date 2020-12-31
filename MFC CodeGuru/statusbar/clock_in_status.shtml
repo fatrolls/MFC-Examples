@@ -1,0 +1,159 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>StatusBar - Adding a clock to the status bar</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Adding a clock to the status bar</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>. 
+
+
+
+<p>Here is how to add the current time to your status bar...
+
+<h4>Step 1:</h4>
+Derive a CMyStatusBar class from CStatusBar as follows:
+
+<PRE><TT><FONT COLOR="#990000">
+//MyStatusBar.h:
+//==============
+class CMyStatusBar : public CStatusBar {
+     DECLARE_DYNCREATE(CMyStatusBar)
+public:
+     CMyStatusBar();
+     ~CMyStatusBar();
+private:
+     CString m_strClockFormat;
+public:
+     void SetClockFormat(LPCTSTR strClockFormat);
+     // Overrides
+     // ClassWizard generated virtual function overrides
+     //{{AFX_VIRTUAL(CMyStatusBar)
+     //}}AFX_VIRTUAL
+     // Generated message map functions
+     //{{AFX_MSG(CMyStatusBar)
+     afx_msg void OnDestroy();
+     afx_msg void OnUpdateIndicatorTime(CCmdUI* pCmdUI);
+     afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+     //}}AFX_MSG
+     DECLARE_MESSAGE_MAP()
+};
+
+
+/////////////////////////////////////////////////////////////////
+//MyStatusBar.cpp:
+//==============
+#include "stdafx.h"
+#include "MyStatusBar.h"
+#include "Resource.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char BASED_CODE THIS_FILE[] = __FILE__;
+#endif
+
+IMPLEMENT_DYNCREATE(CMyStatusBar, CStatusBar)
+
+BEGIN_MESSAGE_MAP(CMyStatusBar, CStatusBar)
+ON_WM_CREATE()
+ON_WM_DESTROY()
+ON_UPDATE_COMMAND_UI(ID_INDICATOR_TIME, OnUpdateIndicatorTime)
+END_MESSAGE_MAP()
+
+CMyStatusBar::CMyStatusBar()
+: CStatusBar()
+, m_strClockFormat("%H:%M:%S")
+{
+}
+
+CMyStatusBar::~CMyStatusBar() {
+}
+
+void CMyStatusBar::SetClockFormat(LPCTSTR strClockFormat) {
+     m_strClockFormat = strClockFormat;
+}
+
+int CMyStatusBar::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+     // make sure time gets updated every second, even when idle
+     CStatusBar::OnCreate(lpCreateStruct);
+     SetTimer(ID_INDICATOR_TIME,1000,NULL);
+     return 0;
+}
+
+void CMyStatusBar::OnUpdateIndicatorTime(CCmdUI* pCmdUI) {
+     pCmdUI->Enable(true);
+     pCmdUI->SetText(CTime::GetCurrentTime().Format(m_strClockFormat));
+}
+
+void CMyStatusBar::OnDestroy() {
+     KillTimer(ID_INDICATOR_TIME);
+     ProgressDestroy();
+     CStatusBar::OnDestroy();
+}
+</FONT></TT></PRE>
+
+<h4>Step 2:</h4>
+Create a new indicator pane by first adding a new menu called
+"ID_INDICATOR", add a single dropdown called "Indicator", add a single
+item to the menu called "Time" - This should create a menu item with id
+ID_INDICATOR_TIME.  Give it a prompt string of, say, "HH:MM:SS" which
+reserves an approriate amount of space for the pane. NOTE: If you change
+time format by calling SetClockFormat you will need to ensure that your
+ID_INDICATOR_TIME pane is big enough.
+
+
+<h4>Step 3:</h4>
+Add a new indicator pane called ID_INDICATOR_TIME to your list of indicator
+in your mainframe
+eg. this is my indicator list...
+
+<PRE><TT><FONT COLOR="#990000">
+static const UINT indicators[] = {
+     ID_SEPARATOR,           // status line indicator
+     ID_INDICATOR_CAPS,
+     ID_INDICATOR_NUM,
+     ID_INDICATOR_SCRL,
+     ID_INDICATOR_TIME,  // <-- new indicator pane
+};
+</FONT></TT></PRE>
+
+<h4>Step 4:</h4>
+Replace all existing uses of CStatusBar in your app with CMyStatusBar - in
+particular, the member variable in your mainframe m_wndStatusBar;
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

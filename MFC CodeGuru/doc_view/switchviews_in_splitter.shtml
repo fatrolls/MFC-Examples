@@ -1,0 +1,120 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc/View - Switching views in splitter panes (SDI)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Switching views in splitter panes (SDI)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:aroman@medanet.ro">Adrian Roman</A>.
+
+<P>I add here the code that could be used to switch views in splitter panes. I usually make database applications, and I don't want that the document to be created/destroyed by the framework, so I create the document myself, and in document's constructor I set the m_bAutoDelete flag to FALSE. The CMainFrame class contains CSplitterWnd m_wndSplitter member. </P>
+<P>The CMyApp class contains as public member a pointer to my document. </P>
+<P>In this case I create a view (which happens to be a TreeView) in the first pane that I don't switch. In second pane you can switch as many views as you want. Just add view classes and create command handlers similar with OnView1, and UpdateUI like OnUpdateView1. The first view that will be in the second pane will be the view from the document template. </P>
+<P>In InitInstance function of CMyApp you should have something like this: </P>
+<FONT COLOR="#800000"><TT><PRE>
+CDocTemplate *pAmortDocTemplate = new CSingleDocTemplate(
+&#9;&#9;&#9;&#9;&#9; IDR_MAINFRAME,
+&#9;&#9;&#9;&#9;&#9; RUNTIME_CLASS(CMyDoc),
+&#9;&#9;&#9;&#9;&#9; RUNTIME_CLASS(CMainFrame), // main SDI frame window
+&#9;&#9;&#9;&#9;&#9; RUNTIME_CLASS(CView1)); //change the class with the view you want to be displayed as default
+//you can extend this so the program saves the active view (not the view J , only information about which one was active), and you can
+//restore the last one when the program will start again
+AddDocTemplate(pAmortDocTemplate);
+
+
+void CMainFrame::OnView1() 
+{
+&#9;// TODO: Add your command handler code here
+&#9;CRect cr;
+&#9;GetClientRect(&amp;cr);
+&#9;CSize paneSize1(3*cr.Width()/4, cr.Height());
+&#9;CCreateContext Context;
+&#9;Context.m_pNewViewClass=RUNTIME_CLASS(CView1);
+&#9;Context.m_pCurrentDoc=((CMyApp*)AfxGetApp())-&gt;m_pDoc;
+&#9;Context.m_pCurrentFrame=this;
+&#9;Context.m_pNewDocTemplate=Context.m_pCurrentDoc-&gt;GetDocTemplate();
+&#9;Context.m_pLastView=(CView*)m_wndSplitter.GetPane(0,0);
+&#9;m_wndSplitter.DeleteView(0, 1);
+&#9;m_wndSplitter.CreateView(0, 1,RUNTIME_CLASS(CView1),paneSize1, &amp;Context);
+&#9;CView1 *pView=(CView1*)m_wndSplitter.GetPane(0,1);
+&#9;pView-GetParentFrame()-&gt;RecalcLayout();
+&#9;m_wndSplitter.RecalcLayout();
+&#9;pView-&gt;OnInitialUpdate(); 
+&#9;m_wndSplitter.SetActivePane(0,1);
+}
+
+//this one is only to gray out the menu item (and/or toolbar button) that corresponds to the active view
+void CMainFrame::OnUpdateView1(CCmdUI* pCmdUI) 
+{
+&#9;// TODO: Add your command update UI handler code here
+&#9;pCmdUI-&gt;Enable(!m_wndSplitter.GetPane(0,1)-&gt;IsKindOf( RUNTIME_CLASS(CView1))); 
+}
+
+
+BOOL CMainFrame::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, 
+&#9;&#9;&#9;&#9;DWORD dwStyle, const RECT&amp; rect, 
+&#9;&#9;&#9;&#9;CWnd* pParentWnd, UINT nID, CCreateContext* pContext) 
+{
+&#9;// TODO: Add your specialized code here and/or call the base class
+&#9;return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
+}
+
+
+BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
+{
+&#9;CRect cr;
+&#9;BOOL rc;
+&#9;if (!m_wndSplitter.CreateStatic(this,1,2)){
+&#9;&#9;TRACE0("Failed to create split bar ");
+&#9;&#9;return FALSE; // failed to create
+&#9;}
+&#9;GetClientRect(&amp;cr);
+&#9;CSize paneSize(cr.Width()/4, cr.Height());
+&#9;CSize paneSize1(3*cr.Width()/4, cr.Height());
+&#9;((CMyApp*)AfxGetApp())-&gt;m_pDoc=(CMyDoc*)(pContext-&gt;m_pCurrentDoc);
+&#9;pContext-&gt;m_pCurrentFrame=this;
+&#9;rc=m_wndSplitter.CreateView(0, 1,pContext-&gt;m_pNewViewClass,paneSize1, pContext);
+&#9;if(!rc)return FALSE;
+&#9;pContext-&gt;m_pNewViewClass=RUNTIME_CLASS(CMyTree);
+&#9;pContext-&gt;m_pCurrentDoc=((CMyApp*)AfxGetApp())-&gt;m_pDoc;
+&#9;pContext-&gt;m_pCurrentFrame=this;
+&#9;rc=m_wndSplitter.CreateView(0,0,pContext-&gt;m_pNewViewClass,paneSize,pContext);
+&#9;m_wndSplitter.RecalcLayout();
+&#9;m_wndSplitter.SetActivePane(0,1);
+&#9;return rc;
+}</PRE>
+</FONT></TT>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

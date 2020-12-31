@@ -1,0 +1,27 @@
+///////////////////////////////////////////////////////////////////
+// Header  : DV_DOC.H
+//
+// Purpose : Interface for the CDocView1Doc class.
+//
+// Author  : Rob McGregor - rob_mcgregor@compuserve.com
+//
+// Date    : 05-12-96
+///////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////
+// The CDocView1Doc document class
+
+class CDocView1Doc : public CDocument
+{
+protected: 
+	DECLARE_DYNCREATE(CDocView1Doc)
+
+public:
+	CDocView1Doc();
+   virtual ~CDocView1Doc();
+
+   // Overrides
+   virtual BOOL OnNewDocument();
+};
+
+///////////////////////////////////////////////////////////////////

@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Birds", "Birds.vcxproj", "{485593B2-22BF-4C5B-920C-58E989304FE3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BirdsPS", "BirdsPS.vcxproj", "{4EC3A272-CCF2-4B2C-8769-A0EFFF82D188}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{485593B2-22BF-4C5B-920C-58E989304FE3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{485593B2-22BF-4C5B-920C-58E989304FE3}.Debug|Win32.Build.0 = Debug|Win32
+		{485593B2-22BF-4C5B-920C-58E989304FE3}.Release|Win32.ActiveCfg = Release|Win32
+		{485593B2-22BF-4C5B-920C-58E989304FE3}.Release|Win32.Build.0 = Release|Win32
+		{4EC3A272-CCF2-4B2C-8769-A0EFFF82D188}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4EC3A272-CCF2-4B2C-8769-A0EFFF82D188}.Release|Win32.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

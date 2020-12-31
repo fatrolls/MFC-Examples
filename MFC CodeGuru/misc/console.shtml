@@ -1,0 +1,144 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CConsole: A wrapper for Console APIs</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">CConsole: A wrapper for Console APIs</FONT></H3></CENTER>
+
+<HR>
+
+This article was contributed by <A HREF="mailto:Girish_Bharadwaj@Pictel.com">Girish Bharadwaj</A>.
+
+
+<P>This class is a wrapper for Console APIs. While browsing through the newsgroups, I realized that there are many developers who use console to output their diagnostic messages and to take input from the user in order to change the behavior during debug. So, Here it is. This class encompasses of  one really important function RedirectToConsole () whose code is I got from Mr.Andrew Tucker's article  in WDJ Dec 97 and also from a KB article (Q126628). Along with that I have added some more functions to make life easier. </P>
+<P>Following is the list of functions available.</P>
+<I><FONT SIZE=3><P>//Constructor &amp; Destructor</P>
+</I></FONT><B><P>CConsole</B>  ();            //This creates an empty class. This will not create the console. </P>
+<B><P>CConsole</B>  (BOOL); // This creates the class and a console if TRUE is passed as an argument.</P>
+<B><P>~CConsole</B> ();          //destroys the class and the console if created.</P>
+<I><FONT SIZE=3><P>//Properties</P>
+</I></FONT>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=784>
+<TR><TD WIDTH="52%" VALIGN="TOP" HEIGHT=72>
+<P>short <B>GetNumberOfLines</B>();</P>
+<P>short <B>SetNumberOfLines</B> (short sLines);</TD>
+<TD WIDTH="48%" VALIGN="TOP" HEIGHT=72>
+<P>These functions set/get the number of lines you want in the console. SetNumberOfLines () returns the old value.</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP" HEIGHT=35>
+<P>short <B>GetNumberOfColumns</B> ();</P>
+<P>short <B>SetNumberOfColumns</B> (short sColumns);</TD>
+<TD WIDTH="48%" VALIGN="TOP" HEIGHT=35>
+<P>These functions set/get the number of columns you want in the console. SetNumberOfColumns () returns the old value.</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP" HEIGHT=35>
+<P>WORD <B>GetAttributes</B> ();</P>
+<P>WORD <B>SetAttributes</B> (WORD wAttrib,short NumChars = 0);</TD>
+<TD WIDTH="48%" VALIGN="TOP" HEIGHT=35>
+<P>These functions set/get the attributes you want in the console. SetAttributes () returns the old value. If you set the NumChars to other value than 0, It will set the attributes only to that many characters. Otherwise, It will be set from the cursor position to end of the console. The values that can be used is given below.</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP" HEIGHT=35>
+<P>short <B>SetMaxLinesInWindow</B> (short maxLines);</P>
+<P>short <B>GetMaxLinesInWindow</B>();</TD>
+<TD WIDTH="48%" VALIGN="TOP" HEIGHT=35>
+<P>Get/Sets the maximum lines in the window..</TD>
+</TR>
+</TABLE>
+
+<I><FONT SIZE=3><P>//Methods</P>
+</I></FONT>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=778>
+<TR><TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>void <B>RedirectToConsole</B> (WORD wFlags);</TD>
+<TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>Redirect the console io functions to console, i.e. printf(), scanf(), cout(), cin() etc. wFlags is not used (yet).<FONT FACE="Wingdings">&#74;</FONT>
+</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>BOOL <B>SetupConsole</B>(WORD wFlags);</TD>
+<TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>Sets up the console to given flag. Internal function.. </TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>HANDLE <B>GetHandle</B> (DWORD dwFlag);</TD>
+<TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>This returns the specified handle STD_OUTPUT_HANDLE, STD_INPUT_HANDLE and STD_ERROR_HANDLE are the valid dwFlag values.</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>BOOL <B>Clear </B>();</TD>
+<TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>Clears the screen with the specified attributes. Used a KB article to get it working.</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>WORD <B>GetSettings</B> (WORD wFlags);</TD>
+<TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>Get the settings for a given flag. </TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>BOOL <B>CreateConsole</B> ();</TD>
+<TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>Creates the console.</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>BOOL <B>DestroyConsole</B> ();</TD>
+<TD WIDTH="50%" VALIGN="TOP" HEIGHT=6>
+<P>Destroys the console.</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<I><FONT SIZE=3><P>//Attribute Values</P>
+</I></FONT><P>BACKGROUD_BLUE,BACKGROUND_GREEN,BACKGROUND_RED,BACKGROUND_INTENSITY</P>
+<P>FOREGROUND_BLUE,FOREGROUND_GREEN,FOREGROUND_RED,FOREGROUND_INTENSITY</P>
+<P>&nbsp;</P>
+<P>//Flags to be used in SetupConsole and GetSettings</P>
+<P>SC_LINES,SC_COLUMNS,SC_MAXLINES and SC_ATTRIB.</P>
+
+
+<P>NOTE: If you are
+using it in MFC application with precompiled headers, you need to
+#include "stdafx.h" in the beginning of Console.cpp.
+Otherwise, you might see a error C1010 while compiling.
+
+<P><A HREF="console.zip">Download file</A>. 
+
+It contains a small test.cpp which shows how to use this class. Add the files to a win32 application's project and compile. That should run without complaining.</P>
+<P>Have Fun..</P>
+
+
+
+
+
+
+ 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

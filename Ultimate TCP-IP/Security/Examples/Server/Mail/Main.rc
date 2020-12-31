@@ -1,0 +1,341 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "main.h"
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG2 DIALOG DISCARDABLE  25, 54, 272, 281
+STYLE DS_CENTER | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Ultimate TCP/IP - Secure E-mail server"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDI_ICON1,IDC_STATIC,7,7,20,20
+    CTEXT           "Ultimate TCP/IP - Secure E-mail server",IDC_STATIC,35,12,
+                    200,13
+    GROUPBOX        " Options: ",IDC_STATIC,5,30,260,75
+    RTEXT           "&Certificate:",IDC_STATIC,10,43,41,8
+    EDITTEXT        IDC_EDIT_CERT,55,40,160,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_BUTTON_CERT,221,40,15,14
+    RTEXT           "&Protocol:",IDC_STATIC,10,57,40,8
+    COMBOBOX        IDC_COMBO_PROTOCOL,55,55,75,60,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "SMTP Por&t:",IDC_STATIC,10,73,41,8
+    EDITTEXT        IDC_EDIT_PORT,55,70,75,14,ES_AUTOHSCROLL
+    RTEXT           "POP&3 Port:",IDC_STATIC,10,88,40,8
+    EDITTEXT        IDC_EDIT_PORT_POP3,55,85,75,14,ES_AUTOHSCROLL
+    CONTROL         "Client &authentication",IDC_CHECK_AUTH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,150,73,94,10
+    CONTROL         "Immediate negotiating",IDC_CHECK_IMMEDIATE_NEG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,150,88,100,10
+    DEFPUSHBUTTON   "Stop",IDC_BUTTON_START,35,110,50,14
+    PUSHBUTTON      "&Options...",IDC_CONFIG,110,110,50,14
+    PUSHBUTTON      "A&bout...",IDC_ABOUT,185,110,50,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,129,262,1
+    CONTROL         "",IDC_STATUS,"CUH_Control",WS_BORDER,5,135,262,144
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 250, 105
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About - Ultimate TCP/IP developers Kit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_EXIT,197,7,46,14
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,7,47,236,51
+    LTEXT           "Phone:",IDC_STATIC,25,57,24,8
+    LTEXT           "Fax:",IDC_STATIC,25,81,14,8
+    LTEXT           "EMail:",IDC_STATIC,133,57,20,8
+    LTEXT           "WWW:",IDC_STATIC,133,71,25,8
+    LTEXT           "1 (416) 467-5100",IDC_STATIC,54,68,55,8
+    LTEXT           "1 (800) 463-1492",IDC_STATIC,54,57,55,8
+    LTEXT           "1 (416) 422-4801",IDC_STATIC,54,81,55,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,160,57,64,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,166,71,58,8
+    ICON            IDI_ICON1,IDC_STATIC,7,7,20,20
+    CTEXT           "Ultimate TCP/IP v 4.0\r\nThe Ultimate Toolbox.\r\nCopyright 1995-2007",
+                    IDC_STATIC,40,10,105,30
+END
+
+IDD_MODIFY_USERS_INFO DIALOG DISCARDABLE  0, 0, 219, 201
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Modify Users Info..."
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,57,172,50,14
+    PUSHBUTTON      "Exit",IDCANCEL,111,173,50,14
+    EDITTEXT        IDC_MODIFY_USER_NAME,57,2,105,14,ES_AUTOHSCROLL
+    LTEXT           "User Name",IDC_STATIC,13,4,36,8
+    LTEXT           "Password",IDC_STATIC,15,47,32,8
+    EDITTEXT        IDC_MODIFY_PASSWORD,57,40,103,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LISTBOX         IDC_EMAIL_ALIASES_LIST,57,59,103,89,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Remove",IDC_REMOVE_ALIASE,164,81,50,14
+    LTEXT           "New Email Alias",IDC_STATIC,1,159,51,8
+    EDITTEXT        IDC_NEW_EMAIL_ALIAS,57,153,106,14,ES_AUTOHSCROLL
+    LTEXT           "Current Aliases",IDC_STATIC,2,67,48,8
+    PUSHBUTTON      "Add",IDC_ADD_ALIAS,165,153,50,14
+    EDITTEXT        IDC_MODIFY_NEW_NAME,57,21,103,14,ES_AUTOHSCROLL
+    LTEXT           "New Name",IDC_STATIC,12,26,36,8
+END
+
+IDD_SPLASH DIALOG DISCARDABLE  0, 0, 240, 155
+STYLE DS_CENTER | WS_POPUP
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         111,IDC_STATIC,"Static",SS_BITMAP | SS_CENTERIMAGE,0,0,
+                    240,155
+END
+
+IDD_DIALOG_CONFIG DIALOG DISCARDABLE  0, 0, 322, 121
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "E-mail Server Configuration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " E-mail data &folder: ",IDC_STATIC,5,5,310,30
+    EDITTEXT        IDC_EDIT_ROOT_PATH,15,15,295,14,ES_AUTOHSCROLL
+    GROUPBOX        " Mail sending/receiving options: ",IDC_STATIC,5,40,310,
+                    45
+    RTEXT           "Max &retries to send:",IDC_STATIC,15,53,80,8
+    EDITTEXT        IDC_EDIT_MAX_RETRIES,100,50,40,14,ES_AUTOHSCROLL
+    RTEXT           "Retry &interval:",IDC_STATIC,140,53,60,8
+    EDITTEXT        IDC_EDIT_RETRY_INTERVAL,205,50,40,14,ES_AUTOHSCROLL
+    RTEXT           "Max. &thread number:",IDC_STATIC,15,68,80,8
+    EDITTEXT        IDC_EDIT_MAX_THREAD,100,65,40,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "D&NS Servers",IDC_BUTTON_DNS_NAMES,31,95,50,14
+    PUSHBUTTON      "&Domains",IDC_BUTTON_DOMAIN_NAMES,101,95,50,14
+    PUSHBUTTON      "&Users",IDC_BUTTON_USERS,171,95,50,14
+    DEFPUSHBUTTON   "OK",IDOK,241,95,50,14
+END
+
+IDD_DIALOG_LIST DIALOG DISCARDABLE  0, 0, 215, 146
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "E-mail Server User Configuration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",IDC_STATIC_TITLE,7,7,198,108
+    LISTBOX         IDC_USER_LIST,15,20,183,43,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_USER_NAME,15,70,183,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Add",IDC_ADD_USER,52,95,50,14
+    PUSHBUTTON      "&Remove",IDC_REMOVE_USER,114,95,50,14
+    DEFPUSHBUTTON   "&Close",IDOK,155,125,50,14
+END
+
+IDD_DIALOG1 DIALOG DISCARDABLE  0, 0, 215, 186
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "E-mail Server User Configuration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Users",IDC_STATIC,7,7,198,150
+    LISTBOX         IDC_USER_LIST,17,20,181,43,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Username:",IDC_STATIC,17,70,43,10
+    EDITTEXT        IDC_USER_NAME,63,70,135,14,ES_AUTOHSCROLL
+    LTEXT           "Password:",IDC_STATIC,17,90,43,10
+    EDITTEXT        IDC_USER_PASSWORD,63,90,135,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LTEXT           "Mail Address:",IDC_STATIC,17,110,43,10
+    EDITTEXT        IDC_USER_MAIL,63,110,135,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Add",IDC_ADD_USER,19,135,50,14
+    PUSHBUTTON      "&Remove",IDC_REMOVE_USER,81,135,50,14
+    PUSHBUTTON      "&Details",IDC_BUTTON_USER_INFO,144,135,50,14
+    DEFPUSHBUTTON   "&Close",IDOK,158,165,50,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""main.h""\r\n"
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 274
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 98
+    END
+
+    IDD_MODIFY_USERS_INFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 212
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 194
+    END
+
+    IDD_SPLASH, DIALOG
+    BEGIN
+        RIGHTMARGIN, 239
+        BOTTOMMARGIN, 126
+    END
+
+    IDD_DIALOG_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 114
+    END
+
+    IDD_DIALOG_LIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP  DISCARDABLE     "SPLASHMlS.BMP"
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "The Ultimate Toolbox\0"
+            VALUE "FileDescription", "UT3Server\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "UT3Server\0"
+            VALUE "LegalCopyright", "Copyright © 2000\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "UT3Server.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Secure Email Server Demo\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

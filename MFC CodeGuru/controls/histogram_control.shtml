@@ -1,0 +1,120 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Histogram Control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Histogram Control
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:klen@bellatlantic.net">Ken C. Len</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG SRC="histogram_control1.gif" height="118" width="376" alt="histogram control">
+&nbsp;<A HREF="histogram_control.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>
+This custom control displays a left scrolling spike with range configurable
+by calling SetRange(0,100), the first parameter is the min(bottom) value and the
+second parameter is max(top) value.
+  
+<p>The control is designed to work just like the progress control but with a twist. Every
+SetPos() will shows a spike and the next SetPos() will scroll the previous one to the left.
+  
+<p>The CHistogramCtrl class is derived from CWnd, the header and code are in HistogramCtrl.h
+and HistogramCtrl.cpp files.
+  
+<h4>Important</h4>
+<p>In your dialog box, you must create the control as static control (use "picture" from control toolbar).
+You must set the properties to 
+
+<ul>  
+<li>Type: Rectangle, and 
+<li>Color: black. (I think black background looks better)
+</ul>
+  
+<p>Don't worry about the height, width and border, the control will ajust itself and draw the border for you.
+  
+<p>First add a member to your dialog class like this:
+
+<FONT COLOR="#990000"><TT><PRE>
+class CHistogramTestDlg : public CDialog
+{
+...
+// Implementation
+protected:
+	CHistogramCtrl m_HistogramCtrl;
+...
+};
+</tt></PRE></FONT>
+  
+<p>And in the initial dialog box...
+  
+<FONT COLOR="#990000"><TT><PRE>
+BOOL CHistogramTestDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	...
+
+	CRect rect;
+	GetDlgItem(IDC_STATIC_HISTOGRAM)->GetWindowRect(rect);
+	ScreenToClient(rect);
+
+	m_HistogramCtrl.Create(WS_VISIBLE | WS_CHILD, rect, this, 100);
+	m_HistogramCtrl.SetRange(0,100);
+  
+	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+</tt></PRE></FONT>
+
+<p>And the rest use SetPos(UINT nValue).
+  
+<p>The custom control uses unique painting technique which is a little bit to long
+to discuss here. If you want to understand more please email your FAQ to
+klen@bellatlantic.net thanks. (The code is not as long to read)
+  
+<p>Here is an example of how an application looks like with the control.
+<p><IMG SRC="histogram_control2.gif" height="553" width="324" alt="histogram control">
+ 
+  
+<!-- Remember to update this -->
+<p>Last updated: 17 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

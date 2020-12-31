@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.ImageLayer.1 = s 'ImageLayer Class'
+	{
+		CLSID = s '{6A6F4B75-04A8-457C-9405-512539EB2046}'
+	}
+	TY3DCtrl.ImageLayer = s 'ImageLayer Class'
+	{		
+		CurVer = s 'TY3DCtrl.ImageLayer.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6A6F4B75-04A8-457C-9405-512539EB2046} = s 'ImageLayer Class'
+		{
+			ProgID = s 'TY3DCtrl.ImageLayer.1'
+			VersionIndependentProgID = s 'TY3DCtrl.ImageLayer'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{40937355-B66F-40ED-815C-32F09B862F13}'
+			Version = s '1.0'
+		}
+	}
+}

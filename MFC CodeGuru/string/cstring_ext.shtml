@@ -1,0 +1,685 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>String - CString Extension</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">CString Extension</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+
+
+
+
+<p>There are innumerable MFC functions that need a CString object as an argument or return a CString object. Often, even if a function needs a char pointer, we still use a CString to hold the string. Although, the CString class has lots of features, it does lack a few very useful string manipulation functions. A case insensitive search funciton is one, a search and replace function is another. Fortunately, implementing these functionality is not very difficult. The CStringEx class given below derives from CString and adds a few useful functions. The CStringEx class does not add any member variables of its own, so that it can be freely interchanged with a CString object.
+
+<p>The constructors in the CStringEx class parallel the constructor in CString and in fact simply chains into the corresponding CString constructor. Some of the CStringEx functions use knowledge of the internal structure of the CString object so there is a small chance that these functions might break if the CString implementation changes.
+
+<p>The functions provided by CStringEx are quite easy to use and fairly simple to understand. The Insert() functions inserts a character or a sub-string within a string. The result is similar to inserting text in an edit control, the string is expanded to accommodate the sub-string. The Delete() function removes a segment from the string and shortens it. The Replace() function removes a sub-string and replaces it with another. Again, the string size is adjusted depending on the size of the sub-string that was removed and the size of the sub-string that was inserted.
+
+<p>The find family of functions, finds a sub-string in the forward or the reverse direction. The NoCase version of these functions are case insensitive. The FindReplace() and FindReplaceNoCase() functions searches for a sub-string and replaces the matching sub-string with another string. The GetField() and GetDelimitedField() functions find a token in the string. The table below exemplifies the uses of these functions.
+
+<p>
+
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH="100%">
+<TR><TD WIDTH="22%" VALIGN="TOP" BGCOLOR="#a0a0a0">
+<FONT SIZE=2><P>String</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP" BGCOLOR="#a0a0a0">
+<FONT SIZE=2><P>Function</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP" BGCOLOR="#a0a0a0">
+<FONT SIZE=2><P>Result</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>xyz</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>Insert(1, ‘a’)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>xayz</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>xyz</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>Insert(1, &quot;ab&quot;)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>xabyz</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>xyz</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>Insert(4, &quot;ab&quot;)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>xyz ab</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>Abcde</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>Delete(2,2)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>Abe</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>Abcde</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>Replace(2,2,&quot;xyz&quot;)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>Abxyze</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>Abc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>Find(‘b’)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>1</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>Abcabc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>Find(‘b’, 2)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>4</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>FindNoCase(&quot;aBC&quot;, 1)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>3</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>FindReplace(&quot;Ab&quot;,&quot;Xy&quot;)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>XycXyc</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>FindReplace(&quot;Ab&quot;,&quot;Xy&quot;, FALSE)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>XycAbc</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>FindReplaceNoCase(&quot;ab&quot;,&quot;Xy&quot;)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>XycXyc</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>FindReplaceNoCase(&quot;ab&quot;,&quot;Xy&quot;, FALSE)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>XycAbc</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>ReverseFind(&quot;bc&quot;)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>4</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>ReverseFindNoCase(&quot;abc&quot;)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>3</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>ReverseFindNoCase(&quot;abc&quot;, 2)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>0</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>GetField( ‘:’, 0 )</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>AbcAbc</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>GetField( ‘:’, 1 )</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>(Blank string)</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>Abc:Def</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>GetField( ‘:’, 0 )</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>Abc</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>Abc:Def</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>GetField( ‘:’, 1 )</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>Def</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>Abc:Def</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>GetField( ‘:’, 2 )</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>(Blank string)</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>Name: Zafir</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>GetField(&quot;Name: &quot;, 1)</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>Zafir</FONT></TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="TOP">
+<FONT SIZE=2><P>(415) 555-7777</FONT></TD>
+<TD WIDTH="45%" VALIGN="TOP">
+<FONT SIZE=2><P>GetDelimitedField(&quot;(&quot;, &quot;)&quot;, 0 )</FONT></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<FONT SIZE=2><P>415</FONT></TD>
+</TR>
+</TABLE>
+
+<PRE><TT><FONT COLOR="#990000">
+//////////////////////////////////////////////////////////////////////
+// StringEx.h
+//
+
+#ifndef __STRINGEX_H_
+#define __STRINGEX_H_
+
+class CStringEx : public CString
+{
+public:
+	CStringEx() : CString( ){};
+	CStringEx( const CString& stringSrc) : CString( stringSrc ){};
+	CStringEx( const CStringEx& stringSrc) : CString( stringSrc ){};
+	CStringEx( TCHAR ch, int nRepeat = 1 ) : CString( ch, nRepeat ){};
+	CStringEx( LPCTSTR lpch, int nLength ) : CString( lpch, nLength ){};
+	CStringEx( const unsigned char* psz ) : CString( psz ){};
+	CStringEx( LPCWSTR lpsz ) : CString( lpsz ){};
+	CStringEx( LPCSTR lpsz ) : CString( lpsz ){};
+
+	CStringEx& Insert(int pos, LPCTSTR s);
+	CStringEx& Insert(int pos, TCHAR c);
+
+	CStringEx& Delete(int pos, int len);
+	CStringEx& Replace(int pos, int len, LPCTSTR s);
+
+	int Find( TCHAR ch, int startpos = 0 ) const;
+	int Find( LPCTSTR lpszSub, int startpos = 0 ) const;
+	int FindNoCase( TCHAR ch, int startpos = 0 ) const;
+	int FindNoCase( LPCTSTR lpszSub, int startpos = 0 ) const;
+
+	int FindReplace( LPCTSTR lpszSub, LPCTSTR lpszReplaceWith, BOOL bGlobal = TRUE );
+	int FindReplaceNoCase( LPCTSTR lpszSub, LPCTSTR lpszReplaceWith, 
+				BOOL bGlobal = TRUE );
+
+	int ReverseFind( TCHAR ch ) const{ return CString::ReverseFind(ch);};
+	int ReverseFind( LPCTSTR lpszSub, int startpos = -1 ) const;
+	int ReverseFindNoCase( TCHAR ch, int startpos = -1  ) const;
+	int ReverseFindNoCase( LPCTSTR lpszSub, int startpos = -1 ) const;
+
+	CStringEx GetField( LPCTSTR delim, int fieldnum);
+	CStringEx GetField( TCHAR delim, int fieldnum);
+	int GetFieldCount( LPCTSTR delim );
+	int GetFieldCount( TCHAR delim );
+
+	CStringEx GetDelimitedField( LPCTSTR delimStart, LPCTSTR delimEnd, 
+				int fieldnum = 0);
+};
+
+
+#endif
+/////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+// StringEx.cpp
+//
+
+#include "stdafx.h"
+#include "StringEx.h"
+
+
+// Insert	- Inserts a sub string into the string
+// Returns	- Reference to the same string object
+// pos		- Position to insert at. Extends the string with spaces if needed
+// s		- Sub string to insert
+CStringEx& CStringEx::Insert(int pos, LPCTSTR s)
+{
+	int len = lstrlen(s);
+	if ( len == 0 )
+		return *this;
+
+	int oldlen = GetLength();
+	int newlen = oldlen + len;
+	LPTSTR str;
+	if ( pos >= oldlen ) 
+	{			
+		// insert after end of string
+		newlen += pos - oldlen ;
+		str = GetBuffer( newlen );
+		_tcsnset( str+oldlen, _T(' '), pos-oldlen );
+		_tcsncpy( str+pos, s, len );
+	} 
+	else 
+	{	
+		// normal insert
+		str = GetBuffer( newlen );
+		memmove( str+pos+len, str+pos, sizeof(_T(' ')) *(oldlen-pos) );
+		_tcsncpy( str+pos, s, len );
+	}
+	ReleaseBuffer( newlen );
+
+	return *this;
+}
+
+
+// Insert	- Inserts a character into the string
+// Returns	- Reference to the same string object
+// pos		- Position to insert at. Extends the string with spaces if needed
+// c		- Char to insert
+CStringEx& CStringEx::Insert(int pos, TCHAR c)
+{
+	TCHAR buf[2];
+	buf[0] = c;
+	buf[1] = _T('\0');
+	return Insert( pos, buf );
+}
+
+
+// Delete	- Deletes a segment of the string and resizes it
+// Returns	- Reference to the same string object
+// pos		- Position of the string segment to remove
+// len		- Number of characters to remove
+CStringEx& CStringEx::Delete(int pos, int len)
+{
+	int strLen = GetLength();
+
+	if( pos >= strLen)
+		return *this;
+	if(len < 0 ||len > strLen - pos)
+		len = strLen - pos;
+
+	LPTSTR str = GetBuffer( strLen );
+	memmove(str+pos, str+pos+len, sizeof(_T(' ')) *(strLen-pos));
+	ReleaseBuffer( strLen - len );
+
+	return *this;
+}
+
+
+// Replace	- Replaces a substring with another
+// Returns	- Reference to the same string object
+// pos		- Position of the substring
+// len		- Length of substring to be replaced
+// s		- New substring
+CStringEx& CStringEx::Replace(int pos, int len, LPCTSTR s)
+{
+	Delete(pos, len);
+	Insert(pos, s);
+
+	return *this;
+}
+
+
+// Find 	- Finds the position of a character in a string
+// Returns	- A zero-based index
+// ch		- Character to look for
+// startpos	- Position to start looking from
+int CStringEx::Find( TCHAR ch, int startpos /*= 0*/ ) const
+{
+	// find first single character
+	LPTSTR lpsz = _tcschr(m_pchData + startpos, (_TUCHAR)ch);
+
+	// return -1 if not found and index otherwise
+	return (lpsz == NULL) ? -1 : (int)(lpsz - m_pchData);
+}
+
+
+// Find 	- Finds the position of a substring in a string
+// Returns	- A zero-based index
+// lpszSub	- Substring to look for
+// startpos	- Position to start looking from
+int CStringEx::Find( LPCTSTR lpszSub, int startpos /*= 0*/ ) const
+{
+	ASSERT(AfxIsValidString(lpszSub, FALSE));
+
+	// find first matching substring
+	LPTSTR lpsz = _tcsstr(m_pchData+startpos, lpszSub);
+
+	// return -1 for not found, distance from beginning otherwise
+	return (lpsz == NULL) ? -1 : (int)(lpsz - m_pchData);
+}
+
+
+// FindNoCase	- Case insensitive find
+// Returns	- A zero-based index
+// ch		- Char to search for
+// startpos 	- Position to start looking from
+int CStringEx::FindNoCase( TCHAR ch, int startpos /*= 0*/ ) const
+{
+	unsigned int locase = Find( tolower( ch ), startpos );
+	unsigned int upcase = Find( toupper( ch ), startpos );
+
+	return locase < upcase ? locase : upcase;
+}
+
+
+// FindNoCase	- Case insensitive find
+// Returns	- A zero-based index
+// lpszSub	- Substring to search for
+// startpos 	- Position to start looking from
+int CStringEx::FindNoCase( LPCTSTR lpszSub, int startpos /*= 0*/ ) const
+{
+	CStringEx sLowerThis = *this;
+	sLowerThis.MakeLower();
+
+	CStringEx sLowerSub = lpszSub;
+	sLowerSub.MakeLower();
+
+	return sLowerThis.Find( sLowerSub, startpos );
+}
+
+
+// FindReplace		- Find a substring and replace with another
+// Returns		- Number of instances replaced
+// lpszSub		- Substring to look for
+// lpszReplaceWith	- Substring to replace with
+// bGlobal		- Flag to indicate whether all occurances 
+//					  should be replaced
+int CStringEx::FindReplace( LPCTSTR lpszSub, LPCTSTR lpszReplaceWith, 
+					BOOL bGlobal /*= TRUE*/ )
+{
+	int iReplaced = 0;
+
+	// find first matching substring
+	LPTSTR lpsz;
+	
+	int pos = 0;
+	int lenSub = lstrlen( lpszSub );
+	int lenReplaceWith = lstrlen( lpszReplaceWith );
+	while( (lpsz = _tcsstr(m_pchData + pos, lpszSub)) != NULL )
+	{
+		pos = (int)(lpsz - m_pchData);
+		Replace( pos, lenSub, lpszReplaceWith );
+		pos += lenReplaceWith;
+		iReplaced++;
+		if( !bGlobal ) break;
+	}
+
+	return iReplaced;
+}
+
+
+// FindReplaceNoCase	- Find a substring and replace with another
+//			  Does case insensitive search
+// Returns		- Number of instances replaced
+// lpszSub		- Substring to look for
+// lpszReplaceWith	- Substring to replace with
+// bGlobal		- Flag to indicate whether all occurances 
+//			  should be replaced
+int CStringEx::FindReplaceNoCase( LPCTSTR lpszSub, LPCTSTR lpszReplaceWith, 
+					 BOOL bGlobal /*= TRUE*/ )
+{
+	CStringEx sLowerThis = *this;
+	sLowerThis.MakeLower();
+
+	CStringEx sLowerSub = lpszSub;
+	sLowerSub.MakeLower();
+
+	int iReplaced = 0;
+
+	// find first matching substring
+	LPTSTR lpsz;
+	
+	int pos = 0, offset = 0;
+	int lenSub = lstrlen( lpszSub );
+	int lenReplaceWith = lstrlen( lpszReplaceWith );
+	while( (lpsz = _tcsstr(sLowerThis.m_pchData + pos, sLowerSub.m_pchData)) != NULL )
+	{
+		pos = (int)(lpsz - sLowerThis.m_pchData);
+		Replace( pos+offset, lenSub, lpszReplaceWith );
+		offset += lenReplaceWith - lenSub;
+		pos += lenSub;
+		iReplaced++;
+		if( !bGlobal ) break;
+	}
+
+	return iReplaced;
+}
+
+
+// ReverseFind	- Searches for the last match of a substring
+// Returns	- A zero-based index
+// lpszSub	- Substring to search for
+// startpos 	- Position to start looking from, in reverse dir
+int CStringEx::ReverseFind( LPCTSTR lpszSub, int startpos /*= -1*/ ) const
+{
+	int lenSub = lstrlen( lpszSub );
+	int len = lstrlen( m_pchData );
+
+	if(0 < lenSub && 0 < len)
+	{
+		if( startpos == -1 || startpos >= len ) startpos = len - 1;
+		for ( LPTSTR lpszReverse = m_pchData + startpos ; 
+						lpszReverse != m_pchData ; --lpszReverse)
+			if (_tcsncmp(lpszSub, lpszReverse, lenSub ) == 0)
+				return (lpszReverse - m_pchData);
+	}
+	return -1;
+}
+
+
+// ReverseFindNoCase	- Searches for the last match of a substring
+//			  Search is case insensitive
+// Returns		- A zero-based index
+// lpszSub		- Character to search for
+// startpos 		- Position to start looking from, in reverse dir
+int CStringEx::ReverseFindNoCase(TCHAR ch, int startpos /*= -1*/ ) const
+{
+	TCHAR a[2];
+	a[0] = ch;
+	a[1] = 0;
+	return ReverseFindNoCase( a, startpos );
+}
+
+
+// ReverseFindNoCase	- Searches for the last match of a substring
+//			  Search is case insensitive
+// Returns		- A zero-based index
+// lpszSub		- Substring to search for
+// startpos 		- Position to start looking from, in reverse dir
+int CStringEx::ReverseFindNoCase( LPCTSTR lpszSub, int startpos /*= -1*/ ) const
+{
+	//LPTSTR lpszEnd = m_pchData + lstrlen
+
+	int lenSub = lstrlen( lpszSub );
+	int len = lstrlen( m_pchData );
+	
+
+	if(0 < lenSub && 0 < len)
+	{
+		if( startpos == -1 || startpos >= len ) startpos = len - 1;
+		for ( LPTSTR lpszReverse = m_pchData + startpos ; 
+				lpszReverse >= m_pchData ; --lpszReverse)
+			if (_tcsnicmp(lpszSub, lpszReverse, lenSub ) == 0)
+				return (lpszReverse - m_pchData);
+	}
+	return -1;
+}
+
+
+// GetField 	- Gets a delimited field
+// Returns	- A CStringEx object that contains a copy of 
+//		  the specified field
+// delim	- The delimiter string
+// fieldnum 	- The field index - zero is the first
+// NOTE 	- Returns the whole string for field zero
+//		  if delim not found
+//		  Returns empty string if # of delim found
+//		  is less than fieldnum
+CStringEx CStringEx::GetField( LPCTSTR delim, int fieldnum)
+{
+	LPTSTR lpsz, lpszRemainder = m_pchData, lpszret;
+	int retlen, lenDelim = lstrlen( delim );
+
+	while( fieldnum-- >= 0 )
+	{
+		lpszret = lpszRemainder;
+		lpsz = _tcsstr(lpszRemainder, delim);
+		if( lpsz )
+		{
+			// We did find the delim
+			retlen = lpsz - lpszRemainder;
+			lpszRemainder = lpsz + lenDelim;
+		}
+		else
+		{
+			retlen = lstrlen( lpszRemainder );
+			lpszRemainder += retlen;	// change to empty string
+		}
+	}
+	return Mid( lpszret - m_pchData, retlen );
+}
+
+// GetField 	- Gets a delimited field
+// Returns	- A CStringEx object that contains a copy of 
+//		  the specified field
+// delim	- The delimiter char
+// fieldnum 	- The field index - zero is the first
+// NOTE 	- Returns the whole string for field zero
+//		  if delim not found
+//		  Returns empty string if # of delim found
+//		  is less than fieldnum
+CStringEx CStringEx::GetField( TCHAR delim, int fieldnum)
+{
+	LPTSTR lpsz, lpszRemainder = m_pchData, lpszret;
+	int retlen;
+
+	while( fieldnum-- >= 0 )
+	{
+		lpszret = lpszRemainder;
+		lpsz = _tcschr(lpszRemainder, (_TUCHAR)delim);
+		if( lpsz )
+		{
+			// We did find the delim
+			retlen = lpsz - lpszRemainder;
+			lpszRemainder = lpsz + 1;
+		}
+		else
+		{
+			retlen = lstrlen( lpszRemainder );
+			lpszRemainder += retlen;	// change to empty string
+		}
+	}
+	return Mid( lpszret - m_pchData, retlen );
+}
+
+
+// GetFieldCount	- Get number of fields in a string
+// Returns		- The number of fields
+//			  Is always greater than zero
+// delim		- The delimiter character
+int CStringEx::GetFieldCount( TCHAR delim )
+{
+	TCHAR a[2];
+	a[0] = delim;
+	a[1] = 0;
+	return GetFieldCount( a );
+}
+
+
+// GetFieldCount	- Get number of fields in a string
+// Returns		- The number of fields
+//			  Is always greater than zero
+// delim		- The delimiter string
+int CStringEx::GetFieldCount( LPCTSTR delim )
+{
+	LPTSTR lpsz, lpszRemainder = m_pchData;
+	int lenDelim = lstrlen( delim );
+
+	int iCount = 1;
+	while( (lpsz = _tcsstr(lpszRemainder, delim)) != NULL )
+	{
+		lpszRemainder = lpsz + lenDelim;
+		iCount++;
+	}
+
+	return iCount;
+}
+
+
+// GetDelimitedField	- Finds a field delimited on both ends
+// Returns		- A CStringEx object that contains a copy of 
+//			  the specified field
+// delimStart		- Delimiter at the start of the field
+// delimEnd 		- Delimiter at the end of the field
+CStringEx CStringEx::GetDelimitedField( LPCTSTR delimStart, LPCTSTR delimEnd, int fieldnum /*= 0*/)
+{
+	LPTSTR lpsz, lpszEnd, lpszRet, lpszRemainder = m_pchData ;
+	int lenDelimStart = lstrlen( delimStart ), lenDelimEnd = lstrlen( delimEnd );
+
+	while( fieldnum-- >= 0 )
+	{
+		lpsz = _tcsstr(lpszRemainder, delimStart);
+		if( lpsz )
+		{
+			// We did find the Start delim
+			lpszRet = lpszRemainder = lpsz + lenDelimStart;
+			lpszEnd = _tcsstr(lpszRemainder, delimEnd);
+			if( lpszEnd == NULL ) return"";
+			lpszRemainder = lpsz + lenDelimEnd;
+		}
+		else return "";
+	}
+	return Mid( lpszRet - m_pchData, lpszEnd - lpszRet );
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

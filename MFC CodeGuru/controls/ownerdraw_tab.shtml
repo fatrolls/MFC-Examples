@@ -1,0 +1,340 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Implementing an owner drawn Tab Control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Implementing an owner drawn Tab Control</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This sample was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<p>
+<img src="ownerdraw_tab.gif" border=0 alt="Ownerdrawn CTabCtrl image" align="bottom">
+
+<P><A HREF="ownerdraw_tab.zip">Download source files</A>
+</p>
+
+
+
+<p>Implementing an owner drawn tab control requires that the tab control
+have the "owner draw fixed" style (TCS_OWNERDRAWFIXED), and that it have 
+a mechanism for drawing itself when needed.</p>
+
+<p>To draw the tabs, just override the "DrawItem" function in your
+derived class. This function accepts a pointer to a DRAWITEMSTRUCT
+structure, which contains the index of the tab to draw (itemID),
+a handle to a DC (hDC) and the rectangle in which to draw the
+tab (rcItem). It's a simple matter to retrive the text and draw
+it which ever way you like. The only tricky bit is that the rectangle
+you get is not quite the one you want - if you blindly draw in the full
+extent of the rectangle you will overshoot the bounds of your tab.</p>
+
+<p>The demo class below (CTabCtrlEx) allows shows how to draw the tab
+text and image, and contains two functions: SetFonts and SetColours
+which allows you to specify different fonts and colours for selected 
+and unselected tabs. SetFonts has two forms: one which accepts two
+fonts (for selected and unselected tabs repsectively) and one which
+allows you to just specify whether the tabs will contain bold, underlined
+or italicised text. Hence you could have your selected tab displayed
+in a heavy, underlined blue, while unselected tabs could be
+displayed in a thin light grey.</p>
+
+<PRE><TT><FONT COLOR="#990000">
+	void SetFonts(CFont* pSelFont,                     // Selected tabs font
+	              CFont* pUnselFont);                  // Unselected tabs font
+
+	void SetFonts(int nSelWeight     = FW_SEMIBOLD,    // Selected tabs font weight
+	              BOOL bSelItalic    = FALSE,          // Selected tabs font in italics?
+	              BOOL bSelUnderline = FALSE,          // Selected tabs font underlined?
+	              int nUnselWeight     = FW_MEDIUM,    // Unselected tabs font weight
+	              BOOL bUnselItalic    = FALSE,        // Unselected tabs font in italics?
+	              BOOL bUnselUnderline = FALSE);       // Unselected tabs font underlined?
+
+	void SetColours(COLORREF bSelColour,               // Selected text colour
+	                COLORREF bUnselColour);            // Unselected tabs font
+</FONT></TT></PRE>
+
+<p>Since different weighted fonts will give different sized text, the
+larger of the fonts should be selected as the underlying font
+for the control so that the sizes of the tabs will be calculated
+correctly.</p>
+
+<p>To use the tab control, simply subclass it to an existing tab control
+in a dialog or use CTabCtrl::Create, and then set the fonts and colours,
+either in the dialogs OnInitDialog or directly after the call to Create().
+</p>
+
+<h3>Source code</h3>
+
+<PRE><TT><FONT COLOR="#990000">
+#if !defined(AFX_TABCTRLEX_H__28407441_38AF_11D1_ABBA_00A0243D1382__INCLUDED_)
+#define AFX_TABCTRLEX_H__28407441_38AF_11D1_ABBA_00A0243D1382__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// TabCtrlEx.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CTabCtrlEx window
+
+class CTabCtrlEx : public CTabCtrl
+{
+// Construction/destruction
+public:
+	CTabCtrlEx();
+	virtual ~CTabCtrlEx();
+
+// Attributes:
+public:
+
+// Operations
+public:
+	void SetFonts(CFont* pSelFont, CFont* pUnselFont);
+	void SetFonts(int nSelWeight=FW_SEMIBOLD, BOOL bSelItalic=FALSE,   BOOL bSelUnderline=FALSE,
+	              int nUnselWeight=FW_MEDIUM, BOOL bUnselItalic=FALSE, BOOL bUnselUnderline=FALSE);
+
+	void SetColours(COLORREF bSelColour, COLORREF bUnselColour);
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CTabCtrlEx)
+	public:
+	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+	protected:
+	virtual void PreSubclassWindow();
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+	COLORREF m_crSelColour, m_crUnselColour;
+	CFont    m_SelFont,	m_UnselFont;
+
+// Generated message map functions
+protected:
+	//{{AFX_MSG(CTabCtrlEx)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_TABCTRLEX_H__28407441_38AF_11D1_ABBA_00A0243D1382__INCLUDED_)
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+// TabCtrlEx.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "TabCtrlEx.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CTabCtrlEx
+
+CTabCtrlEx::CTabCtrlEx()
+{
+	m_crSelColour     = RGB(0,0,255);
+	m_crUnselColour   = RGB(50,50,50);
+}
+
+CTabCtrlEx::~CTabCtrlEx()
+{
+	m_SelFont.DeleteObject();
+	m_UnselFont.DeleteObject();
+}
+
+BEGIN_MESSAGE_MAP(CTabCtrlEx, CTabCtrl)
+	//{{AFX_MSG_MAP(CTabCtrlEx)
+	ON_WM_CREATE()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CTabCtrlEx message handlers
+
+int CTabCtrlEx::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
+	if (CTabCtrl::OnCreate(lpCreateStruct) == -1) return -1;
+	ModifyStyle(0, TCS_OWNERDRAWFIXED);
+	
+	return 0;
+}
+
+void CTabCtrlEx::PreSubclassWindow() 
+{	
+	CTabCtrl::PreSubclassWindow();
+	ModifyStyle(0, TCS_OWNERDRAWFIXED);
+}
+
+void CTabCtrlEx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) 
+{	
+	CRect rect = lpDrawItemStruct->rcItem;
+	int nTabIndex = lpDrawItemStruct->itemID;
+	if (nTabIndex < 0) return;
+	BOOL bSelected = (nTabIndex == GetCurSel());
+
+	char label[64];
+	TC_ITEM tci;
+	tci.mask = TCIF_TEXT|TCIF_IMAGE;
+	tci.pszText = label;     
+	tci.cchTextMax = 63;    	
+	if (!GetItem(nTabIndex, &tci )) return;
+
+	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+	if (!pDC) return;
+	int nSavedDC = pDC->SaveDC();
+
+	// For some bizarre reason the rcItem you get extends above the actual
+	// drawing area. We have to workaround this "feature".
+	rect.top += ::GetSystemMetrics(SM_CYEDGE);
+
+	pDC->SetBkMode(TRANSPARENT);
+	pDC->FillSolidRect(rect, ::GetSysColor(COLOR_BTNFACE));
+
+	// Draw image
+	CImageList* pImageList = GetImageList();
+	if (pImageList && tci.iImage >= 0) {
+
+		rect.left += pDC->GetTextExtent(_T(" ")).cx;		// Margin
+
+		// Get height of image so we 
+		IMAGEINFO info;
+		pImageList->GetImageInfo(tci.iImage, &info);
+		CRect ImageRect(info.rcImage);
+		int nYpos = rect.top;
+
+		pImageList->Draw(pDC, tci.iImage, CPoint(rect.left, nYpos), ILD_TRANSPARENT);
+		rect.left += ImageRect.Width();
+	}
+
+	if (bSelected) {
+		pDC->SetTextColor(m_crSelColour);
+		pDC->SelectObject(&m_SelFont);
+		rect.top -= ::GetSystemMetrics(SM_CYEDGE);
+		pDC->DrawText(label, rect, DT_SINGLELINE|DT_VCENTER|DT_CENTER);
+	} else {
+		pDC->SetTextColor(m_crUnselColour);
+		pDC->SelectObject(&m_UnselFont);
+		pDC->DrawText(label, rect, DT_SINGLELINE|DT_BOTTOM|DT_CENTER);
+	}
+
+	pDC->RestoreDC(nSavedDC);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CTabCtrlEx operations
+
+void CTabCtrlEx::SetColours(COLORREF bSelColour, COLORREF bUnselColour)
+{
+	m_crSelColour = bSelColour;
+	m_crUnselColour = bUnselColour;
+	Invalidate();
+}
+
+void CTabCtrlEx::SetFonts(CFont* pSelFont, CFont* pUnselFont)
+{
+	ASSERT(pSelFont && pUnselFont);
+
+	LOGFONT lFont;
+	int nSelHeight, nUnselHeight;
+
+	m_SelFont.DeleteObject();
+	m_UnselFont.DeleteObject();
+
+	pSelFont->GetLogFont(&lFont);
+	m_SelFont.CreateFontIndirect(&lFont);
+	nSelHeight = lFont.lfHeight;
+
+	pUnselFont->GetLogFont(&lFont);
+	m_UnselFont.CreateFontIndirect(&lFont);
+	nUnselHeight = lFont.lfHeight;
+
+	SetFont( (nSelHeight > nUnselHeight)? &m_SelFont : &m_UnselFont);
+}
+
+
+void CTabCtrlEx::SetFonts(int nSelWeight,   BOOL bSelItalic,   BOOL bSelUnderline,
+                          int nUnselWeight, BOOL bUnselItalic, BOOL bUnselUnderline)
+{
+	// Free any memory currently used by the fonts.
+	m_SelFont.DeleteObject();
+	m_UnselFont.DeleteObject();
+
+	// Get the current font
+	LOGFONT lFont;
+	CFont *pFont = GetFont();
+	if (pFont)
+		pFont->GetLogFont(&lFont);
+	else {
+		NONCLIENTMETRICS ncm;
+		ncm.cbSize = sizeof(NONCLIENTMETRICS);
+		VERIFY(SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 
+		                            sizeof(NONCLIENTMETRICS), &ncm, 0));
+		lFont = ncm.lfMessageFont; 
+	}
+
+	// Create the "Selected" font
+	lFont.lfWeight = nSelWeight;
+	lFont.lfItalic = bSelItalic;
+	lFont.lfUnderline = bSelUnderline;
+	m_SelFont.CreateFontIndirect(&lFont);
+
+	// Create the "Unselected" font
+	lFont.lfWeight = nUnselWeight;
+	lFont.lfItalic = bUnselItalic;
+	lFont.lfUnderline = bUnselUnderline;
+	m_UnselFont.CreateFontIndirect(&lFont);
+
+	SetFont( (nSelWeight > nUnselWeight)? &m_SelFont : &m_UnselFont);
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

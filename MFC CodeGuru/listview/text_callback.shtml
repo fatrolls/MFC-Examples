@@ -1,0 +1,281 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Using text callbacks</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using text callbacks</FONT></H3></CENTER>
+
+This article was contributed by <a href="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</a>.
+
+
+<p>If you store you application data and you wish to save some
+time and memory, you can have the list ask your application 
+for the strings to display in the list on the fly, instead of 
+having the list store the strings explicitly. This will reduce
+the amount of memory your final app needs and will make filling
+and deleting the list contents quicker, at the expense of slightly
+slower display time. (If you are displaying several thousand items
+in the list, the time saved in filling and cleaning the list
+more than makes up for fractionally slower display). Furthermore,
+list sorting can become lightning fast.
+
+<p>Suppose your data is stored in your app in structures "ItemStruct"
+declared:
+
+<PRE><TT><FONT COLOR="#990000">
+typedef struct {
+	int nItemNo;
+	CString strName;
+} ItemStruct;
+</FONT></TT></PRE>
+
+<p>and each structure is stored in an array, list or map. The easiest
+way to let the list know about each item is to store a pointer
+to each item in the lParam field of the LV_ITEM structure you
+pass to the CListCtrl::InsertItem function.
+
+<p>Firstly, when you add a new item to the list you should set
+the LVIF_PARAM bit in the mask field of your LV_ITEM structure
+that you are using. This lets the list know that the lParam field
+of your LV_ITEM contains data.
+
+<p>You may want to create a helper function to add a new item to the
+list like:
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMyListCtrl::AddItem(ItemStruct* pItem, int nPos /* = -1 */)
+{
+	int nNumItems = GetItemCount();
+	int nInsertPos = (nPos >= 0 && nPos <= nNumItems)? nPos : nNumItems;
+
+	LV_ITEM Item;
+	Item.lParam	  = (LPARAM) pItem;		// Store the pointer to the data
+	Item.pszText  = LPSTR_TEXTCALLBACK;		// using callbacks to get the text
+	Item.mask	  = LVIF_TEXT | LVIF_PARAM;	// lParam and pszText fields active
+	Item.iItem	  = nInsertPos;			// position to insert new item
+	Item.iSubItem = 0;
+	
+	if (InsertItem(&Item) < 0) 
+		return FALSE;					
+	else
+		return TRUE;
+}
+</FONT></TT></PRE>
+
+<p>The LPSTR_TEXTCALLBACK value for the pszText field tells the list that
+it should use callbacks to get the text to display, instead of storing
+the text itself. Every time the list needs to display text, it sends
+a LVN_GETDISPINFO. We don't add text for the subitems, since they will
+be dealt with in the LVN_GETDISPINFO handler as well.
+
+<p>You need to handle the windows notification LVN_GETDISPINFO using the
+following:
+
+<PRE><TT><FONT COLOR="#990000">
+BEGIN_MESSAGE_MAP(CMyListCtrl, CListCtrl)
+	//{{AFX_MSG_MAP(CMyListCtrl)
+	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetDispInfo)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+<p>and have an accompanying function declared in you class definition:
+
+<PRE><TT><FONT COLOR="#990000">
+class CMyListCtrl 
+{
+// .. other declarations
+
+// Generated message map functions
+protected:
+	//{{AFX_MSG(CMyListCtrl)
+	afx_msg void OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult);
+	//}}AFX_MSG
+};
+</FONT></TT></PRE>
+
+
+<p>The handler function should look something like:
+
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyListCtrl::OnGetDispInfo(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
+
+	if (pDispInfo->item.mask & LVIF_TEXT)
+	{
+		ItemStruct* pAppItem = (ItemStruct*) pDispInfo->item.lParam;
+		CString strField = QueryItemText(pDispInfo->item.iItem, 
+							   pDispInfo->item.iSubItem);
+		LPTSTR pstrBuffer = AddPool(&strField);	
+
+		pDispInfo->item.pszText = pstrBuffer;
+	}	
+	*pResult = 0;
+}
+</FONT></TT></PRE>
+
+
+<p>The NMHDR variable contains the list view display info, which in turn holds
+a LV_ITEM member specifying the item and subitem it's after, and what sort
+of info it's after. In our case we are only specifying text, so we only
+deal with notifications where the pDispInfo->item.mask equals LVIF_TEXT.
+We get a pointer to our Apps data through the lParam field of LV_ITEM, and
+from this we get a text representation of our data (I'm using another
+helper function "QueryItemText" implemented as
+
+
+<PRE><TT><FONT COLOR="#990000">
+// returns a CString representation for the data in row nRow, column nCol
+CString CMyListCtrl::QueryItemText(int nRow, int nCol)
+{
+	CString strField;
+	ItemStruct* pAppItem = (ItemStruct*) GetItemData(nRow);
+	if (!pAppItem) return strField;
+
+	switch (nCol) {
+		case 0:	strField.Format("%d",pAppItem->nItemNo);	break;
+		case 1: strField = pAppItem->strName;			break;
+		default: ASSERT(FALSE);
+	}
+
+	return strField;
+}
+</FONT></TT></PRE>
+
+
+<p>The main reason I use the "QuesryItemText" function is that since we
+are now using text callbacks, functions like CListCtrl::GetItemText
+no longer work. If you use GetItemText (for instance in TitleTips
+or InPlaceEdit's) then you must replace them with QueryItemText in
+order for them to work. The two lines:
+
+<PRE><TT><FONT COLOR="#990000">
+	LPTSTR pstrBuffer = AddPool(&strField);	
+	pDispInfo->item.pszText = pstrBuffer;
+</FONT></TT></PRE>
+
+<p>in the OnGetDispInfo function were taken from Mike Blaszczak's program
+"ApiBrow" (get it either online or from his book "Proffessional MFC
+with Visual C++ 5"). It handles the bizarre situtation that the list
+control requires the buffer you pass back from the OnGetDispInfo to
+be valid for 2 more LVN_GETDISPINFO notifications. His solution was
+a simple caching to store sufficient copies so the list control
+doesn't have a cow. It goes something like this:
+
+<PRE><TT><FONT COLOR="#990000">
+LPTSTR CMyListCtrl::AddPool(CString* pstr)
+{
+	LPTSTR pstrRetVal;
+	int nOldest = m_nNextFree;
+
+	m_strCPool[m_nNextFree] = *pstr;
+	pstrRetVal = m_strCPool[m_nNextFree].LockBuffer();
+	m_pstrPool[m_nNextFree++] = pstrRetVal;
+	m_strCPool[nOldest].ReleaseBuffer();
+
+	if (m_nNextFree == 3)
+		m_nNextFree = 0;
+	return pstrRetVal;
+}
+</FONT></TT></PRE>
+
+<p>You will need to declare the protected attributes
+
+<PRE><TT><FONT COLOR="#990000">
+	CString m_strCPool[3];
+	LPTSTR	m_pstrPool[3];
+	int	m_nNextFree;
+</FONT></TT></PRE>
+
+<p>in your class definition.
+
+<p>And that's all there is to it!
+
+<p>One advantage of storing the data in the lParam field is that sorting
+become very quick. A column sort function as already been provided in
+in the MFC programmers sourcebook. It is prototyped:
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMasterListCtrl::SortTextItems(int nCol, BOOL bAscending, 
+					int low /*= 0*/, int high /*= -1*/ );
+</FONT></TT></PRE>
+
+<p>I will ignore the high and low parameters (sorry!) and instead
+implement a different version: (see the docs on CListCtrl::SortItems
+for details)
+
+
+<PRE><TT><FONT COLOR="#990000">
+typedef struct {
+	int nColumn;
+	BOOL bAscending;
+} SORTINFO;
+
+BOOL CMasterListCtrl::SortTextItems(int nCol, BOOL bAscending)
+{
+	CWaitCursor waiter;
+
+	SORTINFO si;
+	si.nColumn = m_nSortColumn;
+	si.bAscending = m_bSortAscending;
+	return SortItems(CompareFunc, (LPARAM) &si);
+}
+
+int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+{
+	ItemStruct *pItem1 = (ItemStruct*) lParam1;
+	ItemStruct *pItem2 = (ItemStruct*) lParam2;
+	SORTINFO* pSortInfo = (SORTINFO*) lParamSort;
+	ASSERT(pItem1 && pItem2 && pSortInfo);
+
+	int result;
+	switch (pSortInfo->nColumn) {
+		case 0: if (pItem1->nItemNo < pItem2->nItemNo) 
+					result = -1;
+				else if (pItem1->nItemNo == pItem2->nItemNo) 
+					result = 0;
+				else 
+					result = 1;
+				break;
+		case 1: result = pItem1->strName.Compare(pItem2->strName); 
+				break;
+		default: ASSERT(FALSE);
+	}
+
+	if (!pSortInfo->bAscending) result = -result;
+	return result;
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

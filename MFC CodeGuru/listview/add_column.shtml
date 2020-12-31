@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Adding a column</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Adding a column</FONT></H3></CENTER>
+
+<HR>
+
+<P>The CListCtrl::InsertColumn() is used to add a column to the list view
+control. This function can be used even if the control is not in the report
+mode. When using this function you should remember to specify the nSubItem
+argument (or the iSubItem field if you are using the LV_COLUMN structure).
+The nSubItem is usually equal to the column number. Here is a helper function
+that makes adding a column easier.
+<PRE><TT><FONT COLOR="#990000">// AddColumn&nbsp;&nbsp;&nbsp; - adds column after the right most column
+// Returns&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - the index of the new column if successful or -1 otherwise.
+// sColHeading&nbsp; - the column's heading
+// nWidth&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Width of the column, in pixels. If this parameter is -1,&nbsp;
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the column width is the same as previous column
+// nFormat&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - the alignment of the column. Can be LVCFMT_LEFT,
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LVCFMT_RIGHT, or LVCFMT_CENTER.
+int CMyListCtrl::AddColumn(LPCTSTR sColHeading, int nWidth /* = -1*/, int nFormat /* = LVCFMT_LEFT*/)
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int nColumnCount = pHeader->GetItemCount();
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( nWidth == -1 )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // The line below return zero for ICON views
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //nWidth = GetColumnWidth( nColumnCount - 1 );
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Get the column width of the previous column from header control
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HD_ITEM hd_item;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hd_item.mask = HDI_WIDTH;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //indicate that we want the width
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pHeader->GetItem( nColumnCount - 1, &amp;hd_item );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nWidth = hd_item.cxy;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return InsertColumn( nColumnCount, sColHeading, nFormat, nWidth, nColumnCount );
+}</FONT></TT></PRE>
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT>&nbsp;</DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

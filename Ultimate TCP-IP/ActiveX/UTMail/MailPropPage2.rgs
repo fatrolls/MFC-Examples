@@ -1,0 +1,23 @@
+HKCR
+{
+	UTMail.MailPropPage.1 = s 'MailPropPage Class'
+	{
+		CLSID = s '{255E1EA1-D29D-11d3-A550-0080C858F182}'
+	}
+	UTMail.MailPropPage = s 'MailPropPage Class'
+	{
+		CLSID = s '{255E1EA1-D29D-11d3-A550-0080C858F182}'
+		CurVer = s 'UTMail.MailPropPage.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {255E1EA1-D29D-11d3-A550-0080C858F182} = s 'MailPropPage Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -1,0 +1,121 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Rob Manderson">
+   <TITLE>Posting Files to the Web </TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Posting Files to the Web </FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:ssram@rocketmail.com">sriram</A>.
+
+ 
+<P>The WebPost API allows applications to easily post Web pages (files) to any Internet Web site. The WebPost functions can be used to connect to an Internet Service Provider (ISP), determine the protocol needed to copy the files, and much more. These functions can display wizards to guide the users throughout the process.
+<p>
+This API is easy to implement and powerful.
+<p>
+In this code sample I just called "wpPost" function and pass the Window handle to tell the wizard which window it should return the focus after it completes its job. Then I pass NULL as value to all the other parameters in this function except the last parameter which is the FLAGS. We can give any of the four given flags
+<P>&nbsp;</P>
+<TABLE border=0>
+    <TBODY>
+    <TR>
+        <TD vAlign=top><FONT face=VERDANA,ARIAL,HELVETICA size=2><B>Value 
+            </B></FONT></TD>
+        <TD vAlign=top><FONT face=VERDANA,ARIAL,HELVETICA size=2><B>Meaning 
+            </B></FONT></TD></TR>
+    <TR>
+        <TD vAlign=top><A name=webpost_000b000102010401><FONT 
+            face=VERDANA,ARIAL,HELVETICA 
+            size=2><B>WPF_FIRST_FILE_AS_DEFAULT</B></FONT></A><FONT 
+            face=VERDANA,ARIAL,HELVETICA size=2> </FONT></TD>
+        <TD vAlign=top><FONT face=VERDANA,ARIAL,HELVETICA size=2>If this 
+            flag is set then take the first file specified in the 
+            lppszLocalPaths list as the file that will be shown as the default 
+            page. </FONT></TD></TR>
+    <TR>
+        <TD vAlign=top><A name=webpost_000b000102010402><FONT 
+            face=VERDANA,ARIAL,HELVETICA 
+            size=2><B>WPF_MINIMAL_UI</B></FONT></A><FONT 
+            face=VERDANA,ARIAL,HELVETICA size=2> </FONT></TD>
+        <TD vAlign=top><FONT face=VERDANA,ARIAL,HELVETICA size=2>Skip the 
+            wizard pages where the input has been given. if </FONT>lpszsitename 
+            is given then the wizard will not show the page for choosing the 
+            site name</TD></TR>
+    <TR>
+        <TD vAlign=top><A name=webpost_000b000102010403><FONT 
+            face=VERDANA,ARIAL,HELVETICA 
+            size=2><B>WPF_NO_RECURSIVE_POST</B></FONT></A><FONT 
+            face=VERDANA,ARIAL,HELVETICA size=2> </FONT></TD>
+        <TD vAlign=top><FONT face=VERDANA,ARIAL,HELVETICA size=2>Do not post 
+            the files recursively if lppszLocalPaths array points to a 
+            directory. </FONT></TD></TR>
+    <TR>
+        <TD vAlign=top><A name=webpost_000b000102010404><FONT 
+            face=VERDANA,ARIAL,HELVETICA 
+            size=2><B>WPF_NO_WIZARD</B></FONT></A><FONT 
+            face=VERDANA,ARIAL,HELVETICA size=2> </FONT></TD>
+        <TD vAlign=top><FONT face=VERDANA,ARIAL,HELVETICA size=2>Do not 
+            display the wizard. This is relevant only if lpszSiteName has been 
+            created before. </FONT></TD></TR></TBODY></TABLE>
+<p>
+or just give 0 as the value. In this sample code I just gave 0 as the value to this parameter. Here I stop my blah blah and lets look at the code.
+
+
+<PRE><TT><FONT COLOR="#990000">
+LONG CPostView::Post( )
+{
+	LONG lRet; //return value
+
+	lRet = WpPost( GetSafeHwnd(),	// Handle to the Window
+		NULL, 			// Number of files to be posted, can be null
+		NULL, 			// Files List, can be null
+		NULL, 			// Site Name Count, can be null
+		NULL, 			// Site Name, can be null
+		NULL, 			// URL Count, can be null
+		NULL, 			// URL Name, can be null
+		0 
+	); // Flags
+
+	return lRet;
+}
+
+</FONT></TT></PRE>
+This Post() function internally calls WpPost function. Since all the parameters are given NULL WpPost function calls the wizard to post the files to the web.
+
+That's it folks.
+
+I will update this article soon with more features. If you have better idea or if you find any bugs in this article let me know.
+
+<p>Updated on May 23 1998
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

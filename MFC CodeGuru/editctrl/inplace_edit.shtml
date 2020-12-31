@@ -1,0 +1,233 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Inplace edit control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Inplace edit control</FONT></H3></CENTER>
+<HR>
+
+
+This code was contributed by <A HREF="mailto:MarioC@computer.org">Mario Contestabile</A>.
+
+<P>Have you ever wanted to allow users of your MFC application to rename
+strings contained in various controls? If so, you probably included a
+"Rename" button
+next to your control. Take a listbox for example. When "Rename" is pressed
+you
+retrieve the current selection from the listbox, display it in a dialog for
+the user to modify, and then modify the string in the listbox to the new
+string.
+Not a very aesthetic or efficient method.
+
+<P>A better solution is to dynamically create an edit control on top of
+the area where the displayed string is, preferably following a double-click
+of the string in the listbox. You could re-use this edit class throughout
+your application, thus removing the need for "Rename" buttons. This is
+common
+technique.
+
+<P>One method our SmartEdit can use to notify its parent that the user is done
+with it (&lt;Enter> was pressed for example) is to send its parent a custom
+message.
+But how does the parent (in our example, a dialog with a list control) know
+what new string the user typed? We could pass "this" to our SmartEdit, which
+in turn could call a dialog function passing it the new string. Although
+convenient, this method would not make our SmartEdit very re-usable, since
+it would have to know a) the type of CDialog our parent is and b) every
+different parent dialog would need to implement this same function to
+accept the new string.
+
+<P>The method I chose was to post a message to the parent, essentially telling
+it "Hay, the user possibly modified this string you sent me. Here it is,
+do as you please." But right before posting this message to its parent,
+SmartEdit places the text on the clipboard. This way, SmartEdit doesn't care
+what kind of window its parent is, and the parent can handle it as it seems
+fit.
+
+<P>||||| <b>Figure 1</b> "myDialog.cpp LBN_DBLCLK handler"
+<PRE><TT><FONT COLOR="#990000">
+void myDialog::OnDblclkStringInListBox()
+{
+	const INT nIndex = m_Ctl.GetCurSel();
+	if(nIndex == LB_ERR) return;
+	CString string;
+	m_Ctl.GetText(nIndex, string);
+	RECT rect;
+	INT result = m_Ctl.GetItemRect(nIndex, &rect);
+	if(result==LB_ERR) return;
+	SmartEdit* pEdit = new SmartEdit;
+	rect.bottom += 4;
+	pEdit->Create(WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL,
+		rect, &m_Ctl, (UINT)-1);
+	pEdit->SetWindowText(string);
+	pEdit->SetFocus();
+	pEdit->LimitText(MYMAX_LEN); // user defined maximum length of string
+}
+</FONT></TT></PRE>
+
+
+<P>Figure 1 shows the ON_LBN_DBLCLK handler from the myDialog class. This is the
+handler called when the user double-clicks a string in the listbox. We first determine
+which, if any, of the listbox strings is currently selected. Note GetCurSel() can
+only be used with a single-selection listbox. The actual string is then retrieved
+from the listbox. The dimension of the item's rectangle is determined since this will be
+the size and position of our SmartEdit. The SmartEdit is created on the heap, and its
+Create() function called which creates the Windows edit control and attaches it to the
+CEdit object.
+
+
+
+<P>||||| <b>Figure 2</b> "SmartEdit.cpp implementation"
+
+<PRE><TT><FONT COLOR="#990000">
+SmartEdit::SmartEdit()  : bEscapeKey(FALSE)
+{
+}
+
+BEGIN_MESSAGE_MAP(SmartEdit, CEdit)
+//{{AFX_MSG_MAP(SmartEdit)
+ON_WM_KILLFOCUS()
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+
+void SmartEdit::OnKillFocus(CWnd*)
+{
+	PostMessage(WM_CLOSE, 0, 0);
+	if(!bEscapeKey){
+		CString str;
+		GetWindowText(str);
+		COleDataSource *pds = new COleDataSource;
+		PTCHAR cp = (PTCHAR)GlobalAlloc(GMEM_FIXED, (str.GetLength() *
+			sizeof(TCHAR)) + sizeof(TCHAR));
+		_tcscpy(cp, str);
+		pds->CacheGlobalData(CF_TEXT, cp);
+		pds->SetClipboard();
+		GetOwner()->PostMessage(EDITCLASSMSG);
+		TRACE1("SmartEdit::OnKillFocus  Posting message to my owner, I have put
+			[%s] on the clipboard for him\n", cp);
+	}
+}
+
+// "override" base class member function
+void SmartEdit::PostNcDestroy()
+{
+	delete this;
+}
+
+// "augment" base class member function
+BOOL SmartEdit::PreTranslateMessage(MSG* pMsg)
+{
+	if(pMsg->wParam == VK_RETURN){
+		PostMessage(WM_CLOSE, 0, 0);
+		return TRUE;
+	}else if(pMsg->wParam == VK_ESCAPE){
+		PostMessage(WM_CLOSE, 0, 0);
+		return bEscapeKey = TRUE;
+	}
+	
+	return CEdit::PreTranslateMessage(pMsg);
+}
+</FONT></TT></PRE>
+
+
+<P>Figure 2 shows SmartEdit's implementation. It is straightforward, but perhaps
+the PostNcDestroy function needs further explanation. Remember this object
+was created on the heap with "new" in myDialog. That means someone must "delete" it.
+Since PostNcDestroy() is called after the window has been destroyed, it is a
+perfect time to delete the object.  Modeless dialogs use this method of self-destruction.
+
+<P>The most important action occurs in its OnKillFocus() handler. When the SmartEdit
+loses focus by a means other than the <Escape> key, it retrieves the new string with
+GetWindowText(). The string is then placed on the clipboard using a COleDataSource.
+COleDataSource is a source actor in OLE data transfer. Notice I used PTCHAR, and
+_tcscpy() to allow the code to be transparantly compiled in both ANSI and UNICODE
+applications. After the string is placed on the clipboard, it sends EDITCLASSMSG
+(simply #defined as WM_APP + 100) to its parent.
+
+
+<P>||||| <b>Figure 3</b> "myDialog.cpp EDITCLASSMSG handling code"
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL myDialog::PreTranslateMessage(MSG* pMsg)
+{
+	if(EDITCLASSMSG == pMsg->message){
+		COleDataObject data;
+		
+		hClipboard()){           
+			if(data.IsDataAvailable(CF_TEXT)){ 
+				HGLOBAL hg;
+				if(hg = data.GetGlobalData(CF_TEXT)){
+					CString str = (LPCTSTR)GlobalLock(hg);
+					TRACE1("myDialog::PreTrans(EDITCLASSMSG)  This is on the clipboard [%s]\n", str);
+					GlobalUnlock(hg);
+					NewString(str); // Appropriate action
+				}
+			}
+			data.Release();
+		}
+		return TRUE;
+	}
+	
+	return CDialog::PreTranslateMessage(pMsg);
+}
+</FONT></TT></PRE>
+
+
+<P>Fogure 3 shows what myDialog does when handling a EDITCLASSMSG message.
+It knows there's a string on the clipboard, so uses COleDataObject to retrieve it.
+COleDataObject is the destination actor in OLE data transfer. The string from the
+clipboard is simply passed to a helper function, New String() in this case,
+which will decide a course of action. To replace the string that was 'underneath'
+the string double-clicked in the listbox, you would keep the item index obtained in
+OnDblclkStringInListBox(). For example, "const INT nIndex = m_Ctl.GetCurSel();"
+could be replaced by "m_nIndex = m_Ctl.GetCurSel();" after which NewString()
+would use myDialog's member variable 'm_nIdex' as the index for the new
+string.
+
+<P>We now have a fully functional SmartEdit capable of notifying its parent (using
+OLE) that it has accepted a string. One problem still remains. Can you spot it?
+Since the SmartEdit object 'kills' itself using 'delete' in PostNcDestroy(),
+it *must* be created on the heap using 'new'. If we don't enforce this,
+someone will inevitably use our SmartEdit in a DDX_Control(). This will
+cause serious havoc when the "delete this;" line is executed. So what can we
+do?
+
+<P>The answer is simple. make the ~SmartEdit destructor protected. This still allows the
+class to be used in inheritance, but prevents its usage on the stack.
+
+
+<P>Posted: March, 8, 98
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+ 

@@ -1,0 +1,82 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - A range validation Edit control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A range validation Edit control
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:drkich@csrlink.net">Donald R. Kichline</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>Download <A HREF="range_edit_src.zip">Source Code</a> and <A HREF="range_edit_demo.zip">Example</A>
+</p>
+<br>
+
+<p>In a project that I am working with about 6 people, we were
+using spin controls and edit controls to allow the operator to
+change certain values. We decided we needed one way to handle
+invalid data typed in the edit control by the operator. The best
+solution we came up with was to sub-class CEdit, and validate the
+operators key-strokes.</p>
+
+<ol>
+    <li>Ensure that the edit control has the number only style
+        set to TRUE. </li>
+    <li>Then you need to include the &quot;CRangeEdit.h&quot; in
+        your dialog definition file, and declare CRangeEdit
+        member variables for each edit control that you need to
+        check the range of an operators input.</li>
+    <li>Then you must set the range the CRangeEdit will accept
+        from the operator, using the CRangeEdit::SetRange()
+        method. The CRangeEdit will default to 0-100 range. </li>
+    <li>Set the default contents of the control using
+        CWnd::SetWindowText().</li>
+</ol>
+
+<p>You should be ready to go!</p>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 29 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

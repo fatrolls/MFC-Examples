@@ -1,0 +1,214 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - Class to select directory</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Class to select directory</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:Girish_Bharadwaj@Pictel.com">Girish Bharadwaj</A>. Lot of you may recognize
+him from the lots of helpful posts on the mfc usenet groups.
+
+
+<p>CDirDialog : this class encapsulates the SHBrowseForFolder API. You can
+use this class to browse for folders. I had seen many posting asking this
+question. So, I put together this small wrapper class. In order to use it ,
+Set the title by setting the text in m_strTitle. If you dont set this the
+title will have "Open".
+
+<p>Set the initial directory to start from using m_strInitDir. If you dont set
+this, it will start from desktop.
+
+<p>Then call DoBrowse (). If it returns TRUE, you can see the m_strPath for
+the selected directory. If it returns FALSE, user has dismissed the dialog
+with a cancel OR there was some problem retrieving the folder. I have not
+put in any error code. If, somebody wants to they are welcome to do it.
+
+
+<PRE><TT><FONT COLOR="#990000">
+////////////////////////////////////////////////////////////////////////
+// DirDialog.h: interface for the CDirDialog class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#if
+!defined(AFX_DIRDIALOG_H__62FFAC92_1DEE_11D1_B87A_0060979CDF6D__INCLUDED_)
+#define AFX_DIRDIALOG_H__62FFAC92_1DEE_11D1_B87A_0060979CDF6D__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+class CDirDialog
+{
+public:
+     CDirDialog();
+     virtual ~CDirDialog();
+     int DoBrowse ();
+     CString m_strPath;
+     CString m_strInitDir;
+     CString m_strTitle;
+     int  m_iImageIndex;
+
+};
+
+#endif //
+!defined(AFX_DIRDIALOG_H__62FFAC92_1DEE_11D1_B87A_0060979CDF6D__INCLUDED_)
+
+
+///////////////////////////////////////////////////////////////////////////
+// DirDialog.cpp: implementation of the CDirDialog class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "DirDialog.h"
+#include "shlobj.h"
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CDirDialog::CDirDialog()
+{////////////////////////////////////////////
+
+}
+
+CDirDialog::~CDirDialog()
+{///////////////////////////////////////////
+
+}
+
+int CDirDialog::DoBrowse ()
+{/////////////////////////////////////////
+
+    LPMALLOC pMalloc;
+    if (SHGetMalloc (&pMalloc)!= NOERROR)
+    {
+        return 0;
+    }
+
+    BROWSEINFO bInfo;
+    LPITEMIDLIST pidl;
+    ZeroMemory ( (PVOID) &bInfo,sizeof (BROWSEINFO));
+
+     if (!m_strInitDir.IsEmpty ())
+     {
+          OLECHAR       olePath[MAX_PATH];
+          ULONG         chEaten;
+          ULONG         dwAttributes;
+          HRESULT       hr;
+          LPSHELLFOLDER pDesktopFolder;
+          // // Get a pointer to the Desktop's IShellFolder interface. //
+          if (SUCCEEDED(SHGetDesktopFolder(&pDesktopFolder)))
+          {
+
+               //
+               // IShellFolder::ParseDisplayName requires the file name be in Unicode.
+               //
+               MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, m_strInitDir.GetBuffer (MAX_PATH), -1,
+                    olePath, MAX_PATH);
+
+               m_strInitDir.ReleaseBuffer (-1);
+               //
+               // Convert the path to an ITEMIDLIST.
+               //
+               hr = pDesktopFolder->ParseDisplayName(NULL,
+                    NULL,
+                    olePath,
+                    &chEaten,
+                    &pidl,
+                    &dwAttributes);
+               if (FAILED(hr))
+               {
+                    pMalloc ->Free (pidl);
+                    pMalloc ->Release ();
+                    return 0;
+               }
+               bInfo.pidlRoot = pidl;
+          }
+     }
+          bInfo.hwndOwner = NULL;
+          bInfo.pszDisplayName = m_strPath.GetBuffer (MAX_PATH);
+          bInfo.lpszTitle = (m_strTitle.IsEmpty()) ? "Open":m_strTitle;
+          bInfo.ulFlags = BIF_RETURNFSANCESTORS|BIF_RETURNONLYFSDIRS;
+
+
+          if ((pidl = ::SHBrowseForFolder (&bInfo)) == NULL)
+          {
+               return 0;
+          }
+          m_strPath.ReleaseBuffer ();
+          m_iImageIndex = bInfo.iImage;
+
+          if (::SHGetPathFromIDList(pidl,m_strPath.GetBuffer (MAX_PATH)) == FALSE)
+          {
+               pMalloc ->Free (pidl);
+               pMalloc ->Release ();
+               return 0;
+          }
+
+    m_strPath.ReleaseBuffer ();
+
+    pMalloc ->Free (pidl);
+    pMalloc ->Release ();
+     return 1;
+}
+</FONT></TT></PRE>
+
+
+
+
+<h3>Enhancement</h3>
+This enhancement was sent by <A HREF="mailto:Lars.Klose@studbox.uni-stuttgart.de">Lars Klose</A>.
+
+<P>I downloaded Girish Bharadwaj's wrapper class for SHBrowseForFolder,
+CDirDialog, a few days ago. Because it seems useful to me to set the
+selected folder to a default value other than 'desktop' when the
+dialog opens, I extended Girish Bharadwaj's implementation with a
+callback function that sets the selected folder when the dialog is
+initialized. It's set to the value stored in the new member variable
+m_strSelDir or defaults to 'desktop' if m_strSelDir was not set.
+The attached zip contains the changed files DirDialog.h and .cpp.
+
+<P><A HREF="DirDlg.zip">Download file (2KB)</A>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

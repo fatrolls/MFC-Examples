@@ -1,0 +1,249 @@
+<html>
+<head>
+<title>MeowMoniker ReadMe</title>
+</head>
+
+<body>
+<h1>Copyright</h1>
+MeowMoniker, copyright (c) 1997, Chris Sells.<br>
+Feline, copyright (c) 1997, Chris Sells.<br>
+CComMoniker, copyright (c) 1997, Don Box, Tim Ewald and Chris Sells.<br>
+YACL, copyright (c) 1997, Don Box.<br>
+Extensions to YACL, copyright (c) 1997, Tim Ewald and Chris Sells.<br>
+All rights reserved. NO WARRANTIES ARE EXTENDED. USE AT YOUR OWN RISK.
+
+<h1>Overview</h1>
+MeowMoniker and Feline are COM objects designed and built by Chris Sells, with
+a great deal of input from Don Box and Tim Ewald. The MeowMoniker is a custom
+moniker derived from the CComMoniker class implemented by Don Box, Tim Ewald
+and Chris Sells.
+<p>
+To contact the authors with suggestions or comments, use
+<a href=mailto:csells@sellsbrothers.com>csells@sellsbrothers.com</a>,
+<a href=mailto:tewald@obelisk-llc.com>tewald@obelisk-llc.com</a> and
+<a href=mailto:dbox@develop.com>dbox@develop.com</a>.
+
+<h1>MeowMoniker Usage</h1>
+Microsoft tags every marshalled interface reference packet with the signature MEOW (which
+they claim stands for Microsoft Extended Object Wire-representation). This binary packet
+is a serialized interface reference used for inter-apartment activation. Turning this
+binary packet into a string (via some encoding technique, i.e. Base64) allows a
+serialized interface pointer to be passed more easily than binary data, e.g. as a
+command-line argument or in an HTML page.
+<p>
+Monikers, on the other hand, provide a general-purpose way for a client to separate
+itself from the object binding policy. These object binding polices can be composed
+and stored in strings. These strings contain a string description of the binding
+policy and policy parameters. By building a custom moniker that takes a string-ized
+interface reference as a parameter, a client can use the standard moniker-based
+binding algorithm and bind to a running object via an interface reference. The
+MeowMoniker is an implementation of a moniker that can compose display names out
+of interface pointers and bind to objects via its display names.
+<p>
+To create a MeowMoniker from an interface pointer, MeowMoniker.dll exposes the
+CreateMeowMoniker() function:
+    <pre>
+    STDAPI CreateMeowMoniker(
+        IUnknown*   punk,           // Pointer to the interface to be marshaled
+        REFIID      riid,           // Reference to the identifier of the interface
+        DWORD       dwDestContext,  // Destination context
+        DWORD       mshlflags,      // Reason for marshaling
+        IMoniker**  ppmk);          // Indirect pointer to the moniker
+
+    e.g.
+
+    IMoniker* pmk;
+    hr = CreateMeowMoniker(punkObject,
+                           IID_IUnknown,
+                           MSHCTX_DIFFERENTMACHINE,
+                           MSHLFLAGS_NORMAL,
+                           &pmk);
+    </pre>
+<p>
+To obtain the MeowMoniker's display name, use the GetDisplayName() member function
+of the IMoniker interface:
+    <pre>
+    HRESULT GetDisplayName(
+        IBindCtx *pbc,              // Pointer to bind context to be used 
+        IMoniker *pmkToLeft,        // Pointer to moniker to the left in the composite 
+        LPOLESTR *ppszDisplayName); //Indirect pointer to the display name 
+
+    e.g.
+
+    IBindCtx*   pbc;
+    hr = CreateBindCtx(0, &pbc);
+
+    wchar_t*    pwszDisplayName;
+    hr = pmk->GetDisplayName(pbc, 0, &pwszDisplayName);
+    </pre>
+<p>
+To parse a display name composed by the MeowMoniker, OLE32.dll exposes the
+MkParseDisplayName() function:
+    <pre>
+    WINOLEAPI MkParseDisplayName(
+        LPBC pbc,               // Pointer to the bind context object
+        LPCOLESTR szUserName,   // Pointer to display name
+        ULONG FAR *pchEaten,    // Pointer to the number of characters consumed
+        LPMONIKER FAR *ppmk);   // Indirect pointer to the moniker
+
+    e.g.
+
+    IBindCtx*   pbc;
+    hr = CreateBindCtx(0, &pbc);
+
+    IMoniker*   pmk;
+    ULONG       cchEaten;
+    hr = MkParseDisplayName(pbc,
+                            pwszDisplayName,
+                            &cchEaten,
+                            &pmk);
+    </pre>
+<p>
+To bind to a object, use the BindToObject() member function of the IMoniker interface:
+    <pre>
+    HRESULT BindToObject(
+        IBindCtx *pbc,      // Pointer to bind context object to be used
+        IMoniker *pmkToLeft,// Pointer to moniker that precedes this one in the composite
+        REFIID riidResult,  // IID of interface pointer requested 
+        void **ppvResult);  // Indirect pointer to the specified interface on the object 
+
+    e.g.
+
+    IUnknown*   punk;
+    hr = pmk->BindToObject(pbc, 0, IID_IUnknown, (void**)&punk);
+
+    </pre>
+<i>Note: The MeowMoniker does not current supportly composition or the IMoniker interface
+member function BindToStorage().</i>
+
+<h1>Feline Usage</h1>
+Since neither VB nor VBScript supports calling CreateMeowMoniker() and since
+VBScript has no equivilent of the VB function GetObject(), the Feline object
+provides a dual-interface for making display names out of interface pointers
+and parsing moniker display names:
+    <pre>
+    [
+        object,
+        uuid(CB18CB8E-C7CC-11D0-9A44-00008600A105),
+        dual,
+        helpstring("DIFeline Interface"),
+        pointer_default(unique)
+    ]
+    interface DIFeline : IDispatch
+    {
+        [id(1), helpstring("Returns the Meow Moniker name of an interface pointer")]
+        HRESULT GetDisplayName([in] IDispatch* pdisp, [out, retval] BSTR* pbstrName);
+
+        [id(2), helpstring("Returns an interface pointer given any moniker display name")]
+        HRESULT ParseDisplayName([in] BSTR bstrName, [out, retval] IDispatch** ppdisp);
+    };
+    </pre>
+The following is an example Active Server Page that creates an object on the server,
+creates a display name using the object's interface pointer and uses the display
+name to create a client-side script. The client-side script uses its own instance
+of a feline object to parse the display name and bind to the object created on the
+server-side.
+    <pre>
+    &ltHEAD&gt
+    &ltTITLE&gtfeline.asp&lt/TITLE&gt
+    &lt/HEAD&gt
+    &ltBODY&gt
+
+    &ltobject classid="clsid:CB18CB8F-C7CC-11D0-9A44-00008600A105"
+            runat=server
+            id=feline&gt
+    &lt/object&gt
+
+    &ltobject classid="clsid:7CF322E0-29A9-11D0-B367-0080C7BC7884"
+            runat=server
+            id=pt&gt
+    &lt/object&gt
+
+    &ltobject classid="clsid:CB18CB8F-C7CC-11D0-9A44-00008600A105"
+            id=feline&gt
+    &lt/object&gt
+
+    &ltscript language=vbscript&gt
+        dim pt
+        set pt = feline.ParseDisplayName("&lt%= feline.GetDisplayName(pt) %&gt")
+        pt.x = 100
+        pt.y = 200
+        document.write pt.x & ", " & pt.y
+    &lt/script&gt
+
+    &lt/BODY&gt
+    &lt/HTML&gt
+    </pre>
+
+<h1>CComMoniker Implementation</h1>
+The MeowMoniker derives most of its functionality from CComMoniker,
+provided in mkbase.h and mkbase.cpp. This base class implements IMoniker,
+IParseDisplayName, IROTData and IMarshal (for marshal-by-value). This implementation
+uses the moniker's display name as the persistent state. The custom moniker
+implementor deriving from CComMoniker must provide the CSLID of the moniker
+as the single template parameter (used in the implementation of the GetClassID()
+member function of IPersist and the GetUnmarshalClass() member function of
+IMarshal). The implementor may override any of the base class's member functions
+but <b>must</b> implement these three IMoniker members:
+    <pre>
+    STDMETHODIMP BindToObject(
+        IBindCtx*   pbc,
+        IMoniker*   pmkToLeft,
+        REFIID      riidResult,
+        void**      ppvResult);
+
+    STDMETHODIMP GetDisplayName(
+        IBindCtx*   pbc,
+        IMoniker*   pmkToLeft,
+        LPOLESTR*   ppszDisplayName);
+
+    STDMETHODIMP ParseDisplayName(
+        IBindCtx*   pbc,
+        IMoniker*   pmkToLeft,
+        LPOLESTR    pszDisplayName,
+        ULONG*      pchEaten,
+        IMoniker**  ppmkOut);
+    </pre>
+
+As a aid in parsing display names, the CComMoniker class provides the following
+helper function:
+    <pre>
+    bool MatchesProgID(
+        const wchar_t*  pwszDisplayName,    // Display name being parsed
+        const wchar_t** ppwszDisplayParam); // Pointer to character past :
+    </pre>
+
+This function checks the display name for a leading ProgID or VersionIndependentProgID
+followed by a colon and returns a pointer to the first character of the display
+name parameter(s), i.e. one character past the colon. The implementation of this
+function requires the derived class to implement the following member functions:
+    <pre>
+    virtual const wchar_t* ProgID() =0;
+    virtual const wchar_t* VersionIndependentProgID() =0;
+
+    e.g.
+
+    const wchar_t* ProgID() { return L"dm.meow.1"; }
+    const wchar_t* VersionIndependentProgID() { return L"dm.meow"; }
+    </pre>
+
+<h1>CoMeowMoniker Implementation</h1>
+The MeowMoniker is an ATL object named CoMeowMoniker. It derives from CComMoniker
+and provides an implementation of the required members only. The bulk of the implementation
+is contained in the two member functions, MarshalInterface() and UnmarshalInterface().
+These two member functions manage the Base64 encoding and decoding of the interface
+pointer. The actual Base64 implementation is kept in Base64.cpp.
+
+<h1>CoFeline Implementation</h1>
+The Feline is an ATL object named CoFeline. Its implementation of GetDisplayName()
+uses a MeowMoniker. Its implementation of ParseDisplayName() uses MkParseDisplayName()
+so that any moniker's display name can be used.
+
+<h1>YACL</h1>
+The implementation of the MeowMoniker is based on utilities provided in the YACL
+(Yet Another COM Library), developed and maintained by Don Box and available at
+<a href=http://www.develop.com/dbox/yacl>Don's YACL web site.</a> Since I have
+augmented YACL with my own extensions, I have included the YACL used to build
+the MeowMoniker.
+</body>
+</html>

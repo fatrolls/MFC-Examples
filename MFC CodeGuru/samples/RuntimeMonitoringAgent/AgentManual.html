@@ -1,0 +1,731 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Generator" CONTENT="Microsoft Word 97">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.01 [en] (WinNT; I) [Netscape]">
+   <META NAME="Author" CONTENT="Zoran M.Todorovic">
+   <TITLE>Agent Manual</TITLE>
+</HEAD>
+<BODY LINK="#0000FF" VLINK="#800080">
+
+<CENTER>
+<H1>
+<FONT COLOR="#FF0000">Runtime Monitoring Agent</FONT></H1></CENTER>
+
+<CENTER>
+<H2>
+<FONT COLOR="#FF0000">- Programmer's Manual -</FONT></H2></CENTER>
+
+<CENTER>Designed and developed by</CENTER>
+
+<CENTER><A HREF="#AboutUs">Zoran M.Todorovic</A> and <A HREF="#AboutUs">Miodrag
+D.Stojadinovic</A></CENTER>
+
+
+<P>
+<HR>
+<H1>
+Contents</H1>
+
+<UL>
+<LI>
+<A HREF="#Introduction">Introduction</A></LI>
+
+<LI>
+<A HREF="#UserInterface">User interface</A></LI>
+
+<LI>
+<A HREF="#AgentDLL">Agent.DLL</A></LI>
+
+<LI>
+<A HREF="#AgentLibrary">Agent library</A></LI>
+
+<LI>
+<A HREF="#Delphi">Delphi component or class</A></LI>
+
+<LI>
+<A HREF="#VisualBasic">Visual Basic</A></LI>
+
+<LI>
+<A HREF="#Example">Example</A></LI>
+
+<LI>
+<A HREF="#SideEffects">Side effects</A></LI>
+
+<LI>
+<A HREF="#BackToTheFuture">Back to the future</A></LI>
+
+<LI>
+<A HREF="#AboutUs">About us</A></LI>
+</UL>
+
+
+<P>
+<HR WIDTH="100%">
+<H1>
+<A NAME="Introduction"></A><FONT COLOR="#000000">Introduction</FONT></H1>
+Often while developing an application, programmer needs an information
+about a value of specific variable, time needed to execute a piece of code
+or just plain info that some function/module has been entered/exited. Most
+of these information can be collected using a debugger but, debugger interrupts
+normal program execution (critical for communication programs) and doesn't
+give any time related info (for example, how long does it take to execute
+an SQL statement or what is the time difference between sending a command
+and receiving a response from a device connected to a serial port). Also,
+once you build a release version, you lose any debugging capabilities unless
+they are hard-coded into the program.
+
+<P>Most often, programmers use dump to file as a way to collect info but
+it has several limitations. You cannot view info while program is running,
+you lose some or all data if program crashes and it's very difficult to
+find something in a mass of data collected in this way.
+
+<P>That's were Runtime Monitoring Agent (plain Agent in further text) comes
+in !!!
+<H2>
+The Agent</H2>
+Agent is a separate, stand-alone process which uses Win32 inter process
+communication facilities to receive programmer defined messages coming
+from a client process via an Agent DLL loaded into the client process.
+Agent has an Explorer like user interface. One of the requirements for
+the Agent is that it can be used with programming environments other then
+C++ (for example, Delphi). This is the reason why the Agent is statically
+linked with MFC and C++ runtime library (programmer doesn't need anything
+else but the Agent itself to run it on a target computer). Agent DLL is
+a non-MFC DLL with a very small footprint which is loaded into the client
+program address space and implements a communication channel with an Agent.
+Besides Visual C++, it can also be used for programming environments like
+Delphi. For convenience, there is also a C++ Agent library which takes
+care of dynamically loading the Agent DLL. It is also very small and will
+enable a process to work even if Agent DLL is not found.
+
+<P>Some terminology is necessary to explain the philosophy behind the Agent.
+<H2>
+<A NAME="Terminology"></A>Terminology</H2>
+Agent monitors a <B>System</B> -- set of executable modules which are part
+of a project programmer is working on. Module is either an executable file
+or a DLL. Within a System, programmer defines processes. <B>Process</B>
+is equivalent to a module (executable or DLL). Process can also be a part
+of a module if it is convenient for a programmer (for example, a special
+worker thread). Each process contains one or more fibers. <B>Fiber</B>
+is related to one function, algorithm or any other piece of code programmer
+can think of. Each fiber contains one or more messages. <B>Message</B>
+is at the lowest level and contains a user defined text (usually built
+with a sprinf or CString in order to contain runtime data) and optionally
+a Win32 error code. It can also contain a source code file name and a line
+number from which a message is sent. Agent DLL automatically adds a timestamp
+when the message is sent.
+<H1>
+<A NAME="UserInterface"></A>User Interface</H1>
+The Agent has an explorer like user interface. Left pane is a tree view
+with a list of processes in a system and a list of fibers in each process.
+This is automatically filled from the client application. Right pane is
+splitted into a fixed dimension title pane which contains the name of the
+currently selected system, process or alias and a list view pane which
+is automatically filled with messages as they are received (from the client
+application). There are several possible operations user can perform via
+the user interface.
+<UL>
+<LI>
+User can always save the current session in a file with an extension .agt
+for later reference and analysis.</LI>
+
+<LI>
+Agent can be hidden from the screen and left on a taskbar as an icon.</LI>
+</UL>
+
+<H2>
+Tree view (<A HREF="#Terminology">system</A>/<A HREF="#Terminology">processes</A>/<A HREF="#Terminology">fibers</A>)</H2>
+At the root of the tree view is a registered system. Its children are registered
+processes with the exception of the "All checked fibers" process which
+is automatically added by the Agent. Children of each process are its fibers.
+Each fiber is implemented as a checkbox - user can select it or deselect
+it by clicking on a box on the left of the node label.
+<DL>
+<DL>
+<LI>
+If you double click on a tree node, list view will display all messages
+corresponding to a selected node. If it is a process, you will get all
+the messages corresponding to all the fibers in a selected process. If
+it is a system, you will get messages for all the fibers for all the processes
+in a system. Special case is a local "All checked fibers" process.</LI>
+
+<LI>
+If you click on a checkbox associated with a fiber, you will select/deselect
+a fiber. Double click on an "All checked fibers" process will display all
+messages corresponding to fibers belonging to all checked processes.</LI>
+
+<LI>
+Instead of double clicking, you can select a desired tree node and click
+on a "Synchronize" toolbar button.</LI>
+</DL>
+
+
+<P>When you double click on a tree view node or click on a "Synchronize"
+toolbar item, label of the currently selected node (can be system name,
+process name or fiber name) is automatically displayed in a top-right view
+(fixed view). It indicates what you are currently viewing since you can
+select some other node without double-clicking on it or performin a synchronization.</DL>
+
+<H2>
+List view (<A HREF="#Terminology">messages</A>)</H2>
+Depending on a tree view selection, list view contains one or more messages.
+Each message contains the following fields (columns):
+<UL>
+<LI>
+Date/time when the message was sent from the client application.</LI>
+
+<LI>
+Source code filename (full path) and line number (if defined by the client
+application).</LI>
+
+<LI>
+Message text.</LI>
+
+<LI>
+Win32 numeric error code.</LI>
+
+<LI>
+Description of a specific Win32 error code.</LI>
+</UL>
+From the toolbar (clicking on toolbar buttons), you can do the following
+<DL>
+<DL>
+<LI>
+Display a short (only time) or full (full date and time) timestamp.</LI>
+
+<LI>
+Display only a source code filename or a full path.</LI>
+
+<LI>
+Choose to hide columns containing Win32 error code and its description.</LI>
+</DL>
+</DL>
+Directly in a list view, you can do the following with a selected range
+of messages:
+<UL>
+<LI>
+Hide all selected messages.</LI>
+
+<LI>
+Leave selected messages and hide all the rest (not selected).</LI>
+
+<LI>
+Make all messages visible.</LI>
+</UL>
+This feature is useful if you have a lot of activity in a selected fiber(s)
+and you want to focus your attention to some of the messages.
+<H2>
+Configuration</H2>
+When the Agent is started for the first time, it takes a default configuration.
+However, as soon as a user changes something (position on the screen, column
+width in a list view etc.), changes are registered in the registry database
+under the key:
+<UL><B><TT>HKEY_LOCAL_MACHINE\Software\Codor\Agent</TT></B></UL>
+&nbsp;
+<H1>
+<A NAME="AgentDLL"></A>Agent DLL</H1>
+Agent DLL is a <B>non-MFC DLL</B> which should be used by the client process
+in order to make a connection with the Agent. Using functions exported
+from the Agent DLL, client process can send messages to the Agent. Agent
+DLL is very simple and small. Since its purpose is to use Agent from environments
+other then Visual C++, it is <B>statically linked with C++ runtime library
+</B>so that client application doesn't need anything else but the Agent
+DLL to establish a connection with the Agent.
+
+<P>Agent DLL is <B>thread safe</B>. It can be safely used from several
+threads within one process. It can also be used from different processes
+since access to shared resources is protected. Although it is designed
+for Windows NT, it can also be used in Windows 95.
+
+<P>Agent DLL exports only one function -- SendMsg() with the following
+signature:
+
+<P><TT><FONT COLOR="#FF0000">int SendMsg(int fiber, int process, int system,
+int type, int len, void *data)</FONT></TT>
+
+<P>The purpose of <I>fiber</I>, <I>process </I>and <I>system </I>are described
+in <A HREF="#Terminology">above</A>. <I>Type</I> is a predefined constant
+which describes the contents of <I>data</I>. <I>Len </I>is a length of
+<I>data </I>in bytes and is most often defined as a <TT>sizeof(struct ...)</TT>.
+<I>Data </I>is a pointer to user defined data with a predefined structure.
+
+<P>Return code is 0 if the message is delivered to the Agent. Otherwise,
+it is 1.
+
+<P>When SendMsg is executed, it will add a timestamp to a message (<TT>::GetLocalTime()</TT>)
+and send a message to the Agent. This operation has several possible scenarios:
+<UL>
+<LI>
+If the Agent was running when the client application was started (actually
+when the Agent DLL was loaded) and is still running, message is immediatelly
+transfered to the Agent and control is returned to the client process.</LI>
+
+<LI>
+If the Agent was not running when the client application was started (actually
+when the Agent DLL was loaded), the function returns immediatelly with
+no time lost. It doesn't matter if the Agent is currently running since
+client application missed an opportunity to establish a connection to the
+Agent and to define system and all processes and fibers.</LI>
+
+<LI>
+If the Agent was running but is not running now, then Agent DLL will wait
+for 250 ms for an Agent. If the message could not be delivered in this
+time interval, the Agent DLL assumes that the Agent is dead and stops sending
+messages. Consecutive calls will not waste time but will return immediatelly.</LI>
+</UL>
+Following message types are defined:
+<BR>&nbsp;
+<TABLE BORDER COLS=3 WIDTH="61%" >
+<TR>
+<TD>Registered type</TD>
+
+<TD>Value</TD>
+
+<TD>Data structure</TD>
+</TR>
+
+<TR>
+<TD><TT>MT_TEXT</TT></TD>
+
+<TD><TT>0x1000</TT></TD>
+
+<TD><TT>struct TMtText</TT></TD>
+</TR>
+
+<TR>
+<TD><TT>MT_EXTTEXT</TT></TD>
+
+<TD><TT>0x1001</TT></TD>
+
+<TD><TT>struct TMtExtText</TT></TD>
+</TR>
+
+<TR>
+<TD><TT>MT_SYSTEM</TT></TD>
+
+<TD><TT>0x2000</TT></TD>
+
+<TD><TT>struct TMtSystem</TT></TD>
+</TR>
+
+<TR>
+<TD><TT>MT_PROCESS</TT></TD>
+
+<TD><TT>0x2001</TT></TD>
+
+<TD><TT>struct TMtProcess</TT></TD>
+</TR>
+
+<TR>
+<TD><TT>MT_FIBER</TT></TD>
+
+<TD><TT>0x2002</TT></TD>
+
+<TD><TT>struct TMtFiber</TT></TD>
+</TR>
+</TABLE>
+
+
+<P>When the message type is MT_SYSTEM, MT_PROCESS or MT_FIBER, function
+arguments system, process and fiber are irelevant (set it to 0). Depending
+on the registered message type (see table above), data points to one of
+the structures listed below:
+
+<P><TT><FONT COLOR="#FF0000">#define MAX_NAME_LENGTH&nbsp;&nbsp; 255</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">#define MAX_TEXT_LENGTH&nbsp;&nbsp; 500</FONT></TT>
+
+<P><TT><FONT COLOR="#FF0000">// Plain text</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">struct TMtText {</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; char Text[MAX_TEXT_LENGTH];</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">};</FONT></TT>
+
+<P><TT><FONT COLOR="#FF0000">// Plain text with Win32 error code</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">struct TMtExtText {</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; char Filename[MAX_NAME_LENGTH];</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; int Linenum;</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; int ErrorCode;</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; char Text[MAX_TEXT_LENGTH];</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">};</FONT></TT>
+
+<P><TT><FONT COLOR="#FF0000">// Definition of system</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">struct TMtSystem {</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; int Identifier;</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; char Name[MAX_NAME_LENGTH];</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">};</FONT></TT>
+
+<P><TT><FONT COLOR="#FF0000">// Definition of process</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">struct TMtProcess {</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; int System;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Identifier of the system this process belongs to</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; int Identifier;</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; char Name[MAX_NAME_LENGTH];</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">};</FONT></TT>
+
+<P><TT><FONT COLOR="#FF0000">// Definition of fiber</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">struct TMtFiber {</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; int Process;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Identifier of the process this fiber belongs to</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; int Identifier;</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp; char Name[MAX_NAME_LENGTH];</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">};</FONT></TT>
+
+<P>In all the structures above, <I>Identifier </I>is a programmer defined
+constant. <B>Identifier should not be in a range from 0 to 100 inclusive
+- this range is reserved for Agent</B>. Since you will probably use Agent
+on various different and unrelated projects - if you find it useful at
+all :-) - it is good to make a convention when defining identifiers. <I>Name
+</I>is a programmer defined and shuld be a description of an object.
+
+<P>Since Agent DLL exports a function which receives a structure as an
+argument, it is very important to set a <B>byte alignment to 1</B> (which
+is a byte alignment of an Agent DLL) in your project. Otherwise, you can
+have a scrambled data when it comes into a DLL.
+
+<P>In most cases, Agent DLL should be linked into a client project during
+runtime. This technique will not prevent client application from running
+if an Agent DLL is not present. However, you can also use a compile time
+linking to a DLL since it is much easier to implement.
+<H1>
+<A NAME="AgentLibrary"></A>Agent Library</H1>
+In order to simplify the use of <A HREF="#AgentDLL">Agent DLL</A> in Visual
+C++ projects, Agent LIB is designed. This is a plain and simple C++ library
+which performs several functions:
+<UL>
+<LI>
+It dynamically loads the Agent DLL (during runtime).</LI>
+
+<LI>
+It offers a function interface instead of a structure and one function
+as it is with the Agent DLL.</LI>
+</UL>
+Since Agent LIB encapsulates the interface towards the <A HREF="#AgentDLL">Agent
+DLL</A>, the programmer doesn't have to concern himself with an Agent DLL
+any more. It must exist however, but a software interface is completely
+hidden. Following functions are declared in an agentlib.h include file
+which should be used in a client application.
+
+<P><TT><FONT COLOR="#FF0000">void _stdcall AgentDefineSystem(int systemId,
+const char *name);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">void _stdcall AgentDefineProcess(int systemId,
+int processId, const char *name);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">void _stdcall AgentDefineFiber(int processId,
+int fiberId, const char *name);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">void _stdcall AgentSendText1A(int fiberId,
+int processId, int systemId, const char *text);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">void _stdcall AgentSendText1B(int fiberId,
+const char *text);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">void _stdcall AgentSendText2A(int fiberId,
+int processId, int systemId,</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+const char *filename, int linenum,</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+const char *text, long errcode);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">void _stdcall AgentSendText2B(int fiberId,
+const char *filename, int linenum,</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+const char *text, long errcode);</FONT></TT>
+
+<P><B><TT><FONT COLOR="#FF0000">AgentDefineSystem(int systemId, const char
+*name)</FONT></TT></B>
+<BR>This function should be the first Agent related function executed from
+the client application. It will load an Agent DLL and send a system definition
+to the Agent. <I>SystemId </I>is a programmer defined identifier for the
+system. Only one system can be defined in one client process. If your application
+have several different executables and/or DLLs, then each must define the
+same <I>systemId</I>.
+
+<P><B><TT><FONT COLOR="#FF0000">AgentDefineProcess(int systemId, int processId,
+const char *name)</FONT></TT></B>
+<BR>Following a system definition should be a set of consecutive calls
+where each defines a process. <I>ProcessId </I>is a programmer defined
+identifier for the process and must be unique - there must not be two different
+processes with the same identifier.
+
+<P><B><TT><FONT COLOR="#FF0000">AgentDefineFiber(int processId, int fiberId,
+const char *name)</FONT></TT></B>
+<BR>Following a definition of processes, there should be a set of consecutive
+calls where each defines a fiber. <I>FiberId </I>is a programmer defined
+unique fiber identifier.
+
+<P>After definitions, client process can send messages to the Agent using
+any of the functions AgentSendTextXX. If Agent DLL is found, it is already
+loaded into the client process address space.
+
+<P><B><TT><FONT COLOR="#FF0000">AgentSendText1A(int fiberId, int processId,
+int systemId, const char *text)</FONT></TT></B>
+<BR><FONT COLOR="#000000">This function sends a simple message to the Agent
+(message type MT_TEXT). First 3 parameters define the owner of the message.</FONT>
+
+<P><B><TT><FONT COLOR="#FF0000">AgentSendText1B(int fiberId, const char
+*text)</FONT></TT></B>
+<BR><FONT COLOR="#000000">This function is a simplification of the previous
+one. When the Agent detects that a message has a process and a system identifiers
+equal to 0, it will search its internal data structures in order to find
+a process this fiber belongs to. If it doesn't find it, message is dropped
+-- will not appear in the Agent.</FONT>
+
+<P><B><TT><FONT COLOR="#FF0000">AgentSendText2A(int fiberId, int processId,
+int systemId,</FONT></TT></B>
+<BR><B><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+const char *filename, int linenum,</FONT></TT></B>
+<BR><B><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+const char *text, long errcode)</FONT></TT></B>
+<BR><FONT COLOR="#000000">This function corresponds to the message type
+MT_EXTTEXT. First three parameters identify the owner of the message. <I>Filename
+</I>is usually a macro __FILE__ but it can also be NULL. <I>Linenum </I>is
+usually a macro __LINE__ or plain 0. <I>Text </I>is the actual message
+and <I>errcode </I>is a Win32 error code returned from a Win32 API function
+or returned from ::GetLastError().</FONT>
+
+<P><B><TT><FONT COLOR="#FF0000">AgentSendText2B(int fiberId, const char
+*filename, int linenum,</FONT></TT></B>
+<BR><B><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+const char *text, long errcode)</FONT></TT></B>
+<BR>This is a simplification of the previous message. Agent will search
+its internal data structures to find a process this fiber belongs to. If
+the process is found, message is accepted - otherwise it is dropped.
+
+<P>Simple interface, isn't it?
+
+<P>In order to simplify it further more, programmer can define a set of
+macros in his/her project. I'll show it in the following <A HREF="#Example">example</A>.
+<H1>
+<A NAME="Delphi"></A>Delphi component or class</H1>
+Since I'm currently not working on a Delphi project, this task is left
+to be done. I'm planning to implement a Delphi component with the functionality
+of the Agent LIB. It will dynamically load the DLL and offer the same functionality
+as the Agent LIB.
+<H1>
+<A NAME="VisualBasic"></A>Visual Basic</H1>
+I'm not familiar with Visual Basic since I don't think it is a language
+of choice for a professional programmer. However, software market and customers
+require it (I don't know why). So, if any of you out there are willing
+to implement a component for Visual Basic which offers the functionality
+of the Agent LIB, we will be more then glad to help in any way. Please,
+<A HREF="#AboutUs">contact us</A> about this.
+<H1>
+<A NAME="Example"></A>Example</H1>
+The example bellow&nbsp; is a Visual C++ project which uses an Agent LIB
+for communication with the Agent. Full example is contained in a zip file
+-- this here is just a relevant part which shows how to use it.
+
+<P>Let's assume that example project consists of one executable (EXE) file
+and one DLL. We'll show how to incorporate Agent support in both projects.
+
+<P>In project settings for both projects, you have to include an appropriate
+Agent.lib library on a link tab.
+<H2>
+Executable (EXE)</H2>
+Somewhere in your project's include files (the one which is visible in
+all source code files) or in a separate include file, declare the following
+macros:
+
+<P><TT><FONT COLOR="#FF0000">#define AG_SYSTEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1000</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">#define AG_PROCESS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1001</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">#define AG_FIBER1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1100</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">#define AG_FIBER2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1101</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">#define AG_FIBER3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1102</FONT></TT>
+<BR>&nbsp;
+<BR><TT><FONT COLOR="#FF0000">#define AGENT(x,y,z)&nbsp;&nbsp;&nbsp; \</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ::AgentSendText2A(x,AG_PROCESS,AG_SYSTEM,__FILE__,__LINE__,y,z)</FONT></TT>
+
+<P>Now that you have defined macros for identifiers and a macro for Agent
+LIB function, you are ready for the first of the 2 phases. First, we register
+system, processes and fibers with an Agent.
+
+<P>In your applications InitInstance function or in a constructor of your
+CWinApp derived class, you execute the following code:
+
+<P><TT><FONT COLOR="#FF0000">::AgentDefineSystem(AG_SYSTEM,"Test application
+for Runtime Monitoring Agent");</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">::AgentDefineProcess(AG_SYSTEM,AG_PROCESS,"Sample
+executable file");</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">::AgentDefineFiber(AG_PROCESS,AG_FIBER1,"Initialization/termination
+events");</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">::AgentDefineFiber(AG_PROCESS,AG_FIBER2,"User
+interaction with windows/dialogs");</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">::AgentDefineFiber(AG_PROCESS,AG_FIBER3,"Events
+in a background worker thread");</FONT></TT>
+
+<P>This is just a sample so it will have to be modified for a real project
+and its functionality. Of course, real project will probably have much
+more fibers and even more then one process.
+
+<P>Second phase is the actual sending of the message. There are 3 variations:
+
+<P><TT><FONT COLOR="#FF0000">AGENT(AG_FIBER1,"Sample application started",0);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">....</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">AGENT(AG_FIBER3,"Background worker thread
+created",0);</FONT></TT>
+<BR>&nbsp;
+<BR>or
+
+<P><TT><FONT COLOR="#FF0000">CString str;</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">str.Format(""Button clicked. Edit box contains
+[%s]", edit_box_text);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">AGENT(AG_FIBER2,str,0);</FONT></TT>
+
+<P>or
+
+<P><TT><FONT COLOR="#FF0000">HANDLE handle = ::CreateFile(...);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">if (handle == INVALID_HANDLE_VALUE)</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp; AGENT(AG_FIBER1,"::CreateFile()
+failed", ::GetLastError());</FONT></TT>
+
+<P>Agent will catch all the messages, display them together with a timestamp
+the message is sent from the client process. Error code will be expanded
+to a symbolic value.
+
+<P>That's all there is to it !!!
+<H2>
+Dynamic Link Library (DLL)</H2>
+As before, somewhere in your include files, declare the following macros:
+
+<P><TT><FONT COLOR="#FF0000">#define AG_SYSTEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1000</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">#define AG_DLLMODULE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1002</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">#define AG_DLLFIBER1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1200</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">#define AG_DLLFIBER2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1201</FONT></TT>
+<BR>&nbsp;
+<BR><TT><FONT COLOR="#FF0000">#define AGENT(x,y,z)&nbsp;&nbsp;&nbsp; \</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ::AgentSendText2A(x,AG_DLLMODULE,AG_SYSTEM,__FILE__,__LINE__,y,z)</FONT></TT>
+
+<P>In your DLLMain function, in the case for DLL_PROCESS_ATTACH, add the
+following code:
+<BR>&nbsp;
+<BR><TT><FONT COLOR="#FF0000">::AgentDefineSystem(AG_SYSTEM,"Test application
+for Runtime Monitoring Agent");</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">::AgentDefineProcess(AG_SYSTEM,AG_DLLMODULE,"DLL
+for access to the serial port");</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">::AgentDefineFiber(AG_PROCESS,AG_DLLFIBER1,"Low
+level serial port functions");</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">::AgentDefineFiber(AG_PROCESS,AG_DLLFIBER2,"Top
+level exported functions");</FONT></TT>
+<BR>&nbsp;
+<BR>System identifier and text must be the same since we are working with
+one project. Process identifier (AG_DLLMODULE) is different in order to
+make a difference (in the Agent) between the executable and DLL messages.
+
+<P>Now, we can use AGENT macro to send messages to the Agent.
+
+<P><TT><FONT COLOR="#FF0000">void GetTemperature(float *CoolingWaterTemp)</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">{</FONT></TT>
+<UL><TT><FONT COLOR="#FF0000">AGENT(AG_DLLFIBER2,"Get the current cooling
+water temperature in a reactor",0);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">Device->SendCommand("GiveMeTemperature");</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">AGENT(AG_DLLFIBER1,"Command to get the temperature
+sent to the monitoring device",0);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">if (Device->GetAnswer(CoolingWaterTemp))
+{</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp; AGENT(AG_DLLFIBER1,"Monitoring
+device returned the current temperature",0);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp; CString str;</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp; str.Format("Current temperature
+is %d degrees Celzius", *CoolingWaterTemp);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp; AGENT(AG_DLLFIBER2,str,0);</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">&nbsp;&nbsp;&nbsp; return TRUE;</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">}</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">AGENT(AG_DLLFIBER1,"Monitoring device does
+not respond or timeout",::GetLastError());</FONT></TT>
+<BR><TT><FONT COLOR="#FF0000">return FALSE;</FONT></TT></UL>
+<TT><FONT COLOR="#FF0000">}</FONT></TT>
+<BR>&nbsp;
+<BR>Finished!
+
+<P>Now, your application supports the Agent. If you don't install an Agent
+DLL on target computer, nothing happens which means that the application
+works as if there is no Agent. If you however install the Agent DLL and
+start the Agent before the application, you get a lot of info about what
+is going on inside your program (behind the user interface).
+<H1>
+<A NAME="SideEffects"></A>Side effects</H1>
+If the Agent DLL is not present, client application runs as if it is designed
+with no support for the Agent. The problem is that you have a lot of strings
+or CString objects through out the code and they waste memory space. This
+problem can be solved if all the messages are actually defined in a resource
+only DLL.
+<H1>
+<A NAME="BackToTheFuture"></A>Back to the future</H1>
+We're planning to include a couple of new features in the future.
+<UL>
+<LI>
+Automatic launch of the Agent from within Agent DLL.</LI>
+
+<LI>
+Find a message containing line number, (sub)string or error code.</LI>
+
+<LI>
+Automatically calculate time difference between two selected messages.</LI>
+
+<LI>
+Auto save feature.</LI>
+
+<LI>
+Support for multiple systems.</LI>
+
+<LI>
+Support for auto refresh messages.</LI>
+</UL>
+&nbsp;
+<TABLE BORDER COLS=1 WIDTH="100%" >
+<TR>
+<TD><B>But, first of all, we would like to get some response about this
+whole idea. Do you find it useful, are there any bugs, are there any new
+ideas, any questions etc. Please, if you have downloaded this system and
+read this document, send us a note. If you are lazy, just write "AGENT"
+in a mail so that we know how many people have actually found it interesting
+enough to download it and read about it.</B></TD>
+</TR>
+</TABLE>
+&nbsp;
+<H1>
+<A NAME="AboutUs"></A>About us</H1>
+We are working together so a lot of stuff and experience overlapps. During
+the recent years, we have been working mostly on a domestic projects but
+2 years ago we started to work for an international company with headquarters
+in Viena, Austria as a software specialist consultants. If any of you are
+interested in a cooperation on some project, please contact us.
+
+<P><B><U><A HREF="mailto:codor@eunet.yu">Zoran Todorovic (codor)</A></U></B>
+
+<P>Electronics Engineer (BSEE). Working on wide range of software projects
+for the last 8 years. Was employed at the Faculty of Technical Sciences,
+Institute for Computer Sciences in Novi Sad, Yugoslavia. Currently free
+lance software specialist. Experience on DOS, Windows 16/32, Novell Netware.
+Programming environments include Visual C/C++, Borland C++, Delphi, SQL
+Server. Database design in single user and network environment (client/server
+systems). Communication and data acquisition software. Real time systems
+on DOS based PLCs. Working on projects for industrial support and control
+systems, power electric industry, distributed factory management systems
+etc.
+
+<P><B><U><A HREF="mailto:micko@eunet.yu">Miodrag Stojadinovic (micko)</A></U></B>
+
+<P>Computer Science Engineer (BSCS). Software experience on a wide range
+of projects during the last 9 years. Currently employed at the Faculty
+of Technical Sciences, Institute for Computer Sciences in Novi Sad, Yugoslavia.
+Experience on DOS, Windows 16/32, real-time DOS. Programming environments
+include Visual C/C++, Delphi, SQL Server, INTEL 8-bit microcontrollers
+8031 series. Client server systems. Communication, data acquisition and
+SCADA software. Working on projects for industrial support and control
+systems, power electric industry, distributed factory management systems
+etc.
+<BR>&nbsp;
+
+<P>Thanks for trying and patience.
+
+<P><A HREF="mailto:codor@eunet.yu">Codor</A> &amp; <A HREF="mailto:micko@eunet.yu">Micko</A>
+
+<P>November 1997.
+<BR>&nbsp;
+</BODY>
+</HTML>

@@ -1,0 +1,266 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Nikolay Sokratov">
+<title>CSplitterWnd in a Dialog based Application</title>
+</head>
+<!-- Set background properties -->
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+<!-- A word from our sponsors... -->
+<!-- Article Title -->
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<h3 align="center"><font color="#000000"><strong>CSplitterWnd in a Dialog based
+Application</strong></font></h3>
+
+<hr align="center">
+<!-- Author and contact details -->
+
+<p>This article was contributed by <a href="mailto:gerdk@xcc.de">Gerd Klevesaat</a> </p>
+
+<p><a href="http://www.codeguru.com/dialog/split_in_dlg.zip">Download Example Project</a></p>
+
+<p>Had this problem before. I guess there are some more interested in a solution.<br>
+<br>
+It seems CSplitterWnd is designed to be used in document/view-based applications only. <br>
+But by overriding some virtual methods in a derived class, you can make splitter windows
+based on CSplitterWnd be used in dialog based application, ActiveX-Controls using MFC:<br>
+<br>
+All virtual methods that call GetParentFrame() in its implementation have to be
+overridden. <br>
+I have done this by using existing code except<br>
+- that I replaced the call to GetParentFrame() by a call to GetParent(). <br>
+- all references or pointers to CFrameWnd were changed to references or pointers to CWnd. <br>
+<br>
+I derived a class CxSplitterWnd from the class CSplitterWnd and proceeded as stated above.
+<br>
+Then I used this class in a dialog based application in the same way as any other CWnd
+derived class.<br>
+For example: </p>
+
+<PRE><TT><FONT COLOR="#990000">
+class CSampleDialog : public CDialog
+{
+	... 
+	CxSplitterWnd m_wndSplitter; 
+	.... 
+}
+
+BOOL CSampleDlg::OnInitDialog()
+{ 
+...
+	// TODO: Add extra initialization here
+	m_wndSplitter.CreateStatic(this, 1, 2);
+	m_wndSplitter.CreateView(0,0,RUNTIME_CLASS(CSampleView), CSize(50,0), NULL);
+	m_wndSplitter.CreateView(0,1,RUNTIME_CLASS(CSampleView), CSize(0,0), NULL); 
+
+	CRect rect = ...;
+	m_wndSplitter.MoveWindow(&amp;rect);
+	... 
+}
+</FONT></TT></PRE>
+
+<p>The sample attached is a dialog based application and demonstrates the use of
+CxSplitterWnd. It does<br>
+nothing useful.<br>
+<br>
+This is the new class declaration:</p>
+
+<PRE><TT><FONT COLOR="#990000">
+// SplitWnd.h : implementation file
+// 
+class CxSplitterWnd : public CSplitterWnd
+{
+	// Construction
+	public:
+	CxSplitterWnd() {};
+	virtual ~CxSplitterWnd() {}; 
+
+	// Operations
+	public: 
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CxSplitterWnd)
+	//}}AFX_VIRTUAL 
+
+	// Implementation
+	public: 
+	// These are the methods to be overridden
+	virtual void StartTracking(int ht); 
+	virtual CWnd* GetActivePane(int* pRow = NULL, int* pCol = NULL);
+	virtual void SetActivePane( int row, int col, CWnd* pWnd = NULL ); 
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
+	virtual BOOL OnWndMsg( UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult ); 
+
+	// Generated message map functions
+	protected:
+	//{{AFX_MSG(CxSplitterWnd)
+	// NOTE - the ClassWizard will add and remove member functions here.
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+</FONT></TT></PRE>
+
+And here the implementation file:
+
+<PRE><TT><FONT COLOR="#990000">
+// SplitWnd.cpp : implementation file
+// 
+#include &quot;stdafx.h&quot;
+#include &quot;SplitWnd.h&quot; 
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif 
+
+// HitTest return values (values and spacing between values is important)
+// Had to adopt this because it has module scope 
+enum HitTestValue
+{
+	noHit = 0,
+	vSplitterBox = 1,
+	hSplitterBox = 2,
+	bothSplitterBox = 3, // just for keyboard
+	vSplitterBar1 = 101,
+	vSplitterBar15 = 115,
+	hSplitterBar1 = 201,
+	hSplitterBar15 = 215,
+	splitterIntersection1 = 301,
+	splitterIntersection225 = 525
+}; 
+
+/////////////////////////////////////////////////////////////////////////////
+// CxSplitterWnd 
+
+BEGIN_MESSAGE_MAP(CxSplitterWnd, CSplitterWnd)
+//{{AFX_MSG_MAP(CxSplitterWnd)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP() 
+
+CWnd* CxSplitterWnd::GetActivePane(int* pRow, int* pCol)
+{
+	ASSERT_VALID(this); 
+	CWnd* pView = GetFocus();
+	// make sure the pane is a child pane of the splitter
+	if (pView != NULL &amp;&amp; !IsChildPane(pView, pRow, pCol))
+	pView = NULL; 
+	return pView;
+} 
+
+void CxSplitterWnd::SetActivePane( int row, int col, CWnd* pWnd)
+{
+	// set the focus to the pane
+	CWnd* pPane = pWnd == NULL ? GetPane(row, col) : pWnd;
+	pPane-&gt;SetFocus();
+} 
+
+void CxSplitterWnd::StartTracking(int ht)
+{
+ASSERT_VALID(this);
+	if (ht == noHit)
+		return; 
+	// GetHitRect will restrict 'm_rectLimit' as appropriate
+	GetInsideRect(m_rectLimit); 
+	if (ht &gt;= splitterIntersection1 &amp;&amp; ht &lt;= splitterIntersection225)
+	{
+		// split two directions (two tracking rectangles)
+		int row = (ht - splitterIntersection1) / 15;
+		int col = (ht - splitterIntersection1) % 15; 
+		GetHitRect(row + vSplitterBar1, m_rectTracker);
+		int yTrackOffset = m_ptTrackOffset.y;
+		m_bTracking2 = TRUE;
+		GetHitRect(col + hSplitterBar1, m_rectTracker2);
+		m_ptTrackOffset.y = yTrackOffset;
+	}
+	else if (ht == bothSplitterBox)
+	{
+		// hit on splitter boxes (for keyboard)
+		GetHitRect(vSplitterBox, m_rectTracker);
+		int yTrackOffset = m_ptTrackOffset.y;
+		m_bTracking2 = TRUE;
+		GetHitRect(hSplitterBox, m_rectTracker2);
+		m_ptTrackOffset.y = yTrackOffset; 
+		// center it
+		m_rectTracker.OffsetRect(0, m_rectLimit.Height()/2);
+		m_rectTracker2.OffsetRect(m_rectLimit.Width()/2, 0);
+	}
+	else
+	{
+		// only hit one bar
+		GetHitRect(ht, m_rectTracker);
+	} 
+
+	// steal focus and capture
+	SetCapture();
+	SetFocus(); 
+	// make sure no updates are pending
+	RedrawWindow(NULL, NULL, RDW_ALLCHILDREN | RDW_UPDATENOW); 
+	// set tracking state and appropriate cursor
+	m_bTracking = TRUE;
+	OnInvertTracker(m_rectTracker);
+	if (m_bTracking2)
+	OnInvertTracker(m_rectTracker2);
+	m_htTrack = ht;
+	SetSplitCursor(ht);
+} 
+
+/////////////////////////////////////////////////////////////////////////////
+// CSplitterWnd command routing 
+BOOL CxSplitterWnd::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	if (CWnd::OnCommand(wParam, lParam))
+	return TRUE; 
+	// route commands to the splitter to the parent frame window
+	return GetParent()-&gt;SendMessage(WM_COMMAND, wParam, lParam);
+} 
+
+BOOL CxSplitterWnd::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
+{
+	if (CWnd::OnNotify(wParam, lParam, pResult))
+	return TRUE; 
+	// route commands to the splitter to the parent frame window
+	*pResult = GetParent()-&gt;SendMessage(WM_NOTIFY, wParam, lParam);
+	return TRUE;
+} 
+
+BOOL CxSplitterWnd::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{ 
+	// The code line below is necessary if using CxSplitterWnd in a regular dll
+	// AFX_MANAGE_STATE(AfxGetStaticModuleState()); 
+	return CWnd::OnWndMsg(message, wParam, lParam, pResult);
+}
+</FONT></TT></PRE>
+
+<p>Posted: 11 May 1998 </p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1997 - 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+<!-- Counter -->
+
+
+</body>
+</html>

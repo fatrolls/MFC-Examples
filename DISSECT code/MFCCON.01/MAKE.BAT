@@ -1,0 +1,2 @@
+cl /MT mfccon.cpp
+

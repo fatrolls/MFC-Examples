@@ -1,0 +1,43 @@
+// ex26b.odl : type library source for ex26b.dll
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (ex26b.tlb).
+
+[ uuid(4EBFDD64-5F7D-11D0-848F-00400526305B), version(1.0) ]
+library ex26b
+{
+	importlib("stdole32.tlb");
+	
+
+
+
+	//  Primary dispatch interface for CText
+	
+	[ uuid(4EBFDD71-5F7D-11D0-848F-00400526305B) ]
+	dispinterface IText
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CText)
+			[id(1)] VARIANT Text;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CText)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CText
+
+	[ uuid(4EBFDD72-5F7D-11D0-848F-00400526305B) ]
+	coclass Text
+	{
+		[default] dispinterface IText;
+	};
+
+	//{{AFX_APPEND_ODL}}
+};

@@ -1,0 +1,101 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Len Holgate">
+   <TITLE>Win32 - Win32: Control Panel Applet Framework</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+<!-- A word from our sponsors... -->
+<TABLE width=100%>
+    <TBODY>
+    <TR width = 100%>
+        <TD><!--#exec cgi="/cgi/ads.cgi"--></TD>
+        <TD></TD></TR></TBODY></TABLE><!-- Article Title -->
+<H3 align=center><FONT color=#a0a099>Win32: Control Panel Applet
+Framework</FONT></H3>
+<HR align=center>
+<!-- Author and contact details -->
+<P>This article was contributed by <A
+href="mailto:Len.Holgate@dial.pipex.com">Len Holgate</A>.<!-- Sample 
+image and source code/demo project --> </P>
+<P>&nbsp;<A
+href="http://dialspace.dial.pipex.com/town/road/xmx04/Source/Win32/ControlPanel.htm">Download Source Code and Example</A> </P>
+<P><!-- The article... --><FONT face="Times New Roman">The Windows 
+Control Panel
+is the ideal way to allow a user to alter settings for an application 
+that runs
+in the background, or automatically. But what <EM>are</EM> control panel 
+applets
+and how do you write one? Well, after some exploring in the MSDN I 
+discovered
+that control panel applets are just standard DLLs with a particular set 
+of entry
+points and a .cpl extension. Place such a file in the Windows System 
+directory
+and the next time you start up control panel your applet will be there. 
+Having
+discovered what I needed to know I set about writing a control panel 
+applet and
+once I'd done that, I turned the bulk of the code into a mini applet 
+framework
+so I wouldn't have to write it ever again!</FONT></P>
+<P><FONT face="Times New Roman">To implement your control panel applet 
+all you
+need to do is the following: </FONT>
+<UL>
+    <LI><FONT face="Times New Roman">include 
+&quot;ControlApplet.hpp&quot; and
+    publicly derive a class from CJBControlPanelApplet.</FONT>
+    <LI><FONT face="Times New Roman">call the CJBControlPanelApplet 
+constructor
+    and pass resource IDs for the applet's icon, name and 
+description.</FONT>
+    <LI><FONT face="Times New Roman">implement the pure virtual 
+function
+    OnDoubleClick() - this is where your applet becomes live and can 
+display a
+    dialog or whatever.</FONT>
+    <LI><FONT face="Times New Roman">create an instance of your applet 
+class at
+    global scope.</FONT>
+    <LI><FONT face="Times New Roman">link with ControlApplet.cpp and 
+include
+    ControlApplet.def in your project. ControlApplet.cpp gives you the
+    implementation of CJBControlPanelApplet and suitable DllMain() and
+    CPlApplet() DLL entry point functions.</FONT> </LI></UL>
+<P>So that this article and code can be kept up to date more easily 
+I've
+provided a link to where the article is located on my own web pages. <A
+href="http://dialspace.dial.pipex.com/town/road/xmx04/Source/Win32/Cont
+rolPanel.htm">Read
+the full article and download the source code</A>.</P><!-- Remember to 
+update this -->
+<P>Last updated: 27 June 1998 </P>
+<HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,842 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+<title>String - CString Extension for numerical IO</title>
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000" bgproperties="fixed">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<h3 align="center"><font COLOR="#AOAO99">CString Extension for numerical IO </font></h3>
+
+<hr align="center">
+
+<p>This code was contributed by <a HREF="mailto:mabtech@flash.net">Michael A. Barnhart</a>
+
+<p>I think it is fairly self explaining. I have add calls to put and get numerical entries
+into the string. This with the parsing routines already include have proven quite usefull
+at least to me. </p>
+
+<p>The following extentions add numerical reading and writting to the CStringEx Class. The
+default field length of 8 is used to support my application for Finite Element Card Immage
+format of 10 fields of 8. Change as you desire. The only item that I have found
+interesting is when usign the &quot;=&quot; sign to copy strings between standard CStings
+and CStringEx may only be used as follows.</p>
+
+<p>This is BAD </p>
+
+<PRE><TT><FONT COLOR="#990000">
+	CString Stand;
+	CStingEX Ex1,Ex2;
+	Ex1.PutFloat(1.234);
+	Stand = Ex1; (this is not OK).
+	Ex2 = Stand; Now many functions will fail (ie. GetLenght is always zero)
+</pre></tt></font>
+
+<p>End BAD</p>
+
+<p>This is OK</p>
+
+<pre><tt><FONT COLOR="#990000">
+	CString Stand;
+	CStingEX Ex1,Ex2;
+	Ex1.PutFloat(1.234);
+	Stand = (LPCSTR)Ex1;
+	Ex2 = Stand;
+</pre></tt></font>
+
+<p>End OK</p>
+<br>
+<h3>CStringEx.h</h3>
+<pre><tt><FONT COLOR="#990000">
+#if !defined(AFX_STRINGDEF_H__3A310B45_A6C3_11D1_B56D_00A024838B6B__INCLUDED_)
+#define AFX_STRINGDEF_H__3A310B45_A6C3_11D1_B56D_00A024838B6B__INCLUDED_
+// COPYRITE 1995 MAB TECH , 96,97
+
+inline double atodn(char alpha[],int n);
+inline float atofn(char *alpha,int n);
+inline int atoin(char *alpha,int n);
+inline long int atoln(char alpha[],int n);
+inline void dtoan(char *alpha,double val,int len);
+inline void ftoan(char *alpha,float val,int len);
+inline void itoan(char alpha[],int n,int l);
+inline void ltoan(char alpha[],long int n,int l);
+inline int sizestr(char string[],int max);
+inline void stradd(char stringto[],int maxto,char stringfrom[],int maxfrom);
+inline void strfill(char string[],int max,char fill);
+inline void strover(char stringto[],char stringfrom[],int maxfrom);
+
+class CStringEx : public CString
+{
+public:
+	int GetInt();
+	long GetLong();
+	float GetFloat();
+	double CStringEx::GetDouble();
+	void PutInt(int i, int len=8);
+	void PutLong(long i, int len=8);
+	void PutFloat(float f, int len=8);
+	BOOL IsInt();
+	BOOL IsFloat();
+	CStringEx() : CString( ){};
+	CStringEx( const CString&amp; stringSrc) : CString( stringSrc ){};
+	CStringEx( const CStringEx&amp; stringSrc) : CString( stringSrc ){};
+	CStringEx( TCHAR ch, int nRepeat = 1 ) : CString( ch, nRepeat ){};
+	CStringEx( LPCTSTR lpch, int nLength ) : CString( lpch, nLength ){};
+	CStringEx( const unsigned char* psz ) : CString( psz ){};
+	CStringEx( LPCWSTR lpsz ) : CString( lpsz ){};
+	CStringEx( LPCSTR lpsz ) : CString( lpsz ){};
+
+	CStringEx&amp; Insert(int pos, LPCTSTR s);
+	CStringEx&amp; Insert(int pos, TCHAR c);
+
+	CStringEx&amp; Delete(int pos, int len);
+	CStringEx&amp; Replace(int pos, int len, LPCTSTR s);
+
+	int Find( TCHAR ch, int startpos = 0 ) const;
+	int Find( LPCTSTR lpszSub, int startpos = 0 ) const;
+	int FindNoCase( TCHAR ch, int startpos = 0 ) const;
+	int FindNoCase( LPCTSTR lpszSub, int startpos = 0 ) const;
+
+	int FindReplace( LPCTSTR lpszSub, LPCTSTR lpszReplaceWith, BOOL bGlobal = TRUE );
+	int FindReplaceNoCase( LPCTSTR lpszSub, LPCTSTR lpszReplaceWith,
+				BOOL bGlobal = TRUE );
+
+	int ReverseFind( TCHAR ch ) const{ return CString::ReverseFind(ch);};
+	int ReverseFind( LPCTSTR lpszSub, int startpos = -1 ) const;
+	int ReverseFindNoCase( TCHAR ch, int startpos = -1  ) const;
+	int ReverseFindNoCase( LPCTSTR lpszSub, int startpos = -1 ) const;
+
+	CStringEx GetField( LPCTSTR delim, int fieldnum);
+	CStringEx GetField( TCHAR delim, int fieldnum);
+	int GetFieldCount( LPCTSTR delim );
+	int GetFieldCount( TCHAR delim );
+
+	CStringEx GetDelimitedField( LPCTSTR delimStart, LPCTSTR delimEnd,
+				int fieldnum = 0);
+};
+
+#endif // !defined(AFX_STRINGDEF_H__3A310B45_A6C3_11D1_B56D_00A024838B6B__INCLUDED_)
+
+</pre></tt></font>
+<br>
+<h3>CStringEx.cpp</h3>
+<pre><tt><FONT COLOR="#990000">
+#include &lt;mablib.h&gt; 		// this is just for MFC classes [ may want to be afx.h or stdafx.h : Editor ]
+#include &lt;CStringEx.h&gt;
+
+inline double atodn(char alpha[],int n)
+{
+	double val;
+	char format[16];
+	char string[32];
+	sprintf(format,"%c%df",'%',n);
+	if(n>32) n=32;
+	strncpy(string,alpha,n);
+	string[n]='\0';
+	val=atof(string);//0.0;
+	//sscanf(string,format,&amp;val);
+	return (val);
+}
+
+inline float atofn(char *alpha,int n)
+{
+	float val;
+	char format[16];
+	char string[32];
+	sprintf(format,"%c%df",'%',n);
+	if(n>32) n=32;
+	strncpy(string,alpha,n);
+	string[n]='\0';
+	val=(float)0.;
+	sscanf(string,format,&amp;val);
+	return (val);
+}
+
+inline int atoin(char *alpha,int n)
+{
+	int val;
+	char format[32];
+	char string[32];
+	sprintf(format,"%c%dd",'%',n);
+	val=0;
+	if(n>32)n=32;
+	strncpy(string,alpha,n);
+	string[n]='\0';
+	sscanf(string,format,&amp;val);
+	return (val);
+}
+
+inline long int atoln(char alpha[],int n)
+{
+	long int val;
+	char string[32];
+	if(n>31) return(0);
+	strncpy(string,alpha,n);
+	string[n]='\0';
+	val=atol(string);
+	return (val);
+}
+
+inline void dtoan(char *alpha,double val,int len)
+{
+	char format[16];
+	int exp,i;
+	unsigned int lenx;
+	char *temp;
+	/* do we need to use exponential */
+	if(val &lt; 0.0) sprintf(format,"%7.2E",val);
+	else          sprintf(format,"%8.2E",val);
+	exp=strlen(&amp;format[7]);
+	exp=atoin(&amp;format[7],exp);
+	if(exp+2 >len)
+	{ /* use E format */
+		lenx=len+7;
+		i=sizeof(char);
+		temp=(char near *)calloc(lenx,i);
+		if(val &lt; 0.0) sprintf(format,"%c%d.%dE",'%',len-1,len-5);
+		else          sprintf(format,"%c%d.%dE",'%',len,len-4);
+		sprintf(temp,format,val);
+		lenx=strlen(temp);
+		i=lenx-2;
+		do {
+			if(temp[i]=='0') strcpy(&amp;temp[i],&amp;temp[i+1]);
+			else i--;
+		} while(i>0 &amp;&amp; temp[i]!='E');
+		if(temp[i]=='E') strcpy(&amp;temp[i],&amp;temp[i+1]);
+		while (len &lt; (int) strlen(temp))
+		{
+			i--;
+			strcpy(&amp;temp[i],&amp;temp[i+1]);
+		}
+		strcpy(alpha,temp);
+		free(temp);
+	}
+	else
+	{ /* use f format */
+		if(val &lt; 0.0) sprintf(format,"%c%d.%df",'%',len-1,len-3-exp);
+		else          sprintf(format,"%c%d.%df",'%',len,len-2-exp);
+		sprintf(alpha,format,val);
+	}
+	return;
+}
+
+inline void ftoan(char *alpha,float val,int len)
+{
+	char format[16];
+	int exp,i;
+	unsigned int lenx;
+	char *temp;
+	/* do we need to use exponential */
+	if(val &lt; 0.0) sprintf(format,"%7.2E",val);
+	else          sprintf(format,"%8.2E",val);
+	exp=strlen(&amp;format[7]);
+	exp=atoin(&amp;format[7],exp);
+	if(exp+2 >len)
+	{ /* use E format */
+		lenx=len+7;
+		i=sizeof(char);
+		temp=(char near *)calloc(lenx,i);
+		if(val &lt; 0.0) sprintf(format,"%c%d.%dE",'%',len-1,len-5);
+		else          sprintf(format,"%c%d.%dE",'%',len,len-4);
+		sprintf(temp,format,val);
+		lenx=strlen(temp);
+		i=lenx-2;
+		do {
+			if(temp[i]=='0') strcpy(&amp;temp[i],&amp;temp[i+1]);
+			else i--;
+		} while(i>0 &amp;&amp; temp[i]!='E');
+		if(temp[i]=='E') strcpy(&amp;temp[i],&amp;temp[i+1]);
+		while (len &lt; (int) strlen(temp))
+		{
+			i--;
+			strcpy(&amp;temp[i],&amp;temp[i+1]);
+		}
+		strcpy(alpha,temp);
+		free(temp);
+	}
+	else
+	{ /* use f format */
+		if(val &lt; 0.0) sprintf(format,"%c%d.%df",'%',len-1,len-3-exp);
+		else          sprintf(format,"%c%d.%df",'%',len,len-2-exp);
+		sprintf(alpha,format,val);
+	}
+	return;
+}
+
+inline void itoan(char alpha[],int n,int l)
+{
+	int val;
+	int count;
+	char item;
+	for (count=1;count&lt;=l;count++)
+	{
+		val=n-(n/10)*10;
+		itoa(val,&amp;item,10);
+		alpha[l-count]=item;
+		n=n/10;
+	}
+	count=0;
+	while ((int)alpha[count]==48 &amp;&amp; count &lt;l-1)
+	{
+		alpha[count]=' ';
+		count++;
+	}
+	
+	return;
+}
+
+inline void ltoan(char alpha[],long int n,int l)
+{
+	long int val;
+	int count;
+	char item;
+	for (count=1;count &lt;=l;count++)
+	{
+		val=n-(n/10)*10;
+		ltoa(val,&amp;item,10);
+		alpha[l-count]=item;
+		n=n/10;
+	}
+	count=0;
+	while ((int)alpha[count]==48 &amp;&amp; count &lt;l-1)
+	{
+		alpha[count]=' ';
+		count++;
+	}
+	return;
+}
+
+inline int sizestr(char string[],int max)
+{
+	int i;
+	for(i=0;i &lt; max;i++)
+	{
+		if(string[i]=='\0') return(i);
+	}
+	return(max);
+}
+
+inline void stradd(char stringto[],int maxto,char stringfrom[],int maxfrom)
+{
+	int l1,l2,i;
+	l1=sizestr(stringto,maxto);
+	l2=sizestr(stringfrom,maxfrom);
+	for(i=0;i &lt;=l2;i++) stringto[l1+i]=stringfrom[i];
+	return;
+}
+
+inline void strfill(char string[],int max,char fill)
+/* max is length of string including null terminator */
+{
+	int l1,i;
+	string[max-1]='\0';
+	l1=sizestr(string,max);
+	/* l1 is length of the string
+    this matchs the position
+    of the null terminator */
+	for(i=l1;i &lt;=max-2;i++) string[i]=fill;
+	string[max-1]='\0';
+	return;
+}
+
+inline void strover(char stringto[],char stringfrom[],int maxfrom)
+{
+	int l2,i;
+	l2=sizestr(stringfrom,maxfrom)-1;
+	for(i=0;i &lt;=l2;i++) stringto[i]=stringfrom[i];
+	return;
+}
+
+// Insert	- Inserts a sub string into the string
+// Returns	- Reference to the same string object
+// pos		- Position to insert at. Extends the string with spaces if needed
+// s		- Sub string to insert
+CStringEx&amp; CStringEx::Insert(int pos, LPCTSTR s)
+{
+	int len = lstrlen(s);
+	if ( len == 0 )
+		return *this;
+	
+	int oldlen = GetLength();
+	int newlen = oldlen + len;
+	LPTSTR str;
+	if ( pos >= oldlen )
+	{		
+		// insert after end of string
+		newlen += pos - oldlen ;
+		str = GetBuffer( newlen );
+		_tcsnset( str+oldlen, _T(' '), pos-oldlen );
+		_tcsncpy( str+pos, s, len );
+	}
+	else
+	{
+		// normal insert
+		str = GetBuffer( newlen );
+		memmove( str+pos+len, str+pos, sizeof(_T(' ')) *(oldlen-pos) );
+		_tcsncpy( str+pos, s, len );
+	}
+	ReleaseBuffer( newlen );
+	return *this;
+}
+
+
+// Insert	- Inserts a character into the string
+// Returns	- Reference to the same string object
+// pos		- Position to insert at. Extends the string with spaces if needed
+// c		- Char to insert
+CStringEx&amp; CStringEx::Insert(int pos, TCHAR c)
+{
+	TCHAR buf[2];
+	buf[0] = c;
+	buf[1] = _T('\0');
+	return Insert( pos, buf );
+}
+
+
+// Delete	- Deletes a segment of the string and resizes it
+// Returns	- Reference to the same string object
+// pos		- Position of the string segment to remove
+// len		- Number of characters to remove
+CStringEx&amp; CStringEx::Delete(int pos, int len)
+{
+	int strLen = GetLength();
+	
+	if( pos >= strLen)
+		return *this;
+	if(len &lt; 0 ||len > strLen - pos)
+		len = strLen - pos;
+	
+	LPTSTR str = GetBuffer( strLen );
+	memmove(str+pos, str+pos+len, sizeof(_T(' ')) *(strLen-pos));
+	ReleaseBuffer( strLen - len );
+	
+	return *this;
+}
+
+
+// Replace	- Replaces a substring with another
+// Returns	- Reference to the same string object
+// pos		- Position of the substring
+// len		- Length of substring to be replaced
+// s		- New substring
+CStringEx&amp; CStringEx::Replace(int pos, int len, LPCTSTR s)
+{
+	Delete(pos, len);
+	Insert(pos, s);
+	
+	return *this;
+}
+
+
+// Find 	- Finds the position of a character in a string
+// Returns	- A zero-based index
+// ch		- Character to look for
+// startpos	- Position to start looking from
+int CStringEx::Find( TCHAR ch, int startpos /*= 0*/ ) const
+{
+	// find first single character
+	LPTSTR lpsz = _tcschr(m_pchData + startpos, (_TUCHAR)ch);
+	
+	// return -1 if not found and index otherwise
+	return (lpsz == NULL) ? -1 : (int)(lpsz - m_pchData);
+}
+
+
+// Find 	- Finds the position of a substring in a string
+// Returns	- A zero-based index
+// lpszSub	- Substring to look for
+// startpos	- Position to start looking from
+int CStringEx::Find( LPCTSTR lpszSub, int startpos /*= 0*/ ) const
+{
+	ASSERT(AfxIsValidString(lpszSub, FALSE));
+	
+	// find first matching substring
+	LPTSTR lpsz = _tcsstr(m_pchData+startpos, lpszSub);
+	
+	// return -1 for not found, distance from beginning otherwise
+	return (lpsz == NULL) ? -1 : (int)(lpsz - m_pchData);
+}
+
+
+// FindNoCase	- Case insensitive find
+// Returns	- A zero-based index
+// ch		- Char to search for
+// startpos 	- Position to start looking from
+int CStringEx::FindNoCase( TCHAR ch, int startpos /*= 0*/ ) const
+{
+	unsigned int locase = Find( tolower( ch ), startpos );
+	unsigned int upcase = Find( toupper( ch ), startpos );
+	
+	return locase &lt; upcase ? locase : upcase;
+}
+
+
+// FindNoCase	- Case insensitive find
+// Returns	- A zero-based index
+// lpszSub	- Substring to search for
+// startpos 	- Position to start looking from
+int CStringEx::FindNoCase( LPCTSTR lpszSub, int startpos /*= 0*/ ) const
+{
+	CStringEx sLowerThis = *this;
+	sLowerThis.MakeLower();
+	
+	CStringEx sLowerSub = lpszSub;
+	sLowerSub.MakeLower();
+	
+	return sLowerThis.Find( sLowerSub, startpos );
+}
+
+
+// FindReplace		- Find a substring and replace with another
+// Returns		- Number of instances replaced
+// lpszSub		- Substring to look for
+// lpszReplaceWith	- Substring to replace with
+// bGlobal		- Flag to indicate whether all occurances
+//					  should be replaced
+int CStringEx::FindReplace( LPCTSTR lpszSub, LPCTSTR lpszReplaceWith,
+						   BOOL bGlobal /*= TRUE*/ )
+{
+	int iReplaced = 0;
+	
+	// find first matching substring
+	LPTSTR lpsz;
+	
+	int pos = 0;
+	int lenSub = lstrlen( lpszSub );
+	int lenReplaceWith = lstrlen( lpszReplaceWith );
+	while( (lpsz = _tcsstr(m_pchData + pos, lpszSub)) != NULL )
+	{
+		pos = (int)(lpsz - m_pchData);
+		Replace( pos, lenSub, lpszReplaceWith );
+		pos += lenReplaceWith;
+		iReplaced++;
+		if( !bGlobal ) break;
+	}
+	
+	return iReplaced;
+}
+
+
+// FindReplaceNoCase	- Find a substring and replace with another
+//			  Does case insensitive search
+// Returns		- Number of instances replaced
+// lpszSub		- Substring to look for
+// lpszReplaceWith	- Substring to replace with
+// bGlobal		- Flag to indicate whether all occurances
+//			  should be replaced
+int CStringEx::FindReplaceNoCase( LPCTSTR lpszSub, LPCTSTR lpszReplaceWith,
+								 BOOL bGlobal /*= TRUE*/ )
+{
+	CStringEx sLowerThis = *this;
+	sLowerThis.MakeLower();
+	
+	CStringEx sLowerSub = lpszSub;
+	sLowerSub.MakeLower();
+	
+	int iReplaced = 0;
+	
+	// find first matching substring
+	LPTSTR lpsz;
+	
+	int pos = 0, offset = 0;
+	int lenSub = lstrlen( lpszSub );
+	int lenReplaceWith = lstrlen( lpszReplaceWith );
+	while( (lpsz = _tcsstr(sLowerThis.m_pchData + pos, sLowerSub.m_pchData))
+		!= NULL )
+	{
+		pos = (int)(lpsz - sLowerThis.m_pchData);
+		Replace( pos+offset, lenSub, lpszReplaceWith );
+		offset += lenReplaceWith - lenSub;
+		pos += lenSub;
+		iReplaced++;
+		if( !bGlobal ) break;
+	}
+	
+	return iReplaced;
+}
+
+
+// ReverseFind	- Searches for the last match of a substring
+// Returns	- A zero-based index
+// lpszSub	- Substring to search for
+// startpos 	- Position to start looking from, in reverse dir
+int CStringEx::ReverseFind( LPCTSTR lpszSub, int startpos /*= -1*/ ) const
+{
+	int lenSub = lstrlen( lpszSub );
+	int len = lstrlen( m_pchData );
+	
+	if(0 &lt; lenSub &amp;&amp; 0 &lt; len)
+	{
+		if( startpos == -1 || startpos >= len ) startpos = len - 1;
+		for ( LPTSTR lpszReverse = m_pchData + startpos ;
+		lpszReverse != m_pchData ; --lpszReverse)
+			if (_tcsncmp(lpszSub, lpszReverse, lenSub ) == 0)
+				return (lpszReverse - m_pchData);
+	}
+	return -1;
+}
+
+
+// ReverseFindNoCase	- Searches for the last match of a substring
+//			  Search is case insensitive
+// Returns		- A zero-based index
+// lpszSub		- Character to search for
+// startpos 		- Position to start looking from, in reverse dir
+int CStringEx::ReverseFindNoCase(TCHAR ch, int startpos /*= -1*/ ) const
+{
+	TCHAR a[2];
+	a[1] = ch;
+	a[2] = 0;
+	return ReverseFindNoCase( a, startpos );
+}
+
+
+// ReverseFindNoCase	- Searches for the last match of a substring
+//			  Search is case insensitive
+// Returns		- A zero-based index
+// lpszSub		- Substring to search for
+// startpos 		- Position to start looking from, in reverse dir
+int CStringEx::ReverseFindNoCase( LPCTSTR lpszSub, int startpos /*= -1*/ )
+const
+{
+	//LPTSTR lpszEnd = m_pchData + lstrlen
+	
+	int lenSub = lstrlen( lpszSub );
+	int len = lstrlen( m_pchData );
+	
+	
+	if(0 &lt; lenSub &amp;&amp; 0 &lt; len)
+	{
+		if( startpos == -1 || startpos >= len ) startpos = len - 1;
+		for ( LPTSTR lpszReverse = m_pchData + startpos ;
+		lpszReverse >= m_pchData ; --lpszReverse)
+			if (_tcsnicmp(lpszSub, lpszReverse, lenSub ) == 0)
+				return (lpszReverse - m_pchData);
+	}
+	return -1;
+}
+
+
+// GetField 	- Gets a delimited field
+// Returns	- A CStringEx object that contains a copy of
+//		  the specified field
+// delim	- The delimiter string
+// fieldnum 	- The field index - zero is the first
+// NOTE 	- Returns the whole string for field zero
+//		  if delim not found
+//		  Returns empty string if # of delim found
+//		  is less than fieldnum
+CStringEx CStringEx::GetField( LPCTSTR delim, int fieldnum)
+{
+	LPTSTR lpsz, lpszRemainder = m_pchData, lpszret;
+	int retlen, lenDelim = lstrlen( delim );
+	
+	while( fieldnum-- >= 0 )
+	{
+		lpszret = lpszRemainder;
+		lpsz = _tcsstr(lpszRemainder, delim);
+		if( lpsz )
+		{
+			// We did find the delim
+			retlen = lpsz - lpszRemainder;
+			lpszRemainder = lpsz + lenDelim;
+		}
+		else
+		{
+			retlen = lstrlen( lpszRemainder );
+			lpszRemainder += retlen;	// change to empty string
+		}
+	}
+	return Mid( lpszret - m_pchData, retlen );
+}
+
+// GetField 	- Gets a delimited field
+// Returns	- A CStringEx object that contains a copy of
+//		  the specified field
+// delim	- The delimiter char
+// fieldnum 	- The field index - zero is the first
+// NOTE 	- Returns the whole string for field zero
+//		  if delim not found
+//		  Returns empty string if # of delim found
+//		  is less than fieldnum
+CStringEx CStringEx::GetField( TCHAR delim, int fieldnum)
+{
+	LPTSTR lpsz, lpszRemainder = m_pchData, lpszret;
+	int retlen;
+	
+	while( fieldnum-- >= 0 )
+	{
+		lpszret = lpszRemainder;
+		lpsz = _tcschr(lpszRemainder, (_TUCHAR)delim);
+		if( lpsz )
+		{
+			// We did find the delim
+			retlen = lpsz - lpszRemainder;
+			lpszRemainder = lpsz + 1;
+		}
+		else
+		{
+			retlen = lstrlen( lpszRemainder );
+			lpszRemainder += retlen;	// change to empty string
+		}
+	}
+	return Mid( lpszret - m_pchData, retlen );
+}
+
+
+// GetFieldCount	- Get number of fields in a string
+// Returns		- The number of fields
+//			  Is always greater than zero
+// delim		- The delimiter character
+int CStringEx::GetFieldCount( TCHAR delim )
+{
+	TCHAR a[2];
+	a[0] = delim;
+	a[1] = 0;
+	return GetFieldCount( a );
+}
+
+
+// GetFieldCount	- Get number of fields in a string
+// Returns		- The number of fields
+//			  Is always greater than zero
+// delim		- The delimiter string
+int CStringEx::GetFieldCount( LPCTSTR delim )
+{
+	LPTSTR lpsz, lpszRemainder = m_pchData;
+	int lenDelim = lstrlen( delim );
+	
+	int iCount = 1;
+	while( (lpsz = _tcsstr(lpszRemainder, delim)) != NULL )
+	{
+		lpszRemainder = lpsz + lenDelim;
+		iCount++;
+	}
+	
+	return iCount;
+}
+
+
+// GetDelimitedField	- Finds a field delimited on both ends
+// Returns		- A CStringEx object that contains a copy of
+//			  the specified field
+// delimStart		- Delimiter at the start of the field
+// delimEnd 		- Delimiter at the end of the field
+CStringEx CStringEx::GetDelimitedField( LPCTSTR delimStart, LPCTSTR
+									   delimEnd, int fieldnum /*= 0*/)
+{
+	LPTSTR lpsz, lpszEnd, lpszRet, lpszRemainder = m_pchData ;
+	int lenDelimStart = lstrlen( delimStart ), lenDelimEnd = lstrlen( delimEnd );
+	
+	while( fieldnum-- >= 0 )
+	{
+		lpsz = _tcsstr(lpszRemainder, delimStart);
+		if( lpsz )
+		{
+			// We did find the Start delim
+			lpszRet = lpszRemainder = lpsz + lenDelimStart;
+			lpszEnd = _tcsstr(lpszRemainder, delimEnd);
+			if( lpszEnd == NULL ) return"";
+			lpszRemainder = lpsz + lenDelimEnd;
+		}
+		else return "";
+	}
+	return Mid( lpszRet - m_pchData, lpszEnd - lpszRet );
+}
+
+BOOL CStringEx::IsFloat()
+{
+	if(!Find(".")) return FALSE;
+	return TRUE;
+}
+
+BOOL CStringEx::IsInt()
+{
+	if(Find(".")) return FALSE;
+	return TRUE;
+}
+
+void CStringEx::PutFloat(float f, int len)
+{
+	ftoan(GetBuffer(len),f,len);
+}
+
+void CStringEx::PutLong(long i, int len)
+{
+	ltoan(GetBuffer(len),i,len);
+}
+
+void CStringEx::PutInt(int i, int len)
+{
+	if(len>0) itoan(GetBuffer(len),i,len);
+	else if(i&lt;0) len=8;
+	else
+	{
+		if(i>999999999) len=10;
+		else if(i>99999999) len=9;
+		else if(i>9999999) len=8;
+		else if(i>999999) len=7;
+		else if(i>99999) len=6;
+		else if(i>999) len=5;
+		else if(i>99) len=4;
+		else if(i>9) len=3;
+		else len=2;
+		itoan(GetBuffer(len),i,len);
+	}
+}
+
+float CStringEx::GetFloat()
+{
+	float f;
+	f = atofn(GetBuffer(GetLength()),GetLength());
+	return f;
+}
+
+double CStringEx::GetDouble()
+{
+	double f;
+	f = atodn(GetBuffer(GetLength()),GetLength());
+	return f;
+}
+
+long CStringEx::GetLong()
+{
+	long f;
+	f = atoln(GetBuffer(GetLength()),GetLength());
+	return f;
+}
+
+int CStringEx::GetInt()
+{
+	return atoin(GetBuffer(GetLength()),GetLength());
+}
+
+</pre></tt></font>
+
+<p>Posted on: April 11, 98. </p>
+
+<hr>
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font>
+    </td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+</font>
+</body>
+</html>

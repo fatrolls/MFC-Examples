@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - Font dialog with custom text preview & color</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Font dialog with custom text preview & color</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>.
+
+<p>The MFC CFontDialog class encapulates the standard Font common dialog box.
+This dialog allows you to select a font.  It display a sample window
+showing some text in the required font.  It is nice to be able to specify
+your own sample text - for example, if I am editing a text object in a
+drawing package, I would want to see the actual text in the sample box.
+
+<p>However, the MFC implmentation does not let you easily specify the sample
+text.
+
+<p>The following class, derived from CFontDialog, lets you do just this.  It
+also lets you set and get the color selected in the dialog.  Simple create
+a CMyFontDialog and specify the sample text in the constructor (or call
+SetSampleText() before calling DoModal()).  Also call SetTextColor() before
+calling DoModal(), and retrieve the selected color afterwards with
+TextColor().
+
+
+<PRE><TT><FONT COLOR="#990000">
+// FontDialog.h
+// (c) 1997 Roger Onslow
+
+#ifndef _CMyFontDialog_
+#define _CMyFontDialog_
+
+class CMyFontDialog : public CFontDialog {
+     DECLARE_DYNCREATE(CMyFontDialog);
+public:
+     CMyFontDialog(LPLOGFONT lplogfont=NULL, LPCTSTR sampletext="Sample Text", CWnd* pParentWnd=NULL);
+protected:
+     LPCTSTR m_sampletext;
+public:
+     CString SampleText() const { return m_sampletext; }
+     void SetSampleText(LPCTSTR sampletext) { m_sampletext = sampletext; }
+public:
+     COLORREF TextColor() const { return m_cf.rgbColors; }
+     void SetTextColor(COLORREF rgbColors) { m_cf.rgbColors = rgbColors; }
+protected:
+     // Dialog Data
+protected:
+     //{{AFX_DATA(CMyFontDialog)
+     //}}AFX_DATA
+     // Overrides
+protected:
+     // ClassWizard generate virtual function overrides
+     //{{AFX_VIRTUAL(CMyFontDialog)
+     virtual BOOL OnInitDialog();
+     //}}AFX_VIRTUAL
+     // Implementation
+protected:
+     // Generated message map functions
+     //{{AFX_MSG(CMyFontDialog)
+     //}}AFX_MSG
+     DECLARE_MESSAGE_MAP()
+};
+
+#endif
+
+
+
+
+////////////////////////////////////////////////////////////////////
+// FontDialog.cpp
+// (c) 1997 Roger Onslow
+
+#include "stdafx.h"
+#include "FontDialog.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char BASED_CODE THIS_FILE[] = __FILE__;
+#endif
+
+IMPLEMENT_DYNCREATE(CMyFontDialog, CFontDialog)
+
+BEGIN_MESSAGE_MAP(CMyFontDialog, CFontDialog)
+//{{AFX_MSG_MAP(CMyFontDialog)
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+CMyFontDialog::CMyFontDialog(LPLOGFONT lpLogfont, LPCTSTR sampletext, CWnd* pParentWnd)
+		: CFontDialog(lpLogfont,CF_EFFECTS | CF_SCREENFONTS, NULL, pParentWnd)
+		, m_sampletext(sampletext)
+{
+}
+
+BOOL CMyFontDialog::OnInitDialog() {
+     BOOL r = CFontDialog::OnInitDialog();
+     if (m_sampletext) {
+          SetDlgItemText(stc5, m_sampletext);
+     }
+     return r;
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

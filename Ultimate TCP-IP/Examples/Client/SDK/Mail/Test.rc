@@ -1,0 +1,270 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "test.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SMTP DIALOGEX 5, 17, 334, 261
+STYLE DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Ultimate TCP/IP - SMTP client"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Server:",IDC_STATIC,46,7,30,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_SMTPSERVER,81,7,184,14
+    RTEXT           "&To:",IDC_STATIC,54,25,22,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_TO,81,25,184,14,ES_AUTOHSCROLL
+    RTEXT           "&From:",IDC_STATIC,54,43,22,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_FROM,81,43,184,14,ES_AUTOHSCROLL
+    RTEXT           "S&ubject:",IDC_STATIC,46,61,30,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_SUBJECT,81,61,184,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO1,16,90,199,83,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Add...",IDC_BROWSE,231,90,42,14
+    PUSHBUTTON      "&Remove All",IDC_DEL,277,90,42,14
+    EDITTEXT        IDC_MESSAGE,7,125,156,103,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL
+    PUSHBUTTON      "Send M&ail",IDC_SENDMAIL,274,7,52,14
+    PUSHBUTTON      "R&ead mail...",IDC_POP3,274,24,52,14
+    PUSHBUTTON      "A&bout...",IDC_ABOUT,274,41,52,14
+    PUSHBUTTON      "&Close",IDC_EXIT,274,58,52,14
+    CTEXT           "Progress",IDC_PROGRESS,53,239,273,15,SS_CENTERIMAGE,
+                    WS_EX_STATICEDGE
+    CTEXT           "Ready",IDC_STATUS,7,239,44,15,SS_CENTERIMAGE
+    GROUPBOX        "Attachments",IDC_STATIC,7,79,319,30
+    ICON            IDI_ICON1,IDC_STATIC,7,7,21,20
+    LTEXT           "Simple mail transfer protocol",IDC_STATIC,7,33,41,26
+    EDITTEXT        IDC_MESSAGEHTML,170,125,156,103,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | 
+                    WS_VSCROLL | WS_HSCROLL
+    LTEXT           "Plain text body:",IDC_STATIC,7,115,65,8
+    LTEXT           "HTML body:",IDC_STATIC,170,115,65,8
+END
+
+IDD_POP3 DIALOGEX 0, 0, 340, 327
+STYLE DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ultimate TCP/IP - POP3 client"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Connection",IDC_STATIC,7,7,326,75
+    LTEXT           "&Server:",IDC_STATIC,14,20,24,8
+    EDITTEXT        IDC_HOST,56,20,107,14,ES_AUTOHSCROLL
+    LTEXT           "&Login:",IDC_STATIC,14,39,20,8
+    EDITTEXT        IDC_USER,56,39,107,14,ES_AUTOHSCROLL
+    LTEXT           "&Password:",IDC_STATIC,14,57,34,8
+    EDITTEXT        IDC_PASS,56,57,107,14,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Connect",IDC_CONNECT,175,20,50,14
+    PUSHBUTTON      "Disconnect",IDC_DISCONNECT,232,20,50,14
+    LTEXT           "Number of messages",IDC_STATIC,87,85,67,14
+    EDITTEXT        IDC_NUMMSGS,158,85,37,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER,WS_EX_STATICEDGE
+    LTEXT           "Message Number",IDC_STATIC,200,85,58,14
+    EDITTEXT        IDC_MSGNUM,263,85,32,14,ES_AUTOHSCROLL
+    LISTBOX         IDC_MSGLIST,14,103,257,49,LBS_NOINTEGRALHEIGHT | 
+                    LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    PUSHBUTTON      "To&p",IDC_TOP,278,103,48,14
+    PUSHBUTTON      "&Retrieve",IDC_RETRIEVE,278,120,48,14
+    PUSHBUTTON      "&Delete",IDC_DELETE,278,137,48,14
+    RTEXT           "From:",IDC_STATIC,7,164,31,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_POP3_FROM,46,164,113,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER,WS_EX_STATICEDGE
+    RTEXT           "To:",IDC_STATIC,163,164,31,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_POP3_TO,201,164,132,14,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
+    RTEXT           "Subject:",IDC_STATIC,7,182,31,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_POP3_SUBJECT,46,182,113,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
+    RTEXT           "CC:",IDC_STATIC,163,182,31,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_POP3_CC,201,182,132,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER,WS_EX_STATICEDGE
+    LTEXT           "Number of attachments:",IDC_STATIC,14,201,79,14,
+                    SS_CENTERIMAGE
+    LTEXT           "???",IDC_NUM_ATTACH,95,201,13,14,SS_CENTERIMAGE
+    COMBOBOX        IDC_POP3_COMBO,115,203,161,128,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Save ...",IDC_SAVE_ATTACH,283,201,47,14,NOT WS_TABSTOP
+    EDITTEXT        IDC_MESSAGE,7,231,163,90,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | NOT 
+                    WS_BORDER | WS_VSCROLL | WS_HSCROLL,WS_EX_STATICEDGE
+    GROUPBOX        "Connection Data",IDC_STATIC,7,77,326,83
+    LTEXT           "Message Information",IDC_STATIC,14,92,66,8
+    EDITTEXT        IDC_STATUS,171,51,153,21,ES_READONLY | NOT WS_BORDER | 
+                    NOT WS_TABSTOP,WS_EX_STATICEDGE
+    ICON            IDI_ICON1,IDC_STATIC,293,15,20,20
+    LTEXT           "Status window:",IDC_STATIC,171,40,134,8
+    LTEXT           "Plain text body:",IDC_STATIC,7,221,63,8
+    EDITTEXT        IDC_MESSAGE_HTML,175,231,158,90,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
+                    ES_WANTRETURN | NOT WS_BORDER | WS_VSCROLL | WS_HSCROLL,
+                    WS_EX_STATICEDGE
+    LTEXT           "HTML body:",IDC_STATIC,176,221,63,8
+END
+
+IDD_ATTACH_DLG DIALOG DISCARDABLE  0, 0, 217, 58
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CLIPSIBLINGS | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Add Attachment"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Enter the full path name to the attachment:",IDC_STATIC,
+                    7,7,135,8
+    EDITTEXT        IDC_ATTACH_ADD,7,18,184,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_ADD_BROWSE,196,18,14,14
+    DEFPUSHBUTTON   "&Add",ID_ADD,106,37,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,160,37,50,14
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 250, 105
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About - Ultimate TCP/IP developers Kit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_EXIT,197,6,46,14
+    LTEXT           "Ultimate TCP/IP v 4.0",IDC_STATIC,43,6,84,8
+    LTEXT           "The Ultimate Toolbox.",IDC_STATIC,43,14,70,8
+    LTEXT           "Copyright 1995-2007",IDC_STATIC,43,25,66,8
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,7,47,236,51
+    LTEXT           "Phone:",IDC_STATIC,25,57,24,8
+    LTEXT           "Fax:",IDC_STATIC,25,81,14,8
+    LTEXT           "EMail:",IDC_STATIC,133,57,20,8
+    LTEXT           "WWW:",IDC_STATIC,133,71,25,8
+    LTEXT           "1 416 467-5100",IDC_STATIC,54,68,59,8
+    LTEXT           "1 (800) 463 - 1492",IDC_STATIC,54,57,59,8
+    LTEXT           "1 416 422-4801",IDC_STATIC,54,81,59,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,160,57,64,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,166,71,58,8
+    ICON            IDI_ICON1,IDC_STATIC,7,6,20,20
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""test.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SMTP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 326
+        VERTGUIDE, 163
+        VERTGUIDE, 170
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 254
+        HORZGUIDE, 21
+        HORZGUIDE, 79
+    END
+
+    IDD_POP3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 333
+        VERTGUIDE, 14
+        VERTGUIDE, 38
+        VERTGUIDE, 46
+        VERTGUIDE, 159
+        VERTGUIDE, 194
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 321
+    END
+
+    IDD_ATTACH_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 51
+        HORZGUIDE, 18
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        HORZGUIDE, 98
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,185 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Clipboard - RTF Streaming and the clipboard</TITLE>
+</HEAD>
+
+
+<BODY BGCOLOR="#FFFFFF">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+RTF Streaming and the clipboard
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:g.kuehn@computer.org">Gary Kuehn</a>
+
+
+
+<p>I had a need to copy multiple views derived from CRichEditView to the clipboard. The
+sample code below contains an RTF StreamOut function with its associated callback 
+function and a code snippet for copying multiple views into a single CF_RTF clipboard 
+image. 
+
+<p>The basic premise was to programmatically cycle through all the pertinent CRichEditViews
+in order to create a composite RTF report that could be placed on the clipboard with a 
+single click of the mouse. If your application contains many Read-Only type views from 
+database queries or numerical calculations this method will provide a nice snapshot of 
+the resultant data set. 
+
+<p>I created a user defined  ID_STREAM_VIEWS message that is handled by the 
+CUIMainWindow::OnEditBothPanes method. Menu and Toolbar button control associated 
+with the ID_STREAM_VIEWS can be found in the CUIMainWindow::OnUpdateEditBothPanes 
+UI handler. (Note: CUIMainWindow is derived from CFrameWnd)
+
+<p>The OnEditBothPanes copies both views from my static splitter window onto the clipboard. 
+The idea is simple, walk through each view and stream out the data from the underlying 
+CRichEditCtrl. The OnEditBothPanes function is only accessible if both panes are derived 
+from a CRichEditView. (see OnUpdateEditBothPanes). This restriction allows me to cycle 
+through each replaceable view and not have to worry if it can support a StreamRead method. 
+The area which still needs work is the implied RTF reader. The function as it stands 
+employs a quick hack on the RTF stream. 
+
+<PRE><TT><FONT COLOR="#990000">
+void CUIMainWindow::OnEditBothPanes() 
+{
+  // Get RTF streams from pane 0 and pane 1.
+  COleDataSource* pDataSource = new COleDataSource; 
+
+  CString strPane0;
+  CString strPane1;
+
+  CUIView* pView;
+
+  SetActiveView((CView *)m_SplitterWnd.GetPane(0,0));
+  pView = CUIView::GetView();
+  pView->StreamRead(strPane0);
+
+  SetActiveView((CView *)m_SplitterWnd.GetPane(0,1));
+  pView = CUIView::GetView();
+  pView->StreamRead(strPane1);
+
+  // we are going to concatenate the two rtf streams together
+  // therefore drop the ending paren on the first stream as well
+  // as the starting header on the second stream
+
+  CSharedFile file (GMEM_MOVEABLE | GMEM_DDESHARE | GMEM_ZEROINIT);
+  CString strTemp; 
+
+  // find ending parenthesis and position just before it
+  strTemp = strPane0.Left (strPane0.ReverseFind('}'));
+  file.Write (strTemp, strTemp.GetLength());
+
+  // drop RTF header information through \fonttbl data because
+  // you can not, rather, should not nest RTF with header information
+  // notice I break the rules till I finish my RTF reader
+  //
+  // RTF Version 1.5 Specification defines the following header syntax:
+  //    \rtf&lt;charset> \deff? &lt;fonttbl>&lt;filetb>?&lt;colortbl>?&lt;stylesheet>?
+  //    &lt;listtables>?&lt;revtbl>?
+  // 
+  strTemp = strPane1;
+  char *pDest = strstr((LPCTSTR)strTemp, _T("{\\colortbl"));
+  int  offset = 0;
+  if (pDest != NULL)
+  {
+    offset = pDest - (LPCTSTR)strTemp;
+  }
+
+  // complete rtf stream with a closing parenthesis and write to shared file
+  //
+  strTemp = strPane1.Mid (offset);
+  strTemp += "}";
+  file.Write (strTemp, strTemp.GetLength());
+
+  UINT format = ::RegisterClipboardFormat (CF_RTF);
+  HGLOBAL hMem = file.Detach();
+#if _MFC_VER &lt;= 0x0421
+  ::GlobalUnlock(hMem);
+#endif
+  pDataSource->CacheGlobalData (format, hMem);
+  pDataSource->SetClipboard();
+}
+
+
+void CUIMainWindow::OnUpdateEditBothPanes(CCmdUI* pCmdUI) 
+{
+  // if either pane isn't a CUIView class disable button
+  // CUIView is a CRichEditView derived class
+
+  CObject* objPane0;
+  CObject* objPane1;
+
+  objPane0 = m_SplitterWnd.GetPane(0,0);
+  objPane1 = m_SplitterWnd.GetPane(0,1);
+
+  if ( (objPane0->IsKindOf(RUNTIME_CLASS(CUIView))) &&
+       (objPane1->IsKindOf(RUNTIME_CLASS(CUIView))) )
+    pCmdUI->Enable(1);
+  else
+    pCmdUI->Enable(0);
+}
+
+
+void CUIView::StreamRead (CString& rtfString)
+{
+  CSharedFile sf;
+
+  EDITSTREAM es;
+  es.dwCookie = (DWORD)&sf;
+  es.dwError = 0;
+  es.pfnCallback = StreamOutCtrl;
+ 
+  GetRichEditCtrl().StreamOut(SF_RTF , es);
+ 
+  DWORD dw = sf.GetLength();
+  int nSize = INT_MAX;
+
+  if (dw < INT_MAX)
+    nSize = (int)dw;
+
+  LPTSTR pStr = rtfString.GetBufferSetLength(nSize);
+  sf.SeekToBegin();
+  sf.Read(pStr, nSize);
+  rtfString.ReleaseBuffer();
+
+}
+
+static DWORD CALLBACK StreamOutCtrl (DWORD dwCookie, LPBYTE pbBuff,
+                                     LONG cb, LONG* pcb)
+{
+  CSharedFile *pstr = (CSharedFile*)dwCookie;
+
+  pstr->Write(pbBuff, cb);
+  *pcb = cb;
+
+  return 0;
+}
+</font></tt></pre>
+
+<p>Updated 4 April 1998
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%"><TR>
+
+<TD WIDTH="33%">
+<FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR></TABLE>
+
+
+
+</BODY>
+</HTML>

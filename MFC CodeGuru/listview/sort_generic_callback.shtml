@@ -1,0 +1,240 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Sort list (numeric/text) using callback</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Sort list (numeric/text) using callback</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This article was contributed by <A HREF="mailto:warch@tin.it">Iuri Apollonio</A>.
+
+
+<P>This is a small class which permits to sort list controls. It works "substituting" every original item data with a small class (preserving the value), sort it using the standard (fast!) list control way, and then putting the things right back.
+
+<H4>Step 1: implementing the class</H4>
+The class will contain two subclasses to manage numeric and text column data. The numeric is provided to avoid the sorting of 11 before 2 as it would occur with string comparison; there are also 4 comparing routines (for ascending and descending text and integer columns).
+
+<P>The header file of the class should be like this:
+<PRE><TT><FONT COLOR="#990000">
+class CSortClass
+{
+public:
+	CSortClass(CListCtrl * _pWnd, const int _iCol, const bool _bIsNumeric);
+	virtual ~CSortClass();
+	
+	int iCol;
+	CListCtrl * pWnd;
+	bool bIsNumeric;
+	void Sort(const bool bAsc);
+	
+	static int CALLBACK CompareAsc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+	static int CALLBACK CompareDes(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+	
+	static int CALLBACK CompareAscI(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+	static int CALLBACK CompareDesI(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+	
+public:
+	class CSortItem
+	{
+	public:
+		virtual  ~CSortItem();
+		CSortItem(const DWORD _dw, const CString &_txt);
+		CString txt;
+		DWORD dw;
+	};
+	class CSortItemInt
+	{
+	public:
+		CSortItemInt(const DWORD _dw, const CString &_txt);
+		int iInt ;
+		DWORD dw;
+	};
+};
+</FONT></TT></PRE>
+
+<P>The CPP file will implement all the above:
+
+<PRE><TT><FONT COLOR="#990000">
+/////////////////////////////////////////////////////////////////////////////
+// CSortClass
+
+CSortClass::CSortClass(CListCtrl * _pWnd, const int _iCol, const bool _bIsNumeric)
+{
+	iCol = _iCol;
+	pWnd = _pWnd;
+	bIsNumeric = _bIsNumeric;
+	
+	ASSERT(pWnd);
+	int max = pWnd->GetItemCount();
+	DWORD dw;
+	CString txt;
+	if (bIsNumeric)
+	{
+		for (int t = 0; t < max; t++)
+		{
+			dw = pWnd->GetItemData(t);
+			txt = pWnd->GetItemText(t, iCol);
+			pWnd->SetItemData(t, (DWORD) new CSortItemInt(dw, txt));
+		}
+	}
+	else
+	{
+		for (int t = 0; t < max; t++)
+		{
+			dw = pWnd->GetItemData(t);
+			txt = pWnd->GetItemText(t, iCol);
+			pWnd->SetItemData(t, (DWORD) new CSortItem(dw, txt));
+		}
+	}
+}
+
+CSortClass::~CSortClass()
+{
+	ASSERT(pWnd);
+	int max = pWnd->GetItemCount();
+	if (bIsNumeric)
+	{
+		CSortItemInt * pItem;
+		for (int t = 0; t < max; t++)
+		{
+			pItem = (CSortItemInt *) pWnd->GetItemData(t);
+			ASSERT(pItem);
+			pWnd->SetItemData(t, pItem->dw);
+			delete pItem;
+		}
+	}
+	else
+	{
+		CSortItem * pItem;
+		for (int t = 0; t < max; t++)
+		{
+			pItem = (CSortItem *) pWnd->GetItemData(t);
+			ASSERT(pItem);
+			pWnd->SetItemData(t, pItem->dw);
+			delete pItem;
+		}
+	}
+}
+
+void
+CSortClass::Sort(const bool bAsc)
+{
+	if (bIsNumeric)
+	{
+		if (bAsc)
+			pWnd->SortItems(CompareAscI, 0L);
+		else
+			pWnd->SortItems(CompareDesI, 0L);
+	}
+	else
+	{
+		if (bAsc)
+			pWnd->SortItems(CompareAsc, 0L);
+		else
+			pWnd->SortItems(CompareDes, 0L);
+	}
+}
+
+int CALLBACK CSortClass::CompareAsc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+{
+	CSortItem * i1 = (CSortItem *) lParam1;
+	CSortItem * i2 = (CSortItem *) lParam2;
+	ASSERT(i1 && i2);
+	return i1->txt.CompareNoCase(i2->txt);
+}
+
+int CALLBACK CSortClass::CompareDes(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+{
+	CSortItem * i1 = (CSortItem *) lParam1;
+	CSortItem * i2 = (CSortItem *) lParam2;
+	ASSERT(i1 && i2);
+	return i2->txt.CompareNoCase(i1->txt);
+}
+
+int CALLBACK CSortClass::CompareAscI(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+{
+	CSortItemInt * i1 = (CSortItemInt *) lParam1;
+	CSortItemInt * i2 = (CSortItemInt *) lParam2;
+	ASSERT(i1 && i2);
+	if (i1->iInt == i2->iInt) return 0;
+	return i1->iInt > i2->iInt ? 1 : -1;
+}
+
+int CALLBACK CSortClass::CompareDesI(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+{
+	CSortItemInt * i1 = (CSortItemInt *) lParam1;
+	CSortItemInt * i2 = (CSortItemInt *) lParam2;
+	ASSERT(i1 && i2);
+	if (i1->iInt == i2->iInt) return 0;
+	return i1->iInt < i2->iInt ? 1 : -1;
+}
+
+CSortClass::CSortItem::CSortItem(const DWORD _dw, const CString & _txt)
+{
+	dw = _dw;
+	txt = _txt;
+}
+
+CSortClass::CSortItem::~CSortItem()
+{
+}
+
+CSortClass::CSortItemInt::CSortItemInt(const DWORD _dw, const CString & _txt)
+{
+	iInt = atoi(_txt);
+	dw = _dw;
+}
+</FONT></TT></PRE>
+
+
+
+<H4>Step 2: using it</H4>
+The class is designed to be easy usable. In answer to a column click message in a list control, we can write something like this:
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyListCtrl::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	
+	// bAscending will be use to order from lower to higher or higher to lower
+	bool bAscending = true;
+	
+	CSortClass csc(this, pNMListView->iSubItem, bAscending);
+	csc.Sort(bAsc);
+	
+	*pResult = 0;
+}
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

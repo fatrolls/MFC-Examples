@@ -1,0 +1,116 @@
+{\rtf1\ansi\ansicpg1252\uc1 \deff1\deflang1033\deflangfe1036{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f14\fnil\fcharset2\fprq2{\*\panose 05000000000000000000}Wingdings;}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;
+\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;
+\red192\green192\blue192;}{\stylesheet{\nowidctlpar\widctlpar\adjustright \f1\fs20\lang1036\cgrid \snext0 Normal;}{\s1\sb240\sa60\keepn\nowidctlpar\widctlpar\adjustright \b\f1\fs28\ul\lang1036\kerning28\cgrid \sbasedon0 \snext0 heading 1;}{
+\s2\sb240\sa60\keepn\nowidctlpar\widctlpar\adjustright \b\i\f1\fs20\ul\lang1036\cgrid \sbasedon0 \snext0 heading 2;}{\*\cs10 \additive Default Paragraph Font;}{\*\cs15 \additive \ul\cf2 \sbasedon10 Hyperlink;}}{\*\listtable{\list\listtemplateid-1
+\listsimple{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat0\levelspace0\levelindent0{\leveltext\'01*;}{\levelnumbers;}}{\listname ;}\listid-2}}{\*\listoverridetable{\listoverride\listid-2\listoverridecount1{\lfolevel\listoverrideformat{\listlevel
+\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent283{\leveltext\'01\u-3986 ?;}{\levelnumbers;}\b0\i0\f14\fs24\ulnone\fbias0 \fi-283\li283 }}\ls1}{\listoverride\listid-2\listoverridecount1{\lfolevel\listoverrideformat
+{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent283{\leveltext\'01\u-3986 ?;}{\levelnumbers;}\b0\i0\f14\fs20\ulnone\fbias0 \fi-283\li283 }}\ls2}}{\info{\title MultiSingle (MSDI) Document interface}
+{\author Jean-Claude}{\operator Jean-Claude}{\creatim\yr1996\mo9\dy20\hr22\min41}{\revtim\yr1997\mo12\dy31\hr9\min49}{\printim\yr1997\mo12\dy31\hr9\min48}{\version16}{\edmins221}{\nofpages2}{\nofwords967}{\nofchars5515}{\*\company Prosoft/Lanz}
+{\nofcharsws0}{\vern73}}\paperw11906\paperh16838\margl1417\margr1417\margt1417\margb1417 \deftab708\widowctrl\ftnbj\aenddoc\hyphhotz425\lytprtmet\hyphcaps0\formshade\viewkind4\viewscale100\pgbrdrhead\pgbrdrfoot \fet0\sectd 
+\linex0\headery709\footery709\colsx709\endnhere\sectdefaultcl {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl4
+\pnlcltr\pnstart1\pnindent720\pnhang{\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}
+{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}\pard\plain \s1\sb240\sa60\keepn\nowidctlpar\widctlpar\tx3828\outlinelevel0\adjustright 
+\b\f1\fs28\ul\lang1036\kerning28\cgrid {\lang1033 MultiSingle (MSDI) Document interface.
+\par }\pard\plain \s2\sb240\sa60\keepn\nowidctlpar\widctlpar\outlinelevel1\adjustright \b\i\f1\fs20\ul\lang1036\cgrid {\lang1033 What is a MultiSingle document.
+\par }\pard\plain \nowidctlpar\widctlpar\adjustright \f1\fs20\lang1036\cgrid {\lang1033 In most applications, it is necessary to have one document with many views. The }{\b\lang1033 SDI}{\lang1033  architecture is for one document and one view and the }{
+\b\lang1033 MDI}{\lang1033  architecture is for many documents with many views.  My goal is to have an }{\b\lang1033 MDI}{\lang1033  architecture with one document and many views connected or not to the document. If a chose the }{\b\lang1033 'new'}{
+\lang1033  file command, all views must close and a new document with the fist doc template view must be started. If a chose the }{\b\lang1033 'close' }{\lang1033 
+file command, all views must close and the client area must be empty. Views not attached to the document (attached to the main frame) can live. If the system menu }{\b\lang1033 'close' }{\lang1033 
+command of a child window is selected, the child window will close. If this is the main view (1}{\lang1033\super st}{\lang1033  doc template) the effect is the same as if you select the }{\b\lang1033 'close' }{\lang1033 command of the file menu.
+\par 
+\par This sample is an }{\b\lang1033 MSDI}{\lang1033  application with three views. The 1}{\lang1033\super st}{\lang1033  view is the main document view derived from CFormView. It must be the 1}{\lang1033\super st}{\lang1033  doc template view. The 2}{
+\lang1033\super nd}{\lang1033  view is a simple drawing derived from CView and is attached to the document. The 3}{\lang1033\super rd}{\lang1033  view is a COutView derived from CEditView. This view is not a document view and is not connected
+ with the document }{\b\lang1033 'Close'}{\lang1033  command. It can be opened without document. To close this view, use the system menu of the child window or the close button.
+\par  
+\par To open these Views, the commands are implemented in the }{\b\lang1033 'View'}{\lang1033  menu. The document class is responsible to open the document views and the mainframe class is responsible to open the other views. For the }{\b\lang1033 COutView}{
+\lang1033 , an other menu is used with new commands to demonstrate the possibilities of }{\b\lang1033 MSDI}{\lang1033 .
+\par 
+\par The }{\b\lang1033 'New window'}{\lang1033  command in the }{\b\lang1033 'Window'}{\lang1033 
+ menu open only new windows if the view is connected to the document. If the view is not attached to the document, it can't open a second view. You can change this as you like, see the }{\b\lang1033 CViewFrame}{\lang1033  class.
+\par 
+\par It is not possible to open more than one view of the same class if the view is attached to the document with the }{\b\lang1033 'Create view'}{\lang1033 
+ command. The function CreateOrActivateFrame checks if the view exist and active it. You can change this if you wish more than one view of the same class.
+\par 
+\par For indepen
+dent views (not attached to the document), it is complicate to check if exist because we can't walk trough the views with a document pointer. So we must save the view pointer in the MainFrame and reset it when the COutView::OnDestroy() is called.
+\par 
+\par The resource ID will be used to change the view title (the first resource substring). If you have different resource ID for your views, you can change the menu too. If no menu nor accelerator table is defined for a resource ID, the derived child window }{
+\b\lang1033 CViewFrame}{\lang1033  witch is the base frame class for all child frames except the fist (}{\b\lang1033 CMSDIFrame}{\lang1033 
+), will connect to the menu and accelerator of the fist view. It will use the fist resource substring for the window title.
+\par 
+\par The }{\b\lang1033 CMSDIFrame }{\lang1033 window class is the base frame class for the main view. It calls the application to close all document views if it is closed.
+\par }\pard\plain \s2\sb240\sa60\keepn\nowidctlpar\widctlpar\outlinelevel1\adjustright \b\i\f1\fs20\ul\lang1036\cgrid {\lang1033 Build MultiSingle (MSDI) document-view with AppWizard.
+\par {\pntext\pard\plain\f14\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard\plain \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnb0\pni0\pnf14\pnfs24\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls1\adjustright 
+\f1\fs20\lang1036\cgrid {\lang1033 Create an }{\b\lang1033 MDI}{\lang1033  application with AppWizard (in this sample, an }{\b\lang1033 "msdi"}{\lang1033  application).
+\par {\pntext\pard\plain\f14\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnb0\pni0\pnf14\pnfs24\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls1\adjustright {\lang1033 Include}{
+\b\lang1033  msdiapp.h}{\lang1033 , }{\b\lang1033 msdifrm.h}{\lang1033  &}{\b\lang1033  viewfrm.h}{\lang1033  in }{\b\lang1033 stdafx.h}{\lang1033  or your library include file. These files will not change and are the only files needed to create an }{
+\b\lang1033 MSDI}{\lang1033  application.
+\par {\pntext\pard\plain\f14\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnb0\pni0\pnf14\pnfs24\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls1\adjustright {\lang1033 Add }{
+\b\lang1033 msdiapp.cpp}{\lang1033 , }{\b\lang1033 msdifrm.cpp }{\lang1033 &}{\b\lang1033  viewfrm.cpp}{\lang1033  in your project or your library in linker option.
+\par {\pntext\pard\plain\f14\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnb0\pni0\pnf14\pnfs24\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls1\adjustright {\lang1033 Derive you
+r }{\b\lang1033 CMsdiApp}{\lang1033  from }{\b\lang1033 CMSDIWinApp}{\lang1033  and not from }{\b\lang1033 CWinApp}{\lang1033 , Replace All }{\b\lang1033 CWinApp}{\lang1033  with }{\b\lang1033 CMSDIWinApp}{\lang1033  in }{\b\lang1033 msdi.cpp}{\lang1033 
+ & }{\b\lang1033 msdi.h}{\lang1033 .
+\par {\pntext\pard\plain\f14\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnb0\pni0\pnf14\pnfs24\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls1\adjustright {\lang1033 Delete the 
+}{\b\lang1033 ON_COMMAND}{\lang1033  for }{\b\lang1033 ID_FILE_NEW}{\lang1033  & }{\b\lang1033 ID_FILE_OPEN}{\lang1033  in }{\b\lang1033 msdi.cpp}{\lang1033 .
+\par {\pntext\pard\plain\f14\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls1\pnrnot0\pnb0\pni0\pnf14\pnfs24\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls1\adjustright {\lang1033 
+Replace the Frame class }{\b\lang1033 CMDIChildWnd}{\lang1033  in the creation of the doc template with the }{\b\lang1033 CMSDIFrame}{\lang1033  class to avoid closing the document with views remaining open.
+\par }\pard \nowidctlpar\widctlpar{\*\pn \pnlvlcont\ilvl0\ls0\pnrnot0\pndec }\adjustright {\lang1033 
+\par At this point, the }{\b\lang1033 MSDI}{\lang1033  application work fine. We must now implement the build of multiple views. The best way to do this is to add doc
+ templates like Microsoft in the CHKBOOK sample and make change to the doc string (the third substring) to avoid the }{\b\lang1033 MDI}{\lang1033  Document dialog box.
+\par 
+\par {\pntext\pard\plain\f14\fs20\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls2\pnrnot0\pnb0\pni0\pnf14\pnfs20\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls2\adjustright {\lang1033 
+With the application studio, add your views creation commands in the }{\b\lang1033 'View'}{\lang1033  menu.
+\par {\pntext\pard\plain\f14\fs20\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls2\pnrnot0\pnb0\pni0\pnf14\pnfs20\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls2\adjustright {\lang1033 
+Add document string for your views like this }{\b\lang1033 "ViewTitle}{\b\f2\cf1\lang1033 \\n\\n\\n\\n\\n\\n}{\b\lang1033 "}{\lang1033 . In this sample }{\b\lang1033 IDR_GRAFTYPE}{\lang1033  & }{\b\lang1033 IDR_OUTTYPE}{\lang1033 
+ are the new ressource-ID.}{\f2\cf1\lang1033 
+\par {\pntext\pard\plain\f14\fs20\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls2\pnrnot0\pnb0\pni0\pnf14\pnfs20\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls2\adjustright {\lang1033 
+Make a copy of the }{\b\lang1033 MDI}{\lang1033  icon for all new resource-ID. You can change this icon as you like.}{\f2\cf1\lang1033 
+\par {\pntext\pard\plain\f14\fs20\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls2\pnrnot0\pnb0\pni0\pnf14\pnfs20\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls2\adjustright {\lang1033 
+If necessary, make a copy of the main view menu and change it according to the new view commands.
+\par {\pntext\pard\plain\f14\fs20\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls2\pnrnot0\pnb0\pni0\pnf14\pnfs20\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls2\adjustright {\lang1033 
+With AppWizard, map the messages to the document class or the mainframe class.
+\par {\pntext\pard\plain\f14\fs20\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls2\pnrnot0\pnb0\pni0\pnf14\pnfs20\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls2\adjustright {\lang1033 
+Edit the new functions and add the view creation. Use }{\b\lang1033 NULL}{\lang1033  for the doc parameter of }{\b\lang1033 CreateOrActivateFrame}{\lang1033  if the view is not a document view.
+\par {\pntext\pard\plain\f14\fs20\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls2\pnrnot0\pnb0\pni0\pnf14\pnfs20\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls2\adjustright {\lang1033 
+Add the include files for your new views in your document class file }{\b\lang1033 msdidoc.cpp}{\lang1033 , in the }{\b\lang1033 mainfrm.cpp}{\lang1033  if necessary and in your application file }{\b\lang1033 msdi.cpp}{\lang1033 
+ for doc template creation.
+\par {\pntext\pard\plain\f14\fs20\lang1033\cgrid \loch\af14\dbch\af0\hich\f14 \'6e\tab}}\pard \fi-283\li283\nowidctlpar\widctlpar{\*\pn \pnlvlblt\ilvl0\ls2\pnrnot0\pnb0\pni0\pnf14\pnfs20\pnstart1\pnindent283\pnhang{\pntxtb n}}\ls2\adjustright {\lang1033 
+Add the doc template creation in your application file }{\b\lang1033 msdi.cpp}{\lang1033 . Use the }{\b\lang1033 CViewFrame}{\lang1033  class to have a new frame title for all views. Give the new resource-ID for all views.
+\par }\pard\plain \s2\sb240\sa60\keepn\nowidctlpar\widctlpar\outlinelevel1\adjustright \b\i\f1\fs20\ul\lang1036\cgrid {\lang1033 MSDI with Visual C++4.0.
+\par }\pard\plain \nowidctlpar\widctlpar\adjustright \f1\fs20\lang1036\cgrid {\lang1033 For Visual C++ 4.0, we must remove two functions and make little change (see }{\b\lang1033 WIN32}{\lang1033 ). These functions exist in the Win32 implementation of MFC.
+
+\par }\pard\plain \s2\sb240\sa60\keepn\nowidctlpar\widctlpar\outlinelevel1\adjustright \b\i\f1\fs20\ul\lang1036\cgrid {\lang1033 Change between Versions.
+\par }\pard\plain \nowidctlpar\widctlpar\adjustright \f1\fs20\lang1036\cgrid {\lang1033 Version 1.0.
+\par }\pard \li709\nowidctlpar\widctlpar\adjustright {\lang1033 First implementation of the }{\b\lang1033 MSDI }{\lang1033 Multi(View) Single(Doc) Document Interface.
+\par }\pard \nowidctlpar\widctlpar\adjustright {\lang1033 Version 1.1 (Oct 19 1996)
+\par }\pard \fi-1\li709\nowidctlpar\widctlpar\adjustright {\lang1033 Adding }{\b\lang1033 OnDestroy()}{\lang1033  in the }{\b\lang1033 COutView}{\lang1033  and call the }{\b\lang1033 CMainFrame::OnDestroyView()}{\lang1033  to clear the view pointer.
+\par }\pard \fi-1418\li1418\nowidctlpar\widctlpar\adjustright {\lang1033 Version 1.2 (Oct 22 1996)
+\par }\pard \li709\nowidctlpar\widctlpar\adjustright {\lang1033 Implement }{\b\lang1033 OnSysCommand()}{\lang1033  in the }{\b\lang1033 CMSDIFrame}{\lang1033  to close all views if the main view is closed.
+\par Implement }{\b\lang1033 OnCreate()}{\lang1033  in the }{\b\lang1033 CViewFrame}{\lang1033  for frame with no menu nor accelerator table.
+\par Implement }{\b\lang1033 OnUpdateViewView2()}{\lang1033  to disable the create menu command if the view exist.
+\par Set read only to TRUE in }{\b\lang1033 OnInitialUpdate()}{\lang1033  for the }{\b\lang1033 COutView}{\lang1033 .
+\par Replace the }{\b\lang1033 CMSDIWinApp::SaveModified()}{\lang1033  function name with the name }{\b\lang1033 CloseDocument()}{\lang1033  and make the function virtual.
+\par Replace the name }{\b\lang1033 CMultiSingleDocTemplate}{\lang1033  with }{\b\lang1033 CMSDITemplate}{\lang1033 .
+\par Implement the }{\b\lang1033 ON_WINDOW_NEW}{\lang1033  message to create new windows for all view connected to the document. Implement the }{\b\cf1\lang1033 OnUpdateFrameTitle()}{\cf1\lang1033  to update the frame title accordingly.
+\par Add a new function }{\b\cf1\lang1033 GetDocTemplate()}{\cf1\lang1033  to the }{\b\cf1\lang1033 CMSDIWinApp}{\cf1\lang1033  to retrieve the }{\b\cf1\lang1033 CMSDITemplate*}{\cf1\lang1033  with a }{\b\cf1\lang1033 CView*}{\cf1\lang1033  as parameter.
+
+\par }\pard\plain \s2\sb240\sa60\keepn\nowidctlpar\widctlpar\outlinelevel1\adjustright \b\i\f1\fs20\ul\lang1036\cgrid {\lang1033 Future.
+\par }\pard\plain \nowidctlpar\widctlpar\adjustright \f1\fs20\lang1036\cgrid {\lang1033 I'm sure you will have many applications with the }{\b\lang1033 MSDI}{\lang1033 
+ interface. If you have some questions or if you have significant generic add on, please contact me.
+\par 
+\par \tab \tab \tab Lanz Jean-Claude
+\par \tab \tab \tab Prosoft/Lanz
+\par \tab \tab \tab Les Draizes 38
+\par \tab \tab \tab CH-2006 Neuch\'e2tel
+\par \tab \tab \tab Switzerland
+\par 
+\par \tab \tab \tab }{\field{\*\fldinst {\lang1033  HYPERLINK mailto:Compuserve@100111.55 }{\lang1033 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b02000000170000001500000043006f006d00700075007300650072007600650040003100300030003100310031002e00350035000000e0c9ea79f9bace118c8200aa004ba90b380000006d00610069006c0074006f003a0043006f006d0070007500730065007200760065004000
+3100300030003100310031002e0035003500000000}}}{\fldrslt {\cs15\ul\cf2 Compuserve@100111.55}}}{\lang1033 
+\par \tab \tab \tab e-mail: }{\field{\*\fldinst {\lang1033  HYPERLINK mailto:jclanz@bluewin.ch }{\lang1033 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b0200000017000000120000006a0063006c0061006e007a00400062006c0075006500770069006e002e00630068000000e0c9ea79f9bace118c8200aa004ba90b320000006d00610069006c0074006f003a006a0063006c0061006e007a00400062006c0075006500770069006e00
+2e0063006800000000}}}{\fldrslt {\cs15\ul\cf2 jclanz@bluewin.ch}}}{\lang1033 
+\par 
+\par 
+\par }}

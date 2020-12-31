@@ -1,0 +1,101 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Hugo Bernier">
+   <TITLE>Tools - BuildCount Add-In</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<BODY background=/fancyhome/back.gif bgColor=#ffffff><!-- A word from our sponsors... -->
+<TABLE width=100%>
+<TR WIDTH = 100%><TD align=middle><!--#exec cgi="/cgi/ads.cgi"--><TD></TD></TR>
+</TABLE>
+
+
+
+<CENTER><H3><FONT color=#a0a099><!-- Article Title -->BuildCount Add-In 
+</FONT></H3></CENTER>
+<HR>
+<!-- Author and contact details -->This article was contributed by <A href="mailto:eldadk@butterfly.com">Eldad Kuperman</A>.<!-- Text / source code -->
+<P>Here is an add-in module for Developer Studio which 
+automatically creates and modifies the file &quot;AutoBuildCount.h&quot; that 
+contains a macros with a build count values.<!-- start a block of source code --> The file can be inserted into your 
+current project.&nbsp;
+<P>For example, if your project is on build 6, the contents 
+of the file look like this:</P>
+<BLOCKQUOTE><TT><FONT color=#990000>
+// 6<BR>
+</FONT></TT><TT><FONT color=#990000>
+#ifndef AUTOBUILDCOUNT_H<BR>#define 
+    AUTOBUILDCOUNT_H<BR>#define BUILDCOUNT_NUM 6<BR>#define BUILDCOUNT_STR &quot;6&quot;<BR>#endif<!-- end the block of source code --> 
+</FONT></TT></BLOCKQUOTE>
+<P><!-- The 'p' starts a paragraph of normal text -->At the 
+next build, the content will be updated to: 
+<BLOCKQUOTE>
+<PRE><TT><FONT color=#990000>
+// 7
+#ifndef AUTOBUILDCOUNT_H
+#define AUTOBUILDCOUNT_H
+#define BUILDCOUNT_NUM 7
+#define BUILDCOUNT_STR &quot;7&quot;
+#endif<!-- end the block of source code -->
+</FONT></TT></PRE></BLOCKQUOTE>
+<P>You can use the macros BUILDCOUNT_NUM and/or 
+BUILDCOUNT_STR in the code to refer to the automatically generated build number. 
+For example, to use the build number in your about box, you could use the macro 
+as follows:
+<BLOCKQUOTE>
+<PRE><TT><FONT color=#990000>
+#include &quot;AutoBuildCount.h&quot;
+
+//...
+
+CAboutDlg::CAboutDlg()
+{
+    m_strBuild.Format(_T(&quot;Build %d&quot;), BFCBUILDCOUNT_NUM);
+}
+</FONT></TT></PRE></BLOCKQUOTE>
+
+<P><H4>Installation:</H4>
+<OL>
+    <LI>Copy the file BuildCount.dll to a local folder 
+    (DevStudio\SharedIDE\AddIns if the preferred folder).
+    <LI>At the Developer Studio, choose Customize from the 
+    Tools menu.
+    <LI>Select Browse from the Add-ins and Macro Files 
+    page.
+    <LI>Select 'Add-ins (.dll)' from the 'Files of type' 
+    combo-box.
+    <LI>Select the BuildCount.dll from its folder and click 
+    on Open.</FONT></TT> 
+    </LI></OL><!-- create more blocks of source code as needed --><!-- demo project -->
+<P><A href="BuildCount.zip">Download 
+File - 11.7KB</A><!-- Posted / Update  date mm/dd/yy - add to the list -->
+<P>Date Posted: 05/20/98
+
+
+
+<P><HR>
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH=100%>
+<TR>
+<TD width=33%><FONT size=-1><A href="http://www.codeguru.com">Goto 
+            HomePage</A></FONT></TD>
+
+<TD width=33%>
+<CENTER><FONT size=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD width=34%>
+<DIV align=right><FONT size=-1>Contact me: <A href="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE><!-- Counter -->
+
+
+
+</BODY>
+</HTML>

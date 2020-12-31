@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <title>Misc - MSVC Help Array Generator Utility</TITLE>
+</HEAD>
+
+
+<BODY BGCOLOR="#FFFFFF">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+MSVC Help Array Generator Utility
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:bscinc@trigger.net">
+Peter Bevilacqua </a>.
+
+<br><br><A HREF="help_array_generator.zip">Download program</A><br><br>
+
+<p>This is a utility (no code) that will generate help arrays in
+the format required for MSVC applications to support context-sensitive 
+help.
+  
+<p>I don't know if you're like me, but when it comes to doing tedious work, 
+I get bored quickly, especially when it comes to creating help arrays for 
+applications.
+  
+<p>I don't know if there's a utility out there, but I finally sat down and
+created a program that will take your resource files (resource.h, resource.hm) 
+and generate the required array to support context help via your app for each 
+of your dialog box resources.
+  
+<p>The following shows the output of the utility.
+
+<PRE><TT><FONT COLOR="#990000">// Add To Your Include File
+// Implementation
+protected:
+  static DWORD m_dwHelpMap[];
+// End Include
+
+DWORD CYourClassName::m_dwHelpMap[] = {
+ IDD_ABOUTBOX, HID_HELP,
+ 0, 0
+};
+
+DWORD CYourClassName::m_dwHelpMap[] = {
+ IDD_GRAMMARFILE, HID_HELP,
+ IDC_GRAMMARFILE, HIDC_GRAMMARFILE,
+ IDC_SRENGINE, HIDC_SRENGINE,
+ 0, 0
+};
+</pre></font></tt>
+
+<p>Then basically all you have to do is copy each section to the appropriate
+.cpp file, and change the class name accordingly and hopefully hours cut down 
+on what i was doing of copying and pasting individual resource IDs and making 
+the array manually.
+  
+<p>Hopefully this will help out fellow programmers with some of the more mundane stuff.
+<P>
+
+<p>Updated 27 March 1998
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%"><TR>
+
+<TD WIDTH="33%">
+<FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR></TABLE>
+
+
+
+</BODY>
+</HTML>

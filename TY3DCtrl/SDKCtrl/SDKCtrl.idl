@@ -1,0 +1,18 @@
+// SDKCtrl.idl : SDKCtrl 的 IDL 源
+//
+
+// 此文件将由 MIDL 工具处理以
+// 产生类型库(SDKCtrl.tlb)和封送处理代码。
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(4300DE5D-93FB-42FC-A4BB-ED3561C5F48C),
+	version(1.0),
+]
+library SDKCtrlLib
+{
+	importlib("stdole2.tlb");
+};
+

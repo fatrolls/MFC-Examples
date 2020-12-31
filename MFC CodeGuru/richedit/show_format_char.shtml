@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Rich Edit Control - Show format characters</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Show format characters</FONT></H3></CENTER>
+
+<HR>
+
+<P>This article was contributed by <A HREF="mailto:moor@m-s.ch">Tom Moor</A></P>
+
+<P>I wanted an edit that shows format characters ('TAB' and 'CR\LF'). I tried a 
+little with an CEdit but it never worked.
+
+<P>The I found CRTFCtrl::GetCharPos() which will give you the coordinates of a 
+given character in the control. With this function I was able to determin the
+position of the format characters I wanted to be shown.
+
+<P>So all I do is everytime the content of the control alters I redraw every
+visible format character.
+
+<P>The approach is very generic and can be used for other effects.
+
+<P><b>BUGs</b>: If you drag and drop text with format characters, the selection remains
+(-> any help with this problem is welcome!)
+
+<P><A HREF="show_format_char.zip">Download source</A> 12K
+
+
+<P>Posted: March,7,98
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

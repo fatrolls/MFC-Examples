@@ -1,0 +1,13 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+
+HKEY_CLASSES_ROOT\AutoSrv1.Document = AutoSr Document
+HKEY_CLASSES_ROOT\AutoSrv1.Document\CLSID = {61FE0401-D7C5-11CF-A3BC-444553540000}
+
+HKEY_CLASSES_ROOT\CLSID\{61FE0401-D7C5-11CF-A3BC-444553540000} = AutoSr Document
+HKEY_CLASSES_ROOT\CLSID\{61FE0401-D7C5-11CF-A3BC-444553540000}\LocalServer32 = AUTOSRV1.EXE
+HKEY_CLASSES_ROOT\CLSID\{61FE0401-D7C5-11CF-A3BC-444553540000}\ProgId = AutoSrv1.Document

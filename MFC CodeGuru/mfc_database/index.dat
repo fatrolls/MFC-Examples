@@ -1,0 +1,26 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|calling_stored_procedure.shtml||Calling Stored Procedures|Craig Lucas
+1998/04/29|dao_multithreading.shtml||DAO multi-threading tips|John Bundgaard
+1998/03/28|print_mailing_labels.shtml||Print Mailing Labels|Larry Hansen
+1998/03/28|rfx_date_alternative.shtml||RFX_Date alternative|Jarek Jaskolski
+1998/03/28|tips_odbc_access.shtml||Tips: ODBC & Access database|Claude Turner
+1998/03/28|unbound_dbgrid.shtml||Using DBGrid in unbound mode|
+1998/03/28|virtual_dblist.shtml||Using a Virtual CListView with a Dynaset|Sam Fugarino
+1998/03/28|DAO_non_accessdb.shtml||Using DAO to read data sources other than MS Access|John Vannoy
+1998/03/28|direct_sql_with_odbc.shtml||Classes for direct SQL calls with ODBC|Dave Merner
+1998/04/15|rfx_oledatetime.shtml||RFX_Date using COleDateTime|Dan Querciagrossa
+1998/04/24|generic_recordset.shtml||The Generic Recordset|Bob Place

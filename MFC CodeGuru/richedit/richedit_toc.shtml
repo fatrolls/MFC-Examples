@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META Name="description" Content="Source code for RichEdit control">
+   <META Name="keywords" Content="SOURCE CODE MFC WINDOWS RICH EDIT RICHEDIT CRichEditCtrl CRichEditView
+   TAB STOP RTF TEXT FORMAT FORMATBAR WORD WRAP">
+   <TITLE>Rich Edit Control - Table of Contents</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Rich Edit Control</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<hr>
+Section maintained by <A HREF=mailto:dominik@gunkel.com>Dominik Gunkel</a>
+<UL>
+<LI><A HREF="read_only_text.shtml">Setting selected text to read-only - Zafir Anjum</A></LI>
+<LI><A HREF="word_wrap.shtml">Changing word wrap mode - Zafir Anjum</A></LI>
+<LI><A HREF="tab_stops.shtml">Changing tab stops - Zafir Anjum</A></LI>
+<LI><A HREF="rtf_string_streamin.shtml">Inserting an RTF string using StreamIn - Zafir Anjum</A></LI>
+<LI><A HREF="formatbar.shtml">Providing a Format toolbar - Zafir Anjum</A></LI>
+<LI><A HREF="show_format_char.shtml">Show format characters - Tom Moor</A></LI>
+<LI><A HREF="syntax_hilight.shtml">Syntax coloring Editor - Juraj Rojko</a></li>
+</UL>
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%"><CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT></CENTER>
+</TD>
+
+<TD WIDTH="33%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

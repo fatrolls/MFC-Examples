@@ -1,0 +1,69 @@
+///////////////////////////////////////////////////////////
+//
+//
+// TangramGLWorld- Type Library for TangramGLWorld
+//
+//
+
+///////////////////////////////////////////////////////////
+//
+// Imports
+//
+import "unknwn.idl" ; 
+
+// ITangramModelEvent 
+import "event_i.idl" ;
+
+// ITangramCanvas
+import "canvas_i.idl" ;
+
+// ITangramGLVisual
+import "GLvisl_i.idl" ;
+
+// ITangramGLWorld
+import "GLwrld_i.idl" ;
+
+
+///////////////////////////////////////////////////////////
+//
+//
+// Component descriptions
+//
+[
+	uuid(b53313d2-20c4-11d0-9c6c-00a0c90a632c),
+	version(1.0),
+	helpstring("TangramGLWorld 1.0 Type Library")
+]
+library TangramGLWorldLib
+{
+	importlib("stdole32.tlb");
+
+	//
+	// TangramGLWorld
+	//
+	[
+		uuid(b53313d3-20c4-11d0-9c6c-00a0c90a632c),
+		helpstring("TangramGLWorld Class")
+	]
+	coclass TangramGLWorld
+	{
+		[default] interface ITangramGLWorld;
+		interface ITangramWorld;
+		interface ITangramCanvas ;
+	};
+
+
+	//
+	// TangramGLVisual
+	//
+	[
+		uuid(b53313d4-20c4-11d0-9c6c-00a0c90a632c),
+		helpstring("TangramGLVisual Class")
+	]
+	coclass TangramGLVisual
+	{
+		[default] interface ITangramGLVisual;
+		interface ITangramVisual ;
+		interface ITangramModelEvent ;
+	};
+};

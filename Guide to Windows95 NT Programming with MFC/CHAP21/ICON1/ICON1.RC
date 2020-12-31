@@ -1,0 +1,8 @@
+// ICON1 resource script
+
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// The icon
+
+IDR_ICON1   ICON   DISCARDABLE  "toxic.ico"

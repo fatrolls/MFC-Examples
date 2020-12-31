@@ -1,0 +1,15 @@
+TARGETNAME=generic
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+USE_PDB=1
+INCLUDES=$(BASEDIR)\inc;$(98DDK)\inc;$(98DDK)\inc\win98	
+
+SOURCES= 	Control.cpp \
+		DriverEntry.cpp \
+		RemoveLock.cpp \
+		DevQueue.cpp \
+		PlugPlay.cpp \
+		Driver.rc \
+		Power.cpp \
+		stddcls.cpp

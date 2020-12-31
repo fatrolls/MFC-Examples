@@ -1,0 +1,223 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>CMessageBoxX v1.05</title>
+<link rel="stylesheet" type="text/css" href="./naughter.css">
+</head>
+
+<body>
+
+<h2 align="left">CMessageBoxX v1.05</h2>
+
+<p>Welcome to <strong>CMessageBoxX</strong>, an MFC class to encapsulate the 
+MessageBox API via sub classing.</p>
+
+<table>
+  <tr>
+    <td><a href="#Features">Features</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Copyright">Copyright</a></td>
+  </tr>
+  <tr>
+    <td><a href="#History">History</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Usage">Usage</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Enhancements">Planned Enhancements</a></td>
+  </tr>
+  <tr>
+    <td><a href="#Contact">Contacting the Author</a></td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2><a name="Features"></a>Features</h2>
+
+
+<ul>
+  <li>Subclasses the message box window to allow additional customisation.</li>
+  <li>Sub classed using a standard CWnd derived class, so you can use standard 
+	MFC message maps in the class itself and any classes you derive from it.</li>
+  <li>Implements standard support for automatic addition of icons just like in 
+	MFC.</li>
+  <li>Allows custom icons to be easily added to the message box.</li>
+  <li>Implements timed out message box support with specific timeout button. The 
+	timeout can also be reset based on mouse or keyboard activity.</li>
+  <li>Implements disabled button support. Helpful where you want to implement 
+	Nag screens when you want to remind an end user to register your product.</li>
+	<li>Implements support for including checkboxes on the message box. For 
+	example you can implement &quot;Don't remind me again&quot; type message boxes.</li>
+	<li>Includes support for right aligned buttons instead of the default for 
+	the MessageBox API which is to have the buttons cantered.</li>
+  <li>As of v1.05, the classes are now designed for VC 2005 or later. They will 
+	not compile on earlier releases of VC. </li>
+  <li>Integrates with MFC support for message box help context.</li>
+  <li>Fully Unicode compliant.</li>
+	<li>Optionally supports HTML in your message box via the QHTM HTML control 
+	provided at <a href="http://www.gipsysoft.com/qhtm/">
+	http://www.gipsysoft.com/qhtm/</a>.</li>
+	<li>Supports selectable text in your message boxes.</li>
+	<li>Includes support for user defined animated text and captions</li>
+</ul>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2><b><a name="Copyright"></a>Copyright</b></h2>
+<ul>
+  <li>You are allowed to include the source code in any product (commercial, 
+	shareware, freeware or otherwise) when your product is released in binary 
+	form.</li>
+  <li>You are allowed to modify the source code in any way you want except you 
+	cannot modify the copyright details at the top of each module.</li>
+  <li>If you want to distribute source code with your application, then you are 
+	only allowed to distribute versions released by the author. This is to 
+	maintain a single distribution point for the source code.</li>
+</ul>
+<p></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2><a name="History"></a>History</h2>
+
+<p><strong>V1.0 (19 April 2003)</strong><ul>
+  <li>Initial public release.
+    </li>
+</ul>
+
+<p><strong>V1.01 (24 April 2006)</strong><ul>
+  <li>Updated copyright details.</li>
+	<li>Updated documentation to use the same style as the web site.</li>
+	<li>UpdateCaptionDueToTimer method has been renamed to UpdateUIDueToTimer</li>
+	<li>Now includes support for including a check box on the MessageBox. To 
+	achieve this simply call SetCheckBox with the text to show on the check box 
+	and its initial checked state prior to calling DoModal to show the message 
+	box. Then when DoModal returns simple call GetCheckBoxState to determine 
+	whether the check box was ticked or not.</li>
+	<li>Now includes support for right aligning buttons instead of the default 
+	for the MessageBox API which is to have the buttons centered. The support 
+	for checkboxes and right aligned buttons is inspired by the GSMessageBox 
+	article at <a href="http://www.gipsysoft.com/messagebox/">
+	http://www.gipsysoft.com/messagebox/</a>.</li>
+	<li>Both SetTimeout and SetDisabledButton methods now include a 
+	&quot;bModifyCaptionDuringCountdown&quot; which determines if they should cause the 
+	MessageBox caption to be modified during their timer countdowns</li>
+	<li>Updated the sample app to allow most of the functionality of the code to 
+	be optionally tested.</li>
+	<li>SetTimeout method now includes a bResetTimeoutOnUserActivity parameter.
+    </li>
+	<li>Addition of GetCurrentTimerCaption() and GetCurrentDisabledCaption() 
+	virtual methods which allow the timeout and disabled captions to be easily 
+	customized at runtime.</li>
+	<li>Fixed a number of compiler warnings when the code is compiled using 
+	/Wp64</li>
+</ul>
+
+<p><strong>V1.02 (3 July 2006)</strong><ul>
+	<li>Code now uses newer C++ style casts instead of C style casts.</li>
+	<li>Class now allows you to put HTML text into the message box. This is 
+	provided by the QHTM HTML control provided at
+	<a href="http://www.gipsysoft.com/qhtm/">http://www.gipsysoft.com/qhtm/</a>. 
+	You may need to purchase a license (depending on the type of application you 
+	are developing) as well as follow their instructions on deploying 
+	it if you want this functionality with CMessageBoxX. This functionality by 
+	default is not included in CMessageBoxX and is only available when you 
+	define the preprocessor macro &quot;CMESSAGEBOXX_HTML_SUPPORT&quot;.</li>
+	<li>Implemented support for selectable text. This means that end-users can 
+	select the text in the message box and paste it into the clipboard. Very 
+	helpful if you want end-users to record the details of error messages etc in 
+	your apps.</li>
+	<li>Button captions can now be modified via SetModifiedButtonCaption.</li>
+	<li>Added user defined animated text support.</li>
+	<li>Added user defined animated caption support.</li>
+	<li>Updated code to clean compile on VC 2005.</li>
+</ul>
+
+<p><strong>V1.03 (5 November 2006)</strong><ul>
+	<li>Minor update to stdafx.h of sample app to avoid compiler warnings in VC 
+	2005.</li>
+	<li>Code now uses QHTM const for the class name</li>
+</ul>
+
+<p><strong>V1.04 (11 August 2007)</strong><ul>
+	<li>Updated copyright details.</li>
+	<li>Check box text control is now clipped to the width of the main text 
+	control if its calculated width will exceed the message box client area. 
+	This was done following a report from Kyle Alons that this text can get 
+	clipped on Vista when you pick a longish piece of text as the check box 
+	text. You should ensure you pick a shortish piece of text to avoid this 
+	problem as well as test all your message boxes on all the operating systems 
+	you will be supporting your application on.</li>
+	<li>Addition of a CMESSAGEBOXX_EXT_CLASS to allow the code to be more easily 
+	added to an extension dll.</li>
+</ul>
+
+<p><strong>V1.05 (11 July 2008)</strong><ul>
+	<li>Updated copyright details.</li>
+	<li>Updated sample app to clean compile on VC 2008</li>
+	<li>Removed VC 6 style classwizard comments from the code.</li>
+	<li>The code has now been updated to support VC 2005 or later only. </li>
+	<li>Code now compiles cleanly using Code Analysis (/analyze)</li>
+	<li>Code now uses newer C++ style casts instead of C style casts.</li>
+	<li>Updated sample app to demonstrate support for user icons</li>
+	<li>Class now correctly handles the manifest contexts which the MessageBox 
+	API's can have when you are using Common Control v6 or later</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2><a name="Usage"></a>Usage</h2>
+
+<ul>
+  <li>To use the class in your code simple include MessageBoxX.cpp in your 
+	project and #include MessageBoxX.h in which ever of your modules needs to 
+	make calls to the class. </li>
+  <li>You also need to copy across all the IDS_MESSAGEBOXX_* string resources 
+	from the sample app to your application.</li>
+  <li>Included with the download is a very simple dialog based which exercises 
+	all of the functionality of the class. You should be able to get an idea on 
+	how to use the class by examining the code in this sample.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2><a name="Enhancements"></a>Planned Enhancements</h2>
+<ul>
+  <li>If you have any other suggested improvements for CMessageBoxX, please let 
+	me know so that I can incorporate them into the next release of 
+	CMessageBoxX.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2><a name="Contact"></a>Contacting the Author</h2>
+
+<p>PJ Naughter<br>
+Email: <a href="mailto:pjna@naughter.com">pjna@naughter.com</a><br>
+Web: <a href="http://www.naughter.com">http://www.naughter.com</a><br>
+11 July 2008</p>
+</body>
+</html>

@@ -1,0 +1,141 @@
+#
+# Chapter 11 - Makefile
+#
+!IF "$(OUTPROC)" == ""
+!MESSAGE Building in-proc server.
+SERVER =
+TARGETS = Server.dll
+DIR_SERVER = InProc
+!ELSE
+!MESSAGE Building local/remote server.
+SERVER = /D_OUTPROC_SERVER_
+TARGETS = Server.exe
+DIR_SERVER = OutProc
+!ENDIF 
+
+#
+# Flags - Always compiles debug
+#
+CPP_FLAGS=/c /MTd /Zi /Od /D_DEBUG
+EXE_LINK_FLAGS= /NOD /DEBUG
+DLL_LINK_FLAGS=/NOD /DLL /DEBUG
+
+LIBS = kernel32.lib uuid.lib advapi32.lib ole32.lib oleaut32.lib
+
+# NOTE: Added oleaut32.lib
+
+#################################################
+#
+# Targets
+#
+
+all : Client.exe DClient.exe $(TARGETS)
+
+#################################################
+#
+# Proxy source files
+#
+Iface.h Server.tlb Proxy.c Guids.c DllData.c : Server.idl
+	midl /h Iface.h /iid Guids.c /proxy Proxy.c Server.idl
+
+#################################################
+#
+# Shared source files
+#
+
+Guids.obj : Guids.c
+		cl /c /DWIN32 /DREGISTER_PROXY_DLL Guids.c
+
+#################################################
+#
+# Component/server source files
+#
+
+$(DIR_SERVER)\Server.obj : Server.cpp cunknown.h cfactory.h Iface.h
+	cl $(CPP_FLAGS)  /Fo"$*.obj" Server.cpp
+
+$(DIR_SERVER)\Cmpnt.obj : Cmpnt.cpp Cmpnt.h Iface.h Registry.h   \
+		CUnknown.h
+	cl $(CPP_FLAGS) /Fo"$*.obj" Cmpnt.cpp
+
+#
+# Helper classes
+#
+
+$(DIR_SERVER)\CUnknown.obj : CUnknown.cpp CUnknown.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" CUnknown.cpp
+
+$(DIR_SERVER)\CFactory.obj : CFactory.cpp CFactory.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" CFactory.cpp
+
+$(DIR_SERVER)\Registry.obj : Registry.cpp Registry.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" Registry.cpp
+
+# Util.cpp compiled for server
+$(DIR_SERVER)\Util.obj : Util.cpp Util.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" Util.cpp
+
+!IF "$(OUTPROC)" != ""
+$(DIR_SERVER)\OutProc.obj : OutProc.cpp CFactory.h CUnknown.h
+	cl $(CPP_FLAGS) $(SERVER) /Fo"$*.obj" OutProc.cpp
+
+Server.res : Server.rc
+	rc /l 0x409 Server.rc
+!ENDIF
+
+
+#################################################
+#
+# Client source files
+#
+
+Client.obj : Client.cpp Iface.h Util.h
+	cl $(CPP_FLAGS) Client.cpp
+
+DClient.obj : DClient.cpp Util.h
+	cl $(CPP_FLAGS) DClient.cpp
+
+# Util.cpp compiled for the client
+Util.obj : Util.cpp Util.h
+	cl $(CPP_FLAGS) Util.cpp
+
+#################################################
+#
+# Link component - Automatically register component.
+#
+
+SERVER_OBJS = $(DIR_SERVER)\Server.obj	 \
+              $(DIR_SERVER)\Cmpnt.obj      \
+              $(DIR_SERVER)\Registry.obj   \
+              $(DIR_SERVER)\cfactory.obj   \
+              $(DIR_SERVER)\cunknown.obj   \
+              $(DIR_SERVER)\Util.obj       \
+              Guids.obj
+
+!IF "$(OUTPROC)" == ""
+Server.dll:  $(SERVER_OBJS) Server.def
+	link $(DLL_LINK_FLAGS) $(SERVER_OBJS) libcmtd.lib   \
+		libcimtd.lib $(LIBS) /DEF:Server.def
+	regsvr32 -s Server.dll
+
+!ELSE
+Server.exe:  $(SERVER_OBJS) $(DIR_SERVER)\OutProc.obj Server.res
+	link $(EXE_LINK_FLAGS) $(SERVER_OBJS)	               \
+		$(DIR_SERVER)\OutProc.obj Server.res libcmtd.lib   \
+		libcimtd.lib $(LIBS) user32.lib gdi32.lib
+	Server /RegServer
+!ENDIF
+
+
+#################################################
+#
+# Link clients
+#
+
+Client.exe : Client.obj Guids.obj Util.obj
+	link $(EXE_LINK_FLAGS) Client.obj Guids.obj Util.obj   \
+		libcmtd.lib libcimtd.lib $(LIBS)
+	
+DClient.exe : DClient.obj Util.obj
+	link $(EXE_LINK_FLAGS) DClient.obj Guids.obj Util.obj   \
+		libcmtd.lib libcimtd.lib $(LIBS)

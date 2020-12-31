@@ -1,0 +1,118 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DLL - Dialogs in DLL</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Dialogs in DLL</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+<P>It is nice to be able to make a DLL project that includes its own resources (such as a dialog resource) and then be able to call it from another project. Seems simple but I wnet nuts untill I found out the following:
+
+<P>In the DLL function that pops up the dialog you must manage the state so that the DLL code uses the DLL's resources.
+
+<PRE><TT><FONT COLOR="#990000">
+extern __declspec(dllexport) void ShowEditDialog(int &MyData1, int &MyData2)
+{
+	//ensure we are using our own resources
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	CMyLocalDialog dlg;
+	dlg.Arg1 = MyData1; //specific local data for MyLocalDialog
+	dlg.Arg2 = MyData2;
+	dlg.DoModal();
+	MyData1 = dlg.Arg1; //data after processing
+	MyData2 = dlg.Arg2;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>Here's an update sent in by <A HREF="mailto:jni@esrange.ssc.se">Johan Nilsson</A>
+
+
+<P>The program calling this exported function will never be able to use the 
+function GetLastError() to check for problems that may have occured (I know it 
+from experience). This is because the AFX_MANAGE_STATE macro creates a 
+temporary object on the stack which, when it is automatically destroyed on 
+function exit, will clear any error codes set for the current thread (it calls 
+into TlsGetValue, deep in MFC).
+
+<P>I've provided a workaround for this, which I've been using myself. Not so 
+pretty, but it works. Example on how to fix the ShowEditDialog fn :
+
+<PRE><TT><FONT COLOR="#990000">
+extern __declspec(dllexport) void ShowEditDialog(int &MyData1, int &MyData2)
+{
+	DWORD dwLastErr = NO_ERROR;
+
+	//
+	// surround the code in brackets, which will cause the temporary
+	// object created by AFX_MANAGE_STATE to be destroyed before leaving
+	// the exported function.
+	//
+	// NOTE : Do NOT call MFC code outside of these brackets.
+	//
+	{
+		AFX_MANAGE_STATE(AfxGetStaticModuleState());
+		CMyLocalDialog dlg;
+		dlg.Arg1 = MyData1; //specific local data for MyLocalDialog
+		dlg.Arg2 = MyData2;
+		dlg.DoModal();
+		MyData1 = dlg.Arg1; //data after processing
+		MyData2 = dlg.Arg2;
+
+		//
+		// save possible errors
+		//
+		dwLastErr = ::GetLastError();
+	}
+
+	//
+	// only set error if none is currently set.
+	// (last error will always be NO_ERROR _unless_
+	// TlsGetValue failed earlier)
+	//
+	if (::GetLastError() == NO_ERROR)
+		::SetLastError(dwLastErr);
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META Name="description" Content="Source code for status bar">
+   <META Name="keywords" Content="SOURCE CODE MFC WINDOWS PROGRAMMING PROGRAMMER STATUS BAR STATUSBAR 
+   PROGRESS SCROLL TEXT ENHANCED BITMAP COLOR PANE">
+   <TITLE>Status Bar - Table of Contents</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Status bar</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<hr>
+
+This section is maintained by 
+<A HREF="mailto:moor@m-s.ch">Tom Moor</A>.
+
+<UL>
+<LI><A HREF="progress_in_status.shtml">Showing progress bar in a status bar pane - Brad Mann</A></LI>
+<LI><A HREF="progress_in_status2.shtml">Showing progress bar in a status bar pane (2) - Chris Maunder</A></LI>
+<LI><A HREF="progress_in_status3.shtml">Showing progress bar in a status bar pane (3) - Levente Farkas</A></LI>
+<LI><A HREF="scrolling_text.shtml">Show scrolling text in a status bar pane - by Sushil Saxena</A></LI>
+<LI><A HREF="clock_in_status.shtml">Adding a clock to the status bar - Roger Onslow</A></LI>
+<LI><A HREF="printf_to_status.shtml">Write to status bar using sprintf syntax - Keith Rule</A></LI>
+<LI><A HREF="enhanced_status.shtml">Enhanced statusbar class - Doug Keith</A>
+<LI><A HREF="ready_prompt.shtml">"Ready" prompt replacement - Mark Findlay</A>
+<LI><A HREF="longop.shtml">A UI class for long operation feedback - Klaus Gütter</A>
+<LI><A HREF="XStatusBar.shtml">Extended statusbar with bitmap, progress bar and mouse action - Joachim Raidl</A>
+
+</UL>
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%"><CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT></CENTER>
+</TD>
+
+<TD WIDTH="33%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

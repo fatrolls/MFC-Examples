@@ -1,0 +1,132 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Jerry Coffin">
+   <TITLE>Win32 - PS (Process Status) for Windows 95 and Windows NT</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->PS (Process Status) for Windows 95 and Windows NT
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:jcoffin@taeus.com"><!-- Author Name -->Jerry Coffin</A>.
+
+
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+A PS (Process Status) program for Windows 95 and Windows NT.  This is a
+program to list all the active processes under Windows 95 or Windows NT.
+It lists each program's full path name and Process ID.  If you run it
+with no command line arguments, it displays the output on the console.
+If you supply an argument (regardless of what it is) it displays the
+output in a Listbox instead.
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+In addition, a simple "kill" command is included.  If you type "kill"
+followed by the Process ID shown in the PS display, that process will be
+killed (unless it's a 16 bit Windows task, which would require a bit
+more work.)  When using KILL, you can use hex, decimal or octal for the
+Process ID, following the normal C conventions -- a prefix of "0x"
+indicates hex, a prefix of `0' indicates octal, and no prefix indicates
+decimal.
+
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+Contents:
+<BR>
+    Full source code.
+<BR>
+    VC++ 5.0 SP3 project files. (untested with earlier versions)
+<BR>
+    hand-written makefile for command line builds.
+
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+Installation:
+<p><!-- The 'p' starts a paragraph of normal text -->
+    Unzip the ps_src.zip into a directory of your choice.  Assuming you
+    have VC++ correctly intalled, switch to that directory and type
+    nmake.  The executable should come to a bit under 8K.
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+    If you use the VC++ project files, you'll probably get a message
+    telling you that the project has been moved -- this is normal unless
+    you happen to pick exactly the path name to put it in that I used.
+
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+Known bugs:
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+1) Under NT, DOS programs are not displayed. (16 bit Windows
+   programs are...)
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+2) If you attempt to use the PID supplied for a 16 bit Windows program
+   under NT to kill the program, killing the program will fail unless
+   the kill program takes the special nature of the program into
+   account. (You can kill the NTVDM that the Windows program runs under,
+   and with sufficient code, you should be able to kill the Windows
+   program by itself as well, but I don't know of a kill program that
+   does so.)
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+This code was written by Jerry Coffin.  It is hereby released into the
+public domain.  Since the program is free, I provide no guaranty or
+warranty of any sort with it.  However, if you report any bugs to
+jcoffin@taeus.com, there's a reasonable chance I'll try to fix them when
+I get a chance.  Have fun.<BR>
+    Later,<BR>
+
+    Jerry.
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="ps_exe.zip">Download demo project - 5KB</A>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="ps_src.zip">Download source - 16KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 2-Jul-1998<!-- date here -->
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

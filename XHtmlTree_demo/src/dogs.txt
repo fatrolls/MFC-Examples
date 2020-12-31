@@ -1,0 +1,284 @@
+; dogs.txt - data file for XHtmlTreeTest.exe
+;
+Sight Hounds~0~1
+Afghan &copy; <b>Hound</b>~0~1
+<a href="app:WM_APP_COMMAND1">American Staghound</a>~0~1
+<u>Azawakh</u>~0~0
+<i>Borzoi</i>~0~1
+Chart Polski (Polish <font size="+2" face="Courier New">Greyhound</font>)~0~1
+Chippiparai &sup2;~0~1
+Galgo Español (Spanish <font color="red">Greyhound</font>)~0~1
+<a href="app:WM_APP_COMMAND2">Greyhound</a>~0~1
+Hortaya Borzaya (Chortaj)~0~1
+Irish Wolfhound~0~1
+Italian Greyhound~0~1
+Kangaroo Dog <a href="http://www.dogbreedinfo.com/kangaroodog.htm">(see picture)</a>~0~1
+Kanni~0~1
+Khalag Tazi~0~1
+Longdog~0~1
+Lurcher (Mixed Breed)~0~1
+Magyar Agar (Hungarian Greyhound)~0~1
+Mudhol Hound~0~1
+Rajapalayam~0~1
+Rampur Greyhound~0~1
+Saluki~0~1
+Scottish Deerhound~0~1
+Silken Windhound~0~1
+Sloughi~0~1
+Tasy~0~1
+Whippet~0~1
+
+Herding Dogs~0~1
+Collies~0~1
+ Border Collie~1~1
+ Bearded Collie~0~1
+ Smooth Collie~0~1
+ Rough Collie~0~1
+Australian Cattle Dog~0~1
+Australian Shepherd~0~1
+Australian Kelpie~0~1
+Basque Shepherd Dog~0~1
+Belgian Shepherd Dog (Groenendael, Laekenois, Tervueren, and Malinois)~0~1
+Bergamasco~0~1
+Bouvier des Flandres~0~1
+Briard~0~1
+Canaan Dog~0~1
+Catahoula Leopard Dog~0~1
+Catalan Sheepdog~0~1
+Caucasian Ovcharka~0~1
+Dutch Shepherd~0~1
+English Shepherd~0~1
+German Coolies~0~1
+German Shepherd Dog~0~1
+Hovawart~0~1
+Huntaway~0~1
+Koolie~0~1
+Lancashire Heeler~0~1
+McNab~0~1
+Norwegian Buhund~0~1
+Old English Sheepdog~0~1
+Polish Lowland Sheepdog~0~1
+Puli~0~1
+Shetland Sheepdog~0~1
+Spanish Water Dog~0~1
+Swedish Vallhund~0~1
+Welsh Corgis~0~1
+ Pembroke Welsh Corgi~0~1
+ Cardigan Welsh Corgi~0~1
+Blue Lacy~0~1
+Rottweiler~0~1
+
+Scent Hounds~0~1
+Alpine Dachsbracke~0~1
+American Foxhound~0~1
+Anglo-Français de Petite Vénerie~0~1
+Ariegeois~0~1
+Artois Hound~0~1
+Austrian black and tan hound~0~1
+Basset hound~0~1
+Bavarian Mountain hound~0~1
+Beagle~0~1
+Beagle-Harrier~0~1
+Berner Laufhund~0~1
+Blackmouth Cur~0~1
+Bloodhound~0~1
+Brachet~0~1
+Coonhounds~0~1
+ Black and Tan Coonhound~0~1
+ Redbone Coonhound~0~1
+ Bluetick Coonhound~0~1
+ English Coonhound~0~1
+ Treeing Walker Coonhound~0~1
+ Plott Hound~0~1
+Dachshund~0~1
+Drever~0~1
+Foxhound~0~1
+Grand Basset Griffon Vendeen (GBVB)~0~1
+Grand Bleu de Gascogne~0~1
+Harrier~0~1
+Ibizan hound~0~1
+Kerry Beagle~0~1
+Kritikos Ichnilatis (Cretan Hound)~0~1
+Norwegian Elkhound~0~1
+Otterhound~0~1
+Petit Basset Griffon Vendeen~0~1
+Polish Hound (pl.Ogar Polski )~0~1
+Polish Scenthound (pl.Gonczy Polski )~0~1
+Rhodesian Ridgeback~0~1
+
+Gun Dogs~0~1
+Bracco Italiano~0~1
+Braque du Bourbonnais~0~1
+Brittany~0~1
+Cesky Fousek~0~1
+German Longhaired Pointer~0~1
+German Shorthaired Pointer~0~1
+German Wirehaired Pointer~0~1
+Hungarian Vizsla~0~1
+Hungarian Wirehaired Vizsla~0~1
+Italian Spinone~0~1
+Kooikerhondje~0~1
+Korthals Griffon~0~1
+Lagotto Romagnolo~0~1
+Large Münsterländer~0~1
+Pointer (also known as English Pointer)~0~1
+Portuguese Pointer~0~1
+Pudelpointer~0~1
+Retriever (Chesapeake Bay)~0~1
+Retriever (Curly Coated)~0~1
+Retriever (Flat Coated)~0~1
+Retriever (Golden)~0~1~320~The Golden Retriever is a popular breed of dog, originally developed to retrieve game during hunting. It is one of the most common family dogs as it is naturally very friendly and amenable to training.
+Retriever (Labrador)~0~1
+Retriever (Nova Scotia Duck-Tolling)~0~1
+Setter (English)~0~1
+Setter (Gordon)~0~1
+Setter (Irish)~0~1
+Setter (Irish Red and White)~0~1
+Small Münsterländer~0~1
+Spaniel (American Cocker)~0~1
+Spaniel (American Water)~0~1
+Spaniel (Clumber)~0~1
+Spaniel (Cocker)~0~1
+Spaniel (English Springer)~0~1
+Spaniel (Field)~0~1
+Spaniel (Irish Water)~0~1
+Spaniel (Sussex)~0~1
+Spaniel (Welsh Springer)~0~1
+Spanish Water Dog~0~1
+Spinone Italiano~0~1
+Standard Poodle~0~1
+Weimaraner~0~1
+Wirehaired Pointing Griffon~0~1
+
+Terriers~0~1
+American Pitbull Terrier~0~1
+Airedale Terrier~0~1
+Australian Terrier~0~1
+Bedlington Terrier~0~1
+Black Russian Terrier~0~1
+Brazilian Terrier~0~1
+Border Terrier~0~1
+Boston Terrier~0~1
+Bull Terrier~0~1
+Bull Terrier (Miniature)~0~1
+Cairn Terrier~0~1
+Cesky Terrier~0~1
+Dandie Dinmont Terrier~0~1
+Fox Terrier (Smooth)~0~1
+Fox Terrier (Wire)~0~1
+Glen of Imaal Terrier~0~1
+Irish Terrier~0~1
+Jack Russell Terrier~0~1
+Kerry Blue Terrier~0~1
+Kromfohrlander~0~1
+Lakeland Terrier~0~1
+Manchester Terrier~0~1
+Norfolk Terrier~0~1
+Norwich Terrier~0~1
+Parson Russell Terrier~0~1
+Rat Terrier~0~1
+Scottish Terrier~0~1
+Sealyham Terrier~0~1
+Skye Terrier~0~1
+Soft Coated Wheaten Terrier~0~1
+Staffordshire Terrier~0~1
+Welsh Terrier~0~1
+West Highland White Terrier~0~1
+Working terrier~0~1
+
+Spitz~0~1
+Akita Inu ~0~1
+Alaskan Husky ~0~1
+Alaskan Klee Kai~0~1
+Alaskan Malamute~0~1
+American Eskimo Dog ~0~1
+Canadian Eskimo Dog ~0~1
+Chinese Foo Dog~0~1
+Chinook ~0~1
+Chow Chow ~0~1
+East Siberian Laika~0~1
+Eurasier ~0~1
+Finnish Lapphund ~0~1
+Finnish Spitz ~0~1
+German Spitz ~0~1
+Greenland Dog ~0~1
+Guejae Gae ~0~1
+Hokkaido ~0~1
+Icelandic Sheepdog ~0~1
+Jamthund ~0~1
+Japanese Spitz ~0~1
+Kai ~0~1
+Karelian Bear Dog ~0~1
+Karelo-Finnish Laika ~0~1
+Keeshond ~0~1
+Kintamani ~0~1
+Kishu ~0~1
+Korea Jindo Dog ~0~1
+Lapponian Herder (Lapinporokoira) ~0~1
+Mackenzie River Husky ~0~1
+Nenets Herding Laika ~0~1
+Norbottenspets ~0~1
+Northeasterly Hauling Laika ~0~1
+Norwegian Buhund ~0~1
+Norwegian Elkhound ~0~1
+Norwegian Lundehund ~0~1
+Papillon ~0~1
+Phalène ~0~1
+Pomeranian ~0~1
+Pungsan ~0~1
+Russo-European Laika ~0~1
+Ryukyu Inu ~0~1
+Sakhalin Husky ~0~1
+Samoyed ~0~1
+Sanshu ~0~1
+Schipperke ~0~1
+Seppala Siberian Sleddog ~0~1
+Shiba Inu ~0~1
+Shikoku ~0~1
+Siberian Husky ~0~1
+Swedish Lapphund~0~1
+Swedish Vallhund ~0~1
+Thai Bangkaew Dog~0~1
+Volpino Italiano ~0~1
+Welsh Corgi (Pembroke) ~0~1
+West Siberian Laika~0~1
+
+Guard Dogs~0~1
+Doberman~0~1
+German Shepherd~0~1
+Rottweiler~0~1
+Kangal Dog~0~1
+Bullmastiff~0~1
+American Bulldog~0~1
+Pit bull~0~1
+Kunming Dog (in Asian nations)~0~1
+
+Toy Dogs~0~1
+Affenpinscher~0~1
+Australian Silky Terrier~0~1
+Australian Terrier~0~1
+Bichon Frisé~0~1
+Bolognese~0~1
+Boston Terrier~0~1
+Cavalier King Charles Spaniel~0~1
+Chihuahua (Long Coat)~0~1
+Chihuahua (Smooth Coat)~0~1
+Chinese Crested Dog~0~1
+Coton de Tulear~0~1
+English Toy Terrier (Black & Tan)~0~1
+Griffon Bruxellois~0~1
+Havanese~0~1
+Italian Greyhound~0~1
+Japanese Chin~0~1
+King Charles Spaniel~0~1
+Löwchen (Little Lion Dog)~0~1
+Maltese~0~1
+Miniature Pinscher~0~1
+Papillon~0~1
+Pekingese~0~1
+Pomeranian~0~1
+Pug~0~1
+Shih Tzu~0~1
+Toy Fox Terrier~0~1
+Toy Manchester Terrier~0~1
+Yorkshire Terrier~0~1

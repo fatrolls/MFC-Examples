@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>OpenGL - Starting Rendering Modes</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Starting Rendering Modes</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:pierre.alliez@cnet.francetelecom.fr">Pierre ALLIEZ</A>.
+
+</B></FONT><P><A HREF="start.zip">Download project files</A> 282KB
+
+
+<P>
+<BR><B><FONT SIZE=-1>Keywords :</FONT></B>
+<UL>
+<LI>
+<FONT SIZE=-1>OpenGL rendering context</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>MFC</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Rendering mode : wireframe / vertex / faces</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Gouraud shading</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Antialiasing</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Lighting</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Scaling (with sliders)</FONT></LI>
+
+<LI>
+<FONT SIZE=-1>Rotation (mouse events)</FONT></LI>
+</UL>
+<FONT SIZE=-1>This sample create an OpenGL rendering context in a multidocument
+/ view framework and display the most simple representative object : a
+sphere. A formview on the left permits to check rendering options, like
+rendering modes (vertex, wireframe, faces), antialiasing, lighting, gouraud
+shading (in face and wireframe mode), lighting and back colors, scaling,
+animation (rotation). Mouse events permits rotation.</FONT>
+<BR><FONT SIZE=-1>&nbsp;</FONT>
+<CENTER><IMG SRC="start.gif" NOSAVE HEIGHT=396 WIDTH=547></CENTER>
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

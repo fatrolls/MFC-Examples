@@ -1,0 +1,258 @@
+                        WELCOME to WINDOWS++!!
+                     Copyright 1992 Paul DiLascia
+                      Thank you for your support!
+
+               PLEASE READ THE INSTRUCTIONS CAREFULLY!
+
+This diskette accompanies the book:
+
+            Windows++: Writing Re-usable Windows Code in C++
+               by Paul DiLascia (Addison-Wesley, 1992)
+
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+LICENSE AGREEMENT: You may compile Windows++ into applications that
+you distribute to others (including the Windows++ dynamic link
+library), provided that you include the following text along with
+your own Copyright notice: "This program uses the Windows++ class
+library, Copyright 1992 Paul DiLascia." YOU MAY NOT SELL OR GIVE THE
+WINDOWS++ SOURCE CODE TO ANYONE ELSE. 
+
+REQUIREMENTS
+============
+
+* One of the following compilers:
+
+  Borland C++ compiler, Version 3.0 and Windows 3.0;
+  Borland C++ compiler, Version 3.1 or 4.0 and Windows 3.1;
+  Microsoft C/C++ 8.00 (VC++) and Win 3.1 SDK, Win 3.1;
+  Symantec 6.0 C++ compiler, Win 3.1
+  Zortech C++ compiler, Version 3.0r4, BLINKX version 5.0r3, Win 3.0 or 3.1; 
+
+* About 2 megabytes of disk space (to build everything).
+
+INSTALLATION
+============
+
+The Windows++ diskette contains the following files:
+
+README          The very file you are now reading.
+
+EXPWPP10.EXE    Self-extracting archive with Windows++ 1.0 source code.
+                This is the original code as it appears in the book.
+                It supports Zortech and Borland 3.0 (for Windows 3.0)
+
+EXPWPP20.EXE    This is a new release of WPP (1/1/94) that support the
+                MSC 8.00, BC 3.1 and 4.0, and Symantec compilers.
+                (for Windows 3.1)
+
+To install Windows++, create a directory somewhere on your hard disk,
+say, C:\WPP, and copy the diskette to this directory:
+
+   COPY A:\*.* C:\WPP
+
+Next, run EXPWPP10. This will expand the compressed source code into a
+hierarchy containing the following subdirectories:
+
+  .             Windows++ library
+  .\HELLOC      C HELLO program
+  .\HELLO1      HELLO1 program and library
+  .\HELLO2      HELLO2 program and library
+  .\HELLO3      HELLO3 program and library
+  .\DLL         Sample DLL programs (Borland only)
+  .\SAMPLES     Sample applications from the book (TOE, MANDEL, & co.)
+
+What you do next depends on what compiler you have.
+
+* Zortech 3.0r4 and Borland 3.0 USERS: Do nothing.
+
+* Borland 3.1, 4.00 and MSC 8.00 (VC++) USERS:
+  Ater running EXPWPP10.EXE:
+    . Erase everything in \WPP and \WPP\SAMPLES
+    . From \WPP, run EXPWPP20.EXE
+  NOTE: you must have Windows version 3.1
+
+You can delete the EXPxxx.EXE files after running them. (But save the
+original copies on diskette!)  You'll need about 2MB of disk space to
+build the library and all the programs.
+
+BUILDING WINDOWS++
+==================
+
+Once the files are installed, you're ready to build Windows++.
+
+* Make sure that your compiler is installed and that the LIB and INCLUDE 
+  evironment variables are set correctly. The compiler will be looking
+  for WINDOWS.H and other system files like <STDIO.H> (For Borland, the 
+  library and include paths are set in TURBOC.CFG; this is normally done
+  when you install BCC--but you still need INCLUDE for the RC compiler.) 
+
+* If you're using Borland 4.0, make sure the variable BC4LIB in
+  makefile.bcc is correct. The default is c:\bc4\lib
+
+* From your Windows++ directory, type
+
+     MAKEBCC            to build for Borland
+     MAKEMSC            to build for Microsoft
+     MAKESC             to build for Symantec
+     MAKEZTC            to build for Zortech
+
+* If you're using Windows 3.0, you must copy COMMDLG.DLL to a directory in
+  your Windows search path. If you have Windows 3.1, you should delete the
+  COMMDLG.DLL that comes with Windows++, since Windows 3.1 comes with a newer
+  version. (Though you may need to build COMMDLG.LIB by typing:
+
+  IMPLIB commdlg.lib commdlg.dll
+
+General Notes
+=============
+
+* WPP Version 2.0 (EXPWPP20.EXE) contains a few minor enhancements such as
+  a TRACE macro that lets you write to the Debug window, as well as some
+  bug fixes. Some other changes: all header files are combined into one
+  WPP.H, and the makefiles use precompiled headers. Also, STRICT is used
+  for more typesafe compiling. I gave up trying to support the medium
+  model efficiently and changed all CSTRs to LPSTRs.
+
+* The MAKExxx batch files create a DLL for Borland, and medium model
+  static libraries for the other compilers. If you want a different model, 
+  specify it on the make command line: 
+
+  nmake -fmakefile.msc MODEL=L   (for Microsoft, large model)
+
+  See makefile.xxx for more info.
+
+* MAKExxx.BAT builds the library in the WPP directory and the sample
+  files in the SAMPLES directory. It does NOT build the programs in
+  the HELLO directories, nor those in the DLL directory. If you want
+  to experiment with these, you must manually MAKE them. For example:
+
+        cd HELLO1
+        nmake -fmakefile.msc
+
+  You might want to rename the appropriate make files to MAKEFILE, so you
+  don't have to type -f every time you run MAKE. 
+
+  NOTE: WPP 2.0 does not support the HELLO programs, though they
+  may still compile.
+
+* To make the source code indent properly in your text editor, set the
+  TAB size to 3.
+
+Notes for BORLAND
+=================
+
+* If you're using BC 3.1 or 4.0, make sure the variable BC4LIB is
+  correct in makefile.bcc, and that you've run EXPWPP20.EXE as described
+  above.
+
+* If you're building the DLL for Borland, make sure you copy WPP.DLL to
+  some directory in your Windows search path, say, C:\WINDOWS. You can edit
+  the MAKEFILE to do this automatically: just set the WINDIR variable to the
+  directory you want and then type
+
+     MAKE install
+
+Notes for ZORTECH
+=================
+
+* For Zortech users who don't have MASM, pre-compiled .OBJ files for
+  CWL, CWM, CINITL, CINITM and SETDS are provided. You might want to
+  set the READ ONLY file attribute on these files, so you don't
+  delete them when you do MAKE CLEAN or DEL *.OBJ.
+
+* The Zortech code will run in Windows 3.1, but you must compile using the
+  3.0 WINDOWS.H that comes with the Zortech compiler.
+
+Notes for MICROSOFT C/C++ 8.00
+==============================
+
+* The MSC code requires Windows 3.1 and the 3.1 Software Development Kit.
+  If you have Visual C++, you have everthing you need.
+
+* Run EXPWPP20 as described above.
+
+* Remember to type NMAKE instead of MAKE when building for MSC.
+
+* I've only ported the medium and large model Windows++ static libraries,
+  the sample programs, and the different HELLO version of the library to
+  MSC 8.00. I did NOT port WPP.DLL, nor any of the code in the DLL directory.
+  (This is left as an exercise for the reader--good luck! This should be
+  somewhat easier with MSC 8.0 (VC++), since it allows _exporting a class,
+  but I had no luck.)
+
+* If you use the large model, you can't run multiple instances of the
+  sample programs; for this reason, MAKEMSC builds the medium model. For a
+  discussion of the large-model problems with the Microsoft compiler, I
+  refer you to the book, pp. 125-126 and footnote 30. 
+
+* For some reason (I have not yet had time to find out exactly why), the
+  WPDeferWinPos class does not always work properly with MSC. For this
+  reason, I modified the code in TOE.CPP to use moveWin instead (sigh).
+
+Notes for SYMANTEC
+==================
+
+* Run EXPWPP20 as described above.
+
+* Only the large and medium static libraries are suppported, not the DLL.
+
+
+
+
+Using LAUNCH
+============
+
+The diskette contains the LAUNCH program, which is listed in Appendix A
+of the book, but not described in the text. This You can use this
+program to launch all the other programs--just type
+
+                        win launch
+
+You can use the "Debug" button in the Launch dialog to run a program
+under your favorite debugger. To do so, you must first click the mouse
+on the close box in the upper left hand corner of the Launch dialog,
+select "Set Debugger..." and then enter a command string such a "tdw
+-do" (Borland debugger, use 2nd monitor). This string will be pre-pended
+to the program selected to build a command when you press the Debug
+button, so that in this case, if you selected MANDEL.EXE and pressed the
+Debug button, Launch would attempt to execute the command 
+
+                           tdw mandel.exe
+
+KNOWN BUGS
+==========
+
+* In SVGA, 256-color mode, the MANDEL progam sometimes displays
+  garbage colored boxes now and then. 
+
+* The PEOPLE program prompts you to Save your changes even when you haven't
+  made any, if you've used the "OK & Next" or "OK & Prev" buttons. 
+
+* In PEOPLE, if you invoke the Save As dialog, attempt to overwrite an
+  existing file, and answer Yes to the Windows stickup, the program may crash
+  later, when you exit. I suspect this is a bug in COMMDLG, but I haven't
+  been able to track it down.
+
+* There is a problem with the PEOPLE program and Borland 4.0. When
+  PEOPLE terminates, it sometimes crashes. If you are using the DLL
+  version of WPP, it will corrupt all your WPP programs so each one
+  crashes when you exit it. I am trying to find a solution, but I
+  think it's a bug in the Borland iostream library.
+
+* I've had spurious "fixup" errors reported by the Microsoft resource
+  compiler (RC), so for Borland 3.1, I use RC only to generate the .res
+  file, and I use Borland's RLINK to bind the .res file to the executable.
+  For MSC, I use the -K switch for RC, which seems to eliminate the problem.
+
+* The code for the TOE program is wrong in the book; the correct version is
+  on this diskette.
+
+* Unknown bugs.
+
+Happy Programming!
+
+Paul DiLascia
+January 1994

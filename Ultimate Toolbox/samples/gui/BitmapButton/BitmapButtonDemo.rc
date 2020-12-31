@@ -1,0 +1,310 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_AVI_TEST            AVI                     "res\\avi_test.avi"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\BitmapButtonDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXBitmapButton.rc""         // BitmapButton resources\r\n"
+    "#include ""utsampleabout.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\BitmapButtonDemo.ico"
+IDI_TOOL_ICON_2         ICON                    "res\\ToolIcon2.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BITMAPBUTTONDEMO_DIALOG DIALOGEX 0, 0, 217, 273
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "BitmapButtonDemo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "\nAdd Your Tool Tip  Here",IDC_BUTTON_1,"Button",BS_OWNERDRAW | WS_TABSTOP,7,15,67,43,WS_EX_TRANSPARENT
+    CONTROL         "Toolti&p",IDC_TOOLTIP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,73,37,10
+    CONTROL         "T&rack look",IDC_TRACK_LOOK_1,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,7,83,46,10
+    CONTROL         "&Hyper look",IDC_HYPER_LOOK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,93,46,10
+    CONTROL         "&Disabled",IDC_DISABLED_1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,103,44,10
+    CONTROL         "&Multiline",IDC_MULTILINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,113,44,10
+    CONTROL         "Normal",IDC_RADIO_NORMAL,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,57,73,59,10
+    CONTROL         "Dropdown",IDC_RADIO_DROPDOWN,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,57,83,59,10
+    CONTROL         "Right Dropdown",IDC_RADIO_RIGHTDROPDOWN,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,57,93,67,10
+    CONTROL         "Dropdown(no arrow)",IDC_RADIO_NOARROWDROPDOWN,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,57,102,80,10
+    CONTROL         "Toggle",IDC_RADIO_TOGGLE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,57,111,59,10
+    CONTROL         "Toggle - 3 state",IDC_RADIO_TOGGLETHREESTATE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,57,120,65,10
+    CONTROL         "A&uto resize",IDC_AUTO_RESIZE_1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,146,83,49,10
+    CONTROL         "&Invoke Action",IDC_ACTION_1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,146,93,56,10
+    CONTROL         "&Pseudo disable",IDC_PSEUDO_DISABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,146,103,60,10
+    CONTROL         "",IDC_LEFT_TOP,"Button",BS_AUTORADIOBUTTON | WS_GROUP,157,24,13,8
+    CONTROL         "",IDC_CENTER_TOP,"Button",BS_AUTORADIOBUTTON,175,24,13,8
+    CONTROL         "",IDC_RIGHT_TOP,"Button",BS_AUTORADIOBUTTON,191,24,13,8
+    CONTROL         "",IDC_LEFT_VCENTER,"Button",BS_AUTORADIOBUTTON,157,37,13,8
+    CONTROL         "",IDC_CENTER_VCENTER,"Button",BS_AUTORADIOBUTTON,175,37,13,8
+    CONTROL         "",IDC_RIGHT_VCENTER,"Button",BS_AUTORADIOBUTTON,191,37,13,8
+    CONTROL         "",IDC_LEFT_BOTTOM,"Button",BS_AUTORADIOBUTTON,157,50,13,8
+    CONTROL         "",IDC_CENTER_BOTTOM,"Button",BS_AUTORADIOBUTTON,175,50,13,8
+    CONTROL         "",IDC_RIGHT_BOTTOM,"Button",BS_AUTORADIOBUTTON,191,50,13,8
+    EDITTEXT        IDC_TEXT_1,32,134,90,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Set",IDC_SET_TEXT,129,133,18,14
+    EDITTEXT        IDC_TOOLTIP_1,32,152,90,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Set",IDC_SET_TOOLTIP,129,151,18,14
+    PUSHBUTTON      "Font - Color",IDC_FONT_1,156,151,54,14,0,WS_EX_TRANSPARENT
+    CONTROL         "\nOne",IDC_BUTTON_10,"Button",BS_OWNERDRAW | WS_TABSTOP,12,177,25,24
+    CONTROL         "\nTwo",IDC_BUTTON_11,"Button",BS_OWNERDRAW | WS_TABSTOP,39,177,25,24
+    CONTROL         "\nThree",IDC_BUTTON_12,"Button",BS_OWNERDRAW | WS_TABSTOP,66,177,25,24
+    CONTROL         "T&rack look",IDC_TRACK_LOOK_1X,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,112,179,48,10
+    CONTROL         "&Disabled",IDC_DISABLED_1X,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,166,179,44,10
+    CONTROL         "T&ext",IDC_TEXT_1X,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,112,191,29,10
+    LTEXT           "Check out the new Hyper look",IDC_NEW,7,214,97,23
+    PUSHBUTTON      "H&yper demo",IDC_HYPER,115,213,48,14
+    CONTROL         "\nAnimated Button",IDCANCEL,"Button",BS_OWNERDRAW | BS_CENTER | BS_VCENTER | WS_TABSTOP,66,246,65,14
+    LTEXT           "Owner draw",IDC_STATIC_HEADER,7,7,140,8
+    GROUPBOX        "Alignment",IDC_STATIC,147,13,63,50
+    LTEXT           "Te&xt",IDC_STATIC,7,137,20,8
+    LTEXT           "Toolt&ip",IDC_STATIC,7,155,22,8
+    LTEXT           "Button Row",IDC_STATIC,12,166,35,8
+END
+
+IDD_HYPER_DLG DIALOGEX 0, 0, 162, 126
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Watch the COXBitmapButton in Hyper look mode. There is a background bitmap with three buttons on it.",IDC_STATIC,7,7,148,25
+    GROUPBOX        "",IDC_SPACE,7,38,148,50,NOT WS_VISIBLE
+    CONTROL         "\nStar 1",IDC_BUTTON_1,"Button",BS_OWNERDRAW | WS_TABSTOP,11,55,19,15,WS_EX_TRANSPARENT
+    CONTROL         "\nStar 2",IDC_BUTTON_2,"Button",BS_OWNERDRAW | WS_TABSTOP,47,63,19,15,WS_EX_TRANSPARENT
+    CONTROL         "\nStar 3",IDC_BUTTON_3,"Button",BS_OWNERDRAW | WS_TABSTOP,98,44,19,15,WS_EX_TRANSPARENT
+    LTEXT           "PS : The third button is disabled",IDC_STATIC,6,91,124,8
+    PUSHBUTTON      "Close",IDCANCEL,51,105,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,0,0,1
+ PRODUCTVERSION 2,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "BITMAPBUTTONDEMO MFC Application"
+            VALUE "FileVersion", "2, 0, 0, 1"
+            VALUE "InternalName", "BITMAPBUTTONDEMO"
+            VALUE "LegalCopyright", "Copyright © 1998 Dundas Software Ltd."
+            VALUE "OriginalFilename", "BITMAPBUTTONDEMO.EXE"
+            VALUE "ProductName", "BITMAPBUTTONDEMO Application"
+            VALUE "ProductVersion", "2, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_BITMAPBUTTONDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 266
+    END
+
+    IDD_HYPER_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 155
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_TOOL_BITMAP_1       BITMAP                  "res\\ToolBitmap1.bmp"
+IDB_TOOL_BITMAP_3       BITMAP                  "res\\ToolBitmap3.bmp"
+IDB_SUN                 BITMAP                  "res\\sun.bmp"
+IDB_SPACE               BITMAP                  "res\\space.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About BitmapButtonDemo..."
+    IDS_ACTION_1            "You clicked the COXBitmapButton"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Bitmap Button Demo"
+    ID_DESCRIPTION_FILE     "bitmapbuttonInfo.rtf"
+END
+
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_TEST           ICON                    "res\\icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_TICK                BITMAP                  "res\\tick.bmp"
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\BitmapButtonDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXBitmapButton.rc"         // BitmapButton resources
+#include "utsampleabout.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

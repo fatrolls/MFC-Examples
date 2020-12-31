@@ -1,0 +1,164 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Flicker free drawing using memory DC</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Flicker free drawing using memory DC</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:keithr@europa.com">Keith Rule</A>. 
+<br><a href="memdc.zip">Download</a> a sample file. The zip file is 17KB.
+
+
+<h3>Flicker Free Updates Using CMemDC</h3>
+Creating an MS-Windows application is often an absorbing task. Many issues are often postponed
+ until near the end of development. One commonly postponed issue is removing flicker from screen 
+ redraws. This short tip explains how to do this using the CMemDC class with MFC. This 
+ class isn't a part of MFC, but after you've seen how useful it is you may add it to your MFC toolbox.
+
+
+<h4>Exacerbating the Problem</h4>
+One of the best ways to exacerbate flickering is to enable the "Show windows contents while dragging" mode found in the Plus! Tab of the Display properties in Windows 95. This mode causes your application to be redrawn while it is resized. 
+<p><img src="flicker_free_drawing.gif" width="529" height="504"></p>
+Windows NT also has a similar mode that may be set. If you enable this mode and your application flashes or flicker when resized this tip will probably help.
+
+
+<h4>A Simple Solution</h4>
+The reason your application is flickering is that the original image is being erased and then redrawn in quick succession when the application is resized. A common technique to reduce or eliminate this problem is to not erase the image, but rather, to draw to an off screen buffer and BitBliting the buffer to the screen. This eliminates the flashing caused by erasing, and the flashing cause by being able to see individual drawing operations on the screen. 
+To disable erasing you need to intercept the WM_ERASEBKGND message and return FALSE.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CNoFlickerView::OnEraseBkgnd(CDC* pDC) 
+{
+	return FALSE;
+}
+</FONT></TT></PRE>
+
+To draw to an off screen buffer you need to create a memory CDC, draw to it, and BitBlit the result to the screen. You can do this by using the CMemDC class. This class is very small, just a few lines, but it makes handles most of the off screen drawing issues.
+
+<PRE><TT><FONT COLOR="#990000">
+#ifndef _MEMDC_H_
+#define _MEMDC_H_
+
+//////////////////////////////////////////////////
+// CMemDC - memory DC
+//
+// Author: Keith Rule
+// Email:  keithr@europa.com
+// Copyright 1996-1997, Keith Rule
+//
+// You may freely use or modify this code provided this
+// Copyright is included in all derived versions.
+//
+// History - 10/3/97 Fixed scrolling bug.
+//                   Added print support.
+//
+// This class implements a memory Device Context
+
+class CMemDC : public CDC {
+private:
+	CBitmap m_bitmap; // Offscreen bitmap
+	CBitmap* m_oldBitmap; // bitmap originally found in CMemDC
+	CDC* m_pDC; // Saves CDC passed in constructor
+	CRect m_rect; // Rectangle of drawing area.
+	BOOL m_bMemDC; // TRUE if CDC really is a Memory DC.
+public:
+	CMemDC(CDC* pDC) : CDC(), m_oldBitmap(NULL), m_pDC(pDC)
+	{
+		ASSERT(m_pDC != NULL); // If you asserted here, you passed in a NULL CDC.
+		
+		m_bMemDC = !pDC->IsPrinting();
+		
+		if (m_bMemDC){
+			// Create a Memory DC
+			CreateCompatibleDC(pDC);
+			pDC->GetClipBox(&m_rect);
+			m_bitmap.CreateCompatibleBitmap(pDC, m_rect.Width(), m_rect.Height());
+			m_oldBitmap = SelectObject(&m_bitmap);
+			SetWindowOrg(m_rect.left, m_rect.top);
+		} else {
+			// Make a copy of the relevent parts of the current DC for printing
+			m_bPrinting = pDC->m_bPrinting;
+			m_hDC = pDC->m_hDC;
+			m_hAttribDC = pDC->m_hAttribDC;
+		}
+	}
+	
+	~CMemDC()
+	{
+		if (m_bMemDC) {
+			// Copy the offscreen bitmap onto the screen.
+			m_pDC->BitBlt(m_rect.left, m_rect.top, m_rect.Width(), m_rect.Height(),
+				this, m_rect.left, m_rect.top, SRCCOPY);
+			//Swap back the original bitmap.
+			SelectObject(m_oldBitmap);
+		} else {
+			// All we need to do is replace the DC with an illegal value,
+			// this keeps us from accidently deleting the handles associated with
+			// the CDC that was passed to the constructor.
+			m_hDC = m_hAttribDC = NULL;
+		}
+	}
+	
+	// Allow usage as a pointer
+	CMemDC* operator->() {return this;}
+	
+	// Allow usage as a pointer
+	operator CMemDC*() {return this;}
+};
+
+#endif
+</FONT></TT></PRE>
+
+To draw off screen and blit the result onto the screen you simply change the argument name from pDC to dc, and add a CMemDC local variable named pDC.
+
+<PRE><TT><FONT COLOR="#990000">void CNoFlickerView::OnDraw(CDC* dc)
+{
+	CRect	rcBounds;
+	GetClientRect(&rcBounds);
+	CMemDC	pDC(dc, rcBounds);
+
+	pDC->FillRect(rcBounds, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
+	pDC->Ellipse(rcBounds);
+}
+</FONT></TT></PRE>
+
+This updated version of the OnDraw() function in conjunction with overriding the OnEraseBkgnd() function will eliminate the flicker in your application.
+
+<h4>Caveats and Such</h4>
+If you haven't guessed, this solution isn't a cure all. If your application is slow to draw it will still be slow when using this technique. However, for many situations, this simple class and technique will reduce or eliminate flickering with just a couple of minutes if implementation code.
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

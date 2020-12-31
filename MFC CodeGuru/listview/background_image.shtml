@@ -1,0 +1,466 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Use a bitmap as a background image</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Use a bitmap as a background image</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+Using a bitmap as a background image is somewhat more involved than using a different colored background. The control has to be owner drawn. You could actually set a bitmap as the background image even if the control is not owner drawn but that would be a kludge. Might as well stick to reccomended techniques.
+
+<P>One good use of having an image in the background is to display the company logo. Make sure though that the image is such that it does not make the text difficult to read.
+
+<p><img src="background_image.gif" width="275" height="222"></p>
+
+<P>The technique given below uses a 256 color (16 color would also be fine) image that has been added as a bitmap resource. If the image is smaller than the control, then the image is tiled to cover the client area. For faster redraws the image scrolls along with the items.
+<h4>Step 1: Use owner drawn list view control</h4>
+To make this work the list view control has to be owner drawn. So set the LVS_OWNERDRAWFIXED flag in the resource editor or when creating the control. You'd also have to implement the DrawItem() function. Look up the topic 
+<A HREF="sel_row.shtml">'Selection highlighting of entire row'</A> 
+for steps to implement an owner drawn list view control. 
+
+<h4>Step 2: Add member variables</h4>
+It is not efficient to reload the bitmap or recreate the logical palette each time an item needs to be repainted. We therefore add member variables to store the bitmap, the logical palette and the dimensions of the bitmap. Declare these as protected members since we will provide a function to set the background image.
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	CPalette m_pal;
+	CBitmap m_bitmap;
+	int m_cxBitmap, b_cyBitmap;
+</FONT></TT></PRE>
+
+<h4>Step 3: Add member functions to set background image</h4>
+We add two overloaded member functions to set the background image. These functions should be public member functions. The first function takes the resource ID as an argument and the second takes the resource name as an argument.
+
+<P>These functions can be called to change the image if one has already been specified. The first thing the function does is delete the bitmap and palette gdi object if one has been created. It then loads the bitmap and attaches it to the CBitmap object. We use a call to the global ::LoadImage() rather than to the CBitmap::LoadBitmap(). The reason for this is that we want to be able to access the DIBSECTION of the bitmap and the reason why we want the DIBSECTION is because we want to create a logical palette that matches the colors used by the bitmap. My guess is you already know why we need a logical palette. Without going into too much detail lets just say that if you do not set up and use a logical palette then the image is likely to appear very dull on a 256 color display. You'd be fine if the display supported 64K or more colors. We also save the dimensions of the bitmap for later use.
+
+<P>Once we have the bitmap set, we start working on creating the logical palette. We determine the number of colors used by the bitmap by getting access to the DIBSECTION by calling the Cbitmap::GetObject() function. Note that the documentation for this function does not mention the DIBSECTION, you'd have to look up the documention of the ::GetObject() function in the API section instead. Sometimes the BITMAPINFOHEADER which is part of the DIBSECTION does not specify how many colors it uses. If this is the case we infer the color count from the number of bits it uses for the each pixel. For example, 8 bits can represent 256 different values and therefore indicates 256 colors. Similarly, 16 bits indicates 64K colors.
+
+<P>A bitmap that uses more than 256 colors does not have a color table. In this situation we simply create a halftone palette compatible with the device context. A halftone palette is basically a palette that contains a sampling of all the different colors. This is certainly not the best solution but it is the simplest.
+
+<P>If the bitmap has 256 colors or less, we do create the palette. We allocate enough space to hold the color table of the bitmap and call the function ::GetDIBColorTable() to retrieve it from the bitmap. We also allocate enough memory to create a logical palette and copy the color entries from the bitmap's color table. The palVersion field should be 0x300.
+
+<P>After creating the CPalette object, we deallocate the memory blocks allocated earlier and invalidate the window so that it can be redrawn using the new image.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::SetBkImage(UINT nIDResource)
+{
+	return SetBkImage( (LPCTSTR)nIDResource );
+}
+
+BOOL CMyListCtrl::SetBkImage(LPCTSTR lpszResourceName)
+{
+
+	// If this is not the first call then Delete GDI objects
+	if( m_bitmap.m_hObject != NULL )
+		m_bitmap.DeleteObject();
+	if( m_pal.m_hObject != NULL )
+		m_pal.DeleteObject();
+	
+	
+	HBITMAP hBmp = (HBITMAP)::LoadImage( AfxGetInstanceHandle(), 
+			lpszResourceName, IMAGE_BITMAP, 0,0, LR_CREATEDIBSECTION );
+
+	if( hBmp == NULL ) 
+		return FALSE;
+
+	m_bitmap.Attach( hBmp );
+	BITMAP bm;
+	m_bitmap.GetBitmap( &bm );
+	m_cxBitmap = bm.bmWidth;
+	m_cyBitmap = bm.bmHeight;
+
+
+	// Create a logical palette for the bitmap
+	DIBSECTION ds;
+	BITMAPINFOHEADER &bmInfo = ds.dsBmih;
+	m_bitmap.GetObject( sizeof(ds), &ds );
+
+	int nColors = bmInfo.biClrUsed ? bmInfo.biClrUsed : 1 << bmInfo.biBitCount;
+
+	// Create a halftone palette if colors > 256. 
+	CClientDC dc(NULL);			// Desktop DC
+	if( nColors > 256 )
+		m_pal.CreateHalftonePalette( &dc );
+	else
+	{
+		// Create the palette
+
+		RGBQUAD *pRGB = new RGBQUAD[nColors];
+		CDC memDC;
+		memDC.CreateCompatibleDC(&dc);
+
+		memDC.SelectObject( &m_bitmap );
+		::GetDIBColorTable( memDC, 0, nColors, pRGB );
+
+		UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+		LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+		pLP->palVersion = 0x300;
+		pLP->palNumEntries = nColors;
+
+		for( int i=0; i < nColors; i++)
+		{
+			pLP->palPalEntry[i].peRed = pRGB[i].rgbRed;
+			pLP->palPalEntry[i].peGreen = pRGB[i].rgbGreen;
+			pLP->palPalEntry[i].peBlue = pRGB[i].rgbBlue;
+			pLP->palPalEntry[i].peFlags = 0;
+		}
+
+		m_pal.CreatePalette( pLP );
+
+		delete[] pLP;
+		delete[] pRGB;
+	}
+	Invalidate();
+
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<h4>Step 4: Modify DrawItem() to handle the image</h4>
+The DrawItem() function is responsible for drawing each item in the list. We draw the image within this function. The complete listing of this function is given with changes highlighted in bold.
+
+<P>Since the image should cover the client area completely we adjust the clip region so that it extends to the right edge of the client area. Also, if the last item in the list is being drawn, then the clip region should be extended to the bottom edge of the client area. The next step is to select the logical palette. Its meaningful only if the device supports a palette.
+
+<P>The image is then drawn in a tiled manner. The top left corner of the first item is always used as a reference when drawing the image. This gives the effect of the image scrolling along with the contents of the list view control.
+
+<P>Another change made to the original DrawItem() function is that the background for a non selected item is drawn only when an image is not being drawn.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+	CRect rcItem(lpDrawItemStruct->rcItem);
+	int nItem = lpDrawItemStruct->itemID;
+	CImageList* pImageList;
+
+	// Save dc state
+	int nSavedDC = pDC->SaveDC();
+
+
+	// Get item image and state info
+	LV_ITEM lvi;
+	lvi.mask = LVIF_IMAGE | LVIF_STATE;
+	lvi.iItem = nItem;
+	lvi.iSubItem = 0;
+	lvi.stateMask = 0xFFFF;		// get all state flags
+	GetItem(&lvi);
+
+	// Should the item be highlighted
+	BOOL bHighlight =	((lvi.state & LVIS_DROPHILITED)
+				|| ( (lvi.state & LVIS_SELECTED)
+					&& ((GetFocus() == this)
+						|| (GetStyle() & LVS_SHOWSELALWAYS)
+						)
+					)
+				);
+
+
+	// Get rectangles for drawing
+	CRect rcBounds, rcLabel, rcIcon;
+	GetItemRect(nItem, rcBounds, LVIR_BOUNDS);
+	GetItemRect(nItem, rcLabel, LVIR_LABEL);
+	GetItemRect(nItem, rcIcon, LVIR_ICON);
+	CRect rcCol( rcBounds ); 
+
+
+	CString sLabel = GetItemText( nItem, 0 );
+
+	// Labels are offset by a certain amount  
+	// This offset is related to the width of a space character
+	int offset = pDC->GetTextExtent(_T(" "), 1 ).cx*2;
+
+	CRect rcHighlight;
+	CRect rcClient;
+	int nExt;
+	switch( m_nHighlight )
+	{
+	case 0: 
+		nExt = pDC->GetOutputTextExtent(sLabel).cx + offset;
+		rcHighlight = rcLabel;
+		if( rcLabel.left + nExt < rcLabel.right )
+			rcHighlight.right = rcLabel.left + nExt;
+		break;
+	case 1:
+		rcHighlight = rcBounds;
+		rcHighlight.left = rcLabel.left;
+		break;
+	case 2:
+		GetClientRect(&rcClient);
+		rcHighlight = rcBounds;
+		rcHighlight.left = rcLabel.left;
+		rcHighlight.right = rcClient.right;
+		break;
+	default:
+		rcHighlight = rcLabel;
+	}
+
+
+
+<b>	// Draw bitmap in the background if one has been set
+	if( m_bitmap.m_hObject != NULL )
+	{
+		CDC tempDC;
+		tempDC.CreateCompatibleDC(pDC);
+		tempDC.SelectObject( &m_bitmap );
+
+		GetClientRect(&rcClient);
+
+		CRgn rgnBitmap;
+		CRect rcTmpBmp( rcItem );
+		
+		rcTmpBmp.right = rcClient.right;
+
+		// We also need to check whether it is the last item
+		// The update region has to be extended to the bottom if it is
+		if( nItem == GetItemCount() - 1 )
+			rcTmpBmp.bottom = rcClient.bottom;
+
+		rgnBitmap.CreateRectRgnIndirect(&rcTmpBmp);
+		pDC->SelectClipRgn(&rgnBitmap);
+		rgnBitmap.DeleteObject();
+		
+		if( pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE && m_pal.m_hObject != NULL )
+		{
+			pDC->SelectPalette( &m_pal, FALSE );
+			pDC->RealizePalette();
+		}
+
+		CRect rcFirstItem;
+		GetItemRect(0, rcFirstItem, LVIR_BOUNDS);
+		for( int i = rcFirstItem.left; i < rcClient.right; i += m_cxBitmap )
+			for( int j = rcFirstItem.top; j < rcClient.bottom; j += m_cyBitmap )
+				pDC->BitBlt( i, j, m_cxBitmap, m_cyBitmap, &tempDC, 
+								0, 0, SRCCOPY );
+	}
+</b>
+
+
+	// Draw the background color
+	if( bHighlight )
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+		pDC->SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
+
+		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_HIGHLIGHT)));
+	}
+<b>	else if( m_bitmap.m_hObject == NULL )
+		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_WINDOW)));
+</b>
+	
+
+	// Set clip region
+	rcCol.right = rcCol.left + GetColumnWidth(0);
+	CRgn rgn;
+	rgn.CreateRectRgnIndirect(&rcCol);
+	pDC->SelectClipRgn(&rgn);
+	rgn.DeleteObject();
+
+	// Draw state icon
+	if (lvi.state & LVIS_STATEIMAGEMASK)
+	{
+		int nImage = ((lvi.state & LVIS_STATEIMAGEMASK)>>12) - 1;
+		pImageList = GetImageList(LVSIL_STATE);
+		if (pImageList)
+		{
+			pImageList->Draw(pDC, nImage,
+				CPoint(rcCol.left, rcCol.top), ILD_TRANSPARENT);
+		}
+	}
+	
+	// Draw normal and overlay icon
+	pImageList = GetImageList(LVSIL_SMALL);
+	if (pImageList)
+	{
+		UINT nOvlImageMask=lvi.state & LVIS_OVERLAYMASK;
+		pImageList->Draw(pDC, lvi.iImage, 
+			CPoint(rcIcon.left, rcIcon.top),
+			(bHighlight?ILD_BLEND50:0) | ILD_TRANSPARENT | nOvlImageMask );
+	}
+
+	
+	
+	// Draw item label - Column 0
+	rcLabel.left += offset/2;
+	rcLabel.right -= offset;
+
+	pDC->DrawText(sLabel,-1,rcLabel,DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
+				| DT_VCENTER | DT_END_ELLIPSIS);
+
+
+	// Draw labels for remaining columns
+	LV_COLUMN lvc;
+	lvc.mask = LVCF_FMT | LVCF_WIDTH;
+
+	if( m_nHighlight == 0 )		// Highlight only first column
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
+		pDC->SetBkColor(::GetSysColor(COLOR_WINDOW));
+	}
+	
+	rcBounds.right = rcHighlight.right > rcBounds.right ? rcHighlight.right :
+							rcBounds.right;
+	rgn.CreateRectRgnIndirect(&rcBounds);
+	pDC->SelectClipRgn(&rgn);
+				   
+	for(int nColumn = 1; GetColumn(nColumn, &lvc); nColumn++)
+	{
+		rcCol.left = rcCol.right;
+		rcCol.right += lvc.cx;
+
+		// Draw the background if needed
+		if( m_bitmap.m_hObject == NULL && m_nHighlight == HIGHLIGHT_NORMAL )
+			pDC->FillRect(rcCol, &CBrush(::GetSysColor(COLOR_WINDOW)));
+
+		sLabel = GetItemText(nItem, nColumn);
+		if (sLabel.GetLength() == 0)
+			continue;
+
+
+		// Get the text justification
+		UINT nJustify = DT_LEFT;
+		switch(lvc.fmt & LVCFMT_JUSTIFYMASK)
+		{
+		case LVCFMT_RIGHT:
+			nJustify = DT_RIGHT;
+			break;
+		case LVCFMT_CENTER:
+			nJustify = DT_CENTER;
+			break;
+		default:
+			break;
+		}
+
+		rcLabel = rcCol;
+		rcLabel.left += offset;
+		rcLabel.right -= offset;
+
+		pDC->DrawText(sLabel, -1, rcLabel, nJustify | DT_SINGLELINE 
+				| DT_NOPREFIX | DT_VCENTER | DT_END_ELLIPSIS);
+	}
+
+	// Draw focus rectangle if item has focus
+	if (lvi.state & LVIS_FOCUSED && (GetFocus() == this))
+		pDC->DrawFocusRect(rcHighlight);
+
+	
+	// Restore dc
+	pDC->RestoreDC( nSavedDC );
+}
+</FONT></TT></PRE>
+
+<h4>Step 5: Add handler for WM_ERASEBKGND</h4>
+When an image is being used as a background, erasing the background does not make sense since the image will be drawn over the background anyway. Erasing the background will simply cause a flicker. The handler returns TRUE if the bitmap object is valid.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::OnEraseBkgnd(CDC* pDC) 
+{
+	if( m_bitmap.m_hObject != NULL )
+		return TRUE;
+	return CListCtrl::OnEraseBkgnd(pDC);
+}
+</FONT></TT></PRE>
+
+<h4>Step 6: Override OnNotify() and handle column resizing</h4>
+When a column is resized, only the newly exposed area is painted. This causes an unattractive effect on the background image. We should therefore invalidate the right side of the control whenever a column is resized in the OnNotify() function. I tried using the HDN_TRACK notification but it appeared that this notification was not being generated. The HDN_ITEMCHANGING notification works fine though.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+{
+	HD_NOTIFY	*pHDN = (HD_NOTIFY*)lParam;
+
+	// This code is for using bitmap in the background
+	// Invalidate the right side of the control when a column is resized
+	if(pHDN->hdr.code == HDN_ITEMCHANGINGW || pHDN->hdr.code == HDN_ITEMCHANGINGA)
+	{
+		if( m_bitmap.m_hObject != NULL )
+		{
+			CRect rcClient;
+			GetClientRect( &rcClient );
+			DWORD dwPos = GetMessagePos();
+			CPoint pt( LOWORD(dwPos), HIWORD(dwPos) );
+			ScreenToClient( &pt );
+			rcClient.left = pt.x;
+			InvalidateRect( &rcClient );
+		}
+	}
+	return CListCtrl::OnNotify(wParam, lParam, pResult);
+}
+</FONT></TT></PRE>
+
+
+<h4>Step 7: Handle WM_QUERYNEWPALETTE & WM_PALETTECHANGED</h4>
+The WM_QUERYNEWPALETTE message is sent to a window when it is about to receive input focus. It gives the window an oppurtunity to realize its logical palette so that it can present itself in the best form. The WM_PALETTECHANGED message is sent to a window whenever that system palette is changed. If we do not handle these messages and another application changes the system palette then the colors in our background image will look terrible. Unfortunately both these messages are sent to top level windows. We will deal with that in the next step.
+<p>The OnQueryNewPalette() function first checks whether it needs to reselect the palette. Once it realizes the logical palette it invalidates the window if any of the color were remapped. The OnPaletteChanged() function returns without any further processing if the list view control itself was responsible for the message because it changed the palette. It then calls OnQueryNewPalette() to rerealize the palette. 
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::OnQueryNewPalette() 
+{
+	CClientDC dc(this);
+	if( dc.GetDeviceCaps(RASTERCAPS) & RC_PALETTE && m_pal.m_hObject != NULL )
+	{
+		dc.SelectPalette( &m_pal, FALSE );
+		BOOL result = dc.RealizePalette();
+		if( result )
+			Invalidate();
+		return result;
+	}
+	
+	return CListCtrl::OnQueryNewPalette();
+}
+
+void CMyListCtrl::OnPaletteChanged(CWnd* pFocusWnd) 
+{
+	CListCtrl::OnPaletteChanged(pFocusWnd);
+	
+	if( pFocusWnd == this )
+		return;
+
+	OnQueryNewPalette();
+}
+</FONT></TT></PRE>
+
+<h4>Step 8: Forward palette messages from top level window</h4>
+As I've already mentioned in the previous step, the WM_QUERYNEWPALETTE & WM_PALETTECHANGED messages are sent only to top level windows. Since the list view control had changed the palette we have to forward these messages to the list view control. I had used a dialog based application to test this so here's what the handlers look like.
+
+<PRE><TT><FONT COLOR="#990000">void CListViewDlg::OnPaletteChanged(CWnd* pFocusWnd) 
+{
+	CDialog::OnPaletteChanged(pFocusWnd);
+	
+	m_listctrl.SendMessage( WM_PALETTECHANGED, (WPARAM)pFocusWnd->m_hWnd );
+}
+
+BOOL CListViewDlg::OnQueryNewPalette() 
+{
+	CDialog::OnQueryNewPalette();
+
+	return m_listctrl.SendMessage( WM_QUERYNEWPALETTE );
+}
+</FONT></TT></PRE>
+
+
+
+<BR>&nbsp;
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

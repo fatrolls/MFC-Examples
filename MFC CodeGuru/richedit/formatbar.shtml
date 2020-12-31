@@ -1,0 +1,565 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Rich Edit Control - Providing a Format toolbar</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Providing a Format toolbar</FONT></H3></CENTER>
+
+<HR>
+
+A rich edit control without UI to change the character and paragraph formatting is not really very useful as a rich text editor. In this section we will develop code for a Format toolbar that can be used with a CRichEditView derivative. There is no hard link between the toolbar itself and the CRichEditView, so we can even use this toolbar with a sub-class of CRichEditCtrl. The only extra work would be to make sure that some of the notifications sent by the toolbar gets forwarded to the control.
+
+<P>There is a huge scope for improvement in the code given here, but intergrating this in your application should be fairly easy. When you feel that you need more functionality out of the Format toolbar, take a look at the WordPad sample that comes with your Visual C++ CD. This sample is the actual source code for the WordPad applet that ships with Windows. Be warned though, it takes a little time to understand the code. 
+
+<H4>Step 1: Create a toolbar control resource</H4>
+The first thing we need to do is create a toolbar control resource. Actually you can create a toolbar from a bitmap but it is lot easier to work with a toolbar control. The resource editor has quite a good support for it.
+
+<P>This is what the toolbar control looks like in the resource editor. Give the toolbar control resource the ID - IDR_FORMATBAR. Actually choose any name but you should be willing to replace all occurance of IDR_FORMATBAR in the code below with the new ID.
+
+
+<P>The first two buttons are place holders for the Font Name combobox and the Font Size combobox. The other buttons are pretty obvious. Once we have the images, we should go ahead and set the properties. Besides specifying an ID for each button, we should also provide the prompt string. The prompt string is used for the help text that appears in the status bar and the tooltip text.
+
+
+
+<P>The 'Toolbar Button Properties' dialog is shown above for the Font Name button. The table below lists suggested IDs and prompt strings - in the same sequence they appear in the toolbar.
+
+<p>
+<TABLE BORDER=1 WIDTH="100%" >
+<TR><TD WIDTH="30%" BGCOLOR="#A0A0A0">ID</A></TD><TD WIDTH="70%" BGCOLOR="#A0A0A0">Prompt</TD></TR>
+<TR><TD>IDC_FONTNAME</A></TD><TD>Changes the font of the selection\nFont</TD></TR>
+<TR><TD>IDC_FONTSIZE</A></TD><TD>Changes the font size of the selection\nFont Size</TD></TR>
+<TR><TD>ID_CHAR_BOLD</A></TD><TD>Makes the selection bold (toggle)\nBold</TD></TR>
+<TR><TD>ID_CHAR_ITALIC</A></TD><TD>Makes the selection italics (toggle)\nItalic</TD></TR>
+<TR><TD>ID_CHAR_UNDERLINE</A></TD><TD>Formats the selection with a continuous underline (toggle)\nUnderline</TD></TR>
+<TR><TD>ID_CHAR_COLOR</A></TD><TD>Formats the selection with a color\nColor</TD></TR>
+<TR><TD>ID_PARA_LEFT</A></TD><TD>Left-justifies paragraphs\nLeft Justify</TD></TR>
+<TR><TD>ID_PARA_CENTER</A></TD><TD>Center-justifies paragraphs\nCenter Justify</TD></TR>
+<TR><TD>ID_PARA_RIGHT</A></TD><TD>Right-justifies paragraph\nRight Justify</TD></TR>
+<TR><TD>ID_INSERT_BULLET</A></TD><TD>Inserts a bullet on this line\nBullet</TD></TR>
+</TABLE>
+
+
+<H4>Step 2: Create a CFormatBar class</H4>
+I used the Class Wizard to create this class. The class wizard did not have the option of specifying the CToolBar class as the base class, so I chose the CToolBarCtrl class as the base class and then in the source files, changed it to CToolBar. The advantage of using a CToolBar is that it is already hooked into the Doc-View architecture of MFC. This helps in updating the toolbar and the status bar.
+
+<P>The code for the CFormatBar class header file is given below. You will notice that besides declaring the CFormatBar class, it also declares CHARNMHDR struct. This is used to send custom notification messages whenever the font name or the font size changes. The FN_SETFORMAT and FN_GETFORMAT defines are the custom notification message values. 
+
+<P>The CFormatBar constructor takes a default value which is set to IDR_FORMATBAR. This is useful only if you already have a resource with the ID IDR_FORMATBAR that you are using for some other purpose.
+
+<PRE><TT><FONT COLOR="#990000">#if !defined(AFX_FORMATBAR_H__76705223_1E1F_11D1_830C_5CB0BB000000__INCLUDED_)
+#define AFX_FORMATBAR_H__76705223_1E1F_11D1_830C_5CB0BB000000__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// FormatBar.h : header file
+//
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CFormatBar window
+
+struct CHARNMHDR : public NMHDR
+{
+	CHARFORMAT cf;
+	CHARNMHDR() {cf.cbSize = sizeof(CHARFORMAT);}
+};
+
+// Define format notifications constant
+#define FN_SETFORMAT	0x1000
+#define FN_GETFORMAT	0x1001
+
+
+class CFormatBar : public CToolBar
+{
+// Construction
+public:
+	enum { IDD = IDR_FORMATBAR };
+	CFormatBar(UINT nID = IDD );
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CFormatBar)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CFormatBar();
+
+protected:
+	void FillFontName( CDC *pDC );
+	virtual void OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler);
+
+
+protected:
+	CComboBox	m_cmbFontName;
+	CComboBox	m_cmbFontSize;
+
+	// Generated message map functions
+protected:
+	afx_msg void OnSelectFontName();
+	afx_msg void OnSelectFontSize();
+
+	//{{AFX_MSG(CFormatBar)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+
+private:
+	UINT nToolbarID;
+	static int CALLBACK EnumFontFamProc(ENUMLOGFONT *lpelf, 
+					NEWTEXTMETRIC *lpntm,
+					int nFontType,
+					LPARAM lParam);
+
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_FORMATBAR_H__76705223_1E1F_11D1_830C_5CB0BB000000__INCLUDED_)
+</FONT></TT></PRE>
+
+
+<P>The code in the implementation file for CFormatBar now follows.
+
+<PRE><TT><FONT COLOR="#990000">/////////////////////////////////////////////////////////////////////////////
+// FormatBar.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "RichEdit.h"
+#include "FormatBar.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CFormatBar
+
+// Declare const array of font sizes
+const static int nFontSizes[] = 
+	{8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72};
+
+
+CFormatBar::CFormatBar(UINT nID )
+{
+	nToolbarID = nID;
+}
+
+CFormatBar::~CFormatBar()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CFormatBar, CToolBar)
+	//{{AFX_MSG_MAP(CFormatBar)
+	ON_WM_CREATE()
+	//}}AFX_MSG_MAP
+	ON_CBN_SELENDOK(IDC_FONTNAME, OnSelectFontName)
+	ON_CBN_SELENDOK(IDC_FONTSIZE, OnSelectFontSize)
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CFormatBar message handlers
+
+int CFormatBar::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
+	if (CToolBar::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	
+	// Load the toolbar
+	if( !LoadToolBar( nToolbarID ) )
+		return -1;
+
+
+	// Get the average char width
+	CClientDC dc(this);
+
+	// Determine the size required by the font comboboxes
+	// We will use the DEFAULT_GUI_FONT
+	HGDIOBJ hFont = GetStockObject( DEFAULT_GUI_FONT );
+	CFont font;
+	font.Attach( hFont );
+	dc.SelectObject( font );
+
+	TEXTMETRIC tm;
+	dc.GetTextMetrics( &tm );
+	int cxChar = tm.tmAveCharWidth;
+	int cyChar = tm.tmHeight + tm.tmExternalLeading;
+
+
+	// Create the Font Name combo
+	CRect rect; 
+	GetItemRect( CommandToIndex(IDC_FONTNAME), &rect );
+	rect.right = rect.left + (LF_FACESIZE+4)*cxChar;
+	rect.bottom = rect.top + 16*cyChar;
+
+	SetButtonInfo( CommandToIndex(IDC_FONTNAME), IDC_FONTNAME, 
+				TBBS_SEPARATOR, rect.Width() );
+
+	UINT nCreateStyle = WS_TABSTOP|WS_VISIBLE|WS_VSCROLL;
+	if (!m_cmbFontName.Create(nCreateStyle|CBS_DROPDOWNLIST|CBS_SORT, 
+		rect, this, IDC_FONTNAME))
+	{
+		TRACE0("Failed to create Font Name combo-box\n");
+		return -1;
+	}
+
+
+	// Create Font Size combo
+	GetItemRect( CommandToIndex(IDC_FONTSIZE), &rect );
+	rect.right = rect.left + 10*cxChar;
+	rect.bottom = rect.top + 16*cyChar;
+
+	SetButtonInfo( CommandToIndex(IDC_FONTSIZE), IDC_FONTSIZE, 
+				TBBS_SEPARATOR, rect.Width() );
+
+	if (!m_cmbFontSize.Create(nCreateStyle|CBS_DROPDOWN|WS_HSCROLL, 
+		rect, this, IDC_FONTSIZE))
+	{
+		TRACE0("Failed to create Font Size combo-box\n");
+		return -1;
+	}
+	m_cmbFontSize.LimitText(4);
+
+
+	// Set the font for the combo boxes to DEFAULT_GUI_FONT
+	m_cmbFontName.SetFont(&font);
+	m_cmbFontSize.SetFont(&font);
+
+	// Fill the Font names in the Font Name combo
+	::EnumFontFamilies( dc.m_hDC, NULL, (FONTENUMPROC)EnumFontFamProc, 
+				(LPARAM) this );
+
+	// Fill the Font Size combo
+	CString sSize;
+	int nSizeCount = sizeof(nFontSizes) / sizeof(nFontSizes[0]);
+	for( int i=0; i < nSizeCount; i++ )
+	{
+		sSize.Format("%d", nFontSizes[i] );
+		m_cmbFontSize.AddString( sSize );
+	}
+
+	return 0;
+}
+
+int CALLBACK CFormatBar::EnumFontFamProc(ENUMLOGFONT *lpelf, NEWTEXTMETRIC *lpntm,
+					int nFontType, LPARAM lParam)
+{
+	CFormatBar* pWnd = (CFormatBar*)lParam;
+
+	// Add the font name to the combo
+	pWnd->m_cmbFontName.AddString(lpelf->elfLogFont.lfFaceName);
+
+	return 1;		// 1 to continue enumeration
+}
+
+void CFormatBar::OnSelectFontName()
+{
+	TCHAR szFontName[LF_FACESIZE];
+	int nIndex = m_cmbFontName.GetCurSel();
+	m_cmbFontName.GetLBText( nIndex, szFontName );
+
+	// If font name is empty - return
+	if( szFontName[0] == 0 )
+		return;
+
+	CHARNMHDR fh;
+	CHARFORMAT& cf = fh.cf;
+	fh.hwndFrom = m_hWnd;
+	fh.idFrom = GetDlgCtrlID();
+	fh.code = FN_SETFORMAT;
+	cf.dwMask = CFM_FACE;
+
+	_tcsncpy(cf.szFaceName, szFontName, LF_FACESIZE);	//strncpy
+
+	GetOwner()->SendMessage(WM_NOTIFY, fh.idFrom, (LPARAM)&fh);
+}
+
+void CFormatBar::OnSelectFontSize()
+{
+	TCHAR szSize[5];
+	int index = m_cmbFontSize.GetCurSel();
+	if( index != CB_ERR )
+		m_cmbFontSize.GetLBText(index, szSize );
+	else
+		m_cmbFontSize.GetWindowText( szSize, 5 );
+
+	// Get size in Twips
+	int nSize = _ttoi( szSize ) * 20;			// atoi for tchar
+
+	if( !nSize )
+		return;
+
+	CHARNMHDR fh;
+	CHARFORMAT& cf = fh.cf;
+	fh.hwndFrom = m_hWnd;
+	fh.idFrom = GetDlgCtrlID();
+	fh.code = FN_SETFORMAT;
+
+	cf.dwMask = CFM_SIZE;
+	cf.yHeight = nSize;
+
+	GetOwner()->SendMessage(WM_NOTIFY, fh.idFrom, (LPARAM)&fh);
+}
+
+void CFormatBar::OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler)
+{
+	// Take care of the regular toolbar buttons
+	CToolBar::OnUpdateCmdUI( pTarget, bDisableIfNoHndler);
+
+	// Don't update the combo boxes if user changing font attribute
+	CWnd *pWnd = GetFocus();
+	if( pWnd == &m_cmbFontName || m_cmbFontSize.IsChild(pWnd) )
+		return;
+
+	// get the current font from the view and update
+	CHARNMHDR fh;
+	CHARFORMAT& cf = fh.cf;
+	fh.hwndFrom = m_hWnd;
+	fh.idFrom = GetDlgCtrlID();
+	fh.code = FN_GETFORMAT;
+
+	CWnd *pOwnerWnd = GetOwner();
+	if( !GetOwner()->SendMessage(WM_NOTIFY, fh.idFrom, (LPARAM)&fh) )
+	{
+		TRACE0("The Rich Edit View/Control has to handle the FN_GETFORMAT\n"
+			"notification for the Format Bar to work properly\n");
+		return;
+	}
+
+	// Update the font only if the selection font is different
+	TCHAR szName[LF_FACESIZE];
+	m_cmbFontName.GetWindowText( szName, LF_FACESIZE );
+
+	// the selection must be same font and charset to display correctly
+	if ((cf.dwMask & (CFM_FACE|CFM_CHARSET)) != (CFM_FACE|CFM_CHARSET))
+		m_cmbFontName.SetCurSel( -1 );
+	else if( ::_tcscmp( szName, cf.szFaceName ) != 0 )
+	{
+		if( m_cmbFontName.SelectString( -1, cf.szFaceName ) == CB_ERR )
+			m_cmbFontName.SetCurSel( -1 );
+	}
+
+
+	// Update the font size
+	TCHAR szSize[5];
+	m_cmbFontSize.GetWindowText( szSize, 5 );
+	int nSize = _ttoi( szSize );				// atoi for tchar
+
+	// Update the font size only if selection is different 
+	int nSelSize = (cf.dwMask & CFM_SIZE) ? cf.yHeight/20 : 0;
+	if( nSize != nSelSize )
+	{
+		if(cf.dwMask & CFM_SIZE)
+		{
+			CString strSize;
+			strSize.Format("%d", nSelSize );
+			m_cmbFontSize.SetWindowText( strSize );
+		}
+		else
+			m_cmbFontSize.SetCurSel(-1);
+	}
+}
+
+BOOL CFormatBar::PreTranslateMessage(MSG* pMsg) 
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		NMHDR nm;
+		nm.hwndFrom = m_hWnd;
+		nm.idFrom = GetDlgCtrlID();
+		nm.code = NM_RETURN;
+		switch (pMsg->wParam)
+		{
+		case VK_RETURN:
+			// Send change notification
+			if( m_cmbFontName.IsChild(GetFocus()) )
+				OnSelectFontName();
+			else if( m_cmbFontSize.IsChild(GetFocus()) )
+				OnSelectFontSize();
+			//Fall through
+		case VK_ESCAPE:
+			GetOwner()->SendMessage(WM_NOTIFY, nm.idFrom, (LPARAM)&nm);
+			return TRUE;
+		}
+	}
+	
+	return CToolBar::PreTranslateMessage(pMsg);
+}
+</FONT></TT></PRE>
+
+
+<P>At the top of the file, the nFontSizes array is declared. This array is initialized to the commonly used font sizes and is used to initialize the font size combobox. To make the design simple, the CFormatBar class has beed designed so that the user is always provided with this list of sizes even though the font may not support all of these sizes. The user can also type in an arbitrary value for the font size.
+
+<P>The OnCreate() function  calls the base class version of the function so that the toolbar gets created. It then loads the toolbar from the resource and creates the two comboboxes - for font name and font size. To make place for the comboboxes, the place holder buttons are resized using the SetButtonInfo() function. We use the font that will be used in the combobox to determine a reasonable width for the control. Since a font name can have at most LF_FACESIZE characters, we use this number and the average width of a character to determine the width of the font name combobox. LF_FACESIZE by the way is a constant defined as 32. Similarly we make the font size combobox wide enough to accommodate 4 characters. 
+
+<P>The font name combobox is created with the CBS_DROPDOWNLIST style. This style forces the user to select one of the listed styles. You may want to change this style to CBS_DROPDOWN so that the user may specify a font that may not be available on the machine. The font size combobox uses the CBS_DROPDOWN style to allow the user to type in any point size or select from the list.
+
+<P>At the end, the OnCreate() function populates the font size combobox by calling the EnumFontFamilies() function, which in turn calls the EnumFontFamProc() for each font on the system (the screen device context). It is EnumFontFamProc() that actually adds the font names to the combobox. OnCreate() also populates the font size combobox from the array of common font sizes.
+
+<P>The OnSelectFontName() is called when the user selects a list item in the font name combobox. Notice the entry ON_CBN_SELENDOK(IDC_FONTNAME, OnSelectFontName) in the message map hooking up this function. This function is also called when the user hits the enter key. The purpose of this function is to send out a notification so that the rich edit control can be updated. It uses an extended notification header so that it can also pass on the character format information. Note that it uses a custom notification code. It is the responsibility of the rich edit control class to handle this notification and change the format accordingly. Similarly, the OnSelectFontSize() handles the font size combobox.
+
+<P>The OnUpdateCmdUI() function is called by the framework to update the status of the toolbar. We override this function because the Format Bar has the two comboboxes. The toolbar buttons get updated by the regular ON_UPDATE_COMMAND_UI() message map macros but the combobox needs special handling. This function basically gets the font information about the current selection from the rich edit control and updates the font comboboxes. This of course doesn't make sense if the user is trying to change the font. The function, therefore returns immediately if either of the comboboxes have the input focus. Here again a custom notification is sent out. The FN_GETFORMAT should be handled by the rich edit control and the control should return the format information through the notification header structure.
+
+<P>Overriding the PreTranslateMessage() is how we tackle the situation when the user presses the enter or the escape key. When the user presses the enter key, it calls the OnSelectFontName() or the OnSelectFontSize() function, whichever is appropriate. The function then sends the NM_RETURN notification. This is another notification that the rich edit control has to look out for. On receiving this message, the rich edit control should take back the input focus.
+
+<H4>Step 3: Create the Format toolbar</H4>
+To create the format toolbar, first add a CFormatBar member variable in the CMainFrame class. Actually any frame class that will contain the CRichEditView or CRichEditCtrl will do.
+
+<PRE><TT><FONT COLOR="#990000">protected:  // control bar embedded members
+	CFormatBar	m_wndFormatBar;
+</FONT></TT></PRE>
+
+<P>Create the format toolbar in the OnCreate() function. Here's sample code that does that. 
+
+<PRE><TT><FONT COLOR="#990000">int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	
+	if (!m_wndFormatBar.Create(this, WS_CHILD | WS_VISIBLE |
+			CBRS_TOP |CBRS_TOOLTIPS|CBRS_FLYBY,
+			IDR_FORMATBAR) )
+	{
+		TRACE0("Failed to create FormatBar\n");
+		return -1;      // fail to create
+	}
+	m_wndFormatBar.SetWindowText( _T("Format") );
+	m_wndFormatBar.EnableDocking(CBRS_ALIGN_TOP | CBRS_ALIGN_BOTTOM);
+	EnableDocking(CBRS_ALIGN_ANY);
+	DockControlBar( &m_wndFormatBar );
+
+	:
+	:
+	:	
+
+	return 0;
+}
+</FONT></TT></PRE>
+
+<H4>Step 4: Add handlers for format toolbar notifications</H4>
+As we have already covered, the CFormatBar sends a couple of custom notification as well as the NM_RETURN notification. These notifications inform the rich edit control about activities on the toolbar. The Class Wizard won't be able to help you add these handlers, so you would have to add the entries to the message map yourself.
+
+<PRE><TT><FONT COLOR="#990000">BEGIN_MESSAGE_MAP(CMyRichEditView, CRichEditView)
+	//{{AFX_MSG_MAP(CMyRichEditView)
+	:
+	:
+	//}}AFX_MSG_MAP
+	ON_NOTIFY(FN_GETFORMAT, IDR_FORMATBAR, OnGetCharFormat)
+	ON_NOTIFY(FN_SETFORMAT, IDR_FORMATBAR, OnSetCharFormat)
+	ON_NOTIFY(NM_RETURN, IDR_FORMATBAR, OnBarReturn)
+END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+
+<P>The implementation of the handler functions are quite simple. The OnGetCharFormat() function simply gets the format of the current selection and returns this through the notification header. The OnSetCharFormat() receives the format information through the notification header and applies it to the current selection. The OnBarReturn() simply sets focus to the rich edit control.
+
+<PRE><TT><FONT COLOR="#990000">void CMyRichEditView::OnGetCharFormat(NMHDR* pNMHDR, LRESULT* pRes)
+{
+	((CHARNMHDR*)pNMHDR)->cf = GetCharFormatSelection();
+	*pRes = 1;
+}
+
+void CMyRichEditView::OnSetCharFormat(NMHDR* pNMHDR, LRESULT* pRes)
+{
+	SetCharFormat(((CHARNMHDR*)pNMHDR)->cf);
+	*pRes = 1;
+}
+
+void CMyRichEditView::OnBarReturn(NMHDR*, LRESULT* )
+{
+	SetFocus();
+}
+</FONT></TT></PRE>
+
+<H4>Step 5: Add UPDATE_COMMAND_UI & COMMAND handlers</H4>
+The CRichEditView class already provides support for all but one of the remaining format toolbar buttons. So all we need to do is hook up the message map entries so that the proper functions get called. The only function that we have to write is for the color button. The message map entries and the OnColorPick() function is shown below. We do not have to write the other functions since they are already defined in CRichEditView.
+
+<PRE><TT><FONT COLOR="#990000">BEGIN_MESSAGE_MAP(CMyRichEditView, CRichEditView)
+	//{{AFX_MSG_MAP(CMyRichEditView)
+	:
+	:
+	ON_COMMAND(ID_CHAR_COLOR, OnColorPick)
+	ON_COMMAND(ID_CHAR_BOLD, OnCharBold)
+	ON_UPDATE_COMMAND_UI(ID_CHAR_BOLD, OnUpdateCharBold)
+	ON_COMMAND(ID_CHAR_ITALIC, OnCharItalic)
+	ON_UPDATE_COMMAND_UI(ID_CHAR_ITALIC, OnUpdateCharItalic)
+	ON_COMMAND(ID_CHAR_UNDERLINE, OnCharUnderline)
+	ON_UPDATE_COMMAND_UI(ID_CHAR_UNDERLINE, OnUpdateCharUnderline)
+	ON_COMMAND(ID_PARA_CENTER, OnParaCenter)
+	ON_UPDATE_COMMAND_UI(ID_PARA_CENTER, OnUpdateParaCenter)
+	ON_COMMAND(ID_PARA_LEFT, OnParaLeft)
+	ON_UPDATE_COMMAND_UI(ID_PARA_LEFT, OnUpdateParaLeft)
+	ON_COMMAND(ID_PARA_RIGHT, OnParaRight)
+	ON_UPDATE_COMMAND_UI(ID_PARA_RIGHT, OnUpdateParaRight)
+	ON_COMMAND(ID_INSERT_BULLET, OnBullet)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+
+void CMyRichEditView::OnColorPick() 
+{
+	CColorDialog dlg;
+
+	if( dlg.DoModal() == IDOK ){
+		CRichEditView::OnColorPick(dlg.GetColor());
+	}
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

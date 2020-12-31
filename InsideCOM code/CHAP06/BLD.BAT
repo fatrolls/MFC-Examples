@@ -1,0 +1,1 @@
+cl -MTd -Zi -Od -D_DEBUG Category.cpp ole32.lib advapi32.lib uuid.lib uuid2.lib uuid3.lib 

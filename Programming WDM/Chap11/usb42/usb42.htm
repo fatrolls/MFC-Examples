@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The USB42 Sample</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The USB42 Sample</H2>
+<P>The USB42 Sample accompanies Chapter 11. It’s the simplest example I could dream up of a USB device driver.</P>
+<P>The sample includes three components:</P>
+
+<UL>
+<LI>USB42.SYS (SYS subdirectory) is a WDM driver for a USB device based on the Anchor Chips development board. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console application for testing USB42.SYS. </LI>
+<LI>42.HEX (EZUSB subdirectory) is the firmware image for the USB42 device.</LI></UL>
+
+<H3>Building USB42</H3>
+<P>To build USB42.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named USB42.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing USB42</H3>
+<P>First follow the <A HREF="../../wdmbook.htm#usbtest">general instructions for testing USB samples</A> to install the device firmware (42.HEX in the EZUSB subdirectory) and the driver. Then open a command prompt and run TEST.EXE from the TEST\DEBUG subdirectory. TEST will use an I/O control operation to read a constant value from a bulk endpoint on the device.</P></BODY>
+</HTML>

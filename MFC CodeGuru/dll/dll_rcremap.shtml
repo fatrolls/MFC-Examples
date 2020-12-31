@@ -1,0 +1,75 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Rob Manderson">
+   <TITLE>DLL - RCREMAP</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Remapping resource script ID's
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:weeder@tconl.com"><!-- Author Name -->John Weeder</A>.
+
+<!-- Text / source code -->
+<p>This is code which a lot of people on the WinDev list keep requesting from
+me. It resequences the define's in a resource.h file. I use it primarily for
+DLL's when I don't want the resource id's to overlap with id's used in other
+DLL's or in the main program. The program simply renumbers all ID_?, IDC_?
+And IDS_? starting at a given value. A .inf file is written which retains
+the settings for future use. IDS_?'s are maintained at their offset within
+each 16 string table (ie "IDS_ % 16" is unchanged).
+
+
+This is the source and a build (VC 5) for the RCRemap utility. I developed
+it from source from an individual whose name I've forgotten. The code has
+worked well for me [disclaimer on] but I make no claims as to its fitness
+for any particular purpose. Use at your own risk [disclaimer off]. The code
+is public domain as far as I'm concerned.
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="dll_rcremap.zip">Download source - 21KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->03 May 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

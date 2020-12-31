@@ -1,0 +1,39 @@
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\prsht.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtml.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dimm.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dispex.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtmhst.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\docobj.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\exdisp.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\objsafe.idl";
+
+[
+	object,
+	uuid(B39333DF-28AE-477D-A3C0-BE4EF0F95809),
+	dual,
+	helpstring("ICalc Interface"),
+	pointer_default(unique)
+] 
+#line 14 "d:\\vc++\\atl internals 2e src\\chapter 05\\mathexe\\cocalc.h"
+interface ICalc : IDispatch {
+};
+
+
+[ version(1.0), uuid(F8D5EF98-6A4C-4E92-899F-97A7B8FB31F6), helpstring("MathExe 1.0 Type Library") ]
+library MathExe
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		version(1.0),
+		uuid(3F68AD23-21AD-44A7-8E10-3C57C66BB43F),
+		helpstring("Calc Class")
+	] 
+#line 31 "d:\\vc++\\atl internals 2e src\\chapter 05\\mathexe\\cocalc.h"
+	coclass CCalc {
+		interface ICalc;
+	};
+
+}
+

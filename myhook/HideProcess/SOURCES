@@ -1,0 +1,4 @@
+TARGETNAME=hideprocess
+TARGETPATH=.\sys
+TARGETTYPE=DRIVER
+SOURCES=HideProcess.c 

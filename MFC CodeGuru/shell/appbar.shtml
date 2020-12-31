@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Shell Programming - Application Desktop Toolbar (Appbar)</TITLE>
+</HEAD>
+<BODY>
+
+<CENTER>
+<H3>
+<FONT COLOR="#000099">Application Desktop Toolbar (Appbar)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:carmela@iname.com">Carmela Santos</A>.
+
+<P>I have written a sample appbar application. Below is the step-by-step instruction on implementing it.
+
+<P>1. <A HREF="appbar_source.zip">Download source</A>.
+
+<P>2. Add AppBar.cpp, AppBar.h, ApBarDlg.cpp, ApBarDlg.h, Utility.cpp and Utility.h to project.
+
+<P>3. Derive a class from CAppBarDialog using IDD_APPBAR (or your own dialog in the resource). This dialog will contain all the controls in your appbar. You may prefer to derive from a CWnd in which case you should move all the message handlers from CAppBarDialog to your derived CWnd class. For simplicity, we will use CDialog here.
+
+<P>4. To show the appbar, you may put the create it anywhere in your program depending on when you would like for it to launch. In this example, it will launch when the user hits the "Show" button (BN_CLICKED on IDOK) on the main dialog and destroyed on exit.
+
+<P>5. Look at the implementation of OnDestroy and OnOK to see how the appbar is created and destroyed.
+
+<P>You may also download entire <A HREF="appbar_project.zip">sample project</A>.
+
+
+
+<P>Posted on : 3/15/98
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

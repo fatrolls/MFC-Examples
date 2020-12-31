@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>CListCtrl - Tooltip for the header</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Tooltip for the header</FONT></H3></CENTER>
+
+<HR WIDTH="100%">Adding a tooltip for the header control is quite straightforward. We use a tooltip control object and add a tool for the header control
+
+<h4>Step 1: Add member of type CToolTipCtrl</h4>
+Add a member variable of type CToolTipCtrl in your CListCtrl derived class.
+
+<PRE><TT><FONT COLOR="#990000">CToolTipCtrl	m_tooltip;
+</FONT></TT></PRE>
+
+<h4>Step 2: Initialize the tooltip object</h4>
+Override PreSubclassWindow() in your CListCtrl derived class. After calling the base class PreSubclassWindow(), create the tooltip object. We override the PreSubclassWindow() instead of OnCreate() because the control is usually attached to the C++ object after it has already been created - usually from a dialog resource - and therefore OnCreate is never called for the object. It is important to note that the call to GetDlgItem(0) may fail if the control was created with a style other than LVS_REPORT.
+
+<p>If you are deriving from CListView then the code to create the tooltip and add a tool to it can be moved to OnCreate() or the OnInitialUpdate() function.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::PreSubclassWindow() 
+{
+	CListCtrl::PreSubclassWindow();
+
+	// Add initialization code
+	m_tooltip.Create( this );
+	m_tooltip.AddTool( GetDlgItem(0), "Right click for context menu" );
+} 
+</FONT></TT></PRE>
+
+<h4>Step 3: Call RelayEvents() function of the tooltip object</h4>
+Override PreTranslateMessage() and call the RelayEvents() function of the CToolTipCtrl object.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::PreTranslateMessage(MSG* pMsg) 
+{
+	m_tooltip.RelayEvent( pMsg );	
+	return CListCtrl::PreTranslateMessage(pMsg);
+}
+</FONT></TT></PRE>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ToolBar -  Customizable toolbar</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Customizable toolbar</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:DKEITH@HILLWPOS.HILL.AF.MIL">Doug Keith</A>. 
+<P>Allows user-customization (inserting, removing, reordering toolbar buttons) of the toolbar. Also remembers last position of the toolbar upon application exit. 
+
+<P>While monitoring the MFC newsgroup, a friend and I noticed quite a few questions on customizable toolbars, so we went off and created a generic application supporting customizable toolbars.  Unfortunately, I've just noticed that when customizing the toolbar while the toolbar is vertical causes incorrect repainting - to correct the toolbar display, simply float the toolbar, resize it (this corrects the painting), and then re-dock it.  Customization is disabled while the toolbar is floating because we couldn't get the toolbar to repaint correctly (since the customizable toolbar wasn't part of our project, we didn't feel terribly motivated to perfect our generic application - but this project could serve as an excellent springboard to get developers to the point of customizable toolbars).
+
+
+<P>To exploit the capabilities of the customization functionality, right-click anywhere over the toolbar while the toolbar is docked (I could never get the toolbar to redraw itself correctly when it was floating) and select the menu item. The framework-supplied common dialog will be presented allowing you to reposition the toolbar buttons. The bulk of the processing lies in the header DkToolBar.h and the implementation DkToolBar.cpp. CDkToolBar utilizes message reflection to handle the toolbar customization notification messages (tbn_beginadjust, tbn_begindrag, tbn_custhelp, tbn_endadnust, tbn_enddrag, tbn_getbuttoninfo, tbn_querydelete, tbn_queryinsert, tbn_reset, and tbn_toolbarchange). 
+
+<P>Warning: To make the creation of the toolbar a little easier, I've overridden CToolBar::Create in order to default some of the arguments. In doing so, I don't think you can simply drop this class in where you used to have CToolBar's - but it's only a few lines away from a drop-in. Also, in MainFrm.cpp, you'll notice a block of code declaring CMainFrame::mainToolBar. This is a collection of data needed to inform the toolbar what buttons are available to the toolbar and their default ordering on the toolbar.
+
+<P><a href="customizable_tb.zip">Download project files</a> 25KB
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

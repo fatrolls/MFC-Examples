@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The FASTINST Sample</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The FASTINST Sample</H2>
+<P>The FASTINST Sample accompanies Chapter 12 and illustrates how to write a simple setup program for Windows 2000. The real purpose of FASTINST is to allow you (and me!) to quickly install a sample driver.</P>
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>FASTINST.EXE is a Windows 2000 setup program that installs the first (or only) device in a specified INF file.</LI></UL>
+
+<H3>Building FASTINST</H3>
+<P>To build FASTINST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named FASTINST.DSP.</P>
+<H3>Testing FASTINST</H3>
+<P>It’s not necessary for you to specifically install FASTINST because the setup program for the book samples does this for you. If you rebuild FASTINST, your new copy will be used the next time you invoke it.</P>
+<P>The setup program automatically associates FASTINST as the Open method for INF files. You can therefore invoke FASTINST simply by double-clicking on an INF file’s icon from Explorer.</P>
+<P>You can also invoke FASTINST from a command prompt, as follows:</P><DIR>
+<DIR>
+
+<FONT FACE="Courier New"><P>C:\WDMBOOK\Chap12\FastInst\debug&gt;<U>fastinst infpath [devid]</P></DIR>
+</DIR>
+
+</U></FONT><P>where <B>infpath</B> is the pathname of the INF file you want to install and <B>devid</B> is an optional device identifier. If you omit the <B>devid</B> parameter, FASTINST installs the first (or only) device in the file. If you supply the <B>devid</B> parameter, FASTINST will install the designated device.</P></BODY>
+</HTML>

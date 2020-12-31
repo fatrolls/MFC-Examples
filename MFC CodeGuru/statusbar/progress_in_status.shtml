@@ -1,0 +1,136 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>StatusBar - Showing progress bar in a status bar pane</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Showing progress bar in a status bar pane</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:blm609@juno.com">Brad Mann</A>. 
+
+
+
+<p>This code creates a progress bar anywhere in the status window and 
+the control is created only once.
+
+
+<p>1.  From the View menu, choose Resource Symbols.  Press the New button
+and assign the symbol a name.  (In this example we’ll be using
+ID_INDICATOR_PROGRESS_PANE)  It’s probably best if you let the computer
+assign a value for it.
+
+<p>2.  In MainFrm.cpp, find the indicators array (located under the message
+map section) and type the ID of the resource (ID_INDICATOR_PROGRESS_PANE)
+in the section.  Put it under all the rest of the ID’s, unless you don’t
+want the bar in the far right corner. (placing the ID at the beginning of
+the array puts the pane in the far left where the program messages
+usually go)
+
+<p>3.  Open the string table in the resource editor, and from the Insert
+menu, choose New String.
+
+<p>4.  Double click the string and select the ID.  For the message, just
+type a bunch of spaces. (the more spaces the larger the progress bar)
+
+<p>Now that we’ve created the pane, it’s time to put a progress bar in it.
+
+<p>1.  Declare a public variable in MainFrm.h of type CProgressCtrl.  (In
+this example we’ll call it m_Progress)
+
+<p>2.  Declare a protected variable in MainFrm.h of type BOOL.  (In this
+example we’ll call it m_bCreated)
+
+<p>3.  In the OnCreate() function in MainFrm.cpp, initialize m_bCreated to
+FALSE:
+
+<PRE><TT><FONT COLOR="#990000">	m_bCreated = FALSE;
+</FONT></TT></PRE>
+
+<p>4.  Now, when we need to use the progress bar, we check to see if it’s
+created, and if it isn’t, we make a new one:
+
+<PRE><TT><FONT COLOR="#990000">CMainFrame::OnSomeLongProcess()
+{
+	RECT MyRect;
+	// substitute 4 with the zero-based index of your status bar pane. 
+	// For example, if you put your pane first in the indicators array, 
+	// you’d put 0, second you’d put 1, etc.
+	m_wndStatusBar.GetItemRect(4, &MyRect);  
+
+	if (m_bCreated == FALSE)
+	{
+		//Create the progress control
+		m_Progress.Create(WS_VISIBLE|WS_CHILD, MyRect, &wndStatusBar, 1); 
+
+		m_Progress.SetRange(0,100); //Set the range to between 0 and 100
+		m_Progress.SetStep(1); // Set the step amount
+		m_bCreated = TRUE;
+	}
+
+	// Now we’ll simulate a long process:
+	for (int I = 0; I < 100; I++)
+	{
+			Sleep(20);
+			m_Progress.StepIt();
+	}
+}
+</FONT></TT></PRE>
+
+<p>If the window is resized while the progress bar is created, the progress
+control doesn’t reposition correctly, so we have to override the WM_SIZE
+event of class CMainFrame:
+
+<PRE><TT><FONT COLOR="#990000">void CMainFrame::OnSize(UINT nType, int cx, int cy) 
+{
+	CMDIFrameWnd::OnSize(nType, cx, cy);
+	RECT rc;
+	m_wndStatusBar.GetItemRect(4, &rc);
+
+	// Reposition the progress control correctly!
+	m_Progress.SetWindowPos(&wndTop, rc.left, rc.top, rc.right - rc.left,
+		rc.bottom - rc.top, 0); 
+		
+}
+</FONT></TT></PRE>
+
+<p>That’s the way to implement a progress control into a status bar pane! 
+Although the process is long, it is relatively simple.
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

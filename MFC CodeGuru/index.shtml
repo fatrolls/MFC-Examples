@@ -1,0 +1,460 @@
+<html>
+
+<head>
+<meta name="description" content="One of the best resource for MFC and Windows programmers. Full of source code for common controls, bitmaps and other topics">
+<meta name="keywords" content="SOURCE CODE C++ MFC VISUAL WINDOWS NT 95 LIBRARY TOOLS LIST LISTVIEW CListCtrl CListView TREE TREEVIEW CTreeCtrl CTreeView">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>MFC Programmer's SourceBook</title>
+</head>
+<script LANGUAGE="VBScript">
+	if (( InStr( Navigator.AppName, "Netscape" ) = 0 ) And (Left( Navigator.AppVersion, 1 ) = "" ) ) then
+		Document.linkColor = "#999966"
+		Document.alinkColor = "#999966"
+		Document.vlinkColor = "#999966"
+	end if
+</script>
+
+
+<body background="fancyhome/back.gif">
+
+<table border="0">
+  <tr>
+    <td width="267"><img src="fancyhome/codeguru.gif" WIDTH="265" HEIGHT="85"></td>
+    <td align="right" valign="top" width="638"><!--#exec cgi="/cgi/ads.cgi"--></td>
+  </tr>
+</table>
+
+<table border="0">
+  <tr>
+    <td width="170" bgcolor="#000000" valign="top"><br>
+    <p align="center"><a href="http://www.stingray.com/codeguru"><img src="banners/stingray2.gif" alt="Stingray Software" WIDTH="130" HEIGHT="97"></a></p>
+    <div align="center"><center><table border="0" width="96%" cellpadding="2" cellspacing="2" bordercolor="#000000" bordercolorlight="#ff0000" bordercolordark="#ff0000">
+      <tr>
+		<!--td width="15"><img src="fancyhome/small_bullet.gif" WIDTH="15" HEIGHT="15"></td-->
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="mfc_codeguru/codeguru.shtml"><font face="Arial" size="2" color="#ffffff"><strong>mfc
+        codeguru</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%">&nbsp;</td>
+        <td width="90%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="bugs/index.perl"><font face="Arial" size="2" color="#ffffff"><strong>bugs and fixes </strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="mfc_bbs/index.perl"><font face="Arial" size="2" color="#ffffff"><strong>discussion
+        board</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="forum/index.perl"><font face="Arial" size="2" color="#ffffff">
+		<strong>forum</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="Guestbook/guestbook.shtml"><font face="Arial" size="2" color="#ffffff"><strong>guest
+        book</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="jokes"><font face="Arial" size="2" color="#ffffff"><strong>jokes</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="whats_new.shtml"><font face="Arial" size="2" color="#ffffff"><strong>what's new</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%">&nbsp;</td>
+        <td width="90%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" 
+		href="buttonctrl/buttonctrl_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>button control</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" 
+		href="combobox/combobox_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>combobox</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" 
+		href="editctrl/editctrl_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>edit control</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="listview/listview_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>listview
+        control</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="menu/menu_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>menu</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="controls/controls_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>other
+        controls</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="propertysheet/propertysheet_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>property
+        sheet</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="richedit/richedit_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>rich
+        edit control</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" 
+		href="staticctrl/staticctrl_toc.shtml"><font face="Arial" size="2" color="#ffffff">
+		<strong>static control</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="statusbar/statusbar_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>status
+        bar</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="toolbar/toolbar_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>toolbar</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="treeview/treeview_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>treeview
+        control</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%">&nbsp;</td>
+        <td width="90%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="advancedui/advancedui_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>
+        advanced ui</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="atl/atl_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>atl com
+        activex</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="bitmap/bitmap_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>bitmap
+        &amp; palettes</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="cpp_mfc/cpp_mfc_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>c++
+        &amp; mfc</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="clipboard/clipboard_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>clipboard</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="debug/debug_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>debug</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="mfc_database/database_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>database</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="devstudio_macros/macros_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>devstudio
+        macros</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="dialog/dialog_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>dialog</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="dll/dll_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>dll</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="doc_view/doc_view_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>doc
+        - view</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="docking/docking_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>docking window</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="gdi/gdi_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>gdi</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="internet/internet_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>internet</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="isapi/isapi_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>isapi</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="misc/misc_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>misc</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="opengl/opengl_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>opengl</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="printing/printing_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>printing</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="samples/samples_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>samples</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="shell/shell_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>shell
+        programming</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="splitter/splitter_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>splitter</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="string/string_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>string</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="tips/tips_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>visual c++
+        tips</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="win32/win32_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>win32
+        </strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%">&nbsp;</td>
+        <td width="90%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="about.shtml"><font face="Arial" size="2" color="#ffffff"><strong>about</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="advertise.shtml"><font face="Arial" size="2" color="#ffffff"><strong>advertise</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="gurus/gurus_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>gurus</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="jobs"><font face="Arial" size="2" color="#ffffff"><strong>jobs</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="links/links.shtml"><font face="Arial" size="2" color="#ffffff"><strong>links</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="excite/search.shtml"><font face="Arial" size="2" color="#ffffff"><strong>search</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="download_site.shtml"><font face="Arial" size="2" color="#ffffff"><strong>site
+        download</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%"><font face="Wingdings" color="#c0c0ff">a</font></td>
+        <td width="120" background="fancyhome/bluegradient.gif"><a style="A:link { color: #ffff80; text-decoration: none; }; 
+		A:active { color: #ffff80; text-decoration: none; }; A:visited { text-decoration: none; };" href="tools/tools_toc.shtml"><font face="Arial" size="2" color="#ffffff"><strong>tools</strong></font></a></td>
+      </tr>
+      <tr>
+        <td width="10%">&nbsp;</td>
+        <td width="90%">&nbsp;</td>
+      </tr>
+    </table>
+    </center></div></td>
+    <td width="10"></td>
+    <td valign="top"><table border="0">
+      <tr>
+        <td colspan="3" width="710"><font face="Arial"><em><strong>
+		Welcome to the CodeGuru homepage, the online community of Windows developers. 
+		</strong></em></font></td>
+      </tr>
+      <tr>
+        <td colspan="3" width="710"><font face="Arial"><em><strong><br>
+        </strong></em></font></td>
+      </tr>
+      <tr>
+	<td>
+		<FORM ACTION="/cgi/AT-Pagessearch.cgi" METHOD=POST>
+		<TABLE><TR><TD><INPUT NAME="search" VALUE="" size=20>
+		</TD><TD><INPUT TYPE="image" SRC="/excite/pictures/AT-search_button.gif" 
+		NAME="searchButton" HEIGHT=20
+		WIDTH=75 ALT="Search" BORDER=0></TD></TR></TABLE>
+		<INPUT TYPE="hidden" NAME="sp" VALUE="sp">
+		</FORM>
+	</td>
+      </tr>
+      <tr>
+        <td valign="top" width="350">
+		
+
+
+
+		<p><font face="Arial" color="#6060c0"><b><img src="fancyhome/bb.gif" WIDTH="23" HEIGHT="24">Let your opinion be known</b>
+		<br>
+        </font><font face="Arial">Click <a href="forum/index.perl">here</a> to visit the forum. You can comment on a number of
+		issues, including wishlist items you would like to see in DevStudio and MFC.
+		</font>
+		</p>
+		
+		
+		<p><font face="Arial" color="#6060c0"><b><img src="fancyhome/bb.gif" 
+		WIDTH="23" HEIGHT="24">
+		Are you hiring? Are you looking for a job? </b></font>
+		<font face="Arial">
+		The <strong><a href="jobs">jobs</a></strong> section has a new look and 
+		more than that, it has a script driving it.
+		You can now post your requirement on the job board and make your 
+		job opening known to thousands of Windows
+		programmers.
+		</font>
+		</p>
+
+		<p><font face="Arial" color="#6060c0"><b><br>
+        <img src="fancyhome/bb.gif" WIDTH="23" HEIGHT="24">New resource<br>
+        </b></font><font face="Arial">There is a new resource for developers that you would want
+        to check out. <strong><a href="http://devcentral.iftech.com">DevCentral</a></strong>&nbsp;contains
+        several major components, including training materials, discussion boards, an online
+        developer journal and a MFC source code library.&nbsp; 
+		
+        <p></font>&nbsp;</td>
+        <td valign="top" width="10"></td>
+        <td valign="top" width="350">
+        <p><font face="Arial"><font face="Arial" color="#6060c0"><b><img src="fancyhome/bb.gif" WIDTH="23" HEIGHT="24">Chris
+        Maunder is MFC CodeGuru for February</b>.</font><font face="Arial"> He was also the MFC
+        CodeGuru for Nov'97. Congratulations Chris. He wins the Objective Toolkit Pro from
+        Stingray Software. </font></font><p><img src="fancyhome/bb.gif" WIDTH="23" HEIGHT="24"><b><font face="Arial" color="#6060c0">Also...<br>
+        </font><font face="Arial"><em>Please don't send me email question that can be better
+        addressed in the <a href="mfc_bbs/index.perl">Discussion Board</a>. </em></font></b> </p>
+        <p><font face="Arial"><b><font face="Arial" color="#6060c0"><img src="fancyhome/bb.gif" WIDTH="23" HEIGHT="24"></font><font color="#6060c0">J<font face="Arial">oin the mailing list</font></font><font face="Arial" color="#6060c0"><br>
+        </font></b>Join the mailing list to receive the site update mails and find out about the
+        exciting things happening at CodeGuru.</font></p>
+        <form action="Mailing_list/mailing_list.cgi" method="Get">
+          <div align="center"><center><p><font face="Arial"><input type="submit" value="Join Mailing List"> </font></p>
+          </center></div>
+        </form>
+        <p><font face="Arial" color="#6060c0"><b><img src="fancyhome/bb.gif" WIDTH="23" HEIGHT="24"> Latest Common
+        Control DLL now available</b></font><font face="Arial"> from Microsoft and is
+        redistributable independent of IE4. It can be distributed only as a self-extracting file. <a href="http://www.microsoft.com/msdn/downloads/files/40Comupd.htm"><strong>Click here</strong></a>
+        for download page.</font></td>
+      </tr>
+      <tr>
+        <td colspan="3" width="710"><font face="Arial"><br>
+        <p><font face="Arial" color="#6060c0"><b><img src="fancyhome/bb.gif" WIDTH="23" HEIGHT="24"> Send in your cool
+        code.</b></font> <font face="Arial">If you have some code that you think will be useful to
+        other MFC programmers, do send it in. All you have to do is send the code and instructions
+        on how to incorporate it into existing projects. Take a look at our <a HREF="submission_guide.shtml">submission guidelines</a>, following them will generally
+        speed up our job of posting your article. E-mail it to <strong><a HREF="mailto:submit@codeguru.com">Submissions</a></strong></p>
+        <p>Please take a moment to sign in the <a href="Guestbook/guestbook.shtml"><strong>GuestBook</strong></a>.
+        </font></p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p align="center">
+		<a href="xlate/chinese">chinese</a>
+		&nbsp;&nbsp;<a href="xlate/french">french</a>
+		&nbsp;&nbsp;<a href="xlate/german">german</a>
+		&nbsp;&nbsp;<a href="xlate/italian">italian</a>
+		&nbsp;&nbsp;<a href="xlate/japanese">japanese</a>
+		&nbsp;&nbsp;<a href="xlate/korean/index.shtml">korean</a>
+		&nbsp;&nbsp;<a href="xlate/spanish">spanish</a>
+		&nbsp;&nbsp;<a href="xlate/russian">russian</a>
+        </p>
+        <table border="0" width="100%" cols="3">
+          <tr>
+            <td align="center" width="100%"><font face="Arial" size="2">Contact me: <a href="mailto:zafir@home.com"><strong>zafir@home.com</strong></a></font><font face="Arial">
+            <br>
+            </font><font face="Arial" size="2">© 1998 Zafir Anjum</font></font></td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+<!--#exec cgi="/cgi-bin/info.pl"-->
+<!--#exec cgi="/cgi/reffer/refferers.cgi"-->
+</body>
+</html>

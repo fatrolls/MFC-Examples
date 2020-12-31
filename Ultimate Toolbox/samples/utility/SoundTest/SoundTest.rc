@@ -1,0 +1,217 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\SoundTest.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\SoundTest.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SOUNDTEST_DIALOG DIALOGEX 0, 0, 185, 143
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "COXSound Test"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Open...",IDC_OPEN,5,59,44,14
+    LTEXT           "<no wave file opened>",IDC_FILENAME,60,62,120,8
+    PUSHBUTTON      "&Play",IDC_PLAY,5,79,44,14,WS_DISABLED
+    PUSHBUTTON      "&Stop",IDC_STOP,5,99,44,14,WS_DISABLED
+    CONTROL         "&Async",IDC_ASYNC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    59,82,35,10
+    CONTROL         "&Loop",IDC_LOOP,"Button",BS_AUTOCHECKBOX | WS_DISABLED | 
+                    WS_TABSTOP,106,82,32,10
+    CONTROL         "Load WAVE from file",IDC_RADIO1,"Button",
+                    BS_AUTORADIOBUTTON,34,12,81,10
+    CONTROL         "Use WAVE resource: GUITAR",IDC_RADIO2,"Button",
+                    BS_AUTORADIOBUTTON,34,24,113,10
+    CONTROL         "Use WAVE resource: PHOTON",IDC_RADIO3,"Button",
+                    BS_AUTORADIOBUTTON,34,36,116,10
+    LTEXT           "Status:",IDC_STATIC,5,118,23,8
+    LTEXT           "<status>",IDC_STATUS,5,128,175,10,SS_SUNKEN
+    ICON            IDR_MAINFRAME,IDC_STATIC,6,4,20,20
+    PUSHBUTTON      "Wave Info...",IDC_INFO,62,99,50,14,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    LTEXT           "0",IDC_LOOPCOUNT,143,83,31,8
+    LTEXT           "Count:",IDC_STATIC,143,71,22,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Barefoot Productions, Inc.\0"
+            VALUE "FileDescription", "SOUNDTEST MFC Application\0"
+            VALUE "FileVersion", "1.0\0"
+            VALUE "InternalName", "SOUNDTEST\0"
+            VALUE "LegalCopyright", "Copyright © 1997 Barefoot Productions, Inc.\0"
+            VALUE "OriginalFilename", "SOUNDTEST.EXE\0"
+            VALUE "ProductName", "SOUNDTEST Application\0"
+            VALUE "ProductVersion", "1.0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SOUNDTEST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 136
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDW_GUITAR              WAVE    DISCARDABLE     "res\\Flamenco.wav"
+IDW_PHOTON              WAVE    DISCARDABLE     "res\\photon.wav"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About SoundTest..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "SoundTest"
+    ID_DESCRIPTION_FILE     "SoundTestInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\SoundTest.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

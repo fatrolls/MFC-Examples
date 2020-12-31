@@ -1,0 +1,24 @@
+HKCR
+{
+	MFCATLOCX.MyATLObject.1 = s 'MyATLObject Class'
+	{
+		CLSID = s '{C107FF50-5F0F-11d1-934C-E4CFDA000000}'
+	}
+	MFCATLOCX.MyATLObject = s 'MyATLObject Class'
+	{
+		CurVer = s 'MFCATLOCX.MyATLObject.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C107FF50-5F0F-11d1-934C-E4CFDA000000} = s 'MyATLObject Class'
+		{
+			ProgID = s 'MFCATLOCX.MyATLObject.1'
+			VersionIndependentProgID = s 'MFCATLOCX.MyATLObject'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

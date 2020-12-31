@@ -1,0 +1,358 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""UTSampleAbout.rc"" \r\n"
+    "#include ""OXSpinCtrl.rc""         // Spin ctrl resources\r\n"
+    "#include ""OXHistoryCombo.rc"" \r\n"
+    "#include ""oxdirdlg.rc""\r\n"
+    "#include ""OXBitmapButton.rc"" \r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\ScreenGrabber.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ScreenGrabber.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROPPAGE_ACTIVATION DIALOG DISCARDABLE  0, 0, 226, 94
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_THICKFRAME
+CAPTION "Activation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Hot key",IDC_STATIC_HOT_KEY,7,7,26,8
+    COMBOBOX        IDC_COMBO_HOT_KEY,41,7,76,49,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Timing",IDC_STATIC_TIMING,7,29,212,30
+    EDITTEXT        IDC_EDIT_INITIAL_DELAY,176,41,24,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_INITIAL_DELAY,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS,200,41,10,12
+    CONTROL         "Initial &delay before capture (1-60 sec)",
+                    IDC_CHECK_INITIAL_DELAY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,18,42,155,10
+END
+
+IDD_PROPPAGE_SOURCE DIALOG DISCARDABLE  0, 0, 226, 94
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_THICKFRAME
+CAPTION "Source"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "&Current Window",IDC_RADIO_CURRENT_WINDOW,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,26,20,135,8
+    CONTROL         "C&lient Window",IDC_RADIO_CLIENT_WINDOW,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,26,37,135,8
+    CONTROL         "&Full Screen",IDC_RADIO_FULL_SCREEN,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,26,54,135,8
+    CONTROL         "&Rectangular Area",IDC_RADIO_RECT_AREA,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,26,71,135,8
+    GROUPBOX        "Captured area",IDC_STATIC_AREA,7,7,212,80
+END
+
+IDD_PROPPAGE_DESTINATION DIALOG DISCARDABLE  0, 0, 226, 94
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_THICKFRAME
+CAPTION "Destination"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Copy captured area to",IDC_STATIC_DESTINATION,7,7,212,
+                    80
+    CONTROL         "&File",IDC_CHECK_FILE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,19,23,73,8
+    CONTROL         "&Clipboard",IDC_CHECK_CLIPBOARD,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,42,73,8
+END
+
+IDD_PROPPAGE_IMAGE DIALOG DISCARDABLE  0, 0, 226, 94
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_THICKFRAME
+CAPTION "Image"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "&Resize captured image",IDC_CHECK_RESIZE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,7,128,8
+    EDITTEXT        IDC_EDIT_WIDTH,48,37,24,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_WIDTH,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,72,37,10,12
+    EDITTEXT        IDC_EDIT_HEIGHT,48,58,24,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_HEIGHT,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,72,58,
+                    10,12
+    CONTROL         "&Maintain aspect ratio",IDC_CHECK_MAINTAIN_RATIO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,129,38,81,8
+    GROUPBOX        "Resizing",IDC_STATIC_RESIZING,7,22,212,65
+    LTEXT           "&Width",IDC_STATIC_WIDTH,13,39,20,8
+    LTEXT           "&Height",IDC_STATIC_HEIGHT,13,60,22,8
+END
+
+IDD_PROPPAGE_FILE DIALOGEX 0, 0, 226, 94
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_THICKFRAME
+CAPTION "File"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_COMBO_FILE_NAME,46,7,143,55,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FILE_TYPE,46,24,174,55,CBS_DROPDOWNLIST | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&Use automatic naming",IDC_CHECK_AUTOMATIC_NAMING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,42,86,10
+    CONTROL         "Static",IDC_STATIC_CAPTURE_DIR,"Static",
+                    SS_LEFTNOWORDWRAP | WS_BORDER | WS_GROUP,10,69,189,13,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    PUSHBUTTON      "...",IDC_BUTTON_CAPTURE_DIR,201,68,15,14
+    LTEXT           "File &name",IDC_STATIC_FILE_NAME,8,10,31,8
+    LTEXT           "&Type of file",IDC_STATIC_FILE_TYPE,8,27,36,8
+    GROUPBOX        "Capture Directory",IDC_STATIC_DIR,7,54,212,33
+END
+
+IDD_PROPPAGE_PREFERENCES DIALOG DISCARDABLE  0, 0, 226, 94
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_THICKFRAME
+CAPTION "Preferences"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Capture settings",IDC_STATIC_SETTINGS,7,7,212,48
+    CONTROL         "&Hide icon when capturing",IDC_CHECK_HIDE_ICON,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,21,97,10
+    CONTROL         "&Notify end of capture",IDC_CHECK_NOTIFY_END,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,35,82,10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "ScreenGrabber MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "ScreenGrabber\0"
+            VALUE "LegalCopyright", "Copyright (C) 1997\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "ScreenGrabber.EXE\0"
+            VALUE "ProductName", "ScreenGrabber Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PROPPAGE_ACTIVATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_PROPPAGE_SOURCE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_PROPPAGE_DESTINATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_PROPPAGE_IMAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_PROPPAGE_FILE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_PROPPAGE_PREFERENCES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_POPUPMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "Open",                        ID_OPEN
+        MENUITEM "&Close",                      ID_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "About ScreenGrabber...",      ID_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ScreenGrabber..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "ScreenGrabber"
+    ID_DESCRIPTION_FILE     "ScreenGrabberInfo.rtf"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "ScreenGrabber"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "UTSampleAbout.rc" 
+#include "OXSpinCtrl.rc"         // Spin ctrl resources
+#include "OXHistoryCombo.rc" 
+#include "oxdirdlg.rc"
+#include "OXBitmapButton.rc" 
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\ScreenGrabber.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,229 @@
+// ===================================================================
+// UTMsg.idl : IDL source for UTMsg.dll
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTMsg.tlb) and marshalling code.
+//
+// ===================================================================
+// Copyright © The Ultimate Toolbox 1999-2001, all rights reserved
+// ===================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+cpp_quote("#include \"UTMessage.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+#include "UTMessage.h"
+cpp_quote("#endif")  
+
+[
+	uuid(663A8A50-6792-11D3-A4E3-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP Message Control 4.2")
+]
+library UTMSGLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//===========================================
+	//	Message control Events interface
+	//===========================================
+	[
+		uuid(663A8A60-6792-11D3-A4E3-0080C858F182),
+		helpstring("_IMessageEvents Interface")
+	]
+	dispinterface _IMessageEvents
+	{
+		properties:
+		methods:
+	};
+
+	[
+		uuid(663A8A5F-6792-11D3-A4E3-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP Message Control 4.2")
+	]
+	coclass Message
+	{
+		[default] interface IMessage;
+		[default, source] dispinterface _IMessageEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (ED9684A2-679C-11d3-A4E3-0080C858F182), helpstring("Message Error Codes")]
+	enum MessageErrorCodes
+	{
+		[helpstring("Successful")]							ecSuccess		= UTE_SUCCESS,
+		[helpstring("Error")]								ecError			= UTE_ERROR,
+		[helpstring("Failed to open data source")]			ecMsgOpenFailed	= UTE_MSG_OPEN_FAILED,
+		[helpstring("Writing line failed")]					ecMsgWriteFailrd= UTE_MSG_WRITE_LINE_FAILED,
+		[helpstring("Reading line failed")]					ecMsgReadFailed	= UTE_MSG_READ_LINE_FAILED,
+		[helpstring("Out of memory")]						ecOutOfMemory	= UTE_OUT_OF_MEMORY,
+		[helpstring("Message body buffer too short")]		ecBufferTooShort= UTE_BUFFER_TOO_SHORT,
+		[helpstring("The index value was out of range.")]	ecIndexOutOfRange= UTE_INDEX_OUTOFRANGE,
+		[helpstring("File format error.")]					ecFileFormatError= UTE_FILE_FORMAT_ERROR,
+		[helpstring("File write error")]					ecFileWriteerror= UTE_FILE_WRITE_ERROR,
+		[helpstring("Failed to open attachment data source")] ecDataSourceOpenFailed= UTE_DS_OPEN_FAILED
+
+	} MessageErrorCodes;
+
+	//===========================================
+	//	Encoding type enumeration
+	//===========================================
+	typedef [uuid (06232D31-67B0-11d3-A4E3-0080C858F182), helpstring("Encoding Type")]
+	enum EncodingType
+	{
+		[helpstring("MIME")]				etMime,
+		[helpstring("UUEncode")]			etUUEncode
+	} EncodingType;
+
+	//===========================================
+	//	Header Field type enumeration
+	//===========================================
+	typedef [uuid (06232D33-67B0-11d3-A4E3-0080C858F182), helpstring("Header Field type")]
+	enum HeaderFieldType
+	{
+		[helpstring("All types of fields")]	ftAll			= UTM_ALL_FIELDS,
+		[helpstring("Message ID")]			ftMessageID		= UTM_MESSAGE_ID,
+		[helpstring("To")]					ftTo			= UTM_TO,
+		[helpstring("CC")]					ftCC			= UTM_CC,
+		[helpstring("BCC")]					ftBCC			= UTM_BCC,
+		[helpstring("From")]				ftFrom			= UTM_FROM,
+		[helpstring("Subject")]				ftSubject		= UTM_SUBJECT,
+		[helpstring("Date")]				ftDate			= UTM_DATE,
+		[helpstring("NewsGroups")]			ftNewsGroups	= UTM_NEWSGROUPS,
+		[helpstring("XRef")]				ftXRef			= UTM_XREF,
+		[helpstring("Reply-To")]			ftReplyTo		= UTM_REPLY_TO,
+		[helpstring("X-Newsreader")]		ftXNewsReader	= UTM_XNEWS_READER,
+		[helpstring("References")]			ftReferences	= UTM_REFERENCES,
+		[helpstring("Custom field")]		ftCustom		= UTM_CUSTOM_FIELD
+	} HeaderFieldType;
+
+};
+
+	//===========================================
+	//	IMessage interface
+	//===========================================
+
+	[
+		object,
+		uuid(663A8A5E-6792-11D3-A4E3-0080C858F182),
+		dual,
+		helpstring("IMessage Interface"),
+		pointer_default(unique)
+	]
+	interface IMessage : IDispatch
+	{
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_GET_ERROR_TEXT				= 1;
+		const int DISPID_ADD_ATTACHMENT				= 2;
+		const int DISPID_GET_ATTACHMENT_NUMBER		= 3;
+		const int DISPID_EMPTY_ATTACHMENT_LIST		= 4;
+		const int DISPID_GET_ATTACHMENT_SIZE		= 5;
+		const int DISPID_GET_ATTACHMENT_NAME		= 6;
+		const int DISPID_GET_ATTACHMENT_TYPE		= 7;
+		const int DISPID_GET_ATTACHMENT_PARAM		= 8;
+		const int DISPID_ADD_ATTACHMENT_HEADER_TAG	= 9;
+		const int DISPID_SET_DEFAULT_ENCODING		= 10;
+		const int DISPID_GET_CUSTOM_FIELD_NAME		= 11;
+		const int DISPID_GET_FIELD_NAME				= 12;
+		const int DISPID_GET_MESSAGE_BODY			= 13;
+		const int DISPID_SET_MESSAGE_BODY			= 14;
+		const int DISPID_ADD_HEADER_FIELD			= 15;
+		const int DISPID_CLEAR_HEADER				= 16;
+		const int DISPID_GET_HEADER_COUNT_BY_NAME	= 17;
+		const int DISPID_GET_HEADER_COUNT_BY_TYPE	= 18;
+		const int DISPID_GET_HEADER_BY_NAME			= 19;
+		const int DISPID_GET_HEADER_BY_TYPE			= 20;
+		const int DISPID_LOAD						= 21;
+		const int DISPID_SAVE						= 22;
+		const int DISPID_DECODE_ATTACHMENT			= 23;
+
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+	
+		[id(DISPID_ADD_ATTACHMENT), helpstring("method AddAttachment")] 
+			HRESULT AddAttachment([in] BSTR FileName, [in, defaultvalue("")] BSTR Params, [out,retval] long *Result);
+		
+		[id(DISPID_GET_ATTACHMENT_NUMBER), helpstring("method GetAttachmentNumber")] 
+			HRESULT GetAttachmentNumber([out, retval] long *Number);
+		
+		[id(DISPID_EMPTY_ATTACHMENT_LIST), helpstring("method EmptyAttachmentList")] 
+			HRESULT EmptyAttachmentList();
+	
+		[id(DISPID_GET_ATTACHMENT_SIZE), helpstring("method GetAttachmentSize")] 
+			HRESULT GetAttachmentSize([in, defaultvalue(-1)] long Index, [out,retval] long *Size);
+		
+		[id(DISPID_GET_ATTACHMENT_NAME), helpstring("method GetAttachmentName")] 
+			HRESULT GetAttachmentName([in] long Index, [out,retval] BSTR *Name);
+		
+		[id(DISPID_GET_ATTACHMENT_TYPE), helpstring("method GetAttachmentType")] 
+			HRESULT GetAttachmentType([in] long Index, [out,retval] BSTR *Type);
+		
+		[id(DISPID_GET_ATTACHMENT_PARAM), helpstring("method GetAttachmentParam")] 
+			HRESULT GetAttachmentParam([in] long Index, [out,retval] BSTR *Param);
+		
+		[id(DISPID_ADD_ATTACHMENT_HEADER_TAG), helpstring("method AddAttachmentHeaderTag")] 
+			HRESULT AddAttachmentHeaderTag([in] BSTR Tag, [out,retval] long *Result);
+		
+		[id(DISPID_SET_DEFAULT_ENCODING), helpstring("method SetDefaultEncoding")] 
+			HRESULT SetDefaultEncoding([in] EncodingType Type, [out, retval] long *Result);
+		
+		[id(DISPID_GET_CUSTOM_FIELD_NAME), helpstring("method GetCustomFieldName")] 
+			HRESULT GetCustomFieldName([in] long Index, [out,retval] BSTR *Name);
+		
+		[id(DISPID_GET_FIELD_NAME), helpstring("method GetFieldName")] 
+			HRESULT GetFieldName([in] HeaderFieldType Field, [out,retval] BSTR *Name);
+		
+		[id(DISPID_GET_MESSAGE_BODY), helpstring("method GetMessageBody")] 
+			HRESULT GetMessageBody([out,retval] BSTR *Text);
+		
+		[id(DISPID_SET_MESSAGE_BODY), helpstring("method SetMessageBody")] 
+			HRESULT SetMessageBody([in] BSTR Text, [out,retval] long *Result);
+		
+		[id(DISPID_ADD_HEADER_FIELD), helpstring("method AddHeaderField")] 
+			HRESULT AddHeaderField([in] BSTR Data, [in] HeaderFieldType Type, [in,defaultvalue("")] BSTR FieldName, [out,retval] long *Result);
+		
+		[id(DISPID_CLEAR_HEADER), helpstring("method ClearHeader")] 
+			HRESULT ClearHeader([in] HeaderFieldType Type, [in, defaultvalue("")] BSTR CustomName);
+		
+		[id(DISPID_GET_HEADER_COUNT_BY_NAME), helpstring("method GetHeaderCountByName")] 
+			HRESULT GetHeaderCountByName([in] BSTR Name, [out,retval] long *Number);
+		
+		[id(DISPID_GET_HEADER_COUNT_BY_TYPE), helpstring("method GetHeaderCountByType")] 
+			HRESULT GetHeaderCountByType([in] HeaderFieldType Type, [out,retval] long *Number);
+		
+		[id(DISPID_GET_HEADER_BY_NAME), helpstring("method GetHeaderByName")] 
+			HRESULT GetHeaderByName([in] BSTR Name, [in,defaultvalue(-1)] long Index, [out,retval] BSTR *Header);
+		
+		[id(DISPID_GET_HEADER_BY_TYPE), helpstring("method GetHeaderByType")] 
+			HRESULT GetHeaderByType([in] HeaderFieldType Type, [in,defaultvalue(-1)] long Index, [out,retval] BSTR *Header);
+		
+		[id(DISPID_LOAD), helpstring("method Load")] 
+			HRESULT Load([in] BSTR FileName, [out,retval] long *Result);
+		
+		[id(DISPID_SAVE), helpstring("method Save")] 
+			HRESULT Save([in] BSTR FileName, [out,retval] long *Result);
+
+		[id(DISPID_DECODE_ATTACHMENT), helpstring("method DecodeAttachment")] 
+			HRESULT DecodeAttachment([in] long Index, [in] BSTR FileName, [out,retval] long *Result);
+	};
+

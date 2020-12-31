@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Using TrackMouseEvent to find out when the mouse leaves your window</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using TrackMouseEvent to find out when the mouse leaves your window</FONT></H3></CENTER>
+<HR>
+
+This code was contributed by <AHREF="mailto:douglas.peterson@telex.com">Douglas Peterson</A>.
+<p>Using TrackMouseEvent is pretty simple. When the mouse enters the
+window you want to track, you call track mouse event telling it to
+inform you when the mouse leaves. When it does, it will send a
+WM_MOUSELEAVE message to that window.
+
+<p>If you add this code to any of your existing view classes (or any CWnd
+derived class), you will see a drag rectangle that follows the mouse
+cursor around. If you move the mouse outside the window, it will
+disappear. If you move the mouse back into the window, it will
+reappear.
+
+
+<pre><tt><font COLOR="#990000">
+********************************************************************************
+
+
+
+// TrackView.h changes
+//
+
+class CTrackView : public CView
+{
+// Add data members
+protected:
+	CRect m_rectLast;	//** Added line
+	BOOL m_bMouseTracking;	//** Added line
+
+// Add message handler prototype
+	afx_msg LRESULT OnMouseLeave(WPARAM wParam, LPARAM lParam);	//** Added line
+
+};
+
+****************************************************************************************
+
+// TrackView.cpp changes
+//
+
+// Add message handler
+BEGIN_MESSAGE_MAP(CTrackView, CView)
+	ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)	//** Added line
+END_MESSAGE_MAP()
+
+CTrackView::CTrackView()
+{
+	m_bMouseTracking = FALSE;	//** Added line
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CTrackView message handlers
+
+//** Added function
+LRESULT CTrackView::OnMouseLeave(WPARAM wParam, LPARAM lParam)
+{
+	// Draw last rect, but no new one (erase old rect)
+	CClientDC dc(this);
+	dc.DrawDragRect(CRect(0,0,0,0), CSize(0,0), m_rectLast, CSize(2,2));
+	m_rectLast = CRect(0,0,0,0);
+
+	m_bMouseTracking = FALSE;
+	return TRUE;
+}
+
+void CTrackView::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	// Calc new rectangle
+	CRect rectNew(point.x-20, point.y-20, point.x+20, point.y+20);
+	CClientDC dc(this);
+
+	// WM_MOUSEMOVE + !m_bMouseTracking becomes the equivalent of
+	// WM_MOUSEENTER of which there is no such thing.
+	if (!m_bMouseTracking)
+	{
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = this-&gt;m_hWnd;
+		
+		if (::_TrackMouseEvent(&amp;tme))
+		{
+			m_bMouseTracking = TRUE;
+			
+			// Draw new rect, but no last rect as we are starting anew
+			dc.DrawDragRect(rectNew, CSize(2,2), NULL, CSize(0,0));
+		}
+	}
+	else
+	{
+		// Draw new rect and erase old rect
+		dc.DrawDragRect(rectNew, CSize(2,2), m_rectLast, CSize(2,2));
+	}
+
+	// Remember where we drew this rectangle
+	m_rectLast = rectNew;
+
+	CView::OnMouseMove(nFlags, point);
+}
+
+****************************************************************************************
+
+</font></tt></pre>
+
+<p>
+Here's a helper class I use to make it a little simpler:
+
+<pre><tt><font COLOR="#990000">
+class CTrackMouseEvent : public tagTRACKMOUSEEVENT
+{
+public:
+	CTrackMouseEvent(CWnd* pWnd, DWORD dwFlags = TME_LEAVE, DWORD dwHoverTime = HOVER_DEFAULT)
+	{
+		ASSERT_VALID(pWnd);
+		ASSERT(::IsWindow(pWnd-&gt;m_hWnd));
+
+		this-&gt;cbSize = sizeof(TRACKMOUSEEVENT);
+		this-&gt;dwFlags = dwFlags;
+		this-&gt;hwndTrack = pWnd-&gt;m_hWnd;
+		this-&gt;dwHoverTime = dwHoverTime;
+	}
+
+	BOOL Track()
+		{ return _TrackMouseEvent(this); }
+};
+
+</font></tt></pre>
+<p>
+You can start tracking like this:
+
+<pre><tt><font COLOR="#990000">
+if (!m_bMouseTracking)
+	m_bMouseTracking = CTrackMouseEvent(this).Track();
+
+
+</font></tt></pre>
+ 
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

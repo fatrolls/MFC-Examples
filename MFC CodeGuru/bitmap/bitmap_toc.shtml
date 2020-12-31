@@ -1,0 +1,189 @@
+<HTML>
+
+<HEAD>
+
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+
+   <META NAME="Author" CONTENT="Zafir Anjum">
+
+   <TITLE>Bitmap & Palette - Table of Contents</TITLE>
+
+   <META Name="description" Content="Source code for bitmap handling in Windows. Includes transparent bitmaps, embossing, fading, rotation and conversion between DDB & DIB">
+
+   <META Name="keywords" Content="BITMAP BMP DIB DDB TRANSPARENT GRAYSCALE FADE EMBOSS ROTATE PATTERN FILE SHADE WORLD TRANSFORM">
+
+</HEAD>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<table WIDTH="100%">
+
+<tr WIDTH="100%">
+
+<td>
+
+<H1><FONT COLOR="#a0a0ff">Bitmap & Palette</FONT></H1>
+
+<td>
+
+<td width=10%></td>
+
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+
+</tr>
+
+</table>
+
+
+
+
+
+
+
+
+
+<HR>
+
+<p>This section is now being maintained by Raul Ciotescu.
+
+<P>Many of the code snippets have the following bug. I'll update the articles as soon
+
+as I get a chance but meantime here are the two things you should be aware of.
+
+<ol>
+
+<li>Use GlobalLock() and GlobalUnlock() instead of simply assuming the memory handle to
+
+be a pointer.
+
+<li>When selecting a bitmap to a DC, save the previous bitmap in a variable and reselect
+
+it at the end before releasing the DC.
+
+</ol>
+
+<P><P>
+
+
+
+<UL>
+
+<LI><A HREF="dimensions.shtml">Getting the dimensions of a bitmap - Zafir Anjum</A>
+
+<p>
+
+<LI><A HREF="draw_bitmap.shtml">Drawing a bitmap - Zafir Anjum</A>
+
+<LI><A HREF="draw_bmp.shtml">Drawing a bitmap from a BMP file - Zafir Anjum</A>
+
+<LI><A HREF="bitmap_from_bmp.shtml">Creating a bitmap object from a BMP file - Zafir Anjum</A>
+
+<LI><A HREF="dibsection_from_bmp.shtml">Creating a DIB section from a BMP file - Zafir Anjum</A>
+
+<LI><A HREF="256color_bitmap.shtml">Displaying a 256 color bitmap - Zafir Anjum</A>
+
+<LI><A HREF="copy_to_clipboard.shtml">Copying a bitmap to clipboard - Zafir Anjum</A>
+
+<LI><A HREF="transparent_bitmap.shtml">Drawing a bitmap transparently - Zafir Anjum</A>
+
+<LI><A HREF="ddb_to_dib.shtml">Converting DDB to DIB - Zafir Anjum</A>
+
+<LI><A HREF="dib_to_ddb.shtml">Converting DIB to DDB - Zafir Anjum</A>
+
+<LI><A HREF="bitmap_to_file.shtml">Writing a bitmap to a BMP file - Zafir Anjum</A>
+
+<LI><A HREF="window_to_file.shtml">Writing a window image to a BMP file - Zafir Anjum</A>
+
+<LI><A HREF="shade_image.shtml">Shade images to look like an active icon - Zafir Anjum</A>
+
+<p>
+
+<LI><A HREF="grayscale.shtml">Drawing an image in grayscale - Zafir Anjum</A>
+
+<LI><A HREF="dither_blt.shtml">Draw bitmap with grayed 3D effect - Jean-Edouard Lachand-Robert</A>
+
+<LI><A HREF="fadein.shtml">Fade in / Fade out Images using Palette animation - Zafir Anjum</A>
+
+<LI><A HREF="grayscale_fadein.shtml">Fading from color to grayscale and vice-versa - Zafir Anjum</A>
+
+<LI><A HREF="emboss.shtml">Emboss text and other shape on your bitmap - Zafir Anjum</A>
+
+<LI><A HREF="emboss_pattern.shtml">Apply a 3D bitmap pattern on text or other shapes - Zafir Anjum</A>
+
+<LI><A HREF="invert_bitmap.shtml">Invert (mirror) a bitmap - Zafir Anjum</A>
+
+<LI><A HREF="invert_bitmap_inplace.shtml">Invert (mirror) a bitmap in-place - Roger Onslow</A>
+
+<LI><A HREF="rotate_bitmap.shtml">Rotate a bitmap image - Zafir Anjum</A>
+
+<p>
+
+<LI><A HREF="formview_background.shtml">Painting the background for a CFormView derived class - Adrian Roman</A>
+
+<LI><A HREF="bitmap_picture.shtml">An auto-sizing bitmap picture control - Chris Maunder</A>
+
+<LI><A HREF="bmp_in_mdiclient.shtml">Bitmap background in MDI Client - Neil A. Van Note</A></LI>
+
+<LI><A HREF="bmp_in_mdiclient2.shtml">Bitmap background in MDI Client (2)- David Simpson</A></LI>
+
+<LI><A HREF="logo_bitmap_in_client.shtml">A logo bitmap inside client frame - Adrian Roman</A>
+
+<LI><A HREF="img2dib.shtml">Converts a image list to DIB - Mike Wild</A>
+
+<LI><A HREF="ebgfx.shtml">EBGfx library to get fast access to image data - El Barto</A>
+
+
+
+
+</UL>
+
+
+
+<p>External Links
+
+<ul>
+
+<LI><A HREF="http://web.ukonline.co.uk/Members/julian.smart/code.html">MFC Class for BMP, JPEG, GIF - Julian Smart</A>
+
+</ul>
+
+
+
+<CENTER>
+
+<HR></CENTER>
+
+
+
+<TABLE COLS=3 WIDTH="100%" >
+
+<TR>
+
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+
+
+<TD WIDTH="34%">
+
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT></CENTER>
+
+</TD>
+
+
+
+<TD WIDTH="33%">
+
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+
+</TD>
+
+</TR>
+
+</TABLE>
+
+
+
+</BODY>
+
+</HTML>
+

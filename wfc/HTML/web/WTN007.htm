@@ -1,0 +1,52 @@
+<HTML>
+
+<HEAD>
+<TITLE>WFC - Technical Note 007 - Using MFC-Based DLLs</TITLE>
+</HEAD>
+<BODY>
+
+<H1>WFC Technical Note 006 - Using MFC-Based DLLs</H1>
+$Revision: 1 $ Last Modified $Date: 4/16/00 6:28a $<BR><HR>
+
+<H2>Introduction</H2>
+
+Microsoft Foundation Classes (MFC) is a nice framework for creating
+GUIs. It excels at creating dialog boxes that get information from
+the user. This technote shows you how to use MFC to do the grunt
+work of GUI code without having to base your entire program on MFC.
+
+<H2>A Scenario</H2>
+
+Many times, I like to put GUIs in their own DLL. This allows me to
+isolate that code for easy maintenance as well as easy upgrades. If I
+want to totally change a dialog box, I don't have to recompile the
+entire product. Just replace that one DLL. Typically, I will have
+a DLL name and a function name in my main program. When it is time
+to display the dialog, I will call <CODE>LoadLibrary()</CODE> to 
+load the DLL, then call <CODE>GetProcAddress()</CODE> to get the address
+of the function. This, in essence, is what COM/OLE does when you
+instantiate a COM object (via <CODE>CoCreateInstance()</CODE>).
+
+<H2>Code</H2>
+
+It is amazingly simple to do this. All you need to know is the magic
+functions to call. Here's a sample of a function that can be manually
+loaded as described in the scenario above:
+
+<PRE><CODE>BOOL __stdcall IsItOKToContinue( void )
+{
+   AFX_MANAGE_STATE( AfxGetStaticModuleState() );
+
+   CContinueDialog dialog( AfxGetMainWnd() );
+
+   return( ( dialog.DoModal() == IDOK ) ? TRUE : FALSE );
+}</CODE></PRE>
+
+<P>
+<HR>
+
+<A HREF="mailto:wfc@pobox.com">Samuel R. Blackburn</A>
+
+</BODY>
+
+</HTML>

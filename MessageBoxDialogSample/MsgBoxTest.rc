@@ -1,0 +1,277 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)\r\n"
+    "LANGUAGE 7, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\MsgBoxTest.rc2""  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen\r\n"
+    "#include ""afxres.rc""         // Standardkomponenten\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\MsgBoxTest.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MSGBOXTEST_DIALOG DIALOGEX 0, 0, 397, 195
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Test for the enhanced MFC message boxes"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Content of the message box",IDC_STATIC,7,7,245,59
+    LTEXT           "&Title:",IDC_STATIC,18,26,48,8,0,WS_EX_RIGHT
+    EDITTEXT        IDC_MESSAGE_TITLE,72,24,168,12,ES_AUTOHSCROLL
+    LTEXT           "&Message:",IDC_STATIC,18,44,48,8,0,WS_EX_RIGHT
+    EDITTEXT        IDC_MESSAGE_TEXT,72,42,168,12,ES_AUTOHSCROLL
+    GROUPBOX        "Style of the message box",IDC_STATIC,7,72,245,96
+    LTEXT           "&Style:",IDC_STATIC,18,92,48,8,0,WS_EX_RIGHT
+    COMBOBOX        IDC_MESSAGE_STYLE,72,90,168,60,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Icon:",IDC_STATIC,18,110,48,8,0,WS_EX_RIGHT
+    COMBOBOX        IDC_MESSAGE_ICON,72,108,168,60,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Checkbox:",IDC_STATIC,18,128,48,8,0,WS_EX_RIGHT
+    COMBOBOX        IDC_MESSAGE_CHECKBOX,72,126,168,60,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Default &button:",IDC_STATIC,12,146,54,8
+    COMBOBOX        IDC_DEFAULT_BUTTON,72,144,168,60,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Other options",IDC_STATIC,264,7,126,83
+    CONTROL         "Display button ""&Yes to all""",IDC_YES_TO_ALL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,276,24,108,10
+    CONTROL         "Display button ""&No to all""",IDC_NO_TO_ALL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,276,36,108,10
+    CONTROL         "&Right align buttons",IDC_RIGHT_ALIGN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,276,48,108,10
+    CONTROL         "Don't &play a sound",IDC_NO_SOUND,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,276,60,108,10
+    CONTROL         "Mark checkbox by &default",IDC_DEFAULT_CHECKED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,276,72,108,10
+    GROUPBOX        "Timeout",IDC_STATIC,264,96,126,72
+    CONTROL         "Do a &timeout",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,276,114,108,10
+    RTEXT           "Seconds:",IDC_STATIC,288,128,36,8
+    EDITTEXT        IDC_TIMEOUT_SECONDS,330,126,42,12,ES_AUTOHSCROLL
+    CONTROL         "Disable buttons &while timeout",IDC_DISABLED_TIMEOUT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,276,144,108,10
+    PUSHBUTTON      "Display the message box",IDC_DISPLAY_MESSAGE_BOX,143,
+                    174,120,14
+    PUSHBUTTON      "Reset the message boxes",IDC_RESET_MESSAGE_BOXES,269,
+                    174,120,14
+END
+
+IDD_MESSAGE_BOX DIALOGEX 0, 0, 186, 95
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "Application for testing the new MFC message boxes."
+            VALUE "CompanyName", "Michael P. Mehl <michael.mehl@web.de>"
+            VALUE "FileDescription", "Application for testing the new MFC message boxes."
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "MsgBoxTest"
+            VALUE "LegalCopyright", "Copyright (C) 2004 Michael P. Mehl. All rights reserved."
+            VALUE "OriginalFilename", "MsgBoxTest.exe"
+            VALUE "ProductName", "Application for testing the new MFC message boxes."
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_MSGBOXTEST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 390
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 188
+    END
+
+    IDD_MESSAGE_BOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+IDR_MANIFEST            RT_MANIFEST             "res\\MsgBoxTest.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_MESSAGEBOX_OK       "&Ok"
+    IDS_MESSAGEBOX_CANCEL   "&Cancel"
+    IDS_MESSAGEBOX_ABORT    "&Abort"
+    IDS_MESSAGEBOX_RETRY    "&Retry"
+    IDS_MESSAGEBOX_IGNORE   "&Ignore"
+    IDS_MESSAGEBOX_IGNOREALL "Ignore &all"
+    IDS_MESSAGEBOX_YES      "&Yes"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MESSAGEBOX_YES_TO_ALL "Yes to &all"
+    IDS_MESSAGEBOX_NO       "&No"
+    IDS_MESSAGEBOX_NO_TO_ALL "No to a&ll"
+    IDS_MESSAGEBOX_CONTINUE "&Continue"
+    IDS_MESSAGEBOX_SKIP     "&Skip"
+    IDS_MESSAGEBOX_SKIPALL  "Skip &all"
+    IDS_MESSAGEBOX_HELP     "&Help"
+    IDS_MESSAGEBOX_DONT_DISPLAY_AGAIN "Don't display this &message again."
+    IDS_MESSAGEBOX_DONT_ASK_AGAIN "Don't ask this &question again."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_MESSAGE_MISSING 
+                            "Please insert a message to be displayed in the message box."
+    IDS_RESULT_MESSAGE      "Your message box was displayed successfully or, if the result was stored in the registry, returned the former result, because the user decided, not to display the dialog again.\n\nThe result of the message box was: %1."
+    IDS_RESULT_RESET        "The message boxes have been reset. Those one with checkboxes will be displayed again, even if the user selected the ""Don't display/ask again"" checkbox."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+LANGUAGE 7, 1
+#pragma code_page(1252)
+#include "res\MsgBoxTest.rc2"  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen
+#include "afxres.rc"         // Standardkomponenten
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc-View - Variable splitter views</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Variable splitter views</FONT></H3></CENTER>
+
+<HR>
+
+This article was contributed by <A HREF="mailto:salvatore.mosaico@elsag.it">Salvatore Mosaico</A>.
+
+<P>Here is a class that  implements an MDI Frame (CMDIChildWnd) which
+shows a number of variable views (up to 4 views).
+
+<P>The Class (CBaseVarFrame) is reusable.
+
+<P>It implement four new commands :
+
+<PRE><TT><FONT COLOR="#990000">
+ID_SPLITTER_NESSUNO (Just Default View,no splitter)  // status = 0
+ID_SPLITTER_UNO ( 2 Views ,Default View on the left pane,1 view in the right pane)  // status = 1
+ID_SPLITTER_DUE ( 3 Views,Default View on the left pane,2 views in the right pane)  // status = 2
+ID_SPLITTER_TREE (4 Views,Default View on the left pane,3 views in the right pane) // status = 3
+</FONT></TT></PRE>
+
+<P>To use the class you have two choices:
+
+<H4>A) method 1</H4>
+
+derive your class
+
+<PRE><TT><FONT COLOR="#990000">
+class CMYFrame : public CBaseVarFrame
+// use a static array of your runtime views
+static    CRuntimeClass* myClass[3] =
+{RUNTIME_CLASS(CView1),RUNTIME_CLASS(CView2),RUNTIME_CLASS(CView3)};
+
+// Overrides the method
+
+void CMYFrame::OnConfigViews()
+{
+  ConfigViews(myClass,  // array of RuntimeClass of Views
+                            3,  // number of max of Views on the right pane
+                            0); // initial status (see above)
+}
+</FONT></TT></PRE>
+
+<H4>B) method 2</H4>
+
+Use the configurable class CBaseVariableFrame
+
+which allows you to use it directly ,just put
+
+this code in your application methos InitInstance()  :
+
+<PRE><TT><FONT COLOR="#990000">
+CMultiDocTemplate* pDocTemplate;
+  pDocTemplate = new CMultiDocTemplate(
+  IDR_VARSPLTYPE,
+  RUNTIME_CLASS(CVarSplitDoc),
+  RUNTIME_CLASS(CBaseVariableFrame), // custom MDI child frame
+  RUNTIME_CLASS(CVarSplitView));       // your default views (left pane)
+AddDocTemplate(pDocTemplate);
+
+// TO DO : config your frame
+CBaseVariableFrame::SetConfiguration(myClass,3,0);
+// END CONFIG
+</FONT></TT></PRE>
+
+
+<P>In my example I use the second  method
+
+<PRE><TT><FONT COLOR="#990000">
+BaseVarFrame.cpp BaseVarFrame.h    (base class)
+ChildFrm.cpp ChildFrame.h   (configurable base class)
+</FONT></TT></PRE>
+
+
+<P><A HREF="variable_splitter.zip">Download Source</A> 58KB
+
+ 
+ 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

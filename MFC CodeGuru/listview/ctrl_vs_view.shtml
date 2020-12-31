@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>How do I use a derived CListCtrl with a CListView?</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">How do I use a derived CListCtrl with a CListView?</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+<P>The short answer is - you don't. The long answer is that you derive from CListView instead and add the same functionality to the CListView derived class. The reason for this is that MFC is designed in such a way that only one C++ object can be associated with one window or control. When you use a CListView, the list view control is already associated with the view class so you cannot have another C++ object associated with the control. 
+
+<P>The call to GetListCtrl() actually returns a pointer to the CListView object after casting it to a pointer to CListCtrl. So the return value from GetListCtrl() doesn't really point to a CListCtrl but instead it points to the ClistView. 
+
+<P>The workaround is that you derive from CListView and add the same functions and method handlers that you have for the CListCtrl. The class wizard supports all the same window message for ClistView derived class that it does for the CListCtrl class. In this scenario, we use the old form of code reuse, we copy and paste the code.
+
+<P>Let's assume that one of the messages that the derived CListCtrl handles is the LVN_ENDLABELEDIT notification. To add this functionality to the CListView derived class, simply use the class wizard to add the message handler, copy the code from the CListCtrl derived class and finally precede all calls to CListCtrl methods with 'GetListCtrl()->'. Here's an example to illustrate the point. 
+<PRE><TT><FONT COLOR="#990000">
+void CMyListCtrl::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
+{
+	LV_DISPINFO 	*plvDispInfo = (LV_DISPINFO *)pnmhdr;
+ 	LV_ITEM	*plvItem = &plvDispInfo->item;
+
+	if (plvItem->pszText != NULL)
+		SetItemText(plvItem->iItem, plvItem->iSubItem, plvItem->pszText);
+}
+
+void CMyListView::OnEndLabelEdit(LPNMHDR pnmhdr, LRESULT *pLResult)
+{
+	LV_DISPINFO 	*plvDispInfo = (LV_DISPINFO *)pnmhdr;
+ 	LV_ITEM	*plvItem = &plvDispInfo->item;
+
+	if (plvItem->pszText != NULL)
+		GetListCtrl().SetItemText(plvItem->iItem, 
+				plvItem->iSubItem, plvItem->pszText);
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

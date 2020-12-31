@@ -1,0 +1,197 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>TreeCtrl - Right button popup menu</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">TreeCtrl - Right button popup menu</FONT></H3></CENTER>
+<HR>
+
+<P>Submitted by <A HREF="http://www.ent.ohiou.edu/~csnyder">Christopher
+A. Snyder</A>.
+
+<P>The CTreeView class does not handle the right mouse button click in
+a manner like the Explorer window. Actions like highlighting, setting the
+active item, and where the right mouse menu pops up require some additional
+code to obtain the appropriate functionality. This article is intented
+to illustrate what functions need to be added to your view class for the
+tree to "act" properly.
+
+<P><FONT SIZE=-1>(this page was revised to correct several typos and to
+address the SHIFT-F10 keypress. Revision date 2-20-98)</FONT>
+<BR>&nbsp;
+<H4>
+How this works</H4>
+What need to happen when a user presses the right mouse button is the selected
+item needs to change, but not the item in focus. In addition the pop-up
+context sensitive menu should be display at the corner where the mouse
+clicked. By default, this does not happen. These code additions shift the
+focus of a tree item based on the where the mouse click occurs. However,
+when the right mouse button click is completed, (or after the context menu
+goes away) the selection needs to shift back to the original selected tree
+item. This is done in the end of the OnContextMenu function through the
+use of an added member variable.
+
+<P>To handle the SHIFT-F10 key press, this is the keyboard equivalent of
+a right mouse button click for those who didn't know that (I never use
+it so I tend to forget it is there), we need to handle the key press command
+mirrored from the Tree control. The code I have here for this is more a
+quick fix than a good solution (if someone has a better method send it
+to me and I will have it updated here). I first look for a shift key press
+and then set a flag. Then only when the next key pressed is the F10 do
+I then call the on-context menu function. This is not a real good solution
+because the use does not have to hold the shift key down to get the menu
+to pop up. Though it is close and not too big of a deal since few probably
+even use the SHIFT-F10 sequence anyways.
+
+<P>To add a Right mouse button context sensitive popup menu to a CTreeView
+which behaves like the Explorer. To do this you need to add command handler
+functions for the following messages in your CTreeView derived class (CMyTreeView).
+<PRE><TT>WM_RBUTTONDOWN
+WM_LBUTTONDOWN
+WM_CONTEXTMENU
+=TVN_KEYDOWN</TT></PRE>
+There is one more function that I created here to actually create and display
+you menu from a menu resource and is called
+
+<P><TT><FONT COLOR="#800000">ShowPopupMenu( CPoint&amp; point );</FONT></TT>
+<BR>&nbsp;
+
+<P>You will need to add one member variable to CMyTreeView called m_pOldSel.
+Enjoy!
+<PRE><TT><FONT COLOR="#800000">class CMyTreeView : public CTreeView
+{
+...
+        // Generated message map functions
+protected:
+        //{{AFX_MSG(CMyTreeView)
+        afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+        afx_msg void OnKeydown(NMHDR* pNMHDR, LRESULT* pResult);
+       //}}AFX_MSG
+        DECLARE_MESSAGE_MAP()
+
+protected:
+        afx_msg void OnContextMenu(CWnd*, CPoint point);
+        void CMyTreeView::ShowPopupMenu( CPoint& point );
+// member variables
+        HTREEITEM m_pOldSel;
+};</FONT></TT></PRE>
+Place this code in the created functions.
+<PRE><TT><FONT COLOR="#800000">void CMyTreeView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+        UINT uFlags;
+        HTREEITEM htItem = GetTreeCtrl().HitTest(point, &uFlags);
+        if ((htItem != NULL) && (uFlags & TVHT_ONITEM))
+                GetTreeCtrl().Select(htItem, TVGN_DROPHILITE);
+        CTreeView::OnLButtonDown(nFlags, point);
+}
+
+void CMyTreeView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+        UINT uFlags;
+        HTREEITEM htItem = GetTreeCtrl().HitTest(point, &uFlags);
+        if ((htItem != NULL) && (uFlags & TVHT_ONITEM)) {
+                m_pOldSel = GetTreeCtrl().GetSelectedItem();
+                GetTreeCtrl().Select(htItem, TVGN_DROPHILITE);
+        }
+}
+
+void CMyTreeView::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+        UINT uFlags;
+        CTreeCtrl&      treeCtrl = GetTreeCtrl();
+        CPoint ptTree = point;
+        treeCtrl.ScreenToClient(&ptTree);
+        HTREEITEM htItem = treeCtrl.HitTest(ptTree, &uFlags);
+
+        if ((htItem != NULL) && (uFlags & TVHT_ONITEM)) {
+                ShowPopupMenu( point );
+                treeCtrl.SetItemState(htItem, 0, TVIS_DROPHILITED);
+        }
+        else
+                CTreeView::OnContextMenu(pWnd, point);
+
+        if (m_pOldSel != NULL) {
+                treeCtrl.Select(m_pOldSel, TVGN_DROPHILITE);
+                m_pOldSel = NULL;
+        }
+}
+
+void CMyTreeView::ShowPopupMenu( CPoint& point )
+{
+        if (point.x == -1 && point.y == -1){
+                //keystroke invocation
+                CRect rect;
+                GetClientRect(rect);
+                ClientToScreen(rect);
+
+                point = rect.TopLeft();
+                point.Offset(5, 5);
+        }
+
+        CMenu menu;
+        VERIFY(menu.LoadMenu(IDR_POPUP_MY_MENU));
+
+        CMenu* pPopup = menu.GetSubMenu(0);
+        ASSERT(pPopup != NULL);
+        CWnd* pWndPopupOwner = this;
+
+        while (pWndPopupOwner->GetStyle() & WS_CHILD)
+                pWndPopupOwner = pWndPopupOwner->GetParent();
+
+        pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y,
+                pWndPopupOwner);
+}
+
+/*       121 vbKeyF10  16 = shift */
+// there is probably a more elegant way to handle this, but this method works.
+void CMyTreeView::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+        TV_KEYDOWN* pTVKeyDown = (TV_KEYDOWN*)pNMHDR;
+        static BOOL bShift = FALSE;
+        if ( bShift && pTVKeyDown->wVKey == 121 ) {
+                HTREEITEM hItem = GetTreeCtrl().GetSelectedItem( );
+                CRect rect;
+                GetTreeCtrl().GetItemRect( hItem, &rect, TRUE);
+                ClientToScreen( rect );
+                OnContextMenu( this, CPoint( rect.right, rect.top ) );
+        }
+        bShift = pTVKeyDown->wVKey == 16;
+
+        *pResult = 0;
+}</FONT></TT></PRE>
+Chris is a reseach engineer for the <A HREF="http://www.ent.ohiou.edu/avn">Ohio
+University Avionics Engineering Center</A>.
+<BR>Feel Free to <A HREF="mailto:csnyder1@ohiou.edu">e-mail</A> him with
+questions or comments.
+
+
+<P>Revised on : 3/15/98
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

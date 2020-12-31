@@ -1,0 +1,144 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Drawing a bitmap transparently</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Drawing a bitmap transparently</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+
+Drawing a bitmap transparently means that only those pixels that are not the designated transparent color are drawn onto the target device context. The pixels on the target device context that correspond to a transparent pixel in the source is left unchanged. Any color may be designated as being transparent. If you are drawing the bitmap from scratch you want to choose a background color that will not be used in the foreground. This background color can then be treated as the transparent color.
+
+<p>Here's what happens in the function. Besides getting the handle to the destination device context, the function creates three more device context. The tempDC is used to select the source bitmap into. This is used to copy the image into the second device context - the memDC. The third device context is the maskDC. The maskDC contains a monochrome bitmap. The maskDC is instrumental in allowing us to copy the foreground pixels only.
+
+<p>If the palette handle passed into the  function is not null and if the destination device context supports palettes, we select the palette into the destination DC. Note that the last argument to the SelectPalette() function is FALSE. This indicates that the palette should be a foreground palette. That is, the exact colors in the palette should be displayed. If this argument were TRUE, then the colors in the logical palette would be mapped to the closest colors already in the  physical palette. The call to RealizePalette() maps the palette entries to the system palette. We also select the palette into the memDC so that when the bitmap is copied into it, the colors are mapped properly.
+
+<p>We next create the mask bitmap from the source bitmap image. When we use BitBlt() to copy a color bitmap to a monochrome bitmap then all the pixels that are of the background color are copied as white pixels. All the remaining pixels (that is pixels that are not of the background color) are copied as black pixels. You will note that we call the SetBkColor() for the memDC with the transparent color.
+
+<p>Once we have the mask bitmap, we modify both the source image and the destination image so that we can then combine them to get the final image. Imagine that we have two sheets of paper, one with the image that is to be drawn over and the other with the bitmap image that is to be drawn transparently over the first image. What we do is take the second sheet with the bitmap image and cut out all the parts that contain the background color. We then take the first sheet and cut out all parts of it that correspond to the foreground of the bitmap image. We can now combine the two sheets to get a complete sheet without any overlap and get the final image. 
+
+<p>This is what we do with the images in the device contexts. We take the memDC and copy the image in maskDC in such a way that all the background pixels are turned into black pixels - the equivalent of cutting these pixels away. Let's analyze how we do this. We first set the background color in memDC to black and we set the foreground (text color) to white. We then use the BitBlt() function to combine each pixel in the mask to the corresponding pixel in the image in memDC using the raster AND operation. Whenever the BitBlt() function encounters a background pixel (white) in maskDC, it uses the background color in memDC (black) and does a raster AND operation with the corresponding pixel in memDC. The result of a raster AND operation involving the black color is always black. Similarly, whenever the BitBlt() function encounters a foreground color (black) in the maskDC, is uses the text color in memDC (white) and combines it with the raster AND operation with the corresponding pixel in memDC. The result of a raster AND operation involving white and any other color is always the other color. That is, the destination pixel remains unchanged.
+
+<p>We execute a similar operation on the image in the destination device context. Only, this time we change all the pixels corresponding to the foreground color in the mask to white. We can now combine the two images using the raster operation SRCPAINT. The result of the SRCPAINT operation is such that any colored pixel combined with a black pixel results in the same colored pixel.
+
+<PRE><TT><FONT COLOR="#990000">// TransparentBlt	- Copies a bitmap transparently onto the destination DC
+// hdcDest		- Handle to destination device context 
+// nXDest		- x-coordinate of destination rectangle's upper-left corner 
+// nYDest		- y-coordinate of destination rectangle's upper-left corner 
+// nWidth		- Width of destination rectangle 
+// nHeight		- height of destination rectangle 
+// hBitmap		- Handle of the source bitmap
+// nXSrc		- x-coordinate of source rectangle's upper-left corner 
+// nYSrc		- y-coordinate of source rectangle's upper-left corner 
+// colorTransparent	- The transparent color
+// hPal			- Logical palette to be used with bitmap. Can be NULL
+
+void TransparentBlt( HDC hdcDest, int nXDest, int nYDest, int nWidth, 
+			int nHeight, HBITMAP hBitmap, int nXSrc, int nYSrc,
+			COLORREF colorTransparent, HPALETTE hPal )
+{
+	CDC dc, memDC, maskDC, tempDC;
+	dc.Attach( hdcDest );
+	maskDC.CreateCompatibleDC(&dc);
+	CBitmap maskBitmap;
+	
+	//add these to store return of SelectObject() calls
+	CBitmap* pOldMemBmp = NULL;
+	CBitmap* pOldMaskBmp = NULL;
+	HBITMAP hOldTempBmp = NULL;
+	
+	memDC.CreateCompatibleDC(&dc);
+	tempDC.CreateCompatibleDC(&dc);
+	CBitmap bmpImage;
+	bmpImage.CreateCompatibleBitmap( &dc, nWidth, nHeight );
+	pOldMemBmp = memDC.SelectObject( &bmpImage );
+	
+	// Select and realize the palette
+	if( dc.GetDeviceCaps(RASTERCAPS) & RC_PALETTE && hPal )
+	{
+		::SelectPalette( dc, hPal, FALSE );
+		dc.RealizePalette();
+		
+		::SelectPalette( memDC, hPal, FALSE );
+	}
+	
+	hOldTempBmp = (HBITMAP) ::SelectObject( tempDC.m_hDC, hBitmap );
+	
+	memDC.BitBlt( 0,0,nWidth, nHeight, &tempDC, nXSrc, nYSrc, SRCCOPY );
+	
+	// Create monochrome bitmap for the mask
+	maskBitmap.CreateBitmap( nWidth, nHeight, 1, 1, NULL );
+	pOldMaskBmp = maskDC.SelectObject( &maskBitmap );
+	memDC.SetBkColor( colorTransparent );
+	
+	// Create the mask from the memory DC
+	maskDC.BitBlt( 0, 0, nWidth, nHeight, &memDC, 
+		0, 0, SRCCOPY );
+	
+	// Set the background in memDC to black. Using SRCPAINT with black 
+	// and any other color results in the other color, thus making 
+	// black the transparent color
+	memDC.SetBkColor(RGB(0,0,0));
+	memDC.SetTextColor(RGB(255,255,255));
+	memDC.BitBlt(0, 0, nWidth, nHeight, &maskDC, 0, 0, SRCAND);
+	
+	// Set the foreground to black. See comment above.
+	dc.SetBkColor(RGB(255,255,255));
+	dc.SetTextColor(RGB(0,0,0));
+	dc.BitBlt(nXDest, nYDest, nWidth, nHeight, &maskDC, 0, 0, SRCAND);
+	
+	// Combine the foreground with the background
+	dc.BitBlt(nXDest, nYDest, nWidth, nHeight, &memDC, 
+		0, 0, SRCPAINT);
+	
+	
+	if (hOldTempBmp)
+		::SelectObject( tempDC.m_hDC, hOldTempBmp);
+	if (pOldMaskBmp)
+		maskDC.SelectObject( pOldMaskBmp );
+	if (pOldMemBmp)
+		memDC.SelectObject( pOldMemBmp );
+	
+	dc.Detach();
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

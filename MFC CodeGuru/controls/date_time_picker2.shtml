@@ -1,0 +1,170 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Use the Date/Time Picker common control (2)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Use the Date/Time Picker common control (2)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:Salvatore.Mosaico@elsag.it">Salvatore Mosaico</A>. 
+ 
+
+<P>I just read the article "Use the Date/Time Picker common control
+(IE3+)" and now I'll try to explain my code.
+
+<P>I want to use only MFC interface for all my applications,then when
+MFC doesn't wrap some API and  I want to use it,I write a MFC class.
+
+<P>In the article I just read,I see a GOOD IDEA for use Data/Time
+Picker
+but If you have a MFC class you can have a self control
+that has more feature .
+I wrote a MFC class  that wrap Date Picker Control (no Time
+picker for now) that allows you
+
+
+<P>A) RANGE VALIDATION SUPPORT
+<br>B) EMPTY VALUE SUPPORT (CHECK BOX) 
+<br>C) Auto InitCommonControlsEx
+<br>D) Data changing notifycation  
+      
+
+<H4>Construction:</H4>
+1. The default contructor assigns the current date.
+<PRE><TT><FONT COLOR="#990000">CBaseDataPk();
+</FONT></TT></PRE>
+
+
+<P>2.SetRange - this method assign dt1 current value and a range
+from dt1 to dt2  (I want use only MFC class)
+<PRE><TT><FONT COLOR="#990000">	SetRange(COleDateTime* dt1,COleDateTime* dt2);
+</FONT></TT></PRE>
+     
+<P>3.  SetRange -     this method assign current date value and a range
+from < dayback > back to < dayafter > forward
+<br>SetRange(365,0) from a year ago to today;
+<br>SetRange(1,1)  from yesterday to tomorrow;
+<PRE><TT><FONT COLOR="#990000">	SetRange(int dayback,int dayafter);
+</FONT></TT></PRE>
+
+<P>4. You don't need data exchange the control provide it
+    when you need the value you have a COleDateTime Value
+  with the method GetCurDate(),it dosn't matter if the there are a
+window 
+  on not.
+
+<P>5. the subclassing method is
+  
+<PRE><TT><FONT COLOR="#990000">BOOL  SetData(UINT idc,CWnd* parent,BOOL empty = TRUE,BOOL updown = FALSE);
+</FONT></TT></PRE>
+
+WHERE 
+<br>idc  is the static control yo've placed in the dialog parent  is the dialog object
+<br>empty = TRUE empty value is allowed (check box)
+<br>updown = TRUE updown style
+
+<H4>To use the control</H4>
+1.  Put a static control in your dialog for each data picker
+control you need
+<PRE><TT><FONT COLOR="#990000">
+CBaseDataPk m_pk1;
+CBaseDataPk m_pk2;
+</FONT></TT></PRE>
+
+<br>2. in the InitDialog put this code
+<PRE><TT><FONT COLOR="#990000">
+  m_pk1.SetRange(60,0);  // from 60 days back to today
+  m_pk1.SetData(IDC_DATAPK1,this); // subclass1
+  m_pk2.SetRange(1,1); // from yesterday to tomorrow
+  m_pk2.SetData(IDC_DATAPK2,this); // subclass2 ,FALSE,TRUE);
+</FONT></TT></PRE>
+ 
+
+
+
+
+
+<P><P>
+<P>UPDATE #1:
+<P>I wrote some update to  Date Picker Class :
+
+<P>In the new implementation you can now
+
+<P>1)  Easily test null value
+
+     through   IsNullDate() method
+<P>2)  Initial  Null Value 
+     through  new implementation of 
+    SetRange methods
+<PRE><TT><FONT COLOR="#990000">
+void SetRange(COleDateTime* dt1,COleDateTime* dt2,BOOLnulvalue=FALSE,BOOL updatecurvalue = TRUE);
+void SetRange(int dayback,int dayafter,BOOL nullvalue =FALSE,BOOL updatecurvalue = TRUE);
+</FONT></TT></PRE>
+
+<P>3) Buddy Support. New methods are 
+
+<PRE><TT><FONT COLOR="#990000">
+	CBaseDataPk* GetBuddy() { return m_pDataBuddy; }
+	void SetBuddy(CBaseDataPk* p) {  m_pDataBuddy = p; }
+</FONT></TT></PRE>
+
+
+
+<P>The Buddy support allow you to have another CBaseDatePk control 
+that changes his range  dynamically when the first (master) CBaseDatePk
+changes his  value.
+
+<P>To use Buddy feature in the InitDialog put this code:
+
+<PRE><TT><FONT COLOR="#990000">
+  m_pk2.SetData(IDC_DATAPK2,this); 
+  m_pk1.SetRange(60,5,TRUE);  // FROM 60 DAYS BACK TO 5 DAYS FORWARD ,initial null value
+  m_pk1.SetBuddy(&m_pk2);  // m_pk1 master m_pk2 slave
+  m_pk1.SetData(IDC_DATAPK1,this);
+</FONT></TT></PRE>
+
+<P>the master m_pk1 changes the range of m_pk2 when his value changes
+so you'll be sure that the date of m_pk1  is always <  of m_pk2 
+if you uncheck  box (null value) from m_pk1 then m_pk2 becomes unchecked
+at last if only m_pk2 has a good value  then m_pk1 has the same value.
+
+
+
+
+<P><A HREF="date_time_picker2.zip">Download Project</A>. 51KB
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

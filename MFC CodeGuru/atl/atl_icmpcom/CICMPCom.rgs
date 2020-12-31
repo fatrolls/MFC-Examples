@@ -1,0 +1,24 @@
+HKCR
+{
+	CICMPCom.CICMPCom.1 = s 'CICMPCom Class'
+	{
+		CLSID = s '{BFD09811-E756-11D1-83E6-00A0244DBC26}'
+	}
+	CICMPCom.CICMPCom = s 'CICMPCom Class'
+	{
+		CurVer = s 'CICMPCom.CICMPCom.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BFD09811-E756-11D1-83E6-00A0244DBC26} = s 'CICMPCom Class'
+		{
+			ProgID = s 'CICMPCom.CICMPCom.1'
+			VersionIndependentProgID = s 'CICMPCom.CICMPCom'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+		}
+	}
+}

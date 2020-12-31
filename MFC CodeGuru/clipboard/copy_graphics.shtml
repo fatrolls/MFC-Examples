@@ -1,0 +1,82 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Clipboard - Copying Graphical Data via Enhanced Meta File</TITLE>
+</HEAD>
+
+<!-- Set article properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Copying Graphical Data via Enhanced Meta File
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:oliver.eichler@regensburg.netsurf.de">Oliver Eichler</A>.
+
+<p>The code below is copying graphical data via enhanced meta file to 
+any application. Even to WinWord 7.0 which makes it different to 
+Randy More’s code. It is placed into an appropriate function of a 
+class derived from CView.
+
+<FONT COLOR="#990000"><TT><PRE>	CMetaFileDC * m_pMetaDC = new CMetaFileDC();
+	m_pMetaDC->CreateEnhanced(GetDC(),NULL,NULL,"whatever");
+	//draw meta file
+
+	//do what ever you want to do: bitmaps, lines, text...
+
+	//close meta file dc and prepare for clipboard;
+	HENHMETAFILE hMF = m_pMetaDC->CloseEnhanced();
+
+	//copy to clipboard
+	OpenClipboard();
+	EmptyClipboard();
+	::SetClipboardData(CF_ENHMETAFILE,hMF);
+	CloseClipboard();
+	//DeleteMetaFile(hMF);
+	delete m_pMetaDC;
+</tt></PRE></FONT>
+
+<p>Altogether it is a pretty straight forward solution as suggested by the
+help documents provided with VC++ making it a good alternative to Randy’s
+code. And it's working with Word 7.0. Tested printing, too. :)
+
+<p>Have fun
+
+<!-- Remember to update this -->
+<p>Last updated: 11 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

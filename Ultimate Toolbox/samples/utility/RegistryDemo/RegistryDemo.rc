@@ -1,0 +1,260 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,0,1
+ PRODUCTVERSION 1,1,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "REGISTRYDEMO MFC Application\0"
+            VALUE "FileVersion", "1, 1, 0, 1\0"
+            VALUE "InternalName", "REGISTRYDEMO\0"
+            VALUE "LegalCopyright", "Copyright © 1998 Dundas Software\0"
+            VALUE "OriginalFilename", "REGISTRYDEMO.EXE\0"
+            VALUE "ProductName", "REGISTRYDEMO Application\0"
+            VALUE "ProductVersion", "1, 1, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About RegistryDemo..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Registry Demo"
+    ID_DESCRIPTION_FILE     "regdemoInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_REGISTRYDEMO_DIALOG DIALOGEX 0, 0, 225, 292
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "RegistryDemo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Machine name",IDC_STATIC,7,10,48,8
+    EDITTEXT        IDC_MACHINE_NAME,58,7,88,14,ES_AUTOHSCROLL
+    LTEXT           "&Registry name",IDC_STATIC,7,25,48,8
+    COMBOBOX        IDC_REGISTRY_NAME,58,23,88,54,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Key names",IDC_STATIC,8,40,40,8
+    EDITTEXT        IDC_KEY_NAMES,58,37,126,14,ES_AUTOHSCROLL
+    LTEXT           "&Value name",IDC_STATIC,7,56,37,8
+    EDITTEXT        IDC_VALUE_NAME,58,53,88,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Combine",IDC_COMBINE,23,74,50,14
+    PUSHBUTTON      "&Split",IDC_SPLIT,88,74,50,14
+    PUSHBUTTON      "App &Default",IDC_DEFAULT,153,74,50,14
+    GROUPBOX        "Input",IDC_STATIC,7,90,211,62
+    LTEXT           "&Full registry item",IDC_FULL_REGISTRY_ITEM_STATIC,13,
+                    99,49,8
+    EDITTEXT        IDC_FULL_REGISTRY_ITEM,13,109,197,14,ES_AUTOHSCROLL
+    CONTROL         "&BOOL",IDC_BOOL_1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,128,35,10
+    LTEXT           "&LPCTSTR",IDC_TEXT_1_STATIC,58,126,37,8
+    EDITTEXT        IDC_TEXT_1,58,135,62,14,ES_AUTOHSCROLL
+    LTEXT           "&New value",IDC_NEW_VALUE_STATIC,137,126,44,8
+    EDITTEXT        IDC_NEW_VALUE,137,135,62,14,ES_AUTOHSCROLL
+    LTEXT           "&Action",IDC_STATIC,7,154,20,8
+    COMBOBOX        IDC_ACTIONS,7,164,211,66,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Do",IDC_DO,81,179,50,14
+    LTEXT           "&Output",IDC_STATIC,7,188,22,8
+    EDITTEXT        IDC_RESULT,7,197,211,31,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY
+    GROUPBOX        "List",IDC_STATIC,7,231,211,35
+    CONTROL         "&Values",IDC_INCLUDE_VALUES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,239,37,10
+    CONTROL         "&Subkeys",IDC_INCLUDE_SUBKEYS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,63,239,43,10
+    CONTROL         "&Reversed",IDC_REVERSED_ORDER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,109,239,46,10
+    CONTROL         "&Recursive",IDC_RECURSE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,253,48,10
+    CONTROL         "&Depth first",IDC_DEPTH_FIRST,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,63,253,46,10
+    PUSHBUTTON      "&List",IDC_LIST,160,244,50,14
+    PUSHBUTTON      "Close",IDCANCEL,81,271,50,14
+END
+
+IDD_REGISTRY_LIST DIALOG DISCARDABLE  0, 0, 307, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Registry List"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Close",IDCANCEL,128,79,50,14
+    LISTBOX         IDC_LIST,7,7,293,65,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_REGISTRYDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 285
+    END
+
+    IDD_REGISTRY_LIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 300
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 93
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\RegistryDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\RegistryDemo.ico"
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\RegistryDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

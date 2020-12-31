@@ -1,0 +1,166 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="V. Rama Krishna">
+   <TITLE>ATL - Converting Connect Sample to a Local Server</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Converting the CONNECT sample to a local server.
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:shaffer@primenet.com">Paul Shaffer</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="atl_conexe.zip">Download the CONEXE example project.</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>The CONNECT sample included with Microsoft Visual C++ 5.0 is an example of how
+to use connection points with ATL. The in-process server is implemented in connect.dll and
+the client is a simple dialog based application called MDrive. It's intended to be an example of
+using connection points within a single process boundary. However, the first thing you may 
+want to do with connection points is use them between different processes. 
+I couldn't find an example of how to do this so I had to improvise.
+What follows is an example of how to convert the CONNECT sample to a local server.<br><br>
+
+<p>First I converted the in-process server DLL to a server EXE. The fastest way to do this is
+to create a new application using the ATL COM AppWizard. I called the new application 
+"Conexe" to differentiate it from the original project. The boilerplate code in conexe.cpp
+for the new app is ready to use without modifcation. Retain the use of CoInitialize
+in _tWinMain rather than CoInitializeEx.<br><br>
+
+<p>Then I used the ClassView right click menu to create a new interface called IRandexe. 
+I then copied the IDL interface related lines over from the IRandom interface in CONNECT.
+Finally, I just copied all the functions in the original Random.cpp and definitions in 
+Random.h to complete the new interface. The result is a new interface that works just 
+like IRandom, but with a new name and IID.<br><br>
+
+<p>Also, I added this line to Stdafx.h:<br><br>
+
+<FONT COLOR="#990000"><TT><PRE>
+#define _ATL_FREE_THREADED
+</tt></PRE></FONT>
+
+<p>Now for the really interesting parts. I tried quite a few threading designs
+in creating this project and this is the only one that seems to work properly.
+In the local server version I had to add a call to CoInitialize in the RandomSession thread. So each thread that's created via a 
+client request will get it's own private single threaded apartment. (It's not really
+clear to me why the in-process version does not require this.)<br><br>
+
+<FONT COLOR="#990000"><TT><PRE>
+DWORD WINAPI RandomSessionThreadEntry(void* pv)
+{
+    // Need to call CoInitialize on this thread to create a single
+    // threaded apartment. If you don't do this you will get the 
+    // "CoInitialize has not been called." error.
+    
+    CoInitialize(NULL);	// new line
+    CRandexe::RandomSessionData* pS = (CRandexe::RandomSessionData*)pv;
+    CRandexe* p = pS->pRandom;
+    while (WaitForSingleObject(pS->m_hEvent, 0) != WAIT_OBJECT_0)
+        p->Fire(pS->m_nID);
+    CoUninitialize();	// new line
+    return 0;
+}
+</tt></PRE></FONT>
+
+<p>The next problem is related to interface marshalling between threads. The
+local server version won't work when events are fired since the interface
+was marshalled by COM on a different thread. Now we get to use those really
+long API calls, CoMarshalInterThreadInterfaceInStream and
+CoGetInterfaceAndReleaseStream.
+<br><br>
+
+<FONT COLOR="#990000"><TT><PRE>
+// broadcast to all the objects
+HRESULT CRandexe::Fire(long nID)
+{
+    IConnectionPointImpl<CRandexe, &IID_IRandexeEvent, CComDynamicUnkArray>* p = this;
+    Lock();
+    HRESULT hr = S_OK;
+    IUnknown** pp = p->m_vec.begin();
+	
+    int n = 0;
+
+    while (pp < p->m_vec.end() && hr == S_OK)
+    {
+        if (*pp != NULL)
+        {
+            IRandexeEvent* pIRandomEvent = (IRandexeEvent*)*pp;
+            _ASSERTE( pIRandomEvent != NULL );
+
+            // If you don't call CoMarshalInterThreadInterfaceInStream
+            // followed by CoGetInterfaceAndReleaseStream you will get the
+            // "The application called an interface that was marshalled for different thread."
+            // error message.
+
+            LPSTREAM pStm;
+            hr = CoMarshalInterThreadInterfaceInStream( IID_IRandexeEvent, (IRandexeEvent*)pIRandomEvent, &pStm );
+
+            IRandexeEvent *pI;
+            hr = CoGetInterfaceAndReleaseStream( pStm, IID_IRandexeEvent, (void**)&pI );
+
+            hr = pI->Fire(nID);
+        }
+        pp++;
+    }
+    Unlock();
+    return hr;
+}
+</tt></PRE></FONT>
+
+<p>The client MDrive project was simply copied over to a new subdirectory and only modified slightly to
+use the new server. Multiple instances of MDrive can be launched and they all have access to the
+Conexe.exe local server. One thing to note is that the local server version is a lot slower
+as seen by the pixel drawing rate in MDrive. I'm fairly new to COM and 
+ATL programming, and if I've made any errors please let me know.
+I'd really like to know if I've created needless inefficiencies with the constant inter-thread 
+interface marshalling; if there's a better way, tell me. I also created a version of this
+project that uses IUnknown instead of IDispatch and it also seems to work correctly.<br><br>
+
+
+
+<!-- Remember to update this -->
+<p>Last updated: 11 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

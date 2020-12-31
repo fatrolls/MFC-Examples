@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Play Wav resource</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Play Wav resource</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This code was contributed by <A HREF="mailto:antman@velocity.net">Anthony Petruso</A>.
+
+<P>Well, this doesn't really deal with MFC, but its useful knowledge if you
+don't know how..
+
+<P>Parts of this code I ripped from VC++ 4.1 help, but it was outdated and
+didn't come close to working.
+
+<P>First of all you need to add the wave files to the .rc file manually
+like so:
+
+<PRE><TT><FONT COLOR="#990000">
+&lt;NameOfSound> WAVE &lt;Location of WAVE.>
+</FONT></TT></PRE>
+
+Example being
+
+<PRE><TT><FONT COLOR="#990000">
+Cool WAVE C:\projects\sounds\cool.wav
+</FONT></TT></PRE>
+
+<P>Then you need to add this function declarion to the class you plan on
+using..
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL PlayResource(LPSTR lpName)
+{
+    BOOL bRtn;
+    LPSTR lpRes;
+    HANDLE hRes;
+    HRSRC hResInfo;
+    HINSTANCE Nl=AfxGetInstanceHandle();
+
+    /* Find the WAVE resource. */
+    hResInfo= FindResource(Nl,lpName,"WAVE");
+    if(hResInfo == NULL)
+       return FALSE;
+    /* Load the WAVE resource. */
+
+    hRes = LoadResource(Nl,hResInfo);
+    if (hRes == NULL)
+      return FALSE;
+
+    /* Lock the WAVE resource and play it. */
+    lpRes=(LPSTR)LockResource(hRes);
+    if(lpRes==NULL)
+      return FALSE;
+
+    bRtn = sndPlaySound(lpRes, SND_MEMORY | SND_SYNC);
+    if(bRtn == NULL)
+      return FALSE;
+
+    /* Free the WAVE resource and return success or failure. */
+    FreeResource(hRes);
+    return TRUE;
+}
+</FONT></TT></PRE>
+
+
+<P>Then to play the sound you simply use:
+
+<PRE><TT><FONT COLOR="#990000">
+PlayResource("&lt;soundname>");
+</FONT></TT></PRE>
+
+Example being
+
+<PRE><TT><FONT COLOR="#990000">
+PlayResource("Cool");
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

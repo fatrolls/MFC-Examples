@@ -1,0 +1,149 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Displaying a 256 color bitmap</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Displaying a 256 color bitmap</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+
+If your display supports only 256 colors and you've tried to display a 256 color bitmap, you may have noticed that the simply copying the bitmap onto a windows device context is not enough. The bitmap is drawn using only a few colors. The reason for this is that though most display monitors can display a huge number of colors, at any given time they may display only a limited subset of this due to limitations in the display card. So if your display supports 256 colors, at any given moment it can display 256 colors from the millions of color it is capable of displaying. This leads to the next question. How does the display know which 256 colors to use? This is where palettes come in. A palette is basically a table of color mappings. By default Windows has only a handful of colors defined. These are the colors that Windows uses for the window background, the text, the icons etc.
+
+<p>Anyway cutting to the chase, to display a 256 color bitmap, you have to create a logical palette from the color table in the bitmap, select the palette into the device context, realize the palette and BitBlt the bitmap to the device context.
+<h4>Step 1: Load bitmap and create palette</h4>
+This step shows you how to load a bitmap with the color information and create a logical palette from it. The GetBitmapAndPalette() function shown below loads the bitmap resource and creates a logical palette. Its best to save the bitmap and palette for later use rather than call this function each time the bitmap or the palette is needed. 
+
+<p>The first thing the function does is that it loads the bitmap and attaches it to a CBitmap object. We use a call to the global ::LoadImage() rather than to the CBitmap::LoadBitmap(). The reason for this is that we want to be able to access the DIBSECTION of the bitmap and the reason why we want the DIBSECTION is because we want to access the color information in the bitmap to create a logical palette that matches the colors used by the bitmap. Calling LoadBitmap() would result in the loss of the color information.
+
+<p>Once we have the bitmap, we start working on creating the logical palette. We determine the number of colors used by the bitmap by getting access to the DIBSECTION by calling the Cbitmap::GetObject() function. Note that the documentation for this function does not mention the DIBSECTION, you'd have to look up the documention of the ::GetObject() function in the API section instead. Sometimes the BITMAPINFOHEADER which is part of the DIBSECTION does not specify how many colors it uses. If this is the case we infer the color count from the number of bits it uses for the each pixel. For example, 8 bits can represent 256 different values and therefore indicates 256 colors. Similarly, 16 bits indicates 64K colors.
+
+<p>A bitmap that uses more than 256 colors does not have a color table. In this situation we simply create a halftone palette compatible with the device context. A halftone palette is basically a palette that contains a sampling of all the different colors. This is certainly not the best solution but it is the simplest.
+
+<p>If the bitmap has 256 colors or less, we do create the palette. We allocate enough space to hold the color table of the bitmap and call the function ::GetDIBColorTable() to retrieve it from the bitmap. We also allocate enough memory to create a logical palette and copy the color entries from the bitmap's color table. The palVersion field should be 0x300.
+
+<p>After creating the CPalette object, we deallocate the memory blocks allocated earlier and invalidate the window so that it can be redrawn using the new image.
+
+<PRE><TT><FONT COLOR="#990000">BOOL GetBitmapAndPalette(UINT nIDResource, CBitmap &bitmap, CPalette &pal)
+{
+	LPCTSTR lpszResourceName = (LPCTSTR)nIDResource;
+
+	HBITMAP hBmp = (HBITMAP)::LoadImage( AfxGetInstanceHandle(), 
+			lpszResourceName, IMAGE_BITMAP, 0,0, LR_CREATEDIBSECTION );
+
+	if( hBmp == NULL ) 
+		return FALSE;
+
+	bitmap.Attach( hBmp );
+
+	// Create a logical palette for the bitmap
+	DIBSECTION ds;
+	BITMAPINFOHEADER &bmInfo = ds.dsBmih;
+	bitmap.GetObject( sizeof(ds), &ds );
+
+	int nColors = bmInfo.biClrUsed ? bmInfo.biClrUsed : 1 << bmInfo.biBitCount;
+
+	// Create a halftone palette if colors > 256. 
+	CClientDC dc(NULL);			// Desktop DC
+	if( nColors > 256 )
+		pal.CreateHalftonePalette( &dc );
+	else
+	{
+		// Create the palette
+
+		RGBQUAD *pRGB = new RGBQUAD[nColors];
+		CDC memDC;
+		memDC.CreateCompatibleDC(&dc);
+
+		memDC.SelectObject( &bitmap );
+		::GetDIBColorTable( memDC, 0, nColors, pRGB );
+
+		UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+		LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+		pLP->palVersion = 0x300;
+		pLP->palNumEntries = nColors;
+
+		for( int i=0; i < nColors; i++)
+		{
+			pLP->palPalEntry[i].peRed = pRGB[i].rgbRed;
+			pLP->palPalEntry[i].peGreen = pRGB[i].rgbGreen;
+			pLP->palPalEntry[i].peBlue = pRGB[i].rgbBlue;
+			pLP->palPalEntry[i].peFlags = 0;
+		}
+
+		pal.CreatePalette( pLP );
+
+		delete[] pLP;
+		delete[] pRGB;
+	}
+
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<h4>Step 2: Draw the bitmap</h4>
+You would most likely have code in the WM_PAINT handler to draw the bitmap to the device context. In the sample code below we call the GetBitmapAndPalette() function from within the OnPaint() function. This is not very efficient and has been used here only for clarity. It's always best to save the bitmap and palette object.
+
+<PRE><TT><FONT COLOR="#990000">void CMyWindow::OnPaint() 
+{
+	CPaintDC dc(this);
+
+	// Create a memory DC compatible with the paint DC
+	CDC memDC;
+	memDC.CreateCompatibleDC( &dc );
+
+	CBitmap bitmap;
+	CPalette palette;
+
+	GetBitmapAndPalette( IDB_BITMAP, bitmap, palette );
+	memDC.SelectObject( &bitmap );
+
+	// Select and realize the palette
+	if( dc.GetDeviceCaps(RASTERCAPS) & RC_PALETTE && palette.m_hObject != NULL )
+	{
+		dc.SelectPalette( &palette, FALSE );
+		dc.RealizePalette();
+	}
+	dc.BitBlt(0, 0, 180, 180, &memDC, 0, 0,SRCCOPY);
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

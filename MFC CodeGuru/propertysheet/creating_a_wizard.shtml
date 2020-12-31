@@ -1,0 +1,269 @@
+<HTML>
+
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Robbert E. Peters">
+   <TITLE>PropertySheet - Creating a wizard</TITLE>
+</HEAD>
+
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Creating a wizard
+</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:ppearson@broad.demon.co.uk">Peter Pearson</A>.
+
+
+<p>About Wizards 
+
+<ul>
+  <li>Creating Wizards </li>
+  <li>Implementing Wizards </li>
+  <li>Advanced Wizards</li>
+</ul>
+<u><i><b>
+
+<p>About Wizards</p>
+</b></i></u>
+
+<p>A wizard is a very useful user interface concept. It allows an application to easily
+guide a user through a complete task. The purpose of a wizard is to collect information on
+a task in a structured way, while being an organised user interface, and not displaying
+large numbers of dialogs. </p>
+
+<p>A wizard achieves this by creating multiple page dialogs that the user steps through
+using the navigation buttons at the bottom of the dialog.</p>
+
+<p>Examples of wizards are the AppWizard in Visual C++ and the Install New Hardware wizard
+in Windows.</p>
+<u><i><b>
+
+<p>Creating Wizards</p>
+</b></i></u>
+
+<p>In MFC, wizards are very easy to implement. MFC provides the CPropertySheet and
+CPropertyPage classes for creating property sheets, and wizards are implemented in the
+same fashion, but with some minor modifications. </p>
+
+<p>The easiest way to implement wizards is to use the Insert Components and Controls
+option on the Project menu of Visual C++, and select Property Sheet. This displays a
+wizard, which guides you through the process of creating the wizard. In step 1, select the
+Wizard options button. Click Next, and then Next again. This then displays a wizard page
+with the current classes in your program. Select the class you want to call the wizard
+from and click Next. This wizard page asks you how many pages you want in your wizard.</p>
+
+<p>Select the number you want, from 1 to 9, and click Next. A list box is then displayed
+with the names of the wizard and its property pages. Click Change to change the selected
+one, and change the selected information, click OK, then Finish.</p>
+
+<p>Close the insert component dialog box, and open the Resource View, and expand the
+Dialog item. You should see that more dialogs have been created, depending on the number
+of pages you wanted in your wizard. They are probably called IDD_PROPPAGE1 or something
+like that. You can rename them, but you must also change their names in the wizard page
+header (.h) file.</p>
+<u><i><b>
+
+<p>Implementing Wizards</p>
+</b></i></u>
+
+<p>To call the wizard from your program, open the code for the command to call it from and
+use:</p>
+
+<pre><tt><font COLOR="#990000">
+<big></big></pre>
+
+<p><i>CWizard().DoModal();</i></p>
+</font></tt>
+
+<p>Change CWizard to your wizard's main class name.</p>
+
+<p>Compile and run your program. Select the command that calls your wizard. You should see
+your wizard appear, but it will look very basic. You can add controls to the dialogs just
+like other dialogs, and use them just like on dialogs.</p>
+
+<p>To control the navigation buttons at the bottom of the wizard pages, you have to use
+the features provided by CPropertyPage, using these messages:</p>
+
+<p>&nbsp;&nbsp;&nbsp; <b>OnSetActive</b> is called when the page becomes active</p>
+
+<p>&nbsp;&nbsp;&nbsp; <b>OnKillActive</b> is called when the page is no longer active</p>
+
+<p>&nbsp;&nbsp;&nbsp; <b>OnWizardNext</b> is called when the wizard&#146;s Next button is
+pressed</p>
+
+<p>&nbsp;&nbsp;&nbsp; <b>OnWizardBack</b> is called when the wizard&#146;s Back button is
+pressed</p>
+
+<p>&nbsp;&nbsp;&nbsp; <b>OnWizardFinish</b> is called when the wizard&#146;s Finish button
+is pressed</p>
+
+<p>The <b>OnSetActive()</b> message is the message that plays the main role in adding the
+button functionality. Once a page is notified that it is active, it must then call <b>SetWizardButtons()</b>
+in the parent CWizardDialog object to change the button states.</p>
+
+<p>Use ClassWizard to add a <b>OnSetActive()</b> handler to each CPage class in your
+wizard.</p>
+
+<p>In the first page's <b>OnSetActive()</b> function, add this code:</p>
+
+<pre><tt><font COLOR="#990000">
+<big></big></pre>
+
+<p><i>CWizard* pParent = (CWizard*)GetParent();<br>
+ASSERT_KINDOF(CWizard, pParent);<br>
+pParent-&gt;SetWizardButtons(PSWIZB_NEXT);</p>
+</i></font></tt>
+
+<p>This code gets a pointer to the parent CWizard and calls <b>SetWizardButtons()</b> to
+only enable the Next button, and disable the Back button as it is the first wizard page.</p>
+
+<p>Replace CWizard with your wizard&#146;s main class name, and add an include to the
+wizard header file.</p>
+
+<p>In the second page's <b>OnSetActive()</b> function, add this code:</p>
+
+<pre><tt><font COLOR="#990000">
+<big></big></pre>
+
+<p><i>CWizard* pParent = (CWizard*)GetParent();<br>
+ASSERT_KINDOF(CWizard, pParent);<br>
+pParent-&gt;SetWizardButtons(PSWIZB_BACK | PSWIZB_NEXT);</p>
+</i></font></tt>
+
+<p>This code gets a pointer to the parent CWizard and calls <b>SetWizardButtons()</b> to
+enable both the Next button and the Back button.</p>
+
+<p>&nbsp;In the third page's <b>OnSetActive()</b> function, add this code:</p>
+
+<pre><tt><font COLOR="#990000">
+<big></big></pre>
+
+<p><i>CWizard* pParent = (CWizard*)GetParent();<br>
+ASSERT_KINDOF(CWizard, pParent);<br>
+pParent-&gt;SetWizardButtons(PSWIZB_BACK | PSWIZB_FINISH);</p>
+</i></font></tt>
+
+<p>&nbsp;This code gets a pointer to the parent CWizard and calls <b>SetWizardButtons()</b>
+to enable the Next button, and to display the Finish button instead of the Next button as
+it is the last page.</p>
+
+<p>&nbsp;The <b>SetWizardButtons()</b> function can have the following flags:</p>
+
+<p>&nbsp;&nbsp;&nbsp; <i>SetWizardButtons(PSWIZB_NEXT)</i> Disables the Back button and
+enables the Next button.</p>
+
+<p>&nbsp;&nbsp;&nbsp; <i>SetWizardButtons(PSWIZB_BACK)</i> Disables the Next button and
+enables the Back button.</p>
+
+<p>&nbsp;&nbsp;&nbsp; <i>SetWizardButtons(PSWIZB_FINISH)</i> Disables the Back button, and
+replaces the Next button with an enabled Finish button</p>
+
+<p>&nbsp;&nbsp;&nbsp; <i>SetWizardButtons(PSWIZB_BACK | PSWIZB_NEXT)</i> Enables both the
+Back and Next Buttons</p>
+
+<p>&nbsp;&nbsp;&nbsp; <i>SetWizardButtons(PSWIZB_BACK | PSWIZB_FINISH)</i> Enables both
+the Back and Finish Buttons</p>
+
+<p>&nbsp;&nbsp;&nbsp; <i>SetWizardButtons(PSWIZB_BACK | PSWIZB_DISABLEDFINISH)</i> Enables
+the Back and displays a disabled Finish button instead of the Next button.</p>
+
+<p>The <i>PSWIZB_NEXT</i> and <i>PSWIZB_FINISH</i> flags cannot be used together, because
+they both use the same button position. See Advanced Wizards to find out how to do this.</p>
+
+<p>To find out what button was pressed in the wizard when you display the wizard, use:</p>
+
+<pre><tt><font COLOR="#990000">
+<big></big></pre>
+
+<p><i>If( CWizardDialog().DoModal() == ID_WIZFINISH ) { // Your Code }</i></p>
+</font></tt>
+
+<p>This code will process the code placed where // Your Code is if the Finish button is
+pressed on your wizard.<br>
+<big></big></p>
+
+<p>The titles of the dialogs which make up your wizard will be used as the page titles
+when the wizard is run.<br>
+For example, if the dialog of the wizard's first step has a title &quot;Wizard Step
+1&quot;, then your wizard's title for the first wizard page will also be &quot;Wizard Step
+1&quot;.</p>
+<u><i><b>
+
+<p>Advanced Wizards</p>
+</b></i></u>
+
+<p>I have often been asked how to display three navigation buttons, (Back, Next and
+Finish) on a wizard as Microsoft has done in the AppWizard. CPropertySheet only allows two
+of the buttons to be displayed at a time, but really they are all there, but one is hidden
+under another. The only way I have found to overcome this problem is to move the buttons
+on the <u><i>OnInitDialog </i></u>of the first wizard page using this code:</p>
+
+<pre><tt><font COLOR="#990000">
+<i>
+BOOL CWizardPage::OnInitDialog(void)
+{
+
+    CPropertyPage::OnInitDialog();
+
+    ((CPropertySheet*) GetParent())-&gt;SetWizardButtons(PSWIZB_NEXT|PSWIZB_FINISH);
+
+    CWnd *buttonBack = GetParent()-&gt;GetDlgItem(ID_WIZBACK);
+    CWnd *buttonNext = GetParent()-&gt;GetDlgItem(ID_WIZNEXT);
+
+    // Now we have to move the buttons around
+
+    CRect BackButton;
+
+    buttonBack-&gt;GetWindowRect(&amp;BackButton);
+
+    ScreenToClient(&amp;BackButton);
+
+    buttonBack-&gt;SetWindowPos (NULL, BackButton.left - BackButton.Width() - 5, BackButton.top, BackButton.Width(),  BackButton.Height(),
+        SWP_NOACTIVATE || SWP_NOSIZE || SWP_NOZORDER || SWP_SHOWWINDOW);
+
+    buttonNext-&gt;SetWindowPos(buttonBack, BackButton.left, BackButton.top,
+		BackButton.Width(), BackButton.Height(), SWP_NOACTIVATE || SWP_SHOWWINDOW);
+
+	buttonBack-&gt;EnableWindow(TRUE);
+	buttonBack-&gt;ShowWindow(SW_SHOW);
+
+    buttonNext-&gt;EnableWindow(TRUE);
+    buttonNext-&gt;ShowWindow(SW_SHOW);
+
+
+    return(TRUE);
+}
+</i>
+</FONT></TT></PRE>
+
+<p>Date Posted: 05/09/98
+
+<P><HR>
+
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+
+
+
+</BODY>
+</HTML>

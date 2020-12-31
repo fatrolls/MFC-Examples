@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Rob Manderson">
+   <TITLE>Internet - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various windows controls">
+   <META Name="keywords" Content="">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Internet</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<HR>
+<p>This section is maintained by <A HREF="mailto:UltraMaroon@email.msn.com">Rob Manderson</A>
+<UL>
+<P>General internet
+<LI><A HREF="get_webpage.shtml">Get web page using WinInet class wrapper - Asif Rasheed</A>
+<LI><A HREF="http_service_monitor.shtml">HTTP Service Monitor - Asif Rasheed</A>
+<LI><A HREF="winsockapi_wrappers.shtml">Winsock API Wrapper Classes - Poul A Costinski</A>
+<LI><A HREF="webbrowser_control.shtml">Using the Web Browser control (IE3) - Daniel Harth</A>
+<li><a HREF="mybrowser.shtml">Another example of using the Web Browser control - Panagiotis Piperopoulos</a></li>
+<LI><A HREF="pop3_protocol_class_wrapper.shtml">POP3 Protocol wrapper class - Asif Rasheed</A>
+<LI><A HREF="async_full_duplex.shtml">Asynchronous full-duplex connection class - Paul Barvinko</A>
+<LI><A HREF="local_hostname.shtml">Get hostname and ip address of local computer - Jeff Lundgren</A>
+<LI><A HREF="mailchecker.shtml">Mail Checker (POP3) - Asif Rasheed</A>
+<LI><A HREF="smtp.shtml">SMTP Protocol wrapper class - Asif Rasheed</A>
+<LI><A HREF="imapi.shtml">Class for simple MAPI email - Rob Manderson</A>
+<LI><A HREF="network_enum.shtml">Network enumeration - Joerg Koenig</A>
+<LI><A HREF="InterFunc.shtml">Winsock2 Internet functions - Steve Bryndin</A>
+<LI><A HREF="smtp2.shtml">SMTP MFC Classes - Wes Clyburn</A>
+<li><a HREF="nettools.shtml">Internet tools - Fred Forester</a></li>
+<li><a HREF="mimemfc.shtml">E-Mail File Attachments Using MIME - Wes Clyburn</a></li>
+<li><a HREF="maillook.shtml">Getting that cool Internet EMAIL look - Alexander Nolasco</a></li>
+<li><a HREF="Spider.shtml">A Pre-emptive Multithreading Web Spider - Sim Ayers</a></li>
+
+<p>Browser control
+<LI><a HREF="browser_fonts.shtml">Implementing the "Font" feature like the one in INTERNET EXPLORER - Sriram Srinivasan</a></li>
+<LI><a HREF="print_web_page.shtml">Printing Web Pages like Internet Explorer - Sriram Srinivasan</a></li>
+<LI><a HREF="post_web_page.shtml">Posting Files to the Web - Sriram Srinivasan</a></li>
+<LI><a HREF="view_source.shtml">Implementing the "View Source" option in Internet Explorer - Sriram Srinivasan</a></li>
+<LI><a HREF="Contmenu.shtml">Extending the IE Context
+Menu in your App using the Registry - Sriram Srinivasan</a></li>
+</UL>
+
+
+<HR>
+
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

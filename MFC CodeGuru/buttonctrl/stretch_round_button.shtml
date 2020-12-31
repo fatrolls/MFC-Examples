@@ -1,0 +1,99 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Pushbutton - Stretched rounded buttons</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Stretched rounded buttons
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:dykmans@mail.dma.be">Philippe Dykmans</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<IMG SRC="stretched_round_button.gif">&nbsp;
+Download <A HREF="stretched_round_button_src.zip">Source Code</a> and 
+<A HREF="stretched_round_button_demo.zip">Example</A>.
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>The code is basically an extension to the <a href="round_buttons.shtml">
+RoundButton</a> class written by Chris Maunder. While his RoundButton is 
+always circular, i have changed it such that it can have a flattened horizontal
+orientation. This combines Chris' beautiful round shading with the more
+space-efficient appearance of an ordinary rectangle button.
+
+<p>I decided to keep the RoundButton class instead of deriving yet another
+because i think that the added functionality is transparent enough. In
+the sense that the button defaults to exactly Chris' circular button
+when the button is designed square or vertical (say portrait) in the
+resources.
+
+<p>The only change applies to buttons that are designed non-square
+horizontal (say landscape) in the resources. In that case the button is
+stretched to fill the width of the button. And Chris' circular fragments
+are appended to the left and to the right sides.
+
+<p>In order to do this i split up Chris' DrawCircle function into a
+DrawCircleLeft and DrawCircleRight part. Each of which draws a shaded
+180-degree angle. Then i added the functionality to draw horizontal
+lines between the left and right arcs to combine the arcs.
+
+<p>A minor change is in the LIGHT_SOURCE_ANGLE constant. When Chris' value
+of -2.356 is applied, the color of the highlited line (top line) of the
+stretched button is almost identical to the background color. And the
+line appears to be missing. By changing the angle of incoming light to
+-1.88 the top line has enough highlight to contrast with the background.
+
+<p>The new functionality has been added to both the 3d- and flat-type
+buttons.
+
+<p>I have also changed the text-drawing functionality to give it more of a
+3d-look.
+
+<p>I did not implement the dotted focus for this new button because i did
+not need it myself. But it might be a good idea for another extension.
+
+<p>Chris' button does not support acceleration-underline. Neither does
+mine. This might also be a good extension.
+
+<p>I don't regard my code addition as highly elegant or intelligent. But it
+seems to work without problems in my application.
+
+<!-- Remember to update this -->
+<p>Last updated: 6 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

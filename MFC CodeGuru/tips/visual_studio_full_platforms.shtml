@@ -1,0 +1,86 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Visual C++ Tips - Multiple Platforms in VC++ 5.0 Professional</TITLE>
+</HEAD>
+
+<!-- Set article properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Multiple Platforms in VC++ 5.0 Professional
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+<p>This article was contributed by <A HREF="mailto:m.t.ellis@swansea.ac.uk">Matthew Ellis</A>.
+
+<!-- Sample image and source code/demo project -->
+<P><A HREF="visual_studio_full_platforms.zip">Download .reg file</A></p>
+<br>
+
+<p>By default, Visual C++ 5.0 Professional (I don't know about other versions)
+only displays "Win32" as the possible target platform. If you need to port
+projects to (for example) an NT Alpha machine, you either have to recreate
+your dsp files or edit them, and know exactly what to change. Take it from
+me, neither is a very interesting or pleasant job to do on a large project.
+An easier way, however, is to set the following in the registry (.reg file
+included as attachment):
+
+<FONT COLOR="#990000"><TT><PRE>[HKEY_CURRENT_USER\Software\Microsoft\DevStudio\5.0\Build System]
+"Full Platforms"=dword:00000001
+</tt></PRE></FONT>
+
+<p>Now, when creating a new project, the list of platforms is Win32, Win32
+(ALPHA) and Win32 (PowerPC) The project will be created with configurations
+for all platforms selected. If you wish to create configurations for already
+existing projects, load the project into Visual Studio, and select
+Configurations (default is under the Build menu) select the project you wish
+to create a new configuration for and select "Add...". Change the
+configuration name (Debug and Release are the defaults - don't worry if you
+already have a Debug and Release configuration, the name will be changed to
+include the platform) and select the configuration you wish to copy (if you
+want to create an Debug Alpha configuration, leave the name as Debug and
+select the Win32 Debug configuration from the drop down list) Now select the
+platform. When you click OK, you will get a new configuration with the name
+altered to list the new platform (eg "Win32 (ALPHA) Debug")
+
+<p>Note that this only allows you to create configurations for other platforms.
+It doesn't allow cross-platform compiling.
+
+<!-- Remember to update this -->
+<p>Last updated: 11 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

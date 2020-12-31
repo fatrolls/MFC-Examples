@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Patrick Laplante">
+   <TITLE>Doc/View - Restoring Window Position</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Restoring Window Position
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:yonat@usa.net"><!-- Author Name -->Yonat Sharon</A>.
+
+<!-- Sample image - gif or jpg -->
+<P>Many applications need to "remember" the last window position and status
+(minimized/maximized/normal). This seemingly trivial task holds a few
+little-known subtleties, so I thought it might be helpful to show code
+that handles these things correctly.
+
+<P>Saving the window's position is straight forward:
+
+<!-- Text / source code -->
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+void CMainFrame::OnClose() // message handler for WM_CLOSE
+{
+    // Save main window position
+    CWinApp* app = AfxGetApp();
+    WINDOWPLACEMENT wp;
+    GetWindowPlacement(&wp);
+    app->WriteProfileInt("Frame", "Status", wp.showCmd);
+    app->WriteProfileInt("Frame", "Top",    wp.rcNormalPosition.top);
+    app->WriteProfileInt("Frame", "Left",   wp.rcNormalPosition.left);
+    app->WriteProfileInt("Frame", "Bottom", wp.rcNormalPosition.bottom);
+    app->WriteProfileInt("Frame", "Right",  wp.rcNormalPosition.right);
+	
+    CFrameWnd::OnClose();
+}
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+However, restoring it is a little more tricky:
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
+{
+    //
+    // Restore main window position
+    //
+
+    CWinApp* app = AfxGetApp();
+    int s, t, b, r, l;
+
+    // only restore if there is a previously saved position
+    if ( -1 != (s = app->GetProfileInt("Frame", "Status",   -1)) &&
+         -1 != (t = app->GetProfileInt("Frame", "Top",      -1)) &&
+         -1 != (l = app->GetProfileInt("Frame", "Left",     -1)) &&
+         -1 != (b = app->GetProfileInt("Frame", "Bottom",   -1)) &&
+         -1 != (r = app->GetProfileInt("Frame", "Right",    -1))
+       ) {
+
+        // restore the window's status
+        app->m_nCmdShow = s;
+
+        // restore the window's width and height
+        cs.cx = r - l;
+        cs.cy = b - t;
+
+        // the following correction is needed when the taskbar is
+        // at the left or top and it is not "auto-hidden"
+        RECT workArea;
+        SystemParametersInfo(SPI_GETWORKAREA, 0, &workArea, 0);
+        l += workArea.left;
+        t += workArea.top;
+
+        // make sure the window is not completely out of sight
+        int max_x = GetSystemMetrics(SM_CXSCREEN) -
+                        GetSystemMetrics(SM_CXICON);
+        int max_y = GetSystemMetrics(SM_CYSCREEN) -
+                        GetSystemMetrics(SM_CYICON);
+        cs.x = min(l, max_x);
+        cs.y = min(t, max_y);
+    }
+
+    return CFrameWnd::PreCreateWindow(cs);
+}
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+
+<!-- Zipped source -->
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->6/24/98
+<br>Posted by: <A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,191 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>String - CString like class using STL</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">CString like class using STL</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:jmoleary@earthlink.net">Joe O'Leary</A>. 
+
+<P>I don't know how "cool" this class is -- it's not really innovation
+as much as hard work -- but I have found it extremely useful.  I have
+seen attempts at this in the past that I never really liked very
+much...
+ 
+<P>Basically, I love the ease of use of MFC's CString class, but I
+don't want to use MFC.  In fact, I don't want to rely on any class
+library's string class because I want portability.  The Standard C++
+Library string classes (string and wstring) are OK, but they are
+nowhere near as easy to use as CString.  I decided to combine the best
+of both worlds and create:
+
+<PRE><TT><FONT COLOR="#990000"> 
+     CStdString
+</FONT></TT></PRE>
+ 
+<P>This is a string class derived from the Standard C++ Library
+basic_string&ltTCHAR> and so inherits all of basic_string's
+functionality and compatibility).  You can use it in along with MFC,
+ATL or neither.  I have added a few (not all) of the CString
+conveniences that I've found most convenient.  Here is a summary of
+the functionality
+ 
+<ol> 
+
+  <li>Like CString, CStdString is built on TCHAR and so easily changes
+from UNICODE to MBCS builds
+
+  <li>Since it is derived from basic_string&lt;TCHAR> you can use it
+it wherever you would use basic_string&lt;TCHAR>
+
+  <li>It provides an implicit conversion operator LPCTSTR() so you
+don't have to call c_str() all the time.  ANSI doesn't like this but I
+do.
+
+  <li>It corrects a bug in the MS implementation of basic_string --
+the need to call erase() before assigning one string to another (see
+knowledge base article Q172398)
+
+  <li>It includes the following CString like functions:
+
+      <PRE><TT><FONT COLOR="#990000">
+      Format()
+      TrimRight(), TrimLeft()
+      </FONT></TT></PRE><br>
+
+      a Load() function that loads a string value from string resource ID A
+      constructor that lets you pass a string resource ID wrapped by
+      MAKEINTRESOURCE() - (this actually works now)
+
+<li>If you use CStdString in an MFC build (i.e. when _MFC_VER is
+defined) it adds global serialization operators so you can read and
+write CStdStrings to CArchives
+
+<li>When used in non-ATL, non-MFC builds, the header file also defines
+UNICODE/MBCS conversion operators identical to those of MFC and ATL
+(i.e. A2CT, T2W, etc)
+
+<li>It does not dynamically allocate any memory in the constructor and
+therefore avoids the potential danger of the fact that basic_string's
+destructor is non-virtual
+
+<li>Most functions are inline for speed
+
+<li>Case sensitive or insensitive comparison via the Equals() member
+function.  (operator== and &lt; are case sensitive always)
+
+<li>a static SetResourceHandle() member function if you want it to
+search another HINST first when attempting to Load() strings (a thin
+imitation of AfxSetResourceHandle())
+
+<li>When used in non-ATL, non-MFC builds, the header file also defines
+UNICODE/MBCS conversion operators identical to those of MFC and ATL
+(i.e. A2CT, T2W, etc)
+
+</ol>
+ 
+<P>I have found this class invaluable for a large-scale distributed
+project on which I worked in which some components were MFC, some were
+ATL, and some were neither.  The class is portable won't conflict with
+either class library.
+
+<P>There are a couple of things to keep in mind when using this class.
+ 
+<ol>
+  <li>The reference counting logic of MS' implemenation of
+basic_string is unchanged.  It uses operator++ and -- which are NOT
+thread safe.  I meant to address this but never got around to it.  It
+has never caused me any problems (and I've used it in several
+multi-threaded apps) but there you have it.
+
+  <li>Even though this class fixes an MS bugs, you can probably use it
+with any implementation of basic_string (i.e. SGI's, et al).  I don't
+think I have used any knowledge of the basic_string implementation.
+The fix is just a single, in-line call to erase() so I don't think it
+will slow anyone down.
+
+</ol>
+
+<p>
+This version is a fix to the first one I posted on this website.  The
+fixes are:
+
+<p>
+Added some overloads to the assign() member function to further catch
+cases of the MS assignment bug that I had missed.
+
+<p>
+Fixed some typos that checked for "MFC_VER" when they should have been
+checking for "_MFC_VER" (note missing underscore)
+
+<p>
+Now there REALLY is a constructor that takes a string resource ID.  In
+the first version I never managed to put it in.  So now you can do
+stuff like this:
+
+<pre><tt><font COLOR="#990000">
+	CStdString myString(MAKEINTRESOURCE(IDS_SOME_STRING_ID));
+</font></tt></pre>
+
+The improvements are:
+
+<ul>
+  <li>Added a constructor and operator=() for the new _bstr_t compiler
+support class that comes with Visual C++ 5.0.  This eliminates
+compiler ambiguity errors that you would otherwise receive if you
+tried to assign a _bstr_t to a CStdString.  It does not preclude us of
+the class in VC version 4.x, however.
+
+  <li>Cleaner, shorter, and faster implementations of Load() and
+Format() member functions.
+
+  <li>Added improved ASSERT macro that for non-MFC, non-ATL builds
+(uses _ASSERTE instead of DebugBreak)
+
+  <li>Added case-insensitive comparison (Equals() member function).
+
+  <li>ToLower(), ToUpper(), TrimLeft(), and TrimRight() now return
+*this so you can chain them together if you want.  For example::
+
+<pre><tt><font COLOR="#990000">
+      CStdString myString("JOE    ");
+      myString.ToLower().TrimLeft().TrimRight().
+</font></tt></pre></ul>
+
+<P>Hope someone else finds this as useful as I have.
+ 
+<P><A HREF="StdString.zip">Download Source</A> 9KB
+
+<!-- Remember to update this -->
+<p>Last updated: 9 May 1998
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

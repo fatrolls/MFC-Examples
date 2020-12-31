@@ -1,0 +1,189 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Shilpa Shamapant">
+   <TITLE>CListCtrl - IE4 Extended Styles in a List Control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">IE4 Extended Styles in a list control</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This code was contributed by <A HREF="mailto:gartht@aviation.denel.co.za">Garth Tolmie</A>.
+
+<PRE><TT><FONT COLOR="#990000">
+
+If you Ever wanted to do a full row select, be able to drag a whole column to
+another position, draw a grid and do some other interesting things to your CListCtrl
+derived class. Well now you can by setting the extended styles associated with the
+CListCtrl. This article will give the various flags, their uses, the applicable
+COMCTL32.DLL version and some code snippets used in a CListView derived class, which as
+you know has a CListCtrl item buried in it.
+
+Depending on which version of the common controls DLL you have, there are
+extended styles which can be invoked to support a wide and interesting range
+of functions.  You can download a free restributable version of the latest
+common controls DLL from Microsoft, complete with its own installer.
+(See www.CodeGuru.com home page for details).
+
+Here's a description of the various extended styles available.
+
+LVS_EX_CHECKBOXES  Version 4.70. Enables check boxes for items in a list
+view control. Effectively, when this style is set, the control will create and
+set a state image list using DrawFrameControl. Check boxes are visible and
+functional with all list view modes. The state of the check box for a given
+item is obtained using the ListView_GetCheckState macro.
+
+LVS_EX_FLATSB  Version 4.71. Enables flat scroll bars in the list view. If
+you need more control over the appearance of the list view's scroll bars, you
+should manipulate the list view's scroll bars directly using the Flat Scroll
+Bar APIs.
+
+LVS_EX_FULLROWSELECT  Version 4.70. When an item is selected, the item and
+all its subitems are highlighted. This style is available only in conjunction
+with the LVS_REPORT style.
+
+LVS_EX_GRIDLINES  Version 4.70. Displays gridlines around items and
+subitems.This style is available only in conjunction with the LVS_REPORT style.
+
+LVS_EX_HEADERDRAGDROP  Version 4.70. Enables drag-and-drop reordering of
+columns in a list view control. This style is only available to list view
+controls that use the LVS_REPORT style.
+
+LVS_EX_INFOTIP  Version 4.71. The list view control sends an LVN_GETINFOTIP
+notification message to the parent window before displaying an item's
+tooltip.This style is only available to list view controls that use the
+LVS_ICONstyle.
+
+LVS_EX_MULTIWORKAREAS  Version 4.71. If the list view control has the
+LVS_AUTOARRANGE style, the control will not autoarrange its icons until one
+or more work areas are defined (see LVM_SETWORKAREAS). To be effective, this
+style must be set before any work areas are defined and any items have been
+added to the control.
+
+LVS_EX_ONECLICKACTIVATE  Version 4.70. The list view control sends an
+LVN_ITEMACTIVATE notification message to the parent window when the user
+clicks an item. This style also enables hot tracking in the list view
+control. Hot tracking means that when the cursor moves over an item, it is
+highlighted but not selected.
+
+LVS_EX_REGIONAL  Version 4.71. The list view will create a region that
+includes only the item icons and text and set its window region to that
+using SetWindowRgn. This will exclude any area that is not part of an item from
+the window region. This style is only available to list view controls that use
+the LVS_ICON style.
+
+LVS_EX_SUBITEMIMAGES  Version 4.70. Allows images to be displayed for
+subitems. This style is available only in conjunction with the LVS_REPORT
+style.
+
+LVS_EX_TRACKSELECT  Version 4.70. Enables hover selection in a list view
+control. Hover selection (also called track selection) means that an item is
+automatically selected when the cursor remains over the item for a certain
+period of time. The delay can be changed from the default system setting
+with the LVM_SETHOVERTIME message. This style applies to all styles of list view
+control.
+
+LVS_EX_TWOCLICKACTIVATE  Version 4.70. The list view control sends an
+LVN_ITEMACTIVATE notification message to the parent window when the user
+double-clicks an item. This style also enables hot tracking in the list view
+control. Hot tracking means that when the cursor moves over an item, it is
+highlighted but not selected.
+
+LVS_EX_UNDERLINECOLD  Version 4.71. Causes nonhot items to be displayed with
+underlined text. This style is ignored if LVS_EX_ONECLICKACTIVATE is not
+set.
+LVS_EX_UNDERLINEHOT  Version 4.71. Causes hot items to be displayed with
+underlined text. This style is ignored if LVS_EX_ONECLICKACTIVATE or
+LVS_EX_TWOCLICKACTIVATE is not set.
+
+After the creation of your view, derived from CListView, you may set the
+extended style of the list control using the following code. As there is
+currently no CListCtrl::SetExtendedStyle() you have to do a little bit of
+work until this method has been added.
+
+There are two macros which support extended styles and are implemented as
+such:
+
+void CDerivedListView::OnInitialUpdate()
+{    
+   .
+   .
+   .
+  //The macro ListView_GetExtendedListViewStyle takes a reference to the
+  // CListCtrl and returns the current extended style (a DWORD)
+
+  DWORD dwStyle = ListView_GetExtendedListViewStyle(GetListCtrl());
+
+ //Add the full row select and grid line style to the existing extended styles
+  dwStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES;
+
+  //The macro ListView_SetExtendedListViewStyle takes a reference to the
+  // CListCtrl and the extended style you would like to implement
+
+  ListView_SetExtendedListViewStyle( GetListCtrl(),dwStyle);
+}
+
+Or you could send messages to the control like this:
+
+void CDerivedListView::OnInitialUpdate()
+{    
+   .
+   .
+   .
+  DWORD dwStyle;
+  dwStyle = GetListCtrl().SendMessage(LVM_GETEXTENDEDLISTVIEWSTYLE, 0 ,0);
+  dwStyle |= LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES ;
+  GetListCtrl().SendMessage( LVM_SETEXTENDEDLISTVIEWSTYLE, 0,dwStyle );
+}
+
+But a more conventional approach would probably be:
+
+void CDerivedListView::OnInitialUpdate()
+{    
+   .
+   .
+   .
+  AddExStyle(LVS_EX_FULLROWSELECT);
+  AddExStyle(LVS_EX_GRIDLINES);
+}
+
+void CDerivedListView::AddExStyle(DWORD dwNewStyle)
+{
+    CListCtrl& m_listctrl = GetListCtrl();
+    DWORD dwStyle = m_listctrl.SendMessage(LVM_GETEXTENDEDLISTVIEWSTYLE,0,0);
+    dwStyle |= dwNewStyle;
+    m_listctrl.SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, dwStyle);
+}
+
+</FONT></TT></PRE>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+
+

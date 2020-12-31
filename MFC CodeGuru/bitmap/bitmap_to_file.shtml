@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Writing a bitmap to a BMP file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Writing a bitmap to a BMP file</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+Writing a bitmap to a BMP file is fairly simple if we have a handle to device-independent bitmap. We simply write BITMAPINFOHEADER information followed by the contents of the bitmap. The three fields that we have to set in the BITMAPINFOHEADER are the bfType which should always be "BM", the bfSize which is the size of the bitmap including the infoheader and the bfOffBits which is the offset to the bitmap bits from the start of the file.
+
+<p>If you have a device-dependent bitmap to begin with, you have to first create a DIB from it. Creating a DIB from a DDB has already been covered in another section.
+
+<PRE><TT><FONT COLOR="#990000">// WriteDIB		- Writes a DIB to file
+// Returns		- TRUE on success
+// szFile		- Name of file to write to
+// hDIB			- Handle of the DIB
+BOOL WriteDIB( LPTSTR szFile, HANDLE hDIB)
+{
+	BITMAPFILEHEADER	hdr;
+	LPBITMAPINFOHEADER	lpbi;
+
+	if (!hDIB)
+		return FALSE;
+
+	CFile file;
+	if( !file.Open( szFile, CFile::modeWrite|CFile::modeCreate) )
+		return FALSE;
+
+	lpbi = (LPBITMAPINFOHEADER)hDIB;
+
+	int nColors = 1 << lpbi->biBitCount;
+
+	// Fill in the fields of the file header 
+	hdr.bfType		= ((WORD) ('M' << 8) | 'B');	// is always "BM"
+	hdr.bfSize		= GlobalSize (hDIB) + sizeof( hdr );
+	hdr.bfReserved1 	= 0;
+	hdr.bfReserved2 	= 0;
+	hdr.bfOffBits		= (DWORD) (sizeof( hdr ) + lpbi->biSize +
+						nColors * sizeof(RGBQUAD));
+
+	// Write the file header 
+	file.Write( &hdr, sizeof(hdr) );
+
+	// Write the DIB header and the bits 
+	file.Write( lpbi, GlobalSize(hDIB) );
+
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

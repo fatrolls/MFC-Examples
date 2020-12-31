@@ -1,0 +1,402 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Database - RFX_Date using COleDateTime</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+RFX_Date using COleDateTime
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:dq@mantech.net">Dan Querciagrossa</A>.
+
+
+<!-- The article... -->
+
+<p>The following code is a modified version of the MFC source for RFX_Date,
+instead of the crippled CTime, I use COleDateTime.  This avoids the annoying
+1970 - 2038 year limits (COleDateTime can handle years 100-9999) of the
+CTime object and a COleDateTime is a lot nicer to deal with than a
+TIMESTAMP_STRUCT.  All I do is use ClassLizard to create a recordset, then
+replace the CTime variables with COleDateTime and the RFX_Date calls with
+RFX_OleDateTime.  It's a good idea to move those changes outside the class
+wizard blocks so they don't cause problems.
+
+
+<FONT COLOR="#990000"><TT><PRE>
+void AFXAPI RFX_OleDateTime(CFieldExchange* pFX, LPCTSTR szName,
+                            COleDateTime& value)
+{
+ ASSERT(AfxIsValidAddress(pFX, sizeof(CFieldExchange)));
+ ASSERT(AfxIsValidString(szName));
+
+ RETCODE nRetCode;
+ UINT nField;
+ if (!pFX->IsFieldType(&nField))
+  return;
+
+ LONG* plLength = pFX->m_prs->GetFieldLengthBuffer(nField - 1, pFX->m_nFieldType);
+ switch (pFX->m_nOperation)
+ {
+ default:
+LDefault:
+  pFX->Default(szName, &value, plLength, SQL_C_TIMESTAMP,
+   sizeof(value), TIMESTAMP_PRECISION);
+  return;
+
+ case CFieldExchange::BindParam:
+  {
+   TIMESTAMP_STRUCT* pts;
+   pFX->m_prs->m_bRebindParams = TRUE;
+
+   if (pFX->m_prs->IsParamStatusNull(nField - 1))
+   {
+    pts = NULL;
+    *plLength = SQL_NULL_DATA;
+   }
+   else
+   {
+    // Allocate proxy array if necessary
+    if (pFX->m_prs->m_pvParamProxy == NULL)
+    {
+     pFX->m_prs->m_pvParamProxy = new void*[pFX->m_prs->m_nParams];
+     memset(pFX->m_prs->m_pvParamProxy, 0, pFX->m_prs->m_nParams*sizeof(void*));
+     pFX->m_prs->m_nProxyParams = pFX->m_prs->m_nParams;
+    }
+
+    // Allocate TIMESTAMP_STRUCT if necessary for SQLBindParameter
+    if (pFX->m_prs->m_pvParamProxy[nField-1] == NULL)
+    {
+     pts = new TIMESTAMP_STRUCT;
+     pFX->m_prs->m_pvParamProxy[nField-1] = pts;
+    }
+    else
+     pts = (TIMESTAMP_STRUCT *)pFX->m_prs->m_pvParamProxy[nField-1];
+
+    pts->year = (SWORD)value.GetYear();
+    pts->month = (UWORD)value.GetMonth();
+    pts->day = (UWORD)value.GetDay();
+    pts->hour = (UWORD)value.GetHour();
+    pts->minute = (UWORD)value.GetMinute();
+    pts->second = (UWORD)value.GetSecond();
+    pts->fraction = 0;
+    *plLength = sizeof(TIMESTAMP_STRUCT);
+   }
+
+   AFX_SQL_SYNC(::SQLBindParameter(pFX->m_hstmt, (UWORD)nField,
+    (SWORD)pFX->m_nFieldType, SQL_C_TIMESTAMP, SQL_C_TIMESTAMP,
+    TIMESTAMP_PRECISION, 0, pts, 0, plLength));
+   if (nRetCode != SQL_SUCCESS)
+    pFX->m_prs->ThrowDBException(nRetCode, pFX->m_hstmt);
+
+   // Add the member address to the param map
+   pFX->m_prs->m_mapParamIndex.SetAt(&value, (void*)nField);
+  }
+  return;
+
+ case CFieldExchange::RebindParam:
+  {
+   *plLength = pFX->m_prs->IsParamStatusNull(nField - 1) ?
+    SQL_NULL_DATA : sizeof(TIMESTAMP_STRUCT);
+   if (pFX->m_prs->m_nProxyParams != 0)
+   {
+    // Fill buffer (expected by SQLBindParameter) with new param data
+    TIMESTAMP_STRUCT* pts;
+    pts = (TIMESTAMP_STRUCT *)pFX->m_prs->m_pvParamProxy[nField-1];
+    pts->year = (SWORD)value.GetYear();
+    pts->month = (UWORD)value.GetMonth();
+    pts->day = (UWORD)value.GetDay();
+    pts->hour = (UWORD)value.GetHour();
+    pts->minute = (UWORD)value.GetMinute();
+    pts->second = (UWORD)value.GetSecond();
+    pts->fraction = 0;
+   }
+  }
+  return;
+
+ case CFieldExchange::BindFieldToColumn:
+  {
+#ifdef _DEBUG
+   // Assumes all bound fields BEFORE unbound fields
+   CODBCFieldInfo* pODBCInfo =
+    &pFX->m_prs->m_rgODBCFieldInfos[nField - 1];
+
+   if (pODBCInfo->m_nSQLType != SQL_DATE &&
+    pODBCInfo->m_nSQLType != SQL_TIME &&
+    pODBCInfo->m_nSQLType != SQL_TIMESTAMP)
+   {
+    // Warn of possible field schema mismatch
+    if (afxTraceFlags & traceDatabase)
+     TRACE1("Warning: CTime converted from SQL type %ld.\n",
+      pODBCInfo->m_nSQLType);
+   }
+#endif // _DEBUG
+
+   // Allocate proxy array if necessary
+   if (pFX->m_prs->m_pvFieldProxy == NULL)
+   {
+    pFX->m_prs->m_pvFieldProxy = new void*[pFX->m_prs->m_nFields];
+    memset(pFX->m_prs->m_pvFieldProxy, 0,
+     pFX->m_prs->m_nFields*sizeof(void*));
+    pFX->m_prs->m_nProxyFields = pFX->m_prs->m_nFields;
+   }
+
+   // Allocate TIMESTAMP_STRUCT for SQLBindCol (not necessary on Requery)
+   if (pFX->m_prs->m_pvFieldProxy[nField-1] == NULL)
+    pFX->m_prs->m_pvFieldProxy[nField-1] = new TIMESTAMP_STRUCT;
+
+   AFX_SQL_SYNC(::SQLBindCol(pFX->m_prs->m_hstmt, (UWORD)nField,
+    SQL_C_TIMESTAMP, pFX->m_prs->m_pvFieldProxy[nField-1],
+    sizeof(TIMESTAMP_STRUCT), plLength));
+   if (!pFX->m_prs->Check(nRetCode))
+    pFX->m_prs->ThrowDBException(nRetCode);
+
+   // Add the member address to the field map
+   pFX->m_prs->m_mapFieldIndex.SetAt(&value, (void*)nField);
+  }
+  return;
+
+ case CFieldExchange::BindFieldForUpdate:
+  if (pFX->m_prs->m_nProxyFields != 0)
+  {
+   // Fill buffer (expected by SQLSetPos) with new field data
+   TIMESTAMP_STRUCT* pts;
+   pts = (TIMESTAMP_STRUCT *)pFX->m_prs->m_pvFieldProxy[nField-1];
+   pts->year = (SWORD)value.GetYear();
+   pts->month = (UWORD)value.GetMonth();
+   pts->day = (UWORD)value.GetDay();
+   pts->hour = (UWORD)value.GetHour();
+   pts->minute = (UWORD)value.GetMinute();
+   pts->second = (UWORD)value.GetSecond();
+   pts->fraction = 0;
+
+   pFX->Default(szName, (void *)pts, plLength, SQL_C_TIMESTAMP,
+    sizeof(TIMESTAMP_STRUCT), TIMESTAMP_PRECISION);
+  }
+  return;
+
+ case CFieldExchange::Fixup:
+  if (*plLength == SQL_NULL_DATA)
+  {
+   pFX->m_prs->SetNullFieldStatus(nField - 1);
+   value.SetStatus(COleDateTime::null);//    = AFX_RFX_DATE_PSEUDO_NULL;
+  }
+  else
+  {
+   TIMESTAMP_STRUCT* pts =
+    (TIMESTAMP_STRUCT*)pFX->m_prs->m_pvFieldProxy[nField-1];
+   if (pts->year < 100 || pts->year > 9999)
+   {
+    // Time value out of range, return NULL
+#ifdef _DEBUG
+    if (afxTraceFlags & traceDatabase)
+     TRACE0("Warning: date value out of range, returning NULL value.\n");
+#endif
+    pFX->m_prs->SetNullFieldStatus(nField - 1);
+    value.SetStatus(COleDateTime::null);//value = AFX_RFX_DATE_PSEUDO_NULL;
+   }
+   else
+   {
+#ifdef _DEBUG
+    if ((afxTraceFlags & traceDatabase) && pts->fraction != 0)
+     TRACE0("Warning: ignoring milliseconds.\n");
+#endif
+    value = COleDateTime(pts->year, pts->month, pts->day,
+     pts->hour, pts->minute, pts->second);
+   }
+  }
+  return;
+
+ case CFieldExchange::NameValue:
+  if (pFX->m_prs->IsFieldStatusDirty(nField - 1))
+  {
+   *pFX->m_pstr += szName;
+   *pFX->m_pstr += '=';
+  }
+  // Fall through
+
+ case CFieldExchange::Value:
+  if (pFX->m_prs->IsFieldStatusDirty(nField - 1))
+  {
+   TIMESTAMP_STRUCT* pts =
+    (TIMESTAMP_STRUCT*)pFX->m_prs->m_pvFieldProxy[nField-1];
+   if (pFX->m_prs->IsFieldStatusNull(nField - 1))
+   {
+    *plLength = SQL_NULL_DATA;
+   }
+   else
+   {
+    pts->year = (SWORD)value.GetYear();
+    pts->month = (UWORD)value.GetMonth();
+    pts->day = (UWORD)value.GetDay();
+    pts->hour = (UWORD)value.GetHour();
+    pts->minute = (UWORD)value.GetMinute();
+    pts->second = (UWORD)value.GetSecond();
+    pts->fraction = 0;
+    *plLength = sizeof(TIMESTAMP_STRUCT);
+   }
+
+   // If optimizing for bulk add, only need lengths & proxy set correctly
+   if(!(pFX->m_prs->m_dwOptions & CRecordset::optimizeBulkAdd))
+   {
+    *pFX->m_pstr += '?';
+    *pFX->m_pstr += pFX->m_lpszSeparator;
+    pFX->m_nParamFields++;
+
+    // Assumes all bound fields BEFORE unbound fields
+    CODBCFieldInfo* pODBCInfo =
+     &pFX->m_prs->m_rgODBCFieldInfos[nField - 1];
+
+    AFX_SQL_SYNC(::SQLBindParameter(pFX->m_hstmt,
+     (UWORD)pFX->m_nParamFields, SQL_PARAM_INPUT,
+     SQL_C_TIMESTAMP, pODBCInfo->m_nSQLType,
+     TIMESTAMP_PRECISION, 0, pts, 0, plLength));
+   }
+  }
+  return;
+
+ case CFieldExchange::SetFieldNull:
+  if ((pFX->m_pvField == NULL &&
+   pFX->m_nFieldType == CFieldExchange::outputColumn) ||
+   pFX->m_pvField == &value)
+  {
+   if (pFX->m_bField)
+   {
+    // Mark fields null
+    pFX->m_prs->SetNullFieldStatus(nField - 1);
+    value.SetStatus(COleDateTime::null);//value = AFX_RFX_DATE_PSEUDO_NULL;
+    *plLength = SQL_NULL_DATA;
+   }
+   else
+   {
+    pFX->m_prs->ClearNullFieldStatus(nField - 1);
+    *plLength = sizeof(TIMESTAMP_STRUCT);
+   }
+#ifdef _DEBUG
+   pFX->m_nFieldFound = nField;
+#endif
+  }
+  return;
+
+ case CFieldExchange::MarkForAddNew:
+  {
+   // can force writing of psuedo-null value (as a non-null) by setting
+field dirty
+   COleDateTime timeNull;// = AFX_RFX_DATE_PSEUDO_NULL;
+   if (value != timeNull)
+   {
+    pFX->m_prs->SetDirtyFieldStatus(nField - 1);
+    pFX->m_prs->ClearNullFieldStatus(nField - 1);
+   }
+  }
+  return;
+
+ case CFieldExchange::MarkForUpdate:
+  {
+   COleDateTime timeNull;// = AFX_RFX_DATE_PSEUDO_NULL;
+   if (value != timeNull)
+    pFX->m_prs->ClearNullFieldStatus(nField - 1);
+  }
+  goto LDefault;
+
+ case CFieldExchange::LoadField:
+  {
+   // Get the field data
+   CFieldInfo* pInfo = &pFX->m_prs->m_rgFieldInfos[nField - 1];
+
+   // Restore the status
+   pFX->m_prs->SetFieldStatus(nField - 1, pInfo->m_bStatus);
+
+   // If not NULL, restore the value, length and proxy
+   if (!pFX->m_prs->IsFieldStatusNull(nField - 1))
+   {
+    AfxCopyValueByRef(pInfo->m_pvDataCache, &value,
+     plLength, pInfo->m_nDataType);
+
+    // Restore proxy for correct WHERE CURRENT OF operations
+    TIMESTAMP_STRUCT* pts =
+     (TIMESTAMP_STRUCT*)pFX->m_prs->m_pvFieldProxy[nField-1];
+
+    pts->year = (SWORD)value.GetYear();
+    pts->month = (UWORD)value.GetMonth();
+    pts->day = (UWORD)value.GetDay();
+    pts->hour = (UWORD)value.GetHour();
+    pts->minute = (UWORD)value.GetMinute();
+    pts->second = (UWORD)value.GetSecond();
+    pts->fraction = 0;
+   }
+   else
+    *plLength = SQL_NULL_DATA;
+
+#ifdef _DEBUG
+   // Buffer address must not change - ODBC's SQLBindCol depends upon this
+   if (pInfo->m_pvBindAddress != pFX->m_prs->m_pvFieldProxy[nField-1])
+   {
+    TRACE1("Error: CString buffer (column %u) address has changed!\n",
+     nField);
+    ASSERT(FALSE);
+   }
+#endif // _DEBUG
+  }
+  return;
+
+ case CFieldExchange::AllocCache:
+  {
+   CFieldInfo* pInfo = &pFX->m_prs->m_rgFieldInfos[nField - 1];
+   pInfo->m_pvDataCache = new COleDateTime;
+   pInfo->m_nDataType = AFX_RFX_DATE;
+  }
+  return;
+
+#ifdef _DEBUG
+ case CFieldExchange::DumpField:
+  *pFX->m_pdcDump << "\n" << szName << " = " << value;
+		return;
+#endif // _DEBUG
+
+	}
+}
+</tt></PRE></FONT>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 16 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

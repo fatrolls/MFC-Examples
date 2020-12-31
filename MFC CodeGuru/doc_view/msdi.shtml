@@ -1,0 +1,128 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc/View - MultiSingle (MSDI) Document interface</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">MultiSingle (MSDI) Document interface</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:jclanz@bluewin.ch">Lanz Jean-Claude</A>.
+
+<P><A HREF="msdi1632.zip">Download files</A> 77K.
+
+</FONT><I><FONT FACE="Arial"><P><b>What is a MultiSingle document.</b></P>
+</B></I></U><P>In most applications, it is necessary to have one document with many views. The <B>SDI</B> architecture is for one document and one view and the <B>MDI</B> architecture is for many documents with many views.  My goal is to have an <B>MDI</B> architecture with one document and many views connected or not to the document. If a chose the <B>'new'</B> file command, all views must close and a new document with the fist doc template view must be started. If a chose the <B>'close' </B>file command, all views must close and the client area must be empty. Views not attached to the document (attached to the main frame) can live. If the system menu <B>'close' </B>command of a child window is actived, the child window will close. If this is the main view (1<SUP>st</SUP> doc template) the effect is the same as if you select the <B>'close' </B>command of the file menu.</P>
+
+<P>This sample is an <B>MSDI</B> application with three views. The 1<SUP>st</SUP> view is the main document view derived from CFormView. It must be the 1<SUP>st</SUP> doc template view. The 2<SUP>nd</SUP> view is a simple drawing derived from CView and is attached to the document. The 3<SUP>rd</SUP> view is a COutView derived from CEditView. This view is not a document view and is not closed with the document <B>'Close'</B> command. It can be opened without document. To close this view, use the system menu of the child window or the close button.</P>
+<P> </P>
+<P>To open these Views, the commands are implemented in the <B>'View'</B> menu. The document class is responsible to open the document views and the mainframe classe is responsible to open the other views. For the <B>COutView</B>, an other menu is used with new commands to demonstrate the possibilities of <B>MSDI</B>.</P>
+
+<P>The <B>'New window'</B> command in the <B>'Window'</B> menu open only new windows if the view is connected to the document. If the view is not attached to the document, it can't open a second view. You can change this as you like, see the <B>CMSDIViewFrame</B> class.</P>
+
+<P>It is not possible to open more than one view of the same class if the view is attached to the document with the <B>'Create view'</B> command. The function CreateOrActivateFrame checks if the view exist and active it. You can change this if you wish more than one view of the same class.</P>
+
+<P>For independant views (not attached to the document), it is complicate to check if exist because we can't walk trough the views with a document pointer. So we must save the view pointer in the MainFrame and reset it when the COutView::OnDestroy() is called.</P>
+
+<P>The ressource ID will be used to change the view title (the first resource substring). If you have different ressource ID for your views, you can change the menu too. If no menu nor accelerator table is defined for a ressource ID, the derived child window <B>CMSDIViewFrame</B> witch is the base frame class for all child frames exept the fist (<B>CMSDIFirstFrame</B>), will connect to the menu and accelerator of the fist view. It will use the fist ressource substring for the window title.</P>
+
+<P>The <B>CMSDIFirstFrame </B>window class is the base frame class for the main view. It call the application to close all document views if it is closed.</P>
+<B><I><U><P>Build MultiSingle (MSDI) document-view with AppWizard.</P>
+
+<UL TYPE="SQUARE">
+</B></I></U><LI>Create an <B>MDI</B> application with AppWizard (in this sample, an <B>"msdi"</B> application).</LI>
+<LI>Include<B> msdiapp.h</B>, <B>msdifrm.h</B> &amp;<B> msdivfrm.h</B> in <B>stdafx.h</B> or your library include file. These files will not change and are the only files neded to create an <B>MSDI</B> application.</LI>
+<LI>Add <B>msdiapp.cpp</B>, <B>msdifrm.cpp </B>&amp;<B> msdivfrm.cpp</B> in your project or your library in linker option.</LI>
+<LI>Derive your <B>CMsdiApp</B> from <B>CMSDIWinApp</B> and not from <B>CWinApp</B>, Replace All <B>CWinApp</B> with <B>CMSDIWinApp</B> in <B>msdi.cpp</B> &amp; <B>msdi.h</B>.</LI>
+<LI>Delete the <B>ON_COMMAND</B> for <B>ID_FILE_NEW</B> &amp; <B>ID_FILE_OPEN</B> in <B>msdi.cpp</B>.</LI>
+<LI>Replace the Frame classe <B>CMDIChildWnd</B> in the creation of the doc template with the <B>CMSDIFirstFrame</B> class to avoid closing the document with views remaining open.</LI></UL>
+
+
+<P>At this point, the <B>MSDI</B> application work fine. We must now implement the build of multiple views. The best way to do this is to add doc templates like Microsoft in the CHKBOOK sample and make change to the doc string (the third substring) to avoid the <B>MDI</B> Document dialog box.</P>
+
+
+<UL TYPE="SQUARE">
+<LI>With the application studio, add your views creation commands in the <B>'View'</B> menu.</LI>
+<LI>Add document string for your views like this <B>"ViewTitle</FONT><FONT FACE="Courier New" SIZE=2>\n\n\n\n\n\n</FONT><FONT FACE="Arial" SIZE=2>"</B>. In this sample <B>IDR_GRAFTYPE</B> &amp; <B>IDR_OUTTYPE</B> are the new ressource-ID.</LI>
+<LI>Make a copy of the <B>MDI</B> icone for all new ressource-ID. You can change this icone as you like.</LI>
+<LI>If necessary, make a copy of the main view menu and change it according to the new view commands.</LI>
+<LI>With appwizard, map the messages to the document classe or the mainframe class.</LI>
+<LI>Edit the new fuctions and add the view creation. Use <B>NULL</B> for the doc parameter of <B>CreateOrActivateFrame</B> if the view is not a document view.</LI>
+<LI>Add the include files for your new views in your document class file <B>msdidoc.cpp</B>, in the <B>mainfrm.cpp</B> if necessary and  in your application file <B>msdi.cpp</B> for doc template creation.</LI>
+<LI>Add the doc templates creation in your application file <B>msdi.cpp</B>. Use the <B>CMSDIViewFrame</B> classe to have a new frame title for all views. Give the new ressource-ID for all views.</LI></UL>
+
+<B><I><U><P>MSDI with Visual C++4.0.</P>
+</B></I></U><P>For Visual C++ 4.0, we must remove two functions and make litle change (see <B>WIN32</B>). These functions exist in the Win32 implementation of MFC.</P>
+<B><I><U><P>Change between Versions.</P>
+</B></I></U><P>Version 1.0. Uploaded as MSDI.ZIP</P><DIR>
+<DIR>
+
+<P>First implementation of the <B>MSDI </B>Multi(View) Single(Doc) Document Interface.</P></DIR>
+</DIR>
+
+<P>Version 1.1 (Oct 19 1996) (Uploaded as MSDI32.ZIP</P><DIR>
+<DIR>
+
+<P>Adding <B>OnDestroy()</B> in the <B>COutView</B> and call the <B>CMainFrame::OnDestroyView()</B> to clear the view pointer.</P><DIR>
+<DIR>
+
+<P>Version 1.2 (Oct 22 1996) Uploaded as MSDI1632.ZIP</P></DIR>
+</DIR>
+
+<P>Change name of classe CMSDIFrame to CMSDIFirstFrame.</P>
+<P>Change name of classe CViewFrame to CMSDIViewFrame and files viewfrm.* to msdivfrm.*</P>
+<P>Implement <B>OnSysCommand()</B> in the <B>CMSDIFirstFrame</B> to close all views if the main view is closed. Call an override function in the class CMSDIWinApp. You can change the behaviour of the first frame system menu close.</P>
+<P>Implement <B>OnCreate()</B> in the <B>CMSDIViewFrame</B> for frame with no menu nor accelerator table.</P>
+<P>Implement <B>OnUpdateViewView2()</B> to disable the create menu command if the view exist.</P>
+<P>Set read only to TRUE in <B>OnInitialUpdate()</B> for the <B>COutView</B>.</P>
+<P>Replace the <B>CMSDIWinApp::SaveModified()</B> function name with the name <B>CloseDocument()</B> and make the fuction virtual.</P>
+<P>Replace the name <B>CMultiSingleDocTemplate</B> with <B>CMSDITemplate</B>.</P>
+<P>Implement the <B>ON_WINDOW_NEW</B> message to create new windows for all view connected to the document. Implement the <B>OnUpdateFrameTitle()</B> to update the frame titel accordingly.</P>
+<P>Add a new function <B>GetDocTemplate()</B> to the <B>CMSDIWinApp</B> to retreive the <B>CMSDITemplate*</B> with a <B>CView*</B> as parameter.</P></DIR>
+</DIR>
+
+<B><I><U><P>Problems.</P>
+</B></I></U><P>For all child windows, a new icon is defined, but the framework display the MFC icon for the main view and the same icon for the graf and output view. I have tryed to change the class and connect the right icon, but the code is to complicate for a generic application.</P>
+<B><I><U><P>Future.</P>
+</B></I></U><P>I'm sure you will have many applications with the <B>MSDI</B> interface. If you have some questions or if you have significant generic add on, please contact me.</P>
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

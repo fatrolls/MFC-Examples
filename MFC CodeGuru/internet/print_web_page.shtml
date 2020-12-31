@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Rob Manderson">
+   <TITLE>Printing Web Pages like Internet Explorer</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Printing Web Pages like Internet Explorer</FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:ssram@rocketmail.com">sriram</A>.
+
+ 
+<P>To implement the print function i.e. when we click on the print button in the toolbar no print setup dialog will be displayed and the application will automatically start printing the document. This feature is also present in Microsoft Word. To implement this feature in your application just use the code given below.
+ 
+<PRE><TT><FONT COLOR="#990000">
+void CMyBrowser::OnPrint() 
+{
+	LPOLECOMMANDTARGET pCmdTarg = NULL; 
+
+	m_pDisp = m_WebBrowser2.GetDocument(); //get the IDispatch interface pointer
+	ASSERT(m_pDisp);
+
+	m_pDisp->QueryInterface(IID_IOleCommandTarget, (LPVOID*)&pCmdTarg); //query for olecommandtarget interface
+	ASSERT(pCmdTarg);
+
+	pCmdTarg->Exec(NULL, //call the olecommandtarget's Exec method
+		OLECMDID_PRINT,
+		0,
+		NULL,
+		NULL
+	);
+
+
+	if (pCmdTarg) 
+		pCmdTarg->Release(); // release document's command target
+
+	if (m_pDisp) 
+		m_pDisp->Release(); // release document's dispatch interfac
+
+}
+</FONT></TT></PRE>
+Get the IDispatch interface pointer by calling the Webbrowser controls GetDocument method. Then Query for the IOleCommandTarget interface. 
+
+After getting the IOleCommandTarget pointer then call that interface's Exec method passing the OLECMDID_PRINT as the first parameter.
+
+For detailed explanation for Ole and the Interfaces involved in this piece of code please refer to visual c++ help.
+
+If you have any comments and suggestions or if you find any bugs in this article let me know.
+
+
+<p>Updated on May 23 1998
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

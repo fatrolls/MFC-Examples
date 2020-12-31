@@ -1,0 +1,308 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DevStudio Macros - Open current header file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">Open current header file</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This tip was contributed by <A HREF="mailto:jpatel@altair.com">Jignesh Patel</A>
+
+<p>I was browsing through your site and thought I could contribute an useful
+tip.  If you remember, Visual C++ V 4.x had a little utility to open the
+header file of the current .cpp file.  The same is available under V5 under
+the Command WBOpenInclude but this gives a list of all header files
+included in the current .cpp you are working in and have to make a
+selection.
+
+<p>A lot of time (escpecially for myself and my fellow developers), we have
+the need to navigate back and forth the .cpp and .h file while making
+changes.  Using the above method is a bit tedious and File/Open is very
+slow!
+
+<p>A few months ago I came across a small macro written in VB Script or VBA
+(whichever term you want to use) which opens the .h or .cpp file with a
+single click of a button.  
+
+<p>Once you have the macro loaded you can assign it to a button and even a
+short cut key (I use ctrl-Q, right next to ctrl-tab).
+
+<p>I find this extremely helpful and would like to share it with others on
+your web site.
+
+<p>I must point out, that I cannot take any credit for writing this macro and
+hopefully people will find it just as helpful as I do. (Zafir: I got mail from
+Ian Southwell informing me that he had written this macro. He was kind enough
+to send other useful macros too. A new name was suggested by Michael Ben-David
+to better describe what the macro does)
+
+<PRE><TT><FONT COLOR="#990000">
+'
+'MyMacro.dsm - Written by Ian Southwell
+'
+'------------------------------------------------------------------------------
+'FILE DESCRIPTION: Opens the .cpp or .h file for the current document.
+'------------------------------------------------------------------------------
+
+Sub ToggleHandCPP()
+'DESCRIPTION: Opens the .cpp or .h file for the current document.
+'Toggles between the .cpp & .h file
+	'TODO: Put macro code here
+	ext = ActiveDocument.FullName
+	If ext = "" Then
+		msgbox ("Error, not a .cpp or .h file")
+		exit sub
+	End If
+	DocName = UCase(ext)
+	pos = Instr(ext, ".")
+	Do While pos &gt 1
+		ext = Mid(ext, pos, (Len(ext) - pos + 1))
+		pos = Instr(ext, ".")
+	Loop
+	ext = LCase(ext)
+	pos = Instr(DocName, ".")
+	If ext &lt&gt ".cpp" and ext &lt&gt ".h" Then
+		msgbox ("Error, not a .cpp or a .h file")
+		exit sub
+	End If
+	if ext = ".cpp" then
+		fn = left(DocName, pos) & "h"
+	else
+		fn = left(DocName, pos) & "cpp"
+	end if
+	'msgbox (fn)
+	on error resume next
+	Documents.Open (fn)
+End Sub
+</FONT></TT></PRE>
+
+<P>Here's an updated macro sent by <A HREF="mailto:steve.mailman@usspg.eds.com">Steve Mailman</A>
+<P>The macro  ToggleHandCPP() on this web page is usefull, but it does not
+work when folder name contains a dot.  This is my revised version
+
+<PRE><TT><FONT COLOR="#990000">
+Sub ToggleHandCPP()
+	'DESCRIPTION: Opens the .cpp or .h file for the current document.
+	'Toggles between the .cpp & .h file
+	ext = ActiveDocument.FullName
+	If ext = "" Then
+		msgbox ("Error, not a .cpp or .h file")
+		exit sub
+	End If
+	DocName = UCase(ext)
+
+	If Right(DocName,4) = ".CPP" Then
+		fn = left(DocName, Len(DocName)-3) & "h"
+	ElseIf Right(DocName,2) = ".H" Then
+		fn = Left(DocName, Len(DocName)-1) & "cpp"
+	Else
+		msgbox ("Error, not a .cpp or a .h file")
+		exit sub
+	End If
+	'msgbox (fn)
+	on error resume next
+	Documents.Open (fn)
+End Sub
+</FONT></TT></PRE>
+
+
+
+
+
+<p>Here's another updated macro sent in by <A HREF="mailto:Douglas.Peterson@telex.com">Douglas Peterson</A>
+
+<p>I have several libraries I maintain and browse and it's common practice to
+put header files in an include\ directory and source files in an src\
+directory.  Thanks go to Katie King for helping me with the bit that checks for
+Document.Open success.
+</p>
+<p>When I get around to it, I'll work on a third search method that will search
+your hard drives (are we talking about a plug-in now?).  Or perhaps doing that
+fourth and the third searching all subdirectories under /include or /src (does
+any one else use the Objective Toolkit? - thanks will go to Stingsoft for most convoluted
+source directory structure/naming convention on the planet)
+</p>
+
+<PRE><TT><FONT COLOR="#990000">
+Sub ToggleHeaderFile()
+'DESCRIPTION: Toggles between .cpp and .h files for the current document.
+	' Get doc name and path
+	DocName = ActiveDocument.Name
+	DocNameNoCase = LCase(DocName)
+	If DocName = "" Then
+		MsgBox ("Error, not a .cpp or .h file")
+		Exit Sub
+	End If
+	DocPath = ActiveDocument.Path
+	DocPathNoCase = LCase(DocPath)
+
+	' If this is a source file, we want to look for header and vise versa
+	If Right(DocNameNoCase, 4) = ".cpp" Then
+		DocName = Left(DocName, Len(DocName)-3) & "h"
+		header = 1
+	ElseIf Right(DocNameNoCase, 2) = ".h" Then
+		DocName = Left(DocName, Len(DocName)-1) & "cpp"
+		header = 0
+	Else
+		MsgBox ("Error, not a .cpp or a .h file")
+		Exit Sub
+	End If
+
+	' Try to find the file in the same directory
+	LookFor = DocPath + "\" + DocName
+	On Error Resume Next
+	Documents.Open(LookFor)
+
+	' See if the document was opened, by comparing the active to the original
+	ActiveDocName = LCase(ActiveDocument.Name)
+	If ActiveDocName < > DocNameNoCase Then
+		Exit Sub
+	End If
+
+	' If we are looking for a header file, assume our path ends with \src and
+	' look in an ..\Include directory
+	If header = 1 Then
+		If Right(DocPathNoCase, 4) &lt;> "\src" Then
+			Exit Sub
+		End If
+
+		LookFor = Left(DocPath, Len(DocPath)-3) & "Include\"
+		LookFor = LookFor + DocName
+		On Error Resume Next
+		Documents.Open(LookFor)
+		Exit Sub
+
+	' If we are looking for a source file, assume our path ends with
+	' \include and look in an ..\Src directory
+	Else
+		If Right(DocPathNoCase, 8) &lt;> "\include" Then
+		Exit Sub
+	End If
+
+	LookFor = Left(DocPath, Len(DocPath)-7) & "Src\"
+	LookFor = LookFor + DocName
+	On Error Resume Next
+	Documents.Open(LookFor)
+	End If
+End Sub
+</FONT></TT></PRE>
+
+<p>Yet another macro by <A HREF="mailto:Kingboy@innet.be">Sven Rymenants</A></p>
+
+<p>In addition to the "Open current header file" I wrote a version which is
+a littlebit different than the code above.
+It does the same (swaps header and source).
+When you have an .cpp file the macro first searches for the .hpp file if
+this one is not found it goes on by checking for the .h file.
+If the file is still not found the macro searches for an alternative in
+the #include section of the cpp file.
+</p>
+
+<p>If the file is still not found the user should write better code :-).
+</p>
+
+<PRE><TT><FONT COLOR="#990000">
+Sub ToggleSourceAndHeader()
+'DESCRIPTION: Toggle between the active source and header file.
+
+	sCurrent = LCase (ActiveDocument.FullName)
+		
+	select case right(sCurrent, 3)
+		case "cpp"
+			DocStr    = Replace (sCurrent, ".cpp", ".hpp", 1, 1)
+			DocAltStr = Replace (sCurrent, ".cpp", ".h", 1, 1)
+			DocName   = Replace (sCurrent, ".cpp", "", 1, 1)
+			DocType   = "header"
+		case "hpp"
+			DocStr    = Replace (sCurrent, ".hpp", ".cpp", 1, 1)
+			DocAltStr = Replace (sCurrent, ".hpp", ".c", 1, 1)
+			DocName   = Replace (sCurrent, ".hpp", "", 1, 1)
+			DocType   = "source"
+	end select
+
+	select case right(sCurrent, 1)
+		case "c"
+			DocStr    = Replace (sCurrent, ".c", ".h", 1, 1)
+			DocAltStr = Replace (sCurrent, ".c", ".hpp", 1, 1)
+			DocName   = Replace (sCurrent, ".c", "", 1, 1)
+			DocType   = "header"
+		case "h"
+			DocStr    = Replace (sCurrent, ".h", ".c", 1, 1)
+			DocAltStr = Replace (sCurrent, ".h", ".cpp", 1, 1)
+			DocName   = Replace (sCurrent, ".h", "", 1, 1)
+			DocType   = "source"
+	end select
+
+	'try to open the default
+	on error resume next
+	Documents.Open DocStr
+	if err.number = 0 then exit sub
+	
+	'if not found try to open the alternative
+	on error resume next
+	Documents.Open DocAltStr
+	if err.number = 0 then exit sub
+
+	if msgbox("Error during the loading of the " & _
+			  DocType & " of '" & DocName & "'." & _
+			  vbCr & "Search for alternative ?" , vbExclamation + vbYesNo, "Error") = vbYes Then
+		'Find an alternative
+		ActiveDocument.Selection.StartOfDocument
+		sShortCurrent = LCase (ActiveDocument.Name)
+		sShortCurrent = Left(sShortCurrent, Instr(sShortCurrent, ".")-1)
+
+		do 
+			nStartLine = ActiveDocument.Selection.CurrentLine
+			ActiveDocument.Selection.FindText "#include", dsMatchForward + dsMatchCase + dsMatchRegExp 
+		
+			if nStartLine >= ActiveDocument.Selection.CurrentLine then
+				msgbox "I found no alternative, I'm only a stupid computer...", vbInformation, "Oops!"
+				Exit Do
+			end if
+					
+			ActiveDocument.Selection.CharRight
+			ActiveDocument.Selection.EndOfLine dsExtend
+
+			'if one is found ask the user to open it...
+			if instr(ActiveDocument.Selection, sShortCurrent) > 0 then
+				if msgbox("Open " & ActiveDocument.Selection & "?", vbInformation + vbYesNo, "Question") = vbYes then
+					DocAlt = ActiveDocument.Selection.Text
+					DocAlt = mid(DocAlt, Instr(DocAlt, Chr(34))+1)
+					DocAlt = left(DocAlt, Instr(DocAlt, Chr(34))-1)
+					Documents.Open ActiveDocument.Path & "\" & DocAlt
+					Exit Do
+				end if
+			end if
+		loop
+	end if
+End Sub
+</FONT></TT></PRE>
+
+
+<P>Updated on: June 23, 1998.</P>
+<p>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

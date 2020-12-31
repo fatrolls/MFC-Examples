@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SecureChat", "SecureChat.vcproj", "{85DD45F2-2F01-4C59-BBCC-459890945492}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SecureChatClient", "SecureChatClient\SecureChatClient.vcproj", "{200B204B-4E73-44C2-AE9E-BC193270CDB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85DD45F2-2F01-4C59-BBCC-459890945492}.Debug|Win32.ActiveCfg = Debug|Win32
+		{85DD45F2-2F01-4C59-BBCC-459890945492}.Debug|Win32.Build.0 = Debug|Win32
+		{85DD45F2-2F01-4C59-BBCC-459890945492}.Release|Win32.ActiveCfg = Release|Win32
+		{85DD45F2-2F01-4C59-BBCC-459890945492}.Release|Win32.Build.0 = Release|Win32
+		{200B204B-4E73-44C2-AE9E-BC193270CDB4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{200B204B-4E73-44C2-AE9E-BC193270CDB4}.Debug|Win32.Build.0 = Debug|Win32
+		{200B204B-4E73-44C2-AE9E-BC193270CDB4}.Release|Win32.ActiveCfg = Release|Win32
+		{200B204B-4E73-44C2-AE9E-BC193270CDB4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

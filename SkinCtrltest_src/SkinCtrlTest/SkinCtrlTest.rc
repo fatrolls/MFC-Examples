@@ -1,0 +1,435 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SKINCTRLTEST_DIALOG DIALOGEX 0, 0, 494, 302
+STYLE WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "SkinCtrls"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Unskinned",IDC_UNSKINNED,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,4,4,50,10
+    CONTROL         "Default Skin",IDC_DEFAULTSKIN,"Button",
+                    BS_AUTORADIOBUTTON,69,4,55,10
+    CONTROL         "Bitmap Skin",IDC_BITMAPSKIN,"Button",BS_AUTORADIOBUTTON,
+                    139,4,53,10
+    CONTROL         "Custom Skin (by callback)",IDC_CUSTOMSKIN,"Button",
+                    BS_AUTORADIOBUTTON,207,4,97,10
+    CONTROL         "Tree1",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_TRACKSELECT | 
+                    WS_BORDER | WS_GROUP | WS_TABSTOP,4,31,116,94
+    EDITTEXT        IDC_EDIT1,379,242,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN4,"msctls_updown32",UDS_ALIGNRIGHT | 
+                    UDS_AUTOBUDDY | UDS_ARROWKEYS,421,245,11,10
+    CONTROL         "MonthCalendar1",IDC_MONTHCALENDAR1,"SysMonthCal32",
+                    MCS_NOTODAY | WS_TABSTOP,126,31,126,95
+    LISTBOX         IDC_LIST2,260,31,60,66,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP,WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_EDIT2,327,31,72,66,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL
+    CONTROL         "",IDC_RICHEDIT1,"RICHEDIT",ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_NUMBER | WS_BORDER | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP,410,31,70,66
+    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,
+                    261,107,143,13
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKRECT | SS_SUNKEN | 
+                    WS_BORDER,415,110,21,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,439,110,20,20,SS_SUNKEN
+    CONTROL         "Radio1",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,415,198,61,10
+    CONTROL         "Radio2",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | 
+                    BS_LEFTTEXT | BS_RIGHT,415,210,61,10
+    CONTROL         "Radio3",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | 
+                    BS_CENTER,415,222,61,10
+    CONTROL         "Check1",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    BS_TOP | WS_GROUP | WS_TABSTOP,417,147,61,15
+    CONTROL         "Check2",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    WS_GROUP | WS_TABSTOP,417,164,61,15
+    CONTROL         "Check3",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | BS_CENTER | WS_GROUP | WS_TABSTOP,417,181,
+                    61,15
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | WS_BORDER | 
+                    WS_TABSTOP,4,132,116,164
+    COMBOBOX        IDC_COMBO1,133,162,79,79,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,4,23,483,1
+    SCROLLBAR       IDC_SCROLLBAR1,231,249,71,14
+    CONTROL         "Tab1",IDC_TAB1,"SysTabControl32",0x0,229,130,60,50
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_AUTOTICKS | 
+                    TBS_BOTH | WS_TABSTOP,231,219,93,18
+    LTEXT           "Static",IDC_STATIC,346,212,19,8
+    CONTROL         "DateTimePicker1",IDC_DATETIMEPICKER1,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | DTS_APPCANPARSE | WS_TABSTOP,231,281,71,
+                    15
+    CONTROL         "B1",IDC_BUTTON1,"Button",BS_OWNERDRAW | WS_TABSTOP,306,
+                    131,28,14
+    COMBOBOX        IDC_COMBO2,133,142,79,81,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_COMBO3,133,182,79,31,CBS_SIMPLE | CBS_SORT | 
+                    CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "HotKey1",IDC_HOTKEY1,"msctls_hotkey32",NOT WS_VISIBLE | 
+                    WS_DISABLED | WS_BORDER | WS_TABSTOP,411,280,76,14,
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Combo boxes",IDC_BUTTON,125,129,96,167
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,465,110,21,20
+    COMBOBOX        IDC_COMBO4,133,218,79,72,CBS_SIMPLE | CBS_SORT | 
+                    CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Spin1",IDC_SPIN1,"msctls_updown32",UDS_ARROWKEYS,437,
+                    241,11,24
+    CONTROL         "Spin1",IDC_SPIN2,"msctls_updown32",UDS_ARROWKEYS | 
+                    UDS_HORZ,454,241,33,24
+    PUSHBUTTON      "",IDC_BUTTON2,335,131,28,14
+    PUSHBUTTON      "B3",IDC_BUTTON3,364,131,28,14,BS_BITMAP
+    CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
+                    231,196,93,15
+    PUSHBUTTON      "Button4",IDC_BUTTON4,306,152,45,35,BS_ICON | BS_RIGHT | 
+                    BS_BOTTOM,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "Button5",IDC_BUTTON5,331,194,46,12,WS_DISABLED
+    PUSHBUTTON      "Button5",IDC_BUTTON6,358,150,15,39
+    CONTROL         "Slider1",IDC_SLIDER2,"msctls_trackbar32",TBS_VERT | 
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,313,234,21,62
+    CONTROL         "Progress2",IDC_PROGRESS2,"msctls_progress32",
+                    PBS_VERTICAL | WS_BORDER,385,150,18,87
+    PUSHBUTTON      "Browse...",IDC_BROWSE,437,4,50,14
+    LTEXT           "Static",IDC_STATIC,339,267,55,29,SS_SUNKEN
+    PUSHBUTTON      "Set BkColor...",IDC_SETCOLOR,324,4,50,14
+    PUSHBUTTON      "PropSheet...",IDC_PROPSHEET,381,4,50,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "SkinCtrlTest MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "SkinCtrlTest\0"
+            VALUE "LegalCopyright", "Copyright (C) 2003\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "SkinCtrlTest.EXE\0"
+            VALUE "ProductName", "SkinCtrlTest Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SKINCTRLTEST_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO1, 0x403, 2, 0
+0x0061, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO1, 0x403, 2, 0
+0x0064, 
+    IDC_COMBO2, 0x403, 23, 0
+0x6161, 0x6161, 0x6161, 0x6161, 0x6161, 0x6161, 0x6161, 0x6161, 0x6161, 
+0x6161, 0x6161, "\000" 
+    IDC_COMBO2, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO2, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO2, 0x403, 3, 0
+0x6164, "\000" 
+    IDC_COMBO2, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO2, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO2, 0x403, 3, 0
+0x6164, "\000" 
+    IDC_COMBO2, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO2, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO2, 0x403, 3, 0
+0x6164, "\000" 
+    IDC_COMBO2, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO2, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO2, 0x403, 2, 0
+0x0064, 
+    IDC_COMBO3, 0x403, 2, 0
+0x0061, 
+    IDC_COMBO3, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO3, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO3, 0x403, 2, 0
+0x0064, 
+    IDC_COMBO3, 0x403, 2, 0
+0x0061, 
+    IDC_COMBO3, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO3, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO3, 0x403, 2, 0
+0x0064, 
+    IDC_COMBO4, 0x403, 2, 0
+0x0061, 
+    IDC_COMBO4, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO4, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO4, 0x403, 6, 0
+0x6464, 0x6464, 0x0064, 
+    IDC_COMBO4, 0x403, 2, 0
+0x0061, 
+    IDC_COMBO4, 0x403, 2, 0
+0x0062, 
+    IDC_COMBO4, 0x403, 2, 0
+0x0063, 
+    IDC_COMBO4, 0x403, 11, 0
+0x6464, 0x6464, 0x6464, 0x6464, 0x6464, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SKINCTRLTEST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 487
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 296
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SCROLL_COLD         BITMAP  DISCARDABLE     "res\\scroll_cold.bmp"
+IDB_SCROLL_DIS          BITMAP  DISCARDABLE     "res\\scroll_dis.BMP"
+IDB_SCROLL_HOT          BITMAP  DISCARDABLE     "res\\scroll_hot.bmp"
+IDB_BTNLEFT_HOT         BITMAP  DISCARDABLE     "res\\btn_hot_left.bmp"
+IDB_BTNMID_HOT          BITMAP  DISCARDABLE     "res\\btn_hot_mid.bmp"
+IDB_BTNRIGHT_HOT        BITMAP  DISCARDABLE     "res\\btn_hot_right.bmp"
+IDB_BTNRIGHT_COLD       BITMAP  DISCARDABLE     "res\\btn_cold_right.bmp"
+IDB_BTNMID_COLD         BITMAP  DISCARDABLE     "res\\btn_cold_mid.bmp"
+IDB_BTNLEFT_COLD        BITMAP  DISCARDABLE     "res\\btn_cold_left.bmp"
+IDB_BTNRIGHT_DIS        BITMAP  DISCARDABLE     "res\\btn_dis_right.bmp"
+IDB_BTNMID_DIS          BITMAP  DISCARDABLE     "res\\btn_dis_mid.bmp"
+IDB_BTNLEFT_DIS         BITMAP  DISCARDABLE     "res\\btn_dis_left.bmp"
+IDB_BTNCLIPRIGHT_HOT    BITMAP  DISCARDABLE     "res\\btn_hot_clipright.bmp"
+IDB_BTNCLIPRIGHT_COLD   BITMAP  DISCARDABLE     "res\\btn_cold_clipright.bmp"
+IDB_BTNCLIPLEFT_DIS     BITMAP  DISCARDABLE     "res\\btn_dis_clipleft.bmp"
+IDB_BTNCLIPRIGHT_DIS    BITMAP  DISCARDABLE     "res\\btn_dis_clipright.bmp"
+IDB_BTNCLIPLEFT_HOT     BITMAP  DISCARDABLE     "res\\btn_hot_clipleft.bmp"
+IDB_BTNCLIPLEFT_COLD    BITMAP  DISCARDABLE     "res\\btn_cold_clipleft.bmp"
+IDB_SPINUP_HOT          BITMAP  DISCARDABLE     "res\\spin_hot_up.bmp"
+IDB_SPINLEFT_COLD       BITMAP  DISCARDABLE     "res\\spin_cold_left.bmp"
+IDB_SPINRIGHT_COLD      BITMAP  DISCARDABLE     "res\\spin_cold_right.bmp"
+IDB_SPINUP_COLD         BITMAP  DISCARDABLE     "res\\spin_cold_up.bmp"
+IDB_SPINDOWN_DIS        BITMAP  DISCARDABLE     "res\\spin_dis_down.bmp"
+IDB_SPINLEFT_DIS        BITMAP  DISCARDABLE     "res\\spin_dis_left.bmp"
+IDB_SPINRIGHT_DIS       BITMAP  DISCARDABLE     "res\\spin_dis_right.bmp"
+IDB_SPINUP_DIS          BITMAP  DISCARDABLE     "res\\spin_dis_up.bmp"
+IDB_SPINDOWN_HOT        BITMAP  DISCARDABLE     "res\\spin_hot_down.bmp"
+IDB_SPINLEFT_HOT        BITMAP  DISCARDABLE     "res\\spin_hot_left.bmp"
+IDB_SPINRIGHT_HOT       BITMAP  DISCARDABLE     "res\\spin_hot_right.bmp"
+IDB_SPINDOWN_COLD       BITMAP  DISCARDABLE     "res\\spin_cold_down.bmp"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Australia) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENA)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_AUS
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROPPAGE DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "page"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Static",IDC_STATIC,7,7,172,81
+    COMBOBOX        IDC_COMBO1,20,23,80,136,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,
+                    20,44,80,14
+    CONTROL         "Spin1",IDC_SPIN1,"msctls_updown32",UDS_ARROWKEYS,19,66,
+                    11,14
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,40,66,127,15
+    EDITTEXT        IDC_EDIT1,107,23,61,36,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PROPPAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP              BITMAP  DISCARDABLE     "res\\bitmap.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\SkinCtrlTest.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\SkinCtrlTest.ico"
+#endif    // English (Australia) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\SkinCtrlTest.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

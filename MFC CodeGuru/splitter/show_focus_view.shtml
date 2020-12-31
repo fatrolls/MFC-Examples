@@ -1,0 +1,148 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Splitter Window - Highlight view with focus</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Highlight view with focus</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+
+<P>Many times it would be nice to have some visual feedback as to which pane in a split view currently has the focus. This is very useful if you have multiple view types and different keyboard strokes cause different actions in each.
+
+<P>NOTE: This uses an undocumented feature in MFC so be careful in the future.
+
+ 
+
+<P><b>Step 1) </b>Derive your own SplitterWnd class.
+<br><b>Step 2) </b>Override the undocumented OnDrawSplitter function.
+<br><b>Step 3) </b>Replace the CSplitterWnd instance in the child frame with your splitter.
+
+ 
+
+<P>This example draws in red but you can adjust the color and width of the frame by altering the define values.
+
+ 
+<PRE><TT><FONT COLOR="#990000">
+///////////////////////////////////////////////////////////////////////////// 
+// MySplitterWnd.h
+
+class MySplitterWnd : public CSplitterWnd
+{
+public: 
+	int cRow;
+	int cCol; 
+	MySplitterWnd();
+	void OnDrawSplitter(CDC* pDC, ESplitType nType,
+		const CRect& rectArg);
+	void RefreshSplitBars(void);
+};
+
+
+
+///////////////////////////////////////////////////////////////////////////// 
+// MySplitterWnd.cpp
+
+#include "StdAfx.h"
+#include "MySplitterWnd.h"
+
+#define FOCUS_HILIGHT_COLOR_ULO RGB(180, 75, 25)
+#define FOCUS_HILIGHT_COLOR_LRO RGB(245, 5, 25)
+#define FOCUS_HILIGHT_COLOR_ULI RGB(145, 95, 75)
+#define FOCUS_HILIGHT_COLOR_LRI RGB(220, 65, 40)
+
+#define FOCUS_HILIGHT_SHOW TRUE
+
+#define SPLITTER_CX 4
+#define SPLITTER_CY 4
+#define SPLITTER_GAPX 4
+#define SPLITTER_GAPY 4
+
+void MySplitterWnd::RefreshSplitBars(void)
+{
+	CRect rectInside;
+
+	GetInsideRect(rectInside);
+	DrawAllSplitBars(NULL, rectInside.right, rectInside.bottom);
+}
+
+
+MySplitterWnd::MySplitterWnd()
+{
+	cRow = 0;
+	cCol = 0; 
+	
+	m_cxSplitter = SPLITTER_CX;
+	m_cySplitter = SPLITTER_CY;
+	m_cxSplitterGap = SPLITTER_GAPX;
+	m_cySplitterGap = SPLITTER_GAPY;
+}
+
+
+void MySplitterWnd::OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect& rectArg)
+{
+	if((FOCUS_HILIGHT_SHOW) && ((GetRowCount()>1) || (GetColumnCount()>1)) && (nType == splitBorder))
+	{
+		int pRow = 0;
+		int pCol = 0;
+		if(rectArg.top)
+		{
+			pRow = 1;
+		}
+		if(rectArg.left)
+		{
+			pCol = 1;
+		}
+		if((cRow == pRow) && (cCol == pCol))
+		{
+			if (pDC == NULL)
+			{
+				RedrawWindow(rectArg, NULL, RDW_INVALIDATE|RDW_NOCHILDREN);
+				return; 
+			}
+			ASSERT_VALID(pDC);
+			CRect rect = rectArg;
+			pDC->Draw3dRect(rect, FOCUS_HILIGHT_COLOR_ULO, FOCUS_HILIGHT_COLOR_LRO);
+			rect.InflateRect(-GetSystemMetrics(SM_CXBORDER), -GetSystemMetrics(SM_CYBORDER));
+			pDC->Draw3dRect(rect, FOCUS_HILIGHT_COLOR_ULI, FOCUS_HILIGHT_COLOR_LRI);
+			return; 
+		}
+	}
+	
+	CSplitterWnd::OnDrawSplitter(pDC,nType,rectArg); 
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

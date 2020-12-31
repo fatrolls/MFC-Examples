@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Displaying System Interfaces in ClassView</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Displaying System Interfaces in ClassView</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<P>This article was contributed by <A HREF="mailto:extraview@netmatters.co.uk">James Hebben</A></P>
+
+<P>The VC++ ClassView pane of the project window displays a view of your
+project classes. If your project is an ATL project, then ClassView will also
+display your interfaces that a class supports when the class node is opened in
+ClassView. ClassView scans your class header file for <B>COM_INTERFACE_ENTRY
+</B>macros to determine what interfaces a class supports. By default, only
+interfaces that appear in your IDL file are displayed in the ClassView. </P>
+<P>You can extend this feature to include any system interfaces that you
+implement in your class, such as <B>IStorage</B>, <B>IStream</B> etc. This can
+be acieved in two simple steps:</P>
+
+<OL>
+<LI>Ensure that your class declaration includes <B>COM_INTERFACE_ENTRY </B>macros
+for the system interfaces you implement (it should do already)</LI>
+<LI>Open the system IDL file (in the main Include directory of your VC++
+installation) that contains the interface you want ClassView to recognise and
+include it in your project</LI></OL>
+
+<P>All system interfaces that are defined all IDL files that are included in
+your project will appear in the ClassView window.</P>
+
+<P><B>NOTE:</B> By default, adding an IDL file to your project excludes it from
+the project build so this method does not affect the  build of your project in
+any way</P>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

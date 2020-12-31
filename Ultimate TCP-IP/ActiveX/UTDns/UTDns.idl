@@ -1,0 +1,313 @@
+// ===================================================================
+// UTDns.idl : IDL source for UTDns.dll
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTFinger.tlb) and marshalling code.
+//
+// ===================================================================
+// Copyright © The Ultimate Toolbox 1999-2007, all rights reserved
+// ===================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+cpp_quote("#include \"DNS_c.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "DNS_c.h"
+#include "UTErr.h"
+cpp_quote("#endif")  
+
+
+[
+	uuid(86E5D740-02EB-11D3-A464-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP DNS Control 4.0")
+]
+library UTDNSLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(86E5D751-02EB-11D3-A464-0080C858F182),
+		helpstring("_IDNSEvents Interface")
+	]
+	dispinterface _IDNSEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnLookup")] HRESULT OnLookup([in] long Result);
+	};
+
+	[
+		uuid(86E5D750-02EB-11D3-A464-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP DNS Control 4.0")
+	]
+	coclass DNS
+	{
+		[default] interface IDNS;
+		[default, source] dispinterface _IDNSEvents;
+	};
+
+	//===========================================
+	//	Protocol types enumeration
+	//===========================================
+	typedef [uuid (956966E5-03C4-11d3-A465-0080C858F182), helpstring("DNSProtocolTypes")]
+	enum ProtocolTypes {
+		[helpstring("TCP Protocol")]		ptTCP,	
+		[helpstring("UDP Protocol")]		ptUDP,	
+
+	} ProtocolTypes;
+
+
+	//===========================================
+	//	DNS entry types enumeration
+	//===========================================
+	typedef [uuid (E95A1F6C-0330-11d3-A464-0080C858F182), helpstring("DNSEntryTypes")]
+	enum DNSEntryTypes {
+		[helpstring("Address")]
+			etDNS_ADDRESS			= CUT_DNS_A,	
+		[helpstring("Name server")]
+			etDNS_NAME_SERVER		= CUT_DNS_NS,				
+		[helpstring("Mail destination (obs)")]
+			etDNS_MAIL_DEST			= CUT_DNS_MD,				
+		[helpstring("Mail forwarder (obs)")]
+			etDNS_MAIL_FORW			= CUT_DNS_MF,				
+		[helpstring("Canonical name")]
+			etDNS_CANON_NAME		= CUT_DNS_CNAME,			
+		[helpstring("Start of authority")]
+			etDNS_AUTH_START		= CUT_DNS_SOA,			
+		[helpstring("Mailbox domain")]
+			etDNS_MAILBOX_DOMAIN	= CUT_DNS_MB,				
+		[helpstring("Mail group")]
+			etDNS_MAIL_GROUP		= CUT_DNS_MG,				
+		[helpstring("Mail rename domain")]
+			etDNS_MAIL_REN_DOMAIN	= CUT_DNS_MR,				
+		[helpstring("Null")]
+			etDNS_NULL				= CUT_DNS_NULL,			 
+		[helpstring("Well known service description")]
+			etDNS_WELLKNOWN_SER_DESC= CUT_DNS_WKS,			
+		[helpstring("Domain name pointer")]
+			etDNS_DOMAIN_NAME_PTR	= CUT_DNS_PTR,			  
+		[helpstring("Host info")]
+			etDNS_HOST_INFO			= CUT_DNS_HINFO,			
+		[helpstring("Mailbox or mail list info")]
+			etDNS_MAIL_LIST_INFO	= CUT_DNS_MINFO,			
+		[helpstring("Mail server")]
+			etDNS_MAIL_SERVER		= CUT_DNS_MX,				
+		[helpstring("Text strings")]
+			etDNS_TEXT_STRING		= CUT_DNS_TXT				
+	} DNSEntryTypes;
+
+
+	//===========================================
+	//	Request types enumeration
+	//===========================================
+	typedef [uuid (C4A9D11E-032E-11d3-A464-0080C858F182), helpstring("DNSRequestTypes")]
+	enum DNSRequestTypes
+	{
+		[helpstring("Request for transfer of an entire zone")]	
+			rtDNS_AXFR		= CUT_DNS_AXFR,
+		[helpstring("Request for mailbox related records")]		
+			rtDNS_MAILB		= CUT_DNS_MAILB,
+		[helpstring("Request for mail agent")]					
+			rtDNS_MAILA		= CUT_DNS_MAILA,
+		[helpstring("Request for all records")]					
+			rtDNS_ALL		= CUT_DNS_ALL,
+
+	} DNSRequestTypes;
+
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (CBCC1A6A-032E-11d3-A464-0080C858F182), helpstring("DNS Error Codes")]
+	enum DNSErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Invalid Address Format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid Address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Connection Failed")]		ecConnectionFailed		= UTE_CONNECT_FAILED,
+		[helpstring("No Response")]				ecNoResponse			= UTE_NO_RESPONSE,
+		[helpstring("Name Lookup Failed")]		ecNameLookupFailed		= UTE_NO_RESPONSE,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("Timed out")]				ecTimeOut				= UTE_CONNECT_TIMEOUT,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR
+
+	} DNSErrorCodes;
+
+
+	[
+		uuid(AAA403C6-03B3-11D3-A465-0080C858F182),
+		helpstring("DNSPropPage Class")
+	]
+	coclass DNSPropPage
+	{
+		interface IUnknown;
+	};
+};
+
+
+	[
+		object,
+		uuid(86E5D74F-02EB-11D3-A464-0080C858F182),
+		dual,
+		helpstring("IDNS Interface"),
+		pointer_default(unique)
+	]
+	interface IDNS : IDispatch
+	{
+
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_LOOKUP_TIME_OUT		= 1;
+		const int DISPID_BLOCKING_MODE			= 2;
+		const int DISPID_INCLUDE_DEF_MX			= 3;
+		const int DISPID_CANCEL_LOOKUP			= 4;
+		const int DISPID_GET_ERROR_TEXT			= 5;
+		const int DISPID_GET_NAME_FROM_ADDRESS	= 6;
+		const int DISPID_GET_ADDRESS_FROM_NAME	= 7;
+		const int DISPID_RESET_ENUMERATION		= 8;
+		const int DISPID_ENUM_SERVERS			= 9;
+		const int DISPID_ENUM_MXRECORDS			= 10;
+		const int DISPID_ENUM_ENTRIES			= 11;
+		const int DISPID_LOOKUP					= 12;
+		const int DISPID_AUTH_LOOKUP			= 13;
+		const int DISPID_IS_AUTH				= 14;
+		const int DISPID_GET_ENTRY_SHORT_NAME	= 15;
+		const int DISPID_GET_ENTRY_LONG_NAME	= 16;
+		const int DISPID_HOST_NAME				= 17;
+		const int DISPID_ENTRY_TYPE				= 18;
+		const int DISPID_TIME_TO_LIVE			= 19;
+		const int DISPID_SOA_SERIAL				= 20;
+		const int DISPID_SOA_REFRESH			= 21;
+		const int DISPID_SOA_RETRY				= 22;
+		const int DISPID_SOA_EXPIRE				= 23;
+		const int DISPID_SOA_MINIMUM			= 24;
+		const int DISPID_DATA					= 25;
+		const int DISPID_DATA2					= 26;
+		const int DISPID_MX_PREFERENCE			= 27;
+		const int DISPID_PROTOCOL				= 28;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+
+		[propget, bindable, requestedit, id(DISPID_LOOKUP_TIME_OUT), helpstring("Lookup time out in sec.")] 
+			HRESULT LookupTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_LOOKUP_TIME_OUT), helpstring("Lookup time out in sec.")] 
+			HRESULT LookupTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking Mode")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking Mode")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_INCLUDE_DEF_MX), helpstring("Include Default MX")] 
+			HRESULT IncludeDefaultMX([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_INCLUDE_DEF_MX), helpstring("Include Default MX")] 
+			HRESULT IncludeDefaultMX([in] VARIANT_BOOL newVal);
+
+		[propget, id(DISPID_IS_AUTH), helpstring("Is Authoritative")] 
+			HRESULT IsAuthoritative([out, retval] VARIANT_BOOL *pVal);
+
+		[propget, id(DISPID_PROTOCOL), helpstring("Protocol TCP or UDP")] 
+			HRESULT Protocol([out, retval] ProtocolTypes *pVal);
+		[propput, id(DISPID_PROTOCOL), helpstring("Protocol TCP or UDP")] 
+			HRESULT Protocol([in] ProtocolTypes newVal);
+
+		//===========================================
+		//	Current Entry Get methods
+		//===========================================
+
+
+		[propget, id(DISPID_HOST_NAME), helpstring("Current Entry Host Name")] 
+			HRESULT EntryHostName([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_ENTRY_TYPE), helpstring("Current Entry Type")] 
+			HRESULT EntryType([out, retval] DNSEntryTypes *pVal);
+
+		[propget, id(DISPID_TIME_TO_LIVE), helpstring("Current Entry TimeToLive")] 
+			HRESULT EntryTimeToLive([out, retval] long *pVal);
+
+		[propget, id(DISPID_SOA_SERIAL), helpstring("Current Entry SOA_Serial")] 
+			HRESULT EntrySOA_Serial([out, retval] long *pVal);
+
+		[propget, id(DISPID_SOA_REFRESH), helpstring("Current Entry SOA_Refresh")] 
+			HRESULT EntrySOA_Refresh([out, retval] long *pVal);
+
+		[propget, id(DISPID_SOA_RETRY), helpstring("Current Entry SOA_Retry")] 
+			HRESULT EntrySOA_Retry([out, retval] long *pVal);
+
+		[propget, id(DISPID_SOA_EXPIRE), helpstring("Current Entry SOA_Expire")] 
+			HRESULT EntrySOA_Expire([out, retval] long *pVal);
+
+		[propget, id(DISPID_SOA_MINIMUM), helpstring("Current Entry SOA_Minimum")] 
+			HRESULT EntrySOA_Minimum([out, retval] long *pVal);
+
+		[propget, id(DISPID_DATA), helpstring("Current Entry Data")] 
+			HRESULT EntryData([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_DATA2), helpstring("Current Entry Data2")] 
+			HRESULT EntryData2([out, retval] BSTR *pVal);
+
+		[propget, id(DISPID_MX_PREFERENCE), helpstring("Current Entry MX_Preference")] 
+			HRESULT EntryMX_Preference([out, retval] long *pVal);
+
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+
+		[id(DISPID_CANCEL_LOOKUP), helpstring("Cancel lookup in non blocking mode")] 
+			HRESULT CancelLookup();
+
+		[id(DISPID_ABOUTBOX), helpstring("Display About Box")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Returns error message by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_GET_NAME_FROM_ADDRESS), helpstring("Gets name from address")] 
+			HRESULT GetNameFromAddress([in] BSTR Address, [out] BSTR *Name, [out, retval] int *Result);
+
+		[id(DISPID_GET_ADDRESS_FROM_NAME), helpstring("Gets address from name")] 
+			HRESULT GetAddressFromName([in] BSTR Name, [out] BSTR *Address, [out, retval] int *Result);
+
+		[id(DISPID_RESET_ENUMERATION), helpstring("Reset entries enumeration")] 
+			HRESULT ResetEnumeration();
+
+		[id(DISPID_ENUM_SERVERS), helpstring("Get next DNSServers")] 
+			HRESULT EnumDNSServers([out] BSTR *Name, [out] BSTR *Address, [out, retval] int *Result);
+
+		[id(DISPID_ENUM_MXRECORDS), helpstring("Get next MXRecords")] 
+			HRESULT EnumMXRecords([out] BSTR *Name, [out] BSTR *Address, [out, retval] int *Result);
+
+		[id(DISPID_ENUM_ENTRIES), helpstring("Get next DNSEntry")] 
+			HRESULT EnumDNSEntry([out, retval] int *Result);
+
+		[id(DISPID_LOOKUP), helpstring("Lookup name")] 
+			HRESULT Lookup([in] BSTR Server, [in] BSTR Domain, [in, defaultvalue(rtDNS_ALL)] DNSRequestTypes Type, [out, retval] int *Result);
+
+		[id(DISPID_AUTH_LOOKUP), helpstring("Authoritative Lookup name")] 
+			HRESULT AuthoritativeLookup([in] BSTR Server, [in] BSTR Domain, [in, defaultvalue(rtDNS_ALL)] DNSRequestTypes Type, [out, retval] int *Result);
+		
+		[id(DISPID_GET_ENTRY_SHORT_NAME), helpstring("Returns short name of the entry type")] 
+			HRESULT GetEntryShortName([in] DNSEntryTypes EntryType, [out, retval] BSTR *Name);
+		
+		[id(DISPID_GET_ENTRY_LONG_NAME), helpstring("Returns long name of the entry type")] 
+			HRESULT GetEntryLongName([in] DNSEntryTypes EntryType, [out, retval] BSTR *Name);
+
+	};

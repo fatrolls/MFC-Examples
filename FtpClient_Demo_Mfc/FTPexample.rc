@@ -1,0 +1,285 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)\r\n"
+    "LANGUAGE 7, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""afxres.rc""\r\n"
+    " #endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\FTPexample.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_FTP_DLG_EXAMPLE DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "FTPexample"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDCANCEL,263,7,50,16
+    PUSHBUTTON      "Browse for FTP-Files and Folders",IDC_BTN_BROWSE,7,7,
+                    117,17
+    PUSHBUTTON      "Logon Settings",IDC_BTN_LOGON_INFO,131,7,92,17
+    CONTROL         "",IDC_RE_PROTOCOL,"RichEdit20A",ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,7,47,
+                    306,146
+END
+
+IDD_FTP_DLG_BROWSE DIALOGEX 0, 0, 304, 206
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "FTP File- and Folderselection"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,190,185,50,14
+    PUSHBUTTON      "Ab&brechen",IDCANCEL,247,185,50,14
+    CONTROL         "",IDC_FTP_TREE,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP | 0x800,7,7,290,173
+END
+
+IDD_FTP_DLG_LOGON_INFO DIALOGEX 0, 0, 302, 255
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "FTP-Logon Information"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "FTP Server",IDC_STATIC,7,7,290,94
+    LTEXT           "Hostname",IDC_STATIC,15,25,100,10
+    LTEXT           "Port",IDC_STATIC,140,25,25,10
+    EDITTEXT        IDC_HOSTNAME,15,35,120,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORT,140,35,30,12,ES_AUTOHSCROLL
+    LTEXT           "Username",IDC_STATIC,15,55,60,10
+    LTEXT           "Password",IDC_STATIC,105,55,55,10
+    LTEXT           "Account",IDC_STATIC,195,55,50,10
+    EDITTEXT        IDC_USER,15,65,85,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PASSWORD,105,65,85,12,ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        IDC_ACCOUNT,195,65,90,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Anonymous",IDC_ANONYMOUS,15,82,55,13
+    CONTROL         "Firewall",IDC_FIREWALL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,110,40,10
+    CONTROL         "Passive",IDC_PASV,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    65,110,70,10
+    GROUPBOX        "Firewall",IDC_FRAME_FIREWALL,7,125,288,100
+    LTEXT           "Hostname",IDC_HOSTNAME_STATIC,15,140,75,8
+    LTEXT           "Port",IDC_PORT_STATIC,180,140,25,9
+    EDITTEXT        IDC_HOSTNAME_FIREWALL,15,149,160,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORT_FIREWALL,180,149,30,12,ES_AUTOHSCROLL
+    LTEXT           "Username",IDC_USER_STATIC,15,165,65,10
+    LTEXT           "Password",IDC_PASSWORD_STATIC,105,165,55,10
+    EDITTEXT        IDC_USER_FIREWALL,15,175,85,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PASSWORD_FIREWALL,105,175,85,12,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LTEXT           "Type",IDC_TYPE_STATIC,15,190,45,10
+    COMBOBOX        IDC_TYPE_FIREWALL,15,200,145,107,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,189,234,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,245,234,50,14
+END
+
+IDD_FTP_DLG_PROGRESS DIALOGEX 0, 0, 305, 102
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,248,7,50,14
+    PUSHBUTTON      "Abort",ID_ABORT_FTP_TRANSFER,248,24,50,14
+    CONTROL         "",IDC_PROGRESS_BAR,"msctls_progress32",WS_BORDER | 0x1,
+                    7,72,291,13
+    CONTROL         "",IDC_ANIMATE_FILECOPY,"SysAnimate32",ACS_TRANSPARENT | 
+                    ACS_AUTOPLAY | WS_TABSTOP,7,0,200,24,WS_EX_TRANSPARENT
+    LTEXT           "Static",IDC_STATIC_FILESTATUS,7,88,291,12
+    LTEXT           "Static",IDC_STATIC_TARGET_FILE,7,57,291,12
+    LTEXT           "Static",IDC_STATIC_SOURCE_FILE,7,43,291,12
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: "
+            VALUE "Copyright (C) 2004", "TODO: (c) "
+            VALUE "FileDescription", "TODO: "
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "FTPexample.exe"
+            VALUE "OriginalFilename", "FTPexample.exe"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x809, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_FTP_DLG_EXAMPLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+
+    IDD_FTP_DLG_BROWSE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 297
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 199
+    END
+
+    IDD_FTP_DLG_LOGON_INFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 295
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 248
+    END
+
+    IDD_FTP_DLG_PROGRESS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 298
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 95
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_AVI_UPLOAD          AVI                     "res\\UPLOAD.AVI"
+IDR_AVI_DOWNLOAD        AVI                     "res\\DOWNLOAD.AVI"
+IDR_AVI_FILECOPY        AVI                     "res\\FILECOPY.AVI"
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+LANGUAGE 7, 1
+#pragma code_page(1252)
+#include "afxres.rc"
+ #endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

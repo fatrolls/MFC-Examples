@@ -1,0 +1,701 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Rfi.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Rfi.ico"
+IDI_REPEATER            ICON    DISCARDABLE     "res\\reptr.ico"
+IDI_TRAYICON            ICON    DISCARDABLE     "res\\tray.ico"
+IDI_RFIICON             ICON    DISCARDABLE     "res\\rfiicon.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 203, 71
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Rfi"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,15,16,20,20
+    LTEXT           "Rfi - Repeater Frequency Index, Version 1.0",IDC_STATIC,
+                    45,16,151,8,SS_NOPREFIX
+    LTEXT           "RFI is public domain (FREE) Software",IDC_STATIC,38,45,
+                    144,8
+    LTEXT           "Author: Eric Hoagland <ehoag@meganet.net>",IDC_STATIC,
+                    45,28,151,8,SS_NOPREFIX
+END
+
+IDD_RFI_DIALOG DIALOGEX 0, 0, 356, 223
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Rfi - Repeater Frequency Index"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Ca&llsign:",IDC_STATIC,7,17,40,10
+    EDITTEXT        IDC_QUERY_CALLSIGN,52,15,170,12,ES_AUTOHSCROLL
+    RTEXT           "&Frequency:",IDC_STATIC,7,33,40,10
+    EDITTEXT        IDC_QUERY_FREQUENCY,52,31,170,12,ES_AUTOHSCROLL
+    RTEXT           "Cit&y:",IDC_STATIC,7,49,40,10
+    EDITTEXT        IDC_QUERY_CITY,52,47,170,12,ES_AUTOHSCROLL
+    RTEXT           "&State:",IDC_STATIC,7,65,40,10
+    COMBOBOX        IDC_QUERY_STATE,52,63,170,150,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "&Input:",IDC_STATIC,7,81,40,10
+    COMBOBOX        IDC_QUERY_INPUT,52,79,170,55,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Clear &Query ->",IDC_STATIC,118,5,94,10
+    PUSHBUTTON      "",IDC_CLEAR_QUERY,216,7,6,6
+    PUSHBUTTON      "&Close",IDOK,242,7,107,14
+    PUSHBUTTON      "&Edit Selected Repeater",IDC_EDIT_REPEATER,242,23,107,
+                    14
+    PUSHBUTTON      "&Add Repeaters",IDC_ADD_REPEATERS,242,39,107,14
+    PUSHBUTTON      "&Delete Repeaters",IDC_DELETE_REPEATERS,242,55,107,14
+    DEFPUSHBUTTON   "&Run Query",IDC_EXECUTE_QUERY,242,72,107,20
+    CONTROL         "List1",IDC_REPEATER_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOLABELWRAP | 
+                    LVS_AUTOARRANGE | LVS_OWNERDRAWFIXED | WS_BORDER | 
+                    WS_TABSTOP,7,98,342,118,WS_EX_CLIENTEDGE
+    CONTROL         142,IDC_STATIC,"Static",SS_BITMAP,222,14,19,77
+END
+
+IDD_ADDREPEATERS DIALOGEX 0, 0, 229, 135
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Add Repeaters"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Ca&llsign:",IDC_STATIC,7,17,40,10
+    EDITTEXT        IDC_ADD_CALLSIGN,52,16,170,12,ES_AUTOHSCROLL
+    RTEXT           "&Frequency:",IDC_STATIC,7,33,40,10
+    EDITTEXT        IDC_ADD_FREQUENCY,52,32,170,12,ES_AUTOHSCROLL
+    RTEXT           "Cit&y:",IDC_STATIC,7,49,40,10
+    EDITTEXT        IDC_ADD_CITY,52,48,170,12,ES_AUTOHSCROLL
+    RTEXT           "&State:",IDC_STATIC,7,65,40,10
+    COMBOBOX        IDC_ADD_STATE,52,64,170,150,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "&Input:",IDC_STATIC,7,81,40,10
+    COMBOBOX        IDC_ADD_INPUT,52,80,170,40,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    RTEXT           "Status:",IDC_STATIC,7,99,40,10
+    LTEXT           "",IDC_ADD_STATUS,52,98,170,12,SS_SUNKEN,
+                    WS_EX_CLIENTEDGE
+    RTEXT           "&Reset Form ->",IDC_STATIC,118,5,94,10
+    PUSHBUTTON      "",IDC_RESET,216,7,6,6
+    DEFPUSHBUTTON   "&Add",IDC_ADD,7,114,105,14,WS_DISABLED
+    PUSHBUTTON      "&Close",IDCANCEL,116,114,106,14
+END
+
+IDD_EDITREPEATER DIALOGEX 0, 0, 229, 135
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Edit Repeater"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    RTEXT           "Ca&llsign:",IDC_STATIC,7,17,40,10
+    EDITTEXT        IDC_EDIT_CALLSIGN,52,16,170,12,ES_AUTOHSCROLL
+    RTEXT           "&Frequency:",IDC_STATIC,7,33,40,10
+    EDITTEXT        IDC_EDIT_FREQUENCY,52,32,170,12,ES_AUTOHSCROLL
+    RTEXT           "Cit&y:",IDC_STATIC,7,49,40,10
+    EDITTEXT        IDC_EDIT_CITY,52,48,170,12,ES_AUTOHSCROLL
+    RTEXT           "&State:",IDC_STATIC,7,65,40,10
+    COMBOBOX        IDC_EDIT_STATE,52,64,170,150,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "&Input:",IDC_STATIC,7,81,40,10
+    COMBOBOX        IDC_EDIT_INPUT,52,80,170,40,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Status:",IDC_STATIC,7,99,40,10
+    LTEXT           "",IDC_EDIT_STATUS,52,98,170,12,SS_SUNKEN,
+                    WS_EX_CLIENTEDGE
+    RTEXT           "&Reset Form ->",IDC_STATIC,118,5,94,10
+    PUSHBUTTON      "",IDC_RESET,216,7,6,6
+    DEFPUSHBUTTON   "&Update",IDOK,7,113,105,14,WS_DISABLED
+    PUSHBUTTON      "&Close",IDCANCEL,116,113,106,14
+END
+
+IDD_DELETEREPEATERS DIALOGEX 0, 0, 356, 159
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Delete Repeaters"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_DELETE_REPEATER_LIST,"SysListView32",
+                    LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOLABELWRAP | 
+                    LVS_AUTOARRANGE | LVS_OWNERDRAWFIXED | WS_BORDER | 
+                    WS_TABSTOP,7,0,342,118,WS_EX_CLIENTEDGE
+    RTEXT           "Status:",IDC_STATIC,7,123,40,10
+    LTEXT           "",IDC_DELETE_STATUS,52,122,297,12,SS_SUNKEN,
+                    WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "&Delete Selected Repeaters",IDC_DELETE,7,138,232,14
+    PUSHBUTTON      "&Close",IDCANCEL,243,138,106,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x29L
+#else
+ FILEFLAGS 0x28L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "Repeater Frequency Index (Rfi) For Win95/NT, Public Domain (Free) Software\0"
+            VALUE "CompanyName", "Eric Hoagland\0"
+            VALUE "FileDescription", "RFI MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "RFI\0"
+            VALUE "LegalCopyright", "Source code: Copyright © Eric Hoagland 1997, Binary: Public Domain (Free) software\0"
+            VALUE "LegalTrademarks", "none\0"
+            VALUE "OriginalFilename", "RFI.EXE\0"
+            VALUE "PrivateBuild", "N/A\0"
+            VALUE "ProductName", "Repeater Frequency Index (Rfi) For Win95/NT\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "N/A\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_RFI_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 349
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_ADDREPEATERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 222
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+
+    IDD_EDITREPEATER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 222
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+
+    IDD_DELETEREPEATERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 349
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 152
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_ADDREPEATERS DLGINIT
+BEGIN
+    IDC_ADD_STATE, 0x403, 6, 0
+0x614d, 0x6e69, 0x0065, 
+    IDC_ADD_STATE, 0x403, 14, 0
+0x654e, 0x2077, 0x6148, 0x706d, 0x6873, 0x7269, 0x0065, 
+    IDC_ADD_STATE, 0x403, 8, 0
+0x6556, 0x6d72, 0x6e6f, 0x0074, 
+    IDC_ADD_STATE, 0x403, 14, 0
+0x614d, 0x7373, 0x6361, 0x7568, 0x6573, 0x7474, 0x0073, 
+    IDC_ADD_STATE, 0x403, 13, 0
+0x6852, 0x646f, 0x2065, 0x7349, 0x616c, 0x646e, "\000" 
+    IDC_ADD_STATE, 0x403, 12, 0
+0x6f43, 0x6e6e, 0x6365, 0x6974, 0x7563, 0x0074, 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x654e, 0x2077, 0x6f59, 0x6b72, "\000" 
+    IDC_ADD_STATE, 0x403, 11, 0
+0x654e, 0x2077, 0x654a, 0x7372, 0x7965, "\000" 
+    IDC_ADD_STATE, 0x403, 13, 0
+0x6550, 0x6e6e, 0x7973, 0x766c, 0x6e61, 0x6169, "\000" 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x6544, 0x616c, 0x6177, 0x6572, "\000" 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x614d, 0x7972, 0x616c, 0x646e, "\000" 
+    IDC_ADD_STATE, 0x403, 16, 0
+0x6157, 0x6873, 0x6e69, 0x7467, 0x6e6f, 0x4420, 0x432e, 0x002e, 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x6956, 0x6772, 0x6e69, 0x6169, "\000" 
+    IDC_ADD_STATE, 0x403, 14, 0
+0x6557, 0x7473, 0x5620, 0x7269, 0x6967, 0x696e, 0x0061, 
+    IDC_ADD_STATE, 0x403, 15, 0
+0x6f4e, 0x7472, 0x2068, 0x6143, 0x6f72, 0x696c, 0x616e, "\000" 
+    IDC_ADD_STATE, 0x403, 15, 0
+0x6f53, 0x7475, 0x2068, 0x6143, 0x6f72, 0x696c, 0x616e, "\000" 
+    IDC_ADD_STATE, 0x403, 8, 0
+0x6547, 0x726f, 0x6967, 0x0061, 
+    IDC_ADD_STATE, 0x403, 8, 0
+0x6c46, 0x726f, 0x6469, 0x0061, 
+    IDC_ADD_STATE, 0x403, 8, 0
+0x6c41, 0x6261, 0x6d61, 0x0061, 
+    IDC_ADD_STATE, 0x403, 12, 0
+0x694d, 0x7373, 0x7369, 0x6973, 0x7070, 0x0069, 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x6554, 0x6e6e, 0x7365, 0x6565, "\000" 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x654b, 0x746e, 0x6375, 0x796b, "\000" 
+    IDC_ADD_STATE, 0x403, 5, 0
+0x684f, 0x6f69, "\000" 
+    IDC_ADD_STATE, 0x403, 8, 0
+0x6e49, 0x6964, 0x6e61, 0x0061, 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x694d, 0x6863, 0x6769, 0x6e61, "\000" 
+    IDC_ADD_STATE, 0x403, 10, 0
+0x6957, 0x6373, 0x6e6f, 0x6973, 0x006e, 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x6c49, 0x696c, 0x6f6e, 0x7369, "\000" 
+    IDC_ADD_STATE, 0x403, 10, 0
+0x694d, 0x6e6e, 0x7369, 0x746f, 0x0061, 
+    IDC_ADD_STATE, 0x403, 5, 0
+0x6f49, 0x6177, "\000" 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x694d, 0x7373, 0x756f, 0x6972, "\000" 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x7241, 0x616b, 0x736e, 0x7361, "\000" 
+    IDC_ADD_STATE, 0x403, 10, 0
+0x6f4c, 0x6975, 0x6973, 0x6e61, 0x0061, 
+    IDC_ADD_STATE, 0x403, 6, 0
+0x6554, 0x6178, 0x0073, 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x6b4f, 0x616c, 0x6f68, 0x616d, "\000" 
+    IDC_ADD_STATE, 0x403, 7, 0
+0x614b, 0x736e, 0x7361, "\000" 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x654e, 0x7262, 0x7361, 0x616b, "\000" 
+    IDC_ADD_STATE, 0x403, 13, 0
+0x6f53, 0x7475, 0x2068, 0x6144, 0x6f6b, 0x6174, "\000" 
+    IDC_ADD_STATE, 0x403, 13, 0
+0x6f4e, 0x7472, 0x2068, 0x6144, 0x6f6b, 0x6174, "\000" 
+    IDC_ADD_STATE, 0x403, 8, 0
+0x6f4d, 0x746e, 0x6e61, 0x0061, 
+    IDC_ADD_STATE, 0x403, 8, 0
+0x7957, 0x6d6f, 0x6e69, 0x0067, 
+    IDC_ADD_STATE, 0x403, 9, 0
+0x6f43, 0x6f6c, 0x6172, 0x6f64, "\000" 
+    IDC_ADD_STATE, 0x403, 11, 0
+0x654e, 0x2077, 0x654d, 0x6978, 0x6f63, "\000" 
+    IDC_ADD_STATE, 0x403, 8, 0
+0x7241, 0x7a69, 0x6e6f, 0x0061, 
+    IDC_ADD_STATE, 0x403, 5, 0
+0x7455, 0x6861, "\000" 
+    IDC_ADD_STATE, 0x403, 6, 0
+0x6449, 0x6861, 0x006f, 
+    IDC_ADD_STATE, 0x403, 11, 0
+0x6157, 0x6873, 0x6e69, 0x7467, 0x6e6f, "\000" 
+    IDC_ADD_STATE, 0x403, 7, 0
+0x724f, 0x6765, 0x6e6f, "\000" 
+    IDC_ADD_STATE, 0x403, 7, 0
+0x654e, 0x6176, 0x6164, "\000" 
+    IDC_ADD_STATE, 0x403, 11, 0
+0x6143, 0x696c, 0x6f66, 0x6e72, 0x6169, "\000" 
+    IDC_ADD_STATE, 0x403, 7, 0
+0x6c41, 0x7361, 0x616b, "\000" 
+    IDC_ADD_STATE, 0x403, 7, 0
+0x6148, 0x6177, 0x6969, "\000" 
+    IDC_ADD_INPUT, 0x403, 5, 0
+0x6c50, 0x7375, "\000" 
+    IDC_ADD_INPUT, 0x403, 6, 0
+0x694d, 0x756e, 0x0073, 
+    IDC_ADD_INPUT, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    0
+END
+
+IDD_RFI_DIALOG DLGINIT
+BEGIN
+    IDC_QUERY_STATE, 0x403, 1, 0
+"\000" 
+    IDC_QUERY_STATE, 0x403, 6, 0
+0x614d, 0x6e69, 0x0065, 
+    IDC_QUERY_STATE, 0x403, 14, 0
+0x654e, 0x2077, 0x6148, 0x706d, 0x6873, 0x7269, 0x0065, 
+    IDC_QUERY_STATE, 0x403, 8, 0
+0x6556, 0x6d72, 0x6e6f, 0x0074, 
+    IDC_QUERY_STATE, 0x403, 14, 0
+0x614d, 0x7373, 0x6361, 0x7568, 0x6573, 0x7474, 0x0073, 
+    IDC_QUERY_STATE, 0x403, 13, 0
+0x6852, 0x646f, 0x2065, 0x7349, 0x616c, 0x646e, "\000" 
+    IDC_QUERY_STATE, 0x403, 12, 0
+0x6f43, 0x6e6e, 0x6365, 0x6974, 0x7563, 0x0074, 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x654e, 0x2077, 0x6f59, 0x6b72, "\000" 
+    IDC_QUERY_STATE, 0x403, 11, 0
+0x654e, 0x2077, 0x654a, 0x7372, 0x7965, "\000" 
+    IDC_QUERY_STATE, 0x403, 13, 0
+0x6550, 0x6e6e, 0x7973, 0x766c, 0x6e61, 0x6169, "\000" 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x6544, 0x616c, 0x6177, 0x6572, "\000" 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x614d, 0x7972, 0x616c, 0x646e, "\000" 
+    IDC_QUERY_STATE, 0x403, 16, 0
+0x6157, 0x6873, 0x6e69, 0x7467, 0x6e6f, 0x4420, 0x432e, 0x002e, 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x6956, 0x6772, 0x6e69, 0x6169, "\000" 
+    IDC_QUERY_STATE, 0x403, 14, 0
+0x6557, 0x7473, 0x5620, 0x7269, 0x6967, 0x696e, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 15, 0
+0x6f4e, 0x7472, 0x2068, 0x6143, 0x6f72, 0x696c, 0x616e, "\000" 
+    IDC_QUERY_STATE, 0x403, 15, 0
+0x6f53, 0x7475, 0x2068, 0x6143, 0x6f72, 0x696c, 0x616e, "\000" 
+    IDC_QUERY_STATE, 0x403, 8, 0
+0x6547, 0x726f, 0x6967, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 8, 0
+0x6c46, 0x726f, 0x6469, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 8, 0
+0x6c41, 0x6261, 0x6d61, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 12, 0
+0x694d, 0x7373, 0x7369, 0x6973, 0x7070, 0x0069, 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x6554, 0x6e6e, 0x7365, 0x6565, "\000" 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x654b, 0x746e, 0x6375, 0x796b, "\000" 
+    IDC_QUERY_STATE, 0x403, 5, 0
+0x684f, 0x6f69, "\000" 
+    IDC_QUERY_STATE, 0x403, 8, 0
+0x6e49, 0x6964, 0x6e61, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x694d, 0x6863, 0x6769, 0x6e61, "\000" 
+    IDC_QUERY_STATE, 0x403, 10, 0
+0x6957, 0x6373, 0x6e6f, 0x6973, 0x006e, 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x6c49, 0x696c, 0x6f6e, 0x7369, "\000" 
+    IDC_QUERY_STATE, 0x403, 10, 0
+0x694d, 0x6e6e, 0x7369, 0x746f, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 5, 0
+0x6f49, 0x6177, "\000" 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x694d, 0x7373, 0x756f, 0x6972, "\000" 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x7241, 0x616b, 0x736e, 0x7361, "\000" 
+    IDC_QUERY_STATE, 0x403, 10, 0
+0x6f4c, 0x6975, 0x6973, 0x6e61, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 6, 0
+0x6554, 0x6178, 0x0073, 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x6b4f, 0x616c, 0x6f68, 0x616d, "\000" 
+    IDC_QUERY_STATE, 0x403, 7, 0
+0x614b, 0x736e, 0x7361, "\000" 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x654e, 0x7262, 0x7361, 0x616b, "\000" 
+    IDC_QUERY_STATE, 0x403, 13, 0
+0x6f53, 0x7475, 0x2068, 0x6144, 0x6f6b, 0x6174, "\000" 
+    IDC_QUERY_STATE, 0x403, 13, 0
+0x6f4e, 0x7472, 0x2068, 0x6144, 0x6f6b, 0x6174, "\000" 
+    IDC_QUERY_STATE, 0x403, 8, 0
+0x6f4d, 0x746e, 0x6e61, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 8, 0
+0x7957, 0x6d6f, 0x6e69, 0x0067, 
+    IDC_QUERY_STATE, 0x403, 9, 0
+0x6f43, 0x6f6c, 0x6172, 0x6f64, "\000" 
+    IDC_QUERY_STATE, 0x403, 11, 0
+0x654e, 0x2077, 0x654d, 0x6978, 0x6f63, "\000" 
+    IDC_QUERY_STATE, 0x403, 8, 0
+0x7241, 0x7a69, 0x6e6f, 0x0061, 
+    IDC_QUERY_STATE, 0x403, 5, 0
+0x7455, 0x6861, "\000" 
+    IDC_QUERY_STATE, 0x403, 6, 0
+0x6449, 0x6861, 0x006f, 
+    IDC_QUERY_STATE, 0x403, 11, 0
+0x6157, 0x6873, 0x6e69, 0x7467, 0x6e6f, "\000" 
+    IDC_QUERY_STATE, 0x403, 7, 0
+0x724f, 0x6765, 0x6e6f, "\000" 
+    IDC_QUERY_STATE, 0x403, 7, 0
+0x654e, 0x6176, 0x6164, "\000" 
+    IDC_QUERY_STATE, 0x403, 11, 0
+0x6143, 0x696c, 0x6f66, 0x6e72, 0x6169, "\000" 
+    IDC_QUERY_STATE, 0x403, 7, 0
+0x6c41, 0x7361, 0x616b, "\000" 
+    IDC_QUERY_STATE, 0x403, 7, 0
+0x6148, 0x6177, 0x6969, "\000" 
+    IDC_QUERY_INPUT, 0x403, 1, 0
+"\000" 
+    IDC_QUERY_INPUT, 0x403, 5, 0
+0x6c50, 0x7375, "\000" 
+    IDC_QUERY_INPUT, 0x403, 6, 0
+0x694d, 0x756e, 0x0073, 
+    IDC_QUERY_INPUT, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    0
+END
+
+IDD_EDITREPEATER DLGINIT
+BEGIN
+    IDC_EDIT_STATE, 0x403, 6, 0
+0x614d, 0x6e69, 0x0065, 
+    IDC_EDIT_STATE, 0x403, 14, 0
+0x654e, 0x2077, 0x6148, 0x706d, 0x6873, 0x7269, 0x0065, 
+    IDC_EDIT_STATE, 0x403, 8, 0
+0x6556, 0x6d72, 0x6e6f, 0x0074, 
+    IDC_EDIT_STATE, 0x403, 14, 0
+0x614d, 0x7373, 0x6361, 0x7568, 0x6573, 0x7474, 0x0073, 
+    IDC_EDIT_STATE, 0x403, 13, 0
+0x6852, 0x646f, 0x2065, 0x7349, 0x616c, 0x646e, "\000" 
+    IDC_EDIT_STATE, 0x403, 12, 0
+0x6f43, 0x6e6e, 0x6365, 0x6974, 0x7563, 0x0074, 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x654e, 0x2077, 0x6f59, 0x6b72, "\000" 
+    IDC_EDIT_STATE, 0x403, 11, 0
+0x654e, 0x2077, 0x654a, 0x7372, 0x7965, "\000" 
+    IDC_EDIT_STATE, 0x403, 13, 0
+0x6550, 0x6e6e, 0x7973, 0x766c, 0x6e61, 0x6169, "\000" 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x6544, 0x616c, 0x6177, 0x6572, "\000" 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x614d, 0x7972, 0x616c, 0x646e, "\000" 
+    IDC_EDIT_STATE, 0x403, 16, 0
+0x6157, 0x6873, 0x6e69, 0x7467, 0x6e6f, 0x4420, 0x432e, 0x002e, 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x6956, 0x6772, 0x6e69, 0x6169, "\000" 
+    IDC_EDIT_STATE, 0x403, 14, 0
+0x6557, 0x7473, 0x5620, 0x7269, 0x6967, 0x696e, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 15, 0
+0x6f4e, 0x7472, 0x2068, 0x6143, 0x6f72, 0x696c, 0x616e, "\000" 
+    IDC_EDIT_STATE, 0x403, 15, 0
+0x6f53, 0x7475, 0x2068, 0x6143, 0x6f72, 0x696c, 0x616e, "\000" 
+    IDC_EDIT_STATE, 0x403, 8, 0
+0x6547, 0x726f, 0x6967, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 8, 0
+0x6c46, 0x726f, 0x6469, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 8, 0
+0x6c41, 0x6261, 0x6d61, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 12, 0
+0x694d, 0x7373, 0x7369, 0x6973, 0x7070, 0x0069, 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x6554, 0x6e6e, 0x7365, 0x6565, "\000" 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x654b, 0x746e, 0x6375, 0x796b, "\000" 
+    IDC_EDIT_STATE, 0x403, 5, 0
+0x684f, 0x6f69, "\000" 
+    IDC_EDIT_STATE, 0x403, 8, 0
+0x6e49, 0x6964, 0x6e61, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x694d, 0x6863, 0x6769, 0x6e61, "\000" 
+    IDC_EDIT_STATE, 0x403, 10, 0
+0x6957, 0x6373, 0x6e6f, 0x6973, 0x006e, 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x6c49, 0x696c, 0x6f6e, 0x7369, "\000" 
+    IDC_EDIT_STATE, 0x403, 10, 0
+0x694d, 0x6e6e, 0x7369, 0x746f, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 5, 0
+0x6f49, 0x6177, "\000" 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x694d, 0x7373, 0x756f, 0x6972, "\000" 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x7241, 0x616b, 0x736e, 0x7361, "\000" 
+    IDC_EDIT_STATE, 0x403, 10, 0
+0x6f4c, 0x6975, 0x6973, 0x6e61, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 6, 0
+0x6554, 0x6178, 0x0073, 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x6b4f, 0x616c, 0x6f68, 0x616d, "\000" 
+    IDC_EDIT_STATE, 0x403, 7, 0
+0x614b, 0x736e, 0x7361, "\000" 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x654e, 0x7262, 0x7361, 0x616b, "\000" 
+    IDC_EDIT_STATE, 0x403, 13, 0
+0x6f53, 0x7475, 0x2068, 0x6144, 0x6f6b, 0x6174, "\000" 
+    IDC_EDIT_STATE, 0x403, 13, 0
+0x6f4e, 0x7472, 0x2068, 0x6144, 0x6f6b, 0x6174, "\000" 
+    IDC_EDIT_STATE, 0x403, 8, 0
+0x6f4d, 0x746e, 0x6e61, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 8, 0
+0x7957, 0x6d6f, 0x6e69, 0x0067, 
+    IDC_EDIT_STATE, 0x403, 9, 0
+0x6f43, 0x6f6c, 0x6172, 0x6f64, "\000" 
+    IDC_EDIT_STATE, 0x403, 11, 0
+0x654e, 0x2077, 0x654d, 0x6978, 0x6f63, "\000" 
+    IDC_EDIT_STATE, 0x403, 8, 0
+0x7241, 0x7a69, 0x6e6f, 0x0061, 
+    IDC_EDIT_STATE, 0x403, 5, 0
+0x7455, 0x6861, "\000" 
+    IDC_EDIT_STATE, 0x403, 6, 0
+0x6449, 0x6861, 0x006f, 
+    IDC_EDIT_STATE, 0x403, 11, 0
+0x6157, 0x6873, 0x6e69, 0x7467, 0x6e6f, "\000" 
+    IDC_EDIT_STATE, 0x403, 7, 0
+0x724f, 0x6765, 0x6e6f, "\000" 
+    IDC_EDIT_STATE, 0x403, 7, 0
+0x654e, 0x6176, 0x6164, "\000" 
+    IDC_EDIT_STATE, 0x403, 11, 0
+0x6143, 0x696c, 0x6f66, 0x6e72, 0x6169, "\000" 
+    IDC_EDIT_STATE, 0x403, 7, 0
+0x6c41, 0x7361, 0x616b, "\000" 
+    IDC_EDIT_STATE, 0x403, 7, 0
+0x6148, 0x6177, 0x6969, "\000" 
+    IDC_EDIT_INPUT, 0x403, 5, 0
+0x6c50, 0x7375, "\000" 
+    IDC_EDIT_INPUT, 0x403, 6, 0
+0x694d, 0x756e, 0x0073, 
+    IDC_EDIT_INPUT, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SPLASH              BITMAP  DISCARDABLE     "Splsh16.bmp"
+IDB_QUERYARROW          BITMAP  DISCARDABLE     "res\\arrow.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_POPUP MENU DISCARDABLE 
+BEGIN
+    POPUP "_POPUP_"
+    BEGIN
+        MENUITEM "&Show Main Dialog",           IDC_SHOWMAIN
+        MENUITEM "&Hide Main Dialog",           IDC_HIDEMAIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Close",                      IDOK
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About Rfi..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Rfi.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

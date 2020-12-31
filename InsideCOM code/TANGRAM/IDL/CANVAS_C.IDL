@@ -1,0 +1,35 @@
+///////////////////////////////////////////////////////////
+//
+//
+// TangramCanvas - Component description and Type Library 
+//
+//
+import "Canvas_i.idl" ;
+
+///////////////////////////////////////////////////////////
+//
+//
+// Component descriptions
+//
+[
+	uuid(b53313ce-20c4-11d0-9c6c-00a0c90a632c),
+	version(1.0),
+	helpstring("TangramCanvas 1.0 Type Library")
+]
+library TangramCanvasLib
+{
+	importlib("stdole32.tlb");
+
+	//
+	// TangramCanvas 
+	//
+	[
+		uuid(b53313cf-20c4-11d0-9c6c-00a0c90a632c),
+		helpstring("TangramCanvas Class")
+	]
+	coclass TangramCanvas 
+	{
+		[default] interface ITangramCanvas ;
+	};
+
+};

@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinDirectAudio", "WinDirectAudio.vcproj", "{174EB36E-5484-49DC-A078-1BEF2DBA78AB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD} = {3A214E06-B95E-4D61-A291-1F8DF2EC10FD}
+		{430B1B52-A34A-428C-952B-1521E99CB10F} = {430B1B52-A34A-428C-952B-1521E99CB10F}
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159} = {15CBFEFF-7965-41F5-B4E2-21E8795C9159}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmad", "libmad\msvc++\libmad.vcproj", "{430B1B52-A34A-428C-952B-1521E99CB10F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libogg", "libogg\libogg.vcproj", "{15CBFEFF-7965-41F5-B4E2-21E8795C9159}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libvorbis", "libvorbis\libvorbis.vcproj", "{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159} = {15CBFEFF-7965-41F5-B4E2-21E8795C9159}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release_SSE|Win32 = Release_SSE|Win32
+		Release_SSE2|Win32 = Release_SSE2|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{174EB36E-5484-49DC-A078-1BEF2DBA78AB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{174EB36E-5484-49DC-A078-1BEF2DBA78AB}.Debug|Win32.Build.0 = Debug|Win32
+		{174EB36E-5484-49DC-A078-1BEF2DBA78AB}.Release_SSE|Win32.ActiveCfg = Release|Win32
+		{174EB36E-5484-49DC-A078-1BEF2DBA78AB}.Release_SSE|Win32.Build.0 = Release|Win32
+		{174EB36E-5484-49DC-A078-1BEF2DBA78AB}.Release_SSE2|Win32.ActiveCfg = Release|Win32
+		{174EB36E-5484-49DC-A078-1BEF2DBA78AB}.Release_SSE2|Win32.Build.0 = Release|Win32
+		{174EB36E-5484-49DC-A078-1BEF2DBA78AB}.Release|Win32.ActiveCfg = Release|Win32
+		{174EB36E-5484-49DC-A078-1BEF2DBA78AB}.Release|Win32.Build.0 = Release|Win32
+		{430B1B52-A34A-428C-952B-1521E99CB10F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{430B1B52-A34A-428C-952B-1521E99CB10F}.Debug|Win32.Build.0 = Debug|Win32
+		{430B1B52-A34A-428C-952B-1521E99CB10F}.Release_SSE|Win32.ActiveCfg = Release|Win32
+		{430B1B52-A34A-428C-952B-1521E99CB10F}.Release_SSE|Win32.Build.0 = Release|Win32
+		{430B1B52-A34A-428C-952B-1521E99CB10F}.Release_SSE2|Win32.ActiveCfg = Release|Win32
+		{430B1B52-A34A-428C-952B-1521E99CB10F}.Release_SSE2|Win32.Build.0 = Release|Win32
+		{430B1B52-A34A-428C-952B-1521E99CB10F}.Release|Win32.ActiveCfg = Release|Win32
+		{430B1B52-A34A-428C-952B-1521E99CB10F}.Release|Win32.Build.0 = Release|Win32
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159}.Debug|Win32.ActiveCfg = Debug|Win32
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159}.Debug|Win32.Build.0 = Debug|Win32
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159}.Release_SSE|Win32.ActiveCfg = Release_SSE|Win32
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159}.Release_SSE|Win32.Build.0 = Release_SSE|Win32
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159}.Release_SSE2|Win32.ActiveCfg = Release_SSE2|Win32
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159}.Release_SSE2|Win32.Build.0 = Release_SSE2|Win32
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159}.Release|Win32.ActiveCfg = Release|Win32
+		{15CBFEFF-7965-41F5-B4E2-21E8795C9159}.Release|Win32.Build.0 = Release|Win32
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}.Debug|Win32.Build.0 = Debug|Win32
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}.Release_SSE|Win32.ActiveCfg = Release_SSE|Win32
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}.Release_SSE|Win32.Build.0 = Release_SSE|Win32
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}.Release_SSE2|Win32.ActiveCfg = Release_SSE2|Win32
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}.Release_SSE2|Win32.Build.0 = Release_SSE2|Win32
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}.Release|Win32.ActiveCfg = Release|Win32
+		{3A214E06-B95E-4D61-A291-1F8DF2EC10FD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

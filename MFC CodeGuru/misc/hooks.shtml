@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Hooks</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Hooks</FONT></H3></CENTER>
+
+<HR>
+
+
+This article was contributed by <A HREF="mailto:yli03@mailbox.syr.edu">Yun Li</A>.
+
+
+<P>My program is devided into two parts:
+
+<P>hookDLL ---- the DLL I am going to insert into each thread I am monitoring
+on.
+
+<P>SKDemo  ---- the main program I am using DLL to LISTEN other's password as
+well as other                                             things goes into
+that program I am monitoring on.
+
+<P>The hookDLL, while been inserted into the hooked thread's address space, get called whenever the hooked thread called GetMessage or PeekMessage to retrive message from its message queue. It checks to see whether this message is targeting to the window we want to monitor, if so, save the message information, if not just let them go.
+
+<P>All you need is put the hookDLL.dll and SKDemo.exe to the same directory so SKDemo.exe can find hookDLL.dll and load it. After you start the SKDemo.exe, you will find a dialog, and then you may right click the mouse button and the cursor will turn into eyes, hold on the mouse right button and move mouse to other windows, you will find the edit control in dialog change the content. For example, when you decide to monitor the telnet program, you will right click mouse and move to telnet and then you will find "TelnetWClass" in edit control.
+
+<P>That is it! you click the begin hook button, and hide button, it will minimize itself to system tray and monitor telnet. All things going to telnet will be in a hidden file in
+C:\passdata.txt.
+
+
+<P>Note: I have no time to wrap it into C++ code. If someone can do this, it will be great!
+
+<P><A HREF="hooks.zip">Download files</A> 49KB
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

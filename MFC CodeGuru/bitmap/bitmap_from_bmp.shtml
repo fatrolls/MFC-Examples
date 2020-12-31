@@ -1,0 +1,186 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Creating a bitmap object from a BMP file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Creating a bitmap object from a BMP file</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+To create a CBitmap object from a BMP file you essentially have to read the file into memory, use CreateDIBitmap() to get an HBITMAP and then attach this handle to the CBitmap object. The problem however, is to get the colors right. The following code can handle bitmaps with 256 colors or less.
+
+<p>Although we needn't really create a bitmap object to draw the image, the benefit of doing so is that the bitmap we create is a device dependent bitmap (DDB) as apposed to the device independent bitmap (DIB) help in the BMP file. This reduces the time it takes to render the bitmap onto the device.
+
+<p>The BMP file holds a device independent bitmap and sometimes uses the extension DIB. It is composed of four sections. The first is BITMAPFILEHEADER. This contains the bitmap file signature, the size of the bitmap and the offset to the array of bits that define the bitmap image. The next section is the BITMAPINFOHEADER. This contains information such as the height and widht of the bitmap and the number of colors used. This section is followed by the color table. The color table contains two or more RGBQUAD structures The final section is the actual bits that define the bitmap image.
+
+<h4>Step 1: Create the bitmap object</h4>
+The LoadBMPImage() function given below will read in a BMP file, create a device dependent bitmap of it and attach it to the CBitmap object passed in as an argument. It can also create a logical palette if a pointer to a CPalette object is supplied.
+
+<p>This function basically reads in the BMP file, creates a logical palette and calls CreateDIBitmap() to create the GDI bitmap object. Note that when you supply a pointer to a CPalette object, the function creates a logical palette and uses the palette when creating the bitmap object.
+
+<PRE><TT><FONT COLOR="#990000">// LoadBMPImage	- Loads a BMP file and creates a bitmap GDI object
+//		  also creates logical palette for it.
+// Returns	- TRUE for success
+// sBMPFile	- Full path of the BMP file
+// bitmap	- The bitmap object to initialize
+// pPal		- Will hold the logical palette. Can be NULL
+BOOL LoadBMPImage( LPCTSTR sBMPFile, CBitmap& bitmap, CPalette *pPal )
+{
+	CFile file;
+	if( !file.Open( sBMPFile, CFile::modeRead) )
+		return FALSE;
+
+	BITMAPFILEHEADER bmfHeader;
+
+	// Read file header
+	if (file.Read((LPSTR)&bmfHeader, sizeof(bmfHeader)) != sizeof(bmfHeader))
+		return FALSE;
+
+	// File type should be 'BM'
+	if (bmfHeader.bfType != ((WORD) ('M' << 8) | 'B'))
+		return FALSE;
+
+	// Get length of the remainder of the file and allocate memory
+	DWORD nPackedDIBLen = file.GetLength() - sizeof(BITMAPFILEHEADER);
+	HGLOBAL hDIB = ::GlobalAlloc(GMEM_FIXED, nPackedDIBLen);
+	if (hDIB == 0)
+		return FALSE;
+
+	// Read the remainder of the bitmap file.
+	if (file.ReadHuge((LPSTR)hDIB, nPackedDIBLen) != nPackedDIBLen )
+	{
+		::GlobalFree(hDIB);
+		return FALSE;
+	}
+
+
+	BITMAPINFOHEADER &bmiHeader = *(LPBITMAPINFOHEADER)hDIB ;
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+
+	// If bmiHeader.biClrUsed is zero we have to infer the number
+	// of colors from the number of bits used to specify it.
+	int nColors = bmiHeader.biClrUsed ? bmiHeader.biClrUsed : 
+						1 << bmiHeader.biBitCount;
+
+	LPVOID lpDIBBits;
+	if( bmInfo.bmiHeader.biBitCount > 8 )
+		lpDIBBits = (LPVOID)((LPDWORD)(bmInfo.bmiColors + bmInfo.bmiHeader.biClrUsed) + 
+			((bmInfo.bmiHeader.biCompression == BI_BITFIELDS) ? 3 : 0));
+	else
+		lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+
+	// Create the logical palette
+	if( pPal != NULL )
+	{
+		// Create the palette
+		if( nColors <= 256 )
+		{
+			UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+			LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+			pLP->palVersion = 0x300;
+			pLP->palNumEntries = nColors;
+
+			for( int i=0; i < nColors; i++)
+			{
+				pLP->palPalEntry[i].peRed = bmInfo.bmiColors[i].rgbRed;
+				pLP->palPalEntry[i].peGreen = bmInfo.bmiColors[i].rgbGreen;
+				pLP->palPalEntry[i].peBlue = bmInfo.bmiColors[i].rgbBlue;
+				pLP->palPalEntry[i].peFlags = 0;
+			}
+
+			pPal->CreatePalette( pLP );
+
+			delete[] pLP;
+		}
+	}
+
+	CClientDC dc(NULL);
+	CPalette* pOldPalette = NULL;
+	if( pPal )
+	{
+		pOldPalette = dc.SelectPalette( pPal, FALSE );
+		dc.RealizePalette();
+	}
+
+	HBITMAP hBmp = CreateDIBitmap( dc.m_hDC,		// handle to device context 
+				&bmiHeader,	// pointer to bitmap size and format data 
+				CBM_INIT,	// initialization flag 
+				lpDIBBits,	// pointer to initialization data 
+				&bmInfo,	// pointer to bitmap color-format data 
+				DIB_RGB_COLORS);		// color-data usage 
+	bitmap.Attach( hBmp );
+
+	if( pOldPalette )
+		dc.SelectPalette( pOldPalette, FALSE );
+
+	::GlobalFree(hDIB);
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<h4>Step 2: Drawing the bitmap</h4>
+The DrawBitmap() function given below is a very simple function that will draw the given bitmap to the top left corner of the device context. It will also use a logical palette to draw the image if you supply one. You can easily extend this function to specify where to draw the bitmap or even whether to tile the bitmap or extend it to cover the device context.
+
+<PRE><TT><FONT COLOR="#990000">void DrawBitmap(CDC* pDC, CBitmap& bitmap, CPalette *pPal )
+{
+	// Create a compatible memory DC
+	CDC memDC;
+	memDC.CreateCompatibleDC( pDC );
+	memDC.SelectObject( &bitmap );
+
+	// Select and realize the palette
+	if( pPal != NULL && pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE )
+	{
+		pDC->SelectPalette( pPal, FALSE );
+		pDC->RealizePalette();
+	}
+
+	BITMAP bm;
+	bitmap.GetBitmap( &bm );
+
+	pDC->BitBlt(0, 0, bm.bmWidth, bm.bmHeight, &memDC, 0, 0,SRCCOPY);
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

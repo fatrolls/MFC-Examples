@@ -1,0 +1,2 @@
+cl temclass.cpp
+

@@ -1,0 +1,390 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Selection Highlighting of Entire Row</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Selection Highlighting of Entire Row</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+
+NOTE: Lot of people have pointed me to the LVS_EX_FULLROWSELECT style. This style is supported
+in the new control (with IE4) and will be directly supported by VC++ by downloading a few files
+from the MS web site. This should be available by end of Oct'97. In the meantime you can use
+the ModifyStyleEx() function. I'll be writing a few articles to cover the new control in a few 
+weeks.
+
+
+<P>When the list view control is in the report view, only the first column of the selected row is highlighted. To enable highlighting of the entire row, the list view control has to be owner drawn. That is, the onus of highlighting the row is on the programmer. Visual C++ already comes with an MFC sample that shows how to do this. The name of the sample is ROWLIST. The code given below was written after studying the sample code and fixes a few bugs present in the sample. One of the bug was that displaying state images messed up the text justification. Another bug was that if you resized the column to zero width ( to hide it ), the hidden columns content spilled over to the next column.
+
+<p><img src="select_row.gif" width="276" height="222"></p>
+
+
+<h4>Step 1: Create the control with LVS_OWNERDRAWFIXED style</h4>
+You can set the owner draw style from the resource editor if you have the list view control in a dialog resource. If you aren't already using a sub-class of CListCtrl then create one. You can use the Class Wizard to add a member variable for the list view control.
+
+<p>If you are using a CListView derived class then add the LVS_OWNERDRAWFIXED fixed style in the PreCreateWindow() function. Here's an example
+
+<PRE><TT><FONT COLOR="#990000">BOOL CListViewEx::PreCreateWindow(CREATESTRUCT& cs)
+{
+	// default is report view and full row selection
+	cs.style &= ~LVS_TYPEMASK;
+	cs.style &= ~LVS_SHOWSELALWAYS;
+	cs.style |= LVS_REPORT | LVS_OWNERDRAWFIXED;
+	cs.style |= LVS_EDITLABELS;
+
+	return(CListView::PreCreateWindow(cs));
+}
+</FONT></TT></PRE>
+
+<h4>Step 2: Add member variable and initialize it</h4>
+Add a protected member variable to your class declaration. Also add an enumeration for the different kinds of selection highlighting. The normal highlighting is when only the label in the first column is highlighted. When you choose HIGHLIGHT_ALLCOLUMNS, only the defined columns are highlighted. That is, any area to right of the last column. HIGHLIGHT_ROW on the other hand, covers the entire width of the client area.
+
+<p>Initialize m_nHighlight in the constructor to a value you feel should be the default. Since we are talking about full row selection it will probably be either HIGHLIGHT_ALLCOLUMNS or HIGHLIGHT_ROW.
+
+<PRE><TT><FONT COLOR="#990000">public:
+	enum EHighlight {HIGHLIGHT_NORMAL, HIGHLIGHT_ALLCOLUMNS, HIGHLIGHT_ROW};
+protected:
+	int  m_nHighlight;		// Indicate type of selection highlighting
+</FONT></TT></PRE>
+
+<h4>Step 3: Override DrawItem()</h4>
+The DrawItem() function is called by the framework whenever an item needs to be drawn. Of course, this function is called only for owner drawn controls. The code for DrawItem() is somewhat long. After setting up some variables, the function first saves the device context sent in through the argument. We will use this to restore the device context when we are done. It then gets the image and the state flags for the item that needs to be drawn.
+
+<p>The next segment of code determines if the item needs to be highlighted. The condition for highlighting an item is that the item should be drop-highlighted or it should be selected. By default the selection is shown only if the control has the focus or if the control has the LVS_SHOWSELALWAYS style. You may have noticed with non owner drawn controls that if an item is highlighted when the control does not have focus then the highlight color is different (usually gray). In our code below we do not make this differentiation but you can easily add it if you want.
+
+<p>The next significant step is the statement where we set a variable to twice the width of a space character. This value is used as an offset when we draw the text in the columns. This offset is used to give a white space margin on both ends of the main label and the subitem text.
+
+<p>The function then computes the highlight rectangle and sets up the device context and draws the highlight. We then draw the state image, the item image and the item label (e.i. text for column 1). Before we actually draw any of these we set the clip region for the device context so that all output is constrained within the first column. For item images, you'll notice that we use ILD_BLEND50 flag for selected items. This gives the effect that the image is also selected. If you don't want the image to look different for selected items then remove this flag. Also note that the item label is always drawn left justified. This is the default behaviour of the list view control so we mimic that. 
+
+<p>The DrawText() function is used to draw the text for all the columns. The last argument to this function is a flag that tells the function how to draw the text. One flag of special interest to us is the DT_END_ELLIPSIS. This causes the DrawText() function to replace part of the given string with ellipses, if necessary, so that the result fits in the column bounds. This is again meant to mimic the default behaviour of the control.
+
+<p>We then restore the text color and text background color if the highlighting was for the first column only and then we draw the remainder of the column texts. For the sub-item text we make sure that it gets the text justification information from the column and uses it. We finally draw the focus rectangle and restore the device context.
+
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+	CRect rcItem(lpDrawItemStruct->rcItem);
+	int nItem = lpDrawItemStruct->itemID;
+	CImageList* pImageList;
+
+	// Save dc state
+	int nSavedDC = pDC->SaveDC();
+
+	// Get item image and state info
+	LV_ITEM lvi;
+	lvi.mask = LVIF_IMAGE | LVIF_STATE;
+	lvi.iItem = nItem;
+	lvi.iSubItem = 0;
+	lvi.stateMask = 0xFFFF;		// get all state flags
+	GetItem(&lvi);
+
+	// Should the item be highlighted
+	BOOL bHighlight =((lvi.state & LVIS_DROPHILITED)
+				|| ( (lvi.state & LVIS_SELECTED)
+					&& ((GetFocus() == this)
+						|| (GetStyle() & LVS_SHOWSELALWAYS)
+						)
+					)
+				);
+
+
+	// Get rectangles for drawing
+	CRect rcBounds, rcLabel, rcIcon;
+	GetItemRect(nItem, rcBounds, LVIR_BOUNDS);
+	GetItemRect(nItem, rcLabel, LVIR_LABEL);
+	GetItemRect(nItem, rcIcon, LVIR_ICON);
+	CRect rcCol( rcBounds ); 
+
+
+	CString sLabel = GetItemText( nItem, 0 );
+
+	// Labels are offset by a certain amount  
+	// This offset is related to the width of a space character
+	int offset = pDC->GetTextExtent(_T(" "), 1 ).cx*2;
+
+	CRect rcHighlight;
+	CRect rcWnd;
+	int nExt;
+	switch( m_nHighlight )
+	{
+	case 0: 
+		nExt = pDC->GetOutputTextExtent(sLabel).cx + offset;
+		rcHighlight = rcLabel;
+		if( rcLabel.left + nExt < rcLabel.right )
+			rcHighlight.right = rcLabel.left + nExt;
+		break;
+	case 1:
+		rcHighlight = rcBounds;
+		rcHighlight.left = rcLabel.left;
+		break;
+	case 2:
+		GetClientRect(&rcWnd);
+		rcHighlight = rcBounds;
+		rcHighlight.left = rcLabel.left;
+		rcHighlight.right = rcWnd.right;
+		break;
+	default:
+		rcHighlight = rcLabel;
+	}
+
+	// Draw the background color
+	if( bHighlight )
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+		pDC->SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
+
+		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_HIGHLIGHT)));
+	}
+	else
+		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_WINDOW)));
+
+	
+
+	// Set clip region
+	rcCol.right = rcCol.left + GetColumnWidth(0);
+	CRgn rgn;
+	rgn.CreateRectRgnIndirect(&rcCol);
+	pDC->SelectClipRgn(&rgn);
+	rgn.DeleteObject();
+
+	// Draw state icon
+	if (lvi.state & LVIS_STATEIMAGEMASK)
+	{
+		int nImage = ((lvi.state & LVIS_STATEIMAGEMASK)>>12) - 1;
+		pImageList = GetImageList(LVSIL_STATE);
+		if (pImageList)
+		{
+			pImageList->Draw(pDC, nImage,
+				CPoint(rcCol.left, rcCol.top), ILD_TRANSPARENT);
+		}
+	}
+	
+	// Draw normal and overlay icon
+	pImageList = GetImageList(LVSIL_SMALL);
+	if (pImageList)
+	{
+		UINT nOvlImageMask=lvi.state & LVIS_OVERLAYMASK;
+		pImageList->Draw(pDC, lvi.iImage, 
+			CPoint(rcIcon.left, rcIcon.top),
+			(bHighlight?ILD_BLEND50:0) | ILD_TRANSPARENT | nOvlImageMask );
+	}
+
+	
+	
+	// Draw item label - Column 0
+	rcLabel.left += offset/2;
+	rcLabel.right -= offset;
+
+	pDC->DrawText(sLabel,-1,rcLabel,DT_LEFT | DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
+				| DT_VCENTER | DT_END_ELLIPSIS);
+
+
+	// Draw labels for remaining columns
+	LV_COLUMN lvc;
+	lvc.mask = LVCF_FMT | LVCF_WIDTH;
+
+	if( m_nHighlight == 0 )		// Highlight only first column
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
+		pDC->SetBkColor(::GetSysColor(COLOR_WINDOW));
+	}
+	
+	rcBounds.right = rcHighlight.right > rcBounds.right ? rcHighlight.right :
+							rcBounds.right;
+	rgn.CreateRectRgnIndirect(&rcBounds);
+	pDC->SelectClipRgn(&rgn);
+				   
+	for(int nColumn = 1; GetColumn(nColumn, &lvc); nColumn++)
+	{
+		rcCol.left = rcCol.right;
+		rcCol.right += lvc.cx;
+
+		// Draw the background if needed
+		if( m_nHighlight == HIGHLIGHT_NORMAL )
+			pDC->FillRect(rcCol, &CBrush(::GetSysColor(COLOR_WINDOW)));
+
+		sLabel = GetItemText(nItem, nColumn);
+		if (sLabel.GetLength() == 0)
+			continue;
+
+		// Get the text justification
+		UINT nJustify = DT_LEFT;
+		switch(lvc.fmt & LVCFMT_JUSTIFYMASK)
+		{
+		case LVCFMT_RIGHT:
+			nJustify = DT_RIGHT;
+			break;
+		case LVCFMT_CENTER:
+			nJustify = DT_CENTER;
+			break;
+		default:
+			break;
+		}
+
+		rcLabel = rcCol;
+		rcLabel.left += offset;
+		rcLabel.right -= offset;
+
+		pDC->DrawText(sLabel, -1, rcLabel, nJustify | DT_SINGLELINE | 
+					DT_NOPREFIX | DT_VCENTER | DT_END_ELLIPSIS);
+	}
+
+	// Draw focus rectangle if item has focus
+	if (lvi.state & LVIS_FOCUSED && (GetFocus() == this))
+		pDC->DrawFocusRect(rcHighlight);
+
+	
+	// Restore dc
+	pDC->RestoreDC( nSavedDC );
+}
+</FONT></TT></PRE>
+
+
+
+<h4>Step 4: Define RepaintSelectedItems() helper function</h4>
+This helper function is used to add or remove the focus rectangle around an item. It also adds or removes highlighting from a selected item depending on whether the control has the LVS_SHOWSELALWAYS style. Actually this function just invalidates the rectangle and DrawItem() takes care of the rest.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::RepaintSelectedItems()
+{
+	CRect rcBounds, rcLabel;
+
+	// Invalidate focused item so it can repaint 
+	int nItem = GetNextItem(-1, LVNI_FOCUSED);
+
+	if(nItem != -1)
+	{
+		GetItemRect(nItem, rcBounds, LVIR_BOUNDS);
+		GetItemRect(nItem, rcLabel, LVIR_LABEL);
+		rcBounds.left = rcLabel.left;
+
+		InvalidateRect(rcBounds, FALSE);
+	}
+
+	// Invalidate selected items depending on LVS_SHOWSELALWAYS
+	if(!(GetStyle() & LVS_SHOWSELALWAYS))
+	{
+		for(nItem = GetNextItem(-1, LVNI_SELECTED);
+			nItem != -1; nItem = GetNextItem(nItem, LVNI_SELECTED))
+		{
+			GetItemRect(nItem, rcBounds, LVIR_BOUNDS);
+			GetItemRect(nItem, rcLabel, LVIR_LABEL);
+			rcBounds.left = rcLabel.left;
+
+			InvalidateRect(rcBounds, FALSE);
+		}
+	}
+
+	UpdateWindow();
+}
+</FONT></TT></PRE>
+
+<h4>Step 5: Add code to OnPaint() to invalidate entire row</h4>
+When the list view control repaints an item, it repaints only the area occupied by defined columns. That is if the last column does not extend to the end of the client area, then the space to the right of the last column is not repainted. If we are highlighting the full row then this area also needs to be invalidated, so that the code in DrawItem() can add or remove the highlighting from this area.
+
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnPaint() 
+{
+	// in full row select mode, we need to extend the clipping region
+	// so we can paint a selection all the way to the right
+	if (m_nHighlight == HIGHLIGHT_ROW &&
+		(GetStyle() & LVS_TYPEMASK) == LVS_REPORT )
+	{
+		CRect rcBounds;
+		GetItemRect(0, rcBounds, LVIR_BOUNDS);
+
+		CRect rcClient;
+		GetClientRect(&rcClient);
+		if(rcBounds.right < rcClient.right)
+		{
+			CPaintDC dc(this);
+
+			CRect rcClip;
+			dc.GetClipBox(rcClip);
+
+			rcClip.left = min(rcBounds.right-1, rcClip.left);
+			rcClip.right = rcClient.right;
+
+			InvalidateRect(rcClip, FALSE);
+		}
+	}
+
+	CListCtrl::OnPaint();
+}
+</FONT></TT></PRE>
+
+<h4>Step 6: Add handlers for WM_KILLFOCUS and WM_SETFOCUS</h4>
+This is another step to mimic the default behaviour of the list view control. When the control loses focus, the focus rectangle around the selected (focus) item has to be removed. When the control gets back focus, then the focus rectangle has to be redrawn. Both these handlers call the RepaintSelectedItems() helper function.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnKillFocus(CWnd* pNewWnd) 
+{
+	CListCtrl::OnKillFocus(pNewWnd);
+
+	// check if we are losing focus to label edit box
+	if(pNewWnd != NULL && pNewWnd->GetParent() == this)
+		return;
+
+	// repaint items that should change appearance
+	if((GetStyle() & LVS_TYPEMASK) == LVS_REPORT)
+		RepaintSelectedItems();
+}
+
+void CMyListCtrl::OnSetFocus(CWnd* pOldWnd) 
+{
+	CListCtrl::OnSetFocus(pOldWnd);
+	
+	// check if we are getting focus from label edit box
+	if(pOldWnd!=NULL && pOldWnd->GetParent()==this)
+		return;
+
+	// repaint items that should change appearance
+	if((GetStyle() & LVS_TYPEMASK)==LVS_REPORT)
+		RepaintSelectedItems();
+}
+</FONT></TT></PRE>
+
+<h4>Step 7: Add helper function to change selection mode</h4>
+In this function we update the member variable and invalidate the control so that the items are redrawn with the proper highlighting. SetHighlightType() returns the previous highlight value.
+
+<PRE><TT><FONT COLOR="#990000">int CMyListCtrl::SetHighlightType(EHighlight hilite)
+{
+	int oldhilite = m_nHighlight;
+	if( hilite <= HIGHLIGHT_ROW )
+	{
+		m_nHighlight = hilite;
+		Invalidate();
+	}
+	return oldhilite;
+}
+</FONT></TT></PRE>
+<BR>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

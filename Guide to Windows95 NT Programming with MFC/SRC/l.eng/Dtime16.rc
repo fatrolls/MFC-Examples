@@ -1,0 +1,390 @@
+//Microsoft App Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CDATE_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 136, 39
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,9,0,18,8
+    LTEXT           "Month",IDC_MONTH_PRMPT,50,0,24,8
+    LTEXT           "Year",IDC_YEAR_PRMPT,108,0,18,8
+    EDITTEXT        IDC_DAY,3,8,26,13,ES_MULTILINE
+    COMBOBOX        IDC_MONTH,35,8,59,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,96,8,38,13,ES_MULTILINE
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,25,36,10
+    DEFPUSHBUTTON   "OK",IDOK,72,28,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,104,28,29,9
+END
+
+IDD_CLDATE DIALOG DISCARDABLE  0, 0, 128, 85
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,8,10,18,9
+    LTEXT           "Month",IDC_MONTH_PRMPT,47,10,24,9
+    LTEXT           "Year",IDC_YEAR_PRMPT,103,10,18,9
+    EDITTEXT        IDC_DAY,2,20,27,13,ES_MULTILINE
+    COMBOBOX        IDC_MONTH,32,20,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,89,20,37,13,ES_MULTILINE
+    LTEXT           "Hour",IDC_HOUR_PRMPT,4,36,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,34,36,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,62,36,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,91,36,36,8
+    EDITTEXT        IDC_HOUR,2,45,26,13,ES_MULTILINE
+    EDITTEXT        IDC_MINUTE,33,45,26,13,ES_MULTILINE
+    EDITTEXT        IDC_SECOND,63,45,27,13,ES_MULTILINE
+    EDITTEXT        IDC_MILLISECOND,94,45,32,13,ES_MULTILINE
+    COMBOBOX        IDC_TIMEFRAME,3,71,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,75,60,36,11
+    LTEXT           "Timeframe",IDC_TIMEFRAME_PRMPT,11,61,34,9
+    DEFPUSHBUTTON   "OK",IDOK,63,74,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,96,74,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    15,10
+END
+
+IDD_CLTIMEOFDAY DIALOG DISCARDABLE  0, 0, 122, 45
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Hour",IDC_HOUR_PRMPT,3,10,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,31,10,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,59,10,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,86,10,36,8
+    EDITTEXT        IDC_HOUR,3,19,22,12,ES_MULTILINE
+    EDITTEXT        IDC_MINUTE,31,19,24,12,ES_MULTILINE
+    EDITTEXT        IDC_SECOND,60,19,25,12,ES_MULTILINE
+    EDITTEXT        IDC_MILLISECOND,90,19,30,12,ES_MULTILINE
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,33,36,11
+    DEFPUSHBUTTON   "OK",IDOK,59,34,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,91,34,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    14,9
+END
+
+IDD_CLTIMESPAN DIALOG DISCARDABLE  0, 0, 159, 45
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,6,10,16,8
+    LTEXT           "Hour",IDC_HOUR_PRMPT,44,10,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,68,10,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,96,10,26,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,123,10,36,8
+    EDITTEXT        IDC_DAY,1,19,39,12,ES_MULTILINE
+    EDITTEXT        IDC_HOUR,44,19,22,12,ES_MULTILINE
+    EDITTEXT        IDC_MINUTE,71,19,24,12,ES_MULTILINE
+    EDITTEXT        IDC_SECOND,99,19,23,12,ES_MULTILINE
+    EDITTEXT        IDC_MILLISECOND,127,19,30,12,ES_MULTILINE
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,25,34,36,9
+    DEFPUSHBUTTON   "OK",IDOK,94,34,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,127,34,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    16,9
+END
+
+IDD_CDATE DIALOG DISCARDABLE  0, 0, 137, 51
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,8,12,18,8
+    LTEXT           "Month",IDC_MONTH_PRMPT,49,12,24,8
+    LTEXT           "Year",IDC_YEAR_PRMPT,107,12,18,8
+    EDITTEXT        IDC_DAY,2,20,26,13,ES_MULTILINE
+    COMBOBOX        IDC_MONTH,34,20,59,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,95,20,38,13,ES_MULTILINE
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,4,37,36,10
+    DEFPUSHBUTTON   "OK",IDOK,71,40,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,103,40,29,9
+    CONTROL         "PIN",IDC_PUSHPIN,"Button",BS_OWNERDRAW | WS_TABSTOP,3,1,
+                    14,11
+END
+
+IDD_CLDATE_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 128, 75
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,8,0,18,9
+    LTEXT           "Month",IDC_MONTH_PRMPT,47,0,24,9
+    LTEXT           "Year",IDC_YEAR_PRMPT,103,0,18,9
+    EDITTEXT        IDC_DAY,2,10,27,13,ES_MULTILINE
+    COMBOBOX        IDC_MONTH,32,10,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_YEAR,89,10,37,13,ES_MULTILINE
+    LTEXT           "Hour",IDC_HOUR_PRMPT,4,26,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,34,26,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,63,26,25,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,91,26,36,8
+    EDITTEXT        IDC_HOUR,2,35,26,13,ES_MULTILINE
+    EDITTEXT        IDC_MINUTE,33,35,26,13,ES_MULTILINE
+    EDITTEXT        IDC_SECOND,64,35,27,13,ES_MULTILINE
+    EDITTEXT        IDC_MILLISECOND,94,35,32,13,ES_MULTILINE
+    COMBOBOX        IDC_TIMEFRAME,3,60,51,53,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,75,50,36,11
+    LTEXT           "Timeframe",IDC_TIMEFRAME_PRMPT,11,51,34,9
+    DEFPUSHBUTTON   "OK",IDOK,63,64,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,96,64,29,9
+END
+
+IDD_CLTIMEOFDAY_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 123, 34
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Hour",IDC_HOUR_PRMPT,3,0,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,31,0,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,59,0,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,87,0,36,8
+    EDITTEXT        IDC_HOUR,3,9,22,12,ES_MULTILINE
+    EDITTEXT        IDC_MINUTE,31,9,24,12,ES_MULTILINE
+    EDITTEXT        IDC_SECOND,60,9,25,12,ES_MULTILINE
+    EDITTEXT        IDC_MILLISECOND,90,9,30,12,ES_MULTILINE
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,23,36,11
+    DEFPUSHBUTTON   "OK",IDOK,59,24,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,92,24,29,9
+END
+
+IDD_CLTIMESPAN_WITHOUT_PIN DIALOG DISCARDABLE  0, 0, 159, 35
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "Arial"
+BEGIN
+    LTEXT           "Day",IDC_DAY_PRMPT,6,0,16,8
+    LTEXT           "Hour",IDC_HOUR_PRMPT,44,0,16,8
+    LTEXT           "Minute",IDC_MINUTE_PRMPT,68,0,23,8
+    LTEXT           "Second",IDC_SECOND_PRMPT,95,0,27,8
+    LTEXT           "Millisecond",IDC_MILLISECOND_PRMPT,123,0,36,8
+    EDITTEXT        IDC_DAY,1,9,39,12,ES_MULTILINE
+    EDITTEXT        IDC_HOUR,44,9,22,12,ES_MULTILINE
+    EDITTEXT        IDC_MINUTE,71,9,24,12,ES_MULTILINE
+    EDITTEXT        IDC_SECOND,99,9,23,12,ES_MULTILINE
+    EDITTEXT        IDC_MILLISECOND,127,9,30,12,ES_MULTILINE
+    CONTROL         "&Invalid",IDC_INVALID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,25,24,36,9
+    DEFPUSHBUTTON   "OK",IDOK,94,24,27,9
+    PUSHBUTTON      "Cancel",IDCANCEL,127,24,29,9
+END
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+IDR_MAINFRAME           ICON    DISCARDABLE     "RES\\DATENTRY.ICO"
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+PIND                    BITMAP  FIXED IMPURE    "RES\\PUSHPIND.BMP"
+PINU                    BITMAP  FIXED IMPURE    "RES\\PUSHPINU.BMP"
+
+
+#ifdef APSTUDIO_INVOKED
+//////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Dtime.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_WEEKDAY1            "Sunday"
+    IDS_WEEKDAY2            "Monday"
+    IDS_WEEKDAY3            "Tuesday"
+    IDS_WEEKDAY4            "Wednesday"
+    IDS_WEEKDAY5            "Thursday"
+    IDS_WEEKDAY6            "Friday"
+    IDS_WEEKDAY7            "Saturday"
+    IDS_ABR_WEEKDAY1        "Sun"
+    IDS_ABR_WEEKDAY2        "Mon"
+    IDS_ABR_WEEKDAY3        "Tue"
+    IDS_ABR_WEEKDAY4        "Wed"
+    IDS_ABR_WEEKDAY5        "Thur"
+    IDS_ABR_WEEKDAY6        "Fri"
+    IDS_ABR_WEEKDAY7        "Sat"
+    IDS_MONTH1              "January"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MONTH2              "February"
+    IDS_MONTH3              "March"
+    IDS_MONTH4              "April"
+    IDS_MONTH5              "May"
+    IDS_MONTH6              "June"
+    IDS_MONTH7              "July"
+    IDS_MONTH8              "August"
+    IDS_MONTH9              "September"
+    IDS_MONTH10             "October"
+    IDS_MONTH11             "November"
+    IDS_MONTH12             "December"
+    IDS_ABR_MONTH1          "Jan"
+    IDS_ABR_MONTH2          "Feb"
+    IDS_ABR_MONTH3          "Mar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABR_MONTH4          "Apr"
+    IDS_ABR_MONTH5          "May"
+    IDS_ABR_MONTH6          "Jun"
+    IDS_ABR_MONTH7          "Jul"
+    IDS_ABR_MONTH8          "Aug"
+    IDS_ABR_MONTH9          "Sep"
+    IDS_ABR_MONTH10         "Oct"
+    IDS_ABR_MONTH11         "Nov"
+    IDS_ABR_MONTH12         "Dec"
+    IDS_INVALID_DATE_RANGE  "The date entered is outside of the allowable range"
+    IDS_INVALID_TIMESPAN_RANGE 
+                            "The time span entered is outside of the allowable range"
+    IDS_INVALID_TIMEOFDAY_RANGE 
+                            "The time of day entered is outside of the allowable range"
+    IDS_INVALID_DATE_MIN    "The date entered is earlier that the allowable value"
+    IDS_INVALID_TIMESPAN_MIN 
+                            "The time span entered is earlier that the allowable value"
+    IDS_INVALID_TIMEOFDAY_MIN 
+                            "The time of day entered is earlier that the allowable value"
+    IDS_INVALID_DATE_MAX    "The date entered is later that the allowable value"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_INVALID_TIMESPAN_MAX 
+                            "The time span entered is later that the allowable value"
+    IDS_INVALID_TIMEOFDAY_MAX 
+                            "The time of day entered is later that the allowable value"
+    IDS_CEYEAR              "%1 CE"
+    IDS_BCEYEAR             "%1 BCE"
+    IDS_LOCAL               "Local"
+    IDS_UTC                 "UTC"
+    IDS_ET                  "ET"
+    IDS_AM                  "AM"
+    IDS_PM                  "PM"
+    IDS_INVALID_DATE        "A valid date must be entered."
+    IDS_INVALID_TIMESPAN    "A valid time span must be entered."
+    IDS_INVALID_TIMEOFDAY   "A valid time of day must be entered."
+    IDS_INVALID_LDATE       "A valid long date must be entered."
+    IDS_INVALID_LDATE_MIN   "The long date entered is earlier that the allowable value"
+    IDS_INVALID_LDATE_MAX   "The long date entered is later that the allowable value"
+    IDS_YEAR                "Year"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MONTH               "Month"
+    IDS_DAY                 "Day"
+    IDS_HOUR                "Hour"
+    IDS_MINUTE              "Minute"
+    IDS_SECOND              "Second"
+    IDS_MILLISECOND         "Millisecond"
+    IDS_ABR_HOUR            "H"
+    IDS_ABR_MINUTE          "M"
+    IDS_ABR_SECOND          "S"
+    IDS_ABR_MILLISECOND     "MS"
+    IDS_TIMEFRAME           "Timeframe"
+    IDS_ENTERED_INVALID_DATE 
+                            "Please enter a valid date. A Possible reason that the date is invalid is that it occured during the skip when the Gregorian calendar was introduced."
+    IDS_ENTERED_INVALID_LDATE 
+                            "Please enter a valid long date. Possible reasons that the date is invalid is that it occured during the skip when the Gregorian calendar was introduced or when Daylight Savings was introduced or removed."
+    IDS_EDIT_TEXT           "..."
+    IDS_UNICODE_DEBUG       "(Unicode Debug Build)"
+    IDS_UNICODE_RELEASE     "(Unicode Release Build)"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ASCII_DEBUG         "(Ascii Debug Build)"
+    IDS_ASCII_RELEASE       "(Ascii Release Build)"
+    IDS_SHAREWARE_CAPTION   "DTime v%1 %2"
+    IDS_TT_PUSHPIN          "Keep Visible"
+    IDS_TT_MODIFY           "Modify"
+END
+
+
+#ifndef APSTUDIO_INVOKED
+////////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "Dtime.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

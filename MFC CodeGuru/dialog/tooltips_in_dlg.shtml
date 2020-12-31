@@ -1,0 +1,103 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Section - Tooltips for dialog controls</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Tooltips for dialog controls
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:dbixler@loudoun.com">Dave Bixler</A>.
+
+<!-- Sample image and source code/demo project -->
+
+<!-- The article... -->
+
+<p>Here's a little trick I use to get tooltips into a dialog quickly. I usually put this code
+into the OnInitDialog.  It allows me to easily add tooltips to any dialog quickly.<br>
+<br>
+Add a member to the CDialog or CWnd derived class in the header like:
+
+<FONT COLOR="#990000"><TT><PRE>
+CToolTipCtrl    CTTDialog :: m_ToolTip;
+</tt></PRE></FONT>
+
+In the OnInitDialog or OnInitialUpdate, add:
+
+<FONT COLOR="#990000"><TT><PRE>
+m_ToolTip.Create (this);
+m_ToolTip.Activate (TRUE);
+
+CWnd*    pWnd = GetWindow (GW_CHILD);
+while (pWnd)
+{
+    int nID = pWnd->GetDlgCtrlID ();
+    if (nID != -1)
+    {
+        m_ToolTip.AddTool (pWnd, pWnd->GetDlgCtrlID ());
+    }
+    pWnd = pWnd->GetWindow (GW_HWNDNEXT);
+}
+</tt></PRE></FONT>
+
+To add a tooltip to a control, just add a string resource using the same ID as the control to get
+the tip. If I wanted the OK button to have a tip, I would add a string resource for IDOK.<br>
+<br>
+Also do not forget to put the following code to you dialog class:
+
+<FONT COLOR="#990000"><TT><PRE>
+BOOL CTTDialog :: PreTranslateMessage(MSG* pMsg) 
+{
+    if (m_hWnd)
+    {
+        m_ToolTip.RelayEvent (pMsg);
+        return CDialog::PreTranslateMessage(pMsg);
+    }
+    return (FALSE);
+}
+</tt></PRE></FONT>
+
+That's it.
+
+<!-- Remember to update this -->
+<p>Last updated: 18 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

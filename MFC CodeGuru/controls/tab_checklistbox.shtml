@@ -1,0 +1,172 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Multi-Column Checked List Box</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Multi-Column Checked List Box
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:qzhang7@tfn.net">Qing Zhang</A>. 
+
+<!-- Sample image and source code/demo project --></P>
+<P><IMG SRC="tab_checklistbox.gif"> <br>
+Download <A HREF="tab_checklistbox_src.zip">Source Code</a> 
+and <A HREF="tab_checklistbox_demo.zip">Example</A> </P>
+
+<!-- The article... -->
+<P>Checked list boxes are often used to show multiple choices that are from multiple-column
+data source. You might want to try to put a tab between words to separate each item in the
+list, like its parent, list box.</P>
+
+<P>But if you set LBS_USETABSTOPS for your checked list box style and call SetTabStops()
+function for your checked list box, all you get is some black marks where the tabs suppose
+to be in your checked list box.</P>
+
+<P>You might solve this problem by using fonts with constant stroke width (fixed-pitch),
+like Pica, Elite, and Courier New, then set fixed length for the strings you add. If you
+are not using these fonts in your checked list boxes, the class CTabCheckListBox is the
+easiest way to do it.</P>
+
+<P>The class, CTabCheckListBox, implements owner drawn checked list box derived from the
+CCheckListBox, which overrides the CCheckListBox::DrawItem(), adds SetTabStops()
+functions that are inherited from CListBox. You are going to use the same ways to setup 
+tab stops as CListBox do. The class CTabCheckListBox is simple, and using this class is 
+simple too, just like normal list box you use tabs, and follow the rules for building 
+normal checked list box.</P>
+
+<P>The code of CTabCheckListBox::DrawItem() mostly comes from CCheckListBox::DrawItem() 
+by using TabbedTextOut() instead of ExtTextOut().</P>
+
+<FONT COLOR="#990000"><TT><PRE>
+void CTabCheckListBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) 
+{
+	ASSERT((GetStyle() & (LBS_OWNERDRAWFIXED | LBS_HASSTRINGS)) ==
+		(LBS_OWNERDRAWFIXED | LBS_HASSTRINGS));
+
+	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+
+	if (((LONG)(lpDrawItemStruct->itemID) >= 0) &&
+		(lpDrawItemStruct->itemAction & (ODA_DRAWENTIRE | ODA_SELECT)))
+	{
+		int cyItem = GetItemHeight(lpDrawItemStruct->itemID);
+		BOOL fDisabled = !IsWindowEnabled() || !IsEnabled(lpDrawItemStruct->itemID);
+		COLORREF newTextColor = fDisabled ?
+			RGB(0x80, 0x80, 0x80) : GetSysColor(COLOR_WINDOWTEXT);  // light gray
+		COLORREF oldTextColor = pDC->SetTextColor(newTextColor);
+		COLORREF newBkColor = GetSysColor(COLOR_WINDOW);
+		COLORREF oldBkColor = pDC->SetBkColor(newBkColor);
+
+		if (newTextColor == newBkColor)
+			newTextColor = RGB(0xC0, 0xC0, 0xC0);   // dark gray
+
+		if (!fDisabled && ((lpDrawItemStruct->itemState & ODS_SELECTED) != 0))
+		{
+			pDC->SetTextColor(GetSysColor(COLOR_HIGHLIGHTTEXT));
+			pDC->SetBkColor(GetSysColor(COLOR_HIGHLIGHT));
+		}
+
+		if (m_cyText == 0)
+			VERIFY(cyItem >= CalcMinimumItemHeight());
+
+		CString strText;
+		GetText(lpDrawItemStruct->itemID, strText);
+
+		pDC->ExtTextOut(lpDrawItemStruct->rcItem.left,
+			lpDrawItemStruct->rcItem.top + max(0, (cyItem - m_cyText) / 2),
+			ETO_OPAQUE, &(lpDrawItemStruct->rcItem), "", 0, NULL);
+
+		pDC->TabbedTextOut(lpDrawItemStruct->rcItem.left,
+			lpDrawItemStruct->rcItem.top + max(0, (cyItem - m_cyText) / 2),
+			strText, strText.GetLength(), m_nTabStops, m_lpnEachStop, lpDrawItemStruct->rcItem.left);
+
+		pDC->SetTextColor(oldTextColor);
+		pDC->SetBkColor(oldBkColor);
+	}
+
+	if ((lpDrawItemStruct->itemAction & ODA_FOCUS) != 0)
+		pDC->DrawFocusRect(&(lpDrawItemStruct->rcItem));
+}
+</tt></PRE></FONT>
+
+<P>In order to use TabbedTextOut(), we need to convert dialog unit to logical unit
+(or device unit). For the dialog box using the system font, ::GetDialogBaseUnits() 
+will do the work; I couldn't find a exact way to get the dialog unit for using the 
+non-system font. But the code here does do the work we want.</P>
+
+<FONT COLOR="#990000"><TT><PRE>
+int CTabCheckListBox::GetAverageCharWidths()
+{
+	CFont* pFont = GetFont();
+	LOGFONT lf;
+	pFont->GetLogFont(&lf);
+	int nBaseUnit = lf.lfWidth;
+	if(nBaseUnit == 0)
+		nBaseUnit = LOWORD(GetDialogBaseUnits());
+	return nBaseUnit;
+}
+</tt></PRE></FONT>
+
+To use CTabCheckListBox:
+
+<OL>
+
+<LI>Add a list box control to your dialog resource. Setup the list box style by selecting LBS_OWNERDRAWFIXED, LBS_HASSTRINGS (without LBS_SORT selected). If you want to use the other checked list box styles, you are going to make your own class.</LI>
+<LI>Insert TabCheckListBox.cpp and TabCheckListBox.h files into your project.</LI>
+<LI>Add an instance of CTabCheckListBox in your dialog box member data. </LI>
+<P>CTabCheckListBox m_ctrlCheckListBox;</P>
+<LI>Call SubclassDlgItem() to initialize the class in your OnInitDialog();</LI>
+<P>m_ctrlCheckListBox.SubclassDlgItem(IDC_LIST1, this); </P>
+<LI>Set tab-stop position before you add strings to your checked list box. There are 3 functions to set the tab-stop, same as the CListBox::SetTabStops().</LI>
+<P>void SetTabStops( );</P>
+<P>BOOL SetTabStops( const int&amp; cxEachStop );</P>
+<P>BOOL SetTabStops( int nTabStops, LPINT rgTabStops );</P>
+<P>To set equal tab stops to the default size of 2 dialog units, call the parameterless version of this member function. To set equal tab stops to a size other than 2, call the version with the cxEachStop argument. </P>
+<P>To set tab stops to an array of sizes, use the version with the rgTabStops and nTabStops arguments. A tab stop will be set for each value in rgTabStops, up to the number specified by nTabStops. </P>
+<P>Referring CListBox::SetTabStops for how to using these functions.</P>
+<LI>Add Strings to your checked list box, like</LI></OL>
+<DIR>
+<DIR>
+
+<P>CString str;</P>
+<P>str.Format(_T("%s\t%s\t%d"), "aaZAaa", "dddaaa", 1);</P>
+<P>m_ctrlCheckListBox.AddString(str);</P></DIR>
+</DIR>
+
+<P>The demo project shows how to use CTabCheckListBox by setting different tab stops
+ and using different font.</P>
+
+<!-- Remember to update this -->
+<p>Last updated: 6 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

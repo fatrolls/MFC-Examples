@@ -1,0 +1,178 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Menu - A Cool Looking Menu For Easier Navigation</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A Cool Looking Menu For Easier Navigation
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:ShekarNarayanan@Hotmail.com">Shekar Narayanan</a>
+
+<!-- Sample image and source code/demo project -->
+<p align="center"><img src="contentmenu.jpg" width="482" height="454" alt="Sample image of the ContentMenu"></p>
+<p>Download <A HREF="contentmenu.zip">Source Code</a> and <A HREF="contentmenu_demo.zip">Demo</A></p>
+<br>
+
+<p>Features:
+
+<ul>
+<li>Unlimited entries
+<li>Displays 32X32 Icons with text
+<li>Text wraps to multiple line
+<li>Button pops up when the mouse is on the image
+<li>Owner Drawn and easily customize the source!
+<li>Can be used in SDI or MDI
+</ul>
+
+<h4>Usage Instructions:</h4>
+
+<p>Open the project in which you want to add this feature. From the Project menu, select Add To Project and then Components &
+Controls. From Developer Studio Components, select Dialog Bar component and click insert. When prompted, change the name of
+the dialog bar to ContentMenu and the member variable to m_wndContentMenu. 
+
+<p>Also change the default docking side to left and click OK and close all the Component Gallery windows.
+
+<p>Now, open the CG_IDD_CONTENTMENU from the dialog resource and replace the default TODO... static control with a new List
+Box (it is a list box and NOT list control). Change the default ID from IDC_LIST1 to IDC_LIST_CONTENTS in the property window.
+Also change the following style: 
+
+<ul>
+<li>Owner Draw - Variable 
+<li>No Sort 
+<li>Optionally - change the extended style to Modal Frame 
+</ul>
+
+With the dialog bar open in the resource editor, bring up the Class Wizard by pressing Ctrl-W. You will be given the option of
+creating a new class or select an existing class. Click Select an existing class and press OK. When prompted, select
+CMainFrame from the list and click OK and close all the open windows.
+
+<ol>
+<li>Add the provided ContentMenu.cpp to the project and include the ContentMenu.h in the mainfrm.h. 
+<li>Create a variable for the class CContentMenu in the CMainFrame object in mainfrm.h
+
+<FONT COLOR="#990000"><TT><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;CContentMenu m_ContentMenu;
+</tt></PRE></FONT>
+
+<li>In the OnCreate function of CMainFrame, add the following code
+
+<FONT COLOR="#990000"><TT><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;m_ContentMenu.SubclassDlgItem (IDC_LIST_CONTENTS, &m_wndContentBar); 
+&nbsp;&nbsp;&nbsp;&nbsp;m_ContentMenu.SetItems(ContentInfo, sizeof(ContentInfo) / sizeof(CONTENT_ITEMS)); 
+</tt></PRE></FONT>
+
+<p>ContentInfo is a regular C structure defined in the mainfrm.cpp which holds the information about the items to be displayed. It is
+created as
+
+<FONT COLOR="#990000"><TT><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;// Menu Information for the Content Bar 
+&nbsp;&nbsp;&nbsp;&nbsp;static CONTENT_ITEMS ContentInfo[] =
+&nbsp;&nbsp;&nbsp;&nbsp;{ 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{IDI_COMPOSE,  &quot;Main View&quot;}, 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{IDI_FINISHED, &quot;Another View&quot;}, 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{IDI_FILED,    &quot;Another View&quot;}, 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{IDI_CALENDAR, &quot;Another View&quot;}, 
+&nbsp;&nbsp;&nbsp;&nbsp;}; 
+</tt></PRE></FONT>
+<p> where IDI_... are the 32x32 icons. 
+
+</ol>
+
+<p>Now, you should be able to compile and see how it works. To get the selection from the CMainFrame object, you have to add the
+code to handle the ON_LBN_SELCHANGE message. Normally, you would do this by using the Class Wizard, but in this case, you
+have to do it manually:
+
+<ol>
+<li>Add the following prototype in the mainfrm.h 
+
+<FONT COLOR="#990000"><TT><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;afx_msg void OnSelchangeListContents();
+</tt></PRE></FONT>
+
+<li>Add the following in mainfrm.cpp
+
+<FONT COLOR="#990000"><TT><PRE>&nbsp;&nbsp;&nbsp;&nbsp;ON_LBN_SELCHANGE(IDC_LIST_CONTENTS, OnSelchangeListContents)
+</tt></PRE></FONT>
+
+<p>before the line
+
+<FONT COLOR="#990000"><TT><PRE>&nbsp;&nbsp;&nbsp;&nbsp;END_MESSAGE_MAP()
+</tt></PRE></FONT>
+
+<li>Add the following function also in mainfrm.cpp
+
+<FONT COLOR="#990000"><TT><PRE>
+&nbsp;&nbsp;&nbsp;&nbsp;void CMainFrame::OnSelchangeListContents() 
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch (m_ContentMenu.GetCurSel())
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 0:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AfxMessageBox("You have selected First Item");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 1:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AfxMessageBox("You have selected Second Item");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 2:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AfxMessageBox("You have selected Third Item");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case 3:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AfxMessageBox("You have selected Fourth Item");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} 
+&nbsp;&nbsp;&nbsp;&nbsp;}
+</tt></PRE></FONT>
+
+</ol>
+
+<hr>
+
+<p>NOTE: THIS SOURCE CODE IS PROVIDED AS IS AND I WILL NOT BE RESPONSIBLE FOR ANY DELAYS
+OR DAMAGES CAUSED BY USING IT. USE AT OWN RISK.</p>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 10 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

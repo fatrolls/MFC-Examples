@@ -1,0 +1,711 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ExtendedEditControls.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""UTSampleAbout.rc"" \r\n"
+    "#include ""OXPhysicalEditEx.rc"" // For extended physical edit controls\r\n"
+    "#include ""oxdirdlg.rc""\r\n"
+    "#include ""OXFolderPickerDlg.rc""\r\n"
+    "#include ""OXBitmapButton.rc""\r\n"
+    "#include ""OXPopupBarCtrl.rc""\r\n"
+    "#include ""OXBrowseDirEdit.rc""\r\n"
+    "#include ""OXHistoryCombo.rc""\r\n"
+    "#include ""OXShellFolderTree.rc""\r\n"
+    "#include ""OXCalculatorCtrl.rc""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\ExtendedEditControls.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "ExtendedEditControls MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "ExtendedEditControls"
+            VALUE "LegalCopyright", "Copyright (C) 1999"
+            VALUE "OriginalFilename", "ExtendedEditControls.EXE"
+            VALUE "ProductName", "ExtendedEditControls Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_NUMERICEDIT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 341
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
+
+    IDD_CURRENCYEDIT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 341
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
+
+    IDD_EXTENDEDEDIT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 341
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
+
+    IDD_PHYSICALEDIT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 341
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
+
+    IDD_MASKEDEDIT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 341
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
+
+    IDD_DROPEDIT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 341
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_NUMERICEDIT_DIALOG DIALOGEX 0, 0, 348, 181
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "NumericEdit"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_TEST,7,19,154,12,ES_AUTOHSCROLL | ES_WANTRETURN
+    CONTROL         "\nChoose background color",IDC_BUTTON_BACKCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,83,59,59,16
+    CONTROL         "\nChoose text color",IDC_BUTTON_TEXTCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,83,80,59,16
+    CONTROL         "\nChoose text color for negative value",IDC_BUTTON_TEXTCOLOR_NEGATIVE,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,83,101,59,16
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,7,126,32,15
+    COMBOBOX        IDC_COMBO_MASK,44,151,117,119,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_DECIMAL_DIGIT_COUNT,260,18,30,119,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Indefinite",IDC_CHECK_DECIMAL_DIGIT_COUNT_INDEFINITE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,297,19,45,10
+    COMBOBOX        IDC_COMBO_DECIMAL_SEPARATOR,260,38,30,45,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FRACTIONAL_DIGIT_COUNT,260,55,30,119,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_GROUP_SEPARATOR,260,75,30,49,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_GROUP_LENGTH,260,92,30,119,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "No group",IDC_CHECK_NO_GROUP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,296,94,45,10
+    COMBOBOX        IDC_COMBO_NEGATIVE_VALUE_FORMAT,260,112,81,119,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Display leading zero",IDC_CHECK_LEADING_ZERO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,187,133,79,10
+    LTEXT           "Background",IDC_STATIC,7,63,40,8
+    LTEXT           "Text (positive value)",IDC_STATIC,7,84,64,8
+    LTEXT           "",IDC_STATIC_FONT,44,127,117,13,SS_CENTERIMAGE | SS_SUNKEN
+    LTEXT           "Decimal digit count",IDC_STATIC,187,21,61,8
+    LTEXT           "Negative value format",IDC_STATIC,187,114,70,8
+    LTEXT           "Decimal separator",IDC_STATIC,187,41,58,8
+    LTEXT           "Group separator",IDC_STATIC,187,78,58,8
+    LTEXT           "Text (negative value)",IDC_STATIC,7,105,68,8
+    LTEXT           "Control appearance",IDC_STATIC_CONTROL_APPEARANCE,7,47,154,9,SS_SUNKEN
+    LTEXT           "Edit mask",IDC_STATIC,8,154,32,8
+    LTEXT           "Numeric edit control",IDC_STATIC_NUMERIC_EDIT,7,7,154,10,SS_SUNKEN
+    LTEXT           "Numeric edit control settings",IDC_STATIC_NUMERIC_EDIT_SETTINGS,187,7,154,10,SS_SUNKEN
+    LTEXT           "Fractional digit count",IDC_STATIC,187,58,66,8
+    LTEXT           "Digits in group",IDC_STATIC,187,94,46,8
+    LTEXT           "",IDC_STATIC_BOTTOM,187,153,154,8,SS_SUNKEN
+END
+
+IDD_CURRENCYEDIT_DIALOG DIALOGEX 0, 0, 348, 181
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "CurrencyEdit"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_TEST,7,19,154,12,ES_AUTOHSCROLL | ES_WANTRETURN
+    CONTROL         "\nChoose background color",IDC_BUTTON_BACKCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,83,59,59,16
+    CONTROL         "\nChoose text color",IDC_BUTTON_TEXTCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,83,80,59,16
+    CONTROL         "\nChoose text color for negative value",IDC_BUTTON_TEXTCOLOR_NEGATIVE,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,83,101,59,16
+    LTEXT           "",IDC_STATIC_FONT,44,127,117,13,SS_CENTERIMAGE | SS_SUNKEN
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,7,126,32,15
+    COMBOBOX        IDC_COMBO_MASK,44,152,117,119,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_DECIMAL_DIGIT_COUNT,260,18,30,119,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Indefinite",IDC_CHECK_DECIMAL_DIGIT_COUNT_INDEFINITE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,297,19,45,10
+    COMBOBOX        IDC_COMBO_DECIMAL_SEPARATOR,260,35,30,45,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FRACTIONAL_DIGIT_COUNT,260,52,30,119,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_GROUP_SEPARATOR,260,69,30,49,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_GROUP_LENGTH,260,86,30,119,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "No group",IDC_CHECK_NO_GROUP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,296,88,45,10
+    COMBOBOX        IDC_COMBO_POSITIVE_VALUE_FORMAT,260,104,81,119,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_NEGATIVE_VALUE_FORMAT,260,121,81,119,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_CURRENCY_NAME,260,138,81,119,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Display leading zero",IDC_CHECK_LEADING_ZERO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,188,155,79,10
+    LTEXT           "Background",IDC_STATIC,7,63,40,8
+    LTEXT           "Text (positive value)",IDC_STATIC,7,84,64,8
+    LTEXT           "Decimal digit count",IDC_STATIC,187,21,61,8
+    LTEXT           "Negative value format",IDC_STATIC,187,124,70,8
+    LTEXT           "Decimal separator",IDC_STATIC,187,38,58,8
+    LTEXT           "Group separator",IDC_STATIC,187,72,58,8
+    LTEXT           "Text (negative value)",IDC_STATIC,7,105,68,8
+    LTEXT           "Control appearance",IDC_STATIC_CONTROL_APPEARANCE,7,47,154,9,SS_SUNKEN
+    LTEXT           "Edit mask",IDC_STATIC,8,154,32,8
+    LTEXT           "Currency edit control",IDC_STATIC_NUMERIC_EDIT,7,7,154,10,SS_SUNKEN
+    LTEXT           "Currency edit control settings",IDC_STATIC_NUMERIC_EDIT_SETTINGS,187,7,154,10,SS_SUNKEN
+    LTEXT           "Fractional digit count",IDC_STATIC,187,55,66,8
+    LTEXT           "Digits in group",IDC_STATIC,187,88,46,8
+    LTEXT           "Positive value format",IDC_STATIC,187,107,66,8
+    LTEXT           "Currency name",IDC_STATIC,187,141,48,8
+END
+
+IDD_EXTENDEDEDIT_DIALOG DIALOGEX 0, 0, 348, 181
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ExtendedEdit"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_TEST,7,19,202,37,ES_MULTILINE | WS_VSCROLL
+    CONTROL         "\nChoose background color",IDC_BUTTON_BACKCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,55,78,59,16
+    CONTROL         "\nChoose text color",IDC_BUTTON_TEXTCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,55,99,59,16
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,151,78,32,15
+    COMBOBOX        IDC_COMBO_MASK,188,103,153,119,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Background",IDC_STATIC,7,82,40,8
+    LTEXT           "Text",IDC_STATIC,7,103,15,8
+    LTEXT           "",IDC_STATIC_FONT,188,79,153,13,SS_CENTERIMAGE | SS_SUNKEN
+    LTEXT           "Control appearance",IDC_STATIC_CONTROL_APPEARANCE,7,66,334,9,SS_SUNKEN
+    LTEXT           "Edit mask",IDC_STATIC,152,106,32,8
+    LTEXT           "Extended edit control",IDC_STATIC_NUMERIC_EDIT,7,7,334,10,SS_SUNKEN
+    LTEXT           "",IDC_STATIC_BOTTOM,7,142,334,8,SS_SUNKEN
+    LTEXT           "Tooltip text",IDC_STATIC,7,126,36,8
+    EDITTEXT        IDC_EDIT_TOOLTIP,53,124,288,12,ES_AUTOHSCROLL
+END
+
+IDD_PHYSICALEDIT_DIALOG DIALOGEX 0, 0, 348, 181
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "PhysicalEdit"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_LENGTH,7,18,152,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TIME,7,37,152,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TEMPERATURE,7,56,152,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ANGLE,7,75,152,12,ES_AUTOHSCROLL
+    CTEXT           "Value",IDC_STATIC_VALUE,7,7,217,8,SS_CENTERIMAGE | SS_SUNKEN
+    CONTROL         "\nChoose background color",IDC_BUTTON_BACKCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,83,107,59,16
+    CONTROL         "\nChoose text color",IDC_BUTTON_TEXTCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,83,128,59,16
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,151,108,32,15
+    LTEXT           "Background",IDC_STATIC,7,111,40,8
+    LTEXT           "",IDC_STATIC_FONT,188,109,153,13,SS_CENTERIMAGE | SS_SUNKEN
+    LTEXT           "Control appearance",IDC_STATIC_CONTROL_APPEARANCE,7,97,334,9,SS_SUNKEN
+    LTEXT           "",IDC_STATIC_BOTTOM,7,166,334,8,SS_SUNKEN
+    LTEXT           "Text (positive value)",IDC_STATIC,7,133,64,8
+    CONTROL         "\nChoose text color for negative value",IDC_BUTTON_TEXTCOLOR_NEGATIVE,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,83,148,59,16
+    LTEXT           "Text (negative value)",IDC_STATIC,7,152,68,8
+    CONTROL         "Show unit name",IDC_CHECK_SHOW_UNIT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,153,128,67,10
+    CONTROL         "Show dropdown button",IDC_CHECK_SHOW_DROPDOWN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,153,141,89,10
+    CONTROL         "Display dropdown button on the left",IDC_CHECK_LEFTALIGNED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,153,154,127,10
+END
+
+IDD_MASKEDEDIT_DIALOG DIALOGEX 0, 0, 348, 181
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "MaskedEdit"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_TEST,47,23,234,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_MASKS,47,49,234,82,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_PROMPT,47,75,40,14,ES_AUTOHSCROLL
+    CONTROL         "AutoTab mode",IDC_CHECK_AUTOTAB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,141,79,63,10
+    PUSHBUTTON      "Empty",IDC_BUTTON_EMPTY,291,105,50,14
+    LTEXT           "Test:",IDC_STATIC,13,25,29,8
+    LTEXT           "Masks:",IDC_STATIC,13,51,29,8
+    LTEXT           "Prompt:",IDC_STATIC,13,78,29,8
+    LTEXT           "",IDC_STATIC_BOTTOM,7,108,276,8,SS_SUNKEN
+END
+
+IDD_DROPEDIT_DIALOG DIALOGEX 0, 0, 348, 181
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "DropEdit"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Browse for folder edit control (16-bit)",IDC_STATIC_BROWSE16_EDIT,7,7,160,10,SS_SUNKEN
+    EDITTEXT        IDC_EDIT_BROWSE16,7,20,160,12,ES_AUTOHSCROLL
+    LTEXT           "Browse for folder edit control (32-bit)",IDC_STATIC_BROWSE32_EDIT,7,40,160,10,SS_SUNKEN
+    EDITTEXT        IDC_EDIT_BROWSE32,7,53,160,12,ES_AUTOHSCROLL
+    LTEXT           "Browse for file edit control ",IDC_STATIC_BROWSEFILE_EDIT,7,74,160,10,SS_SUNKEN
+    EDITTEXT        IDC_EDIT_BROWSEFILE,7,88,160,12,ES_AUTOHSCROLL
+    LTEXT           "Browse for color edit control ",IDC_STATIC_BROWSECOLOR_EDIT,7,110,112,10,SS_SUNKEN
+    EDITTEXT        IDC_EDIT_BROWSECOLOR,7,124,112,12
+    LTEXT           "Edit control with menu",IDC_STATIC_MENU_EDIT,7,148,114,10,SS_SUNKEN
+    EDITTEXT        IDC_EDIT_MENU,7,162,114,12
+    CONTROL         "Display dropdown button on the left",IDC_CHECK_LEFTALIGNED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,214,164,127,10
+    LTEXT           "Calculator edit",IDC_STATIC_CALCULATOR,181,7,160,10,SS_SUNKEN
+    EDITTEXT        IDC_EDIT_CALCULATOR,181,20,160,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_NUMERICEDIT_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_MASK, 0x403, 2, 0
+0x0023, 
+    IDC_COMBO_MASK, 0x403, 12, 0
+0x654c, 0x676e, 0x6874, 0x203a, 0x2023, 0x006d, 
+    IDC_COMBO_MASK, 0x403, 12, 0
+0x6548, 0x6769, 0x7468, 0x203a, 0x2023, 0x0022, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0030, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0032, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0033, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0034, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0035, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0036, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0037, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0038, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0039, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_DECIMAL_SEPARATOR, 0x403, 2, 0
+0x002e, 
+    IDC_COMBO_DECIMAL_SEPARATOR, 0x403, 2, 0
+0x007c, 
+    IDC_COMBO_DECIMAL_SEPARATOR, 0x403, 2, 0
+0x002f, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0030, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0032, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0033, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0034, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0035, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0036, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0037, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0038, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0039, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_GROUP_SEPARATOR, 0x403, 2, 0
+0x002c, 
+    IDC_COMBO_GROUP_SEPARATOR, 0x403, 2, 0
+0x007c, 
+    IDC_COMBO_GROUP_SEPARATOR, 0x403, 2, 0
+0x002f, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0032, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0033, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0034, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0035, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0036, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0037, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0038, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0039, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 6, 0
+0x3128, 0x312e, 0x0029, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 5, 0
+0x312d, 0x312e, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 6, 0
+0x202d, 0x2e31, 0x0031, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 5, 0
+0x2e31, 0x2d31, "\000" 
+    0
+END
+
+IDD_CURRENCYEDIT_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_MASK, 0x403, 2, 0
+0x0023, 
+    IDC_COMBO_MASK, 0x403, 17, 0
+0x6f54, 0x6174, 0x3a6c, 0x2320, 0x2820, 0x7267, 0x736f, 0x2973, "\000" 
+    IDC_COMBO_MASK, 0x403, 10, 0
+0x6843, 0x6e61, 0x6567, 0x203a, 0x0023, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 1, 0
+"\000" 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0032, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0033, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0034, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0035, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0036, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0037, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0038, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 2, 0
+0x0039, 
+    IDC_COMBO_DECIMAL_DIGIT_COUNT, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_DECIMAL_SEPARATOR, 0x403, 2, 0
+0x002e, 
+    IDC_COMBO_DECIMAL_SEPARATOR, 0x403, 2, 0
+0x007c, 
+    IDC_COMBO_DECIMAL_SEPARATOR, 0x403, 2, 0
+0x002f, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0030, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0032, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0033, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0034, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0035, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0036, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0037, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0038, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 2, 0
+0x0039, 
+    IDC_COMBO_FRACTIONAL_DIGIT_COUNT, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_GROUP_SEPARATOR, 0x403, 2, 0
+0x002c, 
+    IDC_COMBO_GROUP_SEPARATOR, 0x403, 2, 0
+0x007c, 
+    IDC_COMBO_GROUP_SEPARATOR, 0x403, 2, 0
+0x002f, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0032, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0033, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0034, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0035, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0036, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0037, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0038, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 2, 0
+0x0039, 
+    IDC_COMBO_GROUP_LENGTH, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMBO_POSITIVE_VALUE_FORMAT, 0x403, 5, 0
+0x3124, 0x312e, "\000" 
+    IDC_COMBO_POSITIVE_VALUE_FORMAT, 0x403, 5, 0
+0x2e31, 0x2431, "\000" 
+    IDC_COMBO_POSITIVE_VALUE_FORMAT, 0x403, 6, 0
+0x2024, 0x2e31, 0x0031, 
+    IDC_COMBO_POSITIVE_VALUE_FORMAT, 0x403, 6, 0
+0x2e31, 0x2031, 0x0024, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 7, 0
+0x2428, 0x2e31, 0x2931, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 6, 0
+0x242d, 0x2e31, 0x0031, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 6, 0
+0x2d24, 0x2e31, 0x0031, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 6, 0
+0x3124, 0x312e, 0x002d, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 7, 0
+0x3128, 0x312e, 0x2924, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 6, 0
+0x312d, 0x312e, 0x0024, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 6, 0
+0x2e31, 0x2d31, 0x0024, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 6, 0
+0x2e31, 0x2431, 0x002d, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 7, 0
+0x312d, 0x312e, 0x2420, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 7, 0
+0x242d, 0x3120, 0x312e, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 7, 0
+0x2e31, 0x2031, 0x2d24, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 7, 0
+0x2024, 0x2e31, 0x2d31, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 7, 0
+0x2024, 0x312d, 0x312e, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 7, 0
+0x2e31, 0x2d31, 0x2420, "\000" 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 8, 0
+0x2428, 0x3120, 0x312e, 0x0029, 
+    IDC_COMBO_NEGATIVE_VALUE_FORMAT, 0x403, 8, 0
+0x3128, 0x312e, 0x2420, 0x0029, 
+    IDC_COMBO_CURRENCY_NAME, 0x403, 2, 0
+0x0024, 
+    0
+END
+
+IDD_EXTENDEDEDIT_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_MASK, 0x403, 2, 0
+0x0023, 
+    IDC_COMBO_MASK, 0x403, 12, 0
+0x654c, 0x676e, 0x6874, 0x203a, 0x2023, 0x006d, 
+    IDC_COMBO_MASK, 0x403, 12, 0
+0x6548, 0x6769, 0x7468, 0x203a, 0x2023, 0x0022, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDD_DIALOG_CALCULATOR ACCELERATORS 
+BEGIN
+    "!",            IDC_BUTTON_FACTORIAL,   ASCII,  NOINVERT
+    "%",            IDC_BUTTON_MOD,         ASCII,  NOINVERT
+    "*",            IDC_BUTTON_MULTIPLY,    ASCII,  NOINVERT
+    "+",            IDC_BUTTON_ADD,         ASCII,  NOINVERT
+    "-",            IDC_BUTTON_SUBTRACT,    ASCII,  NOINVERT
+    ".",            IDC_BUTTON_DELIMITER,   ASCII,  NOINVERT
+    "/",            IDC_BUTTON_DIVIDE,      ASCII,  NOINVERT
+    "0",            IDC_BUTTON_0,           ASCII,  NOINVERT
+    "1",            IDC_BUTTON_1,           ASCII,  NOINVERT
+    "2",            IDC_BUTTON_2,           ASCII,  NOINVERT
+    "3",            IDC_BUTTON_3,           ASCII,  NOINVERT
+    "4",            IDC_BUTTON_4,           ASCII,  NOINVERT
+    "5",            IDC_BUTTON_5,           ASCII,  NOINVERT
+    "6",            IDC_BUTTON_6,           ASCII,  NOINVERT
+    "7",            IDC_BUTTON_7,           ASCII,  NOINVERT
+    "8",            IDC_BUTTON_8,           ASCII,  NOINVERT
+    "9",            IDC_BUTTON_9,           ASCII,  NOINVERT
+    "=",            IDC_BUTTON_EQUAL,       ASCII,  NOINVERT
+    "@",            IDC_BUTTON_SQRT,        ASCII,  NOINVERT
+    "A",            IDC_BUTTON_A,           ASCII,  NOINVERT
+    "B",            IDC_BUTTON_B,           ASCII,  NOINVERT
+    "C",            IDC_BUTTON_C,           ASCII,  NOINVERT
+    "D",            IDC_BUTTON_D,           ASCII,  NOINVERT
+    "E",            IDC_BUTTON_E,           ASCII,  NOINVERT
+    "F",            IDC_BUTTON_F,           ASCII,  NOINVERT
+    "H",            IDC_BUTTON_COTAN,       ASCII,  NOINVERT
+    "L",            IDC_BUTTON_LOGARITHM,   ASCII,  NOINVERT
+    "N",            IDC_BUTTON_NATURAL_LOGARITHM, ASCII, NOINVERT
+    "O",            IDC_BUTTON_COS,         ASCII,  NOINVERT
+    "P",            IDC_BUTTON_PI,          ASCII,  NOINVERT
+    "R",            IDC_BUTTON_RECIPROCAL,  ASCII,  NOINVERT
+    "S",            IDC_BUTTON_SIN,         ASCII,  NOINVERT
+    "T",            IDC_BUTTON_TAN,         ASCII,  NOINVERT
+    VK_BACK,        IDC_BUTTON_BACK,        VIRTKEY, NOINVERT
+    VK_DELETE,      IDC_BUTTON_CLEARNUMBER, VIRTKEY, NOINVERT
+    VK_ESCAPE,      IDC_BUTTON_CLEAR,       VIRTKEY, NOINVERT
+    VK_F9,          IDC_BUTTON_CHANGESIGN,  VIRTKEY, NOINVERT
+    94,             IDC_BUTTON_POWER,       ASCII,  NOINVERT
+    "a",            IDC_BUTTON_A,           ASCII,  NOINVERT
+    "b",            IDC_BUTTON_B,           ASCII,  NOINVERT
+    "c",            IDC_BUTTON_C,           ASCII,  NOINVERT
+    "d",            IDC_BUTTON_D,           ASCII,  NOINVERT
+    "e",            IDC_BUTTON_E,           ASCII,  NOINVERT
+    "f",            IDC_BUTTON_F,           ASCII,  NOINVERT
+    "h",            IDC_BUTTON_COTAN,       ASCII,  NOINVERT
+    "l",            IDC_BUTTON_LOGARITHM,   ASCII,  NOINVERT
+    "n",            IDC_BUTTON_NATURAL_LOGARITHM, ASCII, NOINVERT
+    "o",            IDC_BUTTON_COS,         ASCII,  NOINVERT
+    "p",            IDC_BUTTON_PI,          ASCII,  NOINVERT
+    "r",            IDC_BUTTON_RECIPROCAL,  ASCII,  NOINVERT
+    "s",            IDC_BUTTON_SIN,         ASCII,  NOINVERT
+    "t",            IDC_BUTTON_TAN,         ASCII,  NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ExtendedEditControls..."
+    ID_DESCRIPTION_FILE     "EditExtensionsInfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Extended Edit controls"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\ExtendedEditControls.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "UTSampleAbout.rc" 
+#include "OXPhysicalEditEx.rc" // For extended physical edit controls
+#include "oxdirdlg.rc"
+#include "OXFolderPickerDlg.rc"
+#include "OXBitmapButton.rc"
+#include "OXPopupBarCtrl.rc"
+#include "OXBrowseDirEdit.rc"
+#include "OXHistoryCombo.rc"
+#include "OXShellFolderTree.rc"
+#include "OXCalculatorCtrl.rc"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

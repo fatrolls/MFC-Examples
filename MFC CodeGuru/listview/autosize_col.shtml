@@ -1,0 +1,96 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Autosize a column to fit its content</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Autosize a column to fit its content</FONT></H3></CENTER>
+
+<HR WIDTH="100%">This is an easy one actually. The task is to resize the column so that its width is just enough to display the longest item in that column. The list  view control directly supports this feature and you don't have to go through each item and computes the items text extent. The problem is that it is not documented in the MFC documentation. Anyway, after you've inserted all items or at any other point, you can simply call the SetColumnWidth() function. The code below will autosize the first column.
+<PRE><TT><FONT COLOR="#990000">m_listctrl.SetColumnWidth( 0, LVSCW_AUTOSIZE );
+</FONT></TT></PRE>
+
+
+<p>The following was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>.
+
+<p>Here is a routine to auto-size columns.  This routine allows for a minimum
+column width (so columns don't disappear, or get too small for inplace
+editing) and fits to the larger of the column heading and the actual cell
+values.
+
+<p>Declare the following functions:
+
+<PRE><TT><FONT COLOR="#990000">     void AutoSizeColumns(int col = -1);
+     int GetColumnCount() const;
+</FONT></TT></PRE>
+
+<p>And here they are:
+
+<PRE><TT><FONT COLOR="#990000">#define MINCOLWIDTH 10  /* or whatever */
+
+int CMyListCtrl::GetColumnCount() const {
+     // get the header control
+     CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+     // return the number of items in it - ie. the number of columns
+     return pHeader->GetItemCount();
+}
+
+void CMyListCtrl::AutoSizeColumns(int col /*=-1*/) {
+     // Call this after your list control is filled
+     SetRedraw(false);
+     int mincol = col < 0 ? 0 : col;
+     int maxcol = col < 0 ? GetColumnCount()-1 : col;
+     for (col = mincol; col <= maxcol; col++) {
+          SetColumnWidth(col,LVSCW_AUTOSIZE);
+          int wc1 = GetColumnWidth(col);
+          SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
+          int wc2 = GetColumnWidth(col);
+          int wc = MAX(MINCOLWIDTH,MAX(wc1,wc2));
+          SetColumnWidth(col,wc);
+     }
+     // <A HREF="header_col_tooltip.shtml">RecalcHeaderTips</A>(); *** uncomment this if you use my header tips method
+     SetRedraw(true);
+     // Invalidate(); *** uncomment this if you don't use my <A HREF="no_flicker.shtml">SetRedraw</A> function
+}
+</FONT></TT></PRE>
+
+<p>If you don't supply a column number, it will resize all columns.  If you do
+supply a column numner, it will resize that column only. For example, you
+may only want to resize the first column when you do label editing (or
+another column if you use inplace cell editing or combos).  But you might
+want to resize all columns after loading the list control with data.
+
+<p>Notice that the use of SetRedraw to stop flickering.  You should use my
+custom version of this to avoid problems with nested calls to SetRedraw
+(and to remove the need for a final call to Invalidate()).
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

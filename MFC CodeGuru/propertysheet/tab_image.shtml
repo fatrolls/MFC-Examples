@@ -1,0 +1,72 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Use Images with Tab Labels</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Use Images with Tab Labels</FONT>
+<HR></H3></CENTER>
+The tab control is one of the common controls that support using an image list to specify an image for each item in the tab control. Since the property sheet uses a tab control, adding images to the tab lables is fairly simple.
+<p><img src="tab_image.gif" width="422" height="310"></p>
+<h4>Step 1: Create a bitmap resource with the images</h4>
+You can also use icons or even create the images at run time. In this example, however, lets stay with the bitmap since it is so much simpler. A single bitmap contains all the images and the images should be laid out horizontally as shown below. You can create the bitmap with an reasonable height and the image list will use it for the individual images. You can also select any reasonable width for the images as long as they are all the same. I say 'reasonable' because the size of the images should be in proportion to the height of the label. The bitmap shown below is 13 pixel high and each image is 13 pixel wide. The height and width need not be the same.
+<p><img src="tab_image_bmp.gif" width="39" height="13"></p>
+<h4>Step 2: Add member variable of type CimageList</h4>
+Add a member variable to the CPropertySheet derived class. You will need to derive from the CPropertySheet class if you are not already doing so.
+
+<PRE><TT><FONT COLOR="#990000">
+protected:
+	CImageList m_imageTab;
+</FONT></TT></PRE>
+
+<h4>Step 3: Override OnInitDialog() and add code to it.</h4>
+The code to add images to the tab labels should be placed in the OnInitDialog() function. After calling the base class version of OnInitDialog() we create the image list. The first argument to the create function is the resource ID of the bitmap we create in step one. The second argument is the width of each image in the bitmap. We had drawn the bitmap with each image 13 pixels wide. The third argument is the number of images that the image list should grow by when more images are added to it. Since we don't anticipate adding more images to the image list, this value is 1. The final argument is the color that will be treated as a transparent color. We have chosen white to be the transparent color since we used white as the background color when drawing the image.
+
+<p>The next step is to associate the image list with the tab control. Finally, specify an image for each tab item.
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMyPropSheet::OnInitDialog()
+{
+	BOOL bResult = CPropertySheet::OnInitDialog();
+
+	m_imageTab.Create( IDB_TABIMAGES, 13, 1, RGB(255,255,255) );
+	CTabCtrl *pTab = GetTabControl();
+	pTab->SetImageList( &m_imageTab );
+
+	TC_ITEM tcItem;
+	tcItem.mask = TCIF_IMAGE;
+	for( int i = 0; i < 3; i++ )
+	{
+		tcItem.iImage = i;
+		pTab->SetItem( i, &tcItem );
+	}
+}
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

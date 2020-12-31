@@ -1,0 +1,232 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Adding tooltips for item images</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Adding tooltips for item images</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+One thing I’ve never seen ( other than in my applications ) is tooltips
+for the item images. I am not saying that none of the commercial application
+use tooltips for the item images, but I’ve not seen one yet. In fact, in
+some of the applications searching through the help file was also fruitless.
+I still didn’t know what the images meant.
+
+<P>Anyway, here’s what needs to be done if you want to implement tooltips
+for the item images and I hope you do want to implement them.
+
+<P>Just one more thing before we start implementing the tooltips. Like
+the list view control, the new tree view control creates its own tooltip
+control but unlike the list view control it does so in both Win95 and WinNT.
+Since I couldn’t find any documentation for the build in tooltip, I presume
+that it is undocumented and susceptible to change. Anyway, in this section,
+we use the MFC provided mechanism.
+<H4>
+Step 1: Enable tool tips</H4>
+Enabling tooltip for a window simply requires a call to EnableToolTips(TRUE).
+A good place to insert this statement is in the PreSubclassWindow(). No
+matter how the control is created, this function is always called by MFC.
+The same is not true for the OnCreate() function. OnCreate() is called
+only if you create the control by a call to Create() or CreateEx() and
+is not called if the control is created from a dialog resource.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::PreSubclassWindow()&nbsp;
+{
+	CTreeCtrl::PreSubclassWindow();
+
+	EnableToolTips(TRUE);
+}</FONT></TT></PRE>
+&nbsp;
+<H4>
+Step 2: Override the OnToolHitTest() virtual function</H4>
+The MFC framework calls this function to determine whether or not to display
+a tooltip at the given point. The document suggests that a value of 1 be
+returned if the point falls over a tool ( over something that we want to
+display a tooltip for ). This is not true however. This function should
+return different non zero numbers for different tools in the window.
+
+<P>In this funciton we are only handling the case when the mouse is over
+item icon or the state icon. You may wish to add tooltips for other elements
+of the tree control. In both the cases we compute the bounding rectangle
+for the icon and we set the id equal to the handle of the tree item whose
+icons falls under the mouse. Note that though we use the same id for the
+item icon and the state icon for the same item, the return values are different.
+The different return value forces MFC to update the tooltip.
+
+<P>Although, we can specify the tooltip text in this function itself, it
+is best not to add too much computing in this function. This function gets
+called each time the mouse moves so it might be a good idea if you can
+optimize the function.
+
+<P>&nbsp;
+<PRE><TT><FONT COLOR="#990000">int CTreeCtrlX::OnToolHitTest(CPoint point, TOOLINFO * pTI) const
+{
+	RECT rect;
+
+	UINT nFlags;
+	HTREEITEM hitem = HitTest( point, &amp;nFlags );
+	if( nFlags &amp; TVHT_ONITEMICON )
+	{
+		CImageList *pImg = GetImageList( TVSIL_NORMAL );
+		IMAGEINFO imageinfo;
+		pImg->GetImageInfo( 0, &amp;imageinfo );
+
+		GetItemRect( hitem, &amp;rect, TRUE );
+		rect.right = rect.left - 2;
+		rect.left -= (imageinfo.rcImage.right + 2);
+
+		pTI->hwnd = m_hWnd;
+		pTI->uId = (UINT)hitem;
+		pTI->lpszText = LPSTR_TEXTCALLBACK;
+		pTI->rect = rect;
+		return pTI->uId;
+	}
+	else if( nFlags &amp; TVHT_ONITEMSTATEICON )
+	{
+		CImageList *pImg = GetImageList( TVSIL_NORMAL );
+		IMAGEINFO imageinfo;
+		pImg->GetImageInfo( 0, &amp;imageinfo );
+
+		GetItemRect( hitem, &amp;rect, TRUE );
+		rect.right = rect.left - (imageinfo.rcImage.right + 2);
+
+		pImg = GetImageList( TVSIL_STATE );
+		rect.left = rect.right - imageinfo.rcImage.right ;
+
+		pTI->hwnd = m_hWnd;
+		pTI->uId = (UINT)hitem;
+		pTI->lpszText = LPSTR_TEXTCALLBACK;
+		pTI->rect = rect;
+		
+		// return value should be different from that used for item icon
+		return pTI->uId*2;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	}
+	return -1;
+}</FONT></TT></PRE>
+
+<H4>
+Step 3: Add handler for TTN_NEEDTEXT</H4>
+Add a handler for the TTN_NEEDTEXT notification message. This message is
+sent by the tooltip control when it needs the text to display in the tooltip.
+Since in the previous step, we specified LPSTR_TEXTCALLBACK for the text
+we need to handle this notification. The class wizard does not support
+this notification and the entry in the message map will have to be done
+manually. Good thing too, since we actually have to handle both versions,
+e.i. TTN_NEEDTEXTA and TTN_NEEDTEXTW. Here is what the message map looks
+like.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">BEGIN_MESSAGE_MAP(CTreeCtrlX, CTreeCtrl)
+	//{{AFX_MSG_MAP(CTreeCtrlX)
+	:
+	:
+	//}}AFX_MSG_MAP
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
+END_MESSAGE_MAP()</FONT></TT></PRE>
+And here is what the declaration looks like in the class.
+<PRE><TT><FONT COLOR="#990000">protected:
+	//{{AFX_MSG(CTreeCtrlX)
+	:
+	:
+	//}}AFX_MSG
+	afx_msg BOOL OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult );
+	DECLARE_MESSAGE_MAP()</FONT></TT></PRE>
+<BR>
+And now the function itself. We have to handle the ANSI version and the
+UNICODE version of the message somewhat differently. We also ignore the
+message from the built in tooltip control. We recognize the message from
+the built in tooltip control by the fact that the id is equal to the window
+handle of the tree view control and the flags has the TTF_IDISHWND flag
+set. Based on the mouse cursor position we determine whether we need to
+supply the tooltip text for the item icon or the state icon. The code below
+simply supplies the icon index as the tooltip text, but of course, you
+would supply something meaningful.
+<PRE></PRE>
+
+<PRE><TT><FONT COLOR="#990000">BOOL CTreeCtrlX::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult )
+{
+	// need to handle both ANSI and UNICODE versions of the message
+	TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
+	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+	CString strTipText;
+	UINT nID = pNMHDR->idFrom;
+
+	// Do not process the message from built in tooltip&nbsp;
+	if( nID == (UINT)m_hWnd &amp;&amp;
+		(( pNMHDR->code == TTN_NEEDTEXTA &amp;&amp; pTTTA->uFlags &amp; TTF_IDISHWND ) ||
+		( pNMHDR->code == TTN_NEEDTEXTW &amp;&amp; pTTTW->uFlags &amp; TTF_IDISHWND ) ) )
+		return FALSE;
+
+	// Get the mouse position
+	const MSG* pMessage;
+	CPoint pt;
+	pMessage = GetCurrentMessage();
+	ASSERT ( pMessage );
+	pt = pMessage->pt;
+	ScreenToClient( &amp;pt );
+
+	UINT nFlags;
+	HTREEITEM hitem = HitTest( pt, &amp;nFlags );
+	if( nFlags &amp; TVHT_ONITEMICON )
+	{
+		int nImage, nSelImage;
+		GetItemImage( (HTREEITEM ) nID, nImage, nSelImage );
+		strTipText.Format( "Image : %d", nImage );
+	}
+	else
+	{
+		strTipText.Format( "State : %d", GetItemState( (HTREEITEM ) nID,&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;	TVIS_STATEIMAGEMASK ) );
+	}
+
+#ifndef _UNICODE
+	if (pNMHDR->code == TTN_NEEDTEXTA)
+		lstrcpyn(pTTTA->szText, strTipText, 80);
+	else
+		_mbstowcsz(pTTTW->szText, strTipText, 80);
+#else
+	if (pNMHDR->code == TTN_NEEDTEXTA)
+		_wcstombsz(pTTTA->szText, strTipText, 80);
+	else
+		lstrcpyn(pTTTW->szText, strTipText, 80);
+#endif
+	*pResult = 0;
+
+	return TRUE;&nbsp;&nbsp;&nbsp; // message was handled
+}</FONT></TT>
+</PRE>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

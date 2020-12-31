@@ -1,0 +1,223 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="Author" content="Zafir Anjum">
+<title>Splitter - Outlook Style Splitter Bar</title>
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<h3 align="center"><font color="#AOAO99">Outook Style Splitter Bar</font></h3>
+
+<hr align="center">
+
+<p>This article was contributed by <a href="mailto:klen@bellatlantic.net">Ken C. Len</a>.</p>
+
+<p>Here is a another Outlook lookalike example source code.<br>
+<br>
+The OutlookStyle application is an SDI window. The main frame consist of a<br>
+static splitter window with one row and two columns.<br>
+<br>
+The left column CLeftPaneView is derived from CFormView and CRightPaneFrame<br>
+is derived from CFrameWnd.<br>
+<br>
+<font color="#800000">BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext*<br>
+pContext) <br>
+{<br>
+// TODO: Add your specialized code here and/or call the base class<br>
+if (!m_wndSplitter.CreateStatic(this, 1, 2))<br>
+{<br>
+TRACE0(&quot;Failed to create splitter window\n&quot;);<br>
+return FALSE;<br>
+}<br>
+<br>
+// Get the client rect first for calc left pane size<br>
+CRect rect;<br>
+GetClientRect(&amp;rect);<br>
+<br>
+// create the left tree view first.<br>
+if (!m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CLeftPaneView),<br>
+CSize(rect.Width()/3, 0), pContext))<br>
+{<br>
+TRACE0(&quot;Failed to create left pane view\n&quot;);<br>
+return FALSE;<br>
+}<br>
+<br>
+// The right pane is a frame which and contain several different views.<br>
+// The is can be set to active or non-active<br>
+if (!m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CRightPaneFrame),<br>
+CSize(0, 0), pContext))<br>
+{<br>
+TRACE0(&quot;Failed to create right pane frame\n&quot;);<br>
+return FALSE;<br>
+}<br>
+<br>
+// Set the left pane as the active view<br>
+SetActiveView((CView*) m_wndSplitter.GetPane(0, 0));<br>
+<br>
+return TRUE;<br>
+}</font><br>
+<br>
+Since the right pane is a frame, it can have views created from any CViews<br>
+types such as CFromView.<br>
+The left pane is CFormView with a tree control in it which resize itself<br>
+during OnSize.<br>
+<br>
+I have added several items to the tree and process the tree selection<br>
+change message.<br>
+Based on the tree selected, I call the right pane to switch views.<br>
+<br>
+The right pane OnCreateClient creates all the different views and set one<br>
+to be the active view.<br>
+The views in the right pane can also be splitter windows.<br>
+<br>
+<font color="#800000">BOOL CRightPaneFrame::OnCreateClient(LPCREATESTRUCT lpcs,
+CCreateContext*<br>
+pContext) <br>
+{<br>
+// TODO: Add your specialized code here and/or call the base class<br>
+<br>
+m_pSplitterView = new CSplitterView;<br>
+m_pSplitterView-&gt;Create(NULL, NULL, 0L, CFrameWnd::rectDefault, this,<br>
+VIEW_SPLITTER, pContext);<br>
+SetActiveView(m_pSplitterView);<br>
+m_pSplitterView-&gt;ShowWindow(SW_SHOW);<br>
+m_pSplitterView-&gt;SetDlgCtrlID(AFX_IDW_PANE_FIRST);<br>
+<br>
+m_pListCtrlView = new CListCtrlView;<br>
+((CView*) m_pListCtrlView)-&gt;Create(NULL, NULL, 0L, CFrameWnd::rectDefault,<br>
+this, VIEW_LISTCTRL, pContext);<br>
+m_pListCtrlView-&gt;ShowWindow(SW_HIDE);<br>
+m_pListCtrlView-&gt;SetDlgCtrlID(VIEW_LISTCTRL);<br>
+<br>
+m_pEditView = new CEditView;<br>
+m_pEditView-&gt;Create(NULL, NULL, 0L, CFrameWnd::rectDefault, this,<br>
+VIEW_EDIT, pContext);<br>
+m_pEditView-&gt;ShowWindow(SW_HIDE);<br>
+m_pEditView-&gt;SetDlgCtrlID(VIEW_EDIT);<br>
+<br>
+<br>
+RecalcLayout();<br>
+<br>
+return TRUE;<br>
+}</font><br>
+<br>
+The right pane OnCreateClient must return TRUE and RecalcLayout().<br>
+The right pane member SwithToView is called by the left pane when an item<br>
+is selected.<br>
+<br>
+<font color="#800000">void CRightPaneFrame::SwitchToView(UINT nView)<br>
+{<br>
+CView* pOldActiveView = GetActiveView();<br>
+CView* pNewActiveView;<br>
+<br>
+switch (nView)<br>
+{<br>
+case VIEW_SPLITTER:<br>
+pNewActiveView = (CView*) m_pSplitterView;<br>
+break;<br>
+<br>
+case VIEW_LISTCTRL:<br>
+pNewActiveView = (CView*) m_pListCtrlView;<br>
+break;<br>
+<br>
+case VIEW_EDIT:<br>
+pNewActiveView = (CView*) m_pEditView;<br>
+break;<br>
+}<br>
+<br>
+// don't switch when views are the same<br>
+if (pOldActiveView == pNewActiveView) return;<br>
+<br>
+SetActiveView(pNewActiveView);<br>
+pNewActiveView-&gt;ShowWindow(SW_SHOW);<br>
+pNewActiveView-&gt;SetDlgCtrlID(AFX_IDW_PANE_FIRST);<br>
+pOldActiveView-&gt;ShowWindow(SW_HIDE);<br>
+pOldActiveView-&gt;SetDlgCtrlID(m_nCurrentViewID);<br>
+m_nCurrentViewID = nView;<br>
+<br>
+RecalcLayout();<br>
+}</font><br>
+<br>
+The switch code is tricky, it has to hide the old active view, show the new<br>
+active view and<br>
+set the current dialog control id.<br>
+<br>
+Finally, the left pane tree selection needs to call the right pane switch<br>
+function.<br>
+The left pane needs a referrence to the right pane window.<br>
+<br>
+When the main frame creates the left and right pane it sets the right pane<br>
+window pointer to<br>
+the left pane member.<br>
+<br>
+<font color="#800000">BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext*<br>
+pContext) <br>
+{<br>
+.<br>
+.<br>
+.<br>
+CLeftPaneView* pLeftPaneView&nbsp;&nbsp;&nbsp;&nbsp; = (CLeftPaneView*)&nbsp; <br>
+m_wndSplitter.GetPane(0,0);<br>
+pLeftPaneView-&gt;m_pRightPaneFrame = (CRightPaneFrame*)<br>
+m_wndSplitter.GetPane(0,1);<br>
+.<br>
+.<br>
+.<br>
+}</font><br>
+<br>
+<font color="#800000">void CLeftPaneView::OnSelchangedTree(NMHDR* pNMHDR, LRESULT*
+pResult) <br>
+{<br>
+NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;<br>
+// TODO: Add your control notification handler code here<br>
+<br>
+UINT&nbsp;&nbsp;&nbsp;&nbsp; nView&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;<br>
+HTREEITEM hSelectedItem = m_treeCtrl.GetSelectedItem();<br>
+<br>
+if (hSelectedItem == m_hSplitterView)<br>
+nView = VIEW_SPLITTER;<br>
+else<br>
+if (hSelectedItem == m_hListCtrlView)<br>
+nView = VIEW_LISTCTRL;<br>
+else<br>
+if (hSelectedItem == m_hEditView)<br>
+nView = VIEW_EDIT;<br>
+<br>
+if (nView) m_pRightPaneFrame-&gt;SwitchToView(nView);<br>
+<br>
+*pResult = 0;<br>
+}</font><br>
+<br>
+The left pane OnSelchangedTree checks the selected item for a match and<br>
+then call<br>
+the SwitchToView to change view on the right pane.</p>
+
+<p>Download a sample project <a href="outlook_style.zip">outlook_style.zip</a> (58.7k)</p>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

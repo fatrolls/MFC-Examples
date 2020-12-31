@@ -1,0 +1,131 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "PropertiesRes.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "PropertiesRes.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROPERTIES_DIALOG DIALOGEX 0, 0, 300, 205
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,69,187,50,14
+    GROUPBOX        "",IDC_STATIC,7,147,280,35
+    CONTROL         "Tree1",IDC_PROPERTIES_TREE_STATIC,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_DISABLEDRAGDROP | WS_TABSTOP,7,0,280,147,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Static",IDC_PROPERTIES_STATIC,14,161,112,14
+    EDITTEXT        IDC_PROPERTIES_EDIT,133,161,147,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "",IDC_PROPERTIES_COMBO,133,161,147,14
+    COMBOBOX        IDC_PROPERTIES_LIST,133,161,147,77,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Cancel",IDCANCEL,125,187,50,14
+    PUSHBUTTON      "Apply",ID_APPLY_NOW,181,187,50,14,WS_DISABLED
+END
+
+IDD_PROPERTIES_PAGE DIALOGEX 0, 0, 217, 135
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "",IDC_STATIC,0,98,217,35
+    CONTROL         "Tree1",IDC_PROPERTIES_TREE_STATIC,"SysTreeView32",
+                    TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | 
+                    TVS_DISABLEDRAGDROP | WS_TABSTOP,0,0,217,98,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Static",IDC_PROPERTIES_STATIC,7,112,77,14
+    EDITTEXT        IDC_PROPERTIES_EDIT,84,112,126,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "",IDC_PROPERTIES_COMBO,84,112,126,14
+    COMBOBOX        IDC_PROPERTIES_LIST,84,112,126,77,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PROPERTIES_PAGE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 203
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDD_PROPERTIES_SHEET    " "
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

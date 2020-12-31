@@ -1,0 +1,222 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\calc.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CALCULATOR DIALOG  34, 22, 208, 125
+STYLE DS_SETFONT | WS_POPUP | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "0",IDC_0,"CCalcKey",WS_TABSTOP,37,102,19,16
+    CONTROL         "1",IDC_1,"CCalcKey",WS_TABSTOP,37,82,19,16
+    CONTROL         "2",IDC_2,"CCalcKey",WS_TABSTOP,63,82,19,16
+    CONTROL         "3",IDC_3,"CCalcKey",WS_TABSTOP,89,82,19,16
+    CONTROL         "4",IDC_4,"CCalcKey",WS_TABSTOP,37,62,19,16
+    CONTROL         "5",IDC_5,"CCalcKey",WS_TABSTOP,63,62,19,16
+    CONTROL         "6",IDC_6,"CCalcKey",WS_TABSTOP,89,62,19,16
+    CONTROL         "7",IDC_7,"CCalcKey",WS_TABSTOP,37,42,19,16
+    CONTROL         "8",IDC_8,"CCalcKey",WS_TABSTOP,63,42,19,16
+    CONTROL         "9",IDC_9,"CCalcKey",WS_TABSTOP,89,42,19,16
+    CONTROL         "Info",IDC_ABOUT,"CCalcKey",WS_TABSTOP,155,105,43,16
+    CONTROL         "X",IDC_MUL,"CCalcKey",WS_TABSTOP,127,61,19,16
+    CONTROL         "/",IDC_DIV,"CCalcKey",WS_TABSTOP,151,61,19,16
+    CONTROL         "+",IDC_ADD,"CCalcKey",WS_TABSTOP,127,82,19,16
+    CONTROL         "-",IDC_SUB,"CCalcKey",WS_TABSTOP,151,82,19,16
+    CONTROL         "=",IDC_EQUAL,"CCalcKey",WS_TABSTOP,127,101,19,16
+    CONTROL         "X",IDCANCEL,"CCalcKey",0x0,189,2,11,13
+    CONTROL         "",IDC_DISPLAY,"CCalcKey",WS_DISABLED,20,20,168,13
+    CONTROL         131,IDC_STARFIELD,"Static",SS_BITMAP | SS_REALSIZEIMAGE | WS_DISABLED,0,0,215,131
+    CONTROL         "Clear",IDC_CLEAR,"CCalcKey",WS_TABSTOP,125,40,43,16
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "Stellar Calculator"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "CALC"
+            VALUE "LegalCopyright", "Copyright © 1996"
+            VALUE "OriginalFilename", "CALC.EXE"
+            VALUE "ProductName", "Stellar Calculator"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_STARFIELD           BITMAP                  "res\\stars.bmp"
+IDB_TITLE               BITMAP                  "res\\title.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDD_CALCULATOR ACCELERATORS 
+BEGIN
+    "*",            IDC_MUL,                ASCII,  NOINVERT
+    "+",            IDC_ADD,                ASCII,  NOINVERT
+    "-",            IDC_SUB,                ASCII,  NOINVERT
+    "/",            IDC_DIV,                ASCII,  NOINVERT
+    "0",            IDC_0,                  ASCII,  NOINVERT
+    "1",            IDC_1,                  ASCII,  NOINVERT
+    "2",            IDC_2,                  ASCII,  NOINVERT
+    "3",            IDC_3,                  ASCII,  NOINVERT
+    "4",            IDC_4,                  ASCII,  NOINVERT
+    "5",            IDC_5,                  ASCII,  NOINVERT
+    "6",            IDC_6,                  ASCII,  NOINVERT
+    "7",            IDC_7,                  ASCII,  NOINVERT
+    "8",            IDC_8,                  ASCII,  NOINVERT
+    "9",            IDC_9,                  ASCII,  NOINVERT
+    "=",            IDC_EQUAL,              ASCII,  NOINVERT
+    "C",            IDC_CLEAR,              ASCII,  NOINVERT
+    VK_LEFT,        IDC_NOTHING,            VIRTKEY, NOINVERT
+    VK_RIGHT,       IDC_NOTHING,            VIRTKEY, NOINVERT
+    VK_UP,          IDC_NOTHING,            VIRTKEY, NOINVERT
+    VK_DOWN,        IDC_NOTHING,            VIRTKEY, NOINVERT
+    VK_RETURN,      IDC_EQUAL,              VIRTKEY, NOINVERT
+    "c",            IDC_CLEAR,              ASCII,  NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "res\\CALC.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    ID_DESCRIPTION_FILE     "calInfo.rtf"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Calculator"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\calc.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

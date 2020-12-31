@@ -1,0 +1,437 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "#ifdef _VC60\r\n"
+    "/////////////////////////////////////////////////////////////////////////////\r\n"
+    "//\r\n"
+    "// 24\r\n"
+    "//\r\n"
+    "1                      24      MOVEABLE PURE   ""app.manifest""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "hans.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 270, 131
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About XHtmlTreeTest"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,14,20,20,SS_CENTERIMAGE | 
+                    WS_BORDER
+    LTEXT           "XHtmlTreeTest Version 1.6",IDC_STATIC,40,13,140,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright © 2007 Hans Dietrich",IDC_STATIC,40,27,165,8
+    LTEXT           "This software is released into the public domain.  You are free to use it in any way you like.",
+                    IDC_STATIC,40,43,165,18
+    LTEXT           "This software is provided ""as is"" with no expressed or implied warranty.  I accept no liability for any damage or loss of business that this software may cause. ",
+                    IDC_STATIC,40,67,165,34
+    LTEXT           "Send email to Hans Dietrich",IDC_ABOUT_EMAIL,90,113,90,
+                    8,SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,209,9,50,14,WS_GROUP
+END
+
+IDD_MAIN DIALOGEX 0, 0, 195, 170
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "XHtmlTreeTest"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Select an input source, then click the button",
+                    IDC_STATIC,10,8,175,115,BS_CENTER | WS_GROUP
+    CONTROL         "Text - complete list  (dogs.txt)",IDC_IN_TEXT_ALL,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,25,
+                    23,150,10
+    CONTROL         "Text - 10 items per category  (dogs10.txt)",
+                    IDC_IN_TEXT_10,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
+                    25,43,150,10
+    CONTROL         "XML - complete list  (dogs.xml)",IDC_IN_XML_ALL,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,25,63,150,10
+    CONTROL         "XML - 10 items per category  (dogs10.xml)",
+                    IDC_IN_XML_10,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,
+                    25,83,150,10
+    CONTROL         "Multiple Roots  (dogs10.txt)",IDC_MULTIROOT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,25,103,150,10
+    PUSHBUTTON      "Start  XHtmlTreeTest",IDC_START,43,132,110,30,WS_GROUP
+END
+
+IDD_XHTMLTREETEST_DIALOG DIALOG DISCARDABLE  0, 0, 360, 292
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "XHtmlTreeTest"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Options",IDC_STATIC,5,4,210,37
+    CONTROL         "Checkboxes",IDC_CHECKBOXES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,15,75,10
+    CONTROL         "Smart Checkboxes",IDC_SMART_CHECKBOXES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,27,75,10
+    CONTROL         "HTML",IDC_HTML,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,95,
+                    15,55,10
+    CONTROL         "Strip HTML",IDC_STRIP_HTML,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,95,27,55,10
+    CONTROL         "Images",IDC_IMAGES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,15,55,10
+    CONTROL         "Read-only",IDC_READONLY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,155,27,55,10
+    PUSHBUTTON      "Show Checked",IDC_SHOW_CHECKED,228,7,58,14
+    PUSHBUTTON      "Find...",IDC_FIND,228,26,58,14
+    PUSHBUTTON      "Close",IDOK,297,7,58,14,WS_GROUP
+    PUSHBUTTON      "Colors...",IDC_COLORS,297,26,58,14
+    GROUPBOX        "Dogs of the World",IDC_STATIC,5,45,175,140,WS_GROUP
+    PUSHBUTTON      "X",IDC_CHECK_ALL,137,43,12,11,BS_VCENTER | WS_GROUP
+    PUSHBUTTON      "+",IDC_EXPAND_ALL,150,43,12,11
+    PUSHBUTTON      "-",IDC_COLLAPSE_ALL,163,43,12,11
+    CONTROL         "Tree1",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_EDITLABELS | 
+                    TVS_DISABLEDRAGDROP | WS_BORDER | WS_TABSTOP,10,57,165,
+                    122
+    GROUPBOX        "Edit Item",IDC_STATIC,185,45,170,68,WS_GROUP
+    DEFPUSHBUTTON   "Update",IDC_UPDATE,316,43,34,12
+    EDITTEXT        IDC_EDIT1,190,57,160,50,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    WS_VSCROLL
+    GROUPBOX        "Tree Info",IDC_STATIC,185,116,170,22
+    LTEXT           "Static",IDC_TREE_INFO,193,126,155,8
+    GROUPBOX        "Item Info",IDC_STATIC_ITEM_INFO,185,141,170,44
+    LTEXT           "Image:",IDC_STATIC,271,152,23,8
+    LTEXT           "Static",IDC_ITEMIMAGE,297,152,55,8
+    RTEXT           "No. Children:",IDC_STATIC,188,152,45,8
+    LTEXT           "12345",IDC_NOCHILDREN,241,152,27,8
+    RTEXT           "No. Checked:",IDC_STATIC,270,162,45,8
+    LTEXT           "12345",IDC_NOCHECKED,320,162,27,8
+    RTEXT           "Is Checked:",IDC_STATIC,188,162,45,8
+    LTEXT           "FALSE",IDC_ISCHECKED,241,162,27,8
+    RTEXT           "No. Separators:",IDC_STATIC,188,172,51,8
+    LTEXT           "12345",IDC_NOSEPARATORS,241,172,27,8
+    RTEXT           "Expanded:",IDC_STATIC,270,172,45,8
+    LTEXT           "12345",IDC_EXPANDED,320,172,27,8
+    GROUPBOX        "",IDC_STATIC,5,188,350,19
+    LTEXT           "",IDC_BREAD_CRUMB,10,195,340,10
+    GROUPBOX        "Log        ",IDC_STATIC,5,210,350,78,WS_GROUP
+    CONTROL         "",IDC_LOG,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | 
+                    WS_GROUP | WS_TABSTOP,27,210,9,8
+    LISTBOX         IDC_LIST1,10,220,340,62,NOT LBS_NOTIFY | LBS_MULTIPLESEL | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "",IDC_SCROLL1,83,51,13,6,SS_NOTIFY | WS_BORDER
+    LTEXT           "",IDC_SCROLL2,96,51,13,6,SS_NOTIFY | WS_BORDER | NOT 
+                    WS_GROUP
+    LTEXT           "",IDC_SCROLL3,109,51,13,6,SS_NOTIFY | WS_BORDER | NOT 
+                    WS_GROUP
+END
+
+IDD_CHECKED_ITEMS DIALOGEX 0, 0, 200, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "XHtmlTreeTest - Checked Items"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_INVISIBLE,79,13,55,24,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CHECKED_ITEMS,0,0,200,100,ES_MULTILINE | NOT 
+                    WS_BORDER | WS_VSCROLL
+END
+
+IDD_FIND_DLG DIALOGEX 0, 0, 200, 71
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_NOPARENTNOTIFY | WS_EX_TOOLWINDOW
+CAPTION "XHtmlTreeTest - Find"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Find what:",IDC_STATIC,5,8,35,8
+    EDITTEXT        IDC_FIND_EDIT,40,6,104,13,ES_AUTOHSCROLL | WS_GROUP
+    GROUPBOX        "",IDC_STATIC,5,21,90,32,WS_GROUP
+    CONTROL         "Start at selected item",IDC_FIND_CURRENT,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,10,28,83,10
+    CONTROL         "Start at root",IDC_FIND_ROOT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,10,40,83,10
+    GROUPBOX        "",IDC_STATIC,100,21,44,32,WS_GROUP
+    CONTROL         "Up",IDC_FIND_UP,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    WS_TABSTOP,105,28,27,10
+    CONTROL         "Down",IDC_FIND_DOWN,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,105,40,36,10
+    DEFPUSHBUTTON   "Find Next",IDOK,150,5,45,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,150,24,45,14
+    CONTROL         "Check all items that are found",IDC_FIND_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,58,124,10
+END
+
+IDD_COLORS DIALOGEX 0, 0, 258, 75
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "XHtmlTreeTest - Colors"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Colors",IDC_STATIC,10,6,238,38,WS_GROUP
+    LTEXT           "Text Color:",IDC_STATIC,20,21,36,8
+    PUSHBUTTON      "",IDC_TEXT_COLOR,58,19,50,14,WS_GROUP
+    LTEXT           "Background Color:",IDC_STATIC,122,21,61,8
+    PUSHBUTTON      "",IDC_BACKGROUND_COLOR,185,19,50,14,WS_GROUP
+    PUSHBUTTON      "Reset Colors",IDC_RESET_COLORS,70,54,54,14
+    DEFPUSHBUTTON   "OK",IDOK,198,54,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,134,54,50,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,6,0,1
+ PRODUCTVERSION 1,6,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "Article", "www.codeproject.com\0"
+            VALUE "E-mail", "hdietrich@gmail.com\0"
+            VALUE "FileDescription", "XHtmlTreeTest.exe\0"
+            VALUE "FileVersion", "1, 6, 0, 1\0"
+            VALUE "LegalCopyright", "Copyright © 2007 Hans Dietrich\0"
+            VALUE "OriginalFilename", "XHtmlTreeTest.exe\0"
+            VALUE "ProductName", "XHtmlTreeTest\0"
+            VALUE "ProductVersion", "1, 6, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_DOGS                BITMAP  DISCARDABLE     "dogs.bmp"
+IDB_GOLDEN_RETRIEVER    BITMAP  DISCARDABLE     "golden_retriever.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXT
+//
+
+IDU_DOGS1               TEXT    DISCARDABLE     "dogs.txt"
+IDU_DOGS2               TEXT    DISCARDABLE     "dogs10.txt"
+IDU_DOGS3               TEXT    DISCARDABLE     "dogs.xml"
+IDU_DOGS4               TEXT    DISCARDABLE     "dogs10.xml"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+WOOFWOOF                WAVE    DISCARDABLE     "woofwoof.wav"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_XLISTBOX MENU DISCARDABLE 
+BEGIN
+    POPUP "XListBox"
+    BEGIN
+        MENUITEM "&Select All",                 ID_EDIT_SELECT_ALL
+        MENUITEM "&Copy",                       ID_EDIT_COPY
+        MENUITEM "C&lear",                      ID_EDIT_CLEAR
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_MAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 188
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
+
+    IDD_XHTMLTREETEST_DIALOG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 355
+        BOTTOMMARGIN, 212
+    END
+
+    IDD_FIND_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 193
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_COLORS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 68
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR ACCELERATORS DISCARDABLE 
+BEGIN
+    "F",            ID_FIND,                VIRTKEY, CONTROL, NOINVERT
+    VK_F2,          IDC_LOG,                VIRTKEY, NOINVERT
+    VK_F3,          ID_FINDNEXT,            VIRTKEY, NOINVERT
+    VK_F3,          ID_FINDPREV,            VIRTKEY, SHIFT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_DROPCOPY            CURSOR  DISCARDABLE     "dropcopy.cur"
+IDC_DROPMOVE            CURSOR  DISCARDABLE     "dropmove.cur"
+IDC_NODROP              CURSOR  DISCARDABLE     "nodrop.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About XHtmlTreeTest..."
+    IDS_MAILTO              "mailto:hdietrich@gmail.com?subject=XHtmlTree"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "XHtmlTreeTest"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "afxres.rc"         // Standard components
+#endif
+#ifdef _VC60
+/////////////////////////////////////////////////////////////////////////////
+//
+// 24
+//
+1                      24      MOVEABLE PURE   "app.manifest"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

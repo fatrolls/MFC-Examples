@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - Tips: ODBC & Access database</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Tips: ODBC & Access database</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:claude_t@marlok.com">Claude Turner</A>.
+
+
+<P>1. MS Access drivers (upto and including Access 97) are not thread safe.
+
+<P>2. Always make user your DoFieldExchange order is the same as the order of
+fields in the DB table.  The class wizzard will occasionally change the
+order at you.
+
+<P>3. Don't use 16-bit Ints in your database.  Only use Bytes or Longs
+(32-bit).  The RFX_Short function actually uses SQL_LONG in the ODBC call.
+Most of the time this seems to work OK, but it will fail for paramaters.
+Also remember VC++ 5.0 ints are 32-bits.
+
+<P>4. Don't try and bind to fields you are passing in as paramaters. I.E. In
+the Access Query if you have a field you are compairing to a paramater,
+make sure the show row is not check for that column.
+
+<P>5. You can have Indexes with multiple fields besides the primary key to
+help speed up the DB, and help with Database integerity.  To do this go
+into design view for the table, and select View->Indexes.  
+at the bottom of the list enter a new index name, and then enter the names
+of the fields you wish to have in the index in the Field name colum in the
+next rows, leaveing index name cell blank
+
+<pre>
+Index Name    Field Name   Sort Order
+UserName      LastName     Accending
+              FirstName    Accending
+              MiddleInit   Accending
+Index2        Field1       Accending
+              Field2       Accending
+Index3        Field1       Accedning
+Index4        Field1       Accending
+</pre>
+
+<P>The index field properities will only appear when you are on the first row
+of the index.  At this point you can make the index unique if you want.  If
+you want the index to be unique, make sure all of the fields have at least
+1 character.  If one of fields is null, than that record will not be check
+against the Indexes rules.  In the above example this means for anyone
+without a middle initail you need to make it a space.  Otherwise you could
+end up with two John Smith's.  Although it would check John T Smith correctly.
+
+<P>6. Always make sure that there is at least one field per table that is
+guantereed to be unique.  If all else fails make an autoincrement field.
+You never know when you might need it.
+
+<P>7. To convert a CRecordset drived class to use a paramater query make the
+followning changes.
+<ol>
+<li>In the c-tor add m_nParams = {number of paramaters}
+<li>Change GetDefaultSQL to "{Call [ParamQuery] (?,?)}" you need a
+question mark for every paramater this example has two.
+<li>In DoFieldExchange after the //}}AFX_FIELD_MAP add the following line
+<br>      pFX->SetFieldType(CFieldExchange::param);
+<br>      Then put the RFX calls for your paramaters.
+<br>      RFX_Long(pFX, _T("[Param]"), m_param);
+</ol>
+
+<P>8. Don't use CTime.  To put it bluntly this class blows chuncks (IMHO).
+For ODBC use TIMESTAMP_STRUCT with the RFX_Date(), for DAO use
+COleDateTime, with DFX_DateTime().  The class wizard will always try and
+use CTime, you will have to change it by hand to the apporate type.  CTime
+is limited to 1970 - 2038, and can crash your application if you try and
+give it an invalid date/time.
+
+<P>9. Be careful when using Bytes in your DB.  Access uses the value of 255
+(0xFF) as Null.  So if the field is required it cannot equal 255.
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

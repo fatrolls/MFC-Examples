@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="Author" content="Rob Manderson">
+<meta name="GENERATOR" content="Microsoft FrontPage 2.0">
+<title>Internet Mail Look</title>
+<!-- Header information-->
+<!-- Set background properties -->
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF"
+link="#B50029" vlink="#8E2323" alink="#FF0000">
+<!-- A word from our sponsors... -->
+<table border="0" width="100%">
+    <tr>
+        <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+<!-- Article Title -->
+<h3 align="center"><font color="#00000A">Internet Mail Look</font></h3>
+
+<hr>
+<!-- Author and contact details -->
+<P>This article was contributed by <A HREF="mailto:alexn@bellsouth.net">Alexander Nolasco</A>.
+
+<p><br>
+<!-- The article... --></p>
+
+<p align="left">Having an Internet Mail look can be a bit hard to
+handle, but it could be quite rewarding . </p>
+
+<p align="left">This MFC42 code shows you how to provide this
+look in your apps.</p>
+
+<p align="left">.<img src="maillook.gif" width="312" height="328"></p>
+
+<p>The trick is to create a splitter window using another's handle. You can add any view you wish depending on the nature of your app. The image above shows a TreeView, RichView, and a FormView.
+
+<pre><font color="#990000"><tt>BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext) 
+{
+	if(!m_splitterWnd1.CreateStatic(this, 1,2) ||
+	   !m_splitterWnd1.CreateView(0, 0, RUNTIME_CLASS(CSplitterView), CSize(100,0), pContext) ||
+	   !m_splitterWnd2.CreateStatic(&amp;m_splitterWnd1, 2, 1, WS_CHILD | WS_VISIBLE, m_splitterWnd1.IdFromRowCol(0,1)) ||
+	   !m_splitterWnd2.CreateView(0, 0, RUNTIME_CLASS(CMFormView), CSize(0, 355),pContext) ||
+	   !m_splitterWnd2.CreateView(1, 0, RUNTIME_CLASS(CMRichView), CSize(0, 0),pContext))
+		{
+			return FALSE;
+		}		
+	return TRUE;
+}
+
+</tt></font></pre>
+
+<p><a href="maillook.zip">Download Source Code and Example (41 Kb)</a> </p>
+
+<!-- Remember to update this -->
+<p>Last updated: 21 June 1998 </p>
+
+<hr>
+<!-- Codeguru contact details -->
+<table border="0" width="100%">
+    <tr>
+        <td width="33%"><a href="http://www.codeguru.com"><font
+        size="2">Goto HomePage</font></a></td>
+        <td width="33%"><font size="1">© 1997 Zafir Anjum</font>&nbsp;
+        </td>
+        <td width="34%"><font size="2">Contact me: </font><a
+        href="mailto:zafir@home.com"><font size="2">zafir@home.com</font></a><font
+        size="2">&nbsp;</font> </td>
+    </tr>
+</table>
+</body>
+</html>

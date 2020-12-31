@@ -1,0 +1,213 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Internet - Get web page using WinInet class wrapper</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Get web page using WinInet class wrapper</FONT></H3></CENTER>
+<HR>
+
+
+<p>This article was contributed by <a href="mailto:aasif@khi.compol.com">Asif Rasheed</a>.
+</p>
+
+<p>WinInet is a high-level interface to the more complicated underlying Internet protocols
+(including HTTP, FTP, and Gopher).<br>
+WinInet allows your application to act as an HTTP, FTP, or Gopher client without its
+having to understand or, more importantly, keep up with the ever-evolving protocol
+standards. If you use WinInet in your applications, when standards change you can let
+WinInet worry about the changes while your interface to the protocol remains the same.
+WinInet can be used to write product-ordering systems, stock tickers/analyzers, online
+banking systems, FTP clients, your own Internet browser, and so on. Before WinInet, adding
+Internet communications to Windows-based applications required expertise in sockets and
+protocol specifications. Even simple communications required considerable development
+time. WinInet lets you quickly and easily add Internet communications to your
+applications.</p>
+
+<p>MFC also implemented some class which uses these APIs. These classes are distributed in
+different hierarchies. I develop a small class for that which has only two methods. By
+introducing this class in project and calling one method, one can easily download the web
+page from given url.</p>
+
+<p>This class has two methods,</p>
+
+<p><font color="#800000">&nbsp;&nbsp;&nbsp; CString GetWebPage(const CString&amp; Url);<br>
+&nbsp;&nbsp;&nbsp; void SetErrorMessage(CString s);<br>
+</font></p>
+
+<p>GetWebPage method is used for accepting the url (it must me complete i.e.,
+http:\\www.codeguru.com) and returning the desired page.</p>
+
+<p>SetErrorMessage method receives the Default error message. When there was some error
+due to any reason, GetWebpage method will return this message. I am working on it and in
+future beside default error message, a actual error message will be also transmitted.</p>
+
+<p><font color="#800000">&nbsp;</font></p>
+
+<p><font color="#800000">/*<br>
+//------------------------------------------------------------------------------------------------------------------<br>
+// WebWorld.h: interface for the CWebWorld class.<br>
+//------------------------------------------------------------------------------------------------------------------<br>
+*/</font></p>
+
+<p><font color="#800000">#include &quot;wininet.h&quot;<br>
+<br>
+class CWebWorld <br>
+{<br>
+public:<br>
+&nbsp;&nbsp;&nbsp; void SetErrorMessage(CString s);<br>
+&nbsp;&nbsp;&nbsp; CString GetWebPage(const CString&amp; Url);<br>
+&nbsp;&nbsp;&nbsp; CWebWorld();<br>
+&nbsp;&nbsp;&nbsp; virtual ~CWebWorld();<br>
+<br>
+private:<br>
+&nbsp;&nbsp;&nbsp; CString m_ErrorMessage;<br>
+&nbsp;&nbsp;&nbsp; HINTERNET m_Session;<br>
+};<br>
+</font><br>
+</p>
+
+<p><font color="#800000">/*<br>
+//------------------------------------------------------------------------------------------------------------------<br>
+// WebWorld.cpp:&nbsp; implementation of the CWebWorld class.<br>
+//------------------------------------------------------------------------------------------------------------------<br>
+*/</font></p>
+
+<p><font color="#800000">#include &quot;stdafx.h&quot;<br>
+#include &quot;WebThief.h&quot;<br>
+</font></p>
+
+<p><font color="#800000">#ifdef _DEBUG<br>
+#undef THIS_FILE<br>
+static char THIS_FILE[]=__FILE__;<br>
+#define new DEBUG_NEW<br>
+#endif<br>
+<br>
+#define AGENT_NAME&nbsp; &quot;CodeguruBrowser1.0&quot;<br>
+<br>
+//////////////////////////////////////////////////////////////////////<br>
+// Construction/Destruction<br>
+//////////////////////////////////////////////////////////////////////<br>
+<br>
+CWebWorld::CWebWorld()<br>
+{<br>
+&nbsp;&nbsp;&nbsp; DWORD dwError;<br>
+<br>
+&nbsp;&nbsp;&nbsp; // Initialize the Win32 Internet functions <br>
+&nbsp;&nbsp;&nbsp; m_Session = ::InternetOpen(AGENT_NAME, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INTERNET_OPEN_TYPE_PRECONFIG, // Use registry
+settings. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NULL, // Proxy name. NULL indicates use
+default.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NULL, // List of local servers. NULL indicates
+default. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0) ;<br>
+<br>
+&nbsp;&nbsp;&nbsp; dwError = GetLastError();<br>
+}<br>
+<br>
+CWebWorld::~CWebWorld()<br>
+{<br>
+&nbsp;&nbsp;&nbsp; // Closing the session<br>
+&nbsp;&nbsp;&nbsp; ::InternetCloseHandle(m_Session);<br>
+}<br>
+<br>
+CString CWebWorld::GetWebPage(const CString&amp; Url)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; HINTERNET hHttpFile;<br>
+&nbsp;&nbsp;&nbsp; char szSizeBuffer[32];<br>
+&nbsp;&nbsp;&nbsp; DWORD dwLengthSizeBuffer = sizeof(szSizeBuffer); <br>
+&nbsp;&nbsp;&nbsp; DWORD dwFileSize;<br>
+&nbsp;&nbsp;&nbsp; DWORD dwBytesRead;<br>
+&nbsp;&nbsp;&nbsp; BOOL bSuccessful;<br>
+&nbsp;&nbsp;&nbsp; CString Contents;<br>
+<br>
+&nbsp;&nbsp;&nbsp; // Setting default error message<br>
+&nbsp;&nbsp;&nbsp; Contents = m_ErrorMessage;<br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; // Opening the Url and getting a Handle for HTTP file<br>
+&nbsp;&nbsp;&nbsp; hHttpFile = InternetOpenUrl(m_Session, (const char *) Url, NULL, 0, 0,
+0);<br>
+<br>
+&nbsp;&nbsp;&nbsp; if (hHttpFile)<br>
+&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Getting the size of HTTP Files<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BOOL bQuery =
+::HttpQueryInfo(hHttpFile,HTTP_QUERY_CONTENT_LENGTH, szSizeBuffer,
+&amp;dwLengthSizeBuffer, NULL) ;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(bQuery==TRUE)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Allocating the
+memory space for HTTP file contents<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+dwFileSize=atol(szSizeBuffer);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LPSTR szContents =
+Contents.GetBuffer(dwFileSize);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Read the HTTP file <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BOOL bRead =
+::InternetReadFile(hHttpFile, szContents, dwFileSize, &amp;dwBytesRead); <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (bRead) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+bSuccessful = TRUE;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+::InternetCloseHandle(hHttpFile); // Close the connection.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Connection failed.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bSuccessful = FALSE;<br>
+&nbsp;&nbsp;&nbsp; } <br>
+&nbsp;&nbsp;&nbsp; return Contents;<br>
+}<br>
+<br>
+void CWebWorld::SetErrorMessage(CString s)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; m_ErrorMessage = s;<br>
+}</font><br>
+</p>
+
+<p>Following is a use of above class.</p>
+
+<p><font color="#800000">&nbsp;&nbsp;&nbsp; CWebWorld a; <br>
+&nbsp;&nbsp;&nbsp; CString PageContent;</font></p>
+
+<p><font color="#800000">&nbsp;&nbsp;&nbsp; a.SetErrorMessage(&quot;There is some error in
+getting web page ... &quot;);<br>
+&nbsp;&nbsp;&nbsp; PageContent = a.GetWebPage(m_Url);</font><br>
+</p>
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

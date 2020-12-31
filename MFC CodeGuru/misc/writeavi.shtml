@@ -1,0 +1,108 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Class for writing your own AVI-Files</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Class for writing your own AVI-Files
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <a href="mailto:Jaeger-Geitersdorf@t-online.de">Andreas
+Jäger</a>.
+
+<!-- Text / source code -->
+<p>The reason why I deal with AVI-Files is the following: I have a program that does any
+(long) calculation, and the output is immediately displayed (a function graph). After each
+step I can save the current window content as bitmap, and after the calculation I added
+all the bitmaps to an AVI (using VFD.EXE). But the bitmaps take a lot of room, (up to some
+G-Bytes). Therefore I wanted to create a AVI-File, and add the frames immediately when
+they are displayed.</p>
+
+<p>The vfw.h reads like a binary file, and so I have tried to press the sample WriteAVI
+into a C++-class. I don't want to documentate the source code in detail, just add
+WriteAVI.cpp and WriteAVI.h to your project and use the class.</p>
+
+<p>Some problems there are still with that class: 
+
+<ol>
+  <li>The user will be prompted to select a compression method, it should be choosen
+    automatically or by parameter.</li>
+  <li>I create DIB's (not compressed) for adding to an AVI-stream. The resulting AVI-File is
+    not compressed even when I choose a compression method.</li>
+  <li>The time for a frame is fix.</li>
+</ol>
+
+<p>If anybody knows how to fix the problems please send me a mail, so that everybody can
+benefit from it.</p>
+
+<p><br>
+Then these few lines will create your own AVI-file:<br>
+<font color="#990000"><tt><br>
+CAVIFile avi(&quot;test.avi&quot;);<br>
+for (int i=0; i&lt;=20; i++)<br>
+{<br>
+CBitmap bmp; <br>
+... // fill with data<br>
+<font color="#990000">avi.AddFrame(bmp);<br>
+}<br>
+if (avi.IsOK())<br>
+AfxMessageBox(&quot;AVI created&quot;);<br>
+else<br>
+AfxMessageBox(&quot;Error&quot;);<br>
+</tt></font></font></p>
+<!-- Remember to update this -->
+
+<p>You see writing AVI-Files is easy (now).<br>
+</p>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="writeavi.zip">Download source - 4KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 09 June 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

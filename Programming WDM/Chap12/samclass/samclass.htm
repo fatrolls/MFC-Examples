@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The SAMCLASS Sample</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Templates\SampleReadme.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The SAMCLASS Sample</H2>
+<P>The SAMCLASS Sample accompanies Chapter 12 and illustrates how to provide a custom property page for a new class of WDM device.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>SAMCLASS.DLL is a 32-bit property page DLL for use with Windows 2000.</LI>
+<LI>SAMCLS16.DLL (SAMCLS16 subdirectory) is a 16-bit property page DLL for use with Windows 98.</LI></UL>
+
+<H3>Building SAMCLASS</H3>
+<P>To build SAMCLASS.DLL, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named SAMCLASS.DSP.</P>
+<P>To build SAMCLS16.DLL, use the SAMCLS16.MAK project (SAMCLS16 subdirectory) in Microsoft Visual C++ 1.52 or equivalent. Note that this is a 16-bit project and can’t be built with a 32-bit compiler. You’ll need to use the Options/Directories menu command to specify several directory paths. On my computer, I had the compiler installed in the c:\msvc directory and the Win98 DDK in the c:\98ddk directory. My settings are:</P>
+
+<UL>
+<LI>Include Files Path: c:\98ddk\inc\win98\inc16;c:\msvc\include;c:\msvc\mfc\include;c:\98ddk\inc\win98</LI>
+<LI>Library Files Path: c:\msvc\lib;c:\msvc\mfc\lib;c:\98ddk\lib\win98</LI></UL>
+
+<I><P>It won’t work to specify project-specific include directories because the search order won’t end up right.</P>
+</I><H3>Testing SAMCLASS</H3>
+<P>If you installed the book samples normally, the setup program will have installed SAMCLASS or SAMCLS16 as the property page provider for the SAMPLE class of devices. Each time you view the properties of one of the book sample drivers in Device Manager, you’ll be able to view the Sample Information page that these DLLs provide.</P></BODY>
+</HTML>

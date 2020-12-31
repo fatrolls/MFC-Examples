@@ -1,0 +1,88 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Clipboard - Place a enhanced metafile on the clipboard</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Place a enhanced metafile on the clipboard</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+This article was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+<P>(1) If you don't have OLE in your project already then add this
+
+<PRE><TT><FONT COLOR="#990000">#include < afxole.h >
+</FONT></TT></PRE>
+
+<br>and do the following during initialization 
+
+<PRE><TT><FONT COLOR="#990000">OleInitialize(NULL);
+</FONT></TT></PRE>
+
+ 
+
+<P>(2) The following places a metafile copy of a view on the clipboard. It can be easily modified to work with any CWnd that draws to a CDC.
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyView::OnEditCopyWmf() 
+{ 
+	tagSTGMEDIUM * data;
+	CClientDC dcRef( this );
+	data = new tagSTGMEDIUM;
+	CMetaFileDC * dcMeta;
+	dcMeta = new CMetaFileDC();
+	COleDataSource* pData = new COleDataSource;
+	CRect lmbr;
+	GetClientRect(lmbr);
+	//replace "ImageName" with a description of this image
+	dcMeta->CreateEnhanced(&dcRef, NULL, NULL,"ImageName\0Copy\0\0" );
+	dcMeta->SetMapMode(MM_TEXT);
+	//actually draw to the device context
+	OnDraw(dcMeta);
+	//done drawing
+	data->tymed = TYMED_ENHMF;
+	data->hEnhMetaFile = dcMeta->CloseEnhanced();
+	pData->CacheData( CF_ENHMETAFILE, data );
+	pData->SetClipboard();
+	delete dcMeta;
+	delete data;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

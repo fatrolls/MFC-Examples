@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Setting up the item images</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Setting up the item images</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+The tree view control can display two images for each item in the control.
+The primary image is generally known as the item image and is immediately
+to the left of the item label. The secondary image is the state image and
+is to the left of the item image.
+
+<P>To setup the item images, you have to use the SetImageList() function.
+One of the argument this function requires is a pointer to an image list.
+You can create the image list from a bitmap that has all the images or
+you can create it by adding individual icons. I find using a bitmap easier,
+besides when using a bitmap you are not restricted to a square shape and
+just a few sizes as happens when using icons.
+<BR>&nbsp;
+<H4>
+Step 1: Create the bitmap</H4>
+Add a bitmap resource in the resource editor that contains all the icons.
+Here is an example below. The individual icons in this bitmap are 13x13
+pixels, but you may choose a different size and it need not be a square.
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;<IMG SRC="icon_Imagelist.gif" HEIGHT=13 WIDTH=39>
+<H4>
+Step 2: Add a member variable to hold the image list</H4>
+The member variable is usually added to the class that is responsible for
+setting up the tree view control. This would usually be the CView derivative
+or a CDialog derivative. You can also add the member variable to the sub-class
+of CTreeCtrl which is what I recommend.
+
+<P><TT><FONT COLOR="#990000">class CTreeCtrlX : public CTreeCtrl</FONT></TT>
+<BR><TT><FONT COLOR="#990000">{</FONT></TT>
+<BR><TT><FONT COLOR="#990000">// Construction</FONT></TT>
+<BR><TT><FONT COLOR="#990000">public:</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CTreeCtrlX();</FONT></TT>
+
+<P><TT><FONT COLOR="#990000">// Attributes</FONT></TT>
+<BR><TT><FONT COLOR="#990000">public:</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CImageList m_image ;</FONT></TT>
+<BR><TT><FONT COLOR="#990000">:</FONT></TT>
+<BR><TT><FONT COLOR="#990000">:</FONT></TT>
+<BR><TT><FONT COLOR="#990000">:</FONT></TT>
+<BR><TT><FONT COLOR="#990000">}</FONT></TT>
+<BR>&nbsp;
+<H4>
+Step 3: Create and set the image list</H4>
+Call the Create() function of the image object with the resource id of
+the bitmap we created in step 1 and the width of each icon. The height
+of the icons is automatically set to the height of the bitmap. The third
+argument required by the Create() function represents the number of new
+images the resized image list can contain. Since we are creating the image
+list from a bitmap, we would normally not add any more images at runtime
+so we let this value be one. The last argument is the mask color. That
+is, all the pixels of this color will behave as a transparent color. Since
+normally the window color is white, we set the mask color to white.
+
+<P>Once the image list has been created, the tree view control has to be
+instructed to use it. We do that by calling the SetImageList() function.
+The following statement usually belongs in the OnInitDialog() function
+or the OnInitialUpdate() function.
+<PRE><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_tree.m_image.Create( IDB_OUTLINE, 13, 1, RGB(255,255,255) );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_tree.SetImageList( &amp;(m_tree.m_image), TVSIL_NORMAL );</FONT></TT></PRE>
+
+<PRE><TT><FONT COLOR="#990000"></FONT></TT></PRE>
+
+<H4>
+Step 4: Specify icons for the items</H4>
+Once an image list has been associated with the tree view control, the
+control displays an icon to the left of the item label. This space matches
+the dimension of the icons in the image list. When inserting an item into
+the treeview control, you can specify which icon to use. You can also change
+the icon at later time. The InsertItem() and SetItemImage() functions,
+both require two different values for the image. One of the image to be
+used when the item is not selected, and the other image to be used when
+the item is selected. Both these values can be the same.
+
+<P>One common expectation a programmer new to this control has, is that,
+the control should automatically support an icon for when the item is collapsed
+and another for when the item is expanded. However, as we discussed in
+the previous paragraph the two different icons are for the items selection
+state. This will make more sense when you realize that the tree view control
+was primarily designed for the Windows Explorer and in Explorer when you
+select a folder in the tree view, it does open it up in the list view.
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,53 @@
+//---------------------------------------------------------------------
+// ¿…¶W : generic.rc
+//---------------------------------------------------------------------
+#include "windows.h"
+#include "resource.h"
+
+jjhouricon ICON    DISCARDABLE     "jjhour.ico"
+
+GenericMenu MENU DISCARDABLE
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",              IDM_NEW, GRAYED
+        MENUITEM "&Open...",          IDM_OPEN, GRAYED
+        MENUITEM "&Save",             IDM_SAVE, GRAYED
+        MENUITEM "Save &As...",       IDM_SAVEAS, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...",         IDM_PRINT, GRAYED
+        MENUITEM "P&rint Setup...",   IDM_PRINTSETUP, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",             IDM_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",     IDM_UNDO, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",      IDM_CUT, GRAYED
+        MENUITEM "&Copy\tCtrl+C",     IDM_COPY, GRAYED
+        MENUITEM "&Paste\tCtrl+V",    IDM_PASTE, GRAYED
+        MENUITEM "Paste &Link",       IDM_LINK, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "Lin&ks...",         IDM_LINKS, GRAYED
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents",               IDM_HELPCONTENTS, GRAYED
+        MENUITEM "&Search for Help On...",  IDM_HELPSEARCH, GRAYED
+        MENUITEM "&How to Use Help",        IDM_HELPHELP, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&About Generic...",       IDM_ABOUT
+    END
+END
+
+AboutBox DIALOG DISCARDABLE  22, 17, 144, 75
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "About Generic"
+BEGIN
+    CTEXT           "Windows 95",         -1,0, 5,144,8
+    CTEXT           "Generic Application",-1,0,14,144,8
+    CTEXT           "Version 1.0",        -1,0,34,144,8
+    DEFPUSHBUTTON   "OK",              IDOK,53,59,32,14,WS_GROUP
+END
+

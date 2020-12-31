@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Add checkboxes</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Add checkboxes</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <a href="mailto:s2848447@t2.technion.ac.il">Eran Yariv</a>.
+
+<p>A list view gives the GUI designer many options. One of the best is the ability to display tabular data in columns, sort columns, add images and more. This is well implemented by CListView in MFC.
+
+<p>A checked list box enables the GUI designer to get the users picked options via a checkbox on every list item. This is well implemented by CCheckListBox in MFC.
+
+<h4>How to combine them both into one control?</h4>
+Basically, there are two options: either you use owner drawn list view controls and draw your own check boxes as small images 
+OR you can use the new control introduced in Microsoft's IE 3.0.
+
+<p>To use the new features of a list view control you must install IE 3.0 (or above) to get the newest version of COMCTL32.DLL (the common controls library).
+
+<p>This control introduces some new flags in the ListView style and adds accepts some macros defined in the windows header files.
+
+<p>Bear in mind, the new flags and macros DO NOT APPEAR in VC++ 4.2 help files and started to exists in help files only from MSDN Jan 97 version and V++ 5.0
+
+<p>Well, here goes:
+
+<h4>First, you have to set the new style in the list view control.</h4>
+This can be done by: 
+
+<PRE><TT><FONT COLOR="#990000">
+ListView_SetExtendedListViewStyle 
+   (m_lvTestList.m_hWnd, LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT);
+</FONT></TT></PRE>
+
+This sets the list view to support check boxes and also a full row select (not only the 1st column).
+ 
+<p>A full description of the new flags follows in this table:
+
+<table border=2>
+<tr valign=top><td>LVS_EX_CHECKBOXES</td><td>The control supplies check boxes for each item. You can retrieve the state of the check box by using the ListView_GetCheckState macro.</td></tr>
+<tr valign=top><td>LVS_EX_FULLROWSELECT</td><td>When an item is selected, all of its subitems are also displayed as elected. Clicking on any subitem will select the entire row. This extended style is only effective in conjunction with the LVS_REPORT style.</td></tr>
+<tr valign=top><td>LVS_EX_GRIDLINES</td><td>Dashed gridlines are displayed around all items and subitems. This extended style is only effective in conjunction with the LVS_REPORT style.</td></tr>
+<tr valign=top><td>LVS_EX_HEADERDRAGDROP</td><td>Enables drag-and-drop re-ordering of the columns in the ListView. This extended style is only effective in conjunction with the LVS_REPORT style.</td></tr>
+<tr valign=top><td>LVS_EX_SUBITEMIMAGES</td><td>Allows images to be displayed for subitems. This extended style is only effective in  conjunction with the LVS_REPORT style.</td></tr>
+<tr valign=top><td>LVS_EX_TRACKSELECT</td><td>Enables hot tracking of items in a ListView control. Hot Tracking, also known as Hover Selection, means that an item is automatically selected when the mouse pointer is over it for more than 1 second. This style applies to all styles of the ListView control.</td></tr>
+</table>
+
+<h4>How to get notification when an item is checked / unchecked:</h4>
+<PRE><TT><FONT COLOR="#990000">void DemoDlg::OnItemchangedLinksList(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	*pResult = 0;
+
+	if (pNMListView->uOldState == 0 && pNMListView->uNewState == 0)
+		return;	// No change
+
+	BOOL bPrevState = (BOOL)(((pNMListView->uOldState & 
+				LVIS_STATEIMAGEMASK)>>12)-1);   // Old check box state
+	if (bPrevState < 0)	// On startup there's no previous state 
+		bPrevState = 0; // so assign as false (unchecked)
+
+	// New check box state
+	BOOL bChecked=(BOOL)(((pNMListView->uNewState & LVIS_STATEIMAGEMASK)>>12)-1);   
+	if (bChecked < 0) // On non-checkbox notifications assume false
+		bChecked = 0; 
+
+	if (bPrevState == bChecked) // No change in check box
+		return;
+	
+	// Now bChecked holds the new check box state
+
+	// ....
+}
+</FONT></TT></PRE>
+
+for this to work, you must map the following message:
+
+<PRE><TT><FONT COLOR="#990000">ON_NOTIFY(LVN_ITEMCHANGED, IDC_MYLIST, OnItemchangedLinksList)
+</FONT></TT></PRE>
+
+<h4>Setting the check box state of an item:</h4>
+Try the following piece of code
+<PRE><TT><FONT COLOR="#990000">void SetLVCheck (WPARAM ItemIndex, BOOL bCheck)
+{
+	ListView_SetItemState (m_lvTestList.m_hWnd, ItemIndex, 
+		UINT((int(bCheck) + 1) << 12), LVIS_STATEIMAGEMASK);
+}
+</FONT></TT></PRE>
+
+<h4>Getting the check box state of an item:</h4>
+Use the  macro ListView_GetCheckState(hwndLV, i) defined in commctl.h (hwndLV is the window handle of the list view member - i.e, m_lvTestList.m_hWnd and i is the list view index)
+
+
+<p>Email address for Eran Yariv updated on: April 11, 98. </p>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

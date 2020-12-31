@@ -1,0 +1,534 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><META content="IE=5.0000" http-equiv="X-UA-Compatible">
+<TITLE>CSDN技术中心 [翻译]-WinCE 程序设计 (3rd 版)--2.3 位图</TITLE>
+<META name=MS.LOCALE content=zh-CHS>
+<META content="text/html; charset=gb2312" http-equiv=Content-Type>
+<META name=MSHKeywordS content="[翻译]-WinCE 程序设计 (3rd 版)--2.3 位图">
+<META name=MSHKeywordK content=CSDN>
+<META name=MSHKeywordA content="">
+<META name=Description content="[翻译]-WinCE 程序设计 (3rd 版)--2.3 位图">
+<META name=Author content=tellmenow>
+<META name=Search.PublishDate content="Wed, 07 Sep 2005 09:21:00 GMT">
+<META name=Search.RevisedDate content="">
+<META name=Search.TopicType content=kbArticle>
+<META name=Search.UserRating content=80%><LINK rel=stylesheet type=text/css 
+href="/Skins/default/csdn.css"></HEAD>
+<BODY topMargin=0 bgColor=#ffffff text=#000000>
+<FORM id=Form1 method=post name=Form1 action=readarticle.aspx?id=76448><INPUT 
+value=dDwtMTk0MzAyNTA0NDt0PDtsPGk8MD47aTwxPjs+O2w8dDw7bDxpPDE+O2k8OT47aTwxMT47aTwxMz47PjtsPHQ8cDxwPGw8V2lkdGg7SGVpZ2h0O18hU0I7PjtsPDE8XGU+OzE8XGU+O2k8Mzg0Pjs+Pjs+Ozs+O3Q8cDxwPGw8V2lkdGg7SGVpZ2h0O0NTRE5fQXJ0aWNsZUlEO0NTRE5fQXJ0aWNsZV9UaXRsZTtfIVNCOz47bDwxPFxlPjsxPFxlPjtpPDc2NDQ4Pjtb57+76K+RXS1XaW5DRSDnqIvluo/orr7orqEgKDNyZCDniYgpLS0yLjMg5L2N5Zu+O2k8Mzg0Pjs+Pjs+Ozs+O3Q8cDxwPGw8V2lkdGg7SGVpZ2h0O0NTRE5fQXJ0aWNsZUlEO18hU0I7PjtsPDE8XGU+OzE8XGU+O2k8NzY0NDg+O2k8Mzg0Pjs+Pjs+Ozs+O3Q8cDxwPGw8V2lkdGg7SGVpZ2h0O18hU0I7PjtsPDE8XGU+OzE8XGU+O2k8Mzg0Pjs+Pjs+Ozs+Oz4+O3Q8cDxwPGw8V2lkdGg7SGVpZ2h0O18hU0I7PjtsPDE8XGU+OzE8XGU+O2k8Mzg0Pjs+Pjs+Ozs+Oz4+Oz4JAw7ka/CP2Eu8Aw3F4E78G3JWEQ== 
+type=hidden name=__VIEWSTATE> <!-- 头部双层导航栏040827 -->
+<TABLE border=0 cellSpacing=0 cellPadding=0 width=955 bgColor=#666666 
+align=center height=3>
+  <TBODY>
+  <TR>
+    <TD></TD></TR></TBODY></TABLE>
+<TABLE border=0 cellSpacing=0 cellPadding=0 width=955 align=center>
+  <TBODY>
+  <TR>
+    <TD width=192><IMG src="/images/CSDN_Logo.gif" width=192 height=75></TD>
+    <TD background=/images/01_bg_01.gif width=542>
+      <TABLE border=0 cellSpacing=0 borderColor=#000000 cellPadding=0 width=470 
+      bgColor=#ffffff align=center height=60>
+        <TBODY>
+        <TR>
+          <TD width=320><!--Begin//-->
+            <SCRIPT type=text/javascript>
+<!--
+csdn_AD_Position_GroupID = "{f05ff3bf-246b-4d71-a101-b5d4ee3f6cd3}";
+csdn_AD_Page_Url = document.location;
+csdn_AD_CurrPage_CharSet = "gb2312";
+//-->
+</SCRIPT>
+
+            <SCRIPT type=text/javascript 
+            src="http://ggmm.csdn.net/ggmm/Show_JavaScript.js">
+</SCRIPT>
+<!--End//--></TD>
+          <TD><!--Begin//-->
+            <SCRIPT type=text/javascript>
+<!--
+csdn_AD_Position_GroupID = "{a07a8ddc-9f6e-4eaa-99f1-59e0c7a3a08b}";
+csdn_AD_Page_Url = document.location;
+csdn_AD_CurrPage_CharSet = "gb2312";
+//-->
+		</SCRIPT>
+
+            <SCRIPT type=text/javascript 
+            src="http://ggmm.csdn.net/ggmm/Show_JavaScript.js">
+		</SCRIPT>
+<!--End//--></TD></TR></TBODY></TABLE></TD><!--td width="221"><img src="/images/01_bg_02.gif" width="221" height="75"></td--></TR></TBODY></TABLE>
+<TABLE border=0 cellSpacing=0 cellPadding=0 width=955 align=center>
+  <TBODY>
+  <TR>
+    <TD style="PADDING-TOP: 4px" background=/images/menu_bg.gif 
+      width=510>&nbsp;&nbsp;<A href="http://www.csdn.net/" target=_blank>首 页</A> 
+      | <A href="http://www.csdn.net/news/" target=_blank>新 闻</A> | <A 
+      href="http://dev.csdn.net/">技术中心</A> | <A 
+      href="http://www.dearbook.com.cn/" target=_blank>第二书店</A> | <A 
+      href="http://www.csdn.net/magazine/" target=_blank>《程序员》</A> | <A 
+      href="http://www.csdn.net/CSDNMagazine/csdn_magazine.shtm" 
+      target=_blank>《开发高手》</A> | <A href="http://community.csdn.net/" 
+      target=_blank>社 区</A> | <A href="http://www.csdn.net/ypage/" 
+      target=_blank>黄 页</A> | <A href="http://www.csdn.net/commerce/#job" 
+      target=_blank>人 才</A> </TD>
+    <TD width=59><IMG src="/images/menu_1.gif" width=59 height=29></TD>
+    <TD vAlign=top background=/images/menu_bg2.gif width=386 align=left><IMG 
+      src="/images/01_bg_03.gif" width=387 height=24></TD></TR></TBODY></TABLE>
+<TABLE style="MARGIN-BOTTOM: 4px" border=0 cellSpacing=0 cellPadding=0 width=955 
+background=/images/title_buttom.gif align=center height=18>
+  <TBODY>
+  <TR>
+    <TD height=22 vAlign=center align=middle><A 
+      href="http://www.csdn.net/mobile/" target=_blank>移 动</A>∣<A 
+      href="http://www.csdn.net/subject/" target=_blank>专 题</A>∣<A 
+      href="http://www.csdn.net/sun/" target=_blank>SUN</A>∣<A 
+      href="http://www.csdn.net/ibmc/" target=_blank>IBM</A>∣<A 
+      href="http://www.csdn.net/microsoft/" target=_blank>微 软</A>∣<A 
+      href="http://www.csdn.net/wicresoft/" target=_blank>微 创</A>∣<A 
+      href="http://www.csdn.net/prime/" target=_blank>精 华</A>∣<A 
+      href="http://www.donews.com/" target=_blank>Donews</A>∣<A 
+      href="http://www.csdn.net/ptpress/" target=_blank>人 
+邮</A></TD></TR></TBODY></TABLE><!-- /头部双层导航栏111111111111111 -->
+<TABLE id=Table1 border=0 cellSpacing=0 cellPadding=0 width=955 align=center 
+height=161>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=165 colSpan=2>
+      <TABLE border=0 cellSpacing=1 cellPadding=0 width="100%" 
+        bgColor=#000000><TBODY>
+        <TR>
+          <TD bgColor=#ededed vAlign=top>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%">
+              <TBODY>
+              <TR>
+                <TD height=27 background=/images/top.gif align=right><FONT 
+                  class=fonttitle>我的技术中心&nbsp;</FONT></TD></TR></TBODY></TABLE>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" 
+              height=65><TBODY>
+              <TR align=middle>
+                <TD><A 
+                  href="http://www.csdn.net/Develop/MyClass/List_MyClass.asp">我的分类</A></TD>
+                <TD><A 
+                  href="http://www.csdn.net/Develop/My_Article.asp">我的文档</A></TD></TR>
+              <TR align=middle>
+                <TD><A href="/articlelist.aspx">全部文章</A></TD>
+                <TD><A 
+                  href="http://www.csdn.net/Develop/Add_Article.asp">发表文章</A></TD></TR>
+              <TR align=middle>
+                <TD><A 
+                  href="http://www.csdn.net/develop/author/Edit_intro.asp">专栏管理</A></TD>
+                <TD><A 
+              href="http://www.csdn.net/Develop/Help.shtm">使用说明</A></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><BR><!-- Google 广告 -->
+      <SCRIPT type=text/javascript><!--
+google_ad_client = "pub-1076724771190722";
+google_ad_width = 125;
+google_ad_height = 125;
+google_ad_format = "125x125_as";
+google_ad_channel ="";
+//--></SCRIPT>
+
+      <SCRIPT type=text/javascript 
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</SCRIPT>
+      <BR><BR>
+      <TABLE border=0 cellSpacing=1 cellPadding=0 width="100%" 
+        bgColor=#000000><TBODY>
+        <TR>
+          <TD bgColor=#f1f1f1 vAlign=top>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%">
+              <TBODY>
+              <TR>
+                <TD height=27 background=/images/top.gif align=right><FONT 
+                  class=fonttitle><IMG align=absMiddle src="/images/RSSIcon.gif" 
+                  width=36 height=14>&nbsp;RSS 
+            订阅&nbsp;</FONT></TD></TR></TBODY></TABLE>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%">
+              <TBODY>
+              <TR>
+                <TD bgColor=#ffffff align=middle><A 
+                  href="/articlelist.aspx">最新文档列表</A></TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-BOTTOM: 4px" border=0 cellSpacing=0 
+            cellPadding=0 width="95%" align=center>
+              <TBODY>
+              <TR>
+                <TD style="BORDER-BOTTOM: #b0c4de 1px dashed; COLOR: #0033ff" 
+                align=right><FONT 
+              style="FONT-SIZE: 8pt">Windows/.NET</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=14">.NET</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=14">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A href="/articlelist.aspx?c=1">Visual 
+                  C++</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=1">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=2">Delphi</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=2">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A href="/articlelist.aspx?c=3">Visual 
+                  Basic</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=3">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=4">ASP</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=4">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=7">JavaScript</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=7">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-BOTTOM: 4px" border=0 cellSpacing=0 
+            cellPadding=0 width="95%" align=center>
+              <TBODY>
+              <TR>
+                <TD style="BORDER-BOTTOM: #b0c4de 1px dashed; COLOR: #0033ff" 
+                align=right><FONT 
+              style="FONT-SIZE: 8pt">Java/Linux</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=6">Java</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=6">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=5">Perl</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=5">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-BOTTOM: 4px" border=0 cellSpacing=0 
+            cellPadding=0 width="95%" align=center>
+              <TBODY>
+              <TR>
+                <TD style="BORDER-BOTTOM: #b0c4de 1px dashed; COLOR: #0033ff" 
+                align=right><FONT style="FONT-SIZE: 8pt">综合</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=9">其他开发语言</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=9">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=11">文件格式</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=11">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-BOTTOM: 4px" border=0 cellSpacing=0 
+            cellPadding=0 width="95%" align=center>
+              <TBODY>
+              <TR>
+                <TD style="BORDER-BOTTOM: #b0c4de 1px dashed; COLOR: #0033ff" 
+                align=right><FONT style="FONT-SIZE: 8pt">企业开发</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=10">游戏开发</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=10">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=12">网站制作技术</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=12">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-BOTTOM: 4px" border=0 cellSpacing=0 
+            cellPadding=0 width="95%" align=center>
+              <TBODY>
+              <TR>
+                <TD style="BORDER-BOTTOM: #b0c4de 1px dashed; COLOR: #0033ff" 
+                align=right><FONT style="FONT-SIZE: 8pt">数据库</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=8">数据库开发</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=8">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR></TBODY></TABLE>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="95%" 
+align=center>
+              <TBODY>
+              <TR>
+                <TD style="BORDER-BOTTOM: #b0c4de 1px dashed; COLOR: #0033ff" 
+                align=right><FONT style="FONT-SIZE: 8pt">软件工程</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/articlelist.aspx?c=13">其他</A>&nbsp;&nbsp;(<A 
+                  href="http://www.csdn.net/Rss/RssFeed.aspx?rssid=1&amp;bigclassid=13">rss</A>)&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><BR>
+      <TABLE border=0 cellSpacing=1 cellPadding=0 width="100%" 
+        bgColor=#000000><TBODY>
+        <TR>
+          <TD bgColor=#ededed vAlign=top>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%">
+              <TBODY>
+              <TR>
+                <TD height=27 background=/images/top.gif align=right><FONT 
+                  class=fonttitle>积极原创作者&nbsp;</FONT></TD></TR></TBODY></TABLE>
+            <TABLE border=0 cellSpacing=1 cellPadding=2 width="100%">
+              <TBODY>
+              <TR>
+                <TD align=right><A href="/user/NinGoo">NinGoo</A>&nbsp;<FONT 
+                  color=#ff0000>(28)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A href="/user/amh">amh</A>&nbsp;<FONT 
+                  color=#ff0000>(72)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/user/nizhigang2000">nizhigang2000</A>&nbsp;<FONT 
+                  color=#ff0000>(8)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/user/superyan">superyan</A>&nbsp;<FONT 
+                  color=#ff0000>(27)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/user/iiprogram">iiprogram</A>&nbsp;<FONT 
+                  color=#ff0000>(83)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/user/hongbo781202">hongbo781202</A>&nbsp;<FONT 
+                  color=#ff0000>(81)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A href="/user/Kendiv">Kendiv</A>&nbsp;<FONT 
+                  color=#ff0000>(113)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/user/TechnoFantasy">TechnoFantasy</A>&nbsp;<FONT 
+                  color=#ff0000>(52)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/user/feifei1018">feifei1018</A>&nbsp;<FONT 
+                  color=#ff0000>(19)</FONT></TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="/user/coofucoo">coofucoo</A>&nbsp;<FONT 
+                  color=#ff0000>(108)</FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD>
+    <TD vAlign=top width=786>
+      <TABLE border=0 cellPadding=4 width="100%">
+        <TBODY>
+        <TR>
+          <TD height=19 width=10></TD>
+          <TD height=19>
+            <TABLE border=0 cellSpacing=3 cellPadding=3 width="100%">
+              <TBODY>
+              <TR>
+                <TD><A href="http://www.csdn.net/">CSDN</A> - <A 
+                  href="http://dev.csdn.net/">文档中心</A> - <FONT color=#003399><A 
+                  id=ArticleTitle1_ArticleTitle1_hlClass 
+                  href="/articlelist.aspx?c=9">其他开发语言 </A></FONT></TD>
+                <TD align=right>阅读：<SPAN 
+                  id=ArticleTitle1_ArticleTitle1_lblReadCount>190</SPAN> 
+                  &nbsp;&nbsp;评论： <SPAN 
+                  id=ArticleTitle1_ArticleTitle1_lblCommentCount>0</SPAN> 
+                  &nbsp;&nbsp; <A href="#Comment">参与评论</A> </TD></TR></TBODY></TABLE>
+            <TABLE border=0 cellSpacing=3 cellPadding=3 width="100%" 
+            bgColor=#eeeeee>
+              <TBODY>
+              <TR>
+                <TD height=0 width=60 noWrap></TD>
+                <TD></TD></TR>
+              <TR>
+                <TD bgColor=#003399 height=16 noWrap align=middle><FONT 
+                  color=#ffffff>标题</FONT></TD>
+                <TD><B>&nbsp; <SPAN 
+                  id=ArticleTitle1_ArticleTitle1_lblTitle>[翻译]-WinCE 程序设计 (3rd 
+                  版)--2.3 位图</SPAN></B>&nbsp;&nbsp;&nbsp;&nbsp; 选择自 <A 
+                  id=ArticleTitle1_ArticleTitle1_AuthorLink 
+                  href="/user/tellmenow">tellmenow</A> 的 Blog </TD></TR>
+              <TR>
+                <TD bgColor=#003399 height=16 align=middle><FONT 
+                  color=#ffffff>关键字</FONT></TD>
+                <TD width=500>&nbsp; <SPAN 
+                  id=ArticleTitle1_ArticleTitle1_lblKeywords>[翻译]-WinCE 程序设计 
+                  (3rd 版)--2.3 位图</SPAN></TD></TR>
+              <TR>
+                <TD bgColor=#003399 height=16 align=middle><FONT 
+                  color=#ffffff>出处</FONT></TD>
+                <TD>&nbsp; <SPAN 
+                  id=ArticleTitle1_ArticleTitle1_lblSource></SPAN></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD width=10></TD>
+          <TD><SPAN id=ArticleContent1_ArticleContent1_lblContent>
+            <P><FONT color=#000080 size=3><STRONG>位图</STRONG></FONT></P>
+            <P>位图是一种图形化对象，用于在设备环境里创建、绘制、操纵和接收图片。从[开始按钮]上的小Winodws标志到标题栏上的[关闭]按钮，位图在Windows里无处不在。位图可以看作是一种由像素数组构成的图片，这些像素可以在屏幕上进行绘制。和所有图片一样，位图有自己的高度和宽度。也提供方法来判断位图使用什么颜色。最后，位图也是一个描述位图中每个像素的位（bits）数组。</P>
+            <P>习惯上，Windows下的位图被划分成两种类型：设备相关位图（DDBs）和设备无关位图（DIBs）。DDBs是一种和具体DC的特性有紧密关系的位图，不容易在有不同特性的DC上绘制。DIBs则相反，它与具体设备无关，因此需要携带足够的信息以便于在任何设备上准确的绘制。</P>
+            <P>Windwos CE包含了许多在其它Windows版本里可以使用的位图函数。不同之处包括只有Windows 
+            CE才支持的一种新的四色格式和对DIBs不同的操纵方式。<BR></P>
+            <P><FONT color=#800000 
+            size=2><STRONG>设备相关位图</STRONG></FONT><BR>可以使用CreateBitmap函数来创建设备相关位图，函数原型如下：<BR>HBITMAP 
+            CreateBitmap (int nWidth, int nHeight, UINT cPlanes, UINT 
+            cBitsPerPel, CONST VOID 
+            *lpvBits);<BR>nWidth和nHeight表示位图的尺寸。cPlanes是一个历史产物，当时显示器采用不同的硬件平面来实现像素里的每个颜色。对Windows 
+            CE来说，该参数必须是1。cBitspPerPel表示每个像素使用的位数。颜色数是cBitspPerPel的2次幂。在Windows 
+            CE下，允许使用的是1、24、8、16和24。正如我说过的，4色位图是Windows CE特有的，其它Windows 
+            平台不则不支持。</P>
+            <P>最后一个参数是指向位图位数的指针。在Windows 
+            CE下，位数总是按压缩像素格式排列的。也就是，每个像素按字节存储成一系列的比特位，下一个像素紧接上一个。位数组的第一个像素是位图左上角的像素。像素沿位图顶行排列，随后是第二行，依次类推。位图每行必须是双字（4字节）对齐排列。为了对齐下一行，可在行尾使用0来填充。图2-5演示了这种排列方式，图中展示了一个126*64像素的位图，每个像素使用8位。<BR>&nbsp;<BR>图2-5(略) 
+            位图里的字节布局</P>
+            <P>函数CreateCompatibleBitmap，其原型如下：<BR>HBITMAP CreateCompatibleBitmap 
+            (HDC hdc, int nWidth, int 
+            nHeight);<BR>用该函数可以创建一个格式与传入的设备环境兼容的位图。所以如果设备环境是四色DC，创建的位图也是一个四色位图。当您要在屏幕上操纵图片时，使用该函数很就很方便，因为该函数可以很容易创建一个与屏幕直接颜色兼容的空位图。<BR></P>
+            <P><FONT color=#800000 
+            size=2><STRONG>设备无关位图</STRONG></FONT><BR>设备无关位图和设备相关位图之间的基本差异是存储成DIBs的图象有自己的颜色信息。自从使用BMP作为扩展名的Windows 
+            3.0起，几乎每个位图文件都含有在Windows里创建DIB时所需要的信息。</P>
+            <P>在Windows早期，写程序手工读DIB文件并把数据转换为位图是程序员必备的技能。现在，这个烦冗的任务可以通过Windows 
+            CE特有的函数SHLoadDIBitmap来完成，函数原型如下：<BR>HBITMAP SHLoadDIBitmap (LPCTSTR 
+            szFileName);<BR>该函数直接从位图文件里装载位图并提供位图句柄。在Windows 
+            XP里可以使用带LR_LOADFROMFILE参数标志的LoadImage函数来完成同样的处理，但Windows 
+            CE下的LoadImage不支持这个标志。</P>
+            <P><FONT color=#800000 
+            size=2><STRONG>DIB片段</STRONG></FONT><BR>虽然Windows 
+            CE里很容易装载位图文件，但有时您必须读屏幕上图象、操纵图象以及将图象重画到屏幕上。这是DIBs比DDBs更好一些的地方之一。虽然设备相关位图的位数据可以获取得到，但缓冲区的格式直接依赖于屏幕格式。而通过使用DIB，或者更准确地说，通过使用DIB片段，您的程序可以把位图读到预定义格式的缓冲区里，而不用担心显示设备的格式。</P>
+            <P>虽然从Windows 3.0起就不断加入许多DIB创建函数，但Windows 
+            CE只支持XP中的一部分DIB函数。CreateDIBSection是这些函数中的第一个：<BR>HBITMAP 
+            CreateDIBSection (HDC hdc, const BITMAPINFO *pbmi,&nbsp; UINT 
+            iUsage, void 
+            *ppvBits,<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            HANDLE hSection, DWORD dwOffset);<BR>因为他们是相当晚才加到Win32 
+            API里的，所以DIB片段对程序员来说可能是比较新鲜的。使用DIB片段是为了改进Winodows 
+            NT上直接操纵位图的应用程序性能。简而言之，DIB片段允许程序员在直接访问位图位数据时，选择一个设备环境里的DIB。为达到这个目的，DIB片段将一个缓冲区与内存DC结合到一起，该缓冲区同时包含了该DC的位数据。因为图象是映射到一个DC的，所以可以使用其它图形函数调用来修改图片。同时，DC里的DIB格式的原始位数据可以被直接操纵。能改进在NT上的性能固然是很好，但对Window 
+            CE程序员来说，能够简化位图的使用和操作位图的内容才是最有价值的。</P>
+            <P>该函数中最重要的参数是指向BITMAPINFO结构的指针。该结构描述了设备无关位图的布局和颜色构成，该结构包含一个BITMAPINFOHEADER结构和一个代表位图使用的调色板的RGBQUAD数组。</P>
+            <P>BITMAPINFOHEADER定义如下<BR>typedef struct 
+            tagBITMAPINFOHEADER{<BR>&nbsp;&nbsp;&nbsp; DWORD 
+            biSize;<BR>&nbsp;&nbsp;&nbsp; LONG biWidth;<BR>&nbsp;&nbsp;&nbsp; 
+            LONG biHeight;<BR>&nbsp;&nbsp;&nbsp; WORD 
+            biPlanes;<BR>&nbsp;&nbsp;&nbsp; WORD 
+            biBitCount;<BR>&nbsp;&nbsp;&nbsp; DWORD 
+            biCompression;<BR>&nbsp;&nbsp;&nbsp; DWORD 
+            biSizeImage;<BR>&nbsp;&nbsp;&nbsp; LONG 
+            biXPelsPerMeter;<BR>&nbsp;&nbsp;&nbsp; LONG 
+            biYPelsPerMeter;<BR>&nbsp;&nbsp;&nbsp; DWORD 
+            biClrUsed;<BR>&nbsp;&nbsp;&nbsp; DWORD biClrImportant;<BR>} 
+            BITMAPINFOHEADER;<BR>如你所见，该结构包含的信息远多于传给CreateBitmap的参数。第一个域是该结构的尺寸，必须由调用者填充，用于区别由OS/2管理器沿袭来的BITMAPCOREINFOHEADER结构。biWidth, 
+            biHeight, 
+            biPlanes,和biBitCount都和CreateBitmap里的同名参数类似，但有一个例外，biHeight的正负号指定了位数组的组织排列方式。如果biHeight是正数，位数组按由上到下的格式排列，这一点和CreateBitmap相同。如果biHeight是负数，位数组则按由下到上的格式排列，也就是位图的底部行定义在该位数组的首位。和CreateBitmap一样，biPlanes必须设置为1。 
+            </P>
+            <P>biCompression指出位数组使用的压缩方式。Windows 
+            CE里，允许使用的标志有，BI_RGB，指出缓冲区没有压缩；BI_BITFIELDS，指出像素格式被定义在颜色表的头三个入口里。biSizeImage用于指出位数组的大小。但是，当使用BI_RGB标志时，biSizeImage可以设置为0，表示用BITMAPINFOHEADER结构里提供的尺寸（dimensions 
+            ）和像素的位数来计算数组的大小。</P>
+            <P>biXPelsPerMeter和biYPelsPerMeter提供图片的准确尺寸信息。但是对于CreateBIBSection来说，这些参数可以设置为0。biClrUsed指出实际使用的调色板里的颜色数。在256色图片里，调色板有256个入口，但畏途自身可能只需要大约100个不同的颜色。这个域帮助调色板管理器--Windows管理颜色匹配的部件--将系统调色板里的颜色同位图要求的颜色进行匹配。biClrImportant进一步指出真正需要的颜色。对更多颜色的位图，这两个域设置为0，表示使用所有颜色并且所有颜色都重要。</P>
+            <P>前面提到过，BITMAPINFOHEADER结构之后是RGBQUAD结构数组。该结构定义如下：<BR>typedef struct 
+            tagRGBQUAD { /* rgbq */<BR>&nbsp;&nbsp;&nbsp; BYTE 
+            rgbBlue;<BR>&nbsp;&nbsp;&nbsp; BYTE rgbGreen;<BR>&nbsp;&nbsp;&nbsp; 
+            BYTE rgbRed;<BR>&nbsp;&nbsp;&nbsp; BYTE rgbReserved;<BR>} 
+RGBQUAD</P>
+            <P>该结构允许有红蓝绿各256级色度（shade 
+            ）。虽然用该结构可以创建几乎任何色度，但设备上实际渲染的颜色是受设备能显示的颜色的限制的。</P>
+            <P>总体来看，RGBQUAD结构数组描述了DIB的调色板。调色板是位图里的颜色列表。如果位图有调色板，位图数组的每个入口包含的就不再是颜色，而是包含每个像素颜色的调色板索引。虽然对单色位图来说是多余的，但当在彩色设备上绘制彩色位图时，调色板就相当重要了。例如，虽然256色位图中每个像素一个字节，但该字节指向一个代表红绿蓝色的24位值。所以尽管256色位图只能包含256个不同的颜色，但由于是使用24位调色板入口进行颜色绘制的，因而这些颜色中的每个都可使用出的1千6百万种颜色中的一个。为了方便在32位中使用，每个只包含24位颜色信息的调色板入口都被扩充到32位宽度了，这也是RGBQUAD名字的来源。（译者注：QUAD有四个一套的意思）</P>
+            <P>CreateDIBSection剩余的四个参数中只有两个用于Windows 
+            CE。IUsage指出调色板里的颜色是如何被绘制的。如果该参数是DIB_RGB_COLORS，表示位图里的位数据包含了每个像素的全部RGB颜色信息；DIB_PAL_COLORS，表示位图像素包含DC里当前选择的调色板的索引。PpvBits 
+            是指向构成位图图象的位数据的指针。最后两个参数，hSection和dwOffset，Windows 
+            CE不支持它们，必须设置为0。在Windows的其它版本里，它们允许使用内存映射文件来给出位数据。因为Windows 
+            CE不支持内存映射文件，所以它们不能被CreateDIBSection支持。</P>
+            <P>GetDIBColorTable和SetDIBColorTable是管理DIB调色板的两个函数，它们的原型如下：<BR>UINT 
+            GetDIBColorTable (HDC hdc, UINT 
+            uStartIndex,&nbsp;&nbsp;&nbsp;&nbsp;UINT cEntries, RGBQUAD 
+            *pColors);<BR>和<BR>UINT SetDIBColorTable (HDC hdc, UINT 
+            uStartIndex,&nbsp;&nbsp;UINT cEntries, RGBQUAD 
+            *pColors);<BR>对这两个函数来说，uStartIndex指出将被设置或者查询的调色板的第一个入口。CEntries指出有多少调色板入口将改变。指向RGBQUAD数组的指针是用于设置（对SetDIBColorTable）或者查询（对GetDIBColorTable）的颜色数组。</P>
+            <P><FONT color=#800000 
+            size=2><STRONG>绘制位图</STRONG></FONT><BR>能够创建和装载位图固然很好，但如果您创建的位图不能绘制在屏幕上，那就没什么大用处。绘制位图可能并不是您想象的那么简单。位图被绘制到屏幕DC之前，必须先将位图选进一个DC，再将其复制到屏幕设备环境里。虽然这个过程听起来可能有点费解，但这是有合理的原因的。</P>
+            <P>把位图选择到一个设备环境的过程与把逻辑字体选择到设备环境的过程类似。下面让我们把理想变成现实吧。正如Windows要为请求的字体找到最可能匹配的字体一样，位图选择过程也必须为位图要求的颜色找到匹配的设备上可用的颜色。只有在这个过程完成后，位图才能绘制到屏幕上。为了帮助完成这一中间步骤，Windows提供了一个替身DC—内存设备环境。</P>
+            <P>要创建内存设备环境，可以使用函数CreateCompatibleDC：<BR>HDC CreateCompatibleDC 
+            (HDC 
+            hdc);<BR>该函数创建一个与当前屏幕DC兼容的内存DC。一旦创建成功，可以使用您以前用来选择逻辑字体的SelectObject函数将源位图选进这个内存DC。最后，用BitBlt 
+            或StretchBlt将位图从内存DC复制到屏幕DC。</P>
+            <P>位图函数的主力是<BR>BOOL BitBlt (HDC hdcDest, int nXDest, int nYDest, int 
+            nWidth,&nbsp;&nbsp; int nHeight, HDC hdcSrc, int nXSrc,&nbsp; int 
+            nYSrc,&nbsp; DWORD dwRop);</P>
+            <P>BitBlt函数发音为“bit 
+            blit”，它是一个有意思的函数，它在设备环境上操作，而不是内存里，它有时是一个很特别的函数。第一个参数是位图即将被复制到其上的目的设备环境的句柄。接下来的4个参数规定了位图最终位于的目的矩形的位置和大小。接下来的3个参数规定了源设备环境的句柄以及源图象左上角在该DC里的位置。</P>
+            <P>最后一个参数dwRop规定图象如何从源设备环境复制到目的设备环境。ROP代码规定了源位图和当前目的设备如何组合来产生最终图片。ROP代码为SRCOPY，表示简单复制源图象。ROP代码为SRCPAINT，表示源图象和目的之间进行或操作。ROP代码为SRCINVERT，表示复制一个逻辑反转图象，本质上是一个负的源图象。一些ROP代码还将当前选择的画刷（brush）一起作为计算结果图象的因素。ROP代码很多，所以这里不可能覆盖全，要获得全部列表，请参考Windows 
+            CE编程文档。</P>
+            <P>下面的代码片段总结了如何绘制位图：</P>
+            <P>// Create a DC that matches the device.<BR>hdcMem = 
+            CreateCompatibleDC (hdc);<BR>&nbsp;&nbsp; <BR>// Select the bitmap 
+            into the compatible device context.<BR>hOldSel = SelectObject 
+            (hdcMem, hBitmap);<BR>&nbsp;&nbsp; <BR>// Get the bitmap dimensions 
+            from the bitmap.<BR>GetObject (hBitmap, sizeof (BITMAP), 
+            &amp;bmp);<BR>&nbsp;&nbsp; <BR>// Copy the bitmap image from the 
+            memory DC to the screen DC.<BR>BitBlt (hdc, rect.left, rect.top, 
+            bmp.bmWidth, bmp.bmHeight, 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hdcMem, 0, 0, 
+            SRCCOPY);<BR>&nbsp;&nbsp; <BR>// Restore original bitmap selection 
+            and destroy the memory DC.<BR>SelectObject (hdcMem, 
+            hOldSel);<BR>DeleteDC (hdcMem);</P>
+            <P>创建内存设备环境，即将被绘制的位图被选进该DC。因为您可能没有存储即将被绘制的位图尺寸，通常可以调用GetObject来获得。GetObject返回关于图形对象的信息，在本例中是一个位图。可以用这个很有用的函数来查询字体和其它图象对象的信息。接下来，使用BitBlit将位图复制进屏幕DC。为了清理，需要将位图从内存设备环境中取消选择，并使用DeleteDC将该内存DC删除。不要将DeleteDC同ReleaseDC混淆，ReleaseDC是释放一个显示DC。DeleteDC只应该和CreateCompatibleDC一起使用，ReleaseDC只应该和GetDC或GetWindowsDC一起使用。</P>
+            <P>用StretchBlt除了复制位图，还可以拉伸或者压缩位图。该函数原型如下：<BR>BOOL StretchBlt (HDC 
+            hdcDest, int nXOriginDest, int nYOriginDest,&nbsp; int nWidthDest, 
+            int nHeightDest, HDC hdcSrc,&nbsp; int nXOriginSrc, int nYOriginSrc, 
+            int nWidthSrc,&nbsp; int nHeightSrc, DWORD 
+            dwRop);<BR>StretchBlt里的参数和BitBlt里的基本相同，但是有一点例外的是现在可以指定源图象的宽度和高度。同样的，这里的ROP代码规定了源和目的之间如何组合来产生最终图象。</P>
+            <P>Windows CE还有另外一个位图函数TransparentImage，原型如下：<BR>BOOL 
+            TransparentImage (HDC hdcDest, LONG DstX, LONG DstY, LONG DstCx, 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            LONG DstCy, HANDLE hSrc, LONG SrcX, LONG SrcY, 
+            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            LONG SrcCx, LONG SrcCy, COLORREF TransparentColor);</P>
+            <P>该函数同StretchBlt类似，但有两个很重要的例外。首先，您可以指定位图里作为透明色的颜色。当把位图复制到目标中时，位图里透明色的像素不被复制。第二个不同是hSrc参数要么是设备环境要么是位图句柄，该参数允许您不必理会在屏幕上绘制图象前必须将源图象选进一个设备环境的要求。TransparentImage与Windows 
+            2000中的TransparentBlt函数基本相同，除了TransparetBlt不能直接使用位图作为源图象以外。</P>
+            <P>和其它版本的Windows一样，Windows 
+            CE还支持2个其它blit函数：PatBlt和MaskBlt。PatBlt函数将当前选择的画刷同目的DC里当前图象进行组合，产生结果图象。我在本章后面会谈到画刷。MaskBlt函数与BitBlt类似，但包含一个掩码图象，用来提供只绘制源图象的一部分到目的DC里的功能。</P></SPAN><BR>
+            <DIV 
+            style="LINE-HEIGHT: 25px; FONT-SIZE: 14px"><STRONG>作者Blog：</STRONG><A 
+            id=ArticleContent1_ArticleContent1_AuthorBlogLink 
+            href="http://blog.csdn.net/tellmenow/" 
+            target=_blank>http://blog.csdn.net/tellmenow/</A></DIV>
+            <DIV 
+            style="LINE-HEIGHT: 25px; COLOR: #900; FONT-SIZE: 14px"><STRONG>相关文章</STRONG></DIV>
+            <TABLE id=ArticleContent1_ArticleContent1_RelatedArticles border=0 
+            cellSpacing=0>
+              <TBODY>
+              <TR>
+                <TD><A href="/article/84/84153.shtm">[翻译]-Windows CE 程序设计 (3rd 
+                  版)--5.2 公共控件(九) </A></TD></TR>
+              <TR>
+                <TD><A href="/article/83/83999.shtm">[翻译]-Windows CE 程序设计 (3rd 
+                  版)--5.2 公共控件(八) </A></TD></TR>
+              <TR>
+                <TD><A href="/article/83/83856.shtm">[翻译]-Windows CE 程序设计 (3rd 
+                  版)--5.2 公共控件(七) </A></TD></TR>
+              <TR>
+                <TD><A href="/article/83/83500.shtm">[翻译]-Windows CE 程序设计 (3rd 
+                  版)--5.2 公共控件(六) </A></TD></TR>
+              <TR>
+                <TD><A href="/article/83/83223.shtm">[翻译]-Windows CE 程序设计 (3rd 
+                  版)--5.2 公共控件(五)</A> </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><A 
+      name=#Comment></A>
+      <TABLE border=0 cellPadding=0 width="100%">
+        <TBODY>
+        <TR>
+          <TD>
+            <TABLE border=0 cellSpacing=0 cellPadding=0 width="100%" 
+            bgColor=#006699 align=center>
+              <TBODY>
+              <TR bgColor=#006699>
+                <TD id=white bgColor=#006699 width=556 align=middle><FONT 
+                  color=#ffffff>对该文的评论</FONT> </TD></TR></TBODY></TABLE>
+            <DIV align=right><A id=CommnetList1_CommnetList1_Morelink 
+            href="http://comment.csdn.net/Comment.aspx?c=2&amp;s=76448">【评论】</A> 
+            <A id=CommnetList1_CommnetList1_Hyperlink1 
+            href="javascript:window.close();">【关闭】</A> <A 
+            href="mailto:webmaster@csdn.net">【报告bug】</A> 
+      </DIV><BR></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></FORM><!-- 版权 -->
+<DIV align=center>
+<SCRIPT language=JavaScript type=text/javascript 
+src="http://www.csdn.net/common/footer_gb.js"></SCRIPT>
+<LINK rel=stylesheet type=text/css 
+href="http://csdnimg.cn/pubfooter/css/pub_footerstyle.css">
+<DIV style="WIDTH: 960px" class=pub_footerall>
+<DL>
+  <DT>
+  <DD><A href="http://www.csdn.net/company/about.html" target=_blank>公司简介</A>|<A 
+  href="http://www.csdn.net/company/marketing.html" target=_blank>广告服务</A>|<A 
+  href="http://www.csdn.net/company/account.html" target=_blank>银行汇款帐号</A>|<A 
+  href="http://www.csdn.net/company/contact.html" target=_blank>联系方式</A>|<A 
+  href="http://www.csdn.net/company/statement.html" target=_blank>版权声明</A>|<A 
+  href="http://www.csdn.net/company/layer.html" target=_blank>法律顾问</A>|<A 
+  href="mailto:webmaster@csdn.net">问题报告</A>
+  <DD>北京创新乐知广告有限公司 版权所有,&nbsp;京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号
+  <DD>世纪乐知(北京)网络技术有限公司 提供技术支持
+  <DD>Email:webmaster@csdn.net
+  <DD>Copyright &copy; 1999-2010, CSDN.NET, All Rights Reserved
+  <DD><A 
+  href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" 
+  target=_blank><IMG title="" alt=GongshangLogo 
+  src="http://www.csdn.net/ui/images/gongshang_logos.gif"></A></DD></DL></DIV></DIV><!-- /版权 -->
+<SCRIPT>
+      document.write("<img src=http://count.csdn.net/count/pageview1.asp?columnid=4&itemid=11 border=0 width=0 height=0>");
+    </SCRIPT>
+<IMG border=0 
+src="http://count.csdn.net/count/pageview1.asp?columnid=4&amp;itemid=11" width=0 
+height=0>
+<SCRIPT>document.write("<img src=http://counter.csdn.net/pv.aspx?id=37 border=0 width=0 height=0>");</SCRIPT>
+ <IMG border=0 src="http://counter.csdn.net/pv.aspx?id=37" width=0 height=0>
+<SCRIPT language=JavaScript 
+src="http://www.csdn.net/common/common.asp?cid=5"></SCRIPT>
+ </BODY></HTML>

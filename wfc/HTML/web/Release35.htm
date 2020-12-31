@@ -1,0 +1,75 @@
+<HTML>
+<!-- $Revision: 2 $ -->
+<H1>Release 35</H1>
+I've added entity resolution to the 
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+classes.
+
+<H2>What's New</H2>
+<B>CRandomNumberGenerator2</B> - Thanks go to 
+Yehuda Hahn (ygh@cfsnet.com),
+for turning me on to a fast random number
+generator by using Mersenne Twister algorithms
+developed by Makoto Matsutomo and
+Takuji Nishimura of the Department of Mathematics,
+Keio University, in
+Japan (at
+<A HREF="http://www.math.keio.ac.jp/matumoto/emt.html">http://www.math.keio.ac.jp/matumoto/emt.html</A>).
+
+<H2>Bug Fixes/Enhancements</H2>
+
+<B><A HREF="CNetwork.htm">CNetwork</A></B> - Fixed a bug, thanks to
+Ullrich Pollahne (u.pollaehne@online.de),
+where I was not allocating room for any stripped leading
+backslashes in a server name in the <B>Open</B>() method.
+
+<P>
+
+<B><A HREF="CRAS.htm">CRemoteAccessService</A></B> - Fixed a bug, thanks to
+Richard Wirth (r.wirth@wirthware.da-net.de),
+where the <B>Open</B>() method could go into an endless loop.
+<B>
+
+<P>
+
+<B><A HREF="CPing.htm">CPing</A></B> - Fixed a bug, thanks to
+Curits Yanko (cyanko@ziplink.net),
+where I was not thunking the call to
+<CODE>inet_addr()</CODE>.
+
+<P>
+
+<B><A HREF="REGISTRY.htm">CRegistry</A></B> - Fixed a bug, thanks to
+George Koukoulommatis (gemasoft@hol.gr),
+where I was not calculating the size of a string buffer correctly.
+I was incorrectly assuming that a character was only one byte
+wide which is not UNICODE correct. This bug was in the
+<B>SetStringArrayValue</B>() function.
+
+<P>
+
+<B><A HREF="SOCKETS.htm">CSimpleSocket</A></B> - Fixed
+a bug in <B>SetAddress</B>() where the name and address
+properties weren't being set if there was no DNS
+entry for an IP address.
+
+<P>
+
+<B>Map2Def</B> - This is a sample utility that converts a MAP
+file to a DEF file. I fixed it where it was not including
+the timestamp in the resulting DEF file.
+
+<P>
+
+<B>XMLCheck</B> - This is a new sample utility that loads
+an XML file and tells you if it is valid or not. If
+it is not a valid file it will tell you exactly
+where it failed (line number and column number).
+
+<HR>
+<A HREF="Release34.htm">Release 34 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS>Internet: wfc@pobox.com</ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

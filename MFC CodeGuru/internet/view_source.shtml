@@ -1,0 +1,63 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Rob Manderson">
+   <TITLE>Code for "View Source" option in Internet Explorer</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" >
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Code for "View Source" option in Internet Explorer</FONT></H3></CENTER>
+<HR>
+
+
+<P>This article was contributed by <A HREF="mailto:ssram@rocketmail.com">sriram</A>.
+
+<P>This is the code for implementing the "View Source" option in Internet Explorer
+
+<PRE><TT><FONT COLOR="#990000">
+void CMyBrowser::OnViewSource() 
+{
+	CWnd* pWnd = NULL; 
+
+	CWnd* pwndShell = m_WebBrowser2.GetWindow(GW_CHILD); // get the webbrowser window pointer
+
+	if (pwndShell) 
+	{ 
+		pWnd = pwndShell->GetWindow(GW_CHILD);  //get the child window pointer
+	} 
+	
+	if(pWnd != NULL) 
+	{ 
+		WPARAM wParam = MAKELONG(IDM_VIEWSOURCE, 1);  //convert to unsigned 32 bit value and pass it to WPARAM
+		pWnd->SendMessage(WM_COMMAND, wParam, (LPARAM)pWndHTML->m_hWnd); //cool send a message to retreive the source.
+	} 	
+}
+
+</FONT></TT></PRE>
+
+<p>Updated on May 23 1998
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

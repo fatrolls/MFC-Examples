@@ -1,0 +1,417 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Determine DLL version number</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Determine DLL version number</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:s2848447@t2.technion.ac.il">Eran Yariv</A> from Israel.
+This article has some information about COMCTL32.DLL and Unimodem/V TAPI drivers in specific and
+code to determine the version of any DLL through your MFC application.
+
+
+
+<h4>COMCTL32.DLL versions</h4>
+This DLL is responsible for all the controls Windows uses.
+Windows 95 was first shipped with version 4.00 of this DLL.
+Internet explorer 3.x upgrades this DLL to version 4.70 and Internet explorer 4.0 to version 4.71.
+
+<p>Extended controls features (like List view controls with checkboxes) are supported only in versions bigger than 4.00.
+
+<p>An article about common control versions can be found at: 
+<br><a href="http://www.microsoft.com/msdn/sdk/inetsdk/help/inet1560.htm">http://www.microsoft.com/msdn/sdk/inetsdk/help/inet1560.htm</a>
+
+<h4>UnimodemV</h4>
+Unimodem is the standard modem driver used by TAPI.
+More than 95% percent of the "drivers" supplied with the modem hardware are just parameters files for that driver.
+Unimodem's 32-bit driver is located in UMDM32.DLL in the SYSTEM directory.
+
+<p>Recently, Microsoft has published an upgrade for Voice modems.
+This upgrade is called UnimodemV (V for voice). 
+This upgrade supports advanced features like Caller-ID, Distinctive-Ring etc.
+
+<p>The upgrade can be downloaded from:
+<br><a = href="http://www.microsoft.com/kb/articles/Q139/3/83.htm">http://www.microsoft.com/kb/articles/Q139/3/83.htm</a>
+
+<p>The original version of Unimodem is UMDM32.DLL version 4.00.
+UnimodemV replaces this DLL with version 4.10.
+ 
+<h3>How to find the version of a DLL ?</h3>
+The following class retrieves DLL versions.
+
+<p>Class header file:
+
+<PRE><TT><FONT COLOR="#990000">
+/*  For some odd reason, Microsoft published a sample code that uses shlwapi.h 
+    (and shlwapi.lib)
+    to tinker file versions.
+
+    This header file could not be found anywhere !!!
+    Not in Visual C++ 4.2, Visual C++ 5.0 or MSDN versions up to July 97`.
+
+    So, I just took out the interesting structures from scraps I found 
+    and re-defined them here.
+*/
+
+
+//  Remember: You must link version.lib to the project for this class to work !!
+
+
+#ifndef _DLL_VERSION_H_
+#define _DLL_VERSION_H_
+
+#ifndef DLLVERSIONINFO
+typedef struct _DllVersionInfo
+{
+    DWORD cbSize;
+    DWORD dwMajorVersion;
+    DWORD dwMinorVersion;
+    DWORD dwBuildNumber;
+    DWORD dwPlatformID;
+}DLLVERSIONINFO;
+#endif
+
+#ifndef DLLGETVERSIONPROC
+typedef int (FAR WINAPI *DLLGETVERSIONPROC) (DLLVERSIONINFO *);
+#endif
+
+class CDLLVersion
+{
+    typedef enum {  WIN_DIR, // Windows directory (e.g.: "C:\Windows\")
+                    SYS_DIR, // Windows system directory (e.g.: "C:\Windows\System")
+                    CUR_DIR, // Current directory (e.g.: ".")
+                    NO_DIR}  // No directory (path in file name)
+        FileLocationType;   // Possible ways to add a path prefix to a file
+
+public:
+    CDLLVersion (LPSTR szDLLFileName) :
+        m_dwMajor (0),
+        m_dwMinor (0),
+        m_dwBuild (0)
+    {
+        m_bValid = GetDLLVersion (szDLLFileName, m_dwMajor, m_dwMinor, m_dwBuild);
+    }
+        
+
+    virtual ~CDLLVersion () {};
+
+    DWORD GetMajorVersion ()
+    {
+        return m_dwMajor;
+    }
+
+    DWORD GetMinorVersion ()
+    {
+        return m_dwMinor;
+    }
+
+    DWORD GetBuildNumber ()
+    {
+        return m_dwBuild;
+    }
+
+    BOOL IsValid ()
+    {
+        return m_bValid;
+    }
+
+private:
+
+    BOOL GetDLLVersion (LPSTR szDLLFileName, 
+                        DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuildNumber);
+
+    BOOL CheckFileVersion (LPSTR szFileName, FileLocationType FileLoc, 
+                           DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuildNumber);
+
+    BOOL ParseVersionString (LPSTR lpVersion, 
+                             DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuildNumber);
+
+    BOOL FixFilePath (char * szFileName, FileLocationType FileLoc);
+
+    DWORD   m_dwMajor,      // Major version number
+            m_dwMinor,      // Minor version number
+            m_dwBuild;      // Build number
+    BOOL    m_bValid;       // Is the DLL version information valid ?
+};
+
+#endif
+</FONT></TT></PRE>
+
+<p>And here's the implementation:
+
+<PRE><TT><FONT COLOR="#990000">
+#include "DLLVersion.h"
+
+/***************************************************************************
+
+   Function:   GetDLLVersion
+
+   Purpose:    Retrieves DLL major version, minor version and build numbers
+
+   Input:      DLL file name
+               Reference to Major number 
+               Reference to Minor number 
+               Reference to Build number 
+
+   Output:     TRUE only if successful
+
+   Remarks:    This function first tries to get the DLL version the nice way,
+               that is, call the DllGetVersion function in the DLL.
+
+               If this fails, it tries to located the DLL file in the file system,
+               read the file information block and retrieve the file version.
+
+****************************************************************************/
+BOOL CDLLVersion::GetDLLVersion (LPSTR szDLLFileName, 
+                                 DWORD &dwMajor, DWORD &dwMinor, DWORD &dwBuildNumber)
+{
+HINSTANCE   hDllInst;           // Instance of loaded DLL
+char szFileName [_MAX_PATH];    // Temp file name
+BOOL bRes = TRUE;               // Result
+
+    lstrcpy (szFileName, szDLLFileName);    // Save a file name copy for the loading
+    hDllInst = LoadLibrary(TEXT(szFileName));   //load the DLL
+    if(hDllInst) {  // Could successfully load the DLL
+        DLLGETVERSIONPROC pDllGetVersion;
+        /*
+        You must get this function explicitly because earlier versions of the DLL 
+        don't implement this function. That makes the lack of implementation of the 
+        function a version marker in itself.
+        */
+        pDllGetVersion = (DLLGETVERSIONPROC) GetProcAddress(hDllInst,
+                          TEXT("DllGetVersion"));
+   
+        if(pDllGetVersion) {    // DLL supports version retrieval function
+            DLLVERSIONINFO    dvi;
+
+            ZeroMemory(&dvi, sizeof(dvi));
+            dvi.cbSize = sizeof(dvi);
+            HRESULT hr = (*pDllGetVersion)(&dvi);
+
+            if(SUCCEEDED(hr)) { // Finally, the version is at our hands
+                dwMajor = dvi.dwMajorVersion;
+                dwMinor = dvi.dwMinorVersion;
+                dwBuildNumber = dvi.dwBuildNumber;
+            } else
+                bRes = FALSE;   // Failure
+        } else  // GetProcAddress failed, the DLL cannot tell its version
+            bRes = FALSE;       // Failure
+
+        FreeLibrary(hDllInst);  // Release DLL
+    } else  
+        bRes = FALSE;   // DLL could not be loaded
+
+    if (!bRes) // Cannot read DLL version the nice way 
+        return CheckFileVersion (szFileName, SYS_DIR, 
+                                 dwMajor, dwMinor, dwBuildNumber); // Try the ugly way
+    else
+        return TRUE;
+}
+
+/***************************************************************************
+
+   Function:   CheckFileVersion
+
+   Purpose:    Check the version information of a given file
+
+   Input:      File name
+               File location (Windows dir, System dir, Current dir or none)
+               Reference to Major number 
+               Reference to Minor number 
+               Reference to Build number 
+
+   Output:     TRUE only if successful
+
+   Remarks:    Trashes original file name
+
+****************************************************************************/
+BOOL CDLLVersion::CheckFileVersion (LPSTR szFileName, FileLocationType FileLoc, 
+                                    DWORD &dwMajor, DWORD &dwMinor, 
+                                    DWORD &dwBuildNumber)
+{
+LPSTR   lpVersion;			            // String pointer to 'version' text
+UINT    uVersionLen;
+DWORD   dwVerHnd=0;			            // An 'ignored' parameter, always '0'
+
+    FixFilePath (szFileName, FileLoc);  // Add necessary path prefix to file name
+
+    DWORD dwVerInfoSize = GetFileVersionInfoSize (szFileName, &dwVerHnd);
+    if (!dwVerInfoSize)     // Cannot reach the DLL file
+        return FALSE;
+
+    LPSTR lpstrVffInfo = 
+           (LPSTR) malloc (dwVerInfoSize);  // Alloc memory for file info
+    if (lpstrVffInfo == NULL)
+        return FALSE;   // Allocation failed
+
+        // Try to get the info
+    if (!GetFileVersionInfo(szFileName, dwVerHnd, dwVerInfoSize, lpstrVffInfo)) {
+        free (lpstrVffInfo);
+        return FALSE;   // Cannot read the file information - 
+                        // wierd, since we could read the information size
+    }
+		/* The below 'hex' value looks a little confusing, but
+		   essentially what it is, is the hexidecimal representation
+		   of a couple different values that represent the language
+		   and character set that we are wanting string values for.
+		   040904E4 is a very common one, because it means:
+			 US English, Windows MultiLingual characterset
+		   Or to pull it all apart:
+		   04------        = SUBLANG_ENGLISH_USA
+		   --09----        = LANG_ENGLISH
+		   ----04E4 = 1252 = Codepage for Windows:Multilingual
+        */
+
+    if (!VerQueryValue (    lpstrVffInfo,  
+                (LPSTR) (TEXT("\\StringFileInfo\\040904E4\\FileVersion")), 
+                (LPVOID *)&lpVersion, (UINT *)&uVersionLen)) {
+        free (lpstrVffInfo);
+        return FALSE;     // Query was unsuccessful
+    }
+
+    // Now we have a string that looks like this :
+    // "MajorVersion.MinorVersion.BuildNumber", so let's parse it
+
+    BOOL bRes = ParseVersionString (lpVersion, dwMajor, dwMinor, dwBuildNumber);
+    free (lpstrVffInfo);
+    return bRes;
+}
+
+/***************************************************************************
+
+   Function:   ParseVersionString
+
+   Purpose:    Parse version information string into 3 different numbers
+
+   Input:      The version string formatted as "MajorVersion.MinorVersion.BuildNumber"
+               Reference to Major number 
+               Reference to Minor number 
+               Reference to Build number 
+
+   Output:     TRUE only if successful
+
+   Remarks:    
+
+****************************************************************************/
+BOOL CDLLVersion::ParseVersionString (LPSTR lpVersion, 
+                                      DWORD &dwMajor, DWORD &dwMinor, 
+                                      DWORD &dwBuildNumber)
+{
+        // Get first token (Major version number)
+    LPSTR token = strtok( lpVersion, TEXT (".") );  
+    if (token == NULL)  // End of string
+        return FALSE;       // String ended prematurely
+    dwMajor = atoi (token);
+
+    token = strtok (NULL, TEXT ("."));  // Get second token (Minor version number)
+    if (token == NULL)  // End of string
+        return FALSE;       // String ended prematurely
+    dwMinor = atoi (token);
+
+    token = strtok (NULL, TEXT ("."));  // Get third token (Build number)
+    if (token == NULL)  // End of string
+        return FALSE;       // String ended prematurely
+    dwBuildNumber = atoi (token);
+
+    return TRUE;
+}
+
+
+/***************************************************************************
+
+   Function:   FixFilePath
+
+   Purpose:    Adds the correct path string to a file name according 
+               to given file location 
+
+   Input:      Original file name
+               File location (Windows dir, System dir, Current dir or none)
+
+   Output:     TRUE only if successful
+
+   Remarks:    Trashes original file name
+
+****************************************************************************/
+BOOL CDLLVersion::FixFilePath (char * szFileName, FileLocationType FileLoc)
+{
+    char    szPathStr [_MAX_PATH];      // Holds path prefix
+   
+    switch (FileLoc) {
+        case WIN_DIR:
+                // Get the name of the windows directory
+            if (GetWindowsDirectory (szPathStr, _MAX_PATH) ==  0)  
+                return FALSE;   // Cannot get windows directory
+            break;
+
+        case SYS_DIR:
+                // Get the name of the windows SYSTEM directory
+            if (GetSystemDirectory (szPathStr, _MAX_PATH) ==  0)  
+                return FALSE;   // Cannot get system directory
+            break;
+
+        case CUR_DIR:
+                // Get the name of the current directory
+            if (GetCurrentDirectory (_MAX_PATH, szPathStr) ==  0)  
+                return FALSE;   // Cannot get current directory
+            break;
+
+        case NO_DIR:
+            lstrcpy (szPathStr,"");
+            break;
+
+        default:
+            return FALSE;
+    }
+    lstrcat (szPathStr, _T("\\"));
+    lstrcat (szPathStr, szFileName);
+    lstrcpy (szFileName, szPathStr);
+    return TRUE;
+}            
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+
+
+<p>Email address for Eran Yariv updated on: April 11, 98. </p>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

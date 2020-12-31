@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Dialog - Open Dialog with Bitmap Preview</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Open Dialog with Bitmap Preview</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:lortega@opentech.com.ve">Luis Ortega</a></p>
+
+<p>Here is how the dialog looks like:</p>
+
+<p align="center"><img src="bitmap_open.jpg"></p>
+
+<h4>How to include in your project</h4>
+
+<ol>
+<li>Copy BmpDlg.cpp and BmpDlg.h into your project directory.
+<li>Copy BmpDlg.rc into your res directory
+<li>Add this line to your project's rc2 file:<br>
+	#include "BmpDlg.rc"
+<li>Add BmpDlg.cpp to your project.
+</ol>
+
+<h4>How to use</h4>
+
+<p>The dialog is used just as a regular FileOpen dialog. </p>
+
+<p>It has one additional member variable m_showpreview that you can store in the registry to make the "Show Preview" setting persistent.</p>
+
+
+<h4>Some notes</h4>
+
+<p>This class illustrates the use of Hook procedures and additional templates for this kind of dialogs. It can be used as a template to create dialogs with other, more specific, previews.</p>
+
+<p>Download <a href="bitmap_open_source.zip">Source.</a></p>
+
+<P>Posted on: April 11, 98.<br>
+Revised on June 3, 1998: Flicker but fixed.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

@@ -1,0 +1,55 @@
+// MeowMoniker.idl : IDL source for MeowMoniker.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (MeowMoniker.tlb) and marshalling code.
+
+cpp_quote("STDAPI CreateMeowMoniker(IUnknown* punk, REFIID riid, DWORD dwDestContext, DWORD mshlflags, IMoniker** ppmk);")
+cpp_quote("typedef HRESULT (WINAPI *PFNCREATEMEOWMONIKER)(IUnknown* punk, REFIID riid, DWORD dwDestContext, DWORD mshlflags, IMoniker** ppmk);")
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(CB18CB8E-C7CC-11D0-9A44-00008600A105),
+		dual,
+		helpstring("DIFeline Interface"),
+		pointer_default(unique)
+	]
+	interface DIFeline : IDispatch
+	{
+		[id(1), helpstring("Returns the Meow Moniker name of an interface pointer")]
+        HRESULT GetDisplayName([in] IDispatch* pdisp, [out, retval] BSTR* pbstrName);
+
+		[id(2), helpstring("Returns an interface pointer given any moniker display name")]
+        HRESULT ParseDisplayName([in] BSTR bstrName, [out, retval] IDispatch** ppdisp);
+	};
+[
+	uuid(E900C000-BD9D-11D0-9A44-00008600A105),
+	version(1.0),
+	helpstring("MeowMoniker 1.0 Type Library")
+]
+library MEOWMONIKERLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(E900C00E-BD9D-11D0-9A44-00008600A105),
+		helpstring("MeowMoniker Class")
+	]
+	coclass CoMeowMoniker
+	{
+		[default] interface IMoniker;
+	};
+	[
+		uuid(CB18CB8F-C7CC-11D0-9A44-00008600A105),
+		helpstring("Feline Class"),
+        appobject
+	]
+	coclass CoFeline
+	{
+		[default] interface DIFeline;
+	};
+};

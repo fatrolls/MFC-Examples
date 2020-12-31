@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkinControls", "SkinControls\SkinControls.vcproj", "{B0A24ED6-C91E-4C9C-BE27-D5BCC3261200}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcproj", "{AAEE37FB-78AD-4EAE-9500-25B432E44A7F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkinToolTip", "SkinToolTip\SkinToolTip.vcproj", "{F1E4A0E7-1B3A-44AE-8FCC-789910A7C36D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0A24ED6-C91E-4C9C-BE27-D5BCC3261200}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B0A24ED6-C91E-4C9C-BE27-D5BCC3261200}.Debug|Win32.Build.0 = Debug|Win32
+		{B0A24ED6-C91E-4C9C-BE27-D5BCC3261200}.Release|Win32.ActiveCfg = Release|Win32
+		{B0A24ED6-C91E-4C9C-BE27-D5BCC3261200}.Release|Win32.Build.0 = Release|Win32
+		{AAEE37FB-78AD-4EAE-9500-25B432E44A7F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AAEE37FB-78AD-4EAE-9500-25B432E44A7F}.Debug|Win32.Build.0 = Debug|Win32
+		{AAEE37FB-78AD-4EAE-9500-25B432E44A7F}.Release|Win32.ActiveCfg = Release|Win32
+		{AAEE37FB-78AD-4EAE-9500-25B432E44A7F}.Release|Win32.Build.0 = Release|Win32
+		{F1E4A0E7-1B3A-44AE-8FCC-789910A7C36D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F1E4A0E7-1B3A-44AE-8FCC-789910A7C36D}.Debug|Win32.Build.0 = Debug|Win32
+		{F1E4A0E7-1B3A-44AE-8FCC-789910A7C36D}.Release|Win32.ActiveCfg = Release|Win32
+		{F1E4A0E7-1B3A-44AE-8FCC-789910A7C36D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

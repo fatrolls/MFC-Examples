@@ -1,0 +1,146 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Michael Taupitz">
+   <TITLE>Shell Programming - Creating File Links</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Creating File Links
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:M.Taupitz@t-online.de"><!-- Author Name -->Michael Taupitz</A>.
+
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+For a new Project I needed the function, to create Links to a File (in
+Startmenu and Autostart).
+But that is the Point to take a look on the MFC-Classes. But there is
+not so many Info about.
+The Old-Version (for Win 3.11) with DDE was nice and runs fine. But that
+is not the way to
+write it under WinNT 4.0.
+<p>Okay, the right book at the right time, and every problem can be
+solved... 
+<p>The Solution I found under a small chapter about IShellLink. But not much
+Info, and so i tried
+it out.
+
+<p>At First is the boring COM - 
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+	CoInitialize(NULL);	
+	hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
+	IID_IShellLink, (LPVOID*) &psl);
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+<p>If it was successful, you can set Path, Description and so on.
+But to create the link in real (on Harddisk) we need IPersistFile 
+<PRE><TT><FONT COLOR="#990000">
+	hres = psl->QueryInterface( IID_IPersistFile, (LPVOID *) &ppf);
+</FONT></TT></PRE>
+<p>and save the File...
+<PRE><TT><FONT COLOR="#990000">
+	hres = ppf->Save(<LinkPath in WideChar>, TRUE);
+</FONT></TT></PRE>
+<p>Thats all.
+
+<p>So, if anybody need it complete:
+
+<PRE><TT><FONT COLOR="#990000">
+// Creating a Link with IShellLink
+// strPathObj  = Object with Path
+// strPathLink = Path where the Link will appear
+// strDesc = Link-Decription (the text under the Icon)
+// CoInitialize(NULL) wird vorausgesetzt !!
+
+HRESULT MyMainClass::CreateLink(const CString strPathObj,const CString
+strPathLink, const CString strDesc)
+{
+HRESULT hres;
+IShellLink* psl;
+
+	CString strMyPath = strPathLink;
+
+	hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
+IID_IShellLink, (LPVOID*) &psl);
+	if (SUCCEEDED(hres))
+	{
+		IPersistFile* ppf;
+
+		psl->SetPath(strPathObj);
+		psl->SetDescription(strDesc);
+
+		hres = psl->QueryInterface( IID_IPersistFile, (LPVOID *) &ppf);
+
+		if (SUCCEEDED(hres))
+		{
+			strMyPath += ".lnk";  // Important !!!
+
+			WORD wsz[MAX_PATH];
+			MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, strMyPath, -1, wsz,
+MAX_PATH);
+
+			hres = ppf->Save(wsz, TRUE);
+			if (hres != S_OK )
+				MessageBox(NULL, "IPersistFile->Save() Error", "Error", MB_OK);
+			
+			ppf->Release();
+		}
+		psl->Release();
+	}
+	return hres;
+}
+</FONT></TT></PRE>
+
+<!-- create more blocks of source code as needed -->
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 10/5/98<!-- date here -->
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+
+
+

@@ -1,0 +1,331 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>CTreeCtrl: Adding Advanced Checkbox</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Adding Advanced Checkbox</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+In the previous topic we covered how to implement a simple checkbox for each item in the tree control. In this topic we cover a slightly different implementation. The checkbox for each item will indicate whether the item is checked or not and it will also indicate whether any of its descendant is checked or not. The main reason for visually indicating whether a descendant is checked is that it is easier for the user to determine if there are checked items in the outline and if there is a checked item, it is easy to navigate to it.
+<p><img src="advanced_check.gif" border="1" width="213" height="131"></p>
+
+<H4>Step 1: Create bitmap with checkbox images</H4>
+Create a bitmap that will provide the images needed for the checkbox. The images in the bitmap below are 13x13 pixels. The first image is blank since this bitmap is going to be used for the state image list. The next image indicates an unchecked item. The third image indicates a checked item. The fourth image indicates an unchecked item but conveys that at least one of the descendant item is checked. The fifth image indicates a checked item and also indicates that at least one of the descendant item is checked.
+<P><IMG SRC="state_images.gif" HEIGHT=15 WIDTH=75>
+<BR>
+
+<H4>Step 2: Initialize the state image list</H4>
+Setting up state images has been covered in a previous topic. If the tree control class has a member variable m_imageState then here's how to set the image list.
+<PRE><TT><FONT COLOR="#990000">
+	m_tree.m_imageState.Create( IDB_STATE, 13, 1, RGB(255,255,255) );
+	m_tree.SetImageList( &(m_tree.m_imageState), TVSIL_STATE );
+</FONT></TT></PRE>
+<BR>
+<H4>Step 3: Insert items with the checkbox as a state image</H4>
+If you are using TV_INSERTSTRUCT to insert an item into the tree control, then specify the state and the stateMask in the TV_ITEM member. The index of the state image is specified by using the macro INDEXTOSTATEIMAGEMASK. You can also use the SetItemState() function.
+
+<P><PRE><TT><FONT COLOR="#990000">
+SetItemState( hItem, INDEXTOSTATEIMAGEMASK(1), TVIS_STATEIMAGEMASK );
+</FONT></TT></PRE>
+<BR>
+
+<H4>Step 4: Add enumeration for check operation and state</H4>
+Since we are dealing with four different check states, it makes the code more readable if we define an enumeration for the different states. We also define an enumeration to list the different operations on the check state.
+
+<PRE><TT><FONT COLOR="#990000">
+// Attributes
+public:
+	enum CheckState{ NOSTATE = 0, UNCHECKED, CHECKED, CHILD_CHECKED, 
+		SELF_AND_CHILD_CHECKED };
+	enum CheckType{ CHECK, UNCHECK, TOGGLE, REFRESH };
+</FONT></TT></PRE>
+<BR>
+
+<H4>Step 5: Define SetCheck() function</H4>
+When we check an item, the parent items are also updated to indicate that a descendant is checked. Similarly, when we uncheck an item, the parents item have to be updated again. We may also need to update the parents state if an item is moved.
+
+<P>Depending on the value of nCheck, the function determines what the new state of the item should be. If nCheck is REFRESH, only the immediate children items are scanned to determine if the checkbox should be red ( to indicate that a child is checked ). The function then updates the parent items.
+
+<PRE><TT><FONT COLOR="#990000">
+// SetCheck	- Check, uncheck, toggle or refresh an item
+// hItem	- Item that is to be updated
+// nCheck	- CHECK, UNCHECK, TOGGLE OR REFRESH 
+BOOL CTreeCtrlX::SetCheck( HTREEITEM hItem, CheckType nCheck )
+{
+	if( hItem == NULL ) 
+		return FALSE;
+
+	UINT nState = GetItemState( hItem, TVIS_STATEIMAGEMASK ) >> 12;
+
+	// Determine the new check state
+	if ( nCheck == CHECK )
+	{
+		if( nState == CHECKED || nState == SELF_AND_CHILD_CHECKED )
+			return TRUE;
+		switch( nState )
+		{
+		case UNCHECKED:		nState = CHECKED; break;
+		case CHILD_CHECKED:		nState = SELF_AND_CHILD_CHECKED; break;
+		}
+	}
+	else if( nCheck == UNCHECK )
+	{
+		if( nState == UNCHECKED || nState == CHILD_CHECKED )
+			return TRUE;
+		switch( nState )
+		{
+		case CHECKED:			nState = UNCHECKED; break;
+		case SELF_AND_CHILD_CHECKED:	nState = CHILD_CHECKED; break;
+		}
+	}
+	else if( nCheck == TOGGLE )
+	{
+		switch( nState )
+		{
+		case UNCHECKED:		nState = CHECKED; break;
+		case CHECKED:			nState = UNCHECKED; break;
+		case CHILD_CHECKED:		nState = SELF_AND_CHILD_CHECKED; break;
+		case SELF_AND_CHILD_CHECKED:	nState = CHILD_CHECKED; break;
+		}
+	}
+	else if( nCheck == REFRESH )
+	{
+		// Scan children to determine new state
+		BOOL bChildSelected = FALSE;
+		HTREEITEM htiChild = GetChildItem( hItem );
+
+		// Scan children
+		while( htiChild )
+		{
+			UINT nChildState = GetItemState( htiChild, 
+						TVIS_STATEIMAGEMASK ) >> 12;
+			if( nChildState != UNCHECKED && nChildState != NOSTATE )
+			{
+				bChildSelected = TRUE;
+				break;
+			}
+			htiChild = GetNextItem( htiChild, TVGN_NEXT );
+		}
+		if( bChildSelected )
+		{
+			if( nState == CHECKED ) nState = SELF_AND_CHILD_CHECKED;
+			else if( nState == UNCHECKED ) nState = CHILD_CHECKED;
+		}
+		else
+		{
+			if( nState == SELF_AND_CHILD_CHECKED ) nState = CHECKED;
+			else if( nState == CHILD_CHECKED ) nState = UNCHECKED;
+		}
+	}
+
+	SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), 
+					TVIS_STATEIMAGEMASK );
+
+	if( nState == CHECKED 
+		|| ( REFRESH 
+			&& (nState == SELF_AND_CHILD_CHECKED 
+				|| nState == CHILD_CHECKED)
+			)
+		)
+	{
+		// Mark the parents to indicate that a child item is selected.
+		// Use checkbox with red border.
+		while( (hItem = GetParentItem( hItem )) != NULL )
+		{
+			nState = GetItemState( hItem, TVIS_STATEIMAGEMASK ) >> 12;
+			if( nState == UNCHECKED )
+				SetItemState( hItem, INDEXTOSTATEIMAGEMASK(CHILD_CHECKED), 
+						TVIS_STATEIMAGEMASK );
+			else if ( nState == CHECKED )
+				SetItemState( hItem,
+					INDEXTOSTATEIMAGEMASK(SELF_AND_CHILD_CHECKED), 
+					TVIS_STATEIMAGEMASK );
+		}
+	}
+	else if( nState == UNCHECKED )
+	{
+		// Maybe the parent ( ancestors ) state needs to be adjusted if
+		// no more children selected.
+		while( (hItem = GetParentItem( hItem )) != NULL )
+		{
+			BOOL bChildSelected = FALSE;
+			HTREEITEM htiChild = GetChildItem( hItem );
+
+			// Scan children
+			while( htiChild )
+			{
+				UINT nChildState = GetItemState( htiChild, 
+							TVIS_STATEIMAGEMASK ) >> 12;
+				if( nChildState != UNCHECKED && nChildState != NOSTATE )
+				{
+					bChildSelected = TRUE;
+					break;
+				}
+				htiChild = GetNextItem( htiChild, TVGN_NEXT );
+			}
+			if( bChildSelected )
+			{
+				// The parent does not need to be updated
+				// since there are other children still selected
+				break;
+			}
+			else
+			{
+				// The parent item has no more children selected. 
+				// Mark accordingly
+				UINT nParentState = GetItemState( hItem, 
+							TVIS_STATEIMAGEMASK ) >> 12;
+				if( nParentState == CHILD_CHECKED )
+					SetItemState( hItem, 
+							INDEXTOSTATEIMAGEMASK(UNCHECKED), 
+							TVIS_STATEIMAGEMASK );
+				else if ( nParentState == SELF_AND_CHILD_CHECKED )
+					SetItemState( hItem, INDEXTOSTATEIMAGEMASK(CHECKED), 
+							TVIS_STATEIMAGEMASK );
+			}
+		}
+ 	}                                                                                                              
+	return TRUE;
+}
+</FONT></TT></PRE>
+<BR>
+
+<H4>Step 6: Add code to OnLButtonDown to toggle checkbox</H4>
+When the user clicks on the checkbox, then the checkbox state has to be toggled. We use the HitTest() function to determine if the click was on the checkbox. 
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+	UINT uFlags=0;
+	HTREEITEM hItem = HitTest(point,&uFlags);
+
+	if( uFlags & TVHT_ONITEMSTATEICON )
+	{
+		SetCheck( hItem, TOGGLE );
+		return;
+	}
+}
+</FONT></TT></PRE>
+<BR>
+
+<H4>Step 7: Add code to OnKeyDown to toggle checkbox</H4>
+This step provides the keyboard interface for checking and unchecking an item. The key used is usually the space key, so we will use the space key. The code is nearly the same as in the previous step. Instead of using HitTest() to determine the item handle, we use the function GetSelectedItem().
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+{
+	if( nChar == VK_SPACE )
+	{
+		HTREEITEM hItem = GetSelectedItem();
+		SetCheck( hItem, TOGGLE );
+		return;
+	}
+}
+</FONT></TT></PRE>
+<BR>
+
+<H4>Step 8: Define helper functions</H4>
+Define helper functions to determine whether an item is checked or not and to iterate through the checked items. The purpose of the functions is very clear from the function names. The GetFirstCheckedItem() and the GetNextCheckedItem() are optimized. They look at the item state before deciding whether it should search the children items. The GetPrevCheckedItem() function searches sequentially through all items. I leave it as an exercise to optimize this function.
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CTreeCtrlX::IsItemChecked(HTREEITEM hItem)
+{
+	int iImage = GetItemState( hItem, TVIS_STATEIMAGEMASK )>>12;
+	return iImage == CHECKED || iImage == SELF_AND_CHILD_CHECKED;
+}
+
+HTREEITEM CTreeCtrlX::GetFirstCheckedItem()
+{
+	for ( HTREEITEM hItem = GetRootItem(); hItem!=NULL;  )
+	{
+		int iImage = GetItemState( hItem, TVIS_STATEIMAGEMASK )>>12;
+		if ( iImage == CHECKED || iImage == SELF_AND_CHILD_CHECKED )
+			return hItem;
+		
+		if( iImage != CHILD_CHECKED )
+		{
+			HTREEITEM hti = GetNextItem( hItem, TVGN_NEXT );
+			if( hti == NULL )
+				hItem = GetNextItem( hItem );
+			else 
+				hItem = hti;
+		}
+		else
+			hItem = GetNextItem( hItem );
+	}
+
+	return NULL;
+}
+
+HTREEITEM CTreeCtrlX::GetNextCheckedItem( HTREEITEM hItem )
+{
+	hItem = GetNextItem( hItem );
+	while( hItem!=NULL )
+	{
+		int iImage = GetItemState( hItem, TVIS_STATEIMAGEMASK )>>12;
+		if ( iImage == CHECKED || iImage == SELF_AND_CHILD_CHECKED )
+			return hItem;
+		
+		if( iImage != CHILD_CHECKED )
+		{
+			HTREEITEM hti = GetNextItem( hItem, TVGN_NEXT );
+			if( hti == NULL )
+				hItem = GetNextItem( hItem );
+			else 
+				hItem = hti;
+		}
+		else
+			hItem = GetNextItem( hItem );
+	}
+
+	return NULL;
+}
+
+HTREEITEM CTreeCtrlX::GetPrevCheckedItem( HTREEITEM hItem )
+{
+	for ( hItem = GetPrevItem( hItem ); hItem!=NULL; hItem = GetPrevItem( hItem ) )
+		if ( IsItemChecked(hItem) )
+			return hItem;
+
+	return NULL;
+}
+
+</FONT></TT></PRE>
+<BR>
+
+<P>The GetNextItem() function with single argument and the GetPrevItem() function have been 
+defined earlier in the <A HREF="get_next.shtml">Get next item in outline</A> and the <A HREF="get_prev.shtml">Get previous item in outline</A> topics.
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

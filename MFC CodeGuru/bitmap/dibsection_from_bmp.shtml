@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Creating a DIB section from a BMP file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Creating a DIB section from a BMP file</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+A DIB section is somewhat like the DIB in that it provides access to the bitmap bits for direct modification by the application. But unlike a DIB handle, a DIB section can be used with most GDI functions, including the BitBlt() and StretchBlt() functions. If you are familiar with the LoadImage() function, you know that this function can be used to create a DIB section from a bitmap file by using the LR_LOADFROMFILE flag. Although the documentation says that this flag is not supported in NT, the truth is that it works only partly on NT. Using the LoadImage() function on NT 4.0 with the LR_LOADFROMFILE flag will create a DIB section but the color information in the DIB section is not proper. The function given below works on NT as well as Windows 95.
+
+
+<PRE><TT><FONT COLOR="#990000">
+// Function prototype with default arguments
+HBITMAP LoadDIBSectionFromFile( LPCTSTR lpszFileName, LPVOID *ppvBits=NULL, 
+				HANDLE hSection=NULL, DWORD dwOffset=0) ;
+
+
+// LoadDIBSectionFromFile	- Creates a DIB section from BMP file
+// lpszFileName			- Name of the BMP file
+// ppvBits			- to receive address of bitmap bits
+// hSection		- optional handle to a file mapping object
+// dwOffset		- offset to the bitmap bit values within hSection
+HBITMAP LoadDIBSectionFromFile( LPCTSTR lpszFileName, LPVOID *ppvBits, 
+					HANDLE hSection, DWORD dwOffset) 
+{
+	LPVOID lpBits;
+	CFile file;
+	if( !file.Open( lpszFileName, CFile::modeRead) )
+		return NULL;
+	
+	BITMAPFILEHEADER bmfHeader;
+	long nFileLen;
+	
+	nFileLen = file.GetLength();
+	
+	// Read file header
+	if (file.Read((LPSTR)&bmfHeader, sizeof(bmfHeader)) != sizeof(bmfHeader))
+		return NULL;
+	
+	// File type should be 'BM'
+	if (bmfHeader.bfType != ((WORD) ('M' << 8) | 'B'))
+		return NULL;
+
+	BITMAPINFO *pbmInfo;
+	pbmInfo = (BITMAPINFO *)::GlobalAlloc(GMEM_FIXED, 
+				sizeof(BITMAPINFO) + sizeof(RGBQUAD)*256 );
+	if (pbmInfo == NULL)
+		return NULL;
+	
+	// Read the BITMAPINFO
+	file.Read( pbmInfo, sizeof(BITMAPINFO) + sizeof(RGBQUAD)*256 );
+	
+	BITMAPINFO &bmInfo = *pbmInfo ;
+	
+	HBITMAP hBmp = CreateDIBSection( NULL, pbmInfo, DIB_RGB_COLORS, &lpBits, 
+						hSection, dwOffset );
+
+	LPBYTE  lpDIBBits;              // Pointer to DIB bits
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+				1 << bmInfo.bmiHeader.biBitCount;
+	
+	if( bmInfo.bmiHeader.biBitCount > 8 )
+		lpDIBBits = (LPBYTE)((LPDWORD)(bmInfo.bmiColors + 
+			bmInfo.bmiHeader.biClrUsed) + 
+			((bmInfo.bmiHeader.biCompression == BI_BITFIELDS) ? 3 : 0));
+	else
+		lpDIBBits = (LPBYTE)(bmInfo.bmiColors + nColors);
+
+	int nOffset = sizeof(BITMAPFILEHEADER) + (lpDIBBits - (LPBYTE)pbmInfo);
+	file.Seek( nOffset, CFile::begin);
+	file.ReadHuge((LPSTR)lpBits, nFileLen - nOffset); //bmInfo.biSizeImage ); 
+
+	::GlobalFree(pbmInfo);
+
+	if( ppvBits )
+		*ppvBits = lpBits;
+	
+	return hBmp;
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

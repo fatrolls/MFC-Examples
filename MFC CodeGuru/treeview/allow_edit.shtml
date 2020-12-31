@@ -1,0 +1,74 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Allowing users to edit item labels</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Allowing users to edit item labels</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+To allow users to edit the item labels, the treeview control should be
+created with the TVS_EDITLABELS style. Either you can set this style in
+the resource editor, or in the call to Create() or in PreCreateWindow()
+if you are using the CTreeView class.
+
+<P>You should then handle the TVN_BEGINLABELEDIT and the TVN_ENDLABELEDIT
+notifications. You can use the class wizard to add the handler functions.
+Actually it is not necessary to handle the TVN_BEGINLABELEDIT notification
+but it is a good idea to do so and limit the length of the text that the
+user may enter into the edit control.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void COutline::OnBeginLabelEdit(NMHDR* pNMHDR, LRESULT* pResult)&nbsp;
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TV_DISPINFO* pTVDispInfo = (TV_DISPINFO*)pNMHDR;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Limit text to 127 characters
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GetEditControl()->LimitText(127);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *pResult = 0;
+}</FONT></TT></PRE>
+It is necessary for you to handle the TVN_ENDLABELEDIT notification. If
+you don’t do so, then although the user will be able to edit the labels,
+but at the end of the edit the value of the label will be set to the previous
+value. The handler is also a good place to update any internal data structure
+you maintain to track the state of the tree view control.&nbsp;
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void COutline::OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult)&nbsp;
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Set result to TRUE to accept the changes
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *pResult = TRUE;
+}</FONT></TT></PRE>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

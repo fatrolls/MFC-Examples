@@ -1,0 +1,4 @@
+DIRS= \
+autolaunch \
+devprop \
+fastinst

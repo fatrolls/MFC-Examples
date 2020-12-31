@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>CListCtrl - Disable clicking on selected report view columns</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Disable clicking on selected report view columns</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:Petr.Novotny@antek.cz">Petr Novotny</a></p>
+
+<!-- start -->
+
+<p>I have developed a short piece of code to disable clicking column 
+headers for columns than cannot be sorted-by.</p>
+
+
+<p>This code simply uses the customization of header control as 
+presented in "Indicating sort order" article. I just added slight 
+more functionality to that header control.</p>
+
+<p>1. I define a prototype and a variable in a class declaration body:</p>
+
+<pre><tt><FONT COLOR="#990000">
+public:
+	typedef BOOL (*ColumnCheckF)(void *,int,LPARAM);
+
+	void SetCallback(ColumnCheckF checkf=NULL,void * cbdata=NULL)
+	{
+		m_fColumnCheck=checkf;
+		m_pCBData=cbdata;
+	}
+
+private:
+	ColumnCheckF m_fColumnCheck;
+	void *m_pCBData;
+</tt></pre></font>
+
+<p>After a click in a header, I find out the column (and I try to be 
+wise and not disable clicking to resize columns) and ask the callback 
+if the click is allowed (TRUE returned) or not.</p>
+
+<p>It means, in the header (class declaration), I add</p>
+
+<tt><pre><FONT COLOR="#990000">
+	// handlers
+	afx_msg void OnLButtonDown(UINT,CPoint);
+	DECLARE_MESSAGE_MAP()
+</tt></pre></font>
+
+<p>and in the .CPP I add</p>
+
+<tt><pre><FONT COLOR="#990000">
+BEGIN_MESSAGE_MAP(CCustHeaderCtrl,CHeaderCtrl)
+	ON_WM_LBUTTONDOWN()
+END_MESSAGE_MAP()
+
+void CCustHeaderCtrl::OnLButtonDown(UINT flags,CPoint pt)
+{
+	if (m_fColumnCheck!=NULL)
+	{
+		HD_ITEM hditem;
+		CClientDC dc(this);
+		int offset=dc.GetTextExtent(_T(" "),1).cx*2;
+		int x_coord=pt.x;
+
+		int column=0;
+		hditem.mask=HDI_WIDTH;
+		while (x_coord&gt;((column==0)?0:offset))
+		{
+			GetItem(column,&hditem);
+			if (x_coord&lt;hditem.cxy-offset)
+			{
+				// falls inside - query the func
+				hditem.mask=HDI_LPARAM;
+				GetItem(column,&amp;hditem);
+				if (!m_fColumnCheck(m_pCBData,column,hditem.lParam))
+				{
+					// don't forward the message!
+					return;
+				}
+				break;
+			}
+			
+			x_coord-=hditem.cxy;
+			column++;
+		}
+	}
+
+	CHeaderCtrl::OnLButtonDown(flags,pt);
+}
+</tt></pre></font>
+
+<p>The side effect of this code - it disables dragging the "disabled"
+columns. (That's because the header control never hears of LButtonDown
+message - I filter it of.)</p>
+
+
+<P>Posted on: April 14, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

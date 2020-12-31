@@ -1,0 +1,17 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: RANDRECT.RC
+//
+#include "wpp.h"
+
+AppIcon	ICON randrect.ico
+
+AppMenu MENU { 
+	MENUITEM "E&xit!", WPIDM_EXIT
+}
+
+AppAccel ACCELERATORS
+BEGIN
+	AccMemStats
+END
+

@@ -1,0 +1,116 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Nikolay Sokraov">
+<title>Sizable dialogs at its easiest.</title>
+</head>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Sizable dialogs at its easiest
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <a href="mailto:hb@condat.de">Hans Buehler</A>.
+
+<!-- The article... -->
+
+<p>
+<h4>Introduction:</h4>
+<b><font SIZE="+1">
+
+<p align="center"></font><font size="3">Q:</b> What is the difference between the
+following two dialogs ?</font></p>
+
+<p align="center">&nbsp;<img SRC="resizing_dlg_small.gif" alt="small dialog"
+align="texttop" width="287" height="180"><img SRC="resizing_dlg_big.gif" alt="big dialog"
+align="texttop" width="377" height="245"> </p>
+
+<p align="center"><font size="3"><strong>A:</strong> There is <i>no</i> difference !</font><big>
+</big></p>
+
+<p>The <tt>cdxCSizingDialog</tt> class is a class derived from <tt>CDialog</tt> making it <i>very</i>
+easy to implement sizable dialogs. I really missed that feature in VC++ (and IMHO it's a
+shame to the MFC that it doesn't provide an easy to use way to solve this problem). <br>
+However, now it is possible to make your dialogs sizable - you can add this to an existing
+dialog <a HREF="#HowTo">in three steps</a> ! </p>
+
+<p>In addition to <tt>cdxCSizingDialog</tt>, you will even find both <b><tt>cdxCSizingPropSheet</tt></b>
+and <b><tt>cdxCSizingPropPage</tt></b> in the two files that are part of the zip, but these are
+considered to be in <i>beta</i> stadium for now (they seem to work ... I only have problems with
+the sizing icon). </p>
+
+<p>The most important features of <tt>cdxCSizingDialog </tt>are: 
+
+<ul>
+  <li>Easy to add even to already existing dialog classes.</li>
+  <li>Several ways controls may react on window size changes, from a simple <i>nothing</i> to
+    a percentage-value;</li>
+  <li>Automatic creation of a standard-windows sizing icon (as used by the explorer's windows)
+    in the lower right corner of your dialog.</li>
+  <li>Support to load/store window position to the registry.</li>
+</ul>
+
+<h4><a NAME="Requirements"></a>Requirements:</h4>
+
+<ul>
+  <li>Tested and used with Visual C++ 5.0.</li>
+</ul>
+
+<h4><a NAME="Files"></a>Files:</h4>
+
+<ul>
+  <li>cdxCSizingDialog.h (header; can be found in the archive)</li>
+  <li>cdxCSizingDialog.cpp (implementation; can be found in the archive)</li>
+  <li><a HREF="resizing_dlg_sample.zip">Sample application</a> (includes a documentation; see
+    sub-directory &quot;doc&quot; in the archive)</li>
+</ul>
+
+<h4><a NAME="HowTo"></a>How to use:</h4>
+
+<ul>
+  <i><u><p>Make your dialog sizable in 3 steps !!</u></i></p>
+</ul>
+
+<ol>
+  <li>Every control on our dialog needs a DDX value of class <i>control </i>(use Class Wizard
+    in the resource editor).</li>
+  <li>In both the header and implementation file, replace all strings &quot;<tt>CDialog</tt>&quot;
+    by &quot;<tt>cdxCSizingDialog</tt>&quot; and insert an <tt>#include
+    &quot;cdxCSizingDialog.h&quot;</tt> to your header file.</li>
+  <li>In <tt>OnInitDialog()</tt>, make a call to <tt>AddSzControl()</tt> for each control you
+    want to resize/reposition if the dialog's size changes.</li>
+  <li>Additional features might be used... see the documentation.</li>
+</ol>
+
+<ol>
+  <a HREF="#Tutorial"><p></a>A simple tutorial is included in the documentation that might
+  be found <a href="resizing_dlg_doc.zip">here</a></p>
+</ol>
+
+<hr>
+
+<table border="0" width="100%">
+<TBODY>
+  <tr>
+    <td width="33%"><font size="-1"><a href="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td width="33%"><p align="center"><font size="-2">© 1997 - 1998 Zafir Anjum</font>&nbsp; </td>
+    <td width="34%"><font size="-1"><p align="right">Contact me: <a
+    href="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font></td>
+  </tr>
+</table>
+<!-- Counter -->
+
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - Customizing the font dialog</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Customizing the font dialog</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:Petr.Novotny@antek.cz">Petr Novotny</A>.
+
+<P>This is an implementation of my class and the dialog 
+template. 
+
+<P>The motivation for doing that:
+
+<P>Our program stores font info in the drawing. It may happen that I 
+save the picture on one machine, take it to the other one, edit it 
+there and take it back to the first one. Now suppose the first 
+machine has font "StrangeFont CE" while the second one does not. We 
+do not want to convert anything if the user does not intend to (we 
+just display some other font but save with the original one).
+
+<P>To make the things more complicated (we do zooming), we save font 
+height as double, negative meaning "height undefined" - ie. specified 
+by other means. (Therefore the two added controls to the dialog.)
+
+
+<P>This example:
+<P>1. Adds two controls and handles them, using DDX and Fail() method as 
+well. It also shows handling of WM_ACTIVATEAPP and WM_QUERYENDSESSION 
+not to pop-up error messagebox in vain.
+<P>2. It adds a special font to the combo box and if it is selected, 
+disables font style and script combos.
+
+<P><A HREF="override_fontdlg.zip">Download files</A>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,110 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various windows controls">
+   <META Name="keywords" Content="">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Controls - Table of Contents</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<HR>
+
+<p>This section contains code dealing with various Windows controls. 
+
+<p>This section is being maintained by <a href = "mailto:chris.maunder@codeguru.com">Chris Maunder</a>.
+
+<UL>
+<LI><A HREF="hyperlink.shtml">Hyperlink control - Chris Maunder</A>
+<LI><A HREF="hyperlinkex.shtml">An improved hyperlink control - Giancarlo Iovino</A>
+<LI><A HREF="autofit_header.shtml">Autofit Header Control - Baldvin Hansson</A></LI>
+<LI><A HREF="updating_header.shtml">Contiuously updating sizing header - Alger Pike</A></LI>
+<LI><A HREF="histogram_control.shtml">Histogram control - Ken C. Len</A></LI>
+<LI><A HREF="gradient_progress.shtml">Gradient Progress control - Matt Weagle</A></LI>
+<LI><A HREF="text_progressctrl.shtml">Progress control with Text - Chris Maunder</A></LI>
+<LI><A HREF="colour_picker.shtml">Office 97 style Colour Picker control - Chris Maunder</A></LI>
+<LI><A HREF="check_frame.shtml">CheckFrame Control - Christian Skovdal Andersen</A></LI>
+<LI><A HREF="avidemo.shtml">CAnimateCtrl() Example Code - Kirk Stowell</A></LI>
+<LI><A HREF="vector_control.shtml">Custom 3-D Vector Control - Eran Yariv</a></li>
+<LI><A HREF="label_edit.shtml">Editable Labels - Mihai Filimon</a></li>
+<li><a HREF="flat_scrollbar.shtml">Flat Scroll Bar Common Control - Davanum Srinivas</a></li>
+
+<p>
+<li><a HREF="listbox_extent.shtml">How to add Horizontal Extent handling for a CListBox - Richard Hollis</a></li>
+<li><a href="multichecklistbox.shtml">A multi-check ListBox - Harry J. Devine</a>
+<li><a href="listbox_with_columns.shtml">Custom ListBox with columns - Panagiotis Piperopoulos</a>
+<li><a HREF="tab_checklistbox.shtml">Multi-Column Tabbed Checked List Box - Qing Zhang</a></li>
+<p>
+<li><a href="ymselector.shtml">Year and Month Selector Control - Shekar Narayanan</a>
+<LI><A HREF="date_time_picker.shtml">Use the Date/Time Picker common control (IE3+) - Tim Gilman</A></LI>
+<LI><A HREF="date_time_picker2.shtml">Use the Date/Time Picker common control (2) - Salvatore Mosaico</A></LI>
+<LI><A HREF="date_time_picker3.shtml">A class for the IE3 DateTime Picker - Chris Maunder</A></LI>
+<LI><A HREF="ie4_controls_classes.shtml">Classes for new IE4 controls - Luis Barreira</A></LI>
+<p>
+<LI><A HREF="ownerdraw_tab.shtml">Implementing an owner drawn Tab Control - Chris Maunder</A></LI>
+<LI><A HREF="advanced_tabctrl.shtml">An Advanced TabCtrl - Mark Jacob</a></li>
+<p>
+<LI><A HREF="check_for_enter.shtml">Checking for Enter Key Presses - Laura Michaels</A></LI>
+<LI><A HREF="catch_enter_in_list.shtml">Catching the "Enter" key in a CListCtrl (and other controls) - Randy More</a></li> 
+
+<p>Tooltip controls
+<LI><A HREF="tooltip_for_disabled_control.shtml">Tooltip for disabled controls - Ran Almog</A></LI>
+<LI><A HREF="tooltip_for_disabled_control2.shtml">Tooltip for disabled controls (2) - Ray Auchterlounie</A></LI>
+<LI><A HREF="datatip.shtml">DataTip - Simon Wilson</A></LI>
+<LI><A HREF="change_tooltip.shtml">Change tooltips at runtime - Hans Wedemeyer</A></LI>
+<LI><A HREF="extended_tooltip.shtml">Extended ToolTipCtrl (from IE4) - Shane Martin</A></LI>
+<LI><A HREF="tooltip_sound.shtml">ToolTip with Popup Sound - Giancarlo Iovino</A></LI>
+
+<p>Grid Control
+<LI><A HREF="gridctrl.shtml">MFC Grid control (derived from CWnd) - Chris Maunder</A></LI>
+<LI><A HREF="gridctrllist.shtml">MFC Grid control with drop down lists - Motty Cohen.</A></LI>
+<LI><A HREF="gridctrl_in_view.shtml">Using the GridCtrl in a View - Chris Maunder</a></li>
+<LI><a href="gridctrl_combo.shtml">Using a Combobox to edit cells in the Grid Control - Chris Maunder</a></li> 
+
+<p>Popup windows
+<li><A HREF="progress_wnd.shtml">Popup progress window - Chris Maunder</a></li>
+<li><A HREF="folder_dialog.shtml">Folder Browsing Dialog - Kenneth M. Reed</a></li>
+
+<p>Edit controls
+<li><a href = "../editctrl/editctrl_toc.shtml">This section has moved.</a>
+
+<p>CStatic controls
+<li><a href = "../staticctrl/staticctrl_toc.shtml">This section has moved.</a>
+
+<p>Push Buttons
+<li><a href = "../buttonctrl/buttonctrl_toc.shtml">This section has moved.</a>
+
+<p>ComboBox
+<li><a href = "../combobox/combobox_toc.shtml">This section has moved.</a>
+</UL>
+
+
+
+<HR>
+
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

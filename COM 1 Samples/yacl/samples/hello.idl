@@ -1,0 +1,112 @@
+
+
+[
+    uuid(DABA24E0-A38F-11d0-8C2F-0080C73925BA),
+    version(1.0),
+    helpstring("Hello COM")
+]
+library HelloLib
+{
+    [
+        object,
+        oleautomation,
+        uuid(DABA24E1-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    interface IHello : IUnknown
+    {
+        import "unknwn.idl";
+
+        HRESULT HelloWorld(void);
+    }
+    
+    [
+        object,
+        oleautomation,
+        uuid(DABA24E2-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    interface IAnimal : IUnknown
+    {
+        import "unknwn.idl";
+
+        HRESULT Eat(void);
+    }
+    
+    [
+        object,
+        oleautomation,
+        uuid(DABA24E3-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    interface IDog : IAnimal 
+    {
+        import "unknwn.idl";
+
+        HRESULT Bark(void);
+    }
+
+    [
+        object,
+        oleautomation,
+        uuid(DABA24E4-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    interface ICat : IAnimal 
+    {
+        import "unknwn.idl";
+
+        HRESULT IgnoreMaster(void);
+    }
+    [
+        object,
+        oleautomation,
+        uuid(DABA24E5-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    interface IPug : IDog 
+    {
+        import "unknwn.idl";
+
+        HRESULT Snore(void);
+    }
+    [
+        object,
+        oleautomation,
+        uuid(DABA24E6-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    interface IOldPug : IPug
+    {
+        import "unknwn.idl";
+
+        HRESULT SnoreLoudly(void);
+    }
+    
+    [
+        uuid(DABA24E7-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    coclass Hello
+    {
+        interface IHello;
+    }
+
+    [
+        uuid(DABA24E9-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    coclass Goodbye
+    {
+        interface IHello;
+    }
+
+    [
+        uuid(DABA24EA-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    coclass SoLong
+    {
+        interface IHello;
+    }
+
+    [
+        uuid(DABA24E8-A38F-11d0-8C2F-0080C73925BA)
+    ]
+    coclass OldPugCat
+    {
+        interface IOldPug;
+        interface ICat;
+    }
+}

@@ -1,0 +1,187 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Splitter Window - Show/Hide static panes</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Show/Hide static panes</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:oleg@ist.ru">Oleg Galkin</A>.
+
+<P>MFC static splitter windows have a significant limitation. Their panes can't
+be hidden or shown dynamically. To solve the problem I overrode the
+CSplitterWnd. The new class can hide a splitter window column.
+
+<P>Sure, it's only one approach to the problem, but it's a good example
+anyway.
+
+<PRE><TT><FONT COLOR="#990000">
+////////////////////////////////////////////////////////////////////////////
+/
+// splitex.h
+// (c) 1997, Oleg G. Galkin
+
+class CSplitterWndEx : public CSplitterWnd
+{
+protected:
+     int m_nHidedCol;  // hided column number, -1 if all columns are shown
+
+public:
+     CSplitterWndEx();
+
+    void ShowColumn();
+    void HideColumn(int colHide);
+
+// ClassWizard generated virtual function overrides
+     //{{AFX_VIRTUAL(CSplitterWndEx)
+     //}}AFX_VIRTUAL
+
+// Generated message map functions
+protected:
+     //{{AFX_MSG(CSplitterWndEx)
+      // NOTE - the ClassWizard will add and remove member functions here.
+     //}}AFX_MSG
+
+    DECLARE_MESSAGE_MAP()
+};
+
+////////////////////////////////////////////////////////////////////////////
+/
+// splitex.cpp
+// (c) 1997, Oleg G. Galkin
+
+#include "stdafx.h"
+#include "splitex.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+////////////////////////////////////////////////////////////////////////////
+/
+// CSplitterWndEx
+
+CSplitterWndEx::CSplitterWndEx() :
+    m_nHidedCol(-1)
+{
+}
+
+void CSplitterWndEx::ShowColumn()
+{
+     ASSERT_VALID(this);
+     ASSERT(m_nCols < m_nMaxCols);
+     ASSERT(m_nHidedCol != -1);
+
+     int colNew = m_nHidedCol;
+     m_nHidedCol = -1;
+     int cxNew = m_pColInfo[m_nCols].nCurSize;
+     m_nCols++;  // add a column
+     ASSERT(m_nCols == m_nMaxCols);
+
+    // fill the hided column
+     int col;
+     for (int row = 0; row < m_nRows; row++)
+     {
+          CWnd* pPaneShow = GetDlgItem(
+               AFX_IDW_PANE_FIRST + row * 16 + m_nCols);
+          ASSERT(pPaneShow != NULL);
+          pPaneShow->ShowWindow(SW_SHOWNA);
+
+          for (col = m_nCols - 2; col >= colNew; col--)
+          {
+               CWnd* pPane = GetPane(row, col);
+               ASSERT(pPane != NULL);
+               pPane->SetDlgCtrlID(IdFromRowCol(row, col + 1));
+          }
+
+         pPaneShow->SetDlgCtrlID(IdFromRowCol(row, colNew));
+     }
+
+    // new panes have been created -- recalculate layout
+     for (col = colNew + 1; col < m_nCols; col++)
+         m_pColInfo[col].nIdealSize = m_pColInfo[col - 1].nCurSize;
+     m_pColInfo[colNew].nIdealSize = cxNew;
+     RecalcLayout();
+}
+
+void CSplitterWndEx::HideColumn(int colHide)
+{
+     ASSERT_VALID(this);
+     ASSERT(m_nCols > 1);
+     ASSERT(colHide < m_nCols);
+     ASSERT(m_nHidedCol == -1);
+     m_nHidedCol = colHide;
+
+    // if the column has an active window -- change it
+     int rowActive, colActive;
+     if (GetActivePane(&rowActive, &colActive) != NULL &&
+         colActive == colHide)
+     {
+          if (++colActive >= m_nCols)
+              colActive = 0;
+          SetActivePane(rowActive, colActive);
+     }
+
+    // hide all column panes
+     for (int row = 0; row < m_nRows; row++)
+     {
+          CWnd* pPaneHide = GetPane(row, colHide);
+          ASSERT(pPaneHide != NULL);
+          pPaneHide->ShowWindow(SW_HIDE);
+          pPaneHide->SetDlgCtrlID(
+               AFX_IDW_PANE_FIRST + row * 16 + m_nCols);
+
+          for (int col = colHide + 1; col < m_nCols; col++)
+          {
+               CWnd* pPane = GetPane(row, col);
+               ASSERT(pPane != NULL);
+               pPane->SetDlgCtrlID(IdFromRowCol(row, col - 1));
+          }
+     }
+     m_nCols--;
+     m_pColInfo[m_nCols].nCurSize = m_pColInfo[colHide].nCurSize;
+     RecalcLayout();
+}
+
+BEGIN_MESSAGE_MAP(CSplitterWndEx, CSplitterWnd)
+//{{AFX_MSG_MAP(CSplitterWndEx)
+  // NOTE - the ClassWizard will add and remove mapping macros here.
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

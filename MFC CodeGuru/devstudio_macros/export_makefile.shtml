@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>DevStudio Macros - Export Makefile</TITLE>
+</HEAD>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Export Makefile
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This code was contributed by <A HREF="mailto:dziedzic@ma.ultranet.com">Joseph Dziedzic</a>
+
+<p>
+Here's a handy Developer Studio macro that I wrote to export a makefile from
+a Visual C++ V5.0 project (.DSP) file.  We had a bunch of batch files that
+we use to build a software project; these broke when V5.0 moved from the
+.MAK file to the .DSP file.  This macro writes a .MAK file usable by the
+NMAKE command.  Instructions for installation and use are appended.
+
+<h4>Installing the macro:</h4>
+
+<ol>
+<li>Create a file "ExportMakefile.dsm" using the <a href="export_makefile.shtml#Code">
+code</a> at the end of this article and copy to the 
+\ProgramFiles\DevStudio\SharedIDE\Macros directory.
+
+<li>Start Visual C++ (Developer Studio), select the Tools->Customize menu
+item, select the "Add-ins and Macro Files" tab, click the check box next to
+ExportMakefile, then click the Close pushbutton.
+</ol>
+
+
+<h4>Using the macro:</h4>
+
+<p>Invoke the macro at a command line prompt via:
+
+<PRE><TT><FONT COLOR="#990000">	MSDEV [/nologo] project.DSP /Execute ExportMakefile
+</PRE></TT></FONT>
+
+<p>Then you can invoke the makefile via NMAKE /f project.MAK.
+
+<p>Note:  If your project has already been opened by Developer Studio (i.e., if
+a .DSW file already exists in the same directory as the .DSP file),
+Developer Studio will display a dialog box that requires you to click on
+"OK".  I haven't figured out if there's a way to suppress that dialog.
+
+<p><i>(Editors note: try renaming the DSW file before generating the MAK file
+then restoring it after the build.)</i>
+
+<a name="Code"></a>
+<PRE><TT><FONT COLOR="#990000">
+'---------------------------------------------------------------------------
+'FILE: ExportMakefile.dsm
+'FILE DESCRIPTION: Exports a makefile from a project and exits Visual Studio
+'---------------------------------------------------------------------------
+Sub ExportMakefile
+   Application.Visible = False
+   Application.ExecuteCommand "BuildProjectExport"
+   Documents.SaveAll True
+   Application.ExecuteCommand "WorkspaceClose"
+   Application.Quit
+end Sub
+</PRE></TT></FONT>
+
+<p>Updated 21 March 1998
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%"><TR>
+
+<TD WIDTH="33%">
+<FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR></TABLE>
+
+</BODY>
+</HTML>

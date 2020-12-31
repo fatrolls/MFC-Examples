@@ -1,0 +1,10 @@
+; ex26b.def : Declares the module parameters for the DLL.
+
+LIBRARY      "ex26b"
+DESCRIPTION  'ex26b Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+	DllCanUnloadNow PRIVATE
+	DllGetClassObject PRIVATE
+	DllRegisterServer PRIVATE

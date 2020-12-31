@@ -1,0 +1,114 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Sorting the list when user clicks on column header</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Sorting the list when user clicks on column header</FONT></H3></CENTER>
+
+<HR WIDTH="100%">If you don’t want to allow the users to sort the list
+by clicking on the header, you can use the style LVS_NOSORTHEADER. However,
+if you do want to allow sorting, you do not specify the LVS_NOSORTHEADER.
+The control, though, does not sort the items. You have to handle the HDN_ITEMCLICK
+notification from the header control and process it appropriately. In the
+code below, we have used the sorting function SortTextItems() developed
+in a previous section. You may choose to sort the items in a different
+manner.
+<H4>
+Step 1: Add two member variables</H4>
+Add two member variables to the CListCtrl. The first variable to track
+which column has been sorted on, if any. The second variable to track if
+the sort is ascending or descending.
+
+<P><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int nSortedCol;</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BOOL bSortAscending;</FONT></TT>
+<BR>&nbsp;
+<H4>
+Step 2: Initialize them in the constructor.</H4>
+Initialize nSortedCol to -1 to indicate that no column has been sorted
+on. If the list is initially sorted, then this variable should reflect
+that.
+<BR>&nbsp;
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+nSortedCol = -1;</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+bSortAscending = TRUE;</FONT></TT>
+<BR>&nbsp;
+<H4>
+Step 3: Add entry in message map to handle HDN_ITEMCLICK</H4>
+Actually you need to add two entries. For HDN_ITEMCLICKA and HDN_ITEMCLICKW.
+Do not use the class wizard to add the entry. For one, you need to add
+two entries whereas the class wizard will allow you only one. Secondly,
+the class wizard uses the wrong macro in the entry. It uses ON_NOTIFY_REFLECT()
+instead of ON_NOTIFY(). Since the HDN_ITEMCLICK is a notification from
+the header control to the list view control, it is a direct notification
+and not a reflected one.
+<UL><TT><FONT COLOR="#990000">ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)</FONT></TT>
+<BR><TT><FONT COLOR="#990000">ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)</FONT></TT></UL>
+&nbsp;Note that we specify the same function for both the notification.
+Actually the program will receive one or the other and not both. What notification
+it receives will depend on the OS. The list view control on Windows 95
+will send the ANSI version and the control on NT will send the UNICODE
+version.
+
+<P>Also, note that the second argument is zero. This value filters for
+the id of the control and we know that header control id is zero.
+<H4>
+Step 4: Write the OnHeaderClicked() function</H4>
+Here’s where you decide what to do when the user clicks on a column header.
+The expected behaviour is to sort the list based on the values of the items
+in that column. In this function we have used the SortTextItems() function
+developed in a previous section. If any of the columns displays numeric
+or date values, then you would have to provide custom sorting for them.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)&nbsp;
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( phdn->iButton == 0 )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // User clicked on header using left mouse button
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( phdn->iItem == nSortedCol )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bSortAscending = !bSortAscending;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bSortAscending = TRUE;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nSortedCol = phdn->iItem;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SortTextItems( nSortedCol, bSortAscending );
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *pResult = 0;
+}</FONT></TT></PRE>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

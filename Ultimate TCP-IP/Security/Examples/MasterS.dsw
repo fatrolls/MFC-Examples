@@ -1,0 +1,179 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "CertManager"=".\Util\CertManager\CertManager.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "EchoClientS"=".\Client\Echo\EchoClientS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "EchoServerS"=".\Server\Echo\EchoServerS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "FtpClientS"=".\Client\FTPs\FtpClientS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "FtpServerS"=".\Server\FTPs\FtpServerS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "HttpClientS"=".\Client\Https\HttpClientS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "HttpServerS"=".\Server\Https\HttpServerS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "IMAPClientS"=".\Client\Imap4s\IMAPClientS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "MailClientS"=".\Client\Mail\MailClientS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "MailServerS"=".\Server\Mail\MailServerS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name UTSecureLayer
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "UTSecureLayer"="..\UTSecureLayer\UTSecureLayer.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

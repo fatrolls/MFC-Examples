@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>C++ & MFC - Sortable CObArray class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Sortable CObArray class</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:douglas.peterson@telex.com">Douglas Peterson</A>.
+
+<PRE><TT>
+<FONT COLOR="#990000">
+// <B>SortableObArray.h</B>
+/////////////////////////////////////////////////////////////////////
+
+class CSortableObArray : public CObArray
+{
+public:
+	void Sort(int(*CompareFunc)(CObject* pFirst, CObject* pSecond));
+	void Sort(int iStartPos, int iElements, int(*CompareFunc)(CObject* pFirst, CObject* pSecond));
+};
+
+
+template< class TYPE >
+class CTypedSortableObArray : public CSortableObArray
+{
+public:
+	// Accessing elements
+	TYPE GetAt(int nIndex) const
+	{ return (TYPE)CSortableObArray::GetAt(nIndex); }
+	TYPE& ElementAt(int nIndex)
+	{ return (TYPE&)CSortableObArray::ElementAt(nIndex); }
+	void SetAt(int nIndex, TYPE ptr)
+	{ CSortableObArray::SetAt(nIndex, ptr); }
+	
+	// Potentially growing the array
+	void SetAtGrow(int nIndex, TYPE newElement)
+	{ CSortableObArray::SetAtGrow(nIndex, newElement); }
+	int Add(TYPE newElement)
+	{ return CSortableObArray::Add(newElement); }
+	int Append(const CTypedPtrArray< CSortableObArray, TYPE >& src)
+	{ return CSortableObArray::Append(src); }
+	void Copy(const CTypedPtrArray< CSortableObArray, TYPE >& src)
+	{ CSortableObArray::Copy(src); }
+	
+	// Operations that move elements around
+	void InsertAt(int nIndex, TYPE newElement, int nCount = 1)
+	{ CSortableObArray::InsertAt(nIndex, newElement, nCount); }
+	void InsertAt(int nStartIndex, CTypedSortableObArray< TYPE >* pNewArray)
+	{ CSortableObArray::InsertAt(nStartIndex, pNewArray); }
+	
+	// overloaded operator helpers
+	TYPE operator[](int nIndex) const
+	{ return (TYPE)CSortableObArray::operator[](nIndex); }
+	TYPE& operator[](int nIndex)
+	{ return (TYPE&)CSortableObArray::operator[](nIndex); }
+	
+	void Sort( int(*CompareFunc)(TYPE pFirstObj, TYPE pSecondObj) )
+	{ CSortableObArray::Sort((int(*)(CObject*,CObject*))CompareFunc); }
+	void Sort( int iStartPos, int iElements, int(*CompareFunc)(TYPE pFirstObj, TYPE pSecondObj) )
+	{ CSortableObArray::Sort(iStartPos, iElements, (int(*)(CObject*,CObject*))CompareFunc); }
+};
+
+
+
+// <B>SortableObArray.cpp</B>
+///////////////////////////////////////////////////////////////////
+
+#define STRIDE_FACTOR 3
+
+void CSortableObArray::Sort(int(*CompareFunc)(CObject* pFirst, CObject* pSecond))
+{
+	// CompareFunc is expected to return a positive integer if pFirstObj
+	// should follow pSecondObj (is greater than)
+	
+	// Uses Shell Sort
+	
+	// Basically it does a bunch of smaller insertion sorts than insertion sorts the
+	//  whole thing.  Insertion sorting is much faster on a list that is already
+	//  mostly sorted.
+	
+	// ** NOTE:  Because GetSize() is called to retrieve the number of elements, you should
+	//            call SetSize() with the number of valid elements.  An alternative is
+	//            shown in the sort function below.
+	
+	ASSERT_VALID(this);
+	
+	BOOL bFound;
+	int iElements = GetSize();
+	int iInner,iOuter,iStride = 1;
+	CObject *pTmp;
+	
+	while (iStride <= iElements)
+		iStride = iStride * STRIDE_FACTOR + 1;
+	
+	while (iStride > (STRIDE_FACTOR - 1))
+	{
+		iStride = iStride / STRIDE_FACTOR;
+		for (iOuter = iStride; iOuter < iElements; iOuter++)
+		{
+			bFound = 0;
+			iInner = iOuter - iStride;
+			while ((iInner >= 0) && !bFound)
+			{
+				if (CompareFunc(m_pData[iInner+iStride],m_pData[iInner]) < 0)
+				{
+					pTmp = m_pData[iInner+iStride];
+					m_pData[iInner+iStride] = m_pData[iInner];
+					m_pData[iInner] = pTmp;
+					iInner -= iStride;
+				}
+				else
+					bFound = 1;
+			}
+		}
+	}
+}
+
+void CSortableObArray::Sort(int iStartPos, int iElements, int(*CompareFunc)(CObject* pFirst, CObject* pSecond))
+{
+	// This variation allows you to sort only a portion of the array
+	
+	ASSERT_VALID(this);
+	ASSERT( iStartPos >= 0 && iStartPos <= GetUpperBound() );
+	ASSERT( GetSize() - iStartPos >= iElements );
+	
+	BOOL bFound;
+	int iInner,iOuter,iStride = 1;
+	CObject *pTmp;
+	CObject **pData = &m_pData[iStartPos];
+	
+	while (iStride <= iElements)
+		iStride = iStride * STRIDE_FACTOR + 1;
+	
+	while (iStride > (STRIDE_FACTOR - 1))
+	{
+		iStride = iStride / STRIDE_FACTOR;
+		for (iOuter = iStride; iOuter < iElements; iOuter++)
+		{
+			bFound = 0;
+			iInner = iOuter - iStride;
+			while ((iInner >= 0) && !bFound)
+			{
+				if (CompareFunc(pData[iInner+iStride],pData[iInner]) < 0)
+				{
+					pTmp = pData[iInner+iStride];
+					pData[iInner+iStride] = pData[iInner];
+					pData[iInner] = pTmp;
+					iInner -= iStride;
+				}
+				else
+					bFound = 1;
+			}
+		}
+	}
+}
+</FONT><FONT COLOR="#000000">
+
+
+// <B>Usage</B>
+//////////////////////////////////////////////////////////
+
+// Create a CObject based class
+class CMyObject : public CObject
+{
+public:
+    CString name;
+    static int CompBackward(CMyObject* pFirstObj, CMyObject* pSecondObj)
+    {
+        return -lstrcmp((LPCTSTR)pFirstObj->name,(LPCTSTR)pSecondObj->name);
+    }
+};
+
+// Create an array object
+CTypedSortableObArray< CMyObject* > array;
+
+array.SetSize(10);
+
+// Fill the array with a bunch of objects
+for (int i=0; i < 10; i++)
+{
+	CMyObject * pObj = new CMyObject;
+	pObj->name.Format("Object #%d",i);
+	array[i] = pObj;
+}
+
+// Sort the array
+array.Sort(CMyObject::CompBackward);
+
+// Display the contents of the now sorted array
+for (int i=0; i < 10; i++)
+{
+	TRACE1("%s\n",array[i]->name);
+}
+
+
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto
+HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A
+HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

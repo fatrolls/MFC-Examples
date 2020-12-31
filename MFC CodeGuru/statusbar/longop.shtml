@@ -1,0 +1,274 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>StatusBar -  A UI class for long operation feedback</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">A UI class for long operation feedback</FONT></H3></CENTER>
+
+<HR>
+
+<p>This code was contributed by <a href="mailto:kg@it-gmbh.de">Klaus Gütter</a>. </p>
+
+<p>CLongOperation is a class designed to give visual feedback for
+long-lasting operations. It has support for:</p>
+
+<ul>
+    <li>Displaying a wait cursor</li>
+    <li>Showing a text in the status bar</li>
+    <li>Displaying a progress bar in a dynamically created status
+        bar pane</li>
+</ul>
+
+<p>In the simplest case, this class can be used as a replacement
+for MFC's CWaitCursor:</p>
+
+<pre><tt>	CLongOperation wait;
+	// some hard work going here...</tt></pre>
+
+<p>To display some textual progress information in the status
+bar:</p>
+
+<pre><tt>	CLongOperation wait;
+	wait.SetText(&quot;Pass 1&quot;);
+	// ...
+	wait.SetText(&quot;Pass 2&quot;);
+	// ...</tt></pre>
+
+<p>To display a progress bar in the status bar:</p>
+
+<pre><tt>	CLongOperation wait;
+	for (int i = 0; i &lt; count; i++)
+	{
+		wait.Step((100*i)/cnt);
+		// ...
+	}
+	wait.Stop();</tt></pre>
+
+<pre><font color="#990000"><tt>
+/////////////////////////////////////////////////////////////////
+// LongOperation.h
+// (c) 1997, Klaus Gütter
+class CLongOperation : public CObject
+{
+public:
+	// IDS_PLEASE_WAIT is a string resource ID for the default text,
+	// e.g. &quot;Please wait...&quot;
+	CLongOperation(UINT nIDText = IDS_PLEASE_WAIT, bool bStart = true);
+	CLongOperation(LPCTSTR lpszText, bool bStart = true);
+	~CLongOperation();
+
+	void Start();
+	void Stop();
+	void Step(int nPercentage = -1);
+	void SetText(LPCTSTR lpszText);
+
+protected:
+	CString m_strText;
+	bool m_bStarted;
+	HWND m_hwndProgress;
+	void CreateProgressControl();
+};
+
+
+/////////////////////////////////////////////////////////////////
+// LongOperation.cpp
+// (c) 1997, Klaus Gütter
+
+#include &quot;stdafx.h&quot;
+#include &lt;afxpriv.h&gt; // defines WM_SETMESSAGESTRING
+#include &quot;LongOperation.h&quot;
+
+#ifdef _DEBUG
+#undef THIS_FILE
+#define new DEBUG_NEW
+static char BASED_CODE THIS_FILE[] = __FILE__;
+#endif
+
+CLongOperation::CLongOperation(UINT nIDText, bool bStart)
+:	m_bStarted(false)
+,	m_hwndProgress(NULL)
+{
+	VERIFY(m_strText.LoadString(nIDText));
+	if (bStart)
+		Start();
+}
+
+CLongOperation::CLongOperation(LPCTSTR lpszText, bool bStart)
+:	m_strText(lpszText)
+,	m_bStarted(false)
+,	m_hwndProgress(NULL)
+{
+	if (bStart)
+		Start();
+}
+
+CLongOperation::~CLongOperation()
+{
+	if (m_bStarted)
+		Stop();
+}
+
+void CLongOperation::Start()
+{
+	if (m_bStarted)
+		Stop();
+
+	// display text in the status bar
+	CWnd* pMainWnd = ::AfxGetMainWnd();
+	if (pMainWnd)
+		pMainWnd-&gt;SendMessage(WM_SETMESSAGESTRING, 0, (LPARAM)(LPCTSTR)m_strText);
+
+	// switch on wait cursor
+	::AfxGetApp()-&gt;BeginWaitCursor();
+
+	m_bStarted = true;
+}
+
+void CLongOperation::Stop()
+{
+	if (!m_bStarted)
+		return;
+
+	if (m_hwndProgress)
+	{
+		// clean up and destroy progress bar
+		CStatusBar* pStatusBar = DYNAMIC_DOWNCAST(CStatusBar, CWnd::FromHandle(::GetParent(m_hwndProgress)));
+		ASSERT_VALID(pStatusBar);
+
+		::DestroyWindow(m_hwndProgress);
+		m_hwndProgress = NULL;
+
+		// remove progress bar pane
+		int anPart[32];
+		int nParts = pStatusBar-&gt;GetStatusBarCtrl().GetParts(31, anPart);
+		nParts--;
+		pStatusBar-&gt;GetStatusBarCtrl().SetParts(nParts, anPart+1);
+	}
+
+	// switch back to standard text in the status bar
+	CWnd* pMainWnd = ::AfxGetMainWnd();
+	if (pMainWnd)
+		pMainWnd-&gt;SendMessage(WM_SETMESSAGESTRING, AFX_IDS_IDLEMESSAGE, 0);
+
+	// switch off wait cursor
+	::AfxGetApp()-&gt;EndWaitCursor();
+
+	m_bStarted = false;
+}
+
+void CLongOperation::Step(int nPercentage)
+{
+	if (!m_bStarted)
+		Start();
+
+	::AfxGetApp()-&gt;RestoreWaitCursor();
+
+	if (nPercentage &gt;= 0)
+	{
+		ASSERT(nPercentage &lt;= 100);
+		// create or update a progress control in the status bar
+		if (m_hwndProgress == NULL)
+			CreateProgressControl();
+
+		if (m_hwndProgress)
+			::SendMessage(m_hwndProgress, PBM_SETPOS, (WPARAM)nPercentage, 0);
+	}
+}
+
+void CLongOperation::SetText(LPCTSTR lpszText)
+{
+	m_strText = lpszText;
+	CWnd* pMainWnd = ::AfxGetMainWnd();
+	if (pMainWnd)
+		pMainWnd-&gt;SendMessage(WM_SETMESSAGESTRING, 0, (LPARAM)(LPCTSTR)m_strText);
+}
+
+void CLongOperation::CreateProgressControl()
+{
+	ASSERT(m_hwndProgress == NULL);
+
+	// find status bar
+	CWnd* pMainWnd = ::AfxGetMainWnd();
+	if (pMainWnd == NULL)
+		return;
+	CStatusBar* pStatusBar = DYNAMIC_DOWNCAST(CStatusBar, 
+		pMainWnd-&gt;GetDescendantWindow(AFX_IDW_STATUS_BAR, TRUE));
+	if (pStatusBar == NULL || pStatusBar-&gt;m_hWnd == NULL)
+		return;
+
+	CRect rc; // this will be the location for the progress bar pane
+	pStatusBar-&gt;GetItemRect(0, rc);
+	if (!m_strText.IsEmpty())
+	{
+		// adjust so that the text in the leftmost pane will not be covered
+		CClientDC dc(pStatusBar);
+		dc.SelectObject(pStatusBar-&gt;GetFont());
+		CSize sz = dc.GetTextExtent(m_strText);
+		TEXTMETRIC tm;
+		dc.GetTextMetrics(&amp;tm);
+		rc.left += sz.cx + 2*tm.tmAveCharWidth;
+	}
+	int cx = rc.Width();
+	if (cx &lt; 20)
+	{
+		// no sense in displaying such a small progress bar
+		TRACE0(&quot;ProgressDisplay would be too small\n&quot;);
+		return;
+	}
+	else if (cx &gt; 200)
+	{
+		// arbitrarily limiting progress bar width to 200 pixel
+		cx = 200;
+		rc.left = rc.right - cx;
+	}
+
+	// add a pane between the text and the currently leftmost pane
+	int anPart[32];
+	int nParts = pStatusBar-&gt;GetStatusBarCtrl().GetParts(31, anPart+1);
+	anPart[0] = rc.left;
+	nParts++;
+	pStatusBar-&gt;GetStatusBarCtrl().SetParts(nParts, anPart);
+	pStatusBar-&gt;GetStatusBarCtrl().GetRect(1, rc);
+
+	// create progress bar control
+	m_hwndProgress = ::CreateWindow(PROGRESS_CLASS, &quot;&quot;,
+		WS_CHILD | WS_VISIBLE, rc.left, rc.top, rc.Width(), rc.Height(),
+		pStatusBar-&gt;m_hWnd, (HMENU)1, AfxGetInstanceHandle(), NULL);
+
+		pStatusBar->UpdateWindow();
+}
+</tt></font></pre>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Preview", "Preview.vcproj", "{7B40488B-66D1-4A24-B0A2-DBB584757108}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release_Shared|Win32 = Release_Shared|Win32
+		Release|Win32 = Release|Win32
+		Unicode_Debug|Win32 = Unicode_Debug|Win32
+		Unicode_Release|Win32 = Unicode_Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Debug|Win32.Build.0 = Debug|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Release_Shared|Win32.ActiveCfg = Release_Shared|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Release_Shared|Win32.Build.0 = Release_Shared|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Release|Win32.ActiveCfg = Release|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Release|Win32.Build.0 = Release|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
+		{7B40488B-66D1-4A24-B0A2-DBB584757108}.Unicode_Release|Win32.Build.0 = Unicode_Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

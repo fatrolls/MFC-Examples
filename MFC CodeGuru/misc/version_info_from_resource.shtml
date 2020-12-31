@@ -1,0 +1,219 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Get VersionInfo from resource file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Get VersionInfo from resource file</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:roberto-rocco@usa.net">Roberto Rocco</A>.
+
+<P>CVersionInfo is a tiny class, which wraps the stuff needed to get the version info from a resource file.
+It handles both, the fixed version information and the language dependent string version information of the resource file.
+It contains three CString members which hold the retrieved information:
+
+<PRE><TT>
+    m_strFixedFileVersion:  the fixed file version info (language independent)
+    m_strFixedProductVersion: the fixed product version info (language independent)
+    m_strVersionInfo:   the desired version info string (language dependent)
+</TT></PRE>
+ 
+<P>To get the language dependent string version info you need to set the following parameters as follows:
+ 
+<H4>strLangID:</H4>
+<br>strLangID is the language ID for which the version info is desired
+<br>040904E4 means e.g.:
+<br>04------        = SUBLANG_ENGLISH_USA
+<br>--09----        = LANG_ENGLISH
+<br>----04E4 = 1252 = Codepage for Windows:Multilingual
+ 
+ 
+<H4>strInfoType:</H4>
+<br>strInfoType  is the desired version entry, eg.:"ProductName", or "ProductVersion"
+ 
+ 
+<H4>hModule:</H4>
+<br>hModule ist the Instance handle of the module for which the version info should be retrieved
+<br>with EXE's: Get hModule calling AfxGetInstanceHandle.
+<br>with DLL's: Get hModule calling  ::GetModuleHandle ("DLLName"), where "DLLName" is the Name of the module
+ 
+ 
+<H4>Important!</H4>
+CVersionInfo requires to be linked with VERSION.LIB!
+ 
+ 
+<P>Here's the code: 
+
+<PRE><TT><FONT COLOR="#990000"> 
+// VersionInfo.h 
+ 
+#ifndef VERSIONINFO_H
+#define VERSIONINFO_H 
+#include "stdafx.h"
+class CVersionInfo
+{
+public:
+	CString m_strVersionInfo;
+	CString m_strFixedFileVersion;
+	CString m_strFixedProductVersion;
+	CVersionInfo ();
+	~CVersionInfo ();
+	CVersionInfo (HMODULE hModule, LPCTSTR strLangID = NULL, LPCTSTR strInfoType = NULL);
+	CVersionInfo (LPTSTR szFilename, LPCTSTR strLangID = NULL, LPCTSTR strInfoType = NULL);
+	void GetVersionInfo (LPTSTR szFilename, LPCTSTR strLangID = NULL, LPCTSTR strInfoType = NULL);
+	void GetVersionInfo (HMODULE hModule, LPCTSTR strLangID = NULL, LPCTSTR strInfoType = NULL);
+}; 
+
+#endif // VERSIONINFO_H
+ 
+// VersionInfo.cpp
+ 
+//**********************************************************************************************
+// CVersionInfo (c)1997 Roberto Rocco 
+//----------------------------------------------------------------------------------------------
+// CVersionInfo is a tiny class, which wraps the stuff needed to get the version info from a
+// resource file.
+// It handles both, the fixed version information and the language dependent string version
+// information of the resource file.
+//
+// It contains three CString members which hold the retrieved information:
+// m_strFixedFileVersion:  the fixed file version info (language independent)
+// m_strFixedProductVersion: the fixed product version info (language independent)
+// m_strVersionInfo:   the desired version info string (language dependent)
+//
+// CVersionInfo requires to be linked with VERSION.LIB!
+//
+//********************************************************************************************** 
+#include "VersionInfo.h"
+// Standard-Constructor. Does nothing particular
+CVersionInfo::CVersionInfo ()
+{
+} 
+
+// Standard-Destructor. Does nothing particular
+CVersionInfo::~CVersionInfo ()
+{
+} 
+
+// Constructor with hModule, strLangId and strInfoType as parameter
+CVersionInfo::CVersionInfo (HMODULE hModule, LPCTSTR strLangID/*=NULL*/, LPCTSTR strInfoType/*=NULL*/)
+{
+	GetVersionInfo (hModule, strLangID, strInfoType);
+}
+ 
+// Constructor with szFilename, strLangId and strInfoType as parameter
+CVersionInfo::CVersionInfo (LPTSTR szFilename, LPCTSTR strLangID/*=NULL*/, LPCTSTR strInfoType/*=NULL*/)
+{
+	GetVersionInfo (szFilename, strLangID, strInfoType);
+}
+
+void CVersionInfo::GetVersionInfo (HMODULE hModule, LPCTSTR strLangID/*=NULL*/, LPCTSTR strInfoType/*=NULL*/)
+{
+	TCHAR szExeName[MAX_PATH];  
+	if(hModule == NULL) 
+		  return;  
+	GetModuleFileName(hModule, szExeName, sizeof (szExeName)); 
+	GetVersionInfo(szExeName, strLangID, strInfoType); 
+} 
+
+//**********************************************************************************************
+// GetVersionInfo (requires VERSION.LIB!!!)
+//----------------------------------------------------------------------------------------------
+// Retrieves the desired version entry from the VERSIONINFO structure of the resource file.
+//
+// strLangID is the language ID for which the version info is desired
+// 040904E4 means e.g.:
+// 04------        = SUBLANG_ENGLISH_USA
+// --09----        = LANG_ENGLISH
+// ----04E4 = 1252 = Codepage for Windows:Multilingual
+//
+// strInfoType  is the desired version entry, eg.:"ProductName", or "ProductVersion"
+//
+// hModule ist the Instance handle of the module for which the version info should be retrieved
+// with EXE's: Get hModule calling AfxGetInstanceHandle.
+// with DLL's: Get hModule calling  ::GetModuleHandle ("DLLName"), where "DLLName" is the Name of the module
+//
+// the version information is stored in the member variables:
+// m_strFixedFileVersion, m_strFixedProductVersion and m_strVersionInfo, where:
+// m_strFixedFileVersion and m_strFixedProductVersion contain the fixed version info (language independent) and
+// m_strVersionInfo contains the desired version info string (language dependent)
+//
+//**********************************************************************************************
+void CVersionInfo::GetVersionInfo (LPTSTR szFilename, LPCTSTR strLangID/*=NULL*/, LPCTSTR strInfoType/*=NULL*/)
+{
+	DWORD dwVerInfoSize;
+	DWORD dwHnd;
+	void* pBuffer; 
+	VS_FIXEDFILEINFO *pFixedInfo; // pointer to fixed file info structure
+	LPVOID  lpVersion;    // String pointer to 'version' text
+	UINT    uVersionLen;   // Current length of full version string
+	TCHAR szGetName[500]; 
+	 dwVerInfoSize = GetFileVersionInfoSize(szFilename, &dwHnd); 
+	 if (dwVerInfoSize) 
+	{ 
+		  pBuffer = malloc(dwVerInfoSize); 
+		  if (pBuffer == NULL)
+			   return; 
+		  GetFileVersionInfo(szFilename, dwHnd, dwVerInfoSize, pBuffer); 
+		  // get the fixed file info (language-independend) 
+		  VerQueryValue(pBuffer,_T("\\"),(void**)&pFixedInfo,(UINT *)&uVersionLen);  
+		  m_strFixedProductVersion.Format ("%u,%u,%u,%u", HIWORD (pFixedInfo->dwProductVersionMS),
+			              LOWORD (pFixedInfo->dwProductVersionMS),
+			              HIWORD (pFixedInfo->dwProductVersionLS),
+			              LOWORD (pFixedInfo->dwProductVersionLS)); 
+		  m_strFixedFileVersion.Format ("%u,%u,%u,%u",HIWORD (pFixedInfo->dwFileVersionMS),
+			             LOWORD (pFixedInfo->dwFileVersionMS),
+			             HIWORD (pFixedInfo->dwFileVersionLS),
+			             LOWORD (pFixedInfo->dwFileVersionLS)); 
+		  // get the string file info (language-dependend) 
+		  if (strLangID != NULL || strInfoType != NULL)
+		  {
+			   lstrcpy(szGetName, "\\StringFileInfo\\");  
+			   lstrcat (szGetName, strLangID);
+			   lstrcat (szGetName, "\\");
+			   lstrcat (szGetName, strInfoType);
+			   // copy version info, if desired entry exists
+			   if (VerQueryValue(pBuffer,szGetName,(void**)&lpVersion,(UINT *)&uVersionLen) != 0)
+				    m_strVersionInfo = (LPTSTR)lpVersion;
+		  } 
+		  if (pBuffer != NULL)
+			   free(pBuffer); 
+	} 
+} 
+</FONT></TT></PRE>
+ 
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

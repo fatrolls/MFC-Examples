@@ -1,0 +1,154 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Colored buttons</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Colored buttons
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:ryan@ma.aonix.com">Bob Ryan</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+Download <A HREF="color_button.zip">Source Code (3Kb)</A> and <A HREF="color_button_demo.zip">Demo Project (13Kb)</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>One of the problems with the Windows architecture is in the inability to draw buttons 
+in a color other than gray. While the class offered here isn’t cutting-edge technology,
+it is something that a lot of people ask for and use (especially in multi-media applications).
+The only way to draw the buttons in color is to use the owner-draw capabilities (or 
+create a bitmap button which is a horrible solution). CColorButton does all this behind 
+the scene and allows the developer to:</P>
+
+<UL>
+	<LI>Draw a button in DevStudio's editor for placement, size, and setting button captions. </LI>
+	<LI>Set the foreground color (text color), background (button color), and disabled color 
+	    (Note: the focus rectangle is drawn in the text color). </LI>
+	<LI>Set the bevel width</LI>
+</UL>
+
+<P>Consider this simple dialog, displayed in the first example with light blue buttons and 
+blue text and in the second example, with multiple colored buttons and different text colors:
+<I>Note</I>: CTLCOLOR changes the background but not the buttons):</P>
+
+<P><IMG SRC="color_button1.jpg" WIDTH=401 HEIGHT=236></P>
+<P><IMG SRC="color_button2.jpg" WIDTH=401 HEIGHT=236></P>
+
+<h4>Operations</h4>
+<P>There is only one function, <tt>Attach()</tt>, which initializes an owner-draw button 
+– usually in a dialog’s <tt>OnInitDialog()</tt> function.</P>
+
+<FONT COLOR="#990000"><TT><PRE>
+BOOL Attach(const UINT nID, CWnd* pParent, 
+            const COLORREF BGColor = RGB(192, 192, 192), 
+            const COLORREF FGColor = RGB(1, 1, 1), 
+            const COLORREF DisabledColor = RGB(128, 128, 128), 
+            const UINT nBevel = 2);
+</tt></PRE></FONT>
+
+<p>Where:</P>
+
+<ul>
+<li><FONT COLOR="#990000"><TT>nID</tt></FONT> is your button's control ID and 
+<li><FONT COLOR="#990000"><TT>pParent</tt></FONT> is the parent window.
+  
+<p>Only the first two arguments are required; background, foreground, and disabled 
+colors default to a gray button, black text, and dark gray disabled text.
+
+<li><FONT COLOR="#990000"><TT>nBevel</tt></FONT> (bevel width) defaults to 2).
+</ul> 
+
+<h4>How to use CColorButton</h4>
+
+<ul>
+<LI>Include colorBtn.h and colorBtn.cpp in your project. </LI>
+<LI>Draw a button in Developer Studio; make sure the button's <I>Owner-Draw</I>
+    property is checked. </LI>
+<LI>In your program's .h file, include <FONT COLOR="#990000"><TT>"#include colorbtn.h"</TT></FONT></LI>
+<LI>Also in your program's .h file, declare as many variables as you have buttons<br><br>
+<FONT COLOR="#990000"><TT>CColorButton m_btn1; </TT></FONT><br>
+<FONT COLOR="#990000"><TT>CColorButton m_btn2; </TT></FONT><br>
+etc.<br><br>
+
+<LI>In your program's OnInitDialog function, initialize the colors:</LI>
+</UL>
+
+</FONT><FONT COLOR="#990000"><TT><PRE>
+   VERIFY(m_btn1.SetColors(IDOK, this, CLOUDBLUE, DKBLUE, WHITE));
+   VERIFY(m_btn2.SetColors(IDCANCEL, this, DKBLUE, WHITE));
+</PRE></FONT></TT>
+<P><i>Note</I>: the colors used in this example - BLACK, WHITE, BLUE, DKGRAY, etc. 
+- are COLORREF constants that you define in your own program via the RGB() macro: </P>
+
+</FONT><FONT COLOR="#800000"><TT><PRE>
+	const COLORREF CLOUDBLUE = RGB(128, 184, 223);
+	const COLORREF WHITE = RGB(255, 255, 255);
+	const COLORREF BLACK = RGB(1, 1, 1);
+	const COLORREF DKGRAY = RGB(128, 128, 128);
+	const COLORREF etc...
+</PRE></FONT></TT>
+
+<P>That's it. It's pretty easy to use and very useful for multi-media applications.
+ This is a very simple class to work with and anyone with even the slightest GDI 
+ background can add or modify functions.</P>
+
+<h4>Limitations:</h4>
+
+<UL>
+<LI>At this time, you cannot reset the button's colors once the window has been realized. </LI>
+<LI>It doesn't support a dynamic Create() function - yet. </LI>
+<LI>It doesn't support 256 Color palette - yet. </LI>
+<LI>It doesn't allow the font to be overridden for the button text - yet. </LI>
+<LI>The bevel color isn't customizable - yet. </LI>
+<LI>Final caveat: this class wasn't designed to be industrial strength and was written over 
+	a year ago - it has always been one of my own home-grown classes, so you are welcome to make
+	it more robust.</LI>
+</UL>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 9 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calc", "Calc.vcxproj", "{361D3BAE-BC89-4F03-9F63-624D2A64A85A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalcPS", "CalcPS.vcxproj", "{2DA97F6B-ECA7-40C5-A606-DDC3A3E5FF9C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalcClient", "..\CalcClient\CalcClient.vcxproj", "{5647BA77-EA3D-4D4F-B008-B22D9A0E6581}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{361D3BAE-BC89-4F03-9F63-624D2A64A85A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{361D3BAE-BC89-4F03-9F63-624D2A64A85A}.Debug|Win32.Build.0 = Debug|Win32
+		{361D3BAE-BC89-4F03-9F63-624D2A64A85A}.Release|Win32.ActiveCfg = Release|Win32
+		{361D3BAE-BC89-4F03-9F63-624D2A64A85A}.Release|Win32.Build.0 = Release|Win32
+		{2DA97F6B-ECA7-40C5-A606-DDC3A3E5FF9C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2DA97F6B-ECA7-40C5-A606-DDC3A3E5FF9C}.Release|Win32.ActiveCfg = Release|Win32
+		{5647BA77-EA3D-4D4F-B008-B22D9A0E6581}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5647BA77-EA3D-4D4F-B008-B22D9A0E6581}.Debug|Win32.Build.0 = Debug|Win32
+		{5647BA77-EA3D-4D4F-B008-B22D9A0E6581}.Release|Win32.ActiveCfg = Release|Win32
+		{5647BA77-EA3D-4D4F-B008-B22D9A0E6581}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

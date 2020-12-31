@@ -1,0 +1,70 @@
+$$IF(PROJTYPE_DLL)
+// $$root$$.odl : type library source for $$root$$.dll
+$$ELSE
+// $$root$$.odl : type library source for $$root$$.exe
+$$ENDIF //PROJTYPE_DLL
+$$IF(VERBOSE)
+
+// This file will be processed by the MIDL compiler to produce the
+// type library ($$root$$.tlb).
+$$ENDIF
+
+[ uuid($$LIB_CLSID_ODL$$), version(1.0) ]
+library $$Safe_root$$
+{
+	importlib("stdole32.tlb");
+	
+
+$$IF(PROJTYPE_DLL)
+$$ELSE
+$$IF(VERBOSE)
+	//  Primary dispatch interface for $$DOC_CLASS$$
+	
+$$ENDIF
+	[ uuid($$DISPIID_CLSID_ODL$$) ]
+	dispinterface I$$Safe_root$$
+	{
+		properties:
+$$IF(VERBOSE)
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+$$ENDIF
+$$IF(PROJTYPE_DLG)
+			//{{AFX_ODL_PROP($$DLGAUTOPROXY_CLASS$$)
+$$ELSE //!DLG
+			//{{AFX_ODL_PROP($$DOC_CLASS$$)
+$$ENDIF //PROJTYPE_DLG
+			//}}AFX_ODL_PROP
+			
+		methods:
+$$IF(VERBOSE)
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+$$ENDIF
+$$IF(PROJTYPE_DLG)
+			//{{AFX_ODL_METHOD($$DLGAUTOPROXY_CLASS$$)
+$$ELSE //!DLG
+			//{{AFX_ODL_METHOD($$DOC_CLASS$$)
+$$ENDIF //PROJTYPE_DLG
+			//}}AFX_ODL_METHOD
+
+	};
+
+$$IF(VERBOSE)
+	//  Class information for $$DOC_CLASS$$
+	
+$$ENDIF
+	[ uuid($$APP_CLSID_REG$$) ]
+$$IF(PROJTYPE_DLG)
+	coclass $$Safe_root$$
+$$ELSE //!DLG
+	coclass $$DOC_COCLASS$$
+$$ENDIF //PROJTYPE_DLG
+	{
+		[default] dispinterface I$$Safe_root$$;
+	};
+$$ENDIF //PROJTYPE_DLL
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

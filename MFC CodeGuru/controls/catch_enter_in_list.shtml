@@ -1,0 +1,88 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Catching the "Enter" key in a CListCtrl (and other controls)</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Catching the "Enter" key in a CListCtrl (and other controls)
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+<!-- Sample image and source code/demo project -->
+<!-- NONE -->
+
+<p>In order to catch the "Enter" key, and other special keys in a CListCtrl 
+(or any control for that matter) it is necessary to derive your own class and
+ add a handler for the WM_GETDLGCODE message. To allow all special keys to be 
+ processed by the control add the following:
+
+<FONT COLOR="#990000"><TT><PRE>
+UINT SMUPPGrid::OnGetDlgCode()
+{ 
+	UINT result = CListCtrl::OnGetDlgCode();
+	result = result | DLGC_WANTALLKEYS;
+	return result;
+}
+</tt></PRE></FONT>
+
+<p>Other options include (from MSDEV documentation):
+<ul>
+<li>DLGC_WANTALLKEYS All keyboard input. 
+<li>DLGC_WANTARROWS Arrow keys. 
+<li>DLGC_WANTCHARS WM_CHAR messages. 
+<li>DLGC_WANTMESSAGE All keyboard input. The application passes this message on to the control. 
+<li>DLGC_WANTTAB TAB key. 
+<li>DLGC_BUTTON Button (generic). 
+<li>DLGC_DEFPUSHBUTTON Default pushbutton. 
+<li>DLGC_HASSETSEL EM_SETSEL messages. 
+<li>DLGC_UNDEFPUSHBUTTON No default pushbutton processing. (An application can use this flag with DLGC_BUTTON to indicate that it processes button input but relies on the system for default pushbutton processing.) 
+<li>DLGC_RADIOBUTTON Radio button. 
+<li>DLGC_STATIC Static control. 
+</ul>
+
+<p>This is a relatively simple process but it is not really all that intuitive or
+ well documented.
+
+<!-- Remember to update this -->
+<p>Last updated: 9 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

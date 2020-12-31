@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Dialog - Convert modeless dialogs to modal</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Convert modeless dialogs to modal</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:S.Saxena@pbc.be.philips.com">Sushil Saxena</A>. 
+
+
+
+
+
+
+<P><b>A quick & dirty method of converting simple modeless dialogs into modal
+dialogs at run time</b>
+
+<P>Ever wanted a simple modeless dialog to act like a modal dialog? 
+
+<P>Well, override the following in your application and block the commands.
+After the modeless dialog has been displayed, set the flag so that all
+commands 
+from toolbar/menu are blocked giving the modeless dialog a modal-like
+behaviour.
+
+<P>Of course you can decide to let some messages go thru in case the dialog
+has a menu or command buttons.
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMainFrame::OnCommand(WPARAM wParam, LPARAM lParam) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	if (m_bBlockCommands)
+	{
+		AfxMessageBox("All commands blocked!");
+		return TRUE;
+	}
+
+	return CMDIFrameWnd::OnCommand(wParam, lParam);
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

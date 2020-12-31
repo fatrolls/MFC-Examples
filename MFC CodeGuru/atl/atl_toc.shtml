@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ATL - Table of Contents</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">ATL</FONT></H1>
+<td>
+<td width=10%></td>
+    <td align=right><!--#exec cgi="/cgi/ads.cgi"--></td>
+</tr>
+</table>
+
+
+
+<hr>
+
+
+<p>This section is now being maintained by V. Rama Krishna.
+
+<UL>
+<LI><A HREF="atl_icmpcom.shtml">An ATL project to run PING and TRACERT - Fred Forester</A>
+<LI><A HREF="atl_Conexe.shtml">Converting Connect Sample to a Local Server - Paul Shaffer</A>
+<LI><A HREF="ATLMFC_PropPage2.shtml">Property Pages for ActiveX Controls - Shimon Pozzin</A>
+<LI><A HREF="ATL_CodeHelper.shtml">ATL Coding Helpers - Andrew Nosenko</A>
+<LI><A HREF="mfcatl.shtml">Adding ATL to MFC Project - Daniel Ilkanayev</A>
+<LI><A HREF="activex_script_hosting.shtml">ActiveX script hosting - Andrew Garbuzov</A>
+<LI><A HREF="classview_system_interfaces.shtml">Displaying System Interfaces in ClassView - James Hebben</A>
+<LI><A HREF="ATLMFC_PropPage.shtml">COlePropertyPage in ATL server - James Hebben</A>
+<LI><A HREF="dcom_timeout.shtml">HOWTO Configure DCOM Timeouts - Chris Kohlhepp</A>
+<LI><A HREF="windowless.shtml">Control container supporting windowless activation - Klaus Gütter</A>
+<LI><A HREF="activex_script_hosting_2.shtml">ActiveX script hosting - 2 - Andrew Garbuzov</A>
+
+</UL>
+
+
+
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2>30080</FONT></CENTER>
+</BODY>
+</HTML>

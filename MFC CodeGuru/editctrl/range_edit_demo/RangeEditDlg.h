@@ -1,0 +1,51 @@
+// RangeEditDlg.h : header file
+//
+
+#if !defined(AFX_RANGEEDITDLG_H__63CDCB66_CD89_11D1_93FA_444553540000__INCLUDED_)
+#define AFX_RANGEEDITDLG_H__63CDCB66_CD89_11D1_93FA_444553540000__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+#include "CRangeEdit.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// CRangeEditDlg dialog
+
+class CRangeEditDlg : public CDialog
+{
+// Construction
+public:
+	CRangeEditDlg(CWnd* pParent = NULL);	// standard constructor
+
+// Dialog Data
+	//{{AFX_DATA(CRangeEditDlg)
+	enum { IDD = IDD_RANGEEDIT_DIALOG };
+	CSpinButtonCtrl	mySpinCtrl;
+	CRangeEdit	myEditCtrl;
+	//}}AFX_DATA
+
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CRangeEditDlg)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+	HICON m_hIcon;
+
+	// Generated message map functions
+	//{{AFX_MSG(CRangeEditDlg)
+	virtual BOOL OnInitDialog();
+	afx_msg void OnPaint();
+	afx_msg HCURSOR OnQueryDragIcon();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_RANGEEDITDLG_H__63CDCB66_CD89_11D1_93FA_444553540000__INCLUDED_)

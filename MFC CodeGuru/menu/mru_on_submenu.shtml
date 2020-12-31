@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Menu - Using MRU on submenu</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using MRU on submenu<P></FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:lhaupt@ix.netcom.com">Lewis Haupt</A>. 
+
+<P>The following contains a method for putting MRU's on a separate submenu.
+
+<P>After studying Todd C. Gleason's method for implementing MRU's on a submenu MRU's, 
+I ended up taking a slightly different approach.  Namely, a helper function to 
+handle the application's OnUpdateFileMruFile1(CCmdUI* pCmdUI) function.
+
+<P>CRecentFileList::UpdateMenu() seems to work OK if there's another item on the 
+submenu before the MRU.  So we insert such an item, update the menu, and then
+remove the inserted menu.
+
+<P>The update function seems to be called under various circumstances.
+<ul>
+<li>m_pMenu != 0 && m_pSubMenu != 0 -- popup menu opened up but not the submenu<BR>
+	Don't do anything
+<li>m_pMenu != 0 && m_pSubMenu == 0 -- Opening the submenu<BR>
+	Fix up then menu
+<li>m_pMenu == 0 && m_pSubMenu == 0 -- We've clicked on menu<BR>
+	Don't do anything
+</ul>
+
+
+<FONT COLOR="#009900">
+//////////////////////////////////////////////////////////////////////<BR>
+// SubmenuMRU.h<BR>
+//<BR>
+</FONT>
+
+<PRE><TT><FONT COLOR="#990000">
+#ifndef _SUBMENUMRU_H_
+#define _SUBMENUMRU_H_
+
+class SubmenuMRU
+{
+public:
+  static void Handle_OnUpdateFileMruFile1(CCmdUI* pCmdUI, CRecentFileList* pRecentFileList);
+};
+
+#endif
+</FONT></TT></PRE>
+
+<FONT COLOR="#009900">
+//////////////////////////////////////////////////////////////////////<BR>
+// SubmenuMRU.cpp<BR>
+//<BR>
+</FONT>
+
+<PRE><TT><FONT COLOR="#990000">
+#include <afxwin.h>
+#include <afxadv.h>
+
+#include "SubmenuMRU.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+void SubmenuMRU::Handle_OnUpdateFileMruFile1(CCmdUI* pCmdUI, CRecentFileList* pRecentFileList)
+{
+	if (pRecentFileList == NULL) // no MRU files
+		pCmdUI->Enable(FALSE);
+	else
+    {
+        if (pCmdUI->m_pMenu && !pCmdUI->m_pSubMenu) // Only do something if we're the submenu
+        {
+            // Insert a separator so that CRecentFileList::UpdateMenu() will behave
+            pCmdUI->m_pMenu->InsertMenu(0, MF_SEPARATOR | MF_BYPOSITION);
+            pCmdUI->m_nIndex++;
+            pCmdUI->m_nIndexMax++;
+
+            pRecentFileList->UpdateMenu(pCmdUI); // Update the menu
+
+            // Get rid of the separator we just inerted
+            pCmdUI->m_pMenu->DeleteMenu(0, MF_BYPOSITION);
+            pCmdUI->m_nIndex--;
+            pCmdUI->m_nIndexMax--;
+        }
+    }
+}
+</FONT></TT></PRE>
+
+
+<FONT COLOR="#009900">
+//////////////////////////////////////////////////////////////////////<BR>
+// Snippet from test program's MenuTest.rc<BR>
+//<BR>
+</FONT>
+
+<PRE><TT><FONT COLOR="#990000">
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+		...
+        POPUP "Recent &Files"
+        BEGIN
+            MENUITEM "Recent File", ID_FILE_MRU_FILE1, GRAYED
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit", ID_APP_EXIT
+    END
+	...
+END
+</FONT></TT></PRE>
+
+<FONT COLOR="#009900">
+//////////////////////////////////////////////////////////////////////<BR>
+// Snippet from test program's MenuTest.cpp<BR>
+//<BR>
+</FONT>
+
+<PRE><TT><FONT COLOR="#990000">
+#include "SubmenuMRU.h"
+
+BEGIN_MESSAGE_MAP(CMenuTestApp, CWinApp)
+	...
+	ON_UPDATE_COMMAND_UI(ID_FILE_MRU_FILE1, OnUpdateFileMruFile1)
+END_MESSAGE_MAP()
+
+
+void CMenuTestApp::OnUpdateFileMruFile1(CCmdUI* pCmdUI) 
+{
+    // TODO: Add your command update UI handler code here
+    SubmenuMRU::Handle_OnUpdateFileMruFile1(pCmdUI, m_pRecentFileList);
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

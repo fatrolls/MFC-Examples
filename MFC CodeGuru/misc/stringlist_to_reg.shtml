@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Serializing CStringList in the registry</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Serializing CStringList in the registry</FONT></H3></CENTER>
+<HR>
+
+
+This code was contributed by <A HREF="mailto:MarioC@computer.org">Mario Contestabile</A>.
+
+
+<P>The registry is an ideal place to store information about
+your application. Using a key and a Value Name you can
+easily store and retrieve Value Data once you get a hang
+of the registry APIs.
+
+<P>I recently encountered a scenario where I needed to store
+a list of strings in the registry. Typically, that would
+involve ::RegOpenKeyEx(key) followed by a series of
+::RegSetValueEx(ValueName, ValueData). Unfortunately, I didn't
+have any Value Names for the list of strings to store. In other
+words, if I have 5 strings to write into the registry, I would
+need to generate 5 different Value Names to uniquely identify
+each string. Here's what the registry would look like:
+
+<PRE><TT><FONT COLOR="#990000">
+Key:
+SOFTWARE\Commpany\App\strings
+
+Value Name and Value Data:
+a = "string1"
+b = "string2"
+c = "string3"
+d = "string4"
+e = "string5"
+</FONT></TT></PRE>
+
+<P>The downside of this technique is the excessive number of
+Value Names, and the pseudo-random generation of those names.
+My original need of storing N strings would be better served
+by specifying only one Value Name along with a string list.
+
+<P>The technique I implemented consists of serializing a CStringList
+using MFCs CMemFile, CArchive and the registry's REG_BINARY data
+type. The registry is not the appropriate place to store massive
+amounts of data, and anything over 2K should be stored as a separate
+file outside the registry. Therefore, I placed a hard coded limit
+of 4096 bytes for the string list.
+
+<P>The code was tested using Microsoft Visual C++ 5.0sp3 under Windows 95.
+
+<PRE><TT><FONT COLOR="#990000">
+// skip registry key opening sequence for clarity
+const INT nSIZE = 4096;
+DWORD dwType;
+DWORD dwData  = nSIZE;
+BYTE* bData   = (BYTE*)::calloc(nSIZE, sizeof(TCHAR));
+ASSERT(bData);
+
+const LONG retValue = ::RegQueryValueEx(hKey, pszValueName, NULL, &dwType,
+bData, &dwData);
+
+if(retValue == ERROR_SUCCESS and REG_BINARY == dwType){
+ASSERT(dwData < nSIZE);
+try{
+  // Read
+  CMemFile file(bData, nSIZE);
+  CArchive ar(&file, CArchive::load);
+  ar.m_bForceFlat = FALSE;
+  ASSERT( ar.IsLoading() );
+  CStringList myList;
+  ASSERT( myList.IsSerializable() );
+  myList.Serialize(ar);
+  ar.Close();
+  file.Close();
+
+  myList.AddTail("Another string!");
+
+  // Write
+  file.Attach(bData, nSIZE, 16);
+  CArchive ar2(&file, CArchive::store);
+  ASSERT(myList.IsSerializable());
+  myList.Serialize(ar);
+  ar2.Close();
+  const DWORD dwLen = file.GetLength();
+  ASSERT(dwLen < nSIZE);
+  ::RegSetValueEx(hKey, pszValueName, 0, REG_BINARY, file.Detach(), dwLen);
+}
+catch(CMemoryException* e){
+  e->ReportError();
+  e->Delete();
+}
+catch(CArchiveException* e){
+  e->ReportError();
+  e->Delete();
+}
+catch(CFileException* e){
+  e->ReportError();
+  e->Delete();
+}
+if(bData) free(bData); bData = NULL;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

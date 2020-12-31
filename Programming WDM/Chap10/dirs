@@ -1,0 +1,3 @@
+DIRS= \
+wmi42 \
+wmiextra

@@ -1,0 +1,273 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ZIPTEST_DIALOG DIALOGEX 0, 0, 156, 84
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ZipTest"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Test Zip",IDC_ZIP,18,16,50,14
+    PUSHBUTTON      "Test Unzip",IDC_UNZIP,89,16,50,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,52,142,1
+    PUSHBUTTON      "OK",IDOK,99,63,50,14
+END
+
+IDD_UNZIP_DIALOG DIALOGEX 0, 0, 320, 242
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Unzip"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,207,221,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,263,221,50,14
+    EDITTEXT        IDC_ZIPFILE,7,7,249,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Browse...",IDC_BROWSE,263,7,50,14
+    PUSHBUTTON      "Unzip",IDC_UNZIP,7,28,50,14
+    CONTROL         "Ignore path information stored in zip file",
+                    IDC_IGNOREPATHINFO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    65,30,138,10
+    CONTROL         "List1",IDC_DETAILS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,18,80,285,95
+    LTEXT           "File Count:",IDC_STATIC,18,182,34,8
+    LTEXT           "Sub Folder Count:",IDC_STATIC,18,196,58,8
+    EDITTEXT        IDC_FILECOUNT,81,183,40,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    EDITTEXT        IDC_FOLDERCOUNT,81,196,40,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    LTEXT           "Compressed File Size:",IDC_STATIC,129,182,70,8
+    EDITTEXT        IDC_TOTALCOMPSIZE,211,183,94,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    LTEXT           "Uncompressed File Size:",IDC_STATIC,129,196,78,8
+    EDITTEXT        IDC_TOTALUNCOMPSIZE,211,196,94,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_FILEEXT,70,60,40,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Update",IDC_UPDATEDETAILS,121,60,50,14
+    GROUPBOX        "Details",IDC_STATIC,7,48,306,164
+    LTEXT           "File Extension",IDC_STATIC,19,63,47,8
+END
+
+IDD_ZIP_DIALOG DIALOGEX 0, 0, 320, 154
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Zip"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,207,133,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,263,133,50,14
+    LTEXT           "File:",IDC_STATIC,7,9,14,8
+    LTEXT           "Folder:",IDC_STATIC,7,30,22,8
+    EDITTEXT        IDC_FILEPATH,38,7,219,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_FOLDERPATH,38,29,219,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Browse...",IDC_BROWSEFILE,263,7,50,14
+    PUSHBUTTON      "Browse...",IDC_BROWSEFOLDER,263,29,50,14
+    PUSHBUTTON      "Zip",IDC_ZIP,7,52,50,14
+    CONTROL         "Ignore file path information",IDC_IGNOREPATHINFO2,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,65,54,99,10
+    LTEXT           "File Count:",IDC_STATIC,15,93,34,8
+    LTEXT           "Sub Folder Count:",IDC_STATIC,15,107,58,8
+    EDITTEXT        IDC_FILECOUNT2,79,93,40,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    EDITTEXT        IDC_FOLDERCOUNT2,79,107,40,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    LTEXT           "Compressed File Size:",IDC_STATIC,127,93,70,8
+    EDITTEXT        IDC_TOTALCOMPSIZE2,209,93,94,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    LTEXT           "Uncompressed File Size:",IDC_STATIC,127,107,78,8
+    EDITTEXT        IDC_TOTALUNCOMPSIZE2,209,107,94,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    GROUPBOX        "Details",IDC_STATIC,7,73,306,52
+    CONTROL         "Add to Zip (if existing)",IDC_ADDTOZIP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,180,54,83,10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "ZipTest MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "ZipTest\0"
+            VALUE "LegalCopyright", "Copyright (C) 2003\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "ZipTest.EXE\0"
+            VALUE "ProductName", "ZipTest Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ZIPTEST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 149
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 77
+    END
+
+    IDD_UNZIP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 235
+    END
+
+    IDD_ZIP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Australia) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENA)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_AUS
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ZipTest.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ZipTest.ico"
+#endif    // English (Australia) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\ZipTest.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,24 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove {35872D53-3BD4-45FA-8DB5-FFC47D4235E7} = s 'AESCryptShellExtCom Class'
+		{
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+		}
+	}
+    NoRemove *
+    {
+        NoRemove shellex
+        {
+            NoRemove ContextMenuHandlers
+            {
+                ForceRemove AESCrypt = s '{35872D53-3BD4-45FA-8DB5-FFC47D4235E7}'
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+HKCR
+{
+	UTImap4.IMAP4.1 = s 'Dundas IMAP4 Control 4.0'
+	{
+		CLSID = s '{807D52AA-2A6D-11D3-A499-0080C858F182}'
+		'Insertable'
+	}
+	UTImap4.IMAP4 = s 'Dundas IMAP4 Control 4.0'
+	{
+		CLSID = s '{807D52AA-2A6D-11D3-A499-0080C858F182}'
+		CurVer = s 'UTImap4.IMAP4.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {807D52AA-2A6D-11D3-A499-0080C858F182} = s 'Dundas IMAP4 Control 4.0'
+		{
+			ProgID = s 'UTImap4.IMAP4.1'
+			VersionIndependentProgID = s 'UTImap4.IMAP4'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '132497'
+			}
+			'TypeLib' = s '{807D529B-2A6D-11D3-A499-0080C858F182}'
+			'Version' = s '1.4'
+		}
+	}
+}

@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Microsoft Developer Studio">
+<META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>APTSUR - A Multi-STA Surrogate</TITLE>
+</HEAD>
+<BODY BGCOLOR="White">
+<h1>APTSUR - A Multi-STA Surrogate</h1>
+
+APTSUR is a simple custom surrogate that spawns some number of
+STA threads to service activation requests that come into the surrogate's
+MTA. Structurally, it is similar to the OLEAPT SDK sample, except that 
+it runs in a surrogate.
+
+<p>Feel free to check out this code. Be aware that I wrote it one evening 
+on a dare and as such, it has not been throroughly tested. If you find an 
+error, please check back to this page and if the bug has not been
+registered, please send me mail 
+(<a HREF="mailto:dbox@develop.com">dbox@develop.com</a>).
+
+<h2>Cool things in this code</h2>
+If you register aptsur.exe with a command line argument, you can set the
+number of STA threads that are used to create objects: <br><br>
+<tt>
+DllSurrogate=C:\aptsur.exe -threads:50
+</tt><br>
+
+
+<h2>Known Bugs</h2>
+<ul>
+<li>If CoCreateInstance fails the first time, the surrogate does not
+shut down. I couldn't come up with a <i>reliable</i> way to deal with this 
+problem, although I have some ideas. The trick is you need to detect
+if there are live instances. This is not possible today. <br><b>This bug is now 
+fixed. Look at the CClassObjectWrapper::CreateInstance method for details
+on how this was fixed!</b>
+</ul>
+<h2>Known Issues</h2>
+<ul>
+<li>I always forward activation requests to an STA. If the DLL is 
+ThreadingModel = Free, then it actually gets activated back in the MTA
+anyway. If the DLL is ThreadingModel=Both, then, unfortunately, the 
+DLL gets stuck in an STA, not in the MTA where it probably belongs.
+<li>I am a bit rude in terminating the process before all threads 
+get a chance to shutdown. I tried syncronously tearing down the 
+STA threads, but wound up with a deadlock I didn't have time to debug.
+In theory, if we get a FreeSurrogate, then the STA threads should 
+be idle anyway.
+</ul>
+
+<h2>The Code</h2>
+<a HREF="aptsur.zip">
+aptsur.zip</a>
+
+<hr>
+<a HREF="http://www.develop.com/dbox">Back to Don's home page.</a>
+</BODY>
+</HTML>

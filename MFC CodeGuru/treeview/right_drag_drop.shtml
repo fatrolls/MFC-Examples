@@ -1,0 +1,274 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Right Button Drag and Drop with Popup Menu</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Right Button Drag and Drop with Popup Menu</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+<P>Dragging an item with the right mouse button is very similar to dragging it with the left button. When the user begins dragging the item with the right mouse button, Windows sends a TVN_BEGINRDRAG message to the parent window. This can be handled within the control class using MFC message reflection.
+<P>The steps below explain how to start the drag and drop operation, how to bring up a menu and how to handle the menu selection. You can enhance the menu to be context sensitive depending on the requirements of your application.
+<P>NOTE: The below ignores the drag and drop code for the left mouse button for clarity. Some of the code is shared with the left mouse button drag and drop.
+
+<H4>Step 0: Make sure that the control style supports drag and drop</H4>
+<P>If the control has the TVS_DISABLEDRAGDROP style then the TVN_BEGINRDRAG notification is not sent. So make sure that the control does not have the TVS_DISABLEDRAGDROP style.
+
+<H4>Step 1: Declare member variables</H4>
+<P>Add member variables to the CTreeCtrl derived class to track whether drag and drop is in progress and the handle of the drag item and the drop location. The m_pDragImage variable holds the image list used during the drag and drop operation.
+
+<PRE><TT><FONT COLOR="#990000">
+protected:
+	CImageList*		m_pDragImage;
+	HTREEITEM		m_hitemDrag,m_hitemDrop;
+	BOOL			m_bRDragging;
+</FONT></TT>
+</PRE>
+
+<H4>Step 2: Add handler for TVN_BEGINRDRAG</H4>
+<P>You can use the class wizard to add a handler for the TVN_BEGINRDRAG notification. The handler function has been named OnBeginRDrag() in the listing below. The code first sets up the member variables. It then creates an image that will drag across the screen as the mouse moves. CreateDragImage() is a member of the CTreeView class and it creates an image consisting of the item image and the label text.
+
+<P>BeginDrag() function is called with an argument of zero and a point. The zero indicates the first image, which is the only image in the image list. The value we use for the second argument causes the image to be drawn below the cursor. You may want to experiment with this value if the image position does not suit your taste.
+
+<P>We call the DragEnter() to display the drag image. The first argument is NULL so that the drag image will be visible even if the mouse is dragged outside the treeview control.
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnBeginRDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+	*pResult = 0;
+
+	CPoint		ptAction;
+
+	GetCursorPos(&ptAction);
+	ScreenToClient(&ptAction);
+	m_bRDragging = TRUE;
+	m_bRDragCanceled = FALSE;
+	m_hitemDrag = pNMTreeView->itemNew.hItem;
+	m_hitemDrop = NULL;
+	m_pDragImage = CreateDragImage(m_hitemDrag);	// get the image list for dragging
+	m_pDragImage->BeginDrag(0, CPoint(10,-15));
+	SelectDropTarget(NULL);			// to prevent image corruption.
+	m_pDragImage->DragEnter(NULL, ptAction);
+	SetCapture();
+}
+</FONT></TT>
+</PRE>
+
+
+<H4>Step 3: Add handler for WM_MOUSEMOVE to update drag image</H4>
+<P>In this handler we basically update the position of the drag image and update the drop position. The DragMove() function moves the drag image. We then update the drop target if the mouse is over a tree view item. Note the calls to DragShowNolock(). The first call hides the drag image and allows the tree view control to be updated. The second calls displays the drag image again. We can also use a combination of DragLeave() and DragEnter() but I found that using these functions causes some redraw problems.
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnMouseMove(UINT nFlags, CPoint point) 
+{
+	HTREEITEM			hitem;
+	UINT				flags;
+
+	if (m_bRDragging)
+	{
+		POINT pt = point;
+		ClientToScreen( &pt );
+		CImageList::DragMove(pt);
+		if ((hitem = HitTest(point, &flags)) != NULL)
+		{
+			CImageList::DragShowNolock(FALSE);
+			SelectDropTarget(hitem);
+			m_hitemDrop = hitem;
+			CImageList::DragShowNolock(TRUE);
+		}
+	}
+	
+	CTreeCtrl::OnMouseMove(nFlags, point);
+}
+</FONT></TT>
+</PRE>
+
+<H4>Step 4: Define a virtual function to get the popup menu</H4>
+<P>Although we can create the menu at the point were its needed, its nevertheless a good idea to define a virtual function to do the job. This allows further customization by allowing a sub class of our class to specify its own menu. You may want to change this function to meet your requirements.
+
+<PRE><TT><FONT COLOR="#990000">
+HMENU CTreeCtrlX::GetRDragMenu()
+{
+	CMenu menu;
+
+	menu.CreatePopupMenu();
+	menu.AppendMenu( MF_STRING, ID_MOVEASCHILD, _T("Move As Child") );
+	menu.AppendMenu( MF_STRING, ID_MOVEASSIBLING, _T("Move As Sibling") );
+	menu.AppendMenu( MF_STRING, ID_COPYASCHILD, _T("Copy As Child") );
+	menu.AppendMenu( MF_STRING, ID_COPYASSIBLING, _T("Copy As Sibling") );
+
+	return menu.Detach();
+}
+</FONT></TT>
+</PRE>
+
+
+Note that we are using literal strings and not a string resource. The reason for this is that it avoids a dependancy to the resource file. We also define the menu ID values within the implementation file (cpp file).
+
+<PRE><TT><FONT COLOR="#990000">
+#ifndef ID_MOVEASCHILD
+#define ID_MOVEASCHILD 32857
+#endif
+
+#ifndef ID_MOVEASSIBLING
+#define ID_MOVEASSIBLING 32858
+#endif
+
+#ifndef ID_COPYASSIBLING
+#define ID_COPYASSIBLING 32859
+#endif
+
+#ifndef ID_COPYASCHILD
+#define ID_COPYASCHILD 32860
+#endif
+</FONT></TT>
+</PRE>
+
+<H4>Step 5: Add handler for WM_RBUTTONUP</H4>
+<P>In this handler function we bring up a popup menu for the user to decide whether to move the item or copy it. Your needs may be different and you may want a different menu to popup.
+
+<P>It's also in this function that we complete the drag and drop process. We first determine whether a drag - drop operation was in progress. This is a good place to delete the image list object we created by calling CreateDragImage() in OnBeginRDrag() function. 
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnRButtonUp(UINT nFlags, CPoint point) 
+{
+	if (m_bRDragging)
+	{
+		m_bRDragging = FALSE;
+		CImageList::DragLeave(this);
+		CImageList::EndDrag();
+		ReleaseCapture();
+		delete m_pDragImage;
+
+		if( m_hitemDrag == m_hitemDrop )
+			return;
+		
+		CMenu menu;
+		menu.Attach( GetRDragMenu() );
+		if( menu == NULL ) return;
+
+		ClientToScreen( &point );
+		menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+			point.x, point.y,
+			this); 
+
+		SelectDropTarget(NULL);
+	}
+	else
+		CTreeCtrl::OnRButtonUp(nFlags, point);
+}
+</FONT></TT>
+</PRE>
+
+<H4>Step 6: Define functions to handle the popup menu commands</H4>
+<P>You can't use the class wizard to add these functions so you will have to add them manually. First the header file. It's a good idea to insert these four lines after the class wizard generated message map functions. Make sure it is not within the '//{{AFX_MSG(CTreeCtrlX)' and '//}}AFX_MSG' lines as the class wizard will remove these lines the next time you add a function using class wizard.
+
+	afx_msg void OnMoveAsChild();
+	afx_msg void OnMoveAsSibling();
+	afx_msg void OnCopyAsChild();
+	afx_msg void OnCopyAsSibling();
+</FONT></TT>
+</PRE>
+
+<P>And now the functions themselves. These functions use the CopyBranch() function defined in a previous section.
+
+<PRE><TT><FONT COLOR="#990000">
+void CTreeCtrlX::OnMoveAsChild()
+{
+	// Check that the dragged item is not an ancestor
+	HTREEITEM htiParent = m_hitemDrop;
+	while( (htiParent = GetParentItem( htiParent )) != NULL )
+		if( htiParent == m_hitemDrag ) return;
+
+	Expand( m_hitemDrop, TVE_EXPAND ) ;
+
+	HTREEITEM htiNew = CopyBranch( m_hitemDrag, m_hitemDrop, TVI_LAST );
+	DeleteItem(m_hitemDrag);
+	SelectItem( htiNew );
+}
+
+void CTreeCtrlX::OnMoveAsSibling()
+{
+	// Check that the dragged item is not an ancestor
+	HTREEITEM htiParent = m_hitemDrop;
+	while( (htiParent = GetParentItem( htiParent )) != NULL )
+		if( htiParent == m_hitemDrag ) return;
+
+	HTREEITEM htiNew = CopyBranch( m_hitemDrag, GetParentItem(m_hitemDrop), 
+							m_hitemDrop );
+	DeleteItem(m_hitemDrag);
+	SelectItem( htiNew );
+}
+
+void CTreeCtrlX::OnCopyAsChild()
+{
+	// Check that the dragged item is not an ancestor
+	HTREEITEM htiParent = m_hitemDrop;
+	while( (htiParent = GetParentItem( htiParent )) != NULL )
+		if( htiParent == m_hitemDrag ) return;
+
+	HTREEITEM htiNew = CopyBranch( m_hitemDrag, m_hitemDrop, TVI_LAST );
+}
+
+void CTreeCtrlX::OnCopyAsSibling()
+{
+	// Check that the dragged item is not an ancestor
+	HTREEITEM htiParent = m_hitemDrop;
+	while( (htiParent = GetParentItem( htiParent )) != NULL )
+		if( htiParent == m_hitemDrag ) return;
+
+	HTREEITEM htiNew = CopyBranch( m_hitemDrag, GetParentItem(m_hitemDrop), 
+							m_hitemDrop );
+}
+</FONT></TT>
+</PRE>
+
+<H4>Step 7: Hook up the command functions with the menu command id</H4>
+<P>We need to add entries to the message map so that MFC can call our functions when the user selects an item from the popup menu. Again, make sure that you add the message entries outside of the block used by class wizard.
+
+<PRE><TT><FONT COLOR="#990000">
+BEGIN_MESSAGE_MAP(CTreeCtrlX, CTreeCtrl)
+	//{{AFX_MSG_MAP(CTreeCtrlX)
+	:
+	:
+	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_MOVEASCHILD, OnMoveAsChild)
+	ON_COMMAND(ID_MOVEASSIBLING, OnMoveAsSibling)
+	ON_COMMAND(ID_COPYASCHILD, OnCopyAsChild)
+	ON_COMMAND(ID_COPYASSIBLING, OnCopyAsSibling)
+END_MESSAGE_MAP()
+</FONT></TT>
+</PRE>
+
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

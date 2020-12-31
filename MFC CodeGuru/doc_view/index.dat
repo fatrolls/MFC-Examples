@@ -1,0 +1,31 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/12|docking_window.shtml||Resizable Docking Window 2|Cristi Posea
+1998/04/12|mrcext.shtml||Resizable Docking Window|Mark Conway
+1998/04/12|msdi.shtml||MultiSingle (MSDI) Document interface|Lanz Jean-Claude
+1998/04/12|msdidao.shtml||MultiSingle (MSDI) Document interface with DAO doc|Lanz Jean-Claude
+1998/04/12|multiview_for_doc.shtml||Multiple views for a single document (MDI)|Adrian Roman
+1998/04/12|multiview_for_doc2.shtml||Multiple views for a single document (MDI) 2|Chris Kirby
+1998/04/12|no_untitled.shtml||How to get rid of "Untitled - MyApp" in MFC|Chris Kohlhepp
+1998/04/12|open_most_recent.shtml||Open most recent file|Adam Solesby
+1998/04/12|switchviews_in_splitter.shtml||Switching views in splitter panes (SDI)|Adrian Roman
+1998/04/12|tabbed_views.shtml||Tabbed Views|Daniel Harth
+1998/04/12|tabbed_views2.shtml||Tabbed Views (2)|Alger Pike
+1998/04/12|variable_splitter.shtml||Variable splitter views|Salvatore Mosaico
+1998/04/12|multi_open.shtml||Selecting multiple files in File Open dialog|Klaus Gütter
+1998/04/12|zoom_scale.shtml||Add Zoom and Scale Capabilities to CScrollView|Brad Pirtle
+1998/04/13|multi_mru.shtml||Doc-View : Multiple MRUs, and MRUs on Submenus|Todd C. Gleason
+1998/04/28|multiview_for_doc3.shtml||Multiple views for a single document (MDI) 3|<!-- Author Name -->Pat Laplante

@@ -1,0 +1,120 @@
+<HTML>
+
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Robbert E. Peters">
+   <TITLE>PropertySheet - Placing A Bitmap In The PropertySheet Button Area</TITLE>
+</HEAD>
+
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Placing A Bitmap In The PropertySheet Button Area
+</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:jmd@jvf.co.uk">Jeremy Davis</A>.
+
+
+<p>I was recently asked to write an application for a company
+that wanted their logo on every single window in the program. As
+the application grew there became less and less space for a
+company bitmap logo within some of the tabbed-dialog boxes. Due
+to this I decided to see if I could place the bitmap logo in the
+PropertySheet area that is normally only used by the the OK,
+Cancel and <u>A</u>pply buttons. The picture below shows what I
+achived...</p>
+
+<P><IMG SRC="add_bitmap.gif" >
+
+<p>To do this is quite easy.</p>
+
+<p><strong>1. </strong>Firstly create a subclass of
+CPropertySheet called CMyPropertySheet.</p>
+
+<p><strong>2. </strong>Override the WM_PAINT message by creating
+an OnPaint() member function for CMyPropertySheet, and paste the
+follwing code into it.</p>
+
+<PRE><TT><FONT COLOR="#990000">
+CBitmap bmp, *poldbmp;
+CDC memdc;
+CRect rect;
+	
+//Load the bitmap resource 
+bmp.LoadBitmap(IDB_BITMAPLOGO); 
+
+//Create a compatible memory DC
+memdc.CreateCompatibleDC(&amp;dc);
+
+//Select the bitmap into the DC
+poldbmp = memdc.SelectObject(&amp;bmp);//bmp
+
+//Get size of PropertySheet
+GetClientRect(&amp;rect);
+
+//Copy (BitBlt) bitmap from memory DC to screen DC
+dc.BitBlt(left, rect.bottom - lower, w, h, &amp;memdc, 0, 0, SRCCOPY);
+
+memdc.SelectObject(poldbmp);</tt></font></pre>
+</FONT></TT></PRE>
+
+<p>The dc.BitBlt places a <em>w</em> pixel wide by
+<em>h</em> pixel high image <em>left</em> pixels away from the
+left hand edge, and <em>lower</em> pixels away from the bottom of
+the PropertySheet. Change these values as you see fit.</p>
+
+<p><strong>3.</strong> <em>#include &quot;MyPropertSheet.h&quot;</em>
+in the calling dialog that you wish to use the new property page
+in.</p>
+
+<p><strong>4.</strong> Add PropertyPages to the PropertySheet and
+call it, e.g.....</p>
+
+<PRE><TT><FONT COLOR="#990000">
+    CMyPropertySheet sheet(&quot;Personnel Details&quot;);<br>
+    CPerFildlg perfildlgPage;<br>
+    CAddDetdlg adddetdlgPage;<br>
+    CDelDetdlg deldetdlgPage;<br>
+    <br>
+    sheet.AddPage(&amp;perfildlgPage);<br>
+    sheet.AddPage(&amp;adddetdlgPage);<br>
+    sheet.AddPage(&amp;deldetdlgPage);<br>
+    <br>
+    sheet.DoModal();
+</FONT></TT></PRE>
+
+<p>More advanced code for drawing bitmaps / DIBs which also uses
+palettes may be found on this site.</p>
+
+<p><A HREF="add_bitmap.zip">Download source - 1KB</A>
+
+
+<p>Date Posted: 05/04/98
+<P><HR>
+
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+
+
+
+</BODY>
+</HTML>

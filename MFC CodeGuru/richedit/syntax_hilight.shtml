@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Rich Edit Control - Syntax coloring Editor</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Syntax coloring Editor</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:jrojko@twist.cz">Juraj Rojko</a></p>
+
+<p>I wrote really simple color syntax editor based on RICHEDIT control. I spent only one
+day on this work (ok one and half), so it's far from ideal, but the result is suitable for
+editing small scripts in VBScript or JScript (this is a part of my work on a script host
+application)..</p>
+
+<p align="center"><img src="syntax_hilight_1.gif" width="534" height="236"></p>
+
+<h4>How to use this control: </h4>
+
+<ol>
+  <li>Insert a RICHEDIT control into a dialog resource. Add a member variable to appropriate
+    the CDialog or CFormView derived class and subclass the control in the OnInitDialog
+    function. Or create the CTWScriptEdit control then you need it.</li>
+  <li>To minimize any flickering set the style of the parent window (usually the dialog) to
+    WS_CLIPCHILDREN. </li>
+  <li>Call the Initialize() method of the CTWScriptEdit. (This sets default attributes of the
+    text). </li>
+</ol>
+
+<h4>How to set parameters of the language:</h4>
+
+<ul>
+  <li><strong><tt>void SetCaseSensitive(BOOL bSensitive);</tt></strong><br>
+    Is language case sensitive?</li>
+  <li><strong><tt>void SetChangeCase(BOOL bChange);</tt></strong><br>
+    Force case for keywords?</li>
+  <li><strong><tt>void SetSLComment(TCHAR chComment, TCHAR chComment2 = 0);</tt></strong><br>
+    Set character(s) for comment ('\'' for VBScsipt, '\\', '\\' for JScript)</li>
+  <li><strong><tt>void SetSLComment(LPCTSTR lpszComment);</tt></strong><br>
+    Set keyword for comment (&quot;Rem&quot; for VBScript) must be in the keyword list too</li>
+  <li><strong><tt>void SetStringQuotes(LPCTSTR lpszStrQ);</tt></strong><br>
+    Determines string quotation character(s) (&quot;\&quot;&quot;)</li>
+  <li><strong><tt>void AddKeywords(LPCTSTR lpszKwd);</tt></strong><br>
+    Adds keywords</li>
+  <li><strong><tt>void AddConstants(LPCTSTR lpszKwd);</tt></strong><br>
+    Adds constants</li>
+  <li><strong><tt>void SetKeywordColor(COLORREF clr, BOOL bBold);</tt></strong><br>
+    Sets color and bold attribute for keywords</li>
+  <li><strong><tt>void SetConstantColor(COLORREF clr, BOOL bBold);</tt></strong><br>
+    Sets color and bold attribute for constants</li>
+  <li><strong><tt>void SetCommentColor(COLORREF clr, BOOL bBold);</tt></strong><br>
+    Sets color and bold attribute for comment</li>
+  <li><strong><tt>void SetNumberColor(COLORREF clr, BOOL bBold);</tt></strong><br>
+    Sets color and bold attribute for numbers</li>
+  <li><strong><tt>void SetStringColor(COLORREF clr, BOOL bBold);</tt></strong><br>
+    Sets color and bold attribute for strings</li>
+</ul>
+
+<p>The attached sample project is a simple dialog based application. All described steps
+in the source code are outlined by TWSCRIPTEDIT -&gt; &lt;- TWSCRIPTEDIT comment pair.</p>
+
+<h4>Comments on the Source Code:</h4>
+
+<p>The Interesting code sits in the CTWScriptEdit control (TWScriptEdit.h and
+TWScriptEdit.cpp). This control is derived from CRichEditCtrl. The whole miracle occurs in
+the EN_PROTECTED and EN_CHANGE notification handlers. All text in the control has the
+CFE_PROTECTED flag, so <strong>before</strong> any change the OnProtected handler is
+called. <strong>After</strong> the change, the OnChange handler is called. This enables us
+to determine the affected lines that need reformatting. Real formatting occurs in
+FormatTextRange() which parses the range of text and changes necessary attributes by
+calling helper functions. The control correctly handles WM_SETTEXT and EM_RELACELSEL, so
+it's possible to change text programmatically.</p>
+
+<h4>Known Problems:</h4>
+
+<p>The Undo buffer is affected during formatting, so the undo function works incorrectly.</p>
+
+<p>Pasting RTF text from clipboard into the control retains font, size and others
+attributes of pasted text. This can be corrected in SetFormatRange() method - just check
+and change all attributes.</p>
+
+<p>I am sure that I am better at the C++ language than in English, so my description is
+short, but I hope that source code answers all your questions.</p>
+
+<p>Added VBScriptEditor project shows how to implement coloring features in CRichEditView
+derivation.</p>
+
+<p>Download source for the <A HREF="syntax_hilight_CVBScriptEditDlg.zip">CVBScriptEditDlg</a>
+ and the <A HREF="syntax_hilight_VBScriptEditor.zip">CVBScriptEdit.</a></p>
+
+</body>
+<P>Posted on: April 11, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

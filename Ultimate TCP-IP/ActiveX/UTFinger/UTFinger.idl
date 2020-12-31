@@ -1,0 +1,170 @@
+// ===================================================================
+// UTFinger.idl : IDL source for UTFinger.dll
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTFinger.tlb) and marshalling code.
+//
+// ===================================================================
+// Ultimate TCP-IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// ===================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+cpp_quote("#endif")  
+
+	//===========================================
+	//	IFinger interface
+	//===========================================
+
+	[
+		object,
+		uuid(D4A19881-EBE6-11D2-A440-0080C858F182),
+		dual,
+		helpstring("IFinger Interface"),
+		pointer_default(unique)
+	]
+	interface IFinger : IDispatch
+	{
+
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_CONNECT_TIME_OUT		= 1;
+		const int DISPID_RECEIVE_TIME_OUT		= 2;
+		const int DISPID_NUMBER_RETURN_LINES	= 3;
+		const int DISPID_BLOCKING_MODE			= 4;
+		const int DISPID_FINGER					= 5;
+		const int DISPID_GET_RETURN_LINE		= 6;
+		const int DISPID_GET_ERROR_TEXT			= 7;
+		const int DISPID_CANCEL_FINGER			= 8;
+
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_CONNECT_TIME_OUT), helpstring("Connection time out in seconds")] 
+			HRESULT ConnectTimeOut([in] long newVal);
+
+		[propget, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_RECEIVE_TIME_OUT), helpstring("Receive time out in seconds")] 
+			HRESULT ReceiveTimeOut([in] long newVal);
+
+		[propget, id(DISPID_NUMBER_RETURN_LINES), helpstring("Number of lines returned")] 
+			HRESULT NumberReturnLines([out, retval] long *pVal);
+
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+		[id(DISPID_FINGER), helpstring("Finger method")] 
+			HRESULT Finger([in] BSTR Address, [in, defaultvalue("")] BSTR FileName, [out, retval] long *Result);
+
+		[id(DISPID_GET_RETURN_LINE), helpstring("Get one return line by index")] 
+			HRESULT GetReturnLine([in] long Index, [out, retval] BSTR *Line);
+
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_CANCEL_FINGER), helpstring("Cancel Finger request")] 
+			HRESULT CancelFinger();
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+	};
+
+
+[
+	uuid(D4A19873-EBE6-11D2-A440-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP Finger Control 4.2")
+]
+library UTFINGERLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//===========================================
+	//	Finger control Events interface
+	//===========================================
+	[
+		uuid(D4A19883-EBE6-11D2-A440-0080C858F182),
+		helpstring("_IFingerEvents Interface")
+	]
+	dispinterface _IFingerEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnFinger")] HRESULT OnFinger([in] long Result);
+	};
+
+	[
+		uuid(D4A19882-EBE6-11D2-A440-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP Finger Control 4.2")
+	]
+	coclass Finger
+	{
+		[default] interface IFinger;
+		[default, source] dispinterface _IFingerEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (08B7CAD5-EBF9-11d2-A440-0080C858F182), helpstring("Finger Error Codes")]
+	enum FingerErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Invalid Address Format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid Address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Connection Failed")]		ecConnectionFailed		= UTE_CONNECT_FAILED,
+		[helpstring("No Response")]				ecNoResponse			= UTE_NO_RESPONSE,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("Timed out")]				ecTimeOut				= UTE_CONNECT_TIMEOUT,
+		[helpstring("File open failed")]		ecFileOpenFailed		= UTE_DS_OPEN_FAILED,
+		[helpstring("File write failed")]		ecFileWriteFailed		= UTE_DS_WRITE_FAILED,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR
+
+	} FingerErrorCodes;
+
+
+	//===========================================
+	//	Finger control PropertyPage object
+	//===========================================
+	[
+		uuid(B63A9001-ED4F-11D2-A443-0080C858F182),
+		helpstring("FingerProp Class")
+	]
+	coclass FingerProp
+	{
+		interface IUnknown;
+	};
+};
+

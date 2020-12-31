@@ -1,0 +1,294 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ActiveDesktop.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""UTSampleAbout.rc""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ActiveDesktop.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ActiveDesktop"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "ActiveDesktop Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2000",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_ACTIVEDESKTOP_DIALOG DIALOGEX 0, 0, 258, 210
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ActiveDesktop"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,40,189,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,93,189,50,14
+    CONTROL         "Enable Active Desktop",IDC_CHECK_DESKTOP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,9,91,11
+    CONTROL         "Enable Components",IDC_CHECK_COMPS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,139,9,86,10
+    CONTROL         "List1",IDC_LIST_MAIN,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,14,92,173,77
+    PUSHBUTTON      "New ..",ID_NEW,194,117,50,14
+    PUSHBUTTON      "Remove",ID_REMOVE,194,154,50,14,WS_DISABLED
+    PUSHBUTTON      "Edit ..",ID_EDIT,194,136,50,14,WS_DISABLED
+    LTEXT           "Style",IDC_STATIC_WALLPAPER,15,61,21,10
+    EDITTEXT        IDC_EDIT_WALLPAPER,49,40,127,12,ES_AUTOHSCROLL
+    LTEXT           "Pattern",IDC_STATIC_PATTERN_NAME,209,25,25,8
+    CONTROL         130,IDC_STATIC_PATTERN,"Static",SS_BITMAP | WS_BORDER,
+                    199,37,23,21
+    PUSHBUTTON      "Apply",ID_APPLY,147,189,50,14,WS_DISABLED
+    COMBOBOX        IDC_COMBO_WOPT,49,60,80,43,CBS_DROPDOWNLIST | 
+                    CBS_UPPERCASE | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Refresh",ID_REFRESH,201,189,50,14
+    GROUPBOX        "Installed items",IDC_STATIC_MAIN,7,83,244,95
+    GROUPBOX        "Wallpaper properties",IDC_STATIC_WALL,7,26,179,54
+    LTEXT           "FileName",IDC_STATIC_FILENAME,14,40,31,9
+END
+
+IDD_DIALOG_COMPT DIALOG DISCARDABLE  0, 0, 270, 87
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "The component properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,213,65,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,213,47,50,14
+    LTEXT           "Name",IDC_STATIC,7,11,23,8
+    LTEXT           "Source",IDC_STATIC_SOURCE,7,27,27,8
+    LTEXT           "Width",IDC_STATIC,7,52,22,8
+    LTEXT           "Height",IDC_STATIC,7,69,25,8
+    CONTROL         "Scrollable",IDC_CHECK_SCROLLABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,212,20,45,8
+    CONTROL         "Sizeable",IDC_CHECK_SIZEABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,212,33,43,8
+    CONTROL         "Enabled",IDC_CHECK_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,212,7,44,8
+    EDITTEXT        IDC_EDIT_NAME,42,7,158,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SOURCE,42,24,158,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_WIDTH,42,49,32,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_HEIGHT,42,66,32,12,ES_AUTOHSCROLL
+    LTEXT           "Left point",IDC_STATIC,91,52,31,9
+    LTEXT           "Top point",IDC_STATIC,91,69,37,9
+    EDITTEXT        IDC_EDIT_LEFT,137,49,32,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TOP,137,66,32,12,ES_AUTOHSCROLL
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "ActiveDesktop MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "ActiveDesktop\0"
+            VALUE "LegalCopyright", "Copyright (C) 2000\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "ActiveDesktop.EXE\0"
+            VALUE "ProductName", "ActiveDesktop Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_ACTIVEDESKTOP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+    END
+
+    IDD_DIALOG_COMPT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 263
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 80
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_ACTIVEDESKTOP_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_WOPT, 0x403, 16, 0
+0x5057, 0x535f, 0x5954, 0x454c, 0x435f, 0x4e45, 0x4554, 0x0052, 
+    IDC_COMBO_WOPT, 0x403, 14, 0
+0x5057, 0x535f, 0x5954, 0x454c, 0x545f, 0x4c49, 0x0045, 
+    IDC_COMBO_WOPT, 0x403, 17, 0
+0x5057, 0x535f, 0x5954, 0x454c, 0x535f, 0x5254, 0x5445, 0x4843, "\000" 
+    IDC_COMBO_WOPT, 0x403, 13, 0
+0x5057, 0x535f, 0x5954, 0x454c, 0x4d5f, 0x5841, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_PATTERN      BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ActiveDesktop..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DESCRIPTION_FILE     "OXActivedesktop.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\ActiveDesktop.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "UTSampleAbout.rc"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

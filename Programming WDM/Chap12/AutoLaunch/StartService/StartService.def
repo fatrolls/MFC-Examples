@@ -1,0 +1,3 @@
+LIBRARY STARTSERVICE
+EXPORTS
+	StartService = _StartServiceRunning@16 @1

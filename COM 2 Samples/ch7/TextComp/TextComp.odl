@@ -1,0 +1,45 @@
+// TextComp.odl : type library source for TextComp.dll
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (TextComp.tlb).
+
+[ uuid(4F168D44-C210-11D2-9E60-00104B08CC22), version(1.0) ]
+library TextComp
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+
+
+	//  Primary dispatch interface for CTextObject
+	
+	[ uuid(4F168D56-C210-11D2-9E60-00104B08CC22) ]
+	dispinterface ITextObject
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CTextObject)
+			[id(1)] VARIANT Text;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CTextObject)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CTextObject
+
+	[ uuid(4F168D57-C210-11D2-9E60-00104B08CC22) ]
+	coclass Object
+	{
+		[default] dispinterface ITextObject;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

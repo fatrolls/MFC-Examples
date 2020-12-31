@@ -1,0 +1,98 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>DevStudio Macros - Sequentially Renumber Resource ID's</TITLE>
+</HEAD>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Sequentially Renumber Resource ID's
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This code was contributed by <A HREF="mailto:corey.d.house@ac.com">Corey House</a>
+
+<p>
+This macro will take a selection and renumber the resource ID's in
+sequential order. This comes in very handy when trying to avoid resource 
+conflicts as well as when trying to merge items from one resouce file 
+into another.
+
+<PRE><TT><FONT COLOR="#990000">
+' This will assisgn resource ID's to the selected block by starting 
+' with the resource ID given and then incrementing until the end of 
+' the selection is reaced.
+' (Uncomment the commented lines to process only sourcecode files)
+
+Sub AssignResourceIDToSelection ()
+
+     msg = InputBox ("Enter The resource ID to start From:")
+
+'    TypeOfFile = FileType(ActiveDocument)
+
+'    if TypeOfFile <> dsCPP   Then
+'         MsgBox "File Must be of type .c, .cpp, .cxx, .h, .hpp, .hxx"
+'    Else
+          If msg <> "" Then
+               If IsNumeric(msg) Then
+                    nCurResourceID = Int(msg)
+                    AssignGivenResourceIDToSelection(nCurResourceID)
+               End If
+          Else
+               MsgBox "You MUST enter a resource ID, Aborting"
+          End If
+'    End if
+End Sub
+
+
+'This function can be integrated with other macros to
+'automate the renumbering of resource ID's
+
+Function AssignGivenResourceIDToSelection (ByVal nCurResourceID)
+
+     nStartLine = ActiveDocument.Selection.TopLine
+     nEndLine = ActiveDocument.Selection.BottomLine
+
+     ' Debugging messageBox
+     ' MsgBox "Start:" + CStr(nStartLine) + " End:" + + CStr(nEndLine)
+     For i = nStartLine To nEndLine
+          ActiveDocument.Selection.GoToLine i
+          ActiveDocument.Selection.FindText "#define", dsMatchForward
+          If ActiveDocument.Selection.CurrentLine = i Then
+               ' Debugging messageBox
+               ' MsgBox "Ext:" + CStr(ActiveDocument.Selection.CurrentLine)
+               ActiveDocument.Selection.EndOfLine
+               ActiveDocument.Selection.WordLeft dsExtend
+               ActiveDocument.Selection = nCurResourceID
+               nCurResourceID = nCurResourceID + 1
+          End if
+     Next
+
+End Function
+</PRE></TT></FONT>
+
+<p>Updated 21 March 1998
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%"><TR>
+
+<TD WIDTH="33%">
+<FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR></TABLE>
+
+</BODY>
+</HTML>

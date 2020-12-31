@@ -1,0 +1,52 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+Provider="Walter Oney Software"
+
+[Manufacturer]
+"Walter Oney Software"=WCO
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+
+[SourceDisksFiles]
+Wmi42.sys=1
+
+[SourceDisksNames]
+1="Install disk",,,objchk\i386
+
+[WCO]
+"Wmi42 Sample"=Wmi42Install,*WCO1001
+
+[Wmi42Install]
+AddReg=Wmi42.AddReg
+CopyFiles=Wmi42.CopyFiles
+
+[Wmi42.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,Wmi42.sys
+
+[Wmi42.CopyFiles]
+Wmi42.sys,,,2
+
+[Wmi42Install.hw]
+AddReg=Wmi42HwAddReg
+
+[Wmi42HwAddReg]
+HKR,,SampleInfo,,"%wdmbook%\chap10\wmi42\wmi42.htm"
+
+[Wmi42Install.NT]
+CopyFiles=Wmi42.CopyFiles
+
+[Wmi42Install.NT.Services]
+AddService=Wmi42,2,Wmi42Service
+
+[Wmi42Service]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\Wmi42.sys
+
+[Wmi42Install.nt.hw]
+AddReg=Wmi42HwAddReg

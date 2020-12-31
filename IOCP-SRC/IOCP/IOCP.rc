@@ -1,0 +1,271 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_IOCP_DIALOG DIALOGEX 0, 0, 409, 218
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "IOCP Server V1.16"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Quit",IDOK,351,197,50,14
+    CONTROL         "List1",IDC_CLIENTLIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | 
+                    WS_BORDER | WS_TABSTOP,151,7,250,145
+    EDITTEXT        IDC_ADRESS,55,23,91,18,ES_AUTOHSCROLL
+    PUSHBUTTON      "Disconnect All ",IDC_DISCONNECTALL,94,59,52,12
+    PUSHBUTTON      "Disconnect",IDC_DISCONNECT,46,59,46,12
+    PUSHBUTTON      "Send ",IDC_SEND,3,59,41,12
+    EDITTEXT        IDC_SENDTXT,3,42,143,16,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_OEMCONVERT
+    EDITTEXT        IDC_RECEIVEDTXT,2,83,140,15,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_OEMCONVERT | 
+                    ES_READONLY
+    LTEXT           "Received:",IDC_STATIC,3,73,34,8
+    CONTROL         "Flood data to all. ",IDC_FLOOD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,78,99,69,13
+    EDITTEXT        IDC_LOGG,2,151,399,45,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_OEMCONVERT | ES_READONLY | WS_VSCROLL
+    EDITTEXT        IDC_MSGPERSEC,93,197,84,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    LTEXT           "Package received/second:",IDC_STATIC,2,198,88,8
+    PUSHBUTTON      "Stop",IDC_STOPSTART,5,4,51,18
+    PUSHBUTTON      "Settings",IDC_Settings,104,3,42,18,WS_DISABLED
+    LTEXT           "SystemLog:",IDC_STATIC,2,139,38,8
+    LTEXT           "Server Adress:",IDC_STATIC,6,27,47,8
+    PUSHBUTTON      "Send File ",IDC_SENDFILE,1,98,68,16
+    CONTROL         "Random Disconnect (10% probability) ",
+                    IDC_RANDOMDISCONNECT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,2,118,135,10
+END
+
+IDD_SETTINGS DIALOG DISCARDABLE  0, 0, 228, 223
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "IOCP System Configuration "
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Save",IDOK,165,200,56,14
+    LTEXT           "Port (-1= Client mode):",IDC_STATIC,7,10,88,10
+    EDITTEXT        IDC_PORTNR,102,6,120,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAXNUMOFCONNECTION,102,23,119,14,ES_AUTOHSCROLL
+    LTEXT           "Maximum nr of connections :",IDC_STATIC,7,26,92,8
+    LTEXT           "Number of I/O workers       :",IDC_STATIC,7,43,89,8
+    EDITTEXT        IDC_NROFIOWORKERS,102,41,119,14,ES_AUTOHSCROLL
+    LTEXT           "Number of logical workers   :",IDC_STATIC,7,60,90,8
+    EDITTEXT        IDC_NROFLOGICWORKERS,102,59,119,14,ES_AUTOHSCROLL
+    LTEXT           "Max Number of unused Buffers  (0=infinte number)  :",
+                    IDC_STATIC,7,74,89,19
+    EDITTEXT        IDC_NROFFREEBUFF,102,77,119,14,ES_AUTOHSCROLL
+    LTEXT           "Max Number of unused Clients (0=infinte number) :",
+                    IDC_STATIC,7,94,93,17
+    EDITTEXT        IDC_NROFFREECONTEXT,102,95,119,14,ES_AUTOHSCROLL
+    CONTROL         "Make received packages ordered (TRUE if the sever use several pendling reads .  ",
+                    IDC_RECEIVEDORDERED,"Button",BS_AUTOCHECKBOX | 
+                    BS_MULTILINE | WS_TABSTOP,13,155,197,18
+    GROUPBOX        "Package ordering",IDC_STATIC,7,132,214,65
+    LTEXT           "Uncheck to increase the performance if you know that the order of the packages is not important. ",
+                    IDC_STATIC,11,177,196,16
+    CONTROL         "Make sending packages ordered. ",IDC_SENDORDERED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,143,136,10
+    EDITTEXT        IDC_NRPENDLINGREAD,102,114,119,14,ES_AUTOHSCROLL
+    LTEXT           "Number of pendling read loop:",IDC_STATIC,7,113,93,17
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO MOVEABLE PURE 
+BEGIN
+    IDD_IOCP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 401
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 221
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 215
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_HEADER              BITMAP  MOVEABLE PURE   "res\\header.bmp"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "IOCP MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "IOCP\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "OriginalFilename", "IOCP.EXE\0"
+            VALUE "ProductName", "IOCP Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Swedish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)
+#ifdef _WIN32
+LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\IOCP.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\IOCP.ico"
+#endif    // Swedish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\IOCP.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

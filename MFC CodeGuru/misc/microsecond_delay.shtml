@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Microsecond delay</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Microsecond delay</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:hansw@flash.net">Hans Wedemeyer</A>. 
+
+<P>Here is a sample using system resources available to get a MicroSecond delay
+function.
+
+<P>As we know the system has WM_TIMER which gives about 50mS resolution, and
+Mutlimedia Timers which can do about 1mS, and if one require a simple delay of
+say 100microseconds  with about 5% accuracy there is nothing available to do
+that.
+
+<P>Using the GetTickCount() it is possible to adjust a simple for() loop that
+contains _asm {NOP} and get a reasonable delay accuracy.
+
+<P>The attached code sample explains itself.
+
+<P>One improvement I would make next time I use this, is to save the initialization
+values to the registry, and avoid doing it every time the program starts.
+
+<P>The code has been tested on three systems ( dual pentuim Pro running at 233MHz )
+( Penitum P5 at 233MHz) and Toshiba Laptop running at 133MHz.
+
+<P><A HREF="microsecond_delay.zip">Project File</A> 31K
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi-bin/counters/counter.cgi"--></FONT></CENTER>
+</BODY>
+</HTML>

@@ -1,0 +1,60 @@
+// RectPoint.idl : IDL source for RectPoint.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (RectPoint.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(CCA7F35D-DAF3-11D0-8C53-0080C73925BA),
+        oleautomation,
+		helpstring("IPoint Interface"),
+		pointer_default(unique)
+	]
+	interface IPoint : IUnknown
+	{
+		HRESULT GetCoords([out] long *px, [out] long *py);
+		HRESULT SetCoords([in] long x, [in] long y);
+	};
+	[
+        object,
+		uuid(CCA7F35F-DAF3-11D0-8C53-0080C73925BA),
+        oleautomation,	
+		helpstring("IRect Interface"),
+		pointer_default(unique)
+	]
+	interface IRect : IUnknown
+	{
+		[helpstring("method SetCoords")] HRESULT SetCoords([in] long left, [in] long top, [in] long right, [in] long bottom);
+		[propget, helpstring("property Volume")] HRESULT Volume([out, retval] long *pVal);
+	};
+[
+	uuid(CCA7F350-DAF3-11D0-8C53-0080C73925BA),
+	version(1.0),
+	helpstring("RectPoint 1.0 Type Library")
+]
+library RECTPOINTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(CCA7F35E-DAF3-11D0-8C53-0080C73925BA),
+		helpstring("Point Class")
+	]
+	coclass Point
+	{
+		[default] interface IPoint;
+	};
+	[
+		uuid(CCA7F360-DAF3-11D0-8C53-0080C73925BA),
+		helpstring("Rect Class")
+	]
+	coclass Rect
+	{
+		[default] interface IRect;
+	};
+};

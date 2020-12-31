@@ -1,0 +1,24 @@
+///////////////////////////////////////////////////////////////////
+// Header  : MAINFRAM.H
+//
+// Purpose : Interface for the CMainFrame class.
+//
+// Author  : Rob McGregor - rob_mcgregor@compuserve.com
+//
+// Date    : 05-12-96
+///////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////
+// The CMainFrame frame window class
+                  
+class CMainFrame : public CFrameWnd
+{
+protected: // create from serialization only
+	CMainFrame();
+   virtual ~CMainFrame();
+   
+	DECLARE_DYNCREATE(CMainFrame)
+   DECLARE_MESSAGE_MAP();
+};
+
+///////////////////////////////////////////////////////////////////

@@ -1,0 +1,46 @@
+
+[Version]
+Signature=$CHICAGO$
+Class=fdc
+Provider=%String0%
+
+[ClassInstall]
+
+[DestinationDirs]
+DefaultDestDir=11
+
+[Manufacturer]
+%String1%=SECTION_0
+
+[SECTION_0]
+%String2%=DvrInstall,*PNP0700
+
+[DvrInstall]
+CopyFiles=DvrCopy
+AddReg=DvrReg
+LogConfig=DvrConfig
+
+[DvrCopy]
+myvxd.vxd
+
+[DvrReg]
+HKR,,DevLoader,0,myvxd.vxd
+
+[DvrConfig]
+ConfigPriority=HARDWIRED
+IOConfig=3f2-3f5(3ff::)
+IRQConfig=6
+DMAConfig=2
+
+[ControlFlags]
+
+[SourceDisksNames]
+1=InstallDisk,disk1,
+
+[SourceDisksFiles]
+myvxd.vxd=1
+
+[Strings]
+String0="Walter Oney Software"
+String1="Walter Oney Software"
+String2="DMA Sample Driver"

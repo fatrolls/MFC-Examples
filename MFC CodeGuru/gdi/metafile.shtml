@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>GDI - CMetaFile class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">CMetaFile class</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <a href="mailto:rec@kerridge.com">Robert Caldecott</a></p>
+
+<p>The CMetaFile class is derived from CMetaFileDC and allows you to
+easily load metafiles from disk and display them.  A metafile can also
+be displayed with various alignment options, in order to preserve
+aspect ratio, etc.  The class include serialization, allowing you to
+embed a metafile into a CDocument, for example.</p>
+
+<p>To use the class, simply include "meta.h" and create an instance:</p>
+
+<p>CMetaFile m_meta;</p>
+
+<p>To load a metafile from disk use one of the CMetaFile::Read functions.
+One takes a pointer to a filename string, the other a pointer to a
+pre-opened CFile object.  The Read function will return FALSE if an
+error occurred loading the metafile.</p>
+
+<p>If you want to check if a file is a valid metafile, there is a static
+CMetaFile::IsMetaFile function you can call.  Pass a CFile pointer and
+the function returns true if it's a valid metafile image.</p>
+
+<p>That's about it.  The example project shows how to embed a metafile in
+a document and display it from a view.  Examples of all the alignment
+options are included.</p>
+
+<p>Download <a href="metafile_source.zip">Source.</a> and an <a href="metafile_example.zip">Example</a></p>
+
+<P>Posted on: April 11, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

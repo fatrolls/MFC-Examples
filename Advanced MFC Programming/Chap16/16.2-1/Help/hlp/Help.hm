@@ -1,0 +1,25 @@
+// MAKEHELP.BAT generated Help Map file.  Used by HELP.HPJ. 
+ 
+// Commands (ID_* and IDM_*) 
+HID_HELPTEST_TESTA                      0x18004
+HID_HELPTEST_TESTB                      0x18005
+HID_HELPTEST_TESTC                      0x18006
+HID_HELPTEST_TESTD                      0x18007
+HID_HELPTEST_DIALOG                     0x1800C
+ 
+// Prompts (IDP_*) 
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20080
+HIDR_HELPTYPE                           0x20081
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+HIDD_DIALOG                             0x20082
+ 
+// Frame Controls (IDW_*) 
+// Common Controls (IDC_*) 
+HIDC_EDIT                               0x103E8
+HIDC_BUTTON                             0x103E9
+HIDC_RADIO                              0x103EA
+HIDC_COMBO                              0x103EB

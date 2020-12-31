@@ -1,0 +1,10 @@
+TARGETNAME=sehtest
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+USE_PDB=1
+INCLUDES=..\..\..\generic
+MSC_WARNING_LEVEL=-W3 -WX
+
+SOURCES= 	DriverEntry.cpp \
+		STDDCLS.cpp 
+

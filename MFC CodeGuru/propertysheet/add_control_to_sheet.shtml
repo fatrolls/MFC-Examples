@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Adding a Control to the Property Sheet</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Adding a Control to the Property Sheet</FONT>
+<HR></H3></CENTER>
+Each property page has its own set of controls. The only control that they share are the standard button in the property sheet itself. If you want to add an edit control, a preview button or any other control, you have to do it at run time. The code below shows you how to add an edit control. 
+<H4>Step 1: Derive your own class from CPropertySheet</H4>
+We cannot use the CPropertySheet class directly, since we need to add a member variable. If you aren't already using a sub-class of CPropertySheet then derive one.
+<h4>Step 2: Add member variable</h4>
+Add member variable to the CPropertySheet derived class. The edit control will be created and accessed using this member.
+
+<PRE><TT><FONT COLOR="#990000">
+public:
+	CEdit m_edit;
+</FONT></TT></PRE>
+
+<h4>Step 3: Create the edit control in OnInitDialog</h4>
+Override the OnInitDialog() function and add the code to create the edit control to this function. It is a good idea to call the base class version of the function before doing anything specific for the derived class.
+
+<p>The property sheet is first resized to accommodate the new edit control. The edit control is then created at the desired location. The WS_EX_CLIENTEDGE gives it a 3-D look. The edit control is created with a different font than used by other control. We fix this by a call to SetFont() and set the font to be the same as the property sheet.
+
+<p>The text value in the edit control can be set or retrieved using the m_edit object.
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CMyPropSheet::OnInitDialog()
+{
+	BOOL bResult = CPropertySheet::OnInitDialog();
+
+	CRect rectWnd;
+	GetWindowRect(rectWnd);
+	SetWindowPos(NULL, 0, 0,
+		rectWnd.Width() + 100,
+		rectWnd.Height(),
+		SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+
+	m_edit.CreateEx( WS_EX_CLIENTEDGE, _T("EDIT"), NULL,
+				WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER, 
+				rectWnd.Width(), 20, 80, 24, m_hWnd, 0, 0 );
+
+	m_edit.SetFont( GetFont() );
+	
+	CenterWindow();
+	return bResult;
+}
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

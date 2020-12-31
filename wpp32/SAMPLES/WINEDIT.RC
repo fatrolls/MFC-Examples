@@ -1,0 +1,67 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: WINEDIT.RC
+//
+#include "wpp.h"
+
+AppMenu MENU { 
+	POPUP "&File" { 
+		MENUITEM FileNew
+		MENUITEM FileOpen
+		MENUITEM SEPARATOR
+		MENUITEM FileSave
+		MENUITEM FileSaveAs
+		MENUITEM SEPARATOR
+		MENUITEM FilePrint
+		MENUITEM SEPARATOR
+		MENUITEM FileExit
+	}
+
+	POPUP "&Edit" { 
+		MENUITEM EditUndo
+		MENUITEM SEPARATOR
+		MENUITEM EditCut
+		MENUITEM EditCopy
+		MENUITEM EditPaste
+		MENUITEM SEPARATOR
+		MENUITEM EditDelete
+	}
+}
+
+AppAccel ACCELERATORS
+BEGIN
+    AccFileNew
+    AccFileOpen
+    AccFilePrint
+    AccFileSave
+    AccEditUndo
+    AccEditCut
+    AccEditCopy
+    AccEditPaste
+	 AccMemStats
+END
+
+STRINGTABLE {
+	WPIDM_FILENEW, "Create a new file."
+	WPIDM_FILEOPEN, "Open an existing file."
+	WPIDM_FILESAVE, "Save current file on disk."
+	WPIDM_FILESAVEAS, "Save current file with a different name."
+	WPIDM_FILEPRINT, "Print current file."
+	WPIDM_EXIT, "Exit from program."
+	WPIDM_EDITUNDO, "Undo previous edit operation."
+	WPIDM_EDITCUT, "Delete selected text and transfer it to the clipboard."
+	WPIDM_EDITCOPY, "Copy selected text to the clipboard."
+	WPIDM_EDITPASTE, "Insert contents of clipboard at current location."
+	WPIDM_EDITDELETE, "Delete selected text without transferring it to the clipboard."
+}
+
+DLGSEARCH DIALOG  10,17,132,27
+STYLE WS_POPUPWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS | WS_DLGFRAME
+CAPTION "Search"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL "",WPIDED_STRING,"edit",ES_AUTOHSCROLL | WS_TABSTOP | WS_CHILD | WS_BORDER | ES_LEFT,31,7,96,12
+    CONTROL "Search:",-1,"static",WS_CHILD | SS_LEFT,3,8,26,10
+END
+
+#include "wpprint.dlg"

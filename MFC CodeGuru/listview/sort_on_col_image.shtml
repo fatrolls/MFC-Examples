@@ -1,0 +1,213 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Sort columns by the image index of the column</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Sort columns by the image index of the column</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This code was contributed by Mark Findlay.
+
+<PRE><TT><FONT COLOR="#990000">
+// This is a simple modification of the text sorting routine by
+// Zafir Anjum. (See <A HREF="sort_on_col.shtml">"Sorting the list based on text in any column"</A>)
+
+//
+// It sorts the list based on the image index of the column being 
+// sorted. You must only call this function when sorting a column
+// that has an image associated with it.
+//
+// I added an additional helper function GetItemImageIndex() which
+// simply returns the image index for the row and column specified.
+// 
+
+//////////////////////////////////////////////////////////
+//**************************************************
+// GetItemImageIndex
+// return the image index of the selected row and col
+int CMyListCtrl::GetItemImageIndex(int nRow, int nCol/*=0*/)
+{
+    LV_ITEM lv = {0};
+	lv.mask = LVIF_IMAGE;
+	lv.iItem = nRow;
+	lv.iSubItem = nCol;
+
+	GetItem( &lv );
+
+    return lv.iImage;
+}
+
+
+////////////////////////////////////////////////////////////////////
+// Sort by image index of column
+//
+// This function is a simple modification of the text sorting function
+// written by Zafir Anjum.
+//
+// SortInImageOrder	- Sort the list based on image index of column
+// Returns		- Returns true for success
+// nCol			- column that contains the text to be sorted
+// bAscending	- indicate sort order
+// nLow			- row to start scanning from - default row is 0
+// nHigh		- row to end scan. -1 indicates last row
+BOOL CMyListCtrl::SortInImageOrder(int nCol, BOOL bAscending, int nLow/*=0*/, int nHigh/*=-1*/)
+{
+    BOOL bRet = FALSE;
+
+	if( nCol >= ((CHeaderCtrl*)GetDlgItem(0))->GetItemCount() )
+		return FALSE;
+	
+	if( nHigh == -1 ) nHigh = GetItemCount() - 1;
+	int nLo = nLow;   
+	int nHi = nHigh;
+	
+	int nMidItem;
+	
+	if( nHi <= nLo ) 
+        return FALSE;
+	
+	nMidItem = GetItemImageIndex( (nLo+nHi)/2, nCol );
+	
+	// loop through the list until indices cross
+	while( nLo <= nHi )
+	{
+		// arrsRowText will hold all column text for one row
+		CStringArray arrsRowText;
+		
+		// find the first element that is greater than or equal to 
+		// the partition element starting from the left Index.
+		if( bAscending )
+			while( ( nLo < nHigh ) && (GetItemImageIndex(nLo, nCol) < nMidItem ) )
+				++nLo;           
+		else
+			while( ( nLo < nHigh ) && (GetItemImageIndex(nLo, nCol) > nMidItem ) )
+				++nLo;
+                
+		// find an element that is smaller than or equal to 
+		// the partition element starting from the right Index.
+		if( bAscending )
+			while( ( nHi > nLow ) && (GetItemImageIndex(nHi, nCol) > nMidItem ) )
+				--nHi;           
+		else
+			while( ( nHi > nLow ) && (GetItemImageIndex(nHi, nCol) < nMidItem ) )
+				--nHi;
+				
+		// if the indexes have not crossed, swap                
+		// and if the items are not equal
+		if( nLo <= nHi )
+		{
+			// swap only if the items are not equal
+			if(GetItemImageIndex(nLo, nCol) != GetItemImageIndex(nHi, nCol) )
+			{                               
+				// swap the rows
+                LV_ITEM lvitemlo = {0};
+                LV_ITEM lvitemhi = {0};
+                
+                // Get the column count
+				int nColCount =
+							((CHeaderCtrl*)GetDlgItem(0))->GetItemCount();
+				arrsRowText.SetSize( nColCount );
+                
+                // Load string array with text items of Lo row
+				int i;
+				for( i=0; i < nColCount; i++)
+							arrsRowText[i] = GetItemText(nLo, i);
+                
+                // Setup Lo item structure
+				lvitemlo.mask = LVIF_IMAGE | LVIF_STATE;
+
+                // lParam only avail on col zero
+                if (nCol == 0)
+                    lvitemlo.mask |= LVIF_PARAM;
+
+				lvitemlo.iItem = nLo;
+				lvitemlo.iSubItem = nCol; // 10/29/97 0;
+				lvitemlo.stateMask = 
+                        LVIS_CUT            | LVIS_DROPHILITED      |
+						LVIS_FOCUSED        | LVIS_SELECTED         |
+						LVIS_OVERLAYMASK    | LVIS_STATEIMAGEMASK;
+
+                // duplicate to hi item except for iItem index
+				lvitemhi = lvitemlo;
+				lvitemhi.iItem = nHi;
+				lvitemhi.iSubItem = nCol; // 10/29/97
+
+                
+                // get the current lo and hi items
+				GetItem( &lvitemlo );
+				GetItem( &lvitemhi );
+                
+                // set item text of lo to item text of hi
+				for( i=0; i< nColCount; i++)
+				    SetItemText(nLo, i, GetItemText(nHi, i) );
+                
+                // save hi item
+				lvitemhi.iItem = nLo;
+				bRet = SetItem( &lvitemhi );
+                _ASSERTE(bRet);
+                
+                // set item text of hi to item text of lo
+				for( i=0; i< nColCount; i++)
+				    SetItemText(nHi, i, arrsRowText[i]);
+                
+                // save lo item
+				lvitemlo.iItem = nHi;
+                lvitemhi.iSubItem = nCol; // 10/29/97
+                bRet = SetItem( &lvitemlo );
+                _ASSERTE(bRet);
+			}
+			
+			++nLo;
+			--nHi;
+		}
+	}
+	
+	// If the right index has not reached the left side of array
+	// must now sort the left partition.
+	if( nLow < nHi )
+		SortInImageOrder( nCol, bAscending , nLow, nHi);
+	
+	// If the left index has not reached the right side of array
+	// must now sort the right partition.
+	if( nLo < nHigh )
+		SortInImageOrder( nCol, bAscending , nLo, nHigh );
+	
+	return TRUE;
+}
+
+</FONT></TT></PRE>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

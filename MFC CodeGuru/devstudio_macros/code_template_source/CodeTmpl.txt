@@ -1,0 +1,90 @@
+                            CodeTmpl.txt 
+                            ------------
+
+ Configuration file for CodeTmpl add-in. Should live in DevStudio\SharedIDE
+
+
+                           Example Comment Blocks	
+                           ----------------------
+
+
+#{File Header
+/////////////////////////////////////////////////////////////////////////////
+//
+//                           Copyright .....
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+//
+//  File     :   
+//
+//  Author   :   
+//
+//  Date     :   
+//
+//  Synopsis :   
+//
+////////////////
+#}
+
+#{Block Header
+/////////////////////////////////////////////////////////////////////////////
+//
+//  
+//
+///////////////
+#}
+
+#############################################################################
+
+                           Example Code Snippets
+                           ---------------------
+
+
+#{Hello World (Console)
+#include <stdio.h>
+
+int main()
+{
+    puts("Hello, World");    
+}
+#}
+
+#{Hello World (GUI)
+#include <windows.h>
+
+int PASCAL WinMain(HANDLE hInstance,
+                   HANDLE hPrevInstance,
+                   LPSTR lpszCommandLine,
+                   int cmdShow)          
+{
+    MessageBox(NULL, "Hello, World", "Example", MB_OK);
+}
+#}
+
+#############################################################################
+
+                           Example Syntax Elements
+                           -----------------------
+
+#{Lazy Error Handling
+try
+{
+}
+
+catch(...)
+{
+}
+#}
+
+#{Quick Class Definition
+class X
+{
+public:
+    X();
+    ~X();
+protected:
+private:
+};
+#}
+

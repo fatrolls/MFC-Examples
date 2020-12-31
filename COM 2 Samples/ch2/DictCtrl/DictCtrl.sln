@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DictCtrl", "DictCtrl.vcxproj", "{DB6BB077-236C-45C3-9B18-B15F346CD9C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB6BB077-236C-45C3-9B18-B15F346CD9C5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DB6BB077-236C-45C3-9B18-B15F346CD9C5}.Debug|Win32.Build.0 = Debug|Win32
+		{DB6BB077-236C-45C3-9B18-B15F346CD9C5}.Release|Win32.ActiveCfg = Release|Win32
+		{DB6BB077-236C-45C3-9B18-B15F346CD9C5}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

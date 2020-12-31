@@ -1,0 +1,31 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/04/12|animated_dialog.shtml||CDialog using animated control|Ran Almog
+1998/04/05|browse_shell_namespace.shtml||Class for Browsing shell namespace with your own dialog|Selom Ofori (a.k.a SubRosa)
+1998/04/12|ccmduidialog.shtml||Using ON_UPDATE_COMMAND_UI with dialogs|James Hebben
+1998/04/12|credits_dialog.shtml||Scrolling credits dialog|
+1998/04/12|custom_color.shtml||Color Dialog with Persistent Custom Colors|Roger Onslow
+1998/03/12|ddx_phone.shtml||Parse phone fields|Jeff Lundgren
+1998/04/12|dir_dialog.shtml||Class to select directory|Girish Bharadwaj
+1998/04/12|drag_dialog.shtml||Dragging a dialog by clicking anywhere on it|Craig Lucas
+1998/04/12|font_dialog.shtml||Font dialog with custom text preview & color|Roger Onslow
+1998/04/12|modeless_to_modal.shtml||Convert modeless dialogs to modal|Sushil Saxena
+1998/04/12|override_fontdlg.shtml||Customizing the font dialog|Petr Novotny
+1998/04/12|splash.shtml||Splash Screen with 256 color support|
+1998/03/20|dialog_updateui.shtml||Using ON_UPDATE_COMMAND_UI with dialogs (2)|Tim McColl
+1998/03/28|dialogspl.shtml||Dialog with Splash Screen Example Code|Kirk Stowell
+1998/04/12|bitmap_open.shtml||Open Dialog with Bitmap Preview|Luis Ortega
+1998/04/13|cmdlg.shtml||Costumizing CFileDialog|

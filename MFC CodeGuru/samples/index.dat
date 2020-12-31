@@ -1,0 +1,21 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|mfc_hooks.shtml||Win32 hooks with MFC|Dror Kremer
+1998/03/12|rfi.shtml||dkremer@netvision.net.il|
+1998/03/28|runtime_monitoring_agent.shtml||Runtime Monitoring Agent|
+1998/03/28|time_tracker.shtml||Track billable hours (2)|Thomas Blenkers
+1998/03/28|track_hours.shtml||Track billable hours|Eric Hoagland
+1998/03/27|help_array_generator.shtml||MSVC Help Array Generator Utility|

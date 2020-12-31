@@ -1,0 +1,76 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Section - Title</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Simple way to change dialog's background and text colors
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:nikolay@jriver.com">Nikolay Sokratov</A>.
+
+<!-- Sample image and source code/demo project -->
+<br>
+
+<!-- The article... -->
+
+<p>If you want to change background or text color of your dialog box or form view window you can call
+CWinApp::SetDialogBkColor(COLORREF clrCtlBk, COLORREF clrCtlText) function. The first argument of the
+function is background color, second is text color.
+Call this member function from within the InitInstance member function to set the default background and text
+color for dialog boxes and message boxes within your application.
+
+For example, following code sets all application's dialogs to display a red background and a green text.
+
+<FONT COLOR="#990000"><TT><PRE>
+BOOL CMyApp::InitInstance()
+{
+	...
+	// lets set red background and green text for our dialogs
+	SetDialogBkColor(RGB(255, 0, 0), RGB(0, 255, 0));
+	...
+}
+</tt></PRE></FONT>
+
+<!-- Remember to update this -->
+<p>Last updated: 13 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

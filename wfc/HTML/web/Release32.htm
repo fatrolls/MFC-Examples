@@ -1,0 +1,104 @@
+<HTML>
+<!-- $Revision: 2 $ -->
+<H1>NOTE!</H1>
+I found a late bug! If you downloaded WFC.ZIP before
+6pm EST on the 9th of March, please download the new
+WFC.ZIP. There was a bug in SOCKETS.CPP. Sorry...
+<H1>Release 32</H1>
+Lots of work at glacial speeds. I can't  believe it has taken
+me seven months to get this release out. My real job is heating
+up. I've been working on two major projects (one of which
+is a multi-OS generic class library to encapsulate Input-Process-Output
+computing problems, lesson learned: <STRONG>UNIX SUCKS!</STRONG>)
+and several minor
+projects. When I get home, I'm tired of coding. I think part of the
+problem is WFC has almost everything I need to get my job done. In short,
+I'm running out of ideas. I was also distracted by the nagging
+question of &quot;How far is it from here to there?&quot; Take a look
+at GFC on my <A HREF="homepage.htm" TARGET="_parent">home page</A> and you will see
+what I mean.
+<H2>What's New</H2>
+<DL COMPACT>
+<DT><B><A HREF="CBitArray.htm">CBitArray</A></B><DD>
+A class that handles bits like any other data type in an array.
+<DT><B><A HREF="CDataParser.htm">CDataParser</A></B><DD>
+Generic data parsing class.
+<DT><B><A HREF="CExtensibleMarkupLanguageAttribute.htm">CExtensibleMarkupLanguageAttribute</A></B><DD> 
+class that encapulates an XML attribute.
+<DT><B><A HREF="CExtensibleMarkupLanguageDocument.htm">CExtensibleMarkupLanguageDocument</A></B><DD>
+class that encapulates an XML document.
+<DT><B><A HREF="CExtensibleMarkupLanguageElement.htm">CExtensibleMarkupLanguageElement</A></B><DD>
+class that encapulates an XML element.
+<DT><B><A HREF="CGarbageCollector.htm">CGarbageCollector</A></B><DD>
+Makes rolling your own copy-on-write objects easy.
+<DT><B><A HREF="CParsePoint.htm">CParsePoint</A></B><DD>
+Holds a location in a data stream. Used in parsing data with
+<A HREF="CDataParser.htm">CDataParser</A>.
+<DT><B><A HREF="wfc_start_screen_saver.htm">wfc_start_screen_saver</A></B><DD>
+C function that activates the screen saver.
+<DT><B><A HREF="wfc_close_handle.htm">wfc_close_handle</A></B><DD>
+C function that returns TRUE if <B>CloseHandle</B>() returns not FALSE.
+<DT><B><A HREF="wfc_get_error_string.htm">wfc_get_error_string</A></B><DD>
+C function that cryptic error codes into something humanly readable.
+<DT><B><A HREF="wfc_get_operating_system_version_string.htm">wfc_get_operating_system_version_string</A></B><DD>
+Fills a CString with a nice OS version string (including service pack level).
+</DL>
+<H2>Bug Fixes/Enhancements</H2>
+<B>Mixer Classes</B> - Sean Dynan (sdynan@cccgroup.co.uk) pointed out
+a flaw in the design of the lesser classes. They had different prototypes
+for <B>Open</B>() than
+<A HREF="CMixer.htm">CMixer</A>::<B>Open</B>().
+These are now fixed so window handles
+can be used in classes like <B>CMixerSpeakers</B>.<P>
+<B><A HREF="CQueue.htm">CQueue</A></B> - You can now add pointers to the queue.<P>
+<B><A HREF="REGISTRY.htm">CRegistry</A></B> - Thanks to Ravi Kiran (kravi@blr.sni.de) for finding a bug in
+the <B>SetStringValue</B>() method. I was only sending half the bytes
+of a UNICODE string. DOH!<P>
+<B><A HREF="CRAS.htm">CRemoteAccessService</A></B> - I now thunk all RAS calls.<P>
+<B><A HREF="Serial.htm">CSerialFile</A></B> - Fixed a problem with MFC. The CFile::Write() method
+incorrectly handles writes that don't write the full number of bytes but
+also does not error out. <A HREF="Serial.htm">CSerialFile</A>::<B>Write</B>() now spoon feeds WriteFile().<P>
+<B><A HREF="SOCKETS.htm">CSimpleSocket</A></B> - I now thunk all of the WinSock calls. This is 
+to ease going between Win95 (hacked up piece of garbage) and NT (a real
+operating system). Also, the <B>Close</B>() method does not reset
+the data members. This makes for a significant speed up for applications
+like port scanners.<P>
+<B>CTalkingSocket</B> - The <B>Open</B>() method now checks to see
+if the socket is already open. If it is, it will close the first
+connection.
+<H3>In General</H3>
+I added another utility function <CODE>wfc_close_handle</CODE>()
+that is used in place of the <B>CloseHandle</B>() Win32 API. This
+function spits out a warning message if <B>CloseHandle</B>() fails.
+(This helps when debugging.)<P>
+<H3>In General 2</H3>
+Sergey Rapoport [serge_rapoport@bigfoot.com] pointed
+out a bug in a <A HREF="CNetwork.htm">CNetwork</A> family of classes. It seems Microsoft
+changed the personality of the networking API. I modified the logic
+of all affected classes so they will now enumerate properly when all
+items have been retrieved in a single retrieve call.<P>
+<B><A HREF="Serial.htm">CSerialFile</A></B> - As requested by Angelini Fabio [fabioang@iol.it],
+There is now a <B>Write</B>() method that writes a single byte.<P>
+<H3>In General 3</H3>
+Somewhere along the line, exception throwing was added to <CODE>new</CODE>.
+I added <CODE>try/catch</CODE> blocks around all calls to the <CODE>new</CODE>
+operator in WFC.
+<H3>HTML INCLUDED!</H3>
+I got a
+<A HREF="http://home.worldonline.nl/~tonswart/" TARGET="_parent">smurf</A>y
+idea, why not let users surf the web pages at home?
+I created a directory under WFC called HTML. There's a batch file
+in there called <CODE>gather.cmd</CODE>. Run this puppy (you must
+build the HTML sample program first) and it will create the WFC
+web site in that directory! Then all you have to do is click on
+the WFC.HTM file and you can navigate all of the documentation.
+I removed all hard references and made the relative paths. I also
+modified the <CODE>paxit.cmd</CODE> file so when I create the distribution
+package, it will pull in the needed HTML files.
+<HR>
+<A HREF="Release31.htm">Release 31 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS>Internet: wfc@pobox.com</ADDRESS>
+<A HREF="http://ourworld.compuserve.com/homepages/Sam_Blackburn" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

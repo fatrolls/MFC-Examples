@@ -1,0 +1,53 @@
+This is a menu/toolbar/dockbar combination which is as close to the VC5/Office style as
+I could get.
+
+This code consists of 6 classes:
+
+CMDIMenuFrameWnd
+Overrides necessary parts of CMDIFrameWnd, to allow proper hotkey operation of
+the menu/toolbar and to replace the CDockBar for the frame.  Fairly trivial
+to use - just derive your CMainFrame from this & the menus work automatically.
+
+CNGenericDockBar
+The standard CDockBar overlaps the toolbars by a couple of pixels, which is undesirable if
+you want a '3d' look as we do.  This is just a simple hack to remove the overlap on our toolbars.
+
+CNMDIClient
+A quick hack to handle the change of menu when a document is opened/closed.  If anyone has a better way to do
+this I'd be glad to hear it!
+
+CNGenericToolBar
+This is based on the code by Roger Onslow, with modifications to allow displaying of text on the
+buttons, and accelerator keys.  Basically it's a drop in replacement for CToolBar, with a different
+Create function and a new call (SetVisualState) which switches the text/bitmaps on and off.
+
+CNGenericMenu
+This is the draggable menu.  It creates a toolbar with text items only and TBSTYLE_DROPDOWN style.
+It attempts to emulate the operation of a VC/Office menu as accurately as possible.  When a button
+is clicked, the menu creates a window of type CNGenericPopup, which draws the menu.
+
+CNGenericPopup
+This draws a standard popup menu, but passes keypresses (left/right arrow mainly) to the owner toolbar.  
+At present it doesn't put the icons on the left as in VC5, but this should be trivial to implement.  It
+uses a standard CMenu object, walks each menu item and draws it.
+
+To Use:
+
+First:  Make sure you have a recent commctrl.h from MS, otherwise you'll get compilation errors
+
+Derive your CMainFrame from CMDIMenuFrameWnd.
+Change your CToolBar definitions to CNGenericToolBar (optional, but it looks nicer).
+Change your CToolBar 'Create' calls to 'CreateEx' calls.
+
+The text for the toolbar buttons is an extra 'line' in the stringtable entry for the command ID.
+To add text on a button, just add a second '\n' followed by your chosen text:
+
+Open File\nOpen		becomes
+Open File\nOpen\n&Open
+
+Optionally, make a call to CToolBar::SetVisualState to show/hide bitmaps and text (you only need to
+call this for a single toolbar - it will be propogated to all existing/future toolbars).
+
+Tony Hoyle (tmh@netfusion.co.uk)
+
+http://sale.netfusion.co.uk

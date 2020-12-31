@@ -1,0 +1,101 @@
+///////////////////////////////////////////////////////////////////
+// MENU1 resource script
+
+#include <afxres.h>
+#include "resource.h"
+
+///////////////////////////////////////////////////////////////////
+// icon
+
+IDR_MAINFRAME   ICON   DISCARDABLE   "mast.ico"
+
+///////////////////////////////////////////////////////////////////
+// Main Menu
+
+IDR_MAINFRAME MENU DISCARDABLE 
+BEGIN
+   POPUP "&File"
+   BEGIN
+      MENUITEM "&Open...\tCtrl+O",     ID_FILEOPEN
+      MENUITEM "&Save\tCtrl+S",        ID_FILESAVE
+      MENUITEM "Save &As...\tCtrl+A",  ID_FILESAVEAS
+      MENUITEM SEPARATOR
+      MENUITEM "E&xit\tAlt+F4",        ID_FILEEXIT
+   END
+   POPUP "&Help"
+   BEGIN
+      MENUITEM "&About\tF12",          ID_HELPABOUT
+   END
+END
+
+///////////////////////////////////////////////////////////////////
+// Context Menu
+
+IDR_CONTEXTMENU MENU DISCARDABLE 
+BEGIN
+   POPUP "ContextMenu"
+   BEGIN
+      MENUITEM "Context Menu Item 1",  ID_CONTEXTMENU1
+      MENUITEM "Context Menu Item 2",  ID_CONTEXTMENU2
+   END
+END
+
+///////////////////////////////////////////////////////////////////
+// String Tables
+
+// Application title bar text
+STRINGTABLE DISCARDABLE 
+BEGIN
+   IDR_MAINFRAME "MAST - Using Menus, Accelerators & String Tables in MFC"
+END
+
+// Menu/Status bar messages
+STRINGTABLE DISCARDABLE 
+BEGIN
+   ID_HELPABOUT     "Provides information about the application"
+   ID_FILESAVEAS    "Saves the active document with a new name"
+   ID_FILEOPEN      "Opens a file"
+   ID_FILESAVE      "Saves the active document"
+   ID_FILEEXIT      "Exits the MAST application"
+   ID_CONTEXTMENU1  "The first context menu item"
+   ID_CONTEXTMENU2  "The second context menu item"
+END
+
+// Message box strings
+STRINGTABLE DISCARDABLE 
+BEGIN
+   IDS_FILESAVEAS   "The File | Save As menu item was selected."
+   IDS_FILESAVE     "The File | Save menu item was selected."
+   IDS_FILEOPEN     "The File | Open menu item was selected."
+   IDS_HELPABOUT    "MAST sample application - Menu, Accelerator 
+                     & String Table resources."
+   IDS_CONTEXT1     "You've just selected context menu item 1."
+   IDS_CONTEXT2     "You've just selected context menu item 2."
+   ID_MESSAGE1      "This is a custom accelerator message! This
+                     message can only appear when you press
+                     Alt+M in the MAST application!"
+END
+
+// IDs defined by MFC
+STRINGTABLE DISCARDABLE 
+BEGIN
+   ID_INDICATOR_CAPS   "CAP"
+   ID_INDICATOR_NUM    "NUM"
+   ID_INDICATOR_SCRL   "SCRL"
+END
+
+///////////////////////////////////////////////////////////////////
+// Accelerators
+
+IDR_MAINFRAME ACCELERATORS DISCARDABLE 
+BEGIN
+   "A",      ID_FILESAVEAS,   VIRTKEY, CONTROL, NOINVERT
+   "M",      ID_MESSAGE1,     VIRTKEY, ALT, NOINVERT
+   "O",      ID_FILEOPEN,     VIRTKEY, CONTROL, NOINVERT
+   "S",      ID_FILESAVE,     VIRTKEY, CONTROL, NOINVERT
+   VK_F10,   IDR_CONTEXTMENU, VIRTKEY, SHIFT, NOINVERT
+   VK_F12,   ID_HELPABOUT,    VIRTKEY, NOINVERT
+END
+
+///////////////////////////////////////////////////////////////////
+

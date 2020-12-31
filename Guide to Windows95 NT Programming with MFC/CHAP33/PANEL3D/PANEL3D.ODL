@@ -1,0 +1,73 @@
+// Panel3d.odl : type library source for OLE Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (Panel3d.tlb) that will become a resource in
+// Panel3d.ocx.
+
+#include <olectl.h>
+
+[ uuid(4D85CC81-D9C6-11CF-A3BC-444553540000), version(1.0),
+  helpstring("Panel3d OLE Control module"), control ]
+library PANEL3DLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	//  Primary dispatch interface for CPanel3dCtrl
+
+	[ uuid(4D85CC82-D9C6-11CF-A3BC-444553540000),
+	  helpstring("Dispatch interface for Panel3d Control"), hidden ]
+	dispinterface _DPanel3d
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CPanel3dCtrl)
+			[id(DISPID_CAPTION), bindable, requestedit] BSTR Caption;
+			[id(0)] BSTR _Caption;
+			[id(1)] short TextAlignment;
+			[id(2)] short BevelWidth;
+			[id(3)] short BevelStyle;
+			[id(4)] boolean DrawText3d;
+			[id(5)] boolean DrawBorder;
+			//}}AFX_ODL_PROP
+
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CPanel3dCtrl)
+			[id(DISPID_REFRESH)] void Refresh();
+			//}}AFX_ODL_METHOD
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+	};
+
+	//  Event dispatch interface for CPanel3dCtrl
+
+	[ uuid(4D85CC83-D9C6-11CF-A3BC-444553540000),
+	  helpstring("Event interface for Panel3d Control") ]
+	dispinterface _DPanel3dEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CPanel3dCtrl)
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CPanel3dCtrl
+
+	[ uuid(AF51A703-D9AC-11CF-A3BC-444553540000),
+	  helpstring("Panel3d Control"), control ]
+	coclass Panel3d
+	{
+		[default] dispinterface _DPanel3d;
+		[default, source] dispinterface _DPanel3dEvents;
+	};
+
+
+	//{{AFX_APPEND_ODL}}
+};

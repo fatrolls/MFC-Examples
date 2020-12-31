@@ -1,0 +1,222 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ExtendedTreeControl.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXMain.rc""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ExtendedTreeControl.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_EXTENDEDTREECONTROL_DIALOG DIALOGEX 0, 0, 365, 182
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ExtendedTreeControl"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Basic Tree control styles",IDC_STATIC_BASIC_STYLES,7,
+                    101,118,11,SS_CENTERIMAGE | SS_SUNKEN,WS_EX_TRANSPARENT
+    LTEXT           "Extended Tree control styles",
+                    IDC_STATIC_EXTENDED_STYLES,142,101,128,11,SS_CENTERIMAGE | 
+                    SS_SUNKEN,WS_EX_TRANSPARENT
+    CONTROL         "List2",IDC_EXTENDED_TREE,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_EDITLABELS | LVS_OWNERDRAWFIXED | 
+                    WS_BORDER | WS_TABSTOP,7,7,263,91,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "Set Font To Selected",IDC_SET_FONT,278,7,80,14
+    PUSHBUTTON      "Hide Selected items",IDC_HIDE,278,26,80,14
+    PUSHBUTTON      "UnHide All Items",IDC_UNHIDE_ALL,278,45,80,14
+    PUSHBUTTON      "Toggle Disable To Sel",IDC_TOGGLE_DISABLE,278,64,80,14
+    CONTROL         "Has lines",IDC_TVS_HASLINES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,113,77,10
+    CONTROL         "Has buttons",IDC_TVS_HASBUTTONS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,126,85,10
+    CONTROL         "Has lines at root",IDC_TVS_HASLINESATROOT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,139,100,10
+    CONTROL         "Show selected always",IDC_TVS_SHOWSELALWAYS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,152,86,10
+    CONTROL         "Multiselection",IDC_TVOXS_MULTISEL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,142,113,100,10
+    CONTROL         "Display grid lines",IDC_TVOXS_GRID,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,142,126,100,10
+    CONTROL         "Full row selection",IDC_TVOXS_ROWSEL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,142,139,100,10
+    CONTROL         "No sorting in the header",IDC_TVOXS_NOSORTHEADER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,142,152,100,10
+    CONTROL         "Display itemtips",IDC_TVOXS_ITEMTIPS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,142,165,100,10
+    PUSHBUTTON      "Button1",IDC_BUTTON1,283,88,50,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "ExtendedTreeControl MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "ExtendedTreeControl\0"
+            VALUE "LegalCopyright", "Copyright (C) 2003\0"
+            VALUE "OriginalFilename", "ExtendedTreeControl.EXE\0"
+            VALUE "ProductName", "ExtendedTreeControl Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO MOVEABLE PURE 
+BEGIN
+    IDD_EXTENDEDTREECONTROL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 358
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 175
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_IL_TREE             BITMAP  MOVEABLE PURE   "il_tree.bmp"
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\ExtendedTreeControl.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXMain.rc"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Visual C++ Tips - DevStudio Tips</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">DevStudio Tips</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+Many of these tips have been gleaned for the tip of the day in DevStudio. You can modify and add to the list of tips that DevStudio will show you by editing the file 'MSDEV.TIP' and 'VCXX.TIP' in the IDE directory under the BIN directory.
+
+<ul>
+<li>If you want to see sample code at the same time you are working on your project, create a new project that contains the sample code as part of your workspace.</li>
+<li>You can tile any subset of your open windows. Choose Windows from the Window menu. Select the windows you want to tile, and click one of the Tile buttons.</li>
+<li>Toolbars can be docked transversely by holding down the Shift key while docking the bar. If you're dropping it at the top, it'll drop vertically. If you're dropping it at the side, it'll drop horizontally.</li>
+<li>To search for the word at the caret, press Ctrl+F3.</li>
+<li>In the Wizard Bar, click on a combo box and start typing. This list changes to include only entries that start with what you have typed.</li>
+<li>If you want to search for text in the InfoViewer window, press Ctrl-F to bring up the search dialog. The find box in the toolbar does not work.</li>
+<li>You can reorganize the tools in the toolbars by Alt-dragging the tools out of the toolbar or into another toolbar.</li>
+<li>You can temporarily change the syntax highlighting by bringing up the properties dialog (Alt-Enter) and selecting a different language. This can be very useful if you have C++ code in an HTML page.</LI>
+<li>The ClassView can be better organized by creating folders and moving the classes to these folders. To create a folder, right-click on an item in the class-view.</li>
+</ul>
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

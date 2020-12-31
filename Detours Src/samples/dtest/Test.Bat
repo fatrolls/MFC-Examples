@@ -1,0 +1,1 @@
+..\bin\dtest.exe

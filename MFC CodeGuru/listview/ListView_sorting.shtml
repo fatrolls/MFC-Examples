@@ -1,0 +1,130 @@
+<HTML>
+
+<!-- Header Information>
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+	<META NAME="Author" CONTENT="Vella Eric">
+	<TITLE><!-- Section Title -->ListView Sorting - <!-- Article Title -->ListView Sorting</TITLE>
+	</HEAD>
+
+	<!-- Set background properties -->
+	<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+	<!-- A word from our sponsors -->
+	<table WIDTH="100%">
+	<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+	</table>
+
+
+	<CENTER><H3><FONT COLOR="#AOAO99">
+	<!-- Article Title -->ListView Sorting
+	</FONT></H3></CENTER>
+	<HR>
+
+	<!-- Author and contact details>
+	This article was contributed by <!-- Author Email --><A HREF="mailto:ERIC.VELLA@kla-tencor.com"><!-- Author Name -->Eric Vella</A>.
+
+	<!-- Text / source code -->
+	<p><!-- THe 'p' starts a paragraph of normal text -->
+	<!-- start a block of source code -->
+	<PRE><TT><FONT COLOR="#990000">
+
+	   Codeguru has several examples of sophisticated ListView column
+sorting.  Here is an extremely simple implementation, which is probably
+sufficient for most needs.  The code determines which column in the
+report was clicked, converts the text data for that column into item
+data, then lets the list control perform its standard sorting.  The code
+below sorts columns of integers; sorting text is even simpler.
+
+   1) Use Class Wizard to map the message LVN_COLUMNCLICK to the
+ListView handler function OnColumnclick.  This will insert the line
+ON_NOTIFY_REFLECT(LVN_COLUMNCLICK, OnColumnclick) into your derived
+ListView message map.  Fill in the OnColumnclick function with the code
+below. 
+
+   2) Add a comparison function to your derived ListView class.  The
+function prototype should read: static int CALLBACK CompareFunc(LPARAM,
+LPARAM, LPARAM).  The ListView framework calls this function to compare
+ListView items (the first two function parameters).  Fill in the
+function with the code below.  
+
+void CMyListView::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+    // Keep track of sort order and column used for sorting.
+
+    static int nSortColumn = -1;
+    static BOOL bSortAscending = TRUE;
+
+    // Get the index of the column header that was clicked.
+
+    NM_LISTVIEW* pNMListView = (NM_LISTVIEW*) pNMHDR;
+    int iColumn = pNMListView -> iSubItem;
+
+    // Reverse sort order if column was just previously clicked.
+
+    if (iColumn == nSortColumn) { bSortAscending = !bSortAscending; }
+    else                                    { bSortAscending = TRUE; }
+    nSortColumn = iColumn;
+
+    // Set item data for each row to column value,
+    // since sort routine gets passed item data only.
+
+    CListCtrl& ListCtrl = GetListCtrl();
+    int nItems = ListCtrl.GetItemCount();
+
+    for (int item=0; item&ltnItems; item++)
+    {
+        CString text = ListCtrl.GetItemText(item, iColumn);
+
+        int value = atoi(text);  // numeric sort
+        if (!bSortAscending) { value = -value; }
+
+        ListCtrl.SetItemData(item, value);
+    }
+
+    LPARAM lParamSort = 0;
+    ListCtrl.SortItems(CompareFunc, lParamSort);
+}
+
+int CALLBACK CMyListView::CompareFunc(LPARAM lParam1, LPARAM lParam2,
+LPARAM lParamSort)
+{
+    // First two parameters are item data to be compared.
+    // Third parameter is passed from SortItems, not used here.
+
+    if (lParam1 < lParam2) { return -1; }
+    if (lParam1 > lParam2) { return  1; }
+    return  0;
+}
+
+	<!-- end a block of source code -->
+	</FONT></TT></PRE>
+
+	<p>Data Posted: 04/30/98
+
+	<P><HR>
+
+	<TABLE BORDER=0 WIDTH="100%">
+	<TR>
+	<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+	<TD WIDTH="33%">
+	<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+	</TD>
+
+	<TD WIDTH="34%">
+	<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+	</TD>
+	</TR>
+	</TABLE>
+
+
+	</BODY>
+	</HTML>
+
+
+
+
+
+
+

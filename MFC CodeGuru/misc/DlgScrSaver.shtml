@@ -1,0 +1,92 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Screen Saver which Displays Pictures</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Screen Saver which Displays Pictures
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><a href="mailto:Jaeger-Geitersdorf@t-online.de">Andreas
+Jäger</a>. 
+
+<!-- Text / source code -->
+<p>This is a simple screen saver, which display sequentially all pictures in a directory
+(bitmaps, metafiles, GIF's, JPEG's, PNG's). The default directory is the directory of the
+screen saver, but you can change it.</p>
+
+<p>Some problems there are still with that screen saver: 
+
+<ol>
+  <li>The &quot;Configure&quot;-button in the &quot;Screen saver&quot;-property sheet does not
+    work correctly. To configure you must call the .scr file directly without parameters (or
+    right click in explorer and choose &quot;Configure&quot;).</li>
+  <li>The screen saver is not able to display other graphics like PCX, TIFF and so on.</li>
+  <li>Win95 could crash when trying to display bitmaps with too high resolution, WinNT has no
+    problem there.</li>
+</ol>
+
+<p>If anybody knows how to fix the problems please send me a mail, so that everybody can
+benefit from it.</p>
+
+<p>Thanks Oliver Reuther for the idea, <a href="mailto:asierra@servidor.unam.mx">Alejandro
+Auilar Sierra</a> for the CImage-class, <a href="mailto:rec@kerridge.com">Robert Caldecott</a>
+for his Metafile class and <a href="mailto:zafir@home.com">Zafir Anjum</a> for some bitmap
+related routines.<br>
+<br>
+When you have some nice pictures like Error-MessageBoxes or Warnings, please feel free to
+send me these pictures as e-mail. I will include them in my project (by adding a
+copyright-notice of the author), and you will get newest versions of the screen saver per
+e-mail.</p>
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="DlgScrSaver.zip">Download demo project & source - 756KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 09 June 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

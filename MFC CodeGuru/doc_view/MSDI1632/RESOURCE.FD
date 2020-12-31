@@ -1,0 +1,14 @@
+!MS$FREEFORM
+! Microsoft Developer Studio generated include file.
+! Used by Msdi.rc
+!
+      integer, parameter :: IDR_MSDITYPE                    = 2
+      integer, parameter :: IDR_GRAFTYPE                    = 3
+      integer, parameter :: IDR_OUTTYPE                     = 4
+      integer, parameter :: IDR_MAINFRAME                   = 5
+      integer, parameter :: IDD_ABOUTBOX                    = 100
+      integer, parameter :: IDD_MSDI_FORM                   = 101
+      integer, parameter :: ID_VIEW_VIEW2                   = 32771
+      integer, parameter :: ID_OUTPUT_TEXT                  = 32772
+      integer, parameter :: ID_OUTPUT_ERASE                 = 32773
+      integer, parameter :: ID_VIEW_OUTPUT                  = 32774

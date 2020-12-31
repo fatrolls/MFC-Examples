@@ -1,0 +1,238 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - 3D Text</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">3D Text</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>. Here's what
+it looks like.
+
+
+<p><img src="3d_text.gif" width="368" height="192"></p>
+
+
+
+<p>Ever want large size text in your about box or splash screen? How about
+text with a raised 3D appearance? Well, this class will do it for you.
+
+<p>Simply add a button to your dialog.  Set the button label to the text
+required - it will enlarge itself to fill the button, so make the button
+bigger for bigger 3D text.
+
+<p>In your dialog class, associate a control variable (say m_text3d), with the
+button.  If you have told class wizard about CMyTextButton, you will be
+able to select it when you define the control variable.  if not, just go
+for CButton and then manually edit the definition in your dialog header
+file, changing CButton ro CMyTextButton.  If you do not like using DDX then
+you can just subclass the control.
+
+<p>In you OnInitDialog you would call the Use3D() function to set 3D effect on
+or off (it is on by default here).  Also, you can change the text with
+SetWindowText().
+
+<p>The class uses PreSubclassWindow to ensure that the correct style bits are
+set, so you don't need to remember to set them in your dialog (I always do
+my own controls this way).
+
+<PRE><TT><FONT COLOR="#990000">///////////////////////////////////////////////////////////////////////////
+//
+// MyTextButton.h interface for CMyTextButton
+// (c) Roger Onslow, 1997
+// use freely and enjoy
+///////////////////////////////////////////////////////////////////////////
+//
+
+#ifndef _CMyTextButton_
+#define _CMyTextButton_
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CMyTextButton control
+
+class CMyTextButton : public CButton {
+     bool m_bUse3D;
+public:
+     CMyTextButton() : m_bUse3D(true) {}
+     void Use3D(bool bUse3D=true) { m_bUse3D = bUse3D; }
+protected:
+     void Draw(CDC* pDC, const CRect& rect, UINT state);
+     //{{AFX_MSG(CMyTextButton)
+     afx_msg void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+     //}}AFX_MSG
+     //{{AFX_VIRTUAL(CMyTextButton)
+     virtual void PreSubclassWindow();
+     //}}AFX_VIRTUAL
+     DECLARE_MESSAGE_MAP()
+};
+
+///////////////////////////////////////////////////////////////////////////
+//
+
+#endif
+
+
+
+///////////////////////////////////////////////////////////////////////////
+//
+// MyTextButton.cpp - large text which acts as a button
+// (c) Roger Onslow, 1997
+// use freely and enjoy
+///////////////////////////////////////////////////////////////////////////
+//
+#include "stdafx.h"
+#include "MyTextButton.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char BASED_CODE THIS_FILE[] = __FILE__;
+#endif
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CMyTextButton
+
+BEGIN_MESSAGE_MAP(CMyTextButton, CButton)
+     //{{AFX_MSG_MAP(CMyTextButton)
+     ON_WM_DRAWITEM()
+     ON_WM_ERASEBKGND()
+     //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CMyTextButton::PreSubclassWindow() {
+     SetButtonStyle(GetButtonStyle() | BS_OWNERDRAW);
+}
+
+///////////////////////////////////////////////////////////////////////////
+//
+// CMyTextButton message handlers
+
+void CMyTextButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) {
+     CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+     ASSERT_VALID(pDC);
+     CRect rectClient = lpDrawItemStruct->rcItem;
+     Draw(pDC,rectClient, lpDrawItemStruct->itemState);
+}
+
+void CMyTextButton::Draw(CDC* pDC, const CRect& rect, UINT state) {
+     CString text; GetWindowText(text);
+     int l = text.GetLength();
+     CRect rectClient = rect;
+
+     // get font from control
+     CFont* pFont = GetFont();
+
+     // ensure we have a valid height and width and select the font
+     LOGFONT logfont;
+     pFont->GetObject(sizeof(LOGFONT),&logfont);
+     if (logfont.lfHeight == 0) logfont.lfHeight = 20;
+     logfont.lfWidth = 0;     // 0 so it will be calculated
+     logfont.lfWeight = 1000;
+     logfont.lfEscapement = logfont.lfOrientation = 0;
+     CFont tryfont; VERIFY(tryfont.CreateFontIndirect(&logfont));
+     CFont* pFontOld = pDC->SelectObject(&tryfont);
+
+     // get the control size and adjust font width & height accordingly
+     if (m_bUse3D) rectClient.DeflateRect(3,3);
+     CSize textSizeClient = pDC->GetTextExtent(text,l);
+     if (rectClient.Width()*textSizeClient.cy >
+rectClient.Height()*textSizeClient.cx) {
+          logfont.lfHeight = ::MulDiv(logfont.
+lfHeight,rectClient.Height(),textSizeClient.cy);
+     } else {
+          logfont.lfHeight = ::MulDiv(logfont.
+lfHeight,rectClient.Width(),textSizeClient.cx);
+     }
+     logfont.lfHeight--; // fudge factor
+     if (m_bUse3D) rectClient.InflateRect(3,3);
+
+     // create adjusted font and select
+     CFont font; font.CreateFontIndirect(&logfont);
+     pDC->SelectObject(&font);
+     textSizeClient = pDC->GetTextExtent(text,l);
+
+     int minx = rectClient.left+(rectClient.Width()-textSizeClient.cx)/2;
+     int miny = rectClient.top+(rectClient.Height()-textSizeClient.cy)/2;
+
+     int oldBkMode = pDC->SetBkMode(TRANSPARENT);
+     COLORREF textcol = ::GetSysColor((state & ODS_FOCUS) ? COLOR_GRAYTEXT
+: COLOR_BTNTEXT);
+     COLORREF oldTextColor = pDC->SetTextColor(textcol);
+
+     int cx = minx;
+     int cy = miny;
+     if (m_bUse3D) {
+          int s = (state & ODS_SELECTED) ? -1 : +1;
+          cx += 3; cy += 3;
+
+          // draw 3D highlights
+          pDC->SetTextColor(::GetSysColor(COLOR_3DDKSHADOW));
+          pDC->TextOut(cx-s*2,cy+s*2,text);
+          pDC->TextOut(cx+s*2,cy-s*2,text);
+          pDC->TextOut(cx+s*2,cy+s*2,text);
+          pDC->SetTextColor(::GetSysColor(COLOR_3DHILIGHT));
+          pDC->TextOut(cx+s*1,cy-s*2,text);
+          pDC->TextOut(cx-s*2,cy+s*1,text);
+          pDC->TextOut(cx-s*2,cy-s*2,text);
+          pDC->SetTextColor(::GetSysColor(COLOR_3DSHADOW));
+          pDC->TextOut(cx-s*1,cy+s*1,text);
+          pDC->TextOut(cx+s*1,cy-s*1,text);
+          pDC->TextOut(cx+s*1,cy+s*1,text);
+          pDC->SetTextColor(::GetSysColor(COLOR_3DLIGHT));
+          pDC->TextOut(cx,cy-s*1,text);
+          pDC->TextOut(cx-s*1,cy,text);
+          pDC->TextOut(cx-s*1,cy-s*1,text);
+          pDC->SetTextColor(textcol);
+     }
+     // draw the text
+     pDC->TextOut(cx,cy,text);
+
+     // restore DC
+     pDC->SetTextColor(oldTextColor);
+     pDC->SetBkMode(oldBkMode);
+     pDC->SelectObject(pFontOld);
+}
+
+BOOL CMyTextButton::OnEraseBkgnd(CDC*) {
+     return true;    // we don't do any erasing...
+}
+
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

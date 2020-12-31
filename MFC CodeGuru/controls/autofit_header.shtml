@@ -1,0 +1,233 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Autofit Header Control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Autofit Header Control</FONT></H3></CENTER>
+<HR>
+
+
+
+
+
+This article was contributed by <A HREF="mailto:baldvin@trafficsoftware.com">Baldvin Hansson</A>.
+
+
+<p>The Header Common Control has a lot of functionality but can still be improved quite a bit.
+One thing I've always missed is to be able to automatically resize it's columns so that they
+occupy the entire width of the control. The following class inherits from CHeaderCtrl and
+adds exactly this feature to the Header Control. All you have to do is to insert the columns
+you want and then call the SetAutofit method. From there on all columns are resized proportionally
+to their existing size when the size of the control changes or when the user drags a column
+header divider.<br>
+<br>
+There is still lot of room for improvements. If you find this class useful and make any modifications
+to it I would appreciate if you'd send me a note with the changes so that we can continue to improve
+this document. It's much better than posting an alternate version all together. I'll be glad to merge
+any such improvements into the basic idea.
+</p>
+
+<p>For information on how to add this header control class to your listview for example, refer to
+the article <a href="http://www.codeguru.com/listview/header_ctrl.shtml">"The Header Control"</a> under the ListView category.</p>
+
+<p>
+<b>HeaderAutofit.h</b>
+<PRE><TT><FONT COLOR="#990000">
+#if !defined(AFX_HEADERAUTOFIT_H__B2BEAB04_6276_11D1_875B_00A0C9181E86__INCLUDED_)
+#define AFX_HEADERAUTOFIT_H__B2BEAB04_6276_11D1_875B_00A0C9181E86__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// HeaderAutofit.h : header file
+// © 1997 Baldvin Hansson [baldvin@trafficsoftware.com]
+
+/////////////////////////////////////////////////////////////////////////////
+// CHeaderAutofit window
+
+class CHeaderAutofit : public CHeaderCtrl
+{
+// Construction
+public:
+	CHeaderAutofit();
+
+// Attributes
+private:
+	bool m_bAutofit;
+public:
+
+// Operations
+private:
+	void Autofit(int nOverrideItemData = -1, int nOverrideWidth = 0);
+public:
+	void SetAutofit(bool bAutofit = true) { m_bAutofit = bAutofit; Autofit(); }
+
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CHeaderAutofit)
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CHeaderAutofit();
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CHeaderAutofit)
+	afx_msg void OnEndTrack(NMHDR * pNotifyStruct, LRESULT* result);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_HEADERAUTOFIT_H__B2BEAB04_6276_11D1_875B_00A0C9181E86__INCLUDED_)
+</FONT></TT></PRE>
+</p>
+
+<p>
+<b>HeaderAutofit.cpp</b>
+<PRE><TT><FONT COLOR="#990000">
+// HeaderAutofit.cpp : implementation file
+//
+// © 1997 Baldvin Hansson [baldvin@trafficsoftware.com]
+
+#include <afxwin.h>
+#include <afxcmn.h>
+#include "HeaderAutofit.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CHeaderAutofit
+
+CHeaderAutofit::CHeaderAutofit()
+{
+	m_bAutofit = false;
+}
+
+CHeaderAutofit::~CHeaderAutofit()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CHeaderAutofit, CHeaderCtrl)
+	//{{AFX_MSG_MAP(CHeaderAutofit)
+	ON_NOTIFY_REFLECT(HDN_ENDTRACK, OnEndTrack)
+	ON_WM_SIZE()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CHeaderAutofit message handlers
+
+void CHeaderAutofit::Autofit(int nOverrideItemData /*= -1*/, int nOverrideWidth /*= 0*/)
+{
+	int nItemCount = GetItemCount();
+	int nTotalWidthOfColumns = 0;
+	int nDifferenceInWidht;
+	int nItem;
+	HD_ITEM hi;
+	CRect rClient;
+
+	if (!m_bAutofit)
+		return;
+
+	SetRedraw(FALSE);
+
+	GetClientRect(&rClient);
+	if (-1 != nOverrideItemData)
+		rClient.right -= nOverrideWidth;
+
+	// Get total width of all columns
+	for (nItem = 0; nItem < nItemCount; nItem++)
+	{
+		if (nItem == nOverrideItemData)	// Don't mess with the item being resized by the user
+			continue;
+
+		hi.mask = HDI_WIDTH;
+		GetItem(nItem, &hi);
+
+		nTotalWidthOfColumns += hi.cxy;
+	}
+
+	if (nTotalWidthOfColumns != rClient.Width())
+	{
+		nDifferenceInWidht = abs(nTotalWidthOfColumns-rClient.Width());	// We need to shrink/expand all columns!
+		
+		// Shrink/expand all columns proportionally based on their current size
+		for (nItem = 0; nItem < nItemCount; nItem++)
+		{
+			if (nItem == nOverrideItemData)	// Skip the overrride column if there is one!
+				continue;
+			
+			hi.mask = HDI_WIDTH;
+			GetItem(nItem, &hi);
+
+			hi.mask = HDI_WIDTH;
+			hi.cxy = (hi.cxy * rClient.Width()) / nTotalWidthOfColumns;
+
+			SetItem(nItem, &hi);
+		}
+	}
+
+	SetRedraw(TRUE);
+	Invalidate();
+}
+
+void CHeaderAutofit::OnEndTrack(NMHDR * pNotifyStruct, LRESULT* result)
+{
+	HD_NOTIFY* pHDN = (HD_NOTIFY*)pNotifyStruct;
+
+	Autofit(pHDN->iItem, pHDN->pitem->cxy);
+}
+
+void CHeaderAutofit::OnSize(UINT nType, int cx, int cy) 
+{
+	CHeaderCtrl::OnSize(nType, cx, cy);
+
+	Autofit();
+}
+</FONT></TT></PRE>
+</p>
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

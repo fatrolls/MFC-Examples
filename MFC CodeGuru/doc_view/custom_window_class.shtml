@@ -1,0 +1,104 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Tyler Bindon">
+   <TITLE>Doc/View - Custom Window Class for View Window</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Custom Window Class for View Window
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:martica@martica.org">Tyler Bindon</A>.
+
+<!-- The article... -->
+
+<p>Often I have been coding away and realized that to get exactly the behavior I would like I would need to change the Window
+class for my View window.  Upon looking into the Developer Studio help file, and perusing the help to AfxRegisterClass, I'd
+realize that this could be a bit more work than one would originally think.  The most recent time I went to do this I came
+across Zafir Anjum's example "Titletip for individual cells" in the ListView section of this code repository.  Looking at
+what he had done for his custom window classes I realized that if I could get the class info for the default window class of the MFC View class, it would be trivial to change the settings of said class and reregister it under a new name.  This is
+what I came up with.
+
+<FONT COLOR="#990000"><TT><PRE>
+#define CUSTOM_CLASSNAME _T("YourCustomClassName")
+
+BOOL CMyView::PreCreateWindow(CREATESTRUCT& cs)
+{
+
+   // modify window styles and such here
+   cs.style |= (WS_CLIPCHILDREN | WS_CLIPSIBLINGS);          
+ 
+   // call base class PreCreateWindow to get the cs.lpszClass filled in with the MFC default class name
+   if( !CView::PreCreateWindow(cs) )
+     return 0;
+
+   // Register the window class if it has not already been registered.
+   
+   WNDCLASS wndcls;
+   HINSTANCE hInst = AfxGetInstanceHandle();
+
+   if(!(::GetClassInfo(hInst, CUSTOM_CLASSNAME, &wndcls)))      // check if our class is registered
+   {
+     if(::GetClassInfo(hInst, cs.lpszClass, &wndcls))           // get default MFC class settings 
+     {
+	wndcls.lpszClassName = CUSTOM_CLASSNAME;                // set our class name
+
+	wndcls.style |= CS_OWNDC;			        // change settings for your custom class
+        wndcls.hbrBackground = NULL;
+
+        if (!AfxRegisterClass(&wndcls))                         // register class
+          AfxThrowResourceException();				// could not register class
+     }
+     else
+       AfxThrowResourceException();				// default MFC class not registered
+    }
+
+    cs.lpszClass = CUSTOMVIEWCLASSNAME;                         // set our class name in CREATESTRUCT
+
+    return 1;                                                   // we're all set
+}
+
+</tt></PRE></FONT>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here -->6/24/98
+<br>Posted by: <A HREF="mailto:Azathoth@Cyberdude.com"><!-- Author Name -->Pat Laplante</A>.
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

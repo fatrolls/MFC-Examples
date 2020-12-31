@@ -1,0 +1,106 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Extended ToolTipCtrl (from IE4)</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Extended ToolTipCtrl (from IE4)
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:shane.kim@kaiserslautern.netsurf.de">Shane Martin</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="extended_tooltip.zip">Download Source Code</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p>The CToolTipEx class is a extension of the MFC CToolTipCtrl control. When Microsoft c
+reated Internet Explorer 4, they also added many new functions and capabilities for
+CToolTipCtrl.  Unfortunately, they have not added these to the CToolTipCtrl class yet.  
+This class wraps all the new procedures in an easy to use and recognizable format.
+  
+<p>Some of the new functions included:
+
+<ul>  
+<li>Ability to change the colors of both the background and foreground (text) of the Tooltip.
+<li>Ability to change the margins (empty space) surrounding the Tooltip.
+<li>Extended the SetDelayTime function to allow for changing the amount of time the Tooltip 
+	is visible and changing the amount of time before the Tooltip appears when moving the
+	cursor to a new control.
+<li>Ability to adjust the maximum width of the Tooltip.  Anything bigger will be displayed 
+	on multiple lines.
+<li>Ability for the Tooltip to move (track) with the cursor.
+</ul>
+  
+<p>Note: To use this class you must have the most current Common Controls DLL (the one 
+that came with IE4 is fine) and the new Common Controls header file (this can be found 
+at <a href="http://premium.microsoft.com/msdn/library/sdkdoc/c622_7nzn.htm">
+http://premium.microsoft.com/msdn/library/sdkdoc/c622_7nzn.htm</a>).
+  
+<h4>General usage:</h4>
+  
+<p>In your mainfrm.h add a variable for the tooltip:
+<FONT COLOR="#990000"><TT><PRE>	CToolTipEx MyToolTip;
+</tt></PRE></FONT>
+  
+<p>In your mainfrm.cpp's OnCreate, after you create the ToolBar:
+<FONT COLOR="#990000"><TT><PRE>	m_wndToolBar.GetToolBarCtrl().SetToolTips(&MyToolTip);
+</tt></PRE></FONT>
+  
+<p>To access your tooltip control you must use:
+<FONT COLOR="#990000"><TT><PRE>	_AFX_THREAD_STATE* pThreadState = AfxGetThreadState();
+	CToolTipEx* pToolTip = (CToolTipEx*) pThreadState->m_pToolTip;
+</tt></PRE></FONT>
+
+<p>The reason you must use the above two lines instead of CToolBarCtrl's GetToolTips() 
+is that the Toolbar doesn't really own the tooltip.  It is owned by the main 
+application thread.
+
+<p>If you have any questions see the provided help file.  It lists all the functions and 
+gives examples for each.
+
+<!-- Remember to update this -->
+<p>Last updated: 9 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

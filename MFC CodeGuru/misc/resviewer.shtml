@@ -1,0 +1,128 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Misc - ResViewer - view resources within a DLL or EXE file.</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+ResViewer - view resources within a DLL or EXE file.
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:fforest@cyberenet.net">Fred Forester</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="resviewer.zip">Download Source Code</A>
+</p>
+<br>
+
+<!-- The article... -->
+<P>ResViewer – The ResViewer program allows one to see the resources that embedded
+Within a DLL or EXE file. The app is an SDI app with Splitter windows
+Where the left window is a tree control and the right is a View. The program was tested
+on WIN/NT 4.0. Written with MS/VC++ 5.0 
+
+<P>
+When a file is opened the tree control is set up with the RT_BITMAP, RT_ICON,RT_CURSOR and
+RT_DIALOG groups. The groups can then be expanded to see each resource within that group.
+When any of the resources are clicked they are displayed in the view.
+
+<P>
+Once a resource is selected the file save as option from the menu can be used to save the resource
+To disk.  Since the RT_ICON resources are used instead of GROUP ICON. Each ICON is saved
+As a separate file. To use them as an application icon you must save both the 16X16 and 32x32.
+The MSVC resource editor can then be used to combine both into a group icon.  
+
+<P>
+The dialogs are saved as .dlg files. The files contain the resource script code to be used in a .RC 
+File. I did the best I could to make it compatible with the resource editor in MS VC but there
+Are no guarentees here. I tested using a lot of different dialogs and they seemed to work ok. 
+Dialogs that contain external controls cannot be displayed but they can be saved. 
+
+<P>
+There are a zillion resource viewers available on the net. So…. What’s difference?
+Well, you have the source and can see how it’s done.  
+
+<P>
+Since this program uses the PERsrc classes as seen in MSJ from Matt Pietrek, the program
+Can easily be entended to support all resource types. 
+
+<P>
+My DlgData class is used to parse the DLGTEMPLATE and DLGTEMPLATEX 
+Structures and to write the .dlg file. 
+
+<P>
+The program was written and tested with MSVC 5.0. 
+
+<h4>Reference materials:</h4>
+
+<P>
+Matt Pietreks PERsrc Classes.  
+<A HREF="http://www.microsoft.com/msj">http://www.microsoft.com/msj</A><BR>
+See the back issues for Jan 1998. 
+The dlgdump program was used as a basis for the DlgData class. 
+The PERsrc class was used for creating the tree control. 
+
+<P>
+Jeff Prosise  Programming Windows 95 with MFC.<BR>
+The Wanderer sample program was used as the basis for the Explorer like splitter window and tree control.
+
+<P>
+MS’s ICONPRO program was used to see how bitmaps 
+And icons resources are processed. This program is available
+In source at<BR>
+<A HREF="http://www.microsoft.com/win32dev">http://www.microsoft.com/win32dev.</a><BR>
+
+<P>
+MS’s IMAGEEDIT program was also used to see how 
+Bitmaps icons and cursors are formatted and displayed.
+The program is avalable in source from the SDK Jan 1998
+And can be downloaded as part of the TOOLS.
+
+<P>
+The CodeGuru website contains a section on converting
+Bitmaps from DIB to DDB. These were helpful since bitmaps are stored in resources as DDB and 
+must be converted before they can be displayed.<BR>
+See <A HREF="http://www.codeguru.com/">http://www.codeguru.com</A><BR>
+
+<!-- Remember to update this -->
+<p>Last updated: 4 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

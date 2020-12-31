@@ -1,0 +1,12 @@
+{\rtf1\ansi\ansicpg1252\deff0\deftab720{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman\fcharset2 Symbol;}{\f2\fswiss\fprq2 Arial;}{\f3\froman Times New Roman;}}
+{\colortbl\red0\green0\blue0;\red255\green0\blue0;\red0\green128\blue0;\red0\green0\blue255;}
+\deflang1031\pard\plain\lang1033\f2\fs20 With a \plain\lang1033\f2\fs20\b CTcxMsgBox\plain\lang1033\f2\fs20  you can:
+\par 
+\par \pard\li360\fi-360\tx360{\*\pn\pnlvlblt\pnf1\pnindent360{\pntxtb\'b7}}\plain\lang1033\f2\fs20 {\pntext\f1\'b7\tab}Customize the buttons. You're not restrained to the old \plain\lang1033\f2\fs20\i Abort/Retry/Ignore\plain\lang1033\f2\fs20 , \plain\lang1033\f2\fs20\i OK\plain\lang1033\f2\fs20 , \plain\lang1033\f2\fs20\i OK/Cancel\plain\lang1033\f2\fs20 , \plain\lang1033\f2\fs20\i Retry/Cancel\plain\lang1033\f2\fs20 , \plain\lang1033\f2\fs20\i Yes/No\plain\lang1033\f2\fs20 , \plain\lang1033\f2\fs20\i Yes/No/Cancel\plain\lang1033\f2\fs20  schemas.
+\par {\pntext\f1\'b7\tab}Select the default button and the escape button IDs.
+\par {\pntext\f1\'b7\tab}Select any icon to decorate the message box.
+\par {\pntext\f1\'b7\tab}Display messages in \plain\lang1033\f2\fs20\cf3\b Rich\plain\lang1033\f2\fs20\b  \plain\lang1033\f2\fs20\cf1\b Text\plain\lang1033\f2\fs20\b  \plain\lang1033\f2\fs20\cf2\b Format\plain\lang1033\f2\fs20 . Therefore, you can format your important messages to really grab user's attention to what's important.
+\par \pard\plain\f2\fs20 
+\par Isn't it \plain\f2\fs24\b Cool\plain\f2\fs20 ?
+\par }
+ 

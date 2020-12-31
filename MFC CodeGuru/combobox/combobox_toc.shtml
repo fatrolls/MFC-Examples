@@ -1,0 +1,56 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ComboBox Controls - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various windows controls">
+   <META Name="keywords" Content="MFC source code combobox controls">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">ComboBox Controls - Table of Contents</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<HR>
+
+<p>This section is being maintained by <a href = "mailto:chris.maunder@codeguru.com">Chris Maunder</a>.
+
+<UL>
+<LI><A HREF="combo_color_picker.shtml">Combobox Color Picker - Baldvin Hansson</A>
+<LI><A HREF="combo_color_picker2.shtml">Combobox Color Picker 2 - Eric Zimmerman</A>
+<LI><A HREF="combo_color_picker3.shtml">Combobox Color Picker 3 - James R. Twine</A>
+<LI><A HREF="autocompleting_combo.shtml">Auto-completion ComboBox - Chris Maunder</A></LI>
+<LI><A HREF="autocompleting_combo2.shtml">Auto-completion ComboBox (2)- Caroline Price</A></LI>
+<LI><A HREF="combo_dropdown_dropdownlist.shtml">ComboBox - Switch between drop down & drop list mode - Robert Cremer</A></LI>
+<LI><A HREF="multicol_combo.shtml">Multicolumn Combobox - Jakawan Ratiwanich</A></LI>
+<LI><A HREF="color_in_disabled_combo.shtml">Showing disabled combo text in black - Moshe Stolar</A></LI>
+<LI><A HREF="font_selection_combo.shtml">Owner Drawn Font Selection Combobox - Girish Bharadwaj</A></LI>
+<LI><A HREF="combo_dropwindow.shtml">Drop down a popdown window instead of a dropdown list from a combobox - Aravind Corera.</A></LI>
+</UL>
+
+
+<HR>
+
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

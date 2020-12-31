@@ -1,0 +1,145 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Custom ListBox with columns</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Custom ListBox with columns
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:doctor@med.auth.gr">Panagiotis Piperopoulos</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="listbox_with_columns.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+This article describes a custom a list box with columns. I will explain how 
+the program works, but for a better understanding you should read the source 
+code. This source is part of a big project that has to do with pizzas and 
+that's why it contains the pizza word in several places.
+
+<ol>
+<li>In the OnInitDialog() function I am initializing the ClientsLB,
+   which is of type CDBListBox. I am getting the positions of some
+   dialog controls and I am using this information to position my
+   list box at the correct place. The actual initialization of the
+   ClientsLB is done by calling:
+	
+<FONT COLOR="#990000"><TT><PRE>
+   ClientsLB.Init( 20, tmpRect2, this, IDC_CLIENTLB );
+</tt></PRE></FONT>
+
+   The first parameter is the height of the list box items<br>
+   The second its position<br>
+   The third the parent window<br>
+   The last is the controls id<br>
+
+   <p>Then I am adding tab stops to the control, meaning that I am
+   telling the control where to put each column. This is done by calling
+
+<FONT COLOR="#990000"><TT><PRE>
+   SetTabStop( short ColumnIndex, short ColumnPosition )
+</tt></PRE></FONT>
+
+   <p>In this application I am using the position of the edit controls
+   above my list box in order to set the tabs position.
+   <br><br>
+
+<li> The control is now ready to accept data. This is done by calling the
+   CListBox::AddString() but the string must have a special format. It
+   contains all the columns seperated by #. For example:
+
+<FONT COLOR="#990000"><TT><PRE>
+   AddString( "column1#column2#column3" )
+</tt></PRE></FONT>
+
+   <p>The control will extract every column and will display it at the
+   appropriate position, as given by SetTabStop().
+
+   <p>The control has a function called GetCurrentID(). This function
+   returns the first column of the selected item as a CString, it is
+   assumed that this is an id column. If there is no current selection
+   in the list box, it returns "NS".
+
+   <p>It also has a function called ExtractString(). You must call this
+   function twice. The first time with CMD_RESET as the first parameter
+   and a string to analyze as the second. The string is copied to the
+   internall buffer and then by calling the function again with CMD_NEXT
+   as the first parameter we are getting the extracted CString in the
+   second. Every time called it returns the next column of the
+   given string. The function returns the index of the extracted column
+   or -1 if there is not another column in the given string.
+
+   <p>So by using the AddString we are adding data to the listbox and
+   by using GetText we are getting a string from it. By calling ExtractString 
+   we are getting the columns of the above string.
+   <br><br>
+
+<li>The list box is connected to the edit controls above it. This is done
+   by handling the ON_LBN_SELCHANGE() event. You can read the
+   CPizzaDlg::OnSelchange() in order to understand how we can use
+   ExtractString(). 
+
+   <p>You can read the CPizzaDlg::OnAddNew() in order to see how we can
+   format the strings we add to the list box.
+   <br><br>
+
+<li>I am using the AddNew() and Update() to add a record to my database
+   I am using SQL commands to delete, modify and find records. I am using
+   CDaoRecordset because when I used CRecordset I found that there was
+   a problem when I used LIKE '*' in my SQL question. CDatabase was
+   searching for the * in my database, didn't used it as a balanter.
+   <br><br>
+
+<li>CPizzaDlg::PopulateLB() is an example of how you can populate the
+list box with database records.
+   <br><br>
+
+<li>The sample application is a simple addresser. To find a record you
+   give an id or any other information ( SurName, SecondName, ... ), you
+   can give only the first letters. If you give the id the other fields
+   are ignored. Then press find. When pressing the Add Button, you are
+   adding a record, and Delete deletes it. You can also modify the
+   selected record. If you want to see all the records just leave the
+   edit boxes empty and press the find button.
+   <br><br>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 4 July 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

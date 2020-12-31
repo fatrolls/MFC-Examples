@@ -1,0 +1,472 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Invert (mirror) a bitmap in-place</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Invert (mirror) a bitmap in-place</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+This code was contributed by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A>.
+
+
+<p>It is possible to invert a bitmap (laterally or vertically) IN-PLACE - ie.
+without creating any intermediate or temporary bitmaps. You can modify the 
+original bitmap directly. This can be very
+useful if you are wanting to reflect a LARGE bitmap, and don't want to
+allocate the extra storage.  The operation requires 50% more StretchBlt
+operations, but does not have the overhead of creating the extra bitmaps
+and device contexts.  Compare this to GetInvertedBitmap presented elsewhere
+which needs to make a copy of the original bitmap. 
+
+
+
+<p>The Windows SDK appears to provide very few functions for manipulating the
+contents of a bitmap.  Sure, you can draw on a bitmap using GDI functions.
+And you can copy a rectangular part of a bitmap onto another bitmap with
+BitBlt or StretchBlt, but that's about it.
+
+<p>However, the BitBlt and StretchBlt routines are quite powerful little
+beasts,
+and you can do all sorts of manipulations using them.
+
+<p>For example, you can use StretchBlt to copy a bitmap onto another bitmap,
+but
+reflect it in the x or y axis along the way.  And if you do both at once,
+you
+can copy the image flipped upside down.  To do this, you specify a negative
+value for the destination width (for a y-axis reflection) or destination
+height (or a x-axis reflection).
+
+<p>You can also use the various raster operations (or ROPs) to achieve various
+interesting effects by specifying how the source and destination bits
+interact
+with each other.
+
+<p>All these operations are good for copying from one bitmap to another (
+including copy from a bitmap to the screen - which is just another bitmap
+anyway).  But what about actually CHANGING a bitmap itself?
+
+<p>Well, you could make a second bitmap, do your magic with it, and then copy
+the
+result back.  However, that means you need an extra BitBlt to copy back,
+AND
+you need extra storage for the temporary bitmap.
+
+<p>A better solution is to do all the changes in place on the original bitmap.
+This is not always possible, but when it is, you get savings in both memory
+and processing.
+
+<p>In this article we will look at using StretchBlt to do x and y axis
+reflections in-place, WITHOUT needing another bitmap.
+
+<p>Before leaping straight into some code, lets go back to one of the simplest
+functions a beginning program learns how to write - the function to swap
+the
+values of two variables.
+
+<PRE><TT><FONT COLOR="#990000">
+void Swap (int& a, int &b) {
+     int temp = a;
+     a = b;
+     b = temp;
+}
+</FONT></TT></PRE>
+
+<p>This function swaps two integer variables.  Note that this requires the use
+of a temporary variable, which I have given the unoriginal name 'temp'.  We
+make a copy of 'a' in 'temp', overwrite 'a' with 'b' (but we still have a
+copy
+in 'temp') and then finally clobber 'b' with the saved value in 'temp'.
+All
+very simple - and a temporary int is not a problem.
+
+<p>But what if a and b are large structures or blocks of memory instead?  Then
+a temporary could be an expensive thing indeed?  But how can we swap the
+values without it?
+
+<p>Elementary, my dear Watson, we use logic!
+
+<p>One of the basic primitive operations that you can do to a lump of bits is
+called an exclusive-or ('XOR') operation.  It is a cousin of the more
+familiar
+'AND' and 'OR' operations that we all know and love.  When you combine two
+values with an 'XOR', you get a 1-bit for each bit that is different and a
+'0' bit for each that is the same.  That is, it sets a bit if and only if
+one
+or the other (but not both) of the input bits are set.
+
+<p>Here are some 'truth tables' that might clear it up.  Compare the table for
+XOR with those for AND and OR.
+
+<PRE><TT><FONT COLOR="#990000">
+XOR     0       1         AND   0       1         OR    0       1
+0       0       1           0   0       0           0   0       1
+1       1       0           1   0       1           1   1       1
+</FONT></TT></PRE>
+
+<p>By looking at the truth table for XOR, you can see that it effectively
+toggles
+(or swaps) the state of a bit of one input when the corresponding bit of
+the
+other input is 1.
+
+<p>Also not that '(A XOR B) XOR B)' returns A, regardless of B.  The first XOR
+with B swaps the state of some of the bits, and then the second XOR swaps
+the
+same states back again.
+
+<p>In C (and C++) the XOR operator is '^', so 'a ^ b' will do a bit-wise XOR
+operation between a and b and return the result.  There is also a
+XOR-assignment operator '^=', so 'a ^= b' will do a bit-wise XOR of b ont
+a,
+replacing the original value of a.
+
+<p>Now comes some magic, we can use XOR's bit state swapping abilities to do
+our entire integer swapping WITHOUT a temporary.
+
+<PRE><TT><FONT COLOR="#990000">
+void InPlaceSwap (int& a, int &b) {
+     a ^= b;
+     b ^= a;
+     a ^= b;
+}
+</FONT></TT></PRE>
+
+<p>Let's look at some bits to see this in action. We'll start off with a=12
+and
+b = 10 (in binary a=1100, b=1010).  Watch what happens to the bits as each
+statement of InPlaceSwap executes:
+
+<PRE><TT><FONT COLOR="#990000">
+                  a     b      Algebra
+               1100  1010
+    a ^= b;    0110  1010      a' = a^b
+    b ^= a;    0110  1100      b' = b^a' = b^a^b = a
+    a ^= b;    1010  1100      a" = a'^b' = a^b^a = b
+</FONT></TT></PRE>
+
+<p>The end result is that a and b are swapped.
+
+<p>You can use the same technique to swap to large blocks of memory by XOR-ing
+their bits using the same algorithm.  In fact, you can swap chunks of bits
+in
+a BITMAP using this algorithm - by using BitBlt with the SRCINVERT raster
+op,
+which does an XOR operation.
+
+<PRE><TT><FONT COLOR="#990000">
+void SwapBlt (CDC* pDC1, int x1, int y1,
+                 int nWidth, int nHeight,
+                 CDC* pDC2, int x2, int y2
+                 ) {
+     if (! nWidth || ! nHeight) return;
+     pDC1->BitBlt(x1,y1, nWidth,nHeight, pDC2, x2,y2, SRCINVERT);
+     pDC2->BitBlt(x2,y2, nWidth,nHeight, pDC1, x1,y1, SRCINVERT);
+     pDC1->BitBlt(x1,y1, nWidth,nHeight, pDC2, x2,y2, SRCINVERT);
+}
+</FONT></TT></PRE>
+
+<p>The SwapBlt function above uses exactly the same algorithm as the
+SwapInPlace
+function previously to swap the rectangle of size nWidth x nHeight at [x1,
+y1]
+with the one at [x2,y2].  Each BitBlt simply does an XOR of two chunks of
+bitmap memory.
+
+<p>By creating a compatible device context and selecting a bitmap into it, you
+can use SwapBlt to swap the left hand side and right hand side of the
+bitmap
+image as shown below.
+
+<p>First we need a helper function to give us the actual width and height of
+the
+bitmap.
+
+<PRE><TT><FONT COLOR="#990000">
+void GetWidthAndHeight(CBitmap* pBitmap, int* pw, int* ph) const {
+     if (! pBitmap && ! pBitmap->GetSafeHandle()) {     // no bitmap yet
+          if (pw) *pw = 0;
+          if (ph) *ph = 0;
+     } else {
+          BITMAP bm;
+          pBitmap->GetObject(sizeof(bm), &bm);
+          if (pw) *pw = bm.bmWidth;
+          if (ph) *ph = bm.bmHeight;
+     }
+}
+</FONT></TT></PRE>
+
+<p>Here's the swapper:
+
+<PRE><TT><FONT COLOR="#990000">
+void SwapLeftAndRightHalves (CBitmap* pBitmap) {
+     if (!pBitmap || ! pBitmap->GetSafeHandle()) return;
+     // create DC and select bitmap into it
+     CDC dc;
+     CDC* pDC = &dc;
+     pDC->CreateCompatibleDC( NULL );
+     CBitmap* pBmpOldImage = pDC->SelectObject(pBitmap);
+     // get bitmap size
+     int nWidth,nHeight;
+     ::GetWidthAndHeight(pBitmap,&nWidth,&nHeight);
+     // do the swap
+     int nHalfWidth = nWidth/2;
+     if (nHalfWidth < 1) return;
+     ::SwapBlt(pDC,0,0,nHalfWidth,nHeight,pDC,nWidth-nHalfWidth,0);
+     // reselect old bitmap into DC
+     pDC->SelectObject(pBmpOldImage);
+}
+</FONT></TT></PRE>
+
+<p>This function simply works out the width of the two halves, by halving the
+bitmap width.  Then it swaps the left and right sides by passing the same
+DC
+for both arguments of SwapBlt, and by giving positions and sizes for the
+left
+and right hand sides.
+
+<p>This is the first step toward doing a reflection.  Now if only we could
+reflect each half we would be done.  That is exactly what we can do - with
+a
+little bit of recursive programming.
+
+<PRE><TT><FONT COLOR="#990000">
+void MirrorLeftAndRightHalves (CBitmap* pBitmap) {
+     if (!pBitmap || ! pBitmap->GetSafeHandle()) return;
+     // create DC and select bitmap into it
+     CDC dc;
+     CDC* pDC = &dc;
+     pDC->CreateCompatibleDC( NULL );
+     CBitmap* pBmpOldImage = pDC->SelectObject(pBitmap);
+     // get bitmap size
+     int nWidth,nHeight;
+     ::GetWidthAndHeight(pBitmap,&nWidth,&nHeight);
+     // do the mirror
+     ::RecursiveMirrorBlt(pDC,0,0,nWidth,nHeight);
+     // reselect old bitmap into DC
+     pDC->SelectObject(pBmpOldImage);
+}
+
+BOOL RecursiveMirrorBlt (CDC* pDC1, int x1, int y1,
+                               int nWidth, int nHeight
+                               ) {
+     int nHalfWidth = nWidth/2;
+     if (nHalfWidth < 1) return;
+     int x2 = x1+nWidth-nHalfWidth;
+     ::SwapBlt(pDC,x1,y1,nHalfWidth,nHeight,pDC,x2,y1);
+     RecursiveMirrorBlt(pDC,x1,y1,nHalfWidth,nHeight);
+     RecursiveMirrorBlt(pDC,x2,y1,nHalfWidth,nHeight);
+}
+</FONT></TT></PRE>
+
+<p>The 'MirrorLeftAndRightHalves' function is similar to our earlier
+'SwapLeftAndRightHalves'.  However, instead of calling SwapBlt it calls
+'RecursiveMirrorBlt'.  This helper function works out the width of the two
+halves and calls SwapBlt to swap them.  Then it calls itself recursively to
+mirror each half.  The recursion stops when we get down to a single pixel
+wide column to mirror, at which stage we have successfully mirrored the
+bitmap image.
+
+<p>Now, this recursive method is not very efficient - it involves move BiBlt
+operations than are necessary.  We could expand this out to an iterative
+method, but there is an even easier way of achieving the same result
+without
+looping or recursion.
+
+<p>The magic here is to write a version of SwapBlt the also does the
+reflection at
+the same time.
+
+<p>Lets see if this will work with some test data nd some pseudo-code
+
+<PRE><TT><FONT COLOR="#990000">
+                          a     b
+                       1100  1010
+     a ^= reverse(b);  1001  1010
+     b ^= reverse(a);  1001  0011
+     a ^= reverse(b);  0101  0011
+</FONT></TT></PRE>
+
+<p>We do indeed end up with a = reverse(b) and b = reverse(a).  Overall we
+have
+a mirror of the original bit pattern.
+
+<p>We can do this reverse and XOR using StretchBlt with a negative value for
+the
+width.  The function to do this is very much like SwapBlt
+
+<PRE><TT><FONT COLOR="#990000">
+void SwapYInvertBlt (CDC* pDC1, int x1, int y1,
+                          int nWidth, int nHeight,
+                          CDC* pDC2, int x2, int y2
+                          ) {
+     if (! nWidth || ! nHeight) return;
+     pDC1->StretchBlt (
+          x1,y1, nWidth,nHeight,
+          pDC2,
+          x2+nWidth-1,y2, -nWidth, nHeight,
+          SRCINVERT
+          );
+     pDC2->StretchBlt (
+          x2,y2, nWidth,nHeight,
+          pDC1,
+          x1+nWidth-1,y1, -nWidth, nHeight,
+          SRCINVERT
+          );
+     pDC1->StretchBlt (
+          x1,y1, nWidth,nHeight,
+          pDC2,
+          x2+nWidth-1,y2, -nWidth, nHeight,
+          SRCINVERT
+          );
+}
+</FONT></TT></PRE>
+
+<p>Notice the negative sign in each StretchBlt for the width.  And also notice
+that the destination x value is adjusted to take into account the negative
+width.
+
+<p>Now we can rewrite our 'SwapLeftAndRightHalves' function to not just swap,
+but to actually do the mirror.
+
+<PRE><TT><FONT COLOR="#990000">
+void MirrorLeftAndRightHalves (CBitmap* pBitmap) {
+     if (!pBitmap || ! pBitmap->GetSafeHandle()) return;
+     // create DC and select bitmap into it
+     CDC dc;
+     CDC* pDC = &dc;
+     pDC->CreateCompatibleDC( NULL );
+     CBitmap* pBmpOldImage = pDC->SelectObject(pBitmap);
+     // get bitmap size
+     int nWidth,nHeight;
+     ::GetWidthAndHeight(pBitmap,&nWidth,&nHeight);
+     // do the swap
+     int nHalfWidth = nWidth/2;
+     if (nHalfWidth < 1) return;
+     ::SwapYInvertBlt(pDC,0,0,nHalfWidth,nHeight,pDC,nWidth-nHalfWidth,0);
+     // reselect old bitmap into DC
+     pDC->SelectObject(pBmpOldImage);
+}
+</FONT></TT></PRE>
+
+<p>This require only 3 StretchBlt operations, each on a half of the bitmap, so
+is very efficient.
+
+<p>Of course the same technique can be used to mirror top and bottom.
+
+<p>We can use these techniques to derive from class CBitmap and add in-place
+inverting functionality to it.  Here, I have single function 'Invert' which
+takes a BOOL value indicating whether we want left/right or top/bottom
+mirroring.  Also note that some of the functions above now appears as
+member
+functions of this class
+
+<PRE><TT><FONT COLOR="#990000">
+//MyBitmap.h
+class CMyBitmap : public CBitmap {
+public:
+     void GetWidthAndHeight (int* pw, int* ph) const;
+public:
+     void Invert (BOOL bLateral);
+};
+// Global helpers
+void SwapBlt (CDC* pDC1, int x1, int y1, int dx, int dy, CDC* pDC2, int x2, int y2);
+void SwapXReflectBlt (CDC* pDC1, int x1, int y1, int dx, int dy, CDC* pDC2, int x2, int y2);
+void SwapYReflectBlt (CDC* pDC1, int x1, int y1, int dx, int dy, CDC* pDC2, int x2, int y2);
+
+
+//MyBitmap.cpp
+#include "stdafx.h"
+#include "MyBitmap.h"
+
+void CMyBitmap::GetWidthAndHeight(int* pw, int* ph) const {
+     if (! GetSafeHandle()) {   // no bitmap yet
+          if (pw) *pw = 0;
+          if (ph) *ph = 0;
+     } else {
+          BITMAP bm; GetObject(sizeof(bm), &bm);
+          if (pw) *pw = bm.bmWidth;
+          if (ph) *ph = bm.bmHeight;
+     }
+}
+
+void CMyBitmap::Invert (BOOL bLateral) {
+     // must have a bitmap
+     if (! GetSafeHandle()) return;
+     // create DC and select this into it
+     CDC dc; CDC* pDC = &dc;
+     pDC->CreateCompatibleDC( NULL );
+     int nWidth,nHeight; GetWidthAndHeight(&nWidth,&nHeight);
+     CBitmap* pBmpOldImage = pDC->SelectObject(this);
+     // do the reflection
+     if (bLateral) {
+          int nHalfWidth = nWidth/2; if (nHalfWidth < 1) return;
+          SwapYInvertBlt(pDC,0,0,nHalfWidth,nHeight,pDC,nWidth-nHalfWidth,0);
+     } else {
+          int nHalfHeight = nHeight/2; if (nHalfHeight < 1) return;
+          SwapXReflectBlt(pDC,0,0,nWidth,nHalfHeight,pDC,0,nHeight-nHalfHeight);
+     }
+     pDC->SelectObject(pBmpOldImage);
+}
+
+// swap two rectangles in two (different or same) DC's (ie. bitmaps)
+void SwapBlt (CDC* pDC1, int x1, int y1, int nWidth, int nHeight, CDC*pDC2, int x2, int y2) {
+     if (nWidth && nHeight) {   // ignore degenerate cases
+          pDC1->BitBlt( x1,y1, nWidth,nHeight, pDC2, x2,y2, SRCINVERT );
+          pDC2->BitBlt( x2,y2, nWidth,nHeight, pDC1, x1,y1, SRCINVERT );
+          pDC1->BitBlt( x1,y1, nWidth,nHeight, pDC2, x2,y2, SRCINVERT );
+     }
+}
+// swap two rectangles in two (different or same) DC's (ie. bitmaps) and reflect in X asis
+void SwapXReflectBlt (CDC* pDC1, int x1, int y1, int nWidth, int nHeight, CDC* pDC2, int x2, int y2) {
+     if (nWidth && nHeight) {   // ignore degenerate cases
+          pDC1->StretchBlt( x1,y1, nWidth,nHeight, pDC2, x2,y2+nHeight-1,nWidth, -nHeight, SRCINVERT );
+          pDC2->StretchBlt( x2,y2, nWidth,nHeight, pDC1, x1,y1+nHeight-1,nWidth, -nHeight, SRCINVERT );
+          pDC1->StretchBlt( x1,y1, nWidth,nHeight, pDC2, x2,y2+nHeight-1,nWidth, -nHeight, SRCINVERT );
+     }
+}
+// swap two rectangles in two (different or same) DC's (ie. bitmaps) and reflect in Y axis
+void SwapYInvertBlt (CDC* pDC1, int x1, int y1, int nWidth, int nHeight,CDC* pDC2, int x2, int y2) {
+     if (nWidth && nHeight) {   // ignore degenerate cases
+          pDC1->StretchBlt( x1,y1, nWidth,nHeight, pDC2, x2+nWidth-1,y2,-nWidth, nHeight, SRCINVERT );
+          pDC2->StretchBlt( x2,y2, nWidth,nHeight, pDC1, x1+nWidth-1,y1,-nWidth, nHeight, SRCINVERT );
+          pDC1->StretchBlt( x1,y1, nWidth,nHeight, pDC2, x2+nWidth-1,y2,-nWidth, nHeight, SRCINVERT );
+     }
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

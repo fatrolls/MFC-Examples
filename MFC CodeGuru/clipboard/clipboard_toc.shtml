@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Subramani Jagadeesan" CONTENT="Zafir Anjum">
+   <TITLE>Clipboard : Table of Contents</TITLE>
+   <META Name="description" Content="Source code related to Clipboard">
+   <META Name="keywords" Content="clipboard BITMAP ENHANCED METAFILE TEXT">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Clipboard : Table of Contents</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+This section is maintained by <a href="mailto:jsmani@teil.soft.net">Subramani Jagadeesan</a>
+
+<HR>
+
+
+<UL>
+<LI><A HREF="bitmap_to_clipboard.shtml">Place a bitmap image on the clipboard (uses OLE) - Randy More</A>
+<LI><A HREF="emf_to_clipboard.shtml">Place a enhanced metafile on the clipboard (uses OLE) - Randy More</A>
+<LI><A HREF="text_tofrom_clipboard.shtml">Read/Write text on clipboard - Randy More</A>
+<LI><A HREF="copypaste_dragdrop.shtml">Basic Copy/Paste & Drag/Drop Support - Keith Rule</A>
+<LI><A HREF="adv_copypaste.shtml">Advanced Copy/Paste & Drag/Drop Support - Keith Rule</A>
+<LI><a href="rtf_clipboard.shtml">RTF streaming and the clipboard - Gary Kuehn</a>
+<LI><a href="copy_graphics.shtml">Copying Graphical Data via Enhanced Meta File - Oliver Eichler</a>
+</UL>
+
+
+
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,100 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Shade images to look like an active icon</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Shade images to look like an active icon</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+When you select an icon in Windows 95 or NT 4.0, the icon appearance is changed to indicate that it is selected. What Windows does is that it turns every other pixel in the image to the highlight color which is usually blue.
+
+<p>The ShadeRect() function shown below executes the same effect on any rectangular area in the device context. It uses GetSysColor(COLOR_HIGHLIGHT) to determine what color to use but you can modify the function so that it takes in the color as one of the arguments. Doing so will allow you to give the image a disabled look when you specify the COLOR_GRAYTEXT color.
+
+<p>Here's what the function does:
+<ol>
+<li>Define an array of WORD to hold the brush pattern. The hex digit 5 corresponds to the binary digits 0101 and the hex digit 'a' corresponds to the binary 1010.</li>
+<li>Create a 8x8 monochrome bitmap which uses our brush pattern.</li>
+<li>Create a pattern brush from the bitmap and select it into the device context.</li>
+<li>Black out every other pixel in the image held by the device context. Since the pattern brush is already selected into the device context we use PatBlt() and an AND raster operation to black out every other pixel. For every foreground pixel in the brush, the PatBlt() function takes the DCs text color and ANDs it with a corresponding pixel in the DC. Since we set the text color to black (all zeros), the result is black. Similarly, for every background pixel in the brush, the DCs background color is combined with the corresponding pixel in the DC. Since the background is white (all ones), the result is that the destination pixel is unchanged.</li>
+<li>Change the blacked out pixel to the highlight color. The logic used is similar to that used in step 4, only, this time we use an OR operation. Black ORed with an other color is the other color.<li>Black out every other pixel in the image held by the device context. Since the pattern brush is already selected into the device context we use PatBlt() and an AND raster operation to black out every other pixel. For every foreground pixel in the brush, the PatBlt() function takes the DCs text color and ANDs it with a corresponding pixel in the DC. Since we set the text color to black (all zeros), the result is black. Similarly, for every background pixel in the brush, the DCs background color is combined with the corresponding pixel in the DC. Since the background is white (all ones), the result is that the destination pixel is unchanged.</li>
+</ol>
+
+<PRE><TT><FONT COLOR="#990000">void ShadeRect( CDC *pDC, CRect& rect )
+{
+	// Bit pattern for a monochrome brush with every
+	// other pixel turned off
+	WORD Bits[8] = { 0x0055, 0x00aa, 0x0055, 0x00aa,
+			 0x0055, 0x00aa, 0x0055, 0x00aa };
+
+	CBitmap bmBrush;
+	CBrush brush;
+
+	// Need a monochrome pattern bitmap
+	bmBrush.CreateBitmap( 8, 8, 1, 1, &Bits );
+
+	// Create the pattern brush
+	brush.CreatePatternBrush( &bmBrush );
+
+	CBrush *pOldBrush = pDC->SelectObject( &brush );
+
+	// Turn every other pixel to black
+	COLORREF clrBk = pDC->SetBkColor( RGB(255,255,255) );
+	COLORREF clrText = pDC->SetTextColor( RGB(0,0,0) );
+	// 0x00A000C9 is the ROP code to AND the brush with the destination
+	pDC->PatBlt(rect.left, rect.top, rect.Width(), rect.Height(), 
+		(DWORD)0x00A000C9);			//DPa - raster code
+
+	pDC->SetBkColor( RGB(0,0,0) );
+	pDC->SetTextColor( GetSysColor(COLOR_HIGHLIGHT) );
+	// 0x00FA0089 is the ROP code to OR the brush with the destination
+	pDC->PatBlt(rect.left, rect.top, rect.Width(), rect.Height(), 
+		(DWORD)0x00FA0089);			//DPo - raster code
+
+	// Restore the device context
+	pDC->SelectObject( pOldBrush );
+	pDC->SetBkColor( clrBk );
+	pDC->SetTextColor( clrText );
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

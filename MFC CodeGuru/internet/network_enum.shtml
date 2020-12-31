@@ -1,0 +1,219 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Network Enumeration</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Network Enumeration</FONT></H3></CENTER>
+
+<HR>
+
+
+
+This article was contributed by <A HREF="mailto:Joerg.Koenig@rhein-neckar.de">Joerg
+Koenig</A>.
+
+<P>As many plain Win32-API tasks, the network enumeration can be a difficult
+one. To keep me from implementing such a task over and over again, I wrote
+a CNetwork class.
+<BR>The class CNetwork is mainly for enumerating the network and performing
+different tasks on the resources hit by the enumeration, so the central
+method of the class is
+
+<P><FONT COLOR="#990000">BOOL&nbsp; Enumerate(DWORD dwFlags = CNetwork::SEARCHDEFAULT);</FONT>
+
+<P>This method starts the enumeration of the network resources. The possible
+values for the &lt;dwFlags> parameter are defined inside CNetwork as follows
+
+<PRE><TT><FONT COLOR="#990000">#define _BIT(n)&nbsp; (1&lt;&lt;n)
+enum {
+	GLOBALNET = _BIT(0),	// search the entire network
+	CONNECTED = _BIT(1),	// search only currently connected resources
+	REMEMBERED = _BIT(2),	// search only "persistent" connections
+
+	TYPE_ANY = _BIT(3),		// search all types of resources
+	TYPE_DISK = _BIT(4),	// search all disk resources
+	TYPE_PRINT = _BIT(5),	// search all print resources
+
+	SEARCHDEFAULT = _BIT(0) | _BIT(3)
+};
+#undef _BIT</FONT></TT></PRE>
+
+<P>Every time the Enumerate() method hits a network-resource, it calls
+an overridable method called
+
+<P><FONT COLOR="#990000">virtual BOOL OnHitResource( NETRESOURCE &amp;
+) = 0;</FONT>
+
+<P>Note that this is a pure virtual in the base class. You have to derive
+your own class from CNetwork and to override this method.
+<BR>The function has to return TRUE, if you want to continue enumeration;
+FALSE to break off.
+<BR>For every hit you get a reference to a NETRESOURCE object. Not to make
+it necessary for you to know of this type, there are many helper functions
+to deal with a NETRESOURCE:
+
+<PRE><TT><FONT COLOR="#990000">// NOTE: Only one of these functions can return TRUE with the same NETRESOURCE object.
+BOOL	IsServer( NETRESOURCE &amp;) const;		// means "Computer", thus clients too
+BOOL	IsDomain( NETRESOURCE &amp;) const;
+BOOL	IsShare( NETRESOURCE &amp; ) const;
+BOOL	IsGeneric( NETRESOURCE &amp;) const;
+
+// The following functions will simplify the NETRESOURCE access:
+LPCTSTR	GetLocalName( NETRESOURCE &amp; ) const;
+LPCTSTR	GetRemoteName( NETRESOURCE &amp; ) const;
+LPCTSTR	GetComment( NETRESOURCE &amp; ) const;
+LPCTSTR	GetProvider( NETRESOURCE &amp; ) const;
+BOOL	IsConnectable( NETRESOURCE &amp;) const;</FONT></TT></PRE>
+
+<P>You can perform some actions with such a NETRESOURCE
+
+<PRE><TT><FONT COLOR="#990000">// Add a connection to the network.
+// If you want to connect to a local drive ("H:" for instance),
+// you have to fill out the "lpLocalName" of &lt;NetRC> (if this
+// member is NULL or empty).
+// &lt;dwFlags> can be set to "CONNECT_UPDATE_PROFILE" to make the
+// connection persistent (i.e. reconnect when the user logs on).
+// if &lt;UserName> is NULL, it defaults to the current user.
+// if &lt;Password> is NULL, it defaults to the &lt;Username>'s password.
+// See WNetAddConnection2() in the online-help for more details
+BOOL	AddConnection(
+			NETRESOURCE &amp; NetRC,
+			DWORD Flags = 0,		// can be CONNECT_UPDATE_PROFILE for a persistent connection
+			LPTSTR UserName = 0,	// defaults to current user
+			LPTSTR Password = 0		// defaults to password of current user
+		);
+
+// Cancel a network-connection. Returns TRUE on success; FALSE on
+// failure. The NetError() method (see below) will be called on
+// failure. For further information see WNetCancelConnection2()
+// in the online-help.
+BOOL	CancelConnection(
+			LPTSTR szName,			// local or remote name of the resource
+			DWORD dwFlags = CONNECT_UPDATE_PROFILE,
+			BOOL ForceDisconnect = FALSE	// force a disconnect even if the resource is in use
+		);
+BOOL	CancelConnection(
+			NETRESOURCE &amp; NetRC,
+			DWORD dwFlags = CONNECT_UPDATE_PROFILE,
+			BOOL ForceDisconnect = FALSE
+		);</FONT></TT></PRE>
+
+<P>As you can see, not many of the WNet*() functions are encapsulated by
+this class. Remember: this is mainly a network-enumerator! Most of the
+WNet*() functions are simple enough, so that they don't need a wrapping
+by this class ...
+
+<P>There is one more virtual method that you might want to override:
+
+<P><FONT COLOR="#990000">virtual BOOL NetError( DWORD dwErrNo, LPCTSTR
+pszFunction );</FONT>
+
+<P>Normally, this function will be called from inside the enumeration or
+one of the operations (Add-/CancelConnection()). The NetError() method
+will return FALSE, if the occured error is a serious one; otherwise it
+can return TRUE to indicate a minor error. The default implementation of
+this method retrieves a human readable error message and stores it in the
+member
+
+<P><FONT COLOR="#990000">LPTSTR m_pszError;</FONT>
+
+<P>One can retrieve its content via a call to
+
+<P><FONT COLOR="#990000">LPCTSTR&nbsp; GetErrorString() const ;</FONT>
+
+<P>So if you override NetError(), you should call the base-class' implementation
+too, if you encounter a serious error. The original NetError() returns
+always FALSE.
+
+<P>Often it is wanted to have a handler for the network-enumeration in
+another class. For this reason I've derived a template class from CNetwork
+that does the requiered work. This class is called CNetSearch.
+<BR>You can use this class as follows:
+<BR>In the class, where you want to handle the resource hits, insert a
+member of type CNetSearch&lt;>. For instance:
+
+<PRE><TT><FONT COLOR="#990000">class CSampleClass {
+	// ...
+	CNetSearch&lt;CSampleClass>	m_NetWalker;
+
+	BOOL	OnNetResourceHit(NETRESOURCE &amp;);	// handler function for netresource hits
+	// ...
+};</FONT></TT></PRE>
+
+<P>In the implementation file of the sample class you have to Create()
+the CNetSearch&lt;> object:
+
+<PRE><TT><FONT COLOR="#990000">CSampleClass :: CSampleClass() {
+	// ...
+	m_NetWalker.Create(this, OnNetResourceHit);
+	// ...
+}
+
+BOOL CSampleClass :: OnNetResourceHit(NETRESOURCE &amp; NetRC) {
+	// This sample handler lists all known computer names in the output window
+	// of the debugger.
+	if(m_NetWalker. IsServer(NetRC) ) {
+		CString str = m_NetWalker.GetRemoteName(NetRC);
+		register int i = 0;
+		for( ; str[i] == '\\' ; ++i );
+		if( i )
+			str = str.Mid(i);
+		str.MakeLower();
+		TRACE1("found computer \"%s\"\n", LPCTSTR(str));
+	return TRUE;	// continue enumeration
+}
+
+void CSampleClass :: SomeOperation() {
+	// ...
+	m_NetWalker.Enumerate();	// start the enumeration. This will (hopefully) lead to subsequent calls
+								// to OnNetResourceHit() above
+	// ...
+}</FONT></TT></PRE>
+
+<P>Note that CNetSearch overrides the NetError() method. It filters the
+errors "ERROR_BAD_NETPATH" (the resource contains more resources, but is
+not accessible at this time) and "ERROR_NO_NETWORK" (there is no network
+present) as minor errors. Other errors are passed to the base implementation
+of that method.
+
+<P>You have to turn on exception handling, if you want to use these classes.
+In VC++ exception handling is on by default.
+
+<P>CNetwork consists of three files:
+<BR>Network.h
+<BR>Network.cpp
+<BR>NetSearch.h
+<BR><A HREF="network_enum_source.zip">Download Source</A> 5KB
+<BR><A HREF="network_enum_sample_project.zip">Download Sample Project</A> 17KB
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

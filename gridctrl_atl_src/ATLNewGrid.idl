@@ -1,0 +1,224 @@
+// ATLNewGrid.idl : IDL source for ATLNewGrid.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ATLNewGrid.tlb) and marshalling code.
+
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+
+
+[
+	uuid(1A6B8660-58C4-11D3-B221-006097FEBF00),
+	version(1.0),
+	helpstring("ATLNewGrid 1.0 Type Library")
+]
+library ATLNEWGRIDLib
+{
+	typedef enum 
+		{
+			GVL_NONE = 0,
+			GVL_HORZ = 1,
+			GVL_VERT = 2,
+			GVL_BOTH = 3
+		} grGridLines;
+
+	typedef enum 
+		{
+			grPictOrientationLeft = 0,
+			grPictOrientationCenter = 1,
+			grPictOrientationRight = 2
+		} grPictOrientation;
+
+	// Horizontal Text Alignment
+		typedef enum
+		{
+			grOrizAlignLeft = 0,	//DT_LEFT
+			grOrizAlignRight = 1,	//DT_RIGHT
+			grOrizAlignCenter = 2	//DT_CENTER
+		} grOrizontalAlignment;
+
+	// Vertical Text Alignment
+		typedef enum
+		{
+			grVertAlignBottom = 0,	//DT_BOTTOM
+			grVertAlignTop = 1,		//DT_TOP
+			grVertAlignCenter = 2	//DT_VCENTER
+		} grVerticalAlignment;
+
+	// Breaking Text words
+		typedef enum
+		{
+			grBreakingTWNormal = 0,	//nor DT_END_ELLIPSIS nor DT_WORDBREAK
+			grBreakingTWWordBreak = 1,	//DT_WORDBREAK
+			grBreakingTWEndEllipsis = 2	//DT_END_ELLIPSIS
+		} grBreakingTextWords;
+
+	// Breaking Text line
+		typedef enum
+		{
+			grTextSingleLine = 0,	//DT_SINGLELINE
+			grTextNoLimit = 1		// Toggle DT_SINGLELINE
+		} grTextLine;
+
+
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	[
+		object,
+		uuid(67C165D4-BE9B-11D3-9942-006097FEBF00),
+	
+		helpstring("IGridCell Interface"),
+		pointer_default(unique)
+	]
+	interface IGridCell : IUnknown
+	{
+		[propget, helpstring("property PictureOrientation")] HRESULT PictureOrientation([out, retval] grPictOrientation *pVal);
+		[propput, helpstring("property PictureOrientation")] HRESULT PictureOrientation([in] grPictOrientation newVal);
+		[propget, helpstring("property Text")] HRESULT Text([out, retval] BSTR *pVal);
+		[propput, helpstring("property Text")] HRESULT Text([in] BSTR newVal);
+		[propget, helpstring("property Font")] HRESULT Font([out, retval] IFontDisp* *pVal);
+		[propput, helpstring("property Font")] HRESULT Font([in] IFontDisp* newVal);
+		[propget, helpstring("Horizontal Alignment")] HRESULT HorizontalAlignment([out, retval] grOrizontalAlignment *pVal);
+		[propput, helpstring("Horizontal Alignment")] HRESULT HorizontalAlignment([in] grOrizontalAlignment newVal);
+		[propget, helpstring("Vertical Alignment")] HRESULT VerticalAlignment([out, retval] grVerticalAlignment *pVal);
+		[propput, helpstring("Vertical Alignment")] HRESULT VerticalAlignment([in] grVerticalAlignment newVal);
+		[propget, helpstring("Breaking Text Words")] HRESULT BreakingTextWords([out, retval] grBreakingTextWords *pVal);
+		[propput, helpstring("Breaking Text Words")] HRESULT BreakingTextWords([in] grBreakingTextWords newVal);
+		[propget, helpstring("property Picture")] HRESULT Picture([out, retval] IPictureDisp* *pVal);
+		[propput, helpstring("property Picture")] HRESULT Picture([in] IPictureDisp* newVal);
+	};
+
+	[
+		object,
+		uuid(3B1CCC50-58C4-11D3-B221-006097FEBF00),
+		dual,
+		helpstring("IGrid Interface"),
+		pointer_default(unique)
+	]
+	interface IGrid : IDispatch
+	{
+	// Stock properties
+		[propputref, bindable,requestedit, id(DISPID_FONT)]
+		HRESULT Font([in]IFontDisp* pFont);
+		[propput, bindable,requestedit, id(DISPID_FONT)]
+		HRESULT Font([in]IFontDisp* pFont);
+		[propget, bindable,requestedit, id(DISPID_FONT)]
+		HRESULT Font([out, retval]IFontDisp** ppFont);
+
+		[propget, id(29), helpstring("property BackColor")] HRESULT BackColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(29), helpstring("property BackColor")] HRESULT BackColor([in] OLE_COLOR newVal);
+
+		[propget, id(1), helpstring("Imposta/ legge l'image per l'item specificato")] HRESULT Image([in] int Row,[in] int Col, [out, retval] short *pVal);
+		[propput, id(1), helpstring("Imposta/ legge l'image per l'item specificato")] HRESULT Image([in] int Row,[in] int Col, [in] short newVal);
+		[propget, id(2), helpstring("Imposta/ legge il testo per l'item specificato")] HRESULT Text([in] int Row,[in] int Col, [out, retval] BSTR *pVal);
+		[propput, id(2), helpstring("Imposta/ legge il testo per l'item specificato")] HRESULT Text([in] int Row,[in] int Col, [in] BSTR newVal);
+		[id(3), helpstring("method InsertRow")] HRESULT InsertRow([in] int Row,[in] BSTR caption);
+		[propget, id(4), helpstring("Imposta/ritorna il numero di righe nella griglia")] HRESULT RowCount([out, retval] int *pVal);
+		[propput, id(4), helpstring("Imposta/ritorna il numero di righe nella griglia")] HRESULT RowCount([in] int newVal);
+		[propget, id(5), helpstring("Imposta/Ritorna il numero di colonne nella grid")] HRESULT ColumnCount([out, retval] int *pVal);
+		[propput, id(5), helpstring("Imposta/Ritorna il numero di colonne nella grid")] HRESULT ColumnCount([in] int newVal);
+		[propget, id(6), helpstring("Imposta/ritorna l'altezza della riga specificata")] HRESULT RowHeight([in] int nRow, [out, retval] int *pVal);
+		[propput, id(6), helpstring("Imposta/ritorna l'altezza della riga specificata")] HRESULT RowHeight([in] int nRow, [in] int newVal);
+		[propget, id(7), helpstring("Imposta/ritorna la larghezza della colonna")] HRESULT ColumnWidth([in] int Col, [out, retval] int *pVal);
+		[propput, id(7), helpstring("Imposta/ritorna la larghezza della colonna")] HRESULT ColumnWidth([in] int Col, [in] int newVal);
+		[propget, id(9), helpstring("property CellFont")] HRESULT CellFont([in] int Row,[in] int Col, [out, retval] IFontDisp* *pVal);
+		[propput, id(9), helpstring("property CellFont")] HRESULT CellFont([in] int Row,[in] int Col, [in] IFontDisp* newVal);
+		[id(11), helpstring("method AutoSize")] HRESULT AutoSize();
+		[propget, id(12), helpstring("Allow Column resizing")] HRESULT ColumnResizing([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(12), helpstring("Allow Column resizing")] HRESULT ColumnResizing([in] VARIANT_BOOL newVal);
+		[propget, id(13), helpstring("property RowResizing")] HRESULT RowResizing([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(13), helpstring("property RowResizing")] HRESULT RowResizing([in] VARIANT_BOOL newVal);
+		[propget, id(14), helpstring("property GridLines")] HRESULT GridLines([out, retval] grGridLines *pVal);
+		[propput, id(14), helpstring("property GridLines")] HRESULT GridLines([in] grGridLines newVal);
+		[propget, id(15), helpstring("property Editable")] HRESULT Editable([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(15), helpstring("property Editable")] HRESULT Editable([in] VARIANT_BOOL newVal);
+		[propget, id(16), helpstring("property FixedRows")] HRESULT FixedRows([out, retval] int *pVal);
+		[propput, id(16), helpstring("property FixedRows")] HRESULT FixedRows([in] int newVal);
+		[propget, id(17), helpstring("property FixedCols")] HRESULT FixedCols([out, retval] int *pVal);
+		[propput, id(17), helpstring("property FixedCols")] HRESULT FixedCols([in] int newVal);
+		[id(18), helpstring("method AutosizeColumn")] HRESULT AutosizeColumn([in] int col);
+		[id(19), helpstring("method AutosizeRow")] HRESULT AutosizeRow([in] int row);
+		[propget, id(20), helpstring("property CellEnabled")] HRESULT CellEnabled([in] int row,[in] int col, [out, retval] VARIANT_BOOL *pVal);
+		[propput, id(20), helpstring("property CellEnabled")] HRESULT CellEnabled([in] int row,[in] int col, [in] VARIANT_BOOL newVal);
+		[propget, id(21), helpstring("property AllowSelection")] HRESULT AllowSelection([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(21), helpstring("property AllowSelection")] HRESULT AllowSelection([in] VARIANT_BOOL newVal);
+		[propget, id(22), helpstring("property ListMode")] HRESULT ListMode([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(22), helpstring("property ListMode")] HRESULT ListMode([in] VARIANT_BOOL newVal);
+		[propget, id(23), helpstring("property CurrentRow")] HRESULT CurrentRow([out, retval] int *pVal);
+		[propput, id(23), helpstring("property CurrentRow")] HRESULT CurrentRow([in] int newVal);
+		[propget, id(24), helpstring("property CurrentCol")] HRESULT CurrentCol([out, retval] int *pVal);
+		[propput, id(24), helpstring("property CurrentCol")] HRESULT CurrentCol([in] int newVal);
+		[id(25), helpstring("method DeleteRow")] HRESULT DeleteRow([in] int row);
+		[propget, id(26), helpstring("property HeaderSort")] HRESULT HeaderSort([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(26), helpstring("property HeaderSort")] HRESULT HeaderSort([in] VARIANT_BOOL newVal);
+		[propget, id(27), helpstring("property SingleRowSelection")] HRESULT SingleRowSelection([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(27), helpstring("property SingleRowSelection")] HRESULT SingleRowSelection([in] VARIANT_BOOL newVal);
+		[id(28), helpstring("method DeleteColumn")] HRESULT DeleteColumn([in] int col);
+		[propget, id(30), helpstring("property FixedBackColor")] HRESULT FixedBackColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(30), helpstring("property FixedBackColor")] HRESULT FixedBackColor([in] OLE_COLOR newVal);
+		[propget, id(31), helpstring("property TextColor")] HRESULT TextColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(31), helpstring("property TextColor")] HRESULT TextColor([in] OLE_COLOR newVal);
+		[propget, id(32), helpstring("property TextBackColor")] HRESULT TextBackColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(32), helpstring("property TextBackColor")] HRESULT TextBackColor([in] OLE_COLOR newVal);
+		[propget, id(33), helpstring("property Color")] HRESULT Color([out, retval] OLE_COLOR *pVal);
+		[propput, id(33), helpstring("property Color")] HRESULT Color([in] OLE_COLOR newVal);
+		[propget, id(34), helpstring("property FixedTextColor")] HRESULT FixedTextColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(34), helpstring("property FixedTextColor")] HRESULT FixedTextColor([in] OLE_COLOR newVal);
+		[propget, id(35), helpstring("property CellFgColor")] HRESULT CellFgColor([in] int Row, [in] int Col, [out, retval] OLE_COLOR *pVal);
+		[propput, id(35), helpstring("property CellFgColor")] HRESULT CellFgColor([in] int Row, [in] int Col, [in] OLE_COLOR newVal);
+		[propget, id(36), helpstring("property CellBgColor")] HRESULT CellBgColor([in] int Row, [in] int Col, [out, retval] OLE_COLOR *pVal);
+		[propput, id(36), helpstring("property CellBgColor")] HRESULT CellBgColor([in] int Row, [in] int Col, [in] OLE_COLOR newVal);
+		[id(37), helpstring("method SimpleConf")] HRESULT SimpleConf();
+		[propget, id(38), helpstring("property Cell")] HRESULT Cell([in] int Row,[in] int Col, [out, retval] IGridCell* *pVal);
+		[propput, id(38), helpstring("property Cell")] HRESULT Cell([in] int Row,[in] int Col, [in] IGridCell* newVal);
+		[propget, id(39), helpstring("property ToolTip")] HRESULT ToolTip([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(39), helpstring("property ToolTip")] HRESULT ToolTip([in] VARIANT_BOOL newVal);
+		[id(40), helpstring("method Refresh")] HRESULT Refresh();
+		[id(41), helpstring("method SelectAllCells")] HRESULT SelectAllCells();
+		[propget, id(42), helpstring("KeepTab specifies if TAB send or not the Focus to the next control")] HRESULT KeepTab([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(42), helpstring("KeepTab specifies if TAB send or not the Focus to the next control")] HRESULT KeepTab([in] VARIANT_BOOL newVal);
+        
+	};
+
+	[
+		uuid(466C80A1-58C4-11D3-B221-006097FEBF00),
+		helpstring("_IGridEvents Interface")
+	]
+	dispinterface _IGridEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("Fired before start Cell edit")] HRESULT BeforeEdit(int Row,int Col,VARIANT_BOOL* Cancel);
+		[id(2), helpstring("Fired before exit Cell edit")] HRESULT ValidateEdit(int Row,int Col,VARIANT_BOOL* Cancel);
+		[id(3), helpstring("Fired after Cell edit end")] HRESULT AfterEdit(int Row,int Col);
+		[id(4), helpstring("Fired before enter in a Cell")] HRESULT EnterCell(int Row,int Col);
+		[id(5), helpstring("Fired after exit from a Cell")] HRESULT LeaveCell(int Row,int Col);
+		[id(6), helpstring("Fired after click on a fixed column")] HRESULT ColumnClick(int Col);
+		[id(7), helpstring("Fired after click on a fixed row")] HRESULT RowClick(int Row);
+		[id(8), helpstring("Fired before a selection changed")] HRESULT SelChanging();
+		[id(9), helpstring("Fired after a selection changed")] HRESULT SelChanged();
+	};
+
+	[
+		uuid(466C80A0-58C4-11D3-B221-006097FEBF00),
+		helpstring("Grid Class")
+	]
+	coclass Grid
+	{
+		[default] interface IGrid;
+		[default, source] dispinterface _IGridEvents;
+	};
+
+	[
+		uuid(67C165D5-BE9B-11D3-9942-006097FEBF00),
+		helpstring("Cell Class")
+	]
+	coclass GridCell
+	{
+		[default] interface IGridCell;
+	};
+
+};

@@ -1,0 +1,375 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>OpenGL - Zooming and Panning an Orthographic Projection</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Zooming and Panning an Orthographic Projection</FONT></H3></CENTER>
+<HR>
+
+
+
+<p>This article was contributed by <a
+href="mailto:kepler@bellsouth.net">Sam Fugarino</a>. </p>
+
+<p>This article assumes that you understand how to set-up OpenGL
+in a CView derived class.</p>
+
+<p>Zooming and panning an orthographic projection can be done by
+manipulating the projection matrix. In the following function,
+SetupOrtho(int cx, int cy), values for the real world origin and
+maximum coordinate values are used to set up the clip rectangle.
+First, the viewport is set to the width and height of the views
+client area. The desired rectangle, in world coordinates, is
+adjusted based on the diminsions of the client area.</p>
+
+<p>SetupOrtho(int cx, int cy) is called by the OnSize() handler
+and by any function that wants to change the zoom or pan of the
+window. The window is invalidated and the views OnDraw(CDC* pDC)
+member function is called. The OnDraw places the new matrix on
+the current matrix stack and the scene is rendered on the back
+buffer. The buffer's are then swapped.</p>
+
+<p>In the following code, xOrg, yOrg, xMax, and yMax are member
+variables used to store the current clip rectangle</p>
+
+<pre><font color="#990000" face="Arial">
+void CGLView::SetupOrtho(int cx, int cy)
+{
+	if( 0 &gt;= cx || 0 &gt;= cy ) return;
+
+	//Set viewport dimensions
+	::glViewport(0, 0, cx, cy);
+	
+	// OK, now save the dimensions of the window
+	m_width = cx;
+	m_height = cy;
+	
+	// Now that the viewport dimensions are set up,
+	//  we can set up the projection matrix. 
+
+	// select the viewing volumn
+	::glMatrixMode ( GL_PROJECTION );
+	::glLoadIdentity ();
+
+	GLdouble dx = xMax - xOrg;
+	GLdouble dy = yMax - yOrg;
+	double aspect_ratio;
+	if(fabs(dx) &gt; 0.001 || fabs(dy) &gt; 0.001)//Controls how far you can zoom in
+	{
+		if(dx &gt;= dy)
+		{	
+	
+			GLdouble dY = dx * m_height / m_width;
+			GLdouble yMax = yOrg  + dY;
+			::glOrtho( xOrg, xMax, yOrg, yMax, -zMax, zMax);
+		}
+		else
+		{
+			GLdouble dX = dy * m_width / m_height;
+			GLdouble xMax = xOrg + dX;
+			::glOrtho( xOrg, xMax, yOrg, yMax, -zMax, zMax);
+	
+		}
+	}
+	// switch back to the modelview matrix and clear it 
+	::glMatrixMode( GL_MODELVIEW ); 
+	::glLoadIdentity(); 
+} </font></pre>
+
+<p>Overridden version of SetupOrtho that uses the client rect:</p>
+
+<pre><font color="#990000" face="Arial">
+void CGLView::SetupOrtho()
+{
+	//Get the client rect	
+	CRect rect;
+	GetClientRect(&amp;rect);
+
+	//Now save the dimensions of the window
+
+	m_width = rect.Width();
+	m_height = rect.Height();
+
+	//Use client rect to set up viewport when SetupOrtho is called
+	SetupOrtho(rect.Width(), rect.Height());
+}
+</font></pre>
+
+<p>OnSize() calls SetupOrtho(int cx, int cy):</p>
+
+<pre><font color="#990000" face="Arial">
+void CGLView::OnSize(UINT nType, int cx, int cy)
+{
+	CView::OnSize(nType, cx, cy);
+	SetupOrtho(cx, cy);
+}
+</font></pre>
+
+<p>OnDraw renders the scene:</p>
+
+<pre><font color="#990000" face="Arial">
+void CGLView::OnDraw(CDC* pDC)
+{
+	
+
+	HDC hdc;
+	HGLRC rc;
+	 
+	//The following two lines are needed for splinter windows and MDI applications
+	CGLView::GetCurrent(hdc, rc);//Store Current rendering context and it's HDC
+	MakeActive();//Make this current OpenGL View
+	
+	//Clear back buffer
+	::glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	
+	//Push new matrix onto stack
+	::glPushMatrix();
+	
+	//Do any drawing on back buffer
+	RenderScene();
+	
+	//Restore stack
+	::glPopMatrix();
+	
+	// Tell OpenGL to flush its pipeline
+	::glFinish();
+	// Now Swap the buffers
+	::SwapBuffers(m_pDC-&gt;GetSafeHdc());
+	
+	CGLView::SetCurrent(hdc, rc);//Reset last rendering context
+
+}
+</font></pre>
+
+<p>The following functions are called by OnDraw()</p>
+
+<pre><font color="#990000" face="Arial">
+BOOL CGLView::MakeActive()
+{
+	return SetCurrent(m_pDC-&gt;GetSafeHdc(), m_hRC);
+}
+
+
+void CGLView::GetCurrent(HDC&amp; hdc, HGLRC&amp; rc) 
+{	
+	hdc = ::wglGetCurrentDC();
+	rc =  ::wglGetCurrentContext(); 
+} 
+
+BOOL CGLView::SetCurrent(HDC hdc, HGLRC rc) 
+{
+	//Set the current rendering context
+	if (FALSE == ::wglMakeCurrent(hdc, rc))
+		return FALSE;
+	return TRUE;
+} 
+
+void CGLView::RenderScene()
+{
+	//draw anything you want in here
+}
+</font></pre>
+
+<p>Example mouse handlers:</p>
+
+<pre><font color="#990000" face="Arial">
+void CGLView::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+
+	CView::OnLButtonDown(nFlags, point);
+	GLdouble modelMatrix[16];
+	GLdouble projMatrix[16];
+	GLint viewport[4];
+	GLdouble objx, objy, objz;
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelMatrix);
+	glGetDoublev(GL_PROJECTION_MATRIX, projMatrix);
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	CRect rect;
+	GetClientRect(&amp;rect);
+	int y = rect.Height() - point.y;
+	gluUnProject(point.x, y, 0, 
+					modelMatrix, projMatrix, viewport, 
+					&amp;objx, &amp;objy, &amp;objz); 
+
+	if(!m_FirstPickPoint)
+	{
+		switch(currTool)
+		{
+			case ID_ZOOM_WINDOW:
+			{
+				m_EndPoint.east = m_StartPoint.east = objx;
+				m_EndPoint.north = m_StartPoint.north = objy;
+				m_EndPoint.elev = m_StartPoint.elev = objz;
+				m_FirstPickPoint = TRUE;
+				m_StartPosition.x = m_CursorPosition.x = point.x;
+				m_StartPosition.y = m_CursorPosition.y = point.y;
+				DrawZoomRect();
+				break;
+
+			}
+			case ID_PAN:
+			{
+				m_EndPoint.east = m_StartPoint.east = objx;
+				m_EndPoint.north = m_StartPoint.north = objy;
+				m_EndPoint.elev = m_StartPoint.elev = objz;
+				m_FirstPickPoint = TRUE;
+				m_StartPosition.x = m_CursorPosition.x = point.x;
+				m_StartPosition.y = m_CursorPosition.y = point.y;
+				DrawRubberBand();
+				break;
+
+			}
+
+		}
+	}
+	else
+	{
+		switch(currTool)
+		{
+			case ID_ZOOM_WINDOW:
+			{
+				m_PrevZoomLeft.east = xOrg;
+				m_PrevZoomLeft.north = yOrg;
+				m_PrevZoomLeft.elev = -zMax;
+				m_PrevZoomRight.east = xMax;
+				m_PrevZoomRight.north = yMax;
+				m_PrevZoomRight.elev = zMax;
+				
+				m_CursorPosition.x = point.x;
+				m_CursorPosition.y = point.y;
+				
+				DrawZoomRect();			
+				m_EndPoint.east = objx;
+				m_EndPoint.north = objy;
+				m_EndPoint.elev = objz;
+				xOrg = min(m_StartPoint.east, m_EndPoint.east);
+				xMax = max(m_StartPoint.east, m_EndPoint.east);
+				yOrg = min(m_StartPoint.north, m_EndPoint.north);
+				yMax = max(m_StartPoint.north, m_EndPoint.north);
+				currTool = -1;
+				m_FirstPickPoint = FALSE;
+				SetupOrtho();
+				Invalidate();
+				break;
+			}
+			case ID_PAN:
+			{
+				m_PrevZoomLeft.east = xOrg;
+				m_PrevZoomLeft.north = yOrg;
+				m_PrevZoomLeft.elev = -zMax;
+				m_PrevZoomRight.east = xMax;
+				m_PrevZoomRight.north = yMax;
+				m_PrevZoomRight.elev = zMax;
+				
+				m_CursorPosition.x = point.x;
+				m_CursorPosition.y = point.y;
+				
+				DrawRubberBand();			
+				m_EndPoint.east = objx;
+				m_EndPoint.north = objy;
+				m_EndPoint.elev = objz;
+				GLdouble DE = m_EndPoint.east - m_StartPoint.east;
+				GLdouble DN = m_EndPoint.north - m_StartPoint.north;
+				xOrg -= DE;
+				xMax -= DE;
+				yOrg -= DN;
+				yMax -= DN;
+				currTool = -1;
+				m_FirstPickPoint = FALSE;
+				SetupOrtho();
+				Invalidate();
+				break;
+			}
+			default:break;
+		}
+	}
+
+		
+}
+
+void CGLView::OnMouseMove(UINT nFlags, CPoint point) 
+{
+
+	CView::OnMouseMove(nFlags, point);
+	
+	if(currTool == ID_ZOOM_WINDOW)
+		if(m_FirstPickPoint)
+			DrawZoomRect();
+
+	if(currTool == ID_PAN)
+		if(m_FirstPickPoint)
+			DrawRubberBand();
+
+
+	m_CursorPosition.x = point.x;
+	m_CursorPosition.y = point.y;
+	GLdouble modelMatrix[16];
+	GLdouble projMatrix[16];
+	GLint viewport[4];
+	GLdouble objx, objy, objz;
+
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelMatrix);
+	glGetDoublev(GL_PROJECTION_MATRIX, projMatrix);
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	
+	CRect rect;
+	GetClientRect(&amp;rect);
+	point.y = rect.Height() - point.y;
+	gluUnProject(point.x, point.y, 0, 
+					modelMatrix, projMatrix, viewport, 
+					&amp;objx, &amp;objy, &amp;objz);
+	
+	m_EndPoint.east = m_MovePoint.east = objx;
+	m_EndPoint.north = m_MovePoint.north = objy;
+	m_EndPoint.elev = m_MovePoint.elev = objz;
+
+	if(currTool == ID_ZOOM_WINDOW)
+		if(m_FirstPickPoint)
+			DrawZoomRect();
+
+	if(currTool == ID_PAN)
+		if(m_FirstPickPoint)
+			DrawRubberBand();
+	
+}
+</font></pre>
+
+<pre><strong>Bibliography</strong></pre>
+
+<pre>Fosner, Ron. <em>OpenGL Programming for Windows 95 and Windows NT</em>. Reading Mass.:Addison-Wesley, 1996.</pre>
+
+<pre><a href="GLZoom.zip">Download source</a>. 62KB</pre>
+
+
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

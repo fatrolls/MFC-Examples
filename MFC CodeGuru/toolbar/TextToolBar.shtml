@@ -1,0 +1,136 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+<title>ToolBar - Displaying text on a Toolbar</title>
+</head>
+<!-- Set background properties -->
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+<!-- A word from our sponsors... -->
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+<!-- Article Title -->
+
+<h3 align="center"><font COLOR="#AOAO99">Displaying text on a Toolbar </font></h3>
+
+<hr align="center">
+<!-- Author and contact details -->
+
+<p>This article was contributed by <a HREF="mailto:michael.brannan@wxs.nl">Michael Brannan</a>.
+<!-- Sample image and source code/demo project --></p>
+
+<p><img SRC="TextToolBar.gif" width="460" height="102"></p>
+
+<p><br>
+<!-- The article... --></p>
+
+<p>Here is a little bit of code for adding text to your toolbars. In the sample there is a
+CToolBar derived class that overrides LoadToolBar(...) and adds the text to the toolbar
+according to the command id of the button. The text added in the example is the last line
+of text from the resource string whose id is the same as the command id of the button. So
+for ID_FILE_NEW we have the standard string &quot;Create a new document\nNew&quot; which
+would give us a button text of &quot;New&quot; where as if we change ID_FILE_NEW to
+&quot;Create a new document\nNew\nNew File&quot; this will cause &quot;New File&quot; to
+be displayed on the toolbar button.<tt><font COLOR="#990000"></p>
+
+<p></font></tt>After the button text has been added the buttons are resized so that you
+can see the text proplerly. The main code for this is as follows:<font COLOR="#990000"><tt></p>
+
+<pre>
+BOOL CTextToolBar::LoadToolBar(LPCTSTR lpszResourceName)
+{
+	BOOL bReturn = CToolBar::LoadToolBar(lpszResourceName);
+
+	// Check if we loaded the toolbar.
+	if (bReturn == FALSE)
+		return bReturn;
+
+	// Make it flat.
+	ModifyStyle(0, GetStyle()|TBSTYLE_FLAT);
+
+	// Set the text for each button
+	CToolBarCtrl&amp; bar = GetToolBarCtrl();
+
+	int		nIndex = 0;
+	TBBUTTON	tb;
+
+	for (nIndex = bar.GetButtonCount(); nIndex &gt;= 0; nIndex--)
+	{
+		ZeroMemory(&amp;tb, sizeof(TBBUTTON));
+		bar.GetButton(nIndex, &amp;tb);
+
+		// Do we have a separator?
+		if ((tb.fsStyle &amp; TBSTYLE_SEP) ==  TBSTYLE_SEP)
+			continue;
+
+		// Have we got a valid command id?
+		if (tb.idCommand == 0)
+			continue;
+
+		// Get the resource string if there is one.
+		CString strText((LPCSTR)tb.idCommand);
+		LPCTSTR lpszButtonText = NULL;
+		CString	strButtonText(_T(&quot;&quot;));
+		_TCHAR	seps[] = _T(&quot;\n&quot;);
+
+		if (!strText.IsEmpty())
+		{
+			lpszButtonText = _tcstok((LPTSTR)(LPCTSTR)strText, seps);
+
+			while(lpszButtonText)
+			{
+				strButtonText = lpszButtonText;
+				lpszButtonText = _tcstok(NULL, seps);
+			}
+		}
+
+		if (!strButtonText.IsEmpty())
+			SetButtonText(nIndex, strButtonText);
+	}
+
+	// Resize the buttons so that the text will fit.
+	CRect rc(0, 0, 0, 0);
+	CSize sizeMax(0, 0);
+
+	for (nIndex = bar.GetButtonCount(); nIndex &gt;= 0; nIndex--)
+	{
+		bar.GetItemRect(nIndex, rc);
+
+		rc.NormalizeRect();
+		sizeMax.cx = __max(rc.Size().cx, sizeMax.cx);
+		sizeMax.cy = __max(rc.Size().cy, sizeMax.cy);
+	}
+	SetSizes(sizeMax, CSize(16,15));
+
+	return bReturn;
+}
+</tt></pre>
+</font><!-- Remember to update this -->
+
+
+<p>Last updated: 6 June 1998 </p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1997 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+</font>
+</body>
+</html>

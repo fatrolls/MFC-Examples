@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Jaroslav Pisk">
+   <TITLE>DevStudio Macros - A secondary clipboard</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+A secondary clipboard
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This tip was contributed by <A HREF="mailto:alexn@tapscan.com">Alex Niblett</A>
+
+<p>This is three very simple macros, which implement a secondary clipboard.  While not everyone would use it, I have found to be quite useful.</p>
+
+<p>Example:  I use Ctrl+C, Ctrl+V and Ctrl+X for the Windows clipboard, and map these macros in as Ctrl+Shift+C, Ctrl+Shift+V and Ctrl+Shift+X.</p>
+
+<PRE><TT><FONT COLOR="#990000">
+' Three simple macros to implement a secondary clipboard
+
+' Global to act as clipboard
+Dim g_lpszSecondClipBoard
+g_lpszSecondClipBoard = ""
+ 
+Sub SecondaryClipBoardCut() 
+'DESCRIPTION: Performs a cut of current selection to a secondary clipboard.
+ g_lpszSecondClipBoard = ActiveDocument.Selection.Text
+ ActiveDocument.Selection.Text = "" 
+End Sub
+ 
+Sub SecondaryClipBoardCopy() 
+'DESCRIPTION: Performs a copy of current selection to a secondary clipboard.
+ g_lpszSecondClipBoard = ActiveDocument.Selection
+End Sub
+ 
+Sub SecondaryClipBoardPaste() 
+'DESCRIPTION: Performs a paste of secondary clipboard to the current selection.
+ ActiveDocument.Selection = g_lpszSecondClipBoard
+End Sub
+
+</FONT></TT></PRE>
+
+<P>Posted on: May 10, 1998.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

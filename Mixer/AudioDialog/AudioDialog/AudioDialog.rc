@@ -1,0 +1,344 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\AudioDialog.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\sound.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About AudioDialog"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "AudioDialog Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2008",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,17,21,20
+END
+
+IDD_AUDIODIALOG_DIALOG DIALOGEX 0, 0, 676, 276
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_HSCROLL | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "AudioDialog"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,555,243,50,16,NOT WS_VISIBLE
+    PUSHBUTTON      "Cancel",IDCANCEL,619,243,50,16,NOT WS_VISIBLE
+    PUSHBUTTON      "Show Info",IDC_MIXER_BUTTON,104,52,57,12
+    CONTROL         "",IDC_SLIDER_VOL,"msctls_trackbar32",TBS_VERT | TBS_BOTH | NOT WS_VISIBLE | WS_TABSTOP,30,168,27,70
+    COMBOBOX        IDC_MIXER_SELECT_COMBO,63,30,139,47,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Mixer ID",IDC_STATIC,95,20,74,8
+    COMBOBOX        IDC_COMBO_DEST,236,30,61,72,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Destination Index",IDC_STATIC,229,20,74,8
+    COMBOBOX        IDC_COMBO_CONTROL,426,30,61,194,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           " Connection",IDC_STATIC,419,20,74,8
+    CONTROL         "",IDC_SLIDER_BAL,"msctls_trackbar32",NOT WS_VISIBLE | WS_TABSTOP,25,132,37,21
+    CONTROL         "Mute",IDC_CHECK_MUTE,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,19,243,47,9
+    LTEXT           "Volume:",IDC_STATIC_VOL,19,157,58,11,SS_CENTERIMAGE | NOT WS_VISIBLE
+    LTEXT           "Balance:",IDC_STATIC_BAL,19,116,58,11,SS_CENTERIMAGE | NOT WS_VISIBLE
+    LTEXT           "Label",IDC_STATIC_LABEL,19,97,61,12,SS_CENTERIMAGE | NOT WS_VISIBLE
+    COMBOBOX        IDC_COMBO_DEST_CONTROL,331,30,61,72,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Dest Control",IDC_STATIC,324,20,74,8
+    COMBOBOX        IDC_COMBO__CONNECTION_CONTROL,521,30,61,68,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Connection Control",IDC_STATIC,514,20,74,8
+    PUSHBUTTON      "Show Info",IDC_DEST_BUTTON,237,52,57,12
+    PUSHBUTTON      "Show Info",IDC_DEST_CTRL_BUTTON,333,52,57,12
+    PUSHBUTTON      "Show Info",IDC_CONNECTION_BUTTON,428,52,57,12
+    PUSHBUTTON      "Show Info",IDC_CONN_CTRL_BUTTON,523,52,57,12
+    LTEXT           "Destination bound to the ...",IDC_DEST_LABEL_STATIC,19,79,247,12,SS_CENTERIMAGE
+END
+
+IDD_MIXER_CAPS_DIALOG DIALOGEX 0, 0, 405, 156
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,271,135,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,348,135,50,14
+    RTEXT           "wMid Mfg ID",IDC_STATIC,35,23,146,13
+    RTEXT           "wPid Prod ID",IDC_STATIC,35,41,146,13
+    RTEXT           "szPname Prod name",IDC_STATIC,35,77,146,13
+    RTEXT           "vDriverVersion",IDC_STATIC_DRV_VER,35,59,146,13
+    RTEXT           "fdwSupport",IDC_STATIC,35,95,146,13
+    RTEXT           "cDestinations # of audio line destinations",IDC_STATIC,35,113,146,13
+    LTEXT           "Static",IDC_STATIC_WMD,199,23,73,13
+    LTEXT           "Static",IDC_STATIC_WPID,199,42,73,13
+    LTEXT           "Static",IDC_STATIC_DV,199,60,73,13
+    LTEXT           "Static",IDC_STATIC_PROD_NAME,199,76,181,13
+    LTEXT           "Static",IDC_STATIC_SUPPORT,199,94,73,13
+    LTEXT           "Static",IDC_STATIC_N_DESTS,199,114,73,13
+END
+
+IDD_DESTINATIONS_DIALOG DIALOGEX 0, 0, 454, 313
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Destination Data"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,162,292,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,241,292,50,14
+    RTEXT           "dwDest",IDC_STATIC,31,17,89,11
+    RTEXT           "dwSource",IDC_STATIC,31,30,89,11
+    RTEXT           "dwLineID",IDC_STATIC,31,43,89,11
+    RTEXT           "fdwLine",IDC_STATIC,31,56,89,11
+    RTEXT           "dwUser",IDC_STATIC,31,69,89,11
+    RTEXT           "dwComponentType",IDC_STATIC,31,82,89,11
+    RTEXT           "cChannels",IDC_STATIC,31,95,89,11
+    RTEXT           "cConnections",IDC_STATIC,31,108,89,11
+    RTEXT           "cControls",IDC_STATIC,31,121,89,11
+    RTEXT           "szShortName",IDC_STATIC,31,134,89,11
+    RTEXT           "szName",IDC_STATIC,31,147,89,11
+    RTEXT           "dwType",IDC_STATIC,31,191,89,11
+    RTEXT           "dwDevID",IDC_STATIC,31,204,89,11
+    RTEXT           "wMid",IDC_STATIC,31,217,89,11
+    RTEXT           "wPid",IDC_STATIC,31,230,89,11
+    RTEXT           "vDriverVer",IDC_STATIC,31,243,89,11
+    RTEXT           "szPname",IDC_STATIC,31,256,89,11
+    LTEXT           "Target Data:",IDC_STATIC,53,177,68,11
+    LTEXT           "Static",IDC_STATIC_DW_DEST,165,17,58,11
+    LTEXT           "Static",IDC_STATIC_DW_SOURCE,165,30,58,11
+    LTEXT           "Static",IDC_STATIC_DW_LINE_ID,165,43,58,11
+    LTEXT           "Static",IDC_STATIC_FDW_LINE,165,56,58,11
+    LTEXT           "Static",IDC_STATIC_DW_USER,165,69,58,11
+    LTEXT           "Static",IDC_STATIC_DW_COMP_TYPE,165,82,222,11
+    LTEXT           "Static",IDC_STATIC_CCHANNELS,165,95,58,11
+    LTEXT           "Static",IDC_STATIC_CCONNECTIONS,165,108,58,11
+    LTEXT           "Static",IDC_STATIC_CCONTROLS,165,121,58,11
+    LTEXT           "Static",IDC_STATIC_SZ_SHORTNAME,165,134,58,11
+    LTEXT           "Static",IDC_STATIC_SZ_NAME,165,147,111,11
+    LTEXT           "Static",IDC_STATIC_DW_TYPE,165,191,201,11
+    LTEXT           "Static",IDC_STATIC_DW_DEV_ID,165,204,58,11
+    LTEXT           "Static",IDC_STATIC_WMID,165,217,58,11
+    LTEXT           "Static",IDC_STATIC_WPID,165,230,58,11
+    LTEXT           "Static",IDC_STATIC_VDRV_VER,165,243,58,11
+    LTEXT           "Static",IDC_STATIC_SZ_PNAME,165,256,227,11
+END
+
+IDD_CONTROLS_DIALOG DIALOGEX 0, 0, 419, 231
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Contol "
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,198,210,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,362,210,50,14
+    RTEXT           "dwControlID",IDC_STATIC,21,18,88,8
+    RTEXT           "dwControlType",IDC_STATIC,21,31,88,8
+    RTEXT           "dwControlType - Class",IDC_STATIC,21,44,88,8
+    RTEXT           "dwControlType - Type",IDC_STATIC,21,57,88,8
+    RTEXT           "fdwControl",IDC_STATIC,21,70,88,8
+    RTEXT           "",IDC_STATIC,21,83,88,8
+    RTEXT           "",IDC_STATIC,21,96,88,8
+    RTEXT           "",IDC_STATIC,21,109,88,8
+    RTEXT           "cMultipleItems",IDC_STATIC,21,122,88,8
+    RTEXT           "szShortName",IDC_STATIC,21,135,88,8
+    RTEXT           "szName",IDC_STATIC,21,148,88,8
+    RTEXT           "Bounds - MIN",IDC_STATIC,21,161,88,8
+    RTEXT           "Bounds - MAX",IDC_STATIC,21,174,88,8
+    RTEXT           "Metrics",IDC_STATIC,21,187,88,8
+    LTEXT           "",IDC_STATIC_CONTROL_ID,149,18,151,8
+    LTEXT           "",IDC_STATIC_CS_CT,149,31,151,8
+    LTEXT           "",IDC_STATIC_CS_CT_CLASS,149,44,151,8
+    LTEXT           "",IDC_STATIC_CS_CT_TYPE,149,57,151,8
+    LTEXT           "",IDC_STATIC_CS_FDW_CONTROL,149,70,151,8
+    LTEXT           "",IDC_STATIC_CS_DISABLED,149,83,151,8
+    LTEXT           "",IDC_STATIC_CS_MULTIPLE,149,96,151,8
+    LTEXT           "",IDC_STATIC_CS_UNIFORM,149,109,151,8
+    LTEXT           "",IDC_STATIC_CS_MULTIPLE_ITEMS,149,122,151,8
+    LTEXT           "",IDC_STATIC_CS_SZ_SHORT_NAME,149,135,151,8
+    LTEXT           "",IDC_STATIC_CS_SZ_NAME,149,148,151,8
+    LTEXT           "",IDC_STATIC_BOUNDS_MIN,149,161,151,8
+    LTEXT           "",IDC_STATIC_BOUNDS_MAX,149,174,151,8
+    LTEXT           "",IDC_STATIC_METRICS,149,187,151,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "Comments", "Duplicates native Windows ""Audio Control"" utility application"
+            VALUE "FileDescription", "Enumerate audio mixers, display data and controls"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "AudioDialog.exe"
+            VALUE "LegalCopyright", "(c) Peter C. Studt.  All rights reserved."
+            VALUE "OriginalFilename", "AudioDialog.exe"
+            VALUE "ProductName", "Audio Dialog"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_AUDIODIALOG_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 669
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 259
+    END
+
+    IDD_MIXER_CAPS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 398
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 149
+    END
+
+    IDD_DESTINATIONS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 447
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 306
+    END
+
+    IDD_CONTROLS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 412
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 224
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About AudioDialog..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\AudioDialog.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

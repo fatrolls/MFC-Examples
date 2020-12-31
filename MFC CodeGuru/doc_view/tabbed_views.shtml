@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc/View - Tabbed Views</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Tabbed Views</FONT></H3></CENTER>
+<HR>
+
+
+This sample was contributed by <A HREF="mailto:mailto:danielh@mail.matco.ro">Daniel Harth</A>.
+
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>This program is useful if you
+need multiple views of the same document but you only want one of them
+to be visible at once. It draws a number of tabs under the menu/toolbars
+that can be used to select the active view. Click <A HREF="tabbed_views.zip">here</A>
+to download the project and source files.</FONT></FONT>
+
+<P><IMG SRC="tabbed_views.gif" BORDER=0 HEIGHT=271 WIDTH=276>
+<BR>&nbsp;
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>First we create a CWnd-derived
+class:</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>class CTabWnd
+: public CWnd</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>{</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+// Construction</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>public:</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+CTabWnd();</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+// Generated message map functions</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>protected:</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+//{{AFX_MSG(CTabWnd)</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+afx_msg BOOL OnEraseBkgnd(CDC* pDC);</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+afx_msg void OnPaint();</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+//}}AFX_MSG</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+DECLARE_MESSAGE_MAP()</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>};</FONT></FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>Then we add a Create function
+to initialize our control.</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>BOOL CTabWnd::Create(DWORD
+dwStyle, CWnd* pParentWnd, UINT nID)</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>{</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+CRect rect, parent;</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+ASSERT(pParentWnd);</FONT></FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+if (!CWnd::Create(NULL, "SealiteTabWnd", WS_CHILD|WS_VISIBLE, rect, pParentWnd,
+nID, NULL))</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+return FALSE;</FONT></FONT></FONT><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1></FONT></FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+m_dwStyle=dwStyle;</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+return TRUE;</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>}</FONT></FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp; As you can
+see the window is created with an uninitialized rect. It will be resized
+as soon as it receives a WM_SIZEPARENT function. It will fill the entire
+client area and the views are creating using it as a parent. Because the
+control is created in the client area of the parent window it has to draw
+itself the client edge. For best results it is recommended that you remove
+the WS_EX_CLIENTEDGE style of the parent window.</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp; Following
+CsplitterWnd’s example we add a linked list of views and a CreateView function
+to add views in it.</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>typedef
+struct</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>{</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+CWnd *pWnd;</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+char szLabel[32];</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+int x_min, x_max;</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>}TABWND_MEMBER;</FONT></FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>CList &lt;TABWND_MEMBER
+*,TABWND_MEMBER *> m_viewList;</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>BOOL CreateView(LPCTSTR
+lpszLabel, CRuntimeClass *pViewClass, CCreateContext *pContext);</FONT></FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp; In the CreateView
+function we instantiate the pViewClass using CRuntimeClass::CreateObject()
+and add the resulting CView to the list.</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp; The created
+views have to be resized whenever the parent window resize, so we add a
+handler for WM_SIZEPARENT.</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>LRESULT
+CTabWnd::OnSizeParent(WPARAM, LPARAM lParam)</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>{</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+PostMessage(WM_TABRESIZE);</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp;
+return 0;</FONT></FONT></FONT>
+<BR><FONT FACE="Courier New"><FONT COLOR="#800000"><FONT SIZE=-1>}</FONT></FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp; To find out
+how much space is available for the client area after the control bars
+have allocated space for themselves we have to use the RepositionBars function
+with the CWnd::reposQuery parameter. Unfortunatly in a WM_SIZEPARENT handler
+RepositionBars does not return a valid rectangle because the message is
+used by the control bars to resize the client area. To walk around this
+we post a message and in its handler we can safely call this function.</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp; The next thing
+to do is handle the WM_PAINT message to draw the selector and the WM_LBUTTONUP
+message to switch the views. The SetActiveView function is used to make
+sure that the window/command messages are routed to the active view. When
+the current tab is changed both the view that’s going to be selected and
+the one that’s going to be unselected are sent the WM_TABCHANGED message.</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>&nbsp;&nbsp;&nbsp; This is a
+rather complex subject and it is imposible to throughly cover it in a few
+pages. For more information you should go through the CTabWnd (you can
+download the project and source files by clicking the link at the beginning
+of this page) and CSplitterWnd.</FONT></FONT>
+
+<P><FONT FACE="Courier New"><FONT SIZE=-1>Send comments, questions etc.
+to <A HREF="mailto:danielh@mail.matco.ro">danielh@mail.matco.ro</A>.</FONT></FONT>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

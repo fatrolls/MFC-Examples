@@ -1,0 +1,123 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>ActiveX - Control container supporting windowless activation</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Control container supporting windowless activation</FONT></H3></CENTER>
+
+<HR>
+
+
+
+<p>This code was contributed by <a href="mailto:kg@it-gmbh.de">Klaus Gütter</a>. </p>
+
+<p>MFC has some nice Control container support embedded seamlessly into the CWnd class. 
+ActiveX controls can be created via CreateControl just as if they were normal Windows
+controls. Besides, CWnd, the relevant classes are  COleControlContainer, COleControlSite and COccManager 
+(declared in mfc\src\occimpl.h)</p>
+
+<p>I wanted to modify this container support so that controls supporting windowless activation
+are created without a window. Windowless activation (used e.g. in IE4) is a technique used to
+improve performance and minimize resource needs, especially when lots of controls are to be created.</p>
+
+<p>The extension is implemented in principle by deriving new classes COleControlContainerEx and 
+COleControlSiteEx providing the required OLE Interfaces and overriding some base class functions.</p>
+
+<p>While most parts of this task were straightforward, there were some parts in MFC 
+resisting simple means:</p>
+
+<ul>
+    <li>Some CWnd members I need to access are declared protected. MFC's container support classes
+	are friends of CWnd and can thus access these members, but derived classes cannot.</li>
+    <li>None of the CreateControl functions in CWnd, COleControlContainer, and COleControlSite
+	is virtual.</li>
+    <li>COleControlContainer manages the contained site in a map HWND -> COleControlSite. 
+	This required each control to have a HWND.</li>
+    <li>A problem with the MFC import library causes a crash when adding new interfaces to 
+	COleControlContainer and COleControlSite.</li>
+</ul>
+
+<p>Some hacks were required to solve these problems. The classes are now working, though 
+they should be considered experimental status and some more effort would be needed to 
+optimize drawing, support non-rectangular controls etc.
+I would like to get some feedback on the implementation, especially how to get rid of those hacks.
+Note that creating windowless controls by dialog templates is currently not supported.</p>
+
+<p>The <a href="windowless.zip">source code (42KB)</a> contains files OccEx.h and OccEx.cpp implementing the new classes, 
+and a sample SDI project, where the view class creates a windowless control.</p>
+
+<p>To use the extension, you will first have to register the new OCC manager in InitInstance:</p>
+
+<PRE><TT><FONT COLOR="#990000">	COccManagerEx g_occManager;
+
+	BOOL CTestApp::InitInstance()
+	{
+		AfxEnableControlContainer(&g_occManager);
+		// ...
+</FONT></TT></PRE>
+
+
+<p>You must also prepare the container window to contains windowless controls. 
+Forwarding keyboard and mouse messages is done automatically by COleContainerEx 
+(by subclassing the WNDPROC of the container window), but
+you will have to call COleContainerEx::OnDraw from your windows drawing code, i.e. from
+OnDraw in CView derived classes and OnPaint in other CWnd derived classes (does someone
+have an idea to handle this automatically, too?):</p>
+
+<PRE><TT><FONT COLOR="#990000">
+	void CTestView::OnDraw(CDC* pDC)
+	{
+		CTestDoc* pDoc = GetDocument();
+		ASSERT_VALID(pDoc);
+		// ...
+
+		if (m_pCtrlCont)
+			STATIC_DOWNCAST(COleControlContainerEx, m_pCtrlCont)->OnDraw(pDC);
+	}
+</FONT></TT></PRE>
+
+<p>The simplest method to create a control, is to create an instance of my CWindowlessControl
+and call its CreateControl function. You can also use ClassWizard generated wrapper classes if
+you change all occurrences of CWnd to CWindowlessControl in the generated H and CPP files.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

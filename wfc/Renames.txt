@@ -1,0 +1,35 @@
+Here's a list of renames that must be performed
+before I can publish on my website:
+
+CExtensibleMarkupLanguageDocument.htm
+CXMLD.htm
+
+CExtensibleMarkupLanguageElement.htm
+CXMLE.htm
+
+CExtensibleMarkupLanguageAttribute.htm
+CXMLA.htm
+
+CExtensibleMarkupLanguageEntity.htm
+CXMLN.htm
+
+CNetworkConnectionInformation.htm
+CNCI.htm
+
+wfc_undocumented_get_system_process_information.htm
+wugspi.htm
+
+CReedSolomonErrorCorrectionCode.htm
+CRSECC.htm
+
+wfc_get_directory_usage_percentage.htm
+wgdup.htm
+
+wfc_get_operating_system_version_string.htm
+wgosvs.htm
+
+wfc_convert_lpwstr_to_cstring.htm
+wcltc.htm
+
+wfc_append_text_to_edit_control.htm
+wattec.htm

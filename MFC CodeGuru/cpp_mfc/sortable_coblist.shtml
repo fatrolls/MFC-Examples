@@ -1,0 +1,248 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>C++ & MFC - Sortable CObList class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Sortable CObList class</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A
+HREF="mailto:douglas.peterson@telex.com">Douglas Peterson</A>.
+<PRE><TT>
+<FONT COLOR="#990000">
+// <B>SortableObList.h</B>
+/////////////////////////////////////////////////////////////////////
+
+class CSortableObList : public CObList
+{
+public:
+	CSortableObList(int nBlockSize = 10) : CObList(nBlockSize) { }
+
+	void Sort(int(*CompareFunc)(CObject* pFirstObj, CObject*pSecondObj));
+	void Sort(POSITION posStart, int iElements, int (*CompareFunc)(CObject* pFirstObj, CObject* pSecondObj));
+};
+
+
+template< class TYPE >
+class CTypedSortableObList : public CSortableObList
+{
+public:
+// Construction
+	CTypedSortableObList(int nBlockSize = 10) : CSortableObList(nBlockSize) { }
+
+	// peek at head or tail
+	TYPE& GetHead()
+		{ return (TYPE&)CSortableObList::GetHead(); }
+	TYPE GetHead() const
+		{ return (TYPE)CSortableObList::GetHead(); }
+	TYPE& GetTail()
+		{ return (TYPE&)CSortableObList::GetTail(); }
+	TYPE GetTail() const
+		{ return (TYPE)CSortableObList::GetTail(); }
+
+	// get head or tail (and remove it) - don't call on empty list!
+	TYPE RemoveHead()
+		{ return (TYPE)CSortableObList::RemoveHead(); }
+	TYPE RemoveTail()
+		{ return (TYPE)CSortableObList::RemoveTail(); }
+
+	// add before head or after tail
+	POSITION AddHead(TYPE newElement)
+		{ return CSortableObList::AddHead(newElement); }
+	POSITION AddTail(TYPE newElement)
+		{ return CSortableObList::AddTail(newElement); }
+
+	// add another list of elements before head or after tail
+	void AddHead(CTypedSortableObList< TYPE >* pNewList)
+		{ CSortableObList::AddHead(pNewList); }
+	void AddTail(CTypedSortableObList< TYPE >* pNewList)
+		{ CSortableObList::AddTail(pNewList); }
+
+	// iteration
+	TYPE& GetNext(POSITION& rPosition)
+		{ return (TYPE&)CSortableObList::GetNext(rPosition); }
+	TYPE GetNext(POSITION& rPosition) const
+		{ return (TYPE)CSortableObList::GetNext(rPosition); }
+	TYPE& GetPrev(POSITION& rPosition)
+		{ return (TYPE&)CSortableObList::GetPrev(rPosition); }
+	TYPE GetPrev(POSITION& rPosition) const
+		{ return (TYPE)CSortableObList::GetPrev(rPosition); }
+
+	// getting/modifying an element at a given position
+	TYPE& GetAt(POSITION position)
+		{ return (TYPE&)CSortableObList::GetAt(position); }
+	TYPE GetAt(POSITION position) const
+		{ return (TYPE)CSortableObList::GetAt(position); }
+	void SetAt(POSITION pos, TYPE newElement)
+		{ CSortableObList::SetAt(pos, newElement); }
+
+	void Sort( int(*CompareFunc)(TYPE pFirstObj, TYPE pSecondObj) )
+		{ CSortableObList::Sort((int(*)(CObject*,CObject*))CompareFunc); }
+	void Sort( POSITION posStart, int iElements, int(*CompareFunc)(TYPE pFirstObj, TYPE pSecondObj) )
+		{ CSortableObList::Sort(posStart, iElements, (int(*)(CObject*,CObject*))CompareFunc); }
+};
+
+
+// <B>SortableObList.cpp</B>
+///////////////////////////////////////////////////////////////////
+
+void CSortableObList::Sort(int (*CompareFunc)(CObject* pFirstObj, CObject* pSecondObj))
+{
+	// CompareFunc is expected to return a positive integer if pFirstObj
+	// should follow pSecondObj (is greater than)
+
+	// Uses Insertion Sort
+
+	// The Shell Sort is much faster than a straight insertion sort, however, it cannot
+	//  be performed on a linked list (it COULD, but the resulting code would probably be
+	//  much slower as a Shell Sort jumps all around the reletive positions of elements).
+
+	// An Insertion Sort works by evaluating an item, if that item should
+	// precede the item in front of it, than it shifts all the items that
+	// should follow that item up one place until it finds the correct position
+	// for the item, whereby it then 'inserts' that item.
+
+	ASSERT_VALID(this);
+
+	// If the list contains no items, the HEAD position will be NULL
+	if (m_pNodeHead == NULL)
+		return;
+
+	CObject *pOtemp;
+	CObList::CNode *pNi,*pNj;
+
+	// Walk the list
+	for (pNi = m_pNodeHead->pNext; pNi != NULL; pNi = pNi->pNext)
+	{
+		// Save data pointer
+		pOtemp = pNi->data;
+
+		// Walk the list backwards from pNi to the beginning of the list or until
+		// the CompareFunc() determines that this item is in it's correct position
+		// shifting all items upwards as it goes
+		for (pNj = pNi; pNj->pPrev != NULL && CompareFunc(pNj->pPrev->data,pOtemp) > 0; pNj = pNj->pPrev)
+			pNj->data = pNj->pPrev->data;
+
+		// Insert data pointer into it's proper position
+		pNj->data = pOtemp;
+	}
+
+}
+
+void CSortableObList::Sort(POSITION posStart, int iElements, int (*CompareFunc)(CObject* pFirstObj, CObject* pSecondObj))
+{
+	// This variation allows you to sort only a portion of the list
+
+	// iElements can be larger than the number of remaining elements without harm
+	// iElements can be -1 which will always sort to the end of the list
+
+	ASSERT_VALID(this);
+	ASSERT( AfxIsValidAddress((CObList::CNode*)posStart, sizeof(CObList::CNode)) );
+
+	// Make certain posStart is a position value obtained by a GetHeadPosition or Find member function call
+	//  as there is no way to test whether or not posStart is a valid CNode pointer from this list.
+	// Ok, there is one way, we could walk the entire list and verify that posStart is in the chain, but even
+	//  for debug builds that's a bit much.
+
+	// If the list contains no items, the HEAD position will be NULL
+	if (m_pNodeHead == NULL)
+		return;
+
+	CObject *pOtemp;
+	CObList::CNode *pNi,*pNj;
+
+	// Walk the list
+	for (pNi = (CObList::CNode*)posStart; pNi != NULL && iElements != 0; pNi = pNi->pNext, iElements--)
+	{
+		// Save data pointer
+		pOtemp = pNi->data;
+
+		// Walk the list backwards from pNi to the beginning of the sort or until
+		// the CompareFunc() determines that this item is in it's correct position
+		// shifting all items upwards as it goes
+		for (pNj = pNi; pNj->pPrev != NULL && pNj->pPrev != ((CObList::CNode*)posStart)->pPrev && CompareFunc(pNj->pPrev->data,pOtemp) > 0; pNj = pNj->pPrev)
+			pNj->data = pNj->pPrev->data;
+
+		// Insert data pointer into it's proper position
+		pNj->data = pOtemp;
+	}
+
+}
+
+</FONT><FONT COLOR="#000000">
+
+// <B>Usage</B>
+//////////////////////////////////////////////////////////
+
+// Create a CObject based class
+// Create a CObject based class
+class CMyObject : public CObject
+{
+public:
+    CString name;
+    static int CompBackward(CMyObject* pFirstObj, CMyObject* pSecondObj)
+    {
+        return -lstrcmp((LPCTSTR)pFirstObj->name,(LPCTSTR)pSecondObj->name);
+    }
+};
+
+// Create a list object
+CTypedSortableObList< CMyObject* > list;
+
+// Fill the list with a bunch of objects
+for (int i=0; i < 10; i++)
+{
+     CMyObject * pObj = new CMyObject;
+     pObj->name.Format("Object #%d",i);
+     list.AddTail(pObj);
+}
+
+// Sort the list
+list.Sort(CMyObject::CompBackward);
+
+// Display the contents of the now sorted list
+for (POSITION pos = list.GetHeadPosition(); pos != NULL; )
+{
+     CMyObject* pObj = list.GetNext(pos);
+     TRACE1("%s\n",pObj->name);
+}
+
+
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto
+HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A
+HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

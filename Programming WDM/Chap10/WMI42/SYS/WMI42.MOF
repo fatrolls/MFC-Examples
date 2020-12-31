@@ -1,0 +1,20 @@
+[Dynamic, Provider("WMIProv"),
+ WMI, 
+ Description("Wmi42 Sample Schema"),
+ guid("A0F95FD4-A587-11d2-BB3A-00C04FA330A6"),
+ locale("MS\\0x409")]
+
+class Wmi42
+{
+    [key, read] 
+     string InstanceName;
+
+    [read] boolean Active;
+
+    [WmiDataId(1),
+     Description("The Answer to the Ultimate Question of Life, the Universe, and Everything")
+     ]
+    uint32 TheAnswer;
+
+};
+

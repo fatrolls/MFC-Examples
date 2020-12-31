@@ -1,0 +1,130 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (WinNT; I) [Netscape]">
+   <TITLE>A Class For Handling The Registry</TITLE>
+</HEAD>
+<BODY>
+
+<CENTER>
+<H3>
+<FONT COLOR="#000099">A Class For Handling The Registry</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:Joerg.Koenig@rhein-neckar.de">Joerg
+Koenig</A>.
+
+<P><A HREF="#rev2">Changes in Revision 2</A>
+<BR><A HREF="#usage">Usage</A>
+<BR><A HREF="#download">Download</A>
+
+<P>Often one can read in the newsgroups, that someone is looking for an
+MFC class that encapsulates the registry. In fact, MFC does not provide
+such a class. As long as one has no need to work with the registry in another
+location than HKEY_CURRENT_USER/Software/[&lt;company>\]&lt;product>, one
+can use CWinApp::GetProfile*() and CWinApp::WriteProfile*().
+
+<P>If one wants to use the registry more flexible, then one has to use
+the API-functions with their dozens of parameters. I don't know why MS
+doesn't provide a registry class in MFC - that would be quite easy ...
+
+<P>The CRegistry class I've developed allows one to use the registry in
+a simple way. In addition to the basic operations (loading and storing
+data), the class provides some more features. For instance one can walk
+the registry tree and perform some operations on any key/value-hit. Furthermore
+the class encapsulates differences between NT and Win95 (Aeh - you guessed
+that the Win32 API should be identical on both systems? Yes - the API is
+identical, but the performed action is not! Take a closer look at the description
+of the RegDeleteKey() function for instance.)
+
+<P>To handle all the different data types one can put into the registry,
+the CRegistry class uses an information holder class CRegVal. If you have
+to load a string from
+<BR>HKEY_LOCAL_MACHINE/Software/Microsoft/Windows NT/CurrentVersion/WinLogon/DefaultUserName
+<BR>you can do it as follows:
+<PRE><TT><FONT COLOR="#990000">CString strKey = "Software\\Microsoft\\Windows NT\\CurrentVersion\\WinLogon";
+CRegistry reg = HKEY_LOCAL_MACHINE;&nbsp; // otherwise it defaults to HKEY_CURRENT_USER
+CString strDefaultUserName;
+CRegVal regval;
+if( reg.LoadKey(strKey, "DefaultUserName", regval) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( regval.GetValue(strDefaultUserName) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // yep - got the name</FONT></TT></PRE>
+Simple datatypes (numbers and strings) will be supported directly by the
+CRegistry class, so you can write the sample above as follows:
+<PRE><TT><FONT COLOR="#990000">CString strKey = "Software\\Microsoft\\Windows NT\\CurrentVersion\\WinLogon";
+CRegistry reg = HKEY_LOCAL_MACHINE;&nbsp; // otherwise it defaults to HKEY_CURRENT_USER
+CString strDefaultUserName;
+if( reg.LoadKey(strKey, "DefaultUserName", strDefaultUserName) )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // yep - got the name</FONT></TT></PRE>
+.. but, if CRegistry::LoadKey() returns FALSE, this makes it harder to
+check wether the type of the registry key is wrong or the entry does not
+exist.
+
+<P>CRegistry doesn't support security (but that was no handicap for me
+so far :-)
+<BR>&nbsp;
+<H4>
+<A NAME="rev2"></A>Changes in Revision 2</H4>
+You can use Registry.cpp if you want to use the registry classes in a non-MFC
+application and RegMFC.cpp in an MFC-based application. RegMFC.cpp will
+support some more methods for use with MFC.
+<BR>For a build with MFC, you have to insert both files (Registry.cpp and
+RegMFC.cpp) into your project, but to exclude Registry.cpp from build.
+<BR>In a non-MFC build you have to include Registry.cpp into your project
+only. In this case you don't need RegMFC.cpp.
+<BR>Normally Registry.h detects whether you build an MFC version or not.
+If you want to build a non-MFC version in all circumstances, you can <FONT COLOR="#990000">#define
+_REG_NO_MFC_BUILD</FONT>.
+<BR>Furthermore you can <FONT COLOR="#990000">#define _REG_NO_TREEWALK</FONT>
+to shrink the size of the resulting object files. This #define hides the
+CRegistry::RegistryTreeWalk() function and its associates. Use the _REG_NO_TREEWALK
+if you sure know, that you don't need the RegistryTreeWalk() method and
+want to reduce the code of your application/dll.
+<BR>If you plan to use the CRegistry class in a non-MFC project you really
+should <FONT COLOR="#990000">#define STRICT</FONT> to make sure the class
+behaves correct in all circumstances. This absolutly necessary, if you
+insert the class in a non-MFC dll that might be used in a MFC application.
+<BR>CRegistry now is ready for use with UNICODE.
+<BR>&nbsp;
+<H4>
+<A NAME="usage"></A>Usage</H4>
+If you want to use the class in a MFC environment, you have to include
+all three files to your project, but to exclude Registry.cpp from build.
+To do so, right-click the file in the <B>FileView</B> of the workspace
+window and select <B>Settings ... . </B>Make sure you select <B>All Configurations</B>.
+Now select the <B>General</B> page and check the field <B>Exclude file
+from build</B>.
+<BR>In a pure Win32 project you will need Registry.[h|cpp] only.
+
+<P><A NAME="download"></A>CRegistry consists of three files:
+<BR>Registry.h
+<BR>Registry.cpp
+<BR>RegMFC.cpp
+<BR><A HREF="registry_source.zip">Download Source</A> 13 KB
+<BR><A HREF="registry_sample_source.zip">Download Sample Project</A> 23
+KB
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@dsp.net">zafir@dsp.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<CENTER><FONT SIZE=-2>404</FONT></CENTER>
+
+</BODY>
+</HTML>

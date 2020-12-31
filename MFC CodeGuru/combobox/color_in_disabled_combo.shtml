@@ -1,0 +1,89 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Showing disabled combo text in black</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Showing disabled combo text in black</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:stolar@phasecom.co.il">Moshe Stolar</A>. 
+This is only half a solution - works only with CBS_DROPDOWN but not with CBS_DROPDOWNLIST.
+If you can find a solution for CBS_DROPDOWNLIST, please let him know (and copy me).
+
+
+
+<p>I hope that the picture I am hereby attaching speaks for itself:  the
+IP-address in Fig.2 is easily readable, while the parameters in Fig.1
+are not.  
+
+<p><img src="color_in_disabled_combo.jpg"></p>
+
+<p>The same problem is encountered in Windows' Find File, the one that you
+run from the Start button menu.  While it performs the search, the
+search pattern is dimmed.  
+
+
+<p>IDC_COMBO is a combo control of a dialog box.  The code that follows is placed in the
+dialog's OnInitDialog handler, here it is:
+    
+<PRE><TT><FONT COLOR="#990000">    // Make the disabled combo's edit control appear as enabled & R/O
+
+    // 1. The first child window of a combo is its edit control
+    CEdit* pComboEdit=(CEdit*)(GetDlgItem( IDC_COMBO )->GetWindow(GW_CHILD ));
+    
+    // 2. Enable combo's edit control, not the combo itself, and set R/O
+    pComboEdit->EnableWindow( TRUE );
+    pComboEdit->SetReadOnly();
+</FONT></TT></PRE>
+
+<p>However, this approach does not work when the combo box is of the
+DropList type, since such a combo consists of two windows only, the
+combo itself and the combo list control, and, therefore, I can't enable
+it.
+
+<p>And also, overriding the OnCtlControl handler in order to change colors
+doesn't help - there is no problem to change the text background color,
+but the text color still appears dimmed.
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,78 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Messagebox with printf capability</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Messagebox with printf capability
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:csa@mail.jubii.dk">Christian Skovdal Andersen</A>.
+
+<!-- The article... -->
+<p>This is a small utility funtion will simply put up a userdefined message box with a
+string formatted like printf().</p>
+
+<p>Example:</p>
+
+<pre><font COLOR="#990000"><tt>
+int MsgBox(UINT nType, PSTR sz,...)
+{ 
+    char ach[512];
+    va_list args; 
+    va_start(args, sz); 
+    wvsprintf (ach, sz, args); /* Format the string */
+    int retval = AfxMessageBox (ach, nType == 0 ? MB_OK|MB_ICONEXCLAMATION : nType);
+    
+    return retval;
+}
+
+
+void main(int argc, char *argv[])
+{
+  MsgBox(MB_OK|MB_ICONINFORMATION, &quot;There are %ld commandline parameters - parameter one is %s&quot;, argc, argv[1]);
+}</tt></pre></font>
+
+<p>&nbsp;</p>
+
+<!-- Remember to update this -->
+<p>Last updated: 15 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+</BODY>
+</HTML>
+

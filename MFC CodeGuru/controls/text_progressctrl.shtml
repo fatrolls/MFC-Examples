@@ -1,0 +1,141 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Progress Control with Text</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+<!-- Article Title -->
+<h3 align="center"><font color="#AOAO99">Progress Control with Text</font></h3>
+
+<hr>
+
+<!-- Author and contact details -->
+<p>This article was contributed by <a href="mailto:chris.maunder@cbr.clw.csiro.au">Chris Maunder</a>.
+
+<!-- Sample image and source code/demo project --> </p>
+<p><img src="text_progressctrl.gif" width="284" height="114">&nbsp;Download
+<a href="text_progressctrl_src.zip">Source Code</a> and <a
+href="text_progressctrl_demo.zip">Example Project</a>. </p>
+
+<p><br>
+
+<!-- The article... -->
+<br>
+<strong>Lastest Changes</strong> (<a href="mailto::jmd@jvf.co.uk">Jeremy Davis</a>)
+ <a href="text_progressctrl.shtml#latest">26th May 1998</a></p>
+
+<p>This is a simple CProgressCtrl derived class that allows text
+to be displayed on top of the progress bar in much the same way
+as many &quot;Setup&quot; programs display the progress of long
+operations. </p>
+
+<p>The control is extremely simple and allows the same operations
+as a standard CProgressCtrl, as well as: </p>
+
+<pre><font color="#990000"><tt>	void SetShowText(BOOL bShow);
+</tt></font></pre>
+
+<p>which determines whether or not the text for the control will
+be displayed during updates. To set the text to be displayed use
+the standard <font color="#990000"><tt>CWnd::SetWindowText</tt></font>.
+If you call <font color="#990000"><tt>SetShowText(TRUE)</tt></font>
+but do not specify any window text using <font color="#990000"><tt>CWnd::SetWindowText</tt></font>,
+then the percentage fraction of progress will be displayed as
+default. </p>
+
+<p>To use the control, just include a CProgressCtrl in your app
+as per usual (either dynamically or by using a dialog template)
+and change the variable type from CProgressCtrl to
+CTextProgressCtrl. (Make sure you include TextProgressCtrl.h) </p>
+
+<p>At present the progress is only displayed as a smooth bar.
+(This may be changed in the future versions.) </p>
+
+<p><b>Acknowledgements</b><br>
+Thanks to Keith Rule for his CMemDC class. 
+
+<p><a name="latest"></a><strong>Modifications<br>
+</strong>26 May 1998 : <a href="mailto::jmd@jvf.co.uk">Jeremy
+Davis</a> added <font color="#990000"><tt>SetForeColour</tt></font>,
+<font color="#990000" size="2" face="Courier New">SetBkColour</font>,
+<font color="#990000"><tt>SetTextForeColour</tt></font>, <font
+color="#990000"><tt>SetTextBkColour</tt></font>, <font
+color="#990000"><tt>GetForeColour</tt></font>, <font
+color="#990000"><tt>GetBkColour</tt></font>, <font
+color="#990000"><tt>GetTextForeColour</tt></font>, <font
+color="#990000"><tt>GetTextBkColour</tt></font>. </p>
+
+<table border="0" cellspacing="4">
+    <tr>
+        <td><font color="#990000"><tt>void SetForeColour(COLORREF
+        col)</tt></font></td>
+        <td>Sets the bar colour of the progress bar.</td>
+    </tr>
+    <tr>
+        <td><font color="#990000"><tt>void SetBkColour(COLORREF
+        col)</tt></font></td>
+        <td>Sets the background colour of the progress bar.</td>
+    </tr>
+    <tr>
+        <td><font color="#990000"><tt>void
+        SetTextForeColour(COLORREF col)</tt></font></td>
+        <td>Sets the colour of the text when the bar is <u>not</u>
+        covering it.</td>
+    </tr>
+    <tr>
+        <td><font color="#990000"><tt>void
+        SetTextBkColour(COLORREF col)</tt></font></td>
+        <td>Set the colour of the text when the bar is covering
+        it.</td>
+    </tr>
+    <tr>
+        <td><font color="#990000"><tt>COLORREF GetForeColour()</tt></font></td>
+        <td>Returns the bar colour of the progress bar.</td>
+    </tr>
+    <tr>
+        <td><font color="#990000"><tt>COLORREF GetBkColour()</tt></font></td>
+        <td>Returns the background colour of the progress bar.</td>
+    </tr>
+    <tr>
+        <td><font color="#990000"><tt>COLORREF
+        GetTextForeColour()</tt></font></td>
+        <td>Returns the colour the the text when the bar is <u>not</u>
+        covering it.</td>
+    </tr>
+    <tr>
+        <td><font color="#990000"><tt>COLORREF GetTextBkColour()</tt></font></td>
+        <td>Returns the colour of the text when the bar is
+        covering it.</td>
+    </tr>
+</table>
+
+<!-- Remember to update this -->
+<p>Last updated: 30 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

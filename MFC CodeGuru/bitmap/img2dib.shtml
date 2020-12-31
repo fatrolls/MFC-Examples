@@ -1,0 +1,169 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Ciotescu Raul">
+   <TITLE><!-- Section Title -->Bitmap & Palette - <!-- Article Title -->Image to DIB</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->ImageList to DIB
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:Michael.5.0.6.3.Wild@dv-ed-sd.zug.ch.siemet.com"><!-- Author Name -->Mike Wild</A>.
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+In my PrintTree sample I wanted to print the tree in color. This was easy for text, but not for the icons. I tried 
+a lot to convert the imagelist to DIB, but what I really needed was a method, which gives back the DIB of one icon, 
+not of the whole Imagelist. And here is the used method:
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+HANDLE CAdvancedTreeCtrl::ImageToDIB( CImageList* pImageList, int iImageNumber, CWnd* pWnd,
+                                      BOOL bOverlay, HTREEITEM actualItem )
+{
+    // Local Variables
+    CBitmap 	bitmap;
+    CWindowDC	dc( pWnd );
+
+    CDC 		memDC;
+    CRect		rect;
+    CPalette    	pal;
+    IMAGEINFO   	imageInfo;
+
+    if( FALSE == pImageList->GetImageInfo( iImageNumber, &imageInfo ) )
+    {
+        	// Getting of the Imageinfos failed
+        	return NULL;
+    }
+
+    // Create compatible stuff and select Bitmap
+    if( FALSE == memDC.CreateCompatibleDC( &dc ) )
+    {
+        	// Create failed
+        	return NULL;
+    }
+
+    if( FALSE == bitmap.CreateCompatibleBitmap( &dc, 
+                                            imageInfo.rcImage.bottom-imageInfo.rcImage.top, 
+                                            imageInfo.rcImage.right-imageInfo.rcImage.left ) )
+    {
+        	// Create failed
+        	return NULL;
+    }
+
+    CBitmap* pOldBitmap = memDC.SelectObject( &bitmap );
+    if( NULL == pOldBitmap )
+    {
+        	// Select failed
+        	return NULL;
+    }
+
+    // Local Variables for Draw
+    CPoint point( 0, 0);
+    UINT nStyle = ILD_NORMAL;
+
+    // Is there an Overlay
+    if( TRUE == bOverlay )
+    {
+        	TV_ITEM     tv_item;
+
+        	// Set up the Item-Struct
+        	tv_item.hItem       = actualItem;
+
+        	// Get the full Item-Struct
+        	GetItem( &tv_item );
+
+        	// Set the wanted style
+        	nStyle = ILD_TRANSPARENT|( tv_item.state & TVIS_OVERLAYMASK );
+    }
+
+    // Draw Image to the compatible DC
+    if( FALSE == pImageList->Draw( &memDC, iImageNumber, point, nStyle ) )
+    {
+        	// Drawing of the Image failed
+        	return NULL;
+    }
+
+    // Create logical palette if device support a palette
+    if( dc.GetDeviceCaps( RASTERCAPS ) & RC_PALETTE )
+    {
+		UINT        nSize   = sizeof(LOGPALETTE) + ( sizeof(PALETTEENTRY) * 256 );
+		LOGPALETTE* pLP     = (LOGPALETTE*)new BYTE[nSize];
+		pLP->palVersion     = 0x300;
+		pLP->palNumEntries = (unsigned short)GetSystemPaletteEntries( dc, 0, 255, 
+		pLP->palPalEntry );
+
+		// Create the palette
+		pal.CreatePalette( pLP );
+
+		// Free memory
+		delete[] pLP;
+    }
+
+    memDC.SelectObject( pOldBitmap );
+
+    // Convert the bitmap to a DIB
+    return DDBToDIB( bitmap, BI_RGB, &pal );
+}
+
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+
+<!-- create more blocks of source code as needed -->
+
+<p>
+The DDBToDIB-Method is the one already published under "Converting DDB to DIB".
+
+<p>
+Bugs and Improvements:
+Please report all bugs and improvements to me, thanks and enjoy it.
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 05/05/98
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+
+
+
+

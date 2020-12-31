@@ -1,0 +1,210 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_FULLTESTAPI         ICON    DISCARDABLE     "FullTestAPI.ICO"
+IDI_SMALL               ICON    DISCARDABLE     "SMALL.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDC_FULLTESTAPI MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "E&xit",                       IDM_EXIT
+    END
+    POPUP "&Test"
+    BEGIN
+        MENUITEM "&XY Plot",                    ID_TEST_XYPLOT
+        MENUITEM "&Double Buffer Plot",         ID_TEST_DBLBUFFER
+        MENUITEM "Pi&e Plot",                   ID_TEST_PIEPLOT
+        MENUITEM "&Split Plot",                 ID_TEST_SPLITPLOT
+        MENUITEM "L&ayered Plot",               ID_TEST_LAYEREDPLOT
+        MENUITEM "&Bending Plot",               ID_TEST_BENDINGPLOT
+        MENUITEM "&Object Plot",                ID_TEST_OBJECTPLOT
+        MENUITEM "Osc&illo Plot",               ID_TEST_OSCILLOPLOT
+        MENUITEM "Sp&line Plot",                ID_TEST_SPLINEPLOT
+        MENUITEM "I&mage Plot",                 ID_TEST_IMAGEPLOT
+        MENUITEM "Co&ntour Line Plot",          ID_TEST_CONTOURLINEPLOT
+        MENUITEM "S&tem Plot",                  ID_TEST_STEMPLOT
+        MENUITEM "&Realtime Plot Demo",         ID_TEST_REALTIMEPLOT
+        MENUITEM "&Plot Control",               ID_TEST_PLOTCONTROL
+        MENUITEM "&Clear",                      ID_TEST_CLEAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About ...",                  IDM_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDC_FULLTESTAPI ACCELERATORS MOVEABLE PURE 
+BEGIN
+    "?",            IDM_ABOUT,              ASCII,  ALT
+    "/",            IDM_ABOUT,              ASCII,  ALT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  22, 17, 230, 75
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 8, "System"
+BEGIN
+    ICON            IDI_FULLTESTAPI,IDC_MYICON,14,9,16,16
+    LTEXT           "FullTestAPI Version 1.0",IDC_STATIC,49,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2012",IDC_STATIC,49,20,119,8
+    DEFPUSHBUTTON   "OK",IDOK,195,6,30,11,WS_GROUP
+END
+
+IDD_PLOTCONTROLTEST_DIALOG DIALOGEX 0, 0, 410, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "TestControl"
+FONT 9, "ËÎÌו", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,374,56,29,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,374,106,29,14
+    CONTROL         "Custom1",IDC_PLOTCONTROL,"PlotControl",WS_TABSTOP,7,7,
+                    366,201
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resource.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""../SourceAPI/Plot/Resources/PlotResources.rc2""\0"
+END
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PLOTCONTROLTEST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 403
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_APP_TITLE           "FullTestAPI"
+    IDS_HELLO               "Hello World!"
+    IDC_FULLTESTAPI         "FULLTESTAPI"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TEST_XYPLOT          "Test CXYPlot, simple and simple"
+    ID_TEST_CLEAR           "Clear the plot"
+    ID_TEST_DBLBUFFER       "An XY plot with double buffer"
+    ID_TEST_PIEPLOT         "A pie plot with double buffer"
+    ID_TEST_SPLITPLOT       "A split plot with double buffer"
+    ID_TEST_LAYEREDPLOT     "A layered plot with double buffer"
+    ID_TEST_BENDINGPLOT     "A bending plot with double buffer"
+    ID_TEST_OBJECTPLOT      "A object plot with double buffer"
+    ID_TEST_OSCILLOPLOT     "A oscillo plot with double buffer"
+    ID_TEST_SPLINEPLOT      "A spline plot with double buffer"
+    ID_TEST_IMAGEPLOT       "A pie plot with double buffer"
+    ID_TEST_CONTOURLINEPLOT "A contour line plot with double buffer"
+    ID_TEST_STEMPLOT        "A stem plot with double buffer"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TEST_REALTIMEPLOT    "A demo of realtime plot"
+    ID_TEST_PLOTCONTROL     "Use of plot control"
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "../SourceAPI/Plot/Resources/PlotResources.rc2"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

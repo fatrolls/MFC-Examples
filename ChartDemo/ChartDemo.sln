@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChartDemo", "ChartDemo.vcproj", "{EFDCE8CF-7F5A-4BC4-A320-93563E1D0AF7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFDCE8CF-7F5A-4BC4-A320-93563E1D0AF7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EFDCE8CF-7F5A-4BC4-A320-93563E1D0AF7}.Debug|Win32.Build.0 = Debug|Win32
+		{EFDCE8CF-7F5A-4BC4-A320-93563E1D0AF7}.Release|Win32.ActiveCfg = Release|Win32
+		{EFDCE8CF-7F5A-4BC4-A320-93563E1D0AF7}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

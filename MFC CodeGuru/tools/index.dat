@@ -1,0 +1,20 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|odbc_classgen.shtml||ODBC Class generator|
+1998/04/11|map_mode.shtml||Understanding GDI mapping modes and other functions|Hans Wedemeyer
+1998/04/14|covers.shtml||COVERS 3.1|COVERS Development Group
+1998/04/07|spcw.shtml||Stored Procedure Class Wizard|George Poulose
+1998/04/14|classbuilder.shtml||ClassBuilder|Jimmy Venema

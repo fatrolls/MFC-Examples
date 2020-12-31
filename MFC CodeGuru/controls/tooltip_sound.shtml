@@ -1,0 +1,130 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - ToolTip with popup sound</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+ToolTip with popup sound
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:giancarlo@saria.com">Giancarlo Iovino</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<img src="tooltip_sound.gif" width="245" height="106">&nbsp;
+Download <A HREF="tooltip_sound.zip">Source Code</a> and <A HREF="tooltip_sound_demo.zip">Example</A>
+</p>
+<br>
+
+
+<p><strong>Introduction</strong></p>
+
+<p>Can we do something to make a tooltip attracts the user
+attention on it a little more? If the tooltip plays a sound when
+it pops up then maybe the things should get better. Well, this is
+a small class called <strong>CWavTipCtrl</strong> that inherits
+from CToolTipCtrl and adds exactly this feature.</p>
+
+<p><strong>Implementation details</strong></p>
+
+<p>The key points in the control implementation are:</p>
+
+<ul>
+    <li>How to play a wave file resource?</li>
+    <li>How to understand when the tooltip window pops up?</li>
+</ul>
+
+<p>The first argument is covered by the article &quot;<a
+href="../misc/play_wav_resource.shtml">Play Wav Resource</a>&quot;
+by Anthony Petruso.<br>
+The answer to the second question isn't so trivial as you can
+think. The first idea that comes in mind is to handle the
+WM_SHOWWINDOW message: wrong! To find the solution, I browsed in
+the MFC source code. Reading the code, it was clear that the
+tooltip &quot;pops up&quot; thanks to a call to SetWindowPos()
+that moves its window at the top of the Z-order (the depth order
+of all the visible windows). The message to be handled is
+therefore WM_WINDOWPOSCHANGED. But this message is sent also when
+the tooltip window is dismissed. For this reason, in the
+OnWindowPosChanged() function, it is necessary to check if the <em>lpwndpos-&gt;flag</em>
+field contains the SWP_SHOWWINDOW flag. Here is the code:</p>
+
+<pre>void CWavTipCtrl::OnWindowPosChanged(WINDOWPOS FAR* lpwndpos) 
+{
+	CToolTipCtrl::OnWindowPosChanged(lpwndpos);
+	
+	if (lpwndpos-&gt;flags &amp; SWP_SHOWWINDOW)
+		if (m_wWaveResourceID)
+			PlayResource(m_wWaveResourceID);
+}
+</pre>
+
+<p><strong>How to use CWavTipCtrl</strong></p>
+
+<p>Using this class is very simple. Include the WavTipCtrl.cpp
+(and .h) in your project. Then add a tooltip to your window. For
+example, if you want to add CWavTipCtrl to a dialog, first add a
+tooltip component to it, then go in to the header file of the
+dialog class, #include &quot;WavTipCtrl.h&quot; and replace
+CToolTipCtrl with CWavTipCtrl. Include a custom wave resource in
+your project (e.g. IDR_TOOLTIP_SOUND). Now, just add a call to <strong>SetPopupSound(IDR_TOOLTIP_SOUND)</strong>
+in the OnInitDialog() body of your dialog. A last important
+thing: be aware that your program should be linked with the
+'winmm.lib' static library, or a link error will occur.</p>
+
+<p><strong>Operations for CWawTipCtrl</strong></p>
+
+<pre>void SetPopupSound(WORD wResourceID);
+WORD GetPopupSound() const;</pre>
+
+<p>Note: If you don't want your CWavTipCtrl uses the popup sound,
+call SetPopupSound(NULL): NULL is considered as an invalid wave
+resource ID.</p>
+
+<h4>Author's note</h4>
+
+<p>I'm continuously working to improve this control. I'll be
+grateful to you if you mail me your comments, advice, or bug
+apparition reports!.</p>
+
+<p>Updated: May, 21 1998</p>
+
+<hr>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

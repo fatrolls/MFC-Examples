@@ -1,0 +1,241 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Tooltip for individual cells</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Tooltip for individual cells</FONT></H3></CENTER>
+
+<HR WIDTH="100%">Tooltips are very useful when column widths are limited
+due to limited screen size. They could also be used to expand the text
+of abreviated columns. For this task, we will use the tooltip support provided
+by MFC. The code below displays the text of the cell in a tooltip, but
+it can be easily modified to display something other that what’s already
+displayed in the cell.
+
+<P>Adding tooltips for individual cells is quite easy. However, the documentation
+was not very helpful and there are few details that you should be aware
+of. The list view control on Windows 95 and Windows NT 4.0 have two very
+significant differences. First, the list view control ( and the tooltip
+control ) is an ANSI control on Windows 95. What this means is that on
+Windows 95, the control notifications and messages are the ANSI versions.
+Do not rely on the project setting to automatically translate the plain,
+undecorated form of a message constant (e.i. without the A or W suffix)
+to the correct message value. For example, if you were developing a UNICODE
+application, then TTN_NEEDTEXT would translate to TTN_NEEDTEXTW, but on
+Windows 95 the actual message would be TTN_NEEDTEXTA. This also applies
+to structures and strings. On Window 95, all strings passed to a control
+should be ANSI strings. On NT 4.0, the controls are UNICODE controls.
+
+<P>Second, on NT 4.0, the list view control automatically creates a tooltip
+control. This built in tooltip control automatically sends the TTN_NEEDTEXTW
+notification whenever the mouse is over the list view control and does
+not move for a certian duration. The code below ignores notification from
+this built in tooltip control.
+<BR>&nbsp;
+
+<P>Override PreSubclassWindow() and after calling the base class version
+call EnableToolTips(TRUE). EnableToolTips() is a member function of the
+CWnd class and thus available to all windows and controls.
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::PreSubclassWindow()&nbsp;
+{
+	CListCtrl::PreSubclassWindow();
+
+	// Add initialization code
+	EnableToolTips(TRUE);
+}</FONT></TT></PRE>
+Override the OnToolHitTest() function. OnToolHitTest() is a virtual function
+defined in CWnd class and is called by the framework to determine whether
+a point is over any of the tools. A tool can be a control window or even
+a rectangular area within a window. For our purpose, we would want the
+area of each cell to be treated as a tool.
+
+<P>The documentation of the OnToolHitTest() implies that you should return
+1 if a tool is found and -1 if no tool was found. The truth, however, is
+that, the framework uses the return value to determine if the tool has
+changed. The framework updates the tooltip only when the tool changes,
+therefore, OnToolHitTest() should return a different value whenever the
+cell at the given point changes.
+<PRE><TT><FONT COLOR="#990000">int CMyListCtrl::OnToolHitTest(CPoint point, TOOLINFO * pTI) const
+{
+	int row, col;
+	RECT cellrect;
+	row = CellRectFromPoint(point, &amp;cellrect, &amp;col );
+
+	if ( row == -1 )&nbsp;
+		return -1;
+
+	pTI->hwnd = m_hWnd;
+	pTI->uId = (UINT)((row&lt;&lt;10)+(col&amp;0x3ff)+1);
+	pTI->lpszText = LPSTR_TEXTCALLBACK;
+
+	pTI->rect = cellrect;
+
+	return pTI->uId;
+}</FONT></TT></PRE>
+The function first calls the CellRectFromPoint() function to determine
+the row, column and the bounding rectangle of the cell. We cover the CellRectFromPoint()
+below. The function then sets up the TOOLINFO structure. The ‘uId’ is assigned
+a value by combining the row and col values. Our method of combining the
+row and column values will allow upto 4194303 rows and 1023 columns. Also,
+note that a 1 is added to the result. The reason for this is to make this
+a non zero value. We need a non zero id so that we can distinguish it from
+the notification sent from the automatically created tooltip on NT 4.0.
+As mentioned earlier, on NT 4.0, the list view control automatically creates
+a tooltip, and the id used by this tooltip is 0.
+
+<P>We next define the CellRectFromPoint() function that is used by OnToolHitTest().
+This function is very similar to the HitTextEx() function covered in an
+earlier topic. In addition to determining the row and column over which
+a point falls, this function also determines the bounding rectangle of
+the cell thats under the point.
+<PRE><TT><FONT COLOR="#990000">
+// CellRectFromPoint	- Determine the row, col and bounding rect of a cell
+// Returns		- row index on success, -1 otherwise
+// point		- point to be tested.
+// cellrect		- to hold the bounding rect
+// col			- to hold the column index
+int CMyListCtrl::CellRectFromPoint(CPoint &amp; point, RECT * cellrect, int * col) const
+{
+	int colnum;
+
+	// Make sure that the ListView is in LVS_REPORT
+	if( (GetWindowLong(m_hWnd, GWL_STYLE) &amp; LVS_TYPEMASK) != LVS_REPORT )
+		return -1;
+
+	// Get the top and bottom row visible
+	int row = GetTopIndex();
+	int bottom = row + GetCountPerPage();
+	if( bottom > GetItemCount() )
+		bottom = GetItemCount();
+	
+	// Get the number of columns
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+	int nColumnCount = pHeader->GetItemCount();
+
+	// Loop through the visible rows
+	for( ;row &lt;=bottom;row++)
+	{
+		// Get bounding rect of item and check whether point falls in it.
+		CRect rect;
+		GetItemRect( row, &amp;rect, LVIR_BOUNDS );
+		if( rect.PtInRect(point) )
+		{
+			// Now find the column
+			for( colnum = 0; colnum &lt; nColumnCount; colnum++ )
+			{
+				int colwidth = GetColumnWidth(colnum);
+				if( point.x >= rect.left&nbsp;
+					&amp;&amp; point.x &lt;= (rect.left + colwidth ) )
+				{
+					RECT rectClient;
+					GetClientRect( &amp;rectClient );
+					if( col ) *col = colnum;
+					rect.right = rect.left + colwidth;
+
+					// Make sure that the right extent does not exceed
+					// the client area
+					if( rect.right > rectClient.right )&nbsp;
+						rect.right = rectClient.right;
+					*cellrect = rect;
+					return row;
+				}
+				rect.left += colwidth;
+			}
+		}
+	}
+	return -1;
+}</FONT></TT></PRE>
+Define OnToolTipText(). This is the handler for the TTN_NEEDTEXT notification
+from the tooltip. Actually, OnToolTipText() handles both the TTN_NEEDTEXTA
+and TTN_NEEDTEXTW notifications and uses ANSI strings for the former notification
+and UNICODE strings for the latter irrespective of whether the application
+itself is ANSI or UNICODE.
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult )
+{
+	// need to handle both ANSI and UNICODE versions of the message
+	TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
+	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+	CString strTipText;
+	UINT nID = pNMHDR->idFrom;
+
+	if( nID == 0 )	&nbsp;&nbsp;	// Notification in NT from automatically
+		return FALSE;&nbsp;&nbsp;&nbsp;	// created tooltip
+
+	int row = ((nID-1) >> 10) &amp; 0x3fffff ;
+	int col = (nID-1) &amp; 0x3ff;
+	strTipText = GetItemText( row, col );
+
+#ifndef _UNICODE
+	if (pNMHDR->code == TTN_NEEDTEXTA)
+		lstrcpyn(pTTTA->szText, strTipText, 80);
+	else
+		_mbstowcsz(pTTTW->szText, strTipText, 80);
+#else
+	if (pNMHDR->code == TTN_NEEDTEXTA)
+		_wcstombsz(pTTTA->szText, strTipText, 80);
+	else
+		lstrcpyn(pTTTW->szText, strTipText, 80);
+#endif
+	*pResult = 0;
+
+	return TRUE;&nbsp;&nbsp;&nbsp; // message was handled
+}</FONT></TT></PRE>
+The function first checks whether the notification is from the built in
+tooltip (on NT only) and returns immediately if it is. The function then
+decodes the row and column information from the id and then sets up the
+TOOLTIPTEXT structure with the text in the cell.
+<BR>&nbsp;
+
+<P>Hook up OnToolTipText() in the message map. Its a good idea to use the
+ON_NOTIFY_EX and ON_NOTIFY_EX_RANGE macros, since this allows the notification
+to be propogated for further message processing if needed.
+<PRE><TT><FONT COLOR="#990000">BEGIN_MESSAGE_MAP(CMyListCtrl, CListCtrl)
+	//{{AFX_MSG_MAP(CMyListCtrl)
+	:
+	// other entries
+	:
+	//}}AFX_MSG_MAP
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
+END_MESSAGE_MAP()</FONT></TT></PRE>
+Note that we are not using a simple ON_NOTIFY macro. Infact if you were
+using a message map entry such as
+<BR>ON_NOTIFY(TTN_NEEDTEXT, 0, OnToolTipText)
+
+<P>you would have some major problems. First, the TTN_NEEDTEXT define would
+translate to TTN_NEEDTEXTA on an ANSI build and this notification is never
+received on NT 4. Second, we are indicating that we are only interested
+in the id 0, which is not usually the case.
+<BR>&nbsp;
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

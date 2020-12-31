@@ -1,0 +1,137 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>StatusBar - Show scrolling text in a status bar pane</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Show scrolling text in a status bar pane</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:S.Saxena@pbc.be.philips.com">Sushil Saxena</A>. 
+
+
+<p>This simple trick uses string pointer manipulation to give scrolling 
+effect in a status bar. The code is not robust. It only demonstrates 
+how it could be done.
+
+<p>1. Derive your own CMyStatusBar from CstatusBar.
+
+<p>2. In MainFrm.h, change the type of status bar as:
+
+<PRE><TT><FONT COLOR="#990000">	CMyStatusBar m_wndStatusBar;
+</FONT></TT></PRE>
+
+<p>3. Also change the indicator array in MainFrm.cpp as:
+      
+<PRE><TT><FONT COLOR="#990000">	static UINT indicators[] =
+	{
+		ID_SEPARATOR, 
+		IDS_SCROLL_PANE,				//scrolling text
+		ID_INDICATOR_CAPS,
+		ID_INDICATOR_NUM,
+		ID_INDICATOR_SCRL,
+	};
+</FONT></TT></PRE>
+      
+<p>4. Add IDS_SCROLL_PANE in the string table with few blanks. The size 
+of pane will depend on this blank string. There are other painfull 
+ways of sizing a pane too.
+
+<p>5. Add following member to CMyStatusBar:
+
+Cstring m_strScrollText;
+
+<p>6. Add OnTimer() to the CMyStatusBar:
+
+<PRE><TT><FONT COLOR="#990000">void CMyStatusBar::OnTimer(UINT nIDEvent) 
+{
+	// TODO: Add your message handler code here and/or call default
+	
+	if (m_strScrollText.IsEmpty())
+	{
+		KillTimer(1);
+		SetPaneText(CommandToIndex(IDS_SCROLL_PANE), "");
+		return;
+	}
+	static UINT str_idx = 0;        //offset into string
+	
+	//if end of string, return to top
+	if (str_idx >= (UINT) (m_strScrollText.GetLength() / 2) - 1)
+	{
+		str_idx = 0;
+	}
+	
+	//display string
+	SetPaneText(CommandToIndex(IDS_SCROLL_PANE), ((LPCSTR) 
+		m_strScrollText)+str_idx); 
+	
+	//scroll one character
+	str_idx = str_idx + 1;
+	
+	CStatusBar::OnTimer(nIDEvent);
+}
+</FONT></TT></PRE>
+
+<p>7. Destroy timer:
+
+<PRE><TT><FONT COLOR="#990000">void CMyStatusBar::OnDestroy() 
+{
+	CStatusBar::OnDestroy();
+	
+	// TODO: Add your message handler code here
+	
+	KillTimer(1);
+}
+</FONT></TT></PRE>
+
+<p>8. Add a method to start scrolling text. This method must be called 
+after the mainframe (and the status bar) has been constructed to 
+display scrolling text. Perhaps from the CWinApp::InitInstance().
+
+<PRE><TT><FONT COLOR="#990000">void CMyStatusBar::StartDisplay(void) 
+{
+	//set text for scrolling
+	m_strScrollText = "   Hello! World.   "
+		
+		//to make it circular scroll
+		m_strScrollText += m_strScrollText;
+	
+	KillTimer(1);
+	VERIFY(SetTimer(1, 200, NULL) != 0);    //timer
+}
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

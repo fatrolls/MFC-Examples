@@ -1,0 +1,404 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_COMMTYPE            ICON    DISCARDABLE     "res\\CommunicatorDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About Communicator...",      ID_APP_ABOUT
+    END
+END
+
+IDR_COMMTYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "Tile ",                       ID_WINDOW_TILE_VERT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About Communicator...",      ID_APP_ABOUT
+    END
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "COMMUNICATOR MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "COMMUNICATOR\0"
+            VALUE "LegalCopyright", "Copyright © 1996\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "COMMUNICATOR.EXE\0"
+            VALUE "ProductName", "COMMUNICATOR Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
+    IDP_SOCKETS_INIT_FAILED "Windows sockets initialization failed."
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Communicator"
+    IDR_COMMTYPE            "\nComm\nComm\nCommun Files (*.cmm)\n.CMM\nCommunicator.Document\nComm Document"
+    IDS_INVALID_VALUE       "The specified value is not valid for this type"
+    IDS_FAILED_LISTEN       "The Listen failed"
+    IDS_FAILED_CONNECT      "Failed to establish connection"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Communicator"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_DESCRIPTION_FILE     "communicatorinfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Communicator.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SEND_DATA DIALOG DISCARDABLE  0, 0, 190, 230
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Send data"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_VALUE,7,104,155,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Add",IDC_ADD,70,124,50,14
+    LISTBOX         IDC_LIST,7,150,176,49,WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "OK",IDOK,40,206,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,100,206,50,14
+    CONTROL         "&Empty",IDC_EMPTY,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,17,20,35,10
+    CONTROL         "&Null",IDC_NULL,"Button",BS_AUTORADIOBUTTON,17,33,28,10
+    CONTROL         "&Bool",IDC_BOOL,"Button",BS_AUTORADIOBUTTON,17,46,30,10
+    CONTROL         "&UI1 (char)",IDC_UI1,"Button",BS_AUTORADIOBUTTON,17,59,
+                    45,10
+    CONTROL         "&I2 (short)",IDC_I2,"Button",BS_AUTORADIOBUTTON,63,20,
+                    41,10
+    CONTROL         "&I4 (int)",IDC_I4,"Button",BS_AUTORADIOBUTTON,63,33,33,
+                    10
+    CONTROL         "&CY (Currency)",IDC_CY,"Button",BS_AUTORADIOBUTTON,63,
+                    46,57,10
+    CONTROL         "&R4 (float)",IDC_R4,"Button",BS_AUTORADIOBUTTON,63,59,
+                    43,10
+    CONTROL         "&R8 (double)",IDC_R8,"Button",BS_AUTORADIOBUTTON,120,20,
+                    51,10
+    CONTROL         "&Str",IDC_BSTR,"Button",BS_AUTORADIOBUTTON,120,33,29,10
+    CONTROL         "&Date",IDC_DATE,"Button",BS_AUTORADIOBUTTON,120,46,33,
+                    10
+    CONTROL         "&Error",IDC_ERROR,"Button",BS_AUTORADIOBUTTON,120,59,31,
+                    10
+    CONTROL         "&Binary Large Object",IDC_BINARY,"Button",
+                    BS_AUTORADIOBUTTON,63,74,73,10
+    LTEXT           "&Value",IDC_STATIC,7,91,19,8
+    GROUPBOX        "Type",IDC_STATIC,7,7,176,81
+    DEFPUSHBUTTON   "...",IDC_BROWSE,168,104,15,14
+END
+
+IDD_COMMUNICATOR_FORM DIALOG DISCARDABLE  0, 0, 246, 277
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Server",IDC_SERVER_GROUP,7,7,232,103
+    LTEXT           "Local Address",IDC_LOCAL_ADDRESS_LABEL,15,17,46,8
+    EDITTEXT        IDC_LOCAL_ADDRESS,15,29,62,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "Local Port",IDC_LOCAL_PORT_LABEL,82,17,35,8
+    EDITTEXT        IDC_LOCAL_PORT,82,29,34,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Listen",IDC_LISTEN,127,28,50,14
+    PUSHBUTTON      "Shut&down",IDC_SHUTDOWN,182,28,50,14
+    LTEXT           "Client Addresses",IDC_CLIENT_ADDRESSES_LABEL,15,47,60,8
+    LISTBOX         IDC_CLIENT_ADDRESSES,15,58,157,44,LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Send",IDC_SEND_CLIENT,182,60,50,14
+    PUSHBUTTON      "&Disconnect",IDC_DISCONNECT_CLIENT,182,85,50,14
+    GROUPBOX        "Client",IDC_CLIENT_GROUP,7,113,232,50
+    LTEXT           "Remote Address",IDC_REMOTE_ADDRESS_LABEL,14,127,57,8
+    EDITTEXT        IDC_REMOTE_ADDRESS,14,139,62,12,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    LTEXT           "Remote Port",IDC_REMOTE_PORT_LABEL,82,128,39,8
+    EDITTEXT        IDC_REMOTE_PORT,82,138,34,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Connect",IDC_CONNECT_SERVER,125,126,50,14
+    PUSHBUTTON      "&Send",IDC_SEND_SERVER,182,126,50,14
+    PUSHBUTTON      "Disconnect",IDC_DISCONNECT_SERVER,182,144,50,14
+    PUSHBUTTON      "&Spy",IDC_SPY,59,170,50,14
+    LTEXT           "Received Data",-1,7,175,47,8
+    EDITTEXT        IDC_RECEIVED_DATA,7,189,232,61,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | WS_VSCROLL
+    PUSHBUTTON      "Cancel Actions",IDC_CANCEL,93,256,59,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SEND_DATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 183
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 220
+    END
+
+    IDD_COMMUNICATOR_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 239
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 270
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "#include ""utsampleAbout.rc""\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Communicator.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+#include "utsampleAbout.rc"
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Communicator.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

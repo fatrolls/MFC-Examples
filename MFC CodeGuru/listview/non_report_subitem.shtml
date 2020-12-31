@@ -1,0 +1,70 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Using sub-stings in non report view</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using sub-stings in non report view</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+
+This top was contributed by <A HREF="mailto:carsten.witte@ploe.comcity.de">Carsten Witte</A>.
+
+
+<P>I wanted a CListCtrl in icon view mode only (no switch to other view
+modes), but tried to "store" additional string information in subitems. 
+
+<P>So I've useed  used ...
+<PRE><TT><FONT COLOR="#990000">
+        SetItemText (nIndex, 1, strMoreInfo)
+</FONT></TT></PRE>
+
+and according to the help it returned Nonzero for "successful". but then
+later on when I tried to use that string with
+
+<PRE><TT><FONT COLOR="#990000">
+        GetItemText (iItem, 1);
+</FONT></TT></PRE>
+
+it return sucessful with nothing. :( The string was gone.
+
+<P>To make a long story short, one can't store subitems without a header. So
+an easy solution is to define two "blind" headers like ...
+
+<PRE><TT><FONT COLOR="#990000">
+        for(int iHeader=0; iHeader < 2; iHeader++)
+        {
+                InsertColumn (iHeader, "header", LVCFMT_LEFT, -1, iHeader);
+        }
+</FONT></TT></PRE>
+
+and you can store whatever string you want in subitem.
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

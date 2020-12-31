@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The POLLING Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The POLLING Sample</H2>
+<P>The POLLING Sample accompanies Chapter 9 and illustrates how to use a system thread to manage a polled device.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>POLLING.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console application that tests POLLING.SYS.</LI></UL>
+
+<H3>Building POLLING</H3>
+<P>To build POLLING.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named POLLING.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing POLLING</H3>
+<P>You can only test POLLING in Windows 98. Follow the general instructions for using the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98 to install POLLING.SYS. The INF file is named SYS\DEVICE.INF. Take note of the base I/O port address assigned to the device.</P>
+<P>Start the DEVTEST.EXE program in the base directory where you installed the book samples (e.g., WDMBOOK). Select the radio button labelled "Polled input". Enter the base port address for the POLLING device and press the Initialize button:</P>
+<P><IMG SRC="devtest.gif" WIDTH=342 HEIGHT=235></P>
+<P>Now open a command prompt and execute TEST.EXE from the TEST\DEBUG subdirectory. TEST will read 13 characters from the POLLING device. You supply those characters one at a time in the input window of the DEVTEST dialog. <I>Type slowly -- POLLING.SYS looks for a character only every ½ second, so it would be very easy to "overrun" the device.</P>
+</I><P>After you enter 13 characters, TEST.EXE will print them out.</P></BODY>
+</HTML>

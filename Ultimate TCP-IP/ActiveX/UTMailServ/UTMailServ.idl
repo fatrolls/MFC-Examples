@@ -1,0 +1,198 @@
+//=================================================================
+//  File:  UTMailServ.idl : IDL source for UTMailServ.dll
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTMailServ.tlb) and marshalling code.
+//
+//=================================================================
+// Ultimate TCP/IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+//=================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+cpp_quote("#endif")  
+	
+	//===========================================
+	//	IMailServ interface
+	//===========================================
+
+	[
+		object,
+		uuid(178D9403-232D-11D3-A48E-0080C858F182),
+		dual,
+		helpstring("IMailServ Interface"),
+		pointer_default(unique)
+	]
+	interface IMailServ : IDispatch
+	{
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_START					= 1;
+		const int DISPID_GET_ERROR_TEXT			= 2;
+		const int DISPID_USER_ADD				= 3;
+		const int DISPID_USER_DELETE			= 4;
+		const int DISPID_USER_GET_NAME			= 5;
+		const int DISPID_USER_GET_PASSWORD		= 6;
+		const int DISPID_USER_GET_ADDRESS		= 7;
+		const int DISPID_USER_GET_COUNT			= 8;
+		const int DISPID_DNS_ADD				= 9;
+		const int DISPID_DNS_DELETE				= 10;
+		const int DISPID_DNS_GET				= 11;
+		const int DISPID_DNS_GET_COUNT			= 12;
+		const int DISPID_LOCALNAME_ADD			= 13;
+		const int DISPID_LOCALNAME_DELETE		= 14;
+		const int DISPID_LOCALNAME_GET			= 15;
+		const int DISPID_LOCALNAME_GET_COUNT	= 16;
+		const int DISPID_REGISTRY_ROOT_KEY		= 17;
+		const int DISPID_USER_MODIFY			= 18;
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, id(DISPID_REGISTRY_ROOT_KEY), helpstring("Gets/Sets the registry root key")] 
+			HRESULT RegistryRootKey([out, retval] BSTR *pVal);
+
+		[propput, id(DISPID_REGISTRY_ROOT_KEY), helpstring("Gets/Sets the registry root key")] 
+			HRESULT RegistryRootKey([in] BSTR newVal);
+
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_ABOUTBOX), helpstring("AboutBox method")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_START), helpstring("Starts the server")] 
+			HRESULT Start([out, retval] long *Result);
+
+		[id(DISPID_USER_ADD), helpstring("Adds a new user to the server database")] 
+			HRESULT User_Add([in] BSTR Name, [in] BSTR Password, [in] BSTR MailAddresses, [out, retval] long * Result);
+
+		[id(DISPID_USER_DELETE), helpstring("Deletes a user from the server database")] 
+			HRESULT User_Delete([in] BSTR Name, [out, retval] long * Result);
+
+		[id(DISPID_USER_GET_COUNT), helpstring("Gets a count of the number of users")] 
+			HRESULT User_GetCount([out, retval] long *UserCount);
+
+		[id(DISPID_USER_GET_NAME), helpstring("Gets the name of the specified user")] 
+			HRESULT User_GetName([in] long Index, [out, retval] BSTR *Name);
+
+		[id(DISPID_USER_GET_PASSWORD), helpstring("Gets the password of the specified user")] 
+			HRESULT User_GetPassword([in] long Index, [out, retval] BSTR *Password);
+
+		[id(DISPID_USER_GET_ADDRESS), helpstring("Gets the e-mail address of the specified user")] 
+			HRESULT User_GetAddress([in] long Index, [out, retval] BSTR *MailAddresses);
+
+		[id(DISPID_DNS_GET_COUNT), helpstring("Gets the count of DNS entries")] 
+			HRESULT DNS_GetCount([out, retval] long *DNSCount);
+
+		[id(DISPID_DNS_GET), helpstring("Gets the specified DNS entry")] 
+			HRESULT DNS_Get([in] long Index, [out, retval] BSTR *DNSName);
+
+		[id(DISPID_DNS_ADD), helpstring("Adds a DNS entry")] 
+			HRESULT DNS_Add([in] BSTR DNSName, [out, retval] long *Result);
+
+		[id(DISPID_DNS_DELETE), helpstring("Deletes a DNS entry")] 
+			HRESULT DNS_Delete([in] long Index, [out, retval] long *Result);
+
+		[id(DISPID_LOCALNAME_GET_COUNT), helpstring("Gets a count of the number of local names")] 
+			HRESULT LocalName_GetCount([out, retval] long *LocalNamesCount);
+
+		[id(DISPID_LOCALNAME_GET), helpstring("Gets the specified local name")] 
+			HRESULT LocalName_Get([in] long Index, [out, retval] BSTR *LocalName);
+
+		[id(DISPID_LOCALNAME_ADD), helpstring("Adds a new local name")] 
+			HRESULT LocalName_Add([in] BSTR LocalName, [out, retval] long *Result);
+
+		[id(DISPID_LOCALNAME_DELETE), helpstring("Deletes the specified local name")] 
+			HRESULT LocalName_Delete([in] long Index, [out, retval] long *Result);
+
+		[id(DISPID_USER_MODIFY), helpstring("method User_Modify")] 
+			HRESULT User_Modify([in] BSTR Name, [in] BSTR NewName, [in] BSTR NewPassword, [in] BSTR NewAddresses, [out, retval] long *Result);
+
+	};
+
+[
+	uuid(178D93F5-232D-11D3-A48E-0080C858F182),
+	version(1.0),
+	helpstring("Ultimate TCP/IP Mail Server Control 4.2")
+]
+library UTMAILSERVLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//===========================================
+	//	MailServ control Events interface
+	//===========================================
+	[
+		uuid(178D9405-232D-11D3-A48E-0080C858F182),
+		helpstring("_IMailServEvents Interface")
+	]
+	dispinterface _IMailServEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnStatus")] HRESULT OnStatus([in] BSTR Message);
+		[id(2), helpstring("method OnCanAccept")] HRESULT OnCanAccept([in] BSTR Address, [out, retval] BOOL *Result);
+	};
+
+	[
+		uuid(178D9404-232D-11D3-A48E-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP Mail Server Control 4.2")
+	]
+	coclass MailServ
+	{
+		[default] interface IMailServ;
+		[default, source] dispinterface _IMailServEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (1A901D19-2341-11d3-A48E-0080C858F182), helpstring("Mail Server Error Codes")]
+	enum MailServErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Failed")]					ecError					= UTE_ERROR,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Socket creation failed")]	ecSocketCreateFailed	= UTE_SOCK_CREATE_FAILED,
+		[helpstring("Binding failed")]			ecBindFailed			= UTE_SOCK_BIND_FAILED,
+		[helpstring("Listen failed")]			ecListenFailed			= UTE_SOCK_LISTEN_ERROR,
+		[helpstring("User info load failed")]	ecUserInfoLoadFailed	= UTE_USER_INFO_LOAD_FAILED,
+		[helpstring("System info load failed")]	ecSystemInfoLoadFailed	= UTE_SYSTEM_INFO_LOAD_FAILED, 
+		[helpstring("Connection failed")]		ecConnectFailed			=  UTE_CONNECT_FAILED,
+		[helpstring("Start accepting connections failed")]	ecAcceptFailed	=  UTE_ACCEPT_FAILED,
+		[helpstring("Invalid parameter")]		ecInvalidParameter		=  UTE_PARAMETER_INVALID_VALUE,
+		[helpstring("User name alredy exists")]	ecUserExists			=  UTE_USER_NAME_ALREDY_EXIST,
+		[helpstring("Mailbox alredy exists")]	ecMailBoxExists			=  UTE_MAILBOX_NAME_ALREDY_EXIST
+	} MailServErrorCodes;
+
+	[
+		uuid(178D9406-232D-11D3-A48E-0080C858F182),
+		helpstring("MailServPropPage Class")
+	]
+	coclass MailServPropPage
+	{
+		interface IUnknown;
+	};
+};

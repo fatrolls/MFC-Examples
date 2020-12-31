@@ -1,0 +1,256 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\TcxMsgBoxDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\TcxMsgBoxDemo.ico"
+IDI_THUMB               ICON    DISCARDABLE     "res\\thumb.ico"
+IDI_NUTS                ICON    DISCARDABLE     "res\\nuts.ico"
+IDI_SCARED              ICON    DISCARDABLE     "res\\scared.ico"
+IDI_DISK                ICON    DISCARDABLE     "res\\disk.ico"
+IDI_MELT                ICON    DISCARDABLE     "res\\melt.ico"
+IDI_BFLAG               ICON    DISCARDABLE     "res\\bflag.ico"
+IDI_BULB                ICON    DISCARDABLE     "res\\bulb.ico"
+IDI_NOSMOKE             ICON    DISCARDABLE     "res\\nosmoke.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RTF_MSGS
+//
+
+IDR_RTF_MSGS1           RTF_MSGS DISCARDABLE    "res\\rtf_msgs.bin"
+IDR_RTF_MSGS2           RTF_MSGS DISCARDABLE    "res\\bin00001.bin"
+IDR_RTF_MSGS3           RTF_MSGS DISCARDABLE    "res\\bin00002.bin"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDC_OK                  "OK"
+    IDC_CANCEL              "Cancel"
+    IDC_ABORT               "&Abort"
+    IDC_IGNORE              "&Ignore"
+    IDC_RETRY               "&Retry"
+    IDC_YEAH                "&Yeah!!!"
+    IDC_YES                 "&Yes"
+    IDC_YESALL              "Yes &All"
+    IDC_NOALL               "No &All"
+    IDC_QUIT                "&Quit"
+    IDC_SURFTHEWEB          "&Surf the WEB"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDC_PLAYDOOM            "&Play Doom"
+    IDC_DRINKABEER          "&Drink a beer"
+    IDC_PLEASE              "&Please do that"
+    IDC_LATER               "&Maybe later"
+    IDC_MAYBE               "&Maybe"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MSG1                "This is just a simple and plain text message.\nNo fancy icons, no fancy text format.\nNo important message to say.\n\nPlease, just let me die!"
+    IDS_TITLE1              "Working hard... no fun..."
+    IDS_MSG2                "This is a politically correct message box.\n\nThe programmer who put it here never intended to interrupt your productive work.\nHowever, he concerns about your healthiness and strongly believes you'll forgive him.\n\nThe point is that the atomic reactor that the company keeps in the floor (that strange piece of equipment that people like you always  wondered what it was used for) is melting down. By the time you finish reading this message, we believe there would be about 5.32 minutes left before complete destruction.\n\nWould you like this application to use the computer modem and call your mom?"
+    IDS_TITLE2              "Just for your information"
+    IDS_MSG3                "The boss as just left the building.\nWhat do you want to do now?"
+    IDS_TITLE3              "TcxMsgBox Demonstration"
+    IDS_ABOUT_TITLE         "About"
+    IDS_ABOUT               "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deftab720{\\fonttbl{\\f0\\fswiss MS Sans Serif;}{\\f1\\froman\\fcharset2 Symbol;}{\\f2\\froman Times New Roman;}{\\f3\\fswiss\\fprq2 Arial;}}\n{\\colortbl\\red0\\green0\\blue0;}\n\\deflang1031\\pard\\qc\\plain\\f3\\fs16\\cf0 The \\plain\\f3\\fs16\\cf0\\b CTcxMsgBox\\plain\\f3\\fs16\\cf0  class was created by\n\\par \n\\par \\plain\\f3\\fs20\\cf0\\b Thales P. Carvalho\\plain\\f3\\fs16\\cf0 \n\\par     thalesc@uol.com.br\n\\par \n\\par I hope you really enjoy using this class.\n\\par Even better, I hope you make a good use of it.\n\\par \n\\par }\n "
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TCXMSGBOXDEMO_DIALOG DIALOGEX 0, 0, 111, 142
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "TcxMsgBoxDemo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Sample &1",IDC_SAMPLE1,7,7,97,14
+    PUSHBUTTON      "Sample &2",IDC_SAMPLE2,7,26,97,14
+    PUSHBUTTON      "Sample &3",IDC_SAMPLE3,7,45,97,14
+    PUSHBUTTON      "Sample &4",IDC_SAMPLE4,7,64,97,14
+    PUSHBUTTON      "Sample &5",IDC_SAMPLE5,7,83,97,14
+    PUSHBUTTON      "Sample &6",IDC_SAMPLE6,7,102,97,14
+    PUSHBUTTON      "Sample &7",IDC_SAMPLE7,7,121,97,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "TcxMsgBoxDemo MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "TcxMsgBoxDemo\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "TcxMsgBoxDemo.EXE\0"
+            VALUE "ProductName", "TcxMsgBoxDemo Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TCXMSGBOXDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 104
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 135
+        HORZGUIDE, 21
+        HORZGUIDE, 40
+        HORZGUIDE, 59
+        HORZGUIDE, 78
+        HORZGUIDE, 97
+        HORZGUIDE, 116
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\TcxMsgBoxDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

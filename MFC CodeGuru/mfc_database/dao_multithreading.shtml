@@ -1,0 +1,156 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - DAO multi-threading tips</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">DAO multi-threading tips</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+
+<p>This article was contributed by <a href="mailto:bcc27409@vip.cybercity.dk">John Bundgaard</a>.
+
+<P><A HREF="dao_multithreading.zip">Download sample project</A>
+</p>
+
+<br>Looks like DAO 3.5 has some support for multi-threading.
+
+
+<P>As stated by the MFC 4.2 documentation, the Dao database classes are not thread-safe, and that is indeed true.
+ 
+<P>I recently developed a server application the uses IO completion ports, which by nature, are using a number of threads. Because of that, I had to figure out a way to use DAO in different threads simultaneously.
+Here is how I did it:
+
+<PRE><TT><FONT COLOR="#990000">
+//
+// used a global critical section to prevent multiple threads initializing 
+// the Dao database simultaneous.
+//
+CCriticalSection cs;
+
+//
+// Some thread function
+// (In my server app, 4 thread using this function is started)
+//
+UINT MyThreadFunc (LPVOID pParam)
+{
+	CSingleLock lock(&cs, TRUE);
+
+	//
+	// Initialize MFC Dao support
+	//
+	AfxDaoInit();
+
+	CDaoDatabase db;
+	CSomeDaoRecordset set(&db);
+	
+
+	// 
+	// Open the database and recordset.
+	//
+	try
+	{
+		db.Open(_T("database.mdb"));
+		set.Open(dbOpenTable);
+		set.SetCurrentIndex(_T("PrimaryKey"));
+	}
+	catch(CException* pe)	
+	{
+		pe->ReportError();
+		pe->Delete();
+		return 0;
+	}
+
+	//
+	// Allow other threads to initialize Dao
+	//
+	lock.Unlock();
+	
+
+	//
+	// OK the database and recordset is now open
+	//
+
+	while( bRunThisThread )
+	{
+		//
+		// NOTE: You do NOT need to lock out other threads vhile calling
+		// database functions here.
+		//
+		WaitForClientRequest();
+		ParseRequest();
+		DoDatabaseIO();
+	}
+
+	//
+	// Now, lock the critical section again
+	//
+	lock.Lock();
+
+	//
+	// Close recordset and database.
+	rs.Close();
+	db.Close();
+
+	// IMPORTANT: do NOT call AfxDaoTerm() !!!!
+	return 0;
+}
+</FONT></TT></PRE>
+
+<P>Now, when your application terminates, it will generate a protection error. To prevent that modify your CMyApp::ExitInstance().
+<PRE><TT><FONT COLOR="#990000">
+int CMyApp::ExitInstance()
+{
+	// 
+	// Insert your own cleanup code here
+	//
+
+	AfxDaoInit();
+	AfxDaoTerm();
+	
+	return m_msgCur.wParam;
+}
+</FONT></TT></PRE>
+
+
+<P>Notes:
+<br>· The MFC documentation says the you need to call AfxBeginThread to start worker threads, but this is not necessary at all times, it depends on what your doing in your thread function. (I use both AfxBeginThread() and ::CreateThread()). 
+<br>· I call AfxBeginThread() in my main InitInstance() function, but I am not really sure if this is necessary. Of course, you should do it if you need to access the database from your main thread.
+<br>· You will not gain true multithreaded access to the database functions. Jet 3.5 serializes the function calls, but the threads do not have to worry about that.
+
+<P>Known problems:
+<br>1. I have discovered that this approach can sometimes prevent other applications from starting, like MS Word 97, they simply hang, but when i shutdown my multithreaded Dao app, they continues as though nothing has happened ?????
+<br>2. My spelling :-)
+<br>3. ::CoInitialize() will be called for every call to AfxDaoInit(), and will not all be matched by a call to :: ::CoUninitialize(), but i hope the Windows will clean up the mess.
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

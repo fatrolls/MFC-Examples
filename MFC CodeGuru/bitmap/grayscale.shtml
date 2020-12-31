@@ -1,0 +1,153 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Drawing an image in grayscale</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Drawing an image in grayscale</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+
+
+Sometimes a grayscale image can have more impact than a color image. Depending on the situation, you may choose to display the same image in color or in grayscale. The DrawGrayScale() function given below will draw a color image in grayscale. It handles 256 color bitmaps only. 
+
+<p>If the display supports a 256 color palette, then the function creates a grayscale palette from the color information in the DIB and selects and realizes the palette before drawing the image onto the device context. A grayscale color has equal values in its red, green and blue color values. If the display device supports more than 256 colors, then it will not support a palette and palette manipulation will not help us out. In this case, we modify the color table in the DIB instead. We change all the color entries to grayscale before displaying the bitmap.
+
+<PRE><TT><FONT COLOR="#990000">
+// DrawGrayScale	- Draws a bitmap in gray scale
+// pDC			- Pointer to target device context
+// hDIB			- Handle of device-independent bitmap
+//
+void DrawGrayScale( CDC *pDC, HANDLE hDIB )
+{
+	CPalette pal;
+	CPalette *pOldPalette;
+
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+				1 << bmInfo.bmiHeader.biBitCount;
+	
+
+	// Create the palette if needed
+	if( pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE && nColors <= 256 )
+	{
+		// The device supports a palette and bitmap has color table
+		
+		// Allocate memory for a palette
+		UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+		LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+		pLP->palVersion = 0x300;
+		pLP->palNumEntries = nColors;
+		
+		for( int i=0; i < nColors; i++)
+		{
+			long lSquareSum = bmInfo.bmiColors[i].rgbRed 
+						* bmInfo.bmiColors[i].rgbRed
+						+ bmInfo.bmiColors[i].rgbGreen 
+						* bmInfo.bmiColors[i].rgbGreen
+						+ bmInfo.bmiColors[i].rgbBlue 
+						* bmInfo.bmiColors[i].rgbBlue;
+			int nGray = (int)sqrt(((double)lSquareSum)/3);
+			pLP->palPalEntry[i].peRed = nGray;
+			pLP->palPalEntry[i].peGreen = nGray;
+			pLP->palPalEntry[i].peBlue = nGray;
+			pLP->palPalEntry[i].peFlags = 0;
+		}
+		
+		pal.CreatePalette( pLP );
+		
+		delete[] pLP;
+
+		// Select the palette
+		pOldPalette = pDC->SelectPalette(&pal, FALSE);
+		pDC->RealizePalette();
+	}
+	else if((pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE) == 0 && nColors <= 256 )
+	{
+		// Device does not supports palettes but bitmap has a color table
+		// Modify the bitmaps color table directly
+		// Note : This ends up changing the DIB. If that is not acceptable then
+		// copy the DIB and then change the copy rather than the original
+
+		for( int i=0; i < nColors; i++)
+		{
+			long lSquareSum = bmInfo.bmiColors[i].rgbRed 
+						* bmInfo.bmiColors[i].rgbRed
+						+ bmInfo.bmiColors[i].rgbGreen 
+						* bmInfo.bmiColors[i].rgbGreen
+						+ bmInfo.bmiColors[i].rgbBlue 
+						* bmInfo.bmiColors[i].rgbBlue;
+			int nGray = (int)sqrt(((double)lSquareSum)/3);
+			bmInfo.bmiColors[i].rgbRed = nGray;
+			bmInfo.bmiColors[i].rgbGreen = nGray;
+			bmInfo.bmiColors[i].rgbBlue = nGray;
+		}
+	}
+
+
+	int nWidth = bmInfo.bmiHeader.biWidth;
+	int nHeight = bmInfo.bmiHeader.biHeight;
+	
+	
+	// Draw the image 
+	LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+	
+	::SetDIBitsToDevice(pDC->m_hDC,	// hDC
+		0,				// XDest
+		0,				// YDest
+		nWidth,				// nDestWidth
+		nHeight,			// nDestHeight
+		0,				// XSrc
+		0,				// YSrc
+		0,				// nStartScan
+		nHeight,			// nNumScans
+		lpDIBBits,			// lpBits
+		(LPBITMAPINFO)hDIB,		// lpBitsInfo
+		DIB_RGB_COLORS);		// wUsage
+	
+	
+	pDC->SelectPalette(pOldPalette, FALSE);
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

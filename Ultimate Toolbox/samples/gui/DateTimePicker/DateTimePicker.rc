@@ -1,0 +1,250 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DATETIMEPICKER_DIALOG DIALOGEX 0, 0, 339, 281
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "DateTimePicker"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "",IDC_DATETIMEPICKER,21,19,122,15,SS_SUNKEN
+    CONTROL         "DTS_UPDOWN",IDC_CHECK_UPDOWN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,68,68,10
+    CONTROL         "DTS_SHOWNONE",IDC_CHECK_SHOWNONE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,83,78,10
+    CONTROL         "DTS_APPCANPARSE",IDC_CHECK_CANPARSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,97,87,10
+    CONTROL         "DTS_RIGHTALIGN",IDC_CHECK_RIGHTALIGN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,111,79,10
+    CONTROL         "DTS_TIMEFORMAT",IDC_RADIO_TIMEFORMAT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,14,149,82,10
+    CONTROL         "DTS_SHORTDATEFORMAT",IDC_RADIO_SHORTDATEFORMAT,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,14,163,109,10
+    CONTROL         "DTS_LONGDATEFORMAT",IDC_RADIO_LONGDATEFORMAT,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,14,177,104,10
+    COMBOBOX        IDC_COMBO_DATEFORMAT,60,218,97,66,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_TIMEFORMAT,60,241,97,66,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "MCS_NOTODAY",IDC_CHECK_NOTODAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,183,28,71,10
+    CONTROL         "MCS_NOTODAYCIRCLE",IDC_CHECK_NOTODAYCIRCLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,183,42,96,10
+    CONTROL         "MCS_WEEKNUMBERS",IDC_CHECK_WEEKNUMBERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,183,56,93,10
+    COMBOBOX        IDC_COMBO_DIMENSION,173,93,70,66,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_FIRSTDAY,253,93,70,82,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_SCROLLRATE,253,111,42,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_SCROLLRATE,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,295,112,9,11
+    PUSHBUTTON      "Font ...",IDC_BUTTON_CALFONT,174,129,39,13
+    CONTROL         "\nSpecifies background color displayed between months",IDC_BUTTON_CLRBK,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,181,172,61,16
+    CONTROL         "\nSpecifies background color displayed text within a month",IDC_BUTTON_CLRTEXT,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,255,172,61,16
+    CONTROL         "\nSpecifies background color displayed within months",IDC_BUTTON_CLRMONTHBK,
+                    "Button",BS_OWNERDRAW | BS_LEFT | WS_TABSTOP,181,206,61,16
+    CONTROL         "\nSpecifies background color displayed text within calendar's title",IDC_BUTTON_CLRTITLETEXT,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,255,206,61,16
+    CONTROL         "\nSpecifies background color displayed in the calendar's title",IDC_BUTTON_CLRTITLEBK,
+                    "Button",BS_OWNERDRAW | BS_LEFT | WS_TABSTOP,181,240,61,16
+    CONTROL         "\nSpecifies background color to display header and trailed-day text",IDC_BUTTON_CLRTRAILINGTEXT,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,255,240,61,16
+    GROUPBOX        "Styles",IDC_STYLES,7,56,150,72
+    GROUPBOX        "Colors for calendar control",IDC_COLORS,174,149,149,115
+    LTEXT           "Background",IDC_STATIC,181,161,40,8
+    LTEXT           "Month Background",IDC_STATIC,181,195,62,8
+    LTEXT           "Text",IDC_STATIC,256,161,15,8
+    LTEXT           "Title Background",IDC_STATIC,181,230,55,8
+    LTEXT           "Title Text",IDC_STATIC,256,196,30,8
+    LTEXT           "Trailing Text",IDC_STATIC,256,230,40,8
+    GROUPBOX        "Date time picker control",IDC_STATIC,7,4,150,43
+    GROUPBOX        "Format",IDC_STATIC,7,137,150,56
+    LTEXT           "Display",IDC_STATIC,173,81,24,8
+    GROUPBOX        "Popup calendar control",IDC_STATIC,165,4,166,267
+    LTEXT           "First day of week",IDC_STATIC,254,81,54,8
+    LTEXT           "Scroll rate (in months)",IDC_STATIC,174,113,68,8
+    GROUPBOX        "Calendar Styles",IDC_STATIC,173,15,149,58
+    LTEXT           "Static",IDC_STATIC_CALFONT,227,129,95,12,SS_CENTERIMAGE | SS_SUNKEN
+    LTEXT           "Date Format",IDC_STATIC,10,221,40,8
+    LTEXT           "Time Format",IDC_STATIC,10,244,40,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "DateTimePicker MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "DateTimePicker"
+            VALUE "LegalCopyright", "Copyright (C) 1998"
+            VALUE "OriginalFilename", "DateTimePicker.EXE"
+            VALUE "ProductName", "DateTimePicker Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DATETIMEPICKER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 332
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 274
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About DateTimePicker..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Date Time Picker Demo"
+    ID_DESCRIPTION_FILE     "DateTimePickerInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""UTSampleAbout.rc"" \r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\DateTimePicker.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXBitmapButton.rc""\r\n"
+    "#include ""OXPopupBarCtrl.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\DateTimePicker.ico"
+#endif    // English (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "UTSampleAbout.rc" 
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\DateTimePicker.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXBitmapButton.rc"
+#include "OXPopupBarCtrl.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,72 @@
+///////////////////////////////////////////////////////////
+//
+//
+// World_i.idl -	Interface descriptions for ITangramWorld and ITangramGdiWorld
+//
+
+///////////////////////////////////////////////////////////
+//
+// Forwards
+//
+interface ITangramModel ;
+interface ITangramVisual ;
+
+///////////////////////////////////////////////////////////
+//
+// Imports
+//
+
+// Graphic Definitions
+import "tantype.idl" ;
+
+// TangramModel
+import "model_i.idl" ;
+
+// ITangramVisual
+import "visual_i.idl" ;
+
+///////////////////////////////////////////////////////////
+//
+// Interface ITangramWorld
+//
+[
+	object,
+	uuid(b53313cb-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramWorld Interface"),
+	pointer_default(unique)
+]
+interface ITangramWorld : IUnknown
+{
+	import "unknwn.idl" ; 
+
+	HRESULT Initialize([in] HWND hwnd, [in] double logicalCX, [in] double logicalCY) ;
+	HRESULT DeviceToModel([in] POINT ptIN, [out] TangramPoint2d* pptOut) ;
+
+	HRESULT VisualFromPoint([in] POINT pt, 
+							[in] REFIID iid, 
+							[out, iid_is(iid)] IUnknown** pITangramVisual) ;
+
+	HRESULT CreateVisualForModel([in] ITangramModel* pModel) ;
+	HRESULT SelectVisual([in] ITangramVisual* pSelectedVisual, [in] BOOL bSelect);
+	HRESULT Animate() ; 
+};
+
+///////////////////////////////////////////////////////////
+//
+// Interface ITangramGdiWorld
+//
+[
+	object,
+	uuid(b53313cc-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramGdiWorld Interface"),
+	pointer_default(unique)
+]
+interface ITangramGdiWorld : ITangramWorld 
+{
+	import "unknwn.idl" ; 
+
+	HRESULT ModelToDevice(	[in] TangramPoint2d pptIn, 
+							[out] POINT* pptOut) ;
+	HRESULT AddUpdateRect([in] RECT rectUpdate) ; 
+};
+

@@ -1,0 +1,103 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Changing row height in owner drawn control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Changing row height in owner drawn control</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+When you change the font of a list view control, the control or its parent window does not get a chance to respecify the height of the rows. No WM_MEASUREITEM message is sent to the controls parent window. The net effect is that when the font is changed for the control, the row height is no longer valid.
+
+<p>Here's a work around that forces the WM_MEASUREITEM message to be generated.
+
+<h4>Step 1: Add handler for WM_SETFONT</h4>
+The WM_MEASUREITEM message is sent when the control is created. Fortunately this message is also sent whenever the control is resized. Since we want the row height to be adjusted when the font changes, what better place to do thin than in the WM_SETFONT handler. In OnSetFont() we fool Windows into thinking that the window size of the control has changed. We do this by sending the WM_WINDOWPOSCHANGED message to the control which then gets handled by the default window procedure for the control. Note that we haven't specified the SWP_NOSIZE flag and we set the width and height field in the WINDOWPOS structure equal to the existing dimension.
+
+<p>For some reason, the Class Wizard did not have the WM_SETFONT message in its list of window messages. You will have to add the message map entry yourself. It is important to place the entries outside of the block used by the Class Wizard, otherwise the next you make any change with the wizard, our manual changes will be lost.
+
+
+<PRE><TT><FONT COLOR="#990000">// In the header file
+	//{{AFX_MSG(CMyListCtrl)
+	:
+	:
+	//}}AFX_MSG
+	afx_msg LRESULT OnSetFont(WPARAM wParam, LPARAM);
+	afx_msg void MeasureItem ( LPMEASUREITEMSTRUCT lpMeasureItemStruct );
+	DECLARE_MESSAGE_MAP()
+
+
+//////////////////////////////////////////////////////////////////////
+// In the cpp file
+BEGIN_MESSAGE_MAP(CMyListCtrl, CListCtrl)
+	//{{AFX_MSG_MAP(CMyListCtrl)
+	:
+	:
+	//}}AFX_MSG_MAP
+	ON_MESSAGE(WM_SETFONT, OnSetFont)
+	ON_WM_MEASUREITEM_REFLECT( )
+END_MESSAGE_MAP()
+
+
+LRESULT CMyListCtrl::OnSetFont(WPARAM wParam, LPARAM)
+{
+	LRESULT res =  Default();
+
+	CRect rc;
+	GetWindowRect( &rc );
+
+	WINDOWPOS wp;
+	wp.hwnd = m_hWnd;
+	wp.cx = rc.Width();
+	wp.cy = rc.Height();
+	wp.flags = SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER;
+	SendMessage( WM_WINDOWPOSCHANGED, 0, (LPARAM)&wp );
+
+	return res;
+}
+</FONT></TT></PRE>
+
+<h4>Step 2: Add handler for WM_MEASUREITEM</h4>
+Since we want our CListCtrl derived class to be modular, we will handle the WM_MEASUREITEM message within this class. The message however, is sent to the parent window, so we use message reflection. Again, the Class Wizard is not much help. We have to manually add the entry in the message map and update the header file. See the code snippet in step one for this.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::MeasureItem ( LPMEASUREITEMSTRUCT lpMeasureItemStruct )
+{
+	LOGFONT lf;
+	GetFont()->GetLogFont( &lf );
+
+	if( lf.lfHeight < 0 )
+		lpMeasureItemStruct->itemHeight = -lf.lfHeight; 
+	else
+		lpMeasureItemStruct->itemHeight = lf.lfHeight; 
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

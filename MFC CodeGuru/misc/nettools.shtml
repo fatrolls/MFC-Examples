@@ -1,0 +1,275 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Misc - Net Tools</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Net Tools
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:fforest@cyberenet.net">Fred Forester</A>.
+
+<!-- Sample image and source code/demo project -->
+<P><A HREF="nettools.zip">Download Source Code and Example</A></p>
+<br>
+
+<!-- The article... -->
+
+<P>The NETTOOLS project is an example of how to interface with Microsoft’s ICMP.DLL and INETMIB.DLL.
+These somewhat documented DLL’s are supplied by Microsoft to allow MS’s DOS 
+programs PING, TRACERT and NETSTAT access to the low-level IP header and MIB information.
+Since MS’s Winsock implementation does not support RAW sockets they had to create this API
+For themselves. Thanks to many hackers with nothing else to do we too can use the API.
+MS does say ‘It Will Go Away&quot; so keep this in mind!</P>
+
+<h4>PING/TRACERT </h4>
+
+<P>The PING and TRACERT code is implemented as an MFC thread. The main app
+Creates and Starts the thread when the app is started. The thread then just sits
+There and waits for the app to POST a request. Once the operation is started
+The thread posts a message back to the app for each line of output to be displayed
+In the main apps LISTBOX. A structure is used to pass information from
+The PING/TRACERT dialog box to the thread.  The reason for the thread 
+Is the ICMP.DLL. It uses the ASYNCH calls to Winsock. If you didn’t
+Process the DLL calls in a thread the user would be HourGlassed! The thread
+Also allows the user to cancel the request. 
+
+<P>Info on ICMP.DLL can be found in the SDK. You can download the Platform 
+SDK additional component section or you can find it on the Internet at 
+Various sites.</P>
+
+<P>The Pingthread.cpp and .h files contain all the code to handle PING and 
+TRACERT requests.  Pingparmlist.h contains the structure for passing 
+The parameters. </P>
+<P>
+</FONT>
+<TABLE BORDER CELLSPACING=0 CELLPADDING=0 WIDTH=590>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Nettools.h</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Contains the define statements for the user messages being used by the Threads.</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Mainfrm.h</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P> Contains function prototypes for the user messages and  Allocates the thread class and the parmlist  Structure.</P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Mainfrm.cpp</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Contains the code to process the messages from
+The thread creates the events that are used to start and stop the thread, create the thread, starts and stops the thread.  </P>
+</FONT></TD>
+</TR>
+</TABLE>
+
+<P>The way the thread works is a little strange,  plus I was just learning how to
+Do threads when I wrote this. I used EVENTS to Initiate and Terminate the 
+Thread via the Frame. The thread itself uses windows user messages to 
+Post back the data from the operation. </P>
+
+<P>The mainfrm constructor creates the events then creates a new thread.
+The thread classes start function is then called. If the thread is created
+The thread waits for the app to set the StartPing event. This tells the 
+Thread to wake up and process a request. The app then goes about its
+Business until the thread posts a USER message back. </P>
+
+<h4>Pingthread.cpp </h4>
+<TABLE BORDER CELLSPACING=0 CELLPADDING=0 WIDTH=590>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<FONT SIZE=2><P>CpingThreadProc</FONT></TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<FONT SIZE=2><P>a global function that IS the THREAD. Wait to be started. If started were We also asked to die, if not then process A TRACERT or PING. Post msg when done. Go back to sleep (waiting for start event).
+Set the PingDead event if we were asked To die.
+(in this case at app termination).</P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<FONT SIZE=2><P>Start()</FONT></TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<FONT SIZE=2><P>call the CreateThread and InitInstance functions. InitInstance starts Winsock this is required prior to using the ICMP.DLL plus the thread is also making Winsock calls to resolve Hostnames and addresses. Then load ICMP and store the address of the functions being Used.</P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<FONT SIZE=2><P>Icmp_SetOpts()</FONT></TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<FONT SIZE=2><P>Sets up the IP options for ICMP. The IP options are basically the same values used in an IP header. </P>
+
+<P>&nbsp;</FONT></TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<FONT SIZE=2><P>ProcessReply()</FONT></TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<FONT SIZE=2><P>Does just that. It breaks up the ICMP reply plus
+any network info returned.  I.e. route info…</P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<FONT SIZE=2><P>~CpingThread</FONT></TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<FONT SIZE=2><P>Does Nothing but must be changed to Public in the
+Class header file. App wizard makes it private.
+It must be public in order to delete the thread.</FONT></TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<FONT SIZE=2><P>Cleanup()</FONT></TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<FONT SIZE=2><P>Deletes the DLL and stops Winsock.</FONT></TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<FONT SIZE=2><P>CpingThread(Pingparms)</FONT></TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<FONT SIZE=2><P>The Threads overloaded constructor set a pointer
+To CpingThreadProc,Sets autodelete to false and sets
+A pointer to parm list. After the constructor is called
+The thread class now knows where the Thread process
+Function is.</FONT></TD>
+</TR>
+<TR><TD WIDTH="48%" VALIGN="TOP">
+<FONT SIZE=2><P>Kill()</FONT></TD>
+<TD WIDTH="52%" VALIGN="TOP">
+<FONT SIZE=2><P>Cancels the PING or TRACERT request without terminating the thread. A BOOL is set to TRUE. The other thread functions test this value after every async request</P>
+</FONT></TD>
+</TR>
+</TABLE>
+
+<h4>Known Problems</h4>
+Release Build crashes when optimization options are on.
+
+<h4>Reference materials used:</h4>
+
+<P>Developing Professional Applications for Win95 and NT using MFC </FONT><A HREF="http://www.iftech.com/"><FONT SIZE=2>http://www.iftech.com</FONT></A><BR>
+<FONT SIZE=2>Windows Sockets Network Programming </FONT><A HREF="http://www.sockets.com/"><FONT SIZE=2>http://www.sockets.com</FONT></A><BR>
+<FONT SIZE=2>Winsock Specification </FONT><A HREF="http://support.microsoft.com/support/kb/articles/q85/9/65.asp"><FONT SIZE=2>http://support.microsoft.com/support/kb/articles/q85/9/65.asp</FONT></A><BR>
+<FONT SIZE=2>RFC-791  IP Protocol </FONT><A HREF="http://noc.aic.net/Connected/RFC/791/rfc791.txt"><FONT SIZE=2>http://noc.aic.net/Connected/RFC/791/rfc791.txt</FONT></A><BR>
+<FONT SIZE=2>RFC-792 ICMP Protocol </FONT><A HREF="http://noc.aic.net/Connected/RFC/792/rfc792.txt"><FONT SIZE=2>http://noc.aic.net/Connected/RFC/792/rfc792.txt</FONT></A></P>
+
+<h4>NETSTAT </h4>
+
+<P>The NETSTAT utility uses the INETMIB1.DLL supplied with NT. The MIB’s are used
+To provide Statistical information for IP.  By using INETMIB1 there is no need to 
+Install the SNMP manager in order to get the Stats. The SNMP API is fully documented 
+And useable after SNMP is installed on the machine. The supplied INETMIB however 
+Is not documented.  The Inet thread is done in the same fashion as the Ping thread.
+
+<p><b>InetThread.cpp</b> - Contains the code to implement the INETMIB1.DLL as a thread. </P>
+
+<TABLE BORDER CELLSPACING=0 CELLPADDING=0 WIDTH=590>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CinetThreadProc</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>IS the thread procedure. </P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>CinetThread(inetparms)</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Sets up the pointer to the thread proc and turns off the Auto delete option. </P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>~CinetThread()</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Does nothing but it must be define as public to allow delete to be used. </P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>InitInstance()</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Loads the DLL and set pointers to its functions.</P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>RunInet()</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Determines which options are passed and calls the
+Corresponding function. </P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Cleanup()</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Called to delete the DLL and close Winsock.</P>
+</FONT></TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Kill()</FONT></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<FONT SIZE=2><P>Terminates the request while keeping the thread alive.</P>
+</FONT></TD>
+</TR>
+</TABLE>
+
+<P>The actual processing of the MIB data is well beyond the scope of this document.
+The best way to understand it is to look at the code while reading through the reference
+Information. </P>
+
+<P>The SMNP extension functions used in the INETMIB1.DLL are documented 
+In the MSDN library. This undocumented DLL just so happens to use the
+Same function names and format of the basic functions for SNMP. However
+The real SNMP DLL supplied when SMNP manager is installed contains 
+A richer API.  </P>
+
+<h4>Reference materials used:</h4>
+
+<P>MSDN  Microsoft Windows NT SMNP Agent Extensions <A HREF="http://www.microsoft.com/msdn">http://www.microsoft.com/msdn</A><BR>
+MIB II Objects. Documents the format of the MIBs.</P>
+
+<P>Microsoft’s SMNPUTIL.EXE. This program is available from Microsoft in source format.
+It requires that SMNP manager be installed on the machine. It’s a DOS Based program that
+Will dump the MIBs  to the screen so you can get an idea of how they look and let you practice
+Navigating through the MIB tree before writing the code that processes them. 
+
+<P>
+RFC-1155 – MIB structures for TCP/IP networks <A HREF="http://noc.aic.net/Connected/RFC/791/rfc791.txt">http://noc.aic.net/Connected/RFC/1155/rfc1155.txt</A><BR>
+RFC-1157 – SMNP Protocol <A HREF="http://noc.aic.net/Connected/RFC/791/rfc791.txt">http://noc.aic.net/Connected/RFC/1157/rfc1157.txt</A><BR>
+
+<P>The Goal behind writing this program was to learn MFC thread processing and at the same
+Time learn a little about TCP/IP. Both topics could fill a book in themselves. 
+I think what I really learned here is perseverance. It took a lot of time and study 
+To get this working and I ended up with a very very simple program that demonstrates
+The basics for learning how TCP works.  </P>
+
+<!-- Remember to update this -->
+<p>Last updated: 14 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,175 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Statusbar - "Ready" prompt replacement</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">"Ready" prompt replacement</FONT></H3></CENTER>
+<HR>
+
+This sample was contributed by <A HREF="mailto:mfindlay@seanet.com">Mark Findlay</A>.
+
+<H4>Replacing the "Ready" message at run time with custom text.</H4>
+
+<P>The following will allow you to specify a replacement string to appear
+in the status bar any time the customary "Ready" string would normally
+appear.
+
+<P>The difference between this and simply using the AFX_IDS_IDLEMESSAGE 
+is that this technique allows you to set the text to appear in place 
+of the "Ready" prompt AT RUN TIME.
+
+<P>With this, you could for example, read a database, then display the 
+number of records read of a total record count, or display the time
+it took to read the table, or the table name, etc.
+
+<P>With this technique you can change the text as much as you like, 
+any time you like during the course of program execution.
+
+<P>Thanks to Steve McAdams for his help in pointing me to the right
+place to get things working.
+
+<P>The function that handles this is copied almost verbatim from
+the WINFRM.CPP CFrameWnd::OnSetMessageString. The only change
+is to display our own message string.
+
+
+<P>Our changes will take place in the CMainFrame class.
+
+
+<H4>Step1:</H4>
+Create a CString variable that will contain the text to display
+<PRE><TT><FONT COLOR="#990000">
+	CString m_sStatusBarString;
+</FONT></TT></PRE>
+
+<H4>Step2:</H4>
+Add the prototype in the CMainFrame.h file for the OnSetMessageString() 
+function
+<PRE><TT><FONT COLOR="#990000">
+	//{{AFX_MSG(CMainFrame)
+	afx_msg LRESULT OnSetMessageString(WPARAM wParam, LPARAM lParam);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+<H4>Step3:</H4>
+Add the OnSetMessageString() handler to the CMainFrame.cpp file
+<PRE><TT><FONT COLOR="#990000">
+	BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
+		//{{AFX_MSG_MAP(CMainFrame)
+		ON_MESSAGE(WM_SETMESSAGESTRING, OnSetMessageString)
+		//}}AFX_MSG_MAP
+	END_MESSAGE_MAP()
+</FONT></TT></PRE>
+
+<H4>Step4:</H4>
+Create the OnSetMessageString() function:
+
+<PRE><TT><FONT COLOR="#990000">
+//***************************************************************
+LRESULT CMainFrame::OnSetMessageString(WPARAM wParam, LPARAM lParam)
+{
+	UINT nIDLast = m_nIDLastMessage;
+	m_nFlags &= ~WF_NOPOPMSG;
+
+	CWnd* pMessageBar = GetMessageBar();
+	if (pMessageBar != NULL)
+	{
+		LPCTSTR lpsz = NULL;
+		CString strMessage;
+
+		// set the message bar text
+		if (lParam != 0)
+		{
+			ASSERT(wParam == 0);    
+            m_sStatusBarString = (LPCTSTR)lParam;   // Here is our string
+            lpsz = m_sStatusBarString;
+		}
+		else if (wParam != 0)
+		{
+			// map SC_CLOSE to PREVIEW_CLOSE when in print preview mode
+			if (wParam == AFX_IDS_SCCLOSE && m_lpfnCloseProc != NULL)
+				wParam = AFX_IDS_PREVIEW_CLOSE;
+
+			// If the "Ready" string is attempted to be read, 
+            // use our string instead
+            if (wParam == AFX_IDS_IDLEMESSAGE)
+                lpsz = m_sStatusBarString;
+            else
+            {   // default for menu items etc.
+			    GetMessageString(wParam, strMessage);   
+			    lpsz = strMessage;
+            }
+		}
+
+        // Set text of status bar
+		pMessageBar->SetWindowText(lpsz);
+
+		// update owner of the bar in terms of last message selected
+		CFrameWnd* pFrameWnd = pMessageBar->GetParentFrame();
+		if (pFrameWnd != NULL)
+		{
+			m_nIDLastMessage = (UINT)wParam;
+			m_nIDTracking = (UINT)wParam;
+		}
+	}
+
+	m_nIDLastMessage = (UINT)wParam;    // new ID (or 0)
+	m_nIDTracking = (UINT)wParam;       // so F1 on toolbar buttons work
+	return nIDLast;
+}
+</FONT></TT></PRE>
+
+
+<H4>Step5:</H4>
+WM_SETMESSAGESTRING is defined in afxpriv.h. Because we want to be able to use this 
+message in any file, add the include to the Stdafx.h file
+<PRE><TT><FONT COLOR="#990000">
+#include &lt;afxpriv.h&gt; // defines WM_SETMESSAGESTRING
+</FONT></TT></PRE>
+
+
+<P>That's all there is to it. To set the status bar text use the following
+to invoke the OnSetMessageString() function:
+<PRE><TT><FONT COLOR="#990000">
+CString sReplacementText = "This text will always appear in place of Ready";
+
+    ((CMainFrame*)AfxGetMainWnd())->SendMessage(WM_SETMESSAGESTRING, 
+        (WPARAM)0, (LPARAM)sReplacementText.GetBuffer(0)); 
+
+</FONT></TT></PRE>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 17 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

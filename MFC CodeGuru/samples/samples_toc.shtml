@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Samples - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for various projects">
+   <META Name="keywords" Content="">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Samples</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+
+<hr>
+
+<UL>
+<LI><A HREF="track_hours.shtml">Track billable hours - Eric Hoagland</A></LI>
+<li><A HREF="rfi.shtml">Database Sample (Repeater Frequency Index) - Eric Hoagland</A>
+<LI><A HREF="time_tracker.shtml">Track billable hours (2) - Thomas Blenkers</A></LI>
+<LI><A HREF="runtime_monitoring_agent.shtml">Runtime Monitoring Agent - Zoran M.Todorovic & Miodrag D.Stojadinovic</A></LI>
+<LI><A HREF="mfc_hooks.shtml">Win32 hooks with MFC - Dror Kremer</A></LI>
+<LI><A HREF="mfc_hooks.shtml">Win32 hooks with MFC - Dror Kremer</A></LI>
+<LI><A HREF="help_array_generator.shtml">Help Array Generator Utility - Peter Bevilacqua</A></LI>
+<LI><A HREF="msg.shtml">Messenger - Audrius Vasiliauskas</A></LI>
+</UL>
+
+
+
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

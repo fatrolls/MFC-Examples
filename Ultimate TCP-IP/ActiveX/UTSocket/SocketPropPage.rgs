@@ -1,0 +1,23 @@
+HKCR
+{
+	UTSocket.SocketPropPage.1 = s 'SocketPropPage Class'
+	{
+		CLSID = s '{D23EA53D-0D35-11D3-A46D-0080C858F182}'
+	}
+	UTSocket.SocketPropPage = s 'SocketPropPage Class'
+	{
+		CLSID = s '{D23EA53D-0D35-11D3-A46D-0080C858F182}'
+		CurVer = s 'UTSocket.SocketPropPage.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D23EA53D-0D35-11D3-A46D-0080C858F182} = s 'SocketPropPage Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

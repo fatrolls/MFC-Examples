@@ -1,0 +1,131 @@
+<HTML>
+<!-- $Revision: 1 $ -->
+<H1>Release 39</H1>
+
+<H2>Editorial</H2>
+
+OK, so it's been six months. Where have I been? Well, I was leading
+a Unix software project. Talk about the stone ages. I don't
+know what I was thinking. It has been over 10 years since I was
+on a Unix-only project. Since then, I've done a fair amount of
+cross-platform development (creating class libraries mostly)
+and have settled on NT as the best development platform. I've
+ported a number of WFC classes over to a cross platform
+library called Zia. I will be publishing that RSN (real soon
+now).
+
+<P>
+
+In the past six months, I've worked on the 
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+classes almost exclusively. I now consider it to be a decent
+XML parser. It won't parse UTF-8 encoded documents (ASCII,
+UNICODE and UCS4 is OK) but it will write them. It is a
+standalone parser. It parses all but two of James Clark's
+test files (found at
+<A HREF="http://www.jclark.com/xml/" TARGET="_parent">http://www.jclark.com/xml/</A>).
+One refers to an external reference (097.XML) and the other is
+UTF-8 encoded (063.XML). I started writing the XML classes in the
+wrong way. I coded up an XML parser then had to back fill it with
+all of the SGML baggage (inconsistencies, complexities and down
+right stupidity).
+What started as a nice little parser has now turned into an ugly
+hairball of code. These changes have really slowed down the parser.
+It now takes about 3125 milliseconds (a little over 3 seconds) to
+parse Shakespeare's &quot;Love's Labor's Lost&amp; (many thanks to
+Jon Bosak for creating the XML). This document is
+206,945 bytes long and contains 15,126 elements. I ran the parser on
+my development machine (P5-100 with 64MB RAM running Windows NT 4.0
+build 1381 service pack 4). Nearest I can figure, Microsoft's XML
+parser (MSXML.DLL version 5.00.2314.1000) takes about 11 seconds to
+parse the same file (and <B>MUCH</B> longer to display it).
+
+<P>
+
+My XML parser parses bytes. It knows nothing of files, sockets
+or other such application-level objects. Because of this, my parser
+cannot reach out and touch things that other parsers assume will
+be there (like files or web sites). Any communication mechanisms
+are assumed to be application level objects and are not available
+to my XML parser.<P>
+
+<H2>What's New</H2>
+
+<B><A HREF="CMemoryFile.htm">CMemoryFile</A></B> - A simple memory
+mapped file class. It takes care of that silly allocation granularity
+alignment problem. I can't remember if this was in release 38 or not
+but now it is documented.
+
+<P>
+
+<B><A HREF="wfc_create_hard_link.htm">wfc_create_hard_link</A></B> - If you
+just can't wait for that NT 5.0 API <CODE>CreateHardLink()</CODE>, here's
+a function that will create two directory entries for one file. In the
+good old DOS days, that used to be known as a cross-link error.
+
+<P>
+
+<B>wfc_append_string_to_CByteArray</A></B> - I just got
+tired of writing while loops all over the place.
+
+<P>
+
+<B><CODE>wfc_coverage.h</CODE></B> - This header file implements a
+simple code coverage analysis system. I use it to test classes
+to make sure all the code I've written is actually executed.
+
+<P>
+
+<B><CODE>wfc_linker_setup.h</CODE></B> - This header file fixes the
+LNK2005 problems. Turns out, we need to define <CODE>_AFX_NOFORCE_LIBS</CODE>
+before we include <CODE>afx.h</CODE>. This header file makes sure
+the link libraries are included in the proper order.
+
+<P>
+
+<H2>Bug Fixes/Enhancements</H2>
+
+<B><A HREF="CDataParser.htm">CDataParser</A></B> -
+Added more functions. It will interpret charcaters
+now. Those characters can be in ASCII, UNICODE
+(big and little endian) as well as UCS-4 (big endian,
+little endian, unusual 2143 or unusual 3412).
+
+<B><A HREF="CXMLD.htm">CExtensibleMarkupLanguageDocument</A></B> -
+I've added more write options. It will now write the document out
+in ASCII, UTF-8, UNICODE (big and little endian) and UCS-4
+(big endian, little endian, unusual 2143 and unusual 3412).
+It will also automatically detect and parse those same character
+encodings except UTF-8.
+<BR>
+You can now specify your own character to separate parents and
+children when getting elements via the <B>GetElement()</B> method.
+I was using a period (.) but that is a legal name character.
+
+<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> -
+Lots of bugs fixed here.
+
+<UL>
+<LI>ENTITY's that were only &gt; are now parsed correctly.
+<LI>When a parse fails, it will tell you the rule number that caused the failure.
+<LI>Lots of little bug fixes
+</UL>
+
+<P>
+
+<B><A HREF="CRandomNumberGenerator2.htm">CRandomNumberGenerator2</A></B> -
+Now returns something other than zero when you call <B>GetFloat()</B>.
+
+<B>CWfcTrace</B> - Now supports printing SIZE, RECT, POINT, LARGE_INTEGER and
+ULARGE_INTEGER structures. A bug where '%' appeared in the output string wasn't
+being displayed is fixed.
+
+<HR>
+<A HREF="Release38.htm">Release 38 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS><A HREF="mailto:wfc@pobox.com">wfc@pobox.com</A></ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

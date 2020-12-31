@@ -1,0 +1,231 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Building Dynamic Visual C++ Programs with DHTML</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Building Dynamic Visual C++ Programs with DHTML
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:rkrishna@caesolutions.com"><!-- Author Name -->V. Rama Krishna</A>.
+
+<p>The rich inteface provided by DHTML can be used in Visual C++
+applications as a powerful alternative for Form Views. The
+Internet Explorer Document Object Model can be accessed from C++
+programs using some of the interfaces the WebBrowser control
+exposes. The sample Test.exe illustrates this.</p>
+
+<p>The sample code illustrates follwing :-</p>
+
+<p>1. Hosting the web browser control</p>
+
+<p>2. Replacing the default context menu of IE4 with our own.</p>
+
+<p>3. Accessing the IE4 document object model</p>
+
+<p>4. Running a piece of C++ code in response to the events fired
+from the HTML document.</p>
+
+<p>There are various steps in building a program with DHTML.</p>
+
+<p>1. It is important that the latest WIN32 lib files and Include
+files must be presented. They can be freely downloaded as a part
+of internet client SDK form<a
+href="http://www.microsoft.com/msdn/sdks/inetsdk">
+www.microsoft.com/msdn/sdks/inetsdk</a>. </p>
+
+<p>2. The next step is to host the web browser control. The view
+class has been used for this purpose. A class has been derived
+from CView - CBrowserView for this purpose.</p>
+
+<p><pre><font COLOR="#990000"><tt>//Create the Browser Control<br>
+if (!m_wndWebBrowser.CreateControl(CLSID_WebBrowser,
+NULL,WS_CHILD|WS_VISIBLE|WS_GROUP|WS_TABSTOP, CRect(0,0,0,0),
+this, 1))<br>
+return -1;<br>
+<br>
+//Get IUnknown Interface pointer<br>
+LPUNKNOWN pUnk = m_wndWebBrowser.GetControlUnknown();<br>
+HRESULT hr = pUnk-&gt;QueryInterface(IID_IWebBrowser2,
+(LPVOID*)&amp;m_pWebBrowser2);<br>
+<br>
+if (!SUCCEEDED(hr))<br>
+return -1;<br>
+</tt></pre></font></p>
+
+<p>The IWebBrowser2 interface needs to be obtained for various
+functions such as Navigate etc.</p>
+
+<p>3. A special class CHTMLForm has been used. Since a single web
+browser control can load many different HTML filesit is better to
+encapsulate a URL into a class just like CFormView encapsulates a
+dialog resource. To load a form CBrowserView::LoadForm can be
+used.</p>
+
+<p><pre><font COLOR="#990000"><tt>
+HRESULT hr =
+m_pWebBrowser2-&gt;Navigate(m_pForm-&gt;m_strURL.AllocSysString(),
+NULL, NULL, NULL, NULL);<br>
+<br>
+if (!SUCCEEDED(hr))<br>
+return FALSE;<br>
+<br>
+return TRUE;</p>
+</tt></pre></font>
+<p>4. The next step is to access the HTML form elements from C++
+code. They can be accessed once the Document has been fully
+loaded and DocumentComplete event has been fired.</p>
+
+<p><pre><font COLOR="#990000"><tt>void CBrowserView::OnDocumentComplete(LPDISPATCH pDisp,
+VARIANT FAR* URL) <br>
+{<br>
+<br>
+//Document is fully loaded now initialize any variables<br>
+CWaitCursor wc;<br>
+<br>
+if (!m_bNewForm)<br>
+return;<br>
+<br>
+HRESULT hr;<br>
+LPDISPATCH pDisp1;<br>
+IHTMLDocument2* pHTMLDocument = NULL;<br>
+IHTMLElementCollection* pCollection = NULL;<br>
+<br>
+<br>
+hr = m_pWebBrowser2-&gt;get_Document(&amp;pDisp1);<br>
+//if (!SUCCEEDED(hr))<br>
+// throw Exception<br>
+<br>
+hr = pDisp1-&gt;QueryInterface(IID_IHTMLDocument2,
+(void**)&amp;pHTMLDocument);<br>
+//if (!SUCCEEDED(hr))<br>
+// throw Exception<br>
+<br>
+hr = pHTMLDocument-&gt;get_all(&amp;pCollection);<br>
+//if (!SUCCEEDED(hr))<br>
+// throw Exception<br>
+ICustomDoc* pCustomDoc;<br>
+<br>
+hr = pDisp1-&gt;QueryInterface(IID_ICustomDoc,
+(LPVOID*)&amp;pCustomDoc);<br>
+//if (!SUCCEEDED(hr))<br>
+// throw Exception<br>
+<br>
+<br>
+CDocHostUIHandler* pDHUIH = new CDocHostUIHandler();<br>
+<br>
+pDHUIH-&gt;m_pBrowserView = this;<br>
+<br>
+pCustomDoc-&gt;SetUIHandler((IDocHostUIHandler*)pDHUIH);<br>
+<br>
+pCustomDoc-&gt;Release();<br>
+<br>
+m_pForm-&gt;OnLoad(pCollection);<br>
+//It is responsiblity of the form to realease pCollection<br>
+<br>
+<br>
+pDisp1-&gt;Release();<br>
+pHTMLDocument-&gt;Release();<br>
+<br>
+m_bNewForm = FALSE;<br>
+<br>
+}</tt></pre></font><br>
+</p>
+
+<p>There are many interfaces through which the Document Object
+Model can be accessed most important of this is IHTMLCollection.
+For details refer to Internet Client SDK. Next, the default IE4
+context menu can be replaced by setting it's IDocHostUIHandler
+through ICustomDoc::SetUIHandler as shown in the code.</p>
+
+<p>6. The individual HTML elements can be accessed using
+GetElement or GetInputElement function in CHTMLForm.</p>
+
+<p>7. Once the individual elements are obtained Sky is the limit.
+The HTML can be modified in whatever wa one likes.</p>
+
+<p>8. The example also illustrates how to handle eevnts from
+within the HTML documents like clicking of a button or a
+hyperlink to run a piece of C++ code.</p>
+
+<p>This has been done using &quot;cmd://..&quot; as URL prefix.
+When the browser starts to Navigate this URL it fires
+BeforeNavigateEvent. In the event handler the URL is parsed to
+see if it is a command and then the application can handle
+command in it's own way.</p>
+
+<p>The sample has 2 projects :-</p>
+
+<p>1. BrowseView.dsp - Builds an extension dll mfcext.dll which
+contains the classes CBrowserView, CHTMLForm and
+CDocHostUIHandler.</p>
+
+<p>2. Test.dsp a project that builds an SDI application using the
+extension dll. This uses the student registration database that
+comes with VC++ 5.0.</p>
+
+<p>To use the sample :-</p>
+
+<p>1. Install latest Win32 API from Internet Client SDK.</p>
+
+<p>2. Register the Student Registration Database that comes with
+VC++ 5.0.</p>
+
+<p>3. Use the HTML file Inst.htm to be used as a form for
+Instructor Data Entry.</p>
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="dynamic_dhtml_app.zip">Download demo project - 144KB</A>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="dynamic_dhtml_source.zip">Download source - 139KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 10 May 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+
+
+

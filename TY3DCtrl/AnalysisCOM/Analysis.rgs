@@ -1,0 +1,26 @@
+HKCR
+{
+	TY3DCtrl.Analysis.1 = s 'Analysis Class'
+	{
+		CLSID = s '{2243AD26-A251-4B9B-8FC3-B78B6EF49D36}'
+	}
+	TY3DCtrl.Analysis = s 'Analysis Class'
+	{		
+		CurVer = s 'TY3DCtrl.Analysis.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {2243AD26-A251-4B9B-8FC3-B78B6EF49D36} = s 'Analysis Class'
+		{
+			ProgID = s 'TY3DCtrl.Analysis.1'
+			VersionIndependentProgID = s 'TY3DCtrl.Analysis'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{0BCAD96D-D93C-41C7-BD71-06DD4D035124}'
+			Version = s '1.0'
+		}
+	}
+}

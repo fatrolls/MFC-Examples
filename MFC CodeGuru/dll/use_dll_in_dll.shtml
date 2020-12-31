@@ -1,0 +1,106 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DLL - Using one extension DLL in another</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using one extension DLL in another</FONT></H3></CENTER>
+<HR>
+
+
+This code was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+
+<P><FONT>If you create an extension DLL you can most
+conveniently export one or more of its classes using AFX_EXT_CLASS. 
+However if you create a second extension DLL and try to use classes
+from the first you will run into a small problem.</FONT></P>
+
+<P><FONT>The value of AFX_EXT_CLASS will cause your new DLL
+to try and </FONT><B><FONT>export</FONT></B><FONT> your dependent classes!  You will get link errors such as
+below for the classes in the first DLL:</FONT></P>
+
+<P><FONT COLOR="#990000">error LNK2001: unresolved external
+symbol ..........</FONT></P>
+
+<P><FONT>What you need to do is temporarily re-define
+AFX_EXT_CLASS when you include the header files for the classes in
+the DLL you are importing classes from.  The following example shows
+how to do this:</FONT></P>
+
+<P><FONT COLOR="#990000">//change the definition of AFX_EXT... to
+make it import<BR>
+
+#undef AFX_EXT_CLASS<BR>
+
+#undef AFX_EXT_API<BR>
+
+#undef AFX_EXT_DATA<BR>
+
+#define AFX_EXT_CLASS       AFX_CLASS_IMPORT<BR>
+
+#define AFX_EXT_API         AFX_API_IMPORT<BR>
+
+#define AFX_EXT_DATA        AFX_DATA_IMPORT</FONT></P>
+
+<P><FONT COLOR="#990000">//Include headers for the dll / lib that we
+use classes from<BR>
+
+#include "DLLOne.H"</FONT></P>
+
+<P><FONT COLOR="#990000">//put the values back to make AFX_EXT_CLASS
+export again<BR>
+
+#undef AFX_EXT_CLASS<BR>
+
+#undef AFX_EXT_API<BR>
+
+#undef AFX_EXT_DATA<BR>
+
+#define AFX_EXT_CLASS       AFX_CLASS_EXPORT<BR>
+
+#define AFX_EXT_API         AFX_API_EXPORT<BR>
+
+#define AFX_EXT_DATA        AFX_DATA_EXPORT</FONT></P>
+
+<P><FONT COLOR="#990000">//Include headers for the classes we are
+creating in this DLL<BR>
+
+#include "DLLTwo.H"</FONT></P>
+
+
+
+
+
+
+<P>Posted: March, 8, 98
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+ 

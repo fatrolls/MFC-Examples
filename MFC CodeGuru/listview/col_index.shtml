@@ -1,0 +1,98 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Detecting column index of the item clicked</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Detecting column index of the item clicked</FONT></H3></CENTER>
+
+<HR WIDTH="100%">The HitTest() function provided by the CListCtrl class
+returns only the row index of the item that falls under the point being
+tested. The HitTest() also has the drawback that it fails if the point
+is not directly over the first column. To determine the row of the item,
+we use GetItemRect() to get the rectangular bounds of each visible row
+and use PtInRect() to determine if the point falls within this rectangle.
+Once we know the row, we use GetColumnWidth() to determine the bounding
+rect for each cell and then test the point against each of these bounding
+rectangles.
+
+<PRE><TT><FONT COLOR="#990000">// HitTestEx	- Determine the row index and column index for a point
+// Returns	- the row index or -1 if point is not over a row
+// point	- point to be tested.
+// col		- to hold the column index
+int CMyListCtrl::HitTestEx(CPoint &point, int *col) const
+{
+	int colnum = 0;
+	int row = HitTest( point, NULL );
+	
+	if( col ) *col = 0;
+
+	// Make sure that the ListView is in LVS_REPORT
+	if( (GetWindowLong(m_hWnd, GWL_STYLE) & LVS_TYPEMASK) != LVS_REPORT )
+		return row;
+
+	// Get the top and bottom row visible
+	row = GetTopIndex();
+	int bottom = row + GetCountPerPage();
+	if( bottom > GetItemCount() )
+		bottom = GetItemCount();
+	
+	// Get the number of columns
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+	int nColumnCount = pHeader->GetItemCount();
+
+	// Loop through the visible rows
+	for( ;row <=bottom;row++)
+	{
+		// Get bounding rect of item and check whether point falls in it.
+		CRect rect;
+		GetItemRect( row, &rect, LVIR_BOUNDS );
+		if( rect.PtInRect(point) )
+		{
+			// Now find the column
+			for( colnum = 0; colnum < nColumnCount; colnum++ )
+			{
+				int colwidth = GetColumnWidth(colnum);
+				if( point.x >= rect.left 
+					&& point.x <= (rect.left + colwidth ) )
+				{
+					if( col ) *col = colnum;
+					return row;
+				}
+				rect.left += colwidth;
+			}
+		}
+	}
+	return -1;
+}
+</FONT></TT></PRE>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

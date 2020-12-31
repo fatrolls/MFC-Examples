@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The WORKITEM Sample</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The WORKITEM Sample</H2>
+<P>The WORKITEM Sample accompanies Chapter 9 and illustrates how to use ExQueueWorkItem to queue a work item. <I>(Refer to the </I><A HREF="../../chap6/pnpmon/pnpmon.htm">PNPMON sample</A><I> in Chapter 6 for an illustration of how to use the newer function IoQueueWorkItem instead of ExQueueWorkItem.)</P>
+</I><P>The sample includes two components:</P>
+
+<UL>
+<LI>WORKITEM.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a Win32 console program that tests WORKITEM.SYS.</LI></UL>
+
+<H3>Building WORKITEM</H3>
+<P>To build WORKITEM.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named WORKITEM.DSP.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing WORKITEM</H3>
+<P>First install the WORKITEM.SYS driver. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF.</P>
+<P>Open a command prompt and execute TEST.EXE from the TEST\DEBUG subdirectory. TEST will call WORKITEM to queue a work item that should complete almost immediately and report back to TEST. TEST prints a message to indicate the results.</P></BODY>
+</HTML>

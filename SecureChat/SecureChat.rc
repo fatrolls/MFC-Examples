@@ -1,0 +1,251 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SECURECHAT_DIALOG DIALOGEX 0, 0, 387, 238
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "SecureChat Server"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Start",IDC_STARTSTOPSERVER,3,9,56,16
+    EDITTEXT        IDC_ADDRESS,65,11,97,17,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORTNR,65,30,97,17,ES_AUTOHSCROLL
+    EDITTEXT        IDC_NROFIO,65,51,97,17,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAXCONNECT,65,75,97,17,ES_AUTOHSCROLL
+    PUSHBUTTON      "Disconnect",IDC_DISCONNECT,47,112,53,19
+    PUSHBUTTON      "Disconnect All",IDC_DISCONNECTALL,107,112,53,19
+    EDITTEXT        IDC_TEXT,3,134,115,28,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_NOHIDESEL | ES_WANTRETURN | WS_VSCROLL
+    PUSHBUTTON      "Send",IDC_SENDTXT,123,134,37,28
+    EDITTEXT        IDC_KEYSIZE,293,29,91,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Test Library Functionality ",IDC_SIMPLELIBTEST,293,47,
+                    91,18
+    PUSHBUTTON      "RSATEST",IDC_RSATEST,294,70,91,18
+    PUSHBUTTON      "Diffie-Hellman Test",IDC_DHTEST,293,93,91,18
+    PUSHBUTTON      "Generate DSA key",IDC_GENERATEKEY,293,116,91,18
+    PUSHBUTTON      "Quit",IDCANCEL,295,224,90,13
+    EDITTEXT        IDC_TXTOUT,139,177,33,38,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_NOHIDESEL | ES_OEMCONVERT | WS_VSCROLL
+    LTEXT           "Keylength in words: ",IDC_KEYSIZETXT,293,18,91,8
+    CONTROL         "Tab1",IDC_TOPTAP,"SysTabControl32",TCS_BOTTOM,0,219,173,
+                    16
+    GROUPBOX        "Bigg Logg Place Holder",IDC_BIGLOGG,0,1,290,222,NOT 
+                    WS_VISIBLE
+    GROUPBOX        "Dummy Small Place holder",IDC_SMALLLOGG,1,163,385,59,
+                    NOT WS_VISIBLE
+    GROUPBOX        "DummyListPlaceHolder",IDC_LISTPLACEHOLDER,166,0,221,163,
+                    NOT WS_VISIBLE
+    CONTROL         "List1",IDC_USERLIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,189,170,41,44
+    LTEXT           "Adress: ",IDC_SERVERADRESSTXT,67,1,26,8
+    LTEXT           "Port: ",IDC_PORTTXT,6,37,18,8
+    LTEXT           "Number of IO-workers:",IDC_TXTNROFIOWORKER,4,53,57,16
+    LTEXT           "Maximum nr of connetions",IDC_TXTMAXCONNECT,5,74,54,21
+    PUSHBUTTON      "Clear log",IDC_CLEARLOG,293,139,91,18
+END
+
+IDD_RANDOM DIALOG DISCARDABLE  0, 0, 338, 150
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Randomizer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,99,97,132,24
+    CTEXT           "Move mouse randomly around this area and click randomly to collect entropy until this dialog disappear",
+                    IDC_STATIC,41,22,259,32
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | 
+                    WS_BORDER,7,67,324,15
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_RANDOM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 331
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 143
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_HEADER              BITMAP  MOVEABLE PURE   "res\\header.bmp"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "SecureChat MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "SecureChat\0"
+            VALUE "LegalCopyright", "Copyright (C) 2006\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "SecureChat.EXE\0"
+            VALUE "ProductName", "SecureChat Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Swedish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)
+#ifdef _WIN32
+LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\SecureChat.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\SecureChat.ico"
+#endif    // Swedish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\SecureChat.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

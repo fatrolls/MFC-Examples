@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TabViews", "TabViews.vcproj", "{29CA054F-3945-488A-AB47-D29A58C694A5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release_Shared|Win32 = Release_Shared|Win32
+		Release|Win32 = Release|Win32
+		Unicode_Debug|Win32 = Unicode_Debug|Win32
+		Unicode_Release|Win32 = Unicode_Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Debug|Win32.Build.0 = Debug|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Release_Shared|Win32.ActiveCfg = Release_Shared|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Release_Shared|Win32.Build.0 = Release_Shared|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Release|Win32.ActiveCfg = Release|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Release|Win32.Build.0 = Release|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
+		{29CA054F-3945-488A-AB47-D29A58C694A5}.Unicode_Release|Win32.Build.0 = Unicode_Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

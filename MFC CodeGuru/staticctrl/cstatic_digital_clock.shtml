@@ -1,0 +1,129 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - CStatic as digital clock</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">CStatic as digital clock</FONT></H3></CENTER>
+<HR>
+
+
+
+
+
+This article was contributed by <a href="mailto:jw_xie@usa.net">Xie Jingwei</a>.
+
+<P><A HREF="cstatic_digital_clock.zip">Download project files</A>.
+
+<p>Class CXJWDigitClock is a static control derived from CStatic. It displays as 
+a digital clock,as shown below:</p> 
+ 
+<p><img src="cstatic_digital_clock.jpg" alt="digitclock_sample.jpg (26130 bytes)" width="409" height="260"></p> 
+ 
+<p>There are three properties in CXJWDigitClock</p> 
+ 
+<p>face color &lt;-----&gt; SetColor();<br> 
+second style &lt;-----&gt; SetStyle();<br> 
+alarm mode &lt;----&gt; SetAlarm();<br> 
+</p> 
+ 
+<p>Usage: Check the sample project for the detail.</p> 
+ 
+<p>Note: You should insert all 12 bitmaps in your project, and take care the value and order of bitmap's ID.
+In my sample  project, I used IDB_BITMAP1 to IDB_BITMAP12 side by side. See following:</p> 
+ 
+<table border="1"> 
+  <tr> 
+    <td width="14%">Digit</td> 
+    <td width="40%">ID</td> 
+    <td width="46%">VALUE</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">0 </td> 
+    <td width="40%">IDB_BITMAP1</td> 
+    <td width="46%">100</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">1</td> 
+    <td width="40%">IDB_BITMAP2</td> 
+    <td width="46%">101</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">2</td> 
+    <td width="40%">IDB_BITMAP3</td> 
+    <td width="46%">102</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">3</td> 
+    <td width="40%">IDB_BITMAP4</td> 
+    <td width="46%">103</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">4</td> 
+    <td width="40%">IDB_BITMAP5</td> 
+    <td width="46%">104</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">5</td> 
+    <td width="40%">IDB_BITMAP6</td> 
+    <td width="46%">105</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">6</td> 
+    <td width="40%">IDB_BITMAP7</td> 
+    <td width="46%">106</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">7</td> 
+    <td width="40%">IDB_BITMAP8</td> 
+    <td width="46%">107</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">8</td> 
+    <td width="40%">IDB_BITMAP9</td> 
+    <td width="46%">108</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">9</td> 
+    <td width="40%">IDB_BITMAP10</td> 
+    <td width="46%">109</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">10</td> 
+    <td width="40%">IDB_BITMAP11</td> 
+    <td width="46%">110</td> 
+  </tr> 
+  <tr> 
+    <td width="14%">11</td> 
+    <td width="40%">IDB_BITMAP12</td> 
+    <td width="46%">111</td> 
+  </tr> 
+</table> 
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

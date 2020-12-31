@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DSITools", "Prop2\DSITools.vcproj", "{9C9B7338-75E9-456C-87E8-81FF94E0649F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QuickMailer", "QuickMailer\QuickMailer.vcproj", "{65E29262-CC13-4E7B-94D9-FA27A962C89F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MsgMapper", "MsgMapper\MsgMapper.vcproj", "{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_withSkins|Win32 = Debug_withSkins|Win32
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		Unicode Debug|Win32 = Unicode Debug|Win32
+		Unicode Release|Win32 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Debug_withSkins|Win32.ActiveCfg = Debug|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Debug_withSkins|Win32.Build.0 = Debug|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Debug|Win32.Build.0 = Debug|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Release|Win32.ActiveCfg = Release|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Release|Win32.Build.0 = Release|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{9C9B7338-75E9-456C-87E8-81FF94E0649F}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Debug_withSkins|Win32.ActiveCfg = Debug|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Debug_withSkins|Win32.Build.0 = Debug|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Debug|Win32.Build.0 = Debug|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Release|Win32.ActiveCfg = Release|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Release|Win32.Build.0 = Release|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{65E29262-CC13-4E7B-94D9-FA27A962C89F}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Debug_withSkins|Win32.ActiveCfg = Debug|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Debug_withSkins|Win32.Build.0 = Debug|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Debug|Win32.Build.0 = Debug|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Release|Win32.ActiveCfg = Release|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Release|Win32.Build.0 = Release|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Unicode Release|Win32.ActiveCfg = Unicode Release|Win32
+		{FB1538F7-E4DE-40C4-B062-B904BBFF89D4}.Unicode Release|Win32.Build.0 = Unicode Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

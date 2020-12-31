@@ -1,0 +1,315 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG1 DIALOGEX 0, 0, 358, 222
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Ultimate TCP/IP 2005 Internet Tools "
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+END
+
+IDD_DNS_PAGE DIALOGEX 0, 0, 400, 271
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Property Page"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_DNSSERVER,57,7,178,14,ES_AUTOHSCROLL
+    CONTROL         "Use &UDP protocol:",IDC_USE_TCP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,252,12,76,12
+    EDITTEXT        IDC_LOOKUP,57,25,178,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_QUERY_COMBO,57,43,178,105,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_DNS_LOG_FILE,57,72,178,14,ES_AUTOHSCROLL
+    CONTROL         "E&nable Log",IDC_DNS_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,252,74,53,10
+    PUSHBUTTON      "Auth. Loo&kup",IDC_AUTHLOOKUPBTN,343,7,50,14
+    PUSHBUTTON      "&Lookup",IDC_LOOKUPBTN,343,25,50,14
+    PUSHBUTTON      "&About...",IDC_DNS_ABOUT,343,44,50,14
+    CONTROL         "",IDC_HISTORY_DNS,"CUH_Control",WS_TABSTOP,7,92,386,172
+    LTEXT           "Query Type:",IDC_STATIC,12,45,40,8
+    LTEXT           "DNS Server:",IDC_STATIC,11,11,41,8
+    LTEXT           "Domain:",IDC_STATIC,25,28,27,8
+    LTEXT           "Log File:",IDC_STATIC,25,75,28,8
+END
+
+IDD_FINGER_PAGE DIALOG  0, 0, 400, 271
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_USER_NDOMAIN,57,7,178,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_FINGER_LOG_FILE,57,72,178,14,ES_AUTOHSCROLL
+    CONTROL         "E&nable Log",IDC_FINGER_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,252,74,59,10
+    PUSHBUTTON      "&Finger",IDC_FINGER_BTN,343,7,50,14
+    PUSHBUTTON      "&About...",IDC_FINGER_ABOUT,343,25,50,14
+    LTEXT           "Query:",IDC_STATIC,31,10,22,8
+    CONTROL         "",IDC_FINGER_HISTORY,"CUH_Control",WS_TABSTOP,7,92,386,172
+    LTEXT           "Log File:",IDC_STATIC,26,75,28,8
+END
+
+IDD_TRACE_PAGE1 DIALOGEX 0, 0, 400, 271
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_TRACE_NDOMAIN,57,7,178,14,ES_AUTOHSCROLL
+    CONTROL         "Show na&me",IDC_TRACE_SHOW_NAME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,252,12,50,10
+    EDITTEXT        IDC_TRACE_TIME_OUT,58,43,29,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TRACE_DATA_SIZE,132,43,30,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TRACE_NUMBER_HITS,205,43,30,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_TRACE_LOG_FILE,57,72,178,14,ES_AUTOHSCROLL
+    CONTROL         "E&nable Log",IDC_TRACE_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,252,74,52,10
+    PUSHBUTTON      "&Trace",IDC_TRACE_BTN,343,7,50,14
+    PUSHBUTTON      "&About...",IDC_TRACE_ABOUT,343,25,50,14
+    CONTROL         "Custom1",IDC_TRACE_HISTORY,"CUH_Control",WS_TABSTOP,7,92,386,172
+    LTEXT           "Host address:",IDC_STATIC,10,9,44,8
+    LTEXT           "Log File:",IDC_STATIC,26,75,28,8
+    LTEXT           "Timeout",IDC_STATIC,56,32,26,8
+    LTEXT           "Bytes",IDC_STATIC,133,32,18,8
+    LTEXT           "Max hops",IDC_STATIC,206,32,32,8
+END
+
+IDD_VERIFY_EMAIL DIALOG  0, 0, 380, 270
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_VERIFY_SERVER,60,3,115,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_VERIFY_EMAIL_TARGET,60,21,115,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_USING_EMAIL,60,39,115,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Verify",IDC_VERIFY_BTN,272,5,50,14
+    CONTROL         "",IDC_VERIFY_HISTORY,"CUH_Control",WS_TABSTOP,7,63,366,200
+    LTEXT           "Verify Using",IDC_STATIC,13,42,43,8
+    LTEXT           "Verify Server",IDC_STATIC,15,7,41,8
+    LTEXT           "Email",IDC_STATIC,30,23,26,10
+END
+
+IDD_WHO_IS DIALOG  0, 0, 400, 271
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_WHOISSERVER,57,7,178,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_WHOIS_QUERY,57,26,178,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_WHOIS_LOG_FILE,57,72,178,14,ES_AUTOHSCROLL
+    CONTROL         "E&nable Log",IDC_WHOIS_ENABLE_LOOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,252,74,52,10
+    PUSHBUTTON      "&Who Is?",IDC_WHO_IS_BTN,343,7,50,14
+    PUSHBUTTON      "&About...",IDC_WHOIS_ABOUT,343,25,50,14
+    CONTROL         "",IDC_WHO_IS_HISTORY,"CUH_Control",WS_TABSTOP,7,92,386,172
+    LTEXT           "WhoIs Server:",IDC_STATIC,8,11,46,8
+    LTEXT           "Query:",IDC_STATIC,31,28,22,8
+    LTEXT           "Log File:",IDC_STATIC,26,75,28,8
+END
+
+IDD_PING_PAGE2 DIALOG  0, 0, 400, 271
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_PING_NDOMAIN,57,7,178,14,ES_AUTOHSCROLL
+    CONTROL         "Show na&me",IDC_PING_SHOW_NAME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,252,12,50,10
+    EDITTEXT        IDC_PING_INTERVALS,57,43,30,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PING_TIME_OUT,108,43,30,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PING_DATA_SIZE,158,43,30,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PING_NUMBER_HITS,205,43,30,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_PING_NUMBER_TIMEOUTS,252,43,30,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PING_LOG_FILE,57,72,178,14,ES_AUTOHSCROLL
+    CONTROL         "E&nable Log",IDC_PING_ENABLE_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,252,74,52,10
+    PUSHBUTTON      "&Ping",IDC_PING_BTN,343,7,50,14
+    PUSHBUTTON      "&About...",IDC_PING_ABOUT,343,25,50,14
+    CONTROL         "Custom1",IDC_PING_HISTORY,"CUH_Control",WS_TABSTOP,7,92,386,172
+    LTEXT           "Machine:",IDC_STATIC,23,9,30,8
+    LTEXT           "Log File:",IDC_STATIC,26,75,28,8
+    LTEXT           "Interval",IDC_STATIC,57,32,24,8
+    LTEXT           "Timeout",IDC_STATIC,108,32,26,8
+    LTEXT           "Bytes",IDC_STATIC,158,32,18,8
+    LTEXT           "Hits",IDC_STATIC,205,32,13,8
+    LTEXT           "MaxTimeouts",IDC_STATIC,252,32,43,8
+END
+
+IDD_CONTACT DIALOG  0, 0, 380, 270
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDI_ICON1,IDC_STATIC,174,83,20,20
+    LTEXT           "Internet Tools Demo 1.0",IDC_STATIC,153,56,68,8
+    LTEXT           "Ultimate TCP/IP v 40",IDC_STATIC,150,67,84,8
+    LTEXT           "The Ultimate Toolbox.",IDC_STATIC,161,126,70,8
+    LTEXT           "Copyright 1999-2001",IDC_STATIC,160,115,66,8
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,81,171,220,66
+    LTEXT           "Phone:",IDC_STATIC,93,187,24,8
+    LTEXT           "Fax:",IDC_STATIC,93,215,14,9
+    LTEXT           "EMail:",IDC_STATIC,201,187,20,8
+    LTEXT           "WWW:",IDC_STATIC,201,215,25,8
+    LTEXT           "1 (800) 463 - 1492",IDC_STATIC,122,187,59,8
+    LTEXT           "1 (416) 422-4801",IDC_STATIC,122,215,55,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,228,187,64,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,229,214,58,8
+    GROUPBOX        "",IDC_STATIC,82,42,220,117
+    LTEXT           "1 (416) 467-9100",IDC_STATIC,122,201,55,8
+END
+
+IDD_SPLASH DIALOG  0, 0, 180, 126
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         118,IDC_STATIC,"Static",SS_BITMAP,0,0,180,126
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 351
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 215
+    END
+
+    IDD_DNS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 264
+    END
+
+    IDD_FINGER_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 264
+    END
+
+    IDD_TRACE_PAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 264
+    END
+
+    IDD_VERIFY_EMAIL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 263
+    END
+
+    IDD_WHO_IS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 264
+    END
+
+    IDD_PING_PAGE2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 393
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 264
+    END
+
+    IDD_CONTACT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 263
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "SPLSHNetTools.BMP"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

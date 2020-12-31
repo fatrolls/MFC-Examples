@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Preventing inadvertant drag and drop</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Preventing inadvertant drag and drop</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+Have you ever had the experience that you clicked on the Explorer to bring
+it to the foreground and the directory got moved. This happens if the mouse
+moves before the mouse button is released. Many of the users of my program
+had this experience and here’s what I did to prevent inadvertant drag -
+drop. I basically imposed the restriction that after pressing the mouse
+button the cursor should remain on the item for a few milliseconds before
+dragging can be initiated.
+<BR>&nbsp;
+<H4>
+Step 1: Declare member variable</H4>
+Add a member variable to hold the tick count when the user presses the
+mouse button.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">protected:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DWORD&nbsp;&nbsp; m_dwDragStart;</FONT></TT></PRE>
+
+<PRE><TT><FONT COLOR="#990000"></FONT></TT></PRE>
+
+<H4>
+Step 2: Define a constant to specify the delay</H4>
+We define DRAG_DELAY with a value 80. You might want to use a different
+value.
+<PRE><TT><FONT COLOR="#990000">#define DRAG_DELAY 80</FONT></TT></PRE>
+
+<PRE><TT><FONT COLOR="#990000"></FONT></TT></PRE>
+
+<H4>
+Step 3: Add handler for WM_LBUTTONDOWN</H4>
+The only interesting thing we do here is initialize the m_dwDragStart variable.
+GetTickCount() returns the number of milliseconds since Windows was started.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::OnLButtonDown(UINT nFlags, CPoint point)&nbsp;
+{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_dwDragStart = GetTickCount();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CTreeCtrl::OnLButtonDown(nFlags, point);
+}</FONT></TT></PRE>
+
+<PRE><TT><FONT COLOR="#990000"></FONT></TT></PRE>
+
+<H4>
+Step 4: Check for sufficient delay in TVN_BEGINDRAG handler</H4>
+Insert the following code right at the beginning of the TVN_BEGINDRAG handler.
+In a previous section we have used the name OnBeginDrag() for the handler
+function. If the delay since the user pressed the left mouse button is
+not sufficient, we not initiate the drag and drop process.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // This code is to prevent accidental drags.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( (GetTickCount() - m_dwDragStart) &lt; DRAG_DELAY )
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;</FONT></TT>
+</PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

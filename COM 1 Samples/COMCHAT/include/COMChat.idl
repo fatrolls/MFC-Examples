@@ -1,0 +1,60 @@
+/////////////////////////////////////////////////////
+//
+// COMChat.idl
+//
+// Copyright 1997, Don Box/Addison Wesley
+//
+// This code accompanies the book "The Component
+// Object Model" from Addison Wesley. Blah blah blah
+//
+//
+
+interface IChatSessionEvents;
+
+[
+	uuid(5223A050-2441-11d1-AF4F-0060976AA886),
+	object
+]
+interface IChatSession : IUnknown
+{
+	import "objidl.idl";
+
+	[propget] HRESULT SessionName([out, string] OLECHAR **ppwsz);
+	HRESULT Say([in, string] const OLECHAR *pwszStatement);
+	HRESULT GetStatements([out] IEnumString **ppes);
+
+    HRESULT Advise([in] IChatSessionEvents *pEventSink,
+                   [out] DWORD *pdwReg);
+    HRESULT Unadvise([in] DWORD dwReg);
+}
+
+[
+	uuid(5223A051-2441-11d1-AF4F-0060976AA886),
+	object
+]
+interface IChatSessionEvents : IUnknown
+{
+	import "objidl.idl";
+	HRESULT OnNewUser([in, string] const OLECHAR *pwszUser);
+	HRESULT OnUserLeft([in, string] const OLECHAR *pwszUser);
+	HRESULT OnNewStatement([in, string] const OLECHAR *pwszUser,
+                           [in, string] const OLECHAR *pwszStmnt);
+}
+
+[
+	uuid(5223A052-2441-11d1-AF4F-0060976AA886),
+	object
+]
+interface IChatSessionManager : IUnknown
+{
+	import "objidl.idl";
+	HRESULT GetSessionNames([out] IEnumString **ppes);
+	HRESULT FindSession([in, string] const OLECHAR *pwszName,
+						[in] BOOL bDontCreate,
+						[in] BOOL bAllowAnonymousAccess,
+						[out] IChatSession **ppcs);
+	HRESULT DeleteSession([in, string] const OLECHAR *pwszName);
+}
+
+cpp_quote("DEFINE_GUID(CLSID_ChatSession,0x5223a053,0x2441,")
+cpp_quote("0x11d1,0xaf,0x4f,0x0,0x60,0x97,0x6a,0xa8,0x86);")

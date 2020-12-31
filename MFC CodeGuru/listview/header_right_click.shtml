@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Determining right click on the header control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Determining right click on the header control</FONT></H3></CENTER>
+
+<HR WIDTH="100%">One of the notification that the header control sends is the HDN_ITEMCLICK notification. This leads us to wrongly expect a corresponding notification for a right click. The control does send a notification for a right button click, but this is a generic notification sent by all new controls in the form of NM_RCLICK. Although you can use a message map entry to add a handler for this notification message, don't use the class wizard. The class wizard adds an entry corresponding to the notification sent by the listview control to its parent and not the notification sent by the header control to the listview control.
+
+<p>You can add a check for the NM_RCLICK notfication in the OnNotify() function as shown below.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+{
+	HD_NOTIFY	*pHDN = (HD_NOTIFY*)lParam;
+
+	LPNMHDR pNH = (LPNMHDR) lParam; 
+	// wParam is zero for Header ctrl
+	if( wParam == 0 && pNH->code == NM_RCLICK )
+	{
+		// Right button was clicked on header
+		CPoint pt(GetMessagePos());
+		CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+		pHeader->ScreenToClient(&pt);
+		
+		// Determine the column index
+		int index;
+		CRect rcCol;
+		for( int i=0; Header_GetItemRect(pHeader->m_hWnd, i, &rcCol); i++ )
+		{
+			if( rcCol.PtInRect( pt ) )
+			{
+				index = i;
+				break;
+			}
+		}
+
+		// Add your right click action code 
+	}
+}
+</FONT></TT></PRE>
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

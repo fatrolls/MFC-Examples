@@ -1,0 +1,128 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Section - Title</TITLE>
+<!-- Header information-->
+<!-- Set background properties -->
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#B50029" VLINK="#8E2323" ALINK="#FF0000" BACKGROUND="back.gif">
+<!-- A word from our sponsors... -->
+<TABLE WIDTH="100%" >
+<TR WIDTH="100%">
+<TD><!--#exec cgi="/cgi/ads.cgi"--></TD>
+
+<TD></TD>
+</TR>
+</TABLE>
+<!-- Article Title -->
+<CENTER>
+<H3>
+<FONT COLOR="#A0A099">Microsoft Internet Explorer like Intellimouse AutoScroll</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:russf@dircon.co.uk">Russell
+Freeman</A>.
+
+<P>&nbsp;<A HREF="../panningwindow.zip">Download Source Code and Example</A>
+
+<P>This code provides a simple way of adding full AutoScroll capability
+to pretty much any window, I have provided a demo program which also incorporates
+the all of the code you need. I believe it works the same way as Internet
+Explorer, that is all of the behaviour I have seen from IE. The cursor
+changes in every direction just as it does in IE, it uses the pointers
+and origin bitmaps pretty much the same as IE, these are the cursors and
+bitmaps supplied with the Intellipoint SDK with slight modificatiosn to
+the bitmaps.
+<H3>
+How to use it</H3>
+OWnd is a DLL, I did it this way because it seemd the easiest way to use
+it without having to copy resource fiels etc all over the place, plus it
+really is a component that is shared amongst projects. Simply include the
+OWnd DLL project&nbsp; in as a subproject of yours, include the OWndDLL.h
+file in your relevant source files and call StartPanning(...) in your OnMButtonDown
+message handler. That's it really.
+<BR>Additionally you can respond to the registered message OWND_WINDOW_UPDATE
+if you want to perform extra scrolling, the registered message&nbsp; is
+sent every time a scroll event is issued, your message handler should look
+something like this:
+
+<P><TT><FONT COLOR="#990000">static const UINT uOriginWindowUpdateMessage
+= ::RegisterWindowMessage( OWND_WINDOW_UPDATE );</FONT></TT><TT><FONT COLOR="#990000"></FONT></TT>
+
+<P><TT><FONT COLOR="#990000">LRESULT CPanningWindowView::OnOriginWindowUpdate(WPARAM
+, LPARAM lParam)</FONT></TT>
+<BR><TT><FONT COLOR="#990000">//</FONT></TT>
+<BR><TT><FONT COLOR="#990000">// Process the update message sent by the
+origin window.</FONT></TT>
+<BR><TT><FONT COLOR="#990000">// You only need to respond to this message
+if you want to do extra or different scrolling</FONT></TT>
+<BR><TT><FONT COLOR="#990000">{</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; //</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; // psizeDistance will
+contain the distance the cursor is from the origin. We then use</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; // this to calculate the
+new scroll position and the amount to scroll our window.</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; const CSize *psizeDistance
+= reinterpret_cast&lt;const CSize *>( lParam );</FONT></TT>
+<BR><TT><FONT COLOR="#990000">#ifdef _DEBUG</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; afxDump&lt;&lt;_T("CPanningWindowView::OnOriginWindowUpdate
+size")&lt;&lt;*psizeDistance&lt;&lt;_T("\n");</FONT></TT>
+<BR><TT><FONT COLOR="#990000">#endif // _DEBUG</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; //</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp; Return
+1 to signal to COriginWnd that you have handled the scrolling, return 0
+if you</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp;&nbsp; want
+COriginWnd to perform the scrolling.</FONT></TT>
+<BR><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp; return 0;</FONT></TT>
+<BR><TT><FONT COLOR="#990000">}</FONT></TT>
+
+<P>The demo project shows all of this behaviour in the source file PanningWindowView.cpp.
+
+<P>This code imroves over the other examples posted to codeguru in the
+following areas:
+<UL>
+<LI>
+Much closer emulation of IE behaviour, I have tried to do exactly as IE
+does.</LI>
+
+<LI>
+More easily extended and altered, the other examples have way too many
+hardcoded values scattered throughout the code.</LI>
+
+<LI>
+Compiles at level four warnings with warnings as errors, it has been linted
+and it has been built and tested in UNICODE</LI>
+
+<LI>
+Less code.</LI>
+</UL>
+Please let me know of any bugs, fixes or modifications.
+
+<P>Last updated: 13 June1998
+
+<P>
+<HR><!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<!-- Counter -->
+<CENTER><!--#exec cgi="../cgi/counters/counter.cgi"--></CENTER>
+
+</BODY>
+</HTML>

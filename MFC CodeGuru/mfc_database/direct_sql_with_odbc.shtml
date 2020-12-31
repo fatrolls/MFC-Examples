@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Database - Classes for direct SQL calls with ODBC</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Classes for direct SQL calls with ODBC</FONT></H3></CENTER>
+
+<HR>
+
+
+<p>This article was contributed by <a href="mailto:dave@merge.net">Dave Merner</a>.
+
+
+
+<P>During my current project, I found that I needed more functionality with my
+sql calls than CRecordset or CDAORecordset had to offer. These classes wrap
+the low-level ODBC API calls and act simular to a CRecordset, but allow me
+to execute any SQL statement without having to bind variables,etc.
+
+<P>The main class for doing this is CSQLDirect. CSQLDirect has the following
+attributes/functions:
+
+<ul>
+<li><b>CSQLDirect::Connect</b> - Connects to a datasource.
+<li><b>CSQLDirect::ExecuteSQL</b> - this is the main function that is used for
+handling the SQL statement.
+<li><b>CSQLDirect::GetCol</b> - Will return a column from a table in the resulting
+cursor.
+<li><b>CSQLDirect::GetError</b> - Provides detailed error messages in case something
+went wrong.
+<li><b>CSQLDirect::GetColumnType</b> - Provides information about a cursor's column.
+<li><b>CSQLDirect::Fetch</b> - Will properly execute a SQLFetch command with error
+handling.
+<li><b>CSQLDirect::Close</b> - Closes the connection to the datasource.
+</ul>
+
+<P>The other class CSQLColumn is a support class for CSQLDirect. Since
+multiple queries to a cursor's column will result in a NULL value being
+returned, I found it necessary to keep track of the columns as they are
+used. This is stored in a CPtrArray within CSQLDirect and is cleaned up
+after each time the cursor is requeried/closed.
+
+<P>An example of using this class to make SQL Calls:
+
+<PRE><TT><FONT COLOR="#990000">
+CSQLDirect SQLDirect( "TestData" );
+
+if( SQLDirect.ExecuteSQL( "SELECT * FROM Employee" )==SQL_SUCCESS ) {
+	while( SQLDirect.Fetch()==SQL_SUCCESS ) {
+		.
+		// Do some stuff here
+		.
+	}
+}
+</FONT></TT></PRE>
+
+<P>That's it!
+
+<P>The great thing about this class is you no longer have need for a huge
+assortment of CRecordset classes for every table/query.
+
+<P>Anyways I hope this can be of help to anyone that uses the site. Don't
+hesitate to give me a shout if anyone has any questions/comments.
+
+<P>Thanks for all the help that CodeGuru has given my over the last few months!
+
+
+
+<P><A HREF="direct_sql_with_odbc.zip">Download Source</A> 3K
+
+
+<P>Posted on: March 8,98
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

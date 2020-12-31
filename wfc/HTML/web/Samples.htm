@@ -1,0 +1,389 @@
+<HTML>
+
+<HEAD>
+<META NAME="description" CONTENT="A list of sample applications included in Win32 Foundation Classes (WFC)($Revision: 9 $).">
+<META NAME="keywords" CONTENT="C++, programming, freeware, samples, source code, MFC, extension, toolkit">
+
+</HEAD>
+
+<BODY>
+<!-- $Revision: 9 $ -->
+
+<H1>Samples</H1>
+
+<CENTER>Click 
+<A HREF="http://ourworld.compuserve.com/homepages/Sam_Blackburn/sample.zip">here</A>
+or
+<A HREF="http://www.erols.com/sblackbu/SAMPLE.ZIP">here</A>
+to download the samples for WFC.</CENTER>
+
+<P>
+
+<B>ChangeServiceConfiguration</B> - Command line utility that allows you to change when
+a service starts up. Normally you have to do this from the Control Panel Services applet.
+But what if you need to change it from within a CMD script?
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CSvcmgr.htm">CServiceControlManager</A>
+</ul>
+
+<B>ClockSync</B> - Simple service that keeps the NT machine's clock synchronized with
+a designated server.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="Registry.htm">CRegistry</A>
+<li><A HREF="CService.htm">CService</A>
+<li><A HREF="CSvcmgr.htm">CServiceControlManager</A>
+<li><A HREF="CSystemTime.htm">CSystemTime</A>
+<li><A HREF="CNetwork.htm">CNetwork</A>
+<li><A HREF="CEvntLog.htm">CEventLog</A>
+</ul>
+
+<B>Crypto</B> - Demonstrates how to use the Crypto API classes. It enumerates the
+algorithms provided, encrypts and decrypts data.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CCryptographicAlgorithm.htm">CCryptographicAlgorithm</A>
+<li><A HREF="CCryptographicKey.htm">CCryptographicKey</A>
+<li><A HREF="CCryptographicProvider.htm">CCryptographicProvider</A>
+</ul>
+
+<B>Data</B> - Shows how to send operating system (endian) neutral data
+over a socket (or file, or serial port, etc). I've used these classes
+for the basis for serializing objects between an NT client and Unix
+server. Designed for ease of use and to be fairly high speed. The
+demo program creates a server socket (listening socket) that reads
+an object that has been serialized via the Data classes. The client
+connects to the server using a TCP/IP socket and sends a serialized
+object to it.
+This program demonstrates how to use:
+<ul>
+<li>CDataArchive
+<li><A HREF="CDataChunk.htm">CDataChunk</A>
+<li><A HREF="CDataSocket.htm">CDataSocket</A>
+<li><A HREF="sockets.htm">CSimpleSocket</A>
+<li>CSimpleSocketFile
+<li>CTalkingSocket
+</ul>
+
+<B>DeMangle</B> - Undecorates C++ mangled names. When you see a map file
+of exported functions, the names are always mangled. This demo program
+shows you how to use the <CODE>UnDecorateSymbolName</CODE> function
+to decrypt the names.
+
+<B>DriverMover</B> - A simple GUI that I wrote one afternoon while
+attending <A HREF="http://www.osr.com" TARGET="_parent">OSR</A>'s
+NT kernel mode device driver course (a <I>very</I> good course by the
+way). It is a dialog based MFC GUI that will
+move your device driver over to a remote machine, start or stop the
+driver, or reboot the machine. When you write device drivers for NT,
+you typically (unless you are very brave) have two machines connected
+via a serial port. The WINDBG tool uses the serial line to debug
+the target machine. If you have the target machine on the network,
+this little tool will save you some time by eliminating the need to
+move your device driver to floppy and sneaker-net it over to the target.
+It saves it's state to the registry so when you execute it, it starts
+where you left off (this means you don't have to fill in the edit
+controls every time you start the program).
+This program demonstrates how to use:
+<ul>
+<li><A HREF="Registry.htm">CRegistry</A> - For savig the program's state
+<li><A HREF="CNetwork.htm">CNetwork</A> - For rebooting the remote machine
+<li><A HREF="CSvcmgr.htm">CServiceControlManager</A> - For starting/stopping
+the driver on the remote machine
+</ul>
+
+<B>DumpEventLog</B> - Shows how to dump the event log.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CEvntLog.htm">CEventLog</A>
+<li><A HREF="CEventLogRecord.htm">CEventLogRecord</A>
+</ul>
+
+<B>EnableRASLogging</B> - Shows how to turn RAS logging on or off.
+Turning RAS logging on makes it easy to debug auto-logon scripts.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CRAS.HTM">CRemoteAccessService</A>
+</ul>
+
+<B>EventPager</B> - I'm not finished with this one yet. It will be a service that will
+let you watch event logs on any number of servers and send alerts to alphanumeric pagers
+based on whatever criteria you want. It will use:
+<ul>
+<li><A HREF="CEvntLog.htm">CEventLog</A>
+<li><A HREF="CEventLogRecord.htm">CEventLogRecord</A>
+<li><A HREF="Pager.htm">CPager</A>
+<li><A HREF="CService.htm">CService</A>
+<li><A HREF="CSvcmgr.htm">CServiceControlManager</A>
+<li><A HREF="SkyWord.htm">CSkyWord</A>
+<li><A HREF="SprintSpectrum.htm">CSprintSpectrum</A>
+</ul>
+
+<B>GetWebPage</B> - Gets weather information from the Internet and
+sends it to your pager. It does the following:
+<ol>
+<li>Waits for the phone to ring
+<li>Waits for the phone to stop ringing
+<li>Logs onto Internet (using RAS)
+<li>Retrieves the web page(s)
+<li>Logs off of Internet (hangs up RAS)
+<li>chews on the web pages
+<li>Dials the pager company's computer
+<li>Sends the data to the proper account
+<li>Hangs up
+<li>Goto step 1.
+</ol>
+You can use this method to retrieve any information
+from the net and do whatever you want with it. Retrieve stock quotes,
+weather, flight status, etc.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CRAS.HTM">CRemoteAccessService</A>
+<li><A HREF="serial.htm">CSerialFile</A>
+<li><A HREF="SprintSpectrum.htm">CSprintSpectrum</A>
+<li>CUniformResourceLocator
+<li>CWeather
+<li><A HREF="wfc_get_web_page.htm">wfc_get_web_page</A>
+</ul>
+
+<B>HTML</B> - This is the toy I use to pull the HTML pages out of the CPP source
+code files. It is kind of like an automatic documentation generator.<P>
+
+<B>KillDoc</B> - This program empties the Most Recently Used document
+list on your desktop.
+This program demonstrates how to use:
+<li><A HREF="Registry.htm">CRegistry</A>
+
+<B>LastEvent</B> - Shows how to read the event log. It prints the last
+few entries in the event log to the screen. Uses the following
+classes:
+<ul>
+<li><A HREF="CEvntLog.htm">CEventLog</A>
+<li><A HREF="CEventLogRecord.htm">CEventLogRecord</A>
+</ul>
+
+<B>Listen</B> - Simple console program that demonstrates how to use the
+<A HREF="LSOCKETS.htm">CListeningSocket</A>. Uses the following classes:
+<ul>
+<li><A HREF="LSOCKETS.htm">CListeningSocket</A>
+<li><A HREF="sockets.htm">CSimpleSocket</A>
+<li>CSimpleSocketFile
+</ul>
+
+<B>ListProcesses</B> - Console program that prints tons and tons of
+information about the running processes in a system. Uses the
+<B>wfc_undocumented_get_system_process_list()</B> function to do
+this.<P>
+
+<B>Map2Def</B> - This is the toy I use to create .DEF files for DLLs. It avoids
+the traps of <CODE>__declspec( dllimport )</CODE> and <CODE>__declspec( dllexport )</CODE>.
+Microsoft doesn't use these in MFC so why should I use them? It will also
+automatically generate a random BASE= address (in the proper address
+range) so you won't get DLL relocations at runtime. After each function
+that is exported in the resulting MAP file, the unmangled C++ name will
+be included as a comment. This allows you to easily locate C++ member
+functions that you do not want exported.<P>
+
+<B>PasswordFilter</B> - This demonstrates how to accomplish a single user
+logon system. It allows you to intercept user password changes. You get
+the new password as a string that you can do anything you want with. For
+example, you could get the new user's password and logon onto a Unix (yech!)
+box and change the user's password there. This sample program simply logs
+the new password to a text file. The DLL in this project demonstrates how to 
+correctly export the <CODE>InitializeChangeNotify</CODE>() and 
+<CODE>PasswordChangeNotify</CODE>() functions.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CPasswordChangeFilter.htm">CPasswordChangeFilter</A>
+</ul>
+
+<B>Ping</B> - Simple console ping program.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="cping.htm">CPing</A>
+<li><A HREF="cpingres.htm">CPingResults</A>
+<li><A HREF="sockets.htm">CSimpleSocket</A>
+</ul>
+
+<B>Pinger</B> - This was a service I wrote that would execute a command-line ping on 
+a machine every so many minutes. I used it to keep a RAS connection up when the server
+would disconnect me due to inactivity. I wrote it before I wrote
+<A HREF="cping.htm">CPing</A>.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CEvntLog.htm">CEventLog</A>
+<li><A HREF="Registry.htm">CRegistry</A>
+<li><A HREF="CService.htm">CService</A>
+<li><A HREF="CSvcmgr.htm">CServiceControlManager</A>
+</ul>
+
+<B>RasAdmin</B> - Basically shows how to enumerate the ports dedicated
+to RAS.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CRASADM.htm">CRemoteAccessServiceAdministration</A>
+<li><A HREF="RemoteAccessServicePort.htm">CRemoteAccessServicePort</A>
+</ul>
+
+<B>Serial</B> - Little program that simulates a brain dead GPS unit. Spits out a
+string to the serial port every two seconds. This simulates a NMEA0183 device.
+This program demonstrates how to use:
+<ul>
+<li>CCommunicationProperties
+<li><A HREF="serial.htm">CSerialFile</A>
+</ul>
+
+<B>Service</B> - Command line utility that tells you what services are running on
+your local machine or a machine on the network. Handy little tool.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CSvcmgr.htm">CServiceControlManager</A>
+<li>CServiceNameAndStatus
+</ul>
+
+<B>SkyPage</B> - Really brain dead sample of how to page someone using the Skyword system.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="SkyWord.htm">CSkyWord</A>
+</ul>
+
+<B>Squiggle</B> - A GUI program that demonstrates how to create 
+oscilloscope and constellation type programs.
+This program demonstrates how to use:
+<ul>
+<li>CConstellation
+<li>CConstellationData
+<li>CLabeledGrid
+<li>CSquiggle
+<li>CSquiggleData
+</ul>
+
+<B>SprintSpectrum</B> - This was supposed to be as silly as SkyPage but I added a neato
+little routine that waits for the phone to ring then pages you with the time it rang. It
+gives you an idea of how to get NT to do something in response to the phone ringing and
+then paging you with the results.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="serial.htm">CSerialFile</A>
+<li><A HREF="SprintSpectrum.htm">CSprintSpectrum</A>
+</ul>
+
+<B>Test</B> - This is the mother of all WFC samples. It is what I use to test the classes. It
+doesn't test all methods on an object but it does an OK job.
+This program demonstrates how to use:
+<ul>
+<li>ASCII_to_UNICODE
+<li><A HREF="CEvntLog.htm">CEventLog</A>
+<li><A HREF="lmerr.htm">Convert_NERR_Code_to_String</A>
+<li>CWorkstationTransport
+<li><A HREF="lzfile.htm">CLZFile</A>
+<li><A HREF="CMicrosoftTape.htm">CMicrosoftTape</A>
+<li><A HREF="CNetwork.htm">CNetwork</A>
+<li>CNetworkConnectionInformation
+<li><A HREF="CNetConn.htm">CNetworkConnections</A>
+<li>CNetworkFileInformation
+<li><A HREF="CNetFile.htm">CNetworkFiles</A>
+<li>CNetworkResourceInformation
+<li>CNetworkResources
+<li>CNetworkShareInformation
+<li>CNetworkShares
+<li>CNetworkSessionInformation
+<li>CNetworkSessions
+<li>CNetWorkstation
+<li>CNetworkUserInformation
+<li><A HREF="CNetworkUser.htm">CNetworkUsers</A>
+<li><A HREF="PortInformation.htm">CPortInformation</A>
+<li><A HREF="CRAS.HTM">CRemoteAccessService</A>
+<li><A HREF="Registry.htm">CRegistry</A>
+<li><A HREF="CServer.htm">CServer</A>
+<li><A HREF="CSvcmgr.htm">CServiceControlManager</A>
+<li>CServiceNameAndStatus
+<li>CTapeGetDriveParameters
+<li>CTapeGetMediaParameters
+<li>CUniformResourceLocator
+<li>CWorkstationInformation
+<li>CWorkstationUser
+<li>UNICODE_to_ASCII
+</ul>
+
+<B>TortureXML</B> - This is my test program for creating tortureous
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+files. I've wasted a lot of time getting my XML classes working
+according to the
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">specification</A>.
+This tool creates valid, well-formed, standalone XML files that will
+stress an XML parser to its limits.<P>
+
+<B>USNOTime</B> - Simple command line utility that synchronizes
+the computer clock with the US Naval Observatory Atomic Clock.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CSystemTime.htm">CSystemTime</A>
+<li><A HREF="talksock.htm">CTalkingSocket</A>
+</ul>
+
+<B>WatchDog</B> - This is actually a useful service. It watches services on the local
+machine or a remote machine and makes sure they are running. If it finds one that is
+not running (either because it blew up or an operator stopped it) it will automagically
+restart the service. Like a good service, it records in the event log when it restarts
+an errant service.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CEvntLog.htm">CEventLog</A>
+<li><A HREF="Registry.htm">CRegistry</A>
+<li><A HREF="CService.htm">CService</A>
+<li><A HREF="CSvcmgr.htm">CServiceControlManager</A>
+<li>CServiceNameAndStatus
+</ul>
+
+<B>XML</B> - Shows how to parse and write
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+documents.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CDataParser.htm">CDataParser</A>
+<li><A HREF="CExtensibleMarkupLanguageDocument.htm">CExtensibleMarkupLanguageDocument</A>
+<li><A HREF="CExtensibleMarkupLanguageElement.htm">CExtensibleMarkupLanguageElement</A>
+<li><A HREF="CParsePoint.htm">CParsePoint</A>
+<li><A HREF="CSystemTime.htm">CSystemTime</A>
+</ul>
+
+<B>XMLCheck</B> - Checks
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+files for well formedness.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CDataParser.htm">CDataParser</A>
+<li><A HREF="CExtensibleMarkupLanguageDocument.htm">CExtensibleMarkupLanguageDocument</A>
+<li><A HREF="CExtensibleMarkupLanguageElement.htm">CExtensibleMarkupLanguageElement</A>
+</ul>
+
+<B>XMLExplorer</B> - This is an Explorer-like application that parses
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+documents and puts them into a hierarchical tree. It is an MFC gui app.
+This program demonstrates how to use:
+<ul>
+<li><A HREF="CDataParser.htm">CDataParser</A>
+<li><A HREF="CExtensibleMarkupLanguageDocument.htm">CExtensibleMarkupLanguageDocument</A>
+<li><A HREF="CExtensibleMarkupLanguageElement.htm">CExtensibleMarkupLanguageElement</A>
+</ul>
+
+<B>XMLUser</B> - Shows how to enumerate through all the user accounts
+on a machine and have the data written out in
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+format. It demonstrates how to serialize objects using
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>.
+Uses:
+<ul>
+<li><A HREF="CExtensibleMarkupLanguageDocument.htm">CExtensibleMarkupLanguageDocument</A>
+<li><A HREF="CExtensibleMarkupLanguageElement.htm">CExtensibleMarkupLanguageElement</A>
+<li>CNetworkUsers
+<li>CNetworkUserInformation
+<li><A HREF="CSystemTime.htm">CSystemTime</A>
+<li><A HREF="CXMLArchive.htm">CXMLArchive</A>
+</ul>
+
+</BODY>
+
+</HTML>

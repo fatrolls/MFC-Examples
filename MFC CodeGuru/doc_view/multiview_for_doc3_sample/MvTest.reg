@@ -1,0 +1,13 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+
+HKEY_CLASSES_ROOT\MvTest.Document = MvTest Document
+HKEY_CLASSES_ROOT\MvTest.Document\CLSID = {A695B2BD-DE92-11D1-B6BE-00C04FA35F76}
+
+HKEY_CLASSES_ROOT\CLSID\{A695B2BD-DE92-11D1-B6BE-00C04FA35F76} = MvTest Document
+HKEY_CLASSES_ROOT\CLSID\{A695B2BD-DE92-11D1-B6BE-00C04FA35F76}\ProgId = MvTest.Document
+HKEY_CLASSES_ROOT\CLSID\{A695B2BD-DE92-11D1-B6BE-00C04FA35F76}\LocalServer32 = MVTEST.EXE

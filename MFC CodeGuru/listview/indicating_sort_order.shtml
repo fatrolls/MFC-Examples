@@ -1,0 +1,241 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Indicating sort order in header control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Indicating sort order in header control</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+The list view control does not provide any visual feedback on whether the list is sorted. To give feedback to the users of our application, we can use the owner draw feature of the header  control and display a triangle pointing downwards or pointing updwards, indicating whether the list is sorted in the ascending or the descending order. This, of course, is applicable only if the list view control is in the report view mode.
+
+<p><img src="sort_indicator.gif" border="1" width="253" height="35"></p>
+
+<p>Since we have to use an owner drawn header control, we will need to derive a class from CHeaderCtrl and add the functionality in this class. Here are the steps involved.
+
+<h4>Step 1: Derive class from CHeaderCtrl</h4>
+If you don't have a class derived from CHeaderCtrl, derive one now. You can use the Class Wizard to create one for you. I used the name CMyHeaderCtrl for the derived class.
+
+<H4>Step 2: Add member variables</H4>
+Add member variables in CMyHeaderCtrl to track the column that is sorted and the sorting order. These variables are declared as protected members and we will provide a function to set them.
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	int	m_nSortCol;
+	BOOL	m_bSortAsc;
+</FONT></TT></PRE>
+
+<h4>Step 3: Initialize the variables in the constructor</h4>
+Initialize the m_nSortCol variable to -1 in the constructor. This indicates that the list is not sorted.
+
+<PRE><TT><FONT COLOR="#990000">CMyHeaderCtrl:: CMyHeaderCtrl() 
+{
+	m_nSortCol = -1;
+}
+</FONT></TT></PRE>
+
+<h4>Step 4: Add function SetSortImage()</h4>
+Add a function SetSortImage() to the CMyHeaderCtrl class. This is the function that will be used to set the sort indicator. The SetSortImage() function takes the column number as an argument and also a boolean value to indicate whether it is sorted in the ascending order or in the descending order.
+
+<p>After setting the internal variables, the function set the header item to owner drawn. This will ensure that the DrawItem() function will get called. The function then invalidates the header control so that any previous sort indicator is removed and the new one is displayed.
+
+<PRE><TT><FONT COLOR="#990000">int CMyHeaderCtrl::SetSortImage( int nCol, BOOL bAsc )
+{
+	int nPrevCol = m_nSortCol;
+
+	m_nSortCol = nCol;
+	m_bSortAsc = bAsc;
+
+	// Change the item to ownder drawn
+	HD_ITEM hditem;
+
+	hditem.mask = HDI_FORMAT;
+	GetItem( nCol, &hditem );
+	hditem.fmt |= HDF_OWNERDRAW;
+	SetItem( nCol, &hditem );
+
+	// Invalidate header control so that it gets redrawn
+	Invalidate();
+	return nPrevCol;
+}
+</FONT></TT></PRE>
+
+<h4>Step 5: Override DrawItem()</h4>
+The DrawItem() is where the sort indicator actually gets drawn. Besides drawing the sort triangle, this function is now also responsible for drawing the column label itself. The DrawItem() function is called for each item in the header control that has the HDF_OWNERDRAW format.
+
+<p>These are the step we take in the DrawItem() function to draw the column label and the triangular image to indicate the sort order:
+<ol>
+<li>Attach the device context handle passed in through the argument to a CDC object for easier device context handling. The handle is detached from the CDC object before the function returns. If we did not detach the handle then the DC would be released when the CDC object is destroyed.</li>
+<li>We save the DC and change the clipping region so that all the updates are contrained within the header item for which the DrawItem() function is called. The device context is restored before the function returns.</li>
+<li>We compute the offset used when drawing the label and the sort triangle. The offset is used to leave a margin around the label and is equal to twice the width of a space character.</li>
+<li>We determine the format to be used when drawing the column label. Since the column label can be aligned left, center or right, we have to choose an appropriate format for the DrawText() function. You will also notice the flag DT_END_ELLIPSIS. This tells the DrawText() function that if the text doesn't fit with the rectangle specified, then the text should be shortened and three dots appended to the text so that the result fits within the rectangle.</li>
+<li>We next adjust the rectangle within which the label will be drawn and then draw the lable using DrawText().</li>
+<li>Finally we draw the triangle to indicate the sort order. We use two different color to draw the triangle so that it matches the other GUI elements in Widnows. The COLOR_3DHILIGHT color is used for edges facing the light source, and the COLOR_3DSHADOW color is used for the shadow.</li>
+</ol>
+
+<PRE><TT><FONT COLOR="#990000">void CMyHeaderCtrl::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
+{
+	CDC dc;
+
+	dc.Attach( lpDrawItemStruct->hDC );
+
+	// Get the column rect
+	CRect rcLabel( lpDrawItemStruct->rcItem );
+
+	// Save DC
+	int nSavedDC = dc.SaveDC();
+
+	// Set clipping region to limit drawing within column
+	CRgn rgn;
+	rgn.CreateRectRgnIndirect( &rcLabel );
+	dc.SelectObject( &rgn );
+	rgn.DeleteObject();
+
+        // Draw the background
+        dc.FillRect(rcLabel, &CBrush(::GetSysColor(COLOR_3DFACE)));
+	
+	// Labels are offset by a certain amount  
+	// This offset is related to the width of a space character
+	int offset = dc.GetTextExtent(_T(" "), 1 ).cx*2;
+
+
+	// Get the column text and format
+	TCHAR buf[256];
+	HD_ITEM hditem;
+	
+	hditem.mask = HDI_TEXT | HDI_FORMAT;
+	hditem.pszText = buf;
+	hditem.cchTextMax = 255;
+
+	GetItem( lpDrawItemStruct->itemID, &hditem );
+
+	// Determine format for drawing column label
+	UINT uFormat = DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP 
+						| DT_VCENTER | DT_END_ELLIPSIS ;
+
+	if( hditem.fmt & HDF_CENTER)
+		uFormat |= DT_CENTER;
+	else if( hditem.fmt & HDF_RIGHT)
+		uFormat |= DT_RIGHT;
+	else
+		uFormat |= DT_LEFT;
+
+	// Adjust the rect if the mouse button is pressed on it
+	if( lpDrawItemStruct->itemState == ODS_SELECTED )
+	{
+		rcLabel.left++;
+		rcLabel.top += 2;
+		rcLabel.right++;
+	}
+
+	// Adjust the rect further if Sort arrow is to be displayed
+	if( lpDrawItemStruct->itemID == (UINT)m_nSortCol )
+	{
+		rcLabel.right -= 3 * offset;
+	}
+
+	rcLabel.left += offset;
+	rcLabel.right -= offset;
+
+	// Draw column label
+	if( rcLabel.left < rcLabel.right )
+		dc.DrawText(buf,-1,rcLabel, uFormat);
+
+	// Draw the Sort arrow
+	if( lpDrawItemStruct->itemID == (UINT)m_nSortCol )
+	{
+		CRect rcIcon( lpDrawItemStruct->rcItem );
+
+		// Set up pens to use for drawing the triangle
+		CPen penLight(PS_SOLID, 1, GetSysColor(COLOR_3DHILIGHT));
+		CPen penShadow(PS_SOLID, 1, GetSysColor(COLOR_3DSHADOW));
+		CPen *pOldPen = dc.SelectObject( &penLight );
+
+		if( m_bSortAsc )
+		{
+			// Draw triangle pointing upwards
+			dc.MoveTo( rcIcon.right - 2*offset, offset-1);
+			dc.LineTo( rcIcon.right - 3*offset/2, rcIcon.bottom - offset );
+			dc.LineTo( rcIcon.right - 5*offset/2-2, rcIcon.bottom - offset );
+			dc.MoveTo( rcIcon.right - 5*offset/2-1, rcIcon.bottom - offset-1 );
+
+			dc.SelectObject( &penShadow );
+			dc.LineTo( rcIcon.right - 2*offset, offset-2);
+		}
+		else
+		{
+			// Draw triangle pointing downwords
+			dc.MoveTo( rcIcon.right - 3*offset/2, offset-1);
+			dc.LineTo( rcIcon.right - 2*offset-1, rcIcon.bottom - offset + 1 );
+			dc.MoveTo( rcIcon.right - 2*offset-1, rcIcon.bottom - offset );
+
+			dc.SelectObject( &penShadow );
+			dc.LineTo( rcIcon.right - 5*offset/2-1, offset -1 );
+			dc.LineTo( rcIcon.right - 3*offset/2, offset -1);
+		}
+
+		// Restore the pen
+		dc.SelectObject( pOldPen );
+	}
+
+	// Restore dc
+	dc.RestoreDC( nSavedDC );
+
+	// Detach the dc before returning
+	dc.Detach();
+}
+</FONT></TT></PRE>
+
+<h4>Step 6: Add member variable for header control in list view class</h4>
+Now that we are done with the CMyHeaderCtrl class, we have to add a member to the CListCtrl or the CListView derived class so that we can access the extended functionality. Add a protected member.
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	CMyHeaderCtrl	m_headerctrl;
+</FONT></TT></PRE>
+
+<h4>Step 7: Subclass the header control</h4>
+We have to sub-class the header control so that the DrawItem() function in CMyHeaderCtrl can get called. If you are using a CListView derived class, you can place the sub-classing code in OnInitialUpdate(). If you are using a CListCtrl derived class, then put the code in PreSubclassWindow(). In either case, make sure you call the base class version of the function before subclassing the header control.
+If the listview control was not created in the report view mode, then you have to change the style of control before trying the subclass the control. You can use ModifyStyle() for this. The reason why we need to change the style to the report view mode is that the header control is created only when the control first taken to the report view mode.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::PreSubclassWindow() 
+{
+	CListCtrl::PreSubclassWindow();
+
+	// Add initialization code
+	m_headerctrl.SubclassWindow( ::GetDlgItem(m_hWnd,0) );
+}
+</FONT></TT></PRE>
+
+<h4>Step 8: Use SetSortImage() to indicate sort order</h4>
+Now you are all set to add the sort order indicator. Whenever you sort the list view control, call the CMyHeaderCtrl::SetSortImage() function with the column number on which the list is sorted and the order of sorting. E.g.
+
+<PRE><TT><FONT COLOR="#990000">	m_headerctrl.SetSortImage( nCol, bAscending );
+</FONT></TT></PRE>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

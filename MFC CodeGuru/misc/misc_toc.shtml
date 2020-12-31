@@ -1,0 +1,119 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Zafir Anjum">
+<title>Miscellaneous - Table of Contents</title>
+<meta Name="description" Content="Source code for miscellaneous MFC tasks">
+<meta Name="keywords"
+Content="SOURCE CODE MFC WINDOWS 3D FLAT TOOLBAR BUTTON COLOR 
+   OWNER DRAWN UNDO REDO FLICKER FREE MESSAGE MAP MESSAGEMAP DLL VERSION SAVE RESTORE">
+</head>
+
+<body background="back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000" bgproperties="fixed">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><h1><font COLOR="#a0a0ff">Miscellaneous MFC Topics</font></h1>
+    </td>
+    <td></td>
+    <td width="10%"></td>
+    <td align=right><!--#exec cgi="/cgi/ads.cgi"--></td>
+  </tr>
+</table>
+
+<hr>
+
+<p>This section is maintained by <a href="mailto:smille69@home.com">Scott Miller</a>
+<p>Some of the articles have been moved to other sections. Check out the dialog and 
+   control section. Some of these articles will be moved to other sections in the
+   future.
+
+<ul>
+
+<p>Network / Internet
+  <li><a HREF="ping.shtml">Ping a computer using TCP stacks - Les Jordan</a></li>
+  <li><a HREF="tapi_dialout.shtml">TAPI to place out-bound calls - M. Shams Mukhtar</a></li>
+  <li><a HREF="nettools.shtml">Internet tools - Fred Forester</a></li>
+
+<p>MFC Help
+  <li><a href="html_help.shtml">HTML Help classes  - Andreas Dunkel.</a></li>
+  <li><a href="csh_formview.shtml">Implementing ToolTip Style Context Sensitive Help in CFormView based Applications - Yawar Jawaad Maajed..</a></li>
+  <li><a href="csh_dialog.shtml">Implementing ToolTip style Context sensitive help in Dialogs  - Yawar Jawaad Maajed..</a></li>
+
+<p>Registry
+  <li><a HREF="registry.shtml">A Class For Handling The Registry - Joerg Koenig</a></li>
+  <li><a href="registry_class.shtml">Registry class, for handling the registry - Ken C. Le</a></li>
+  <li><a HREF="registry_ult.shtml">Another Registry Class - Shane Martin</a></li>
+  <li><a HREF="CRegKey.shtml">CRegKey Registry Class - Richard Hollis</a>
+  <li><a HREF="stringlist_to_reg.shtml">Serializing CStringList in the registry - Mario
+    Contestabile</a></li>
+  <li><a HREF="navigating_registry.shtml">Navigating the Windows Registry in C++ - Sasha Djolich</a>
+	
+<p>Other
+  <li><a HREF="undo_redo_cdocument.shtml">Add Undo - Redo support to CDocument - Keith Rule</a></li>
+  <li><a HREF="flicker_free_drawing.shtml">Flicker free drawing using memory DC - Keith Rule</a></li>
+  <li><a HREF="flicker_free_drawing2.shtml">Flicker free drawing (2) - Andreas Leitner</a></li>
+  <li><a HREF="userdef_message_map_entry.shtml">HOWTO: MFC user defined message maps - Chris
+    Kohlhepp</a></li>
+  <li><a HREF="no_window_list.shtml">Getting rid of Window List from MDI applications - Sushil
+    Saxena</a></li>
+  <li><a HREF="save_restore.shtml">Save and Restore - Roger Onslow</a></li>
+  <li><a HREF="comctl32_version.shtml">Determine COMCTL32 version - Roger Onslow</a> </li>
+  <li><a HREF="memory_api_wrappers.shtml">Memory API Wrappers - Poul Costinsky</a> </li>
+  <li><a HREF="intellimouse_msg.shtml">Getting messages from the IntelliMouse - Randy More</a>
+  </li>
+  <li><a HREF="compare_filename.shtml">Safe file name comparison - &nbsp;Jörg Koenig</a></li>
+  <li><a HREF="version_info_from_resource.shtml">Get VersionInfo from resource file - Roberto
+    Rocco</a></li>
+  <li><a HREF="nt_service.shtml">A Class For Building An NT Service - Joerg Koenig</a></li>
+  <li><a HREF="console.shtml">CConsole: A wrapper for Console APIs - Girish Bharadwaj</a></li>
+  <li><a HREF="disable_alt_tab.shtml">Disable ALT-TAB etc - Kevin Bentley</a></li>
+  <li><a HREF="child_popup.shtml">Change from child window to popup window (and back) - Bing
+    Hou</a></li>
+  <li><a HREF="graded_caption.shtml">Gradient color caption bar - Brent Corkum</a></li>
+  <li><a HREF="hooks.shtml">Hooks - Yun Li</a></li>
+  <li><a HREF="process.shtml">Starting, Managing and Switching Processes - Joerg Koenig</a></li>
+  <li><a HREF="serialport.shtml">A communication class for serail port - Remon Spekreijse</a></li>
+  <li><a HREF="microsecond_delay.shtml">Microsecond delay - Hans Wedemeyer</a></li>
+  <li><a HREF="play_wav.shtml">Play Wav resource - Anthony Petruso</a></li>
+  <li><a HREF="error_message.shtml">Class for displaying system error messages - Gert Rijs</a></li>
+  <li><a HREF="TrackMouseEvent.shtml">Using TrackMouseEvent to find out when the mouse leaves
+    your window - Douglas Peterson</a></li>
+  
+  <li><a HREF="realtime_plot.shtml">Real-time plot - Jan Vidar Berger</a></li>
+  <li><a HREF="excel_automation.shtml">Doing Excel Automation witch MSVC - Thomas Blenkers</a></li>
+  <li><a HREF="thread_manager.shtml">Thread Manager - Simon Coghlan</a></li>
+  <li><a HREF="winpe.shtml">Parsing the Portable Executable File Format - Fred Forester</a></li>
+  <li><a HREF="resviewer.shtml">ResViewer - view resources within a DLL or EXE file - Fred Forester</a></li>
+  <li><a HREF="misc_filespec.shtml">Filename Handling Class - Rob Manderson</a>
+  <li><a HREF="single_instance.shtml">Single Instance of an Application Class - Kevin Lussier</a>
+  <li><a HREF="version_info_from_resource_2.shtml">Get VersionInfo from resource file (2) - Manuel Laflamme</a>
+  <li><a HREF="dynamic_dhtml_apps.shtml">Building Dynamic Visual C++ Programs with DHTML - V. Rama Krishna</a>
+  <li><a HREF="msgbox_printf.shtml">Message Box with printf capability - Christian Skovdal Andersen</a>
+  <li><a HREF="cd_audio.shtml">A Cd-audio class to build a simple CD player - Giancarlo Iovino</a>
+  <li><a HREF="DlgScrSaver.shtml">Screen Saver which Displays Pictures - Andreas Jäger</a>
+  <li><a HREF="writeavi.shtml">Writing Your Own AVI Files - Andreas Jäger</a>
+  <li><a HREF="MIDIGenerator.shtml">Writing MIDI Files - Andreas Jäger</a>
+  <li><a HREF="single_instance_app.shtml">A Single Instance Application Class - Giancarlo Iovino</a>
+  <li><a href="evaluation.shtml">In-Program Evaluation - Joachim Raidl</a>
+  <li><a href="randomstring.shtml">Random String Generator - Mike Wild</a>
+  <li><a href="mfcsaver.shtml">Windows Compliant Screen Saver Using MFC - Ed Halley</a>
+  <li><a href="win32proc.shtml">Enumerating Running Processes in Win95 and WinNT - Tomer Patel</a>
+</ul>
+
+<hr align="center">
+
+<table COLS="3" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="34%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font> </td>
+    <td WIDTH="33%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

@@ -1,0 +1,769 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\demo.ico"
+IDR_DEMOTYPE            ICON    DISCARDABLE     "res\\demoDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_EDIT_UNDO
+    BUTTON      ID_EDIT_REDO
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Select Source...",            ID_FILE_SELECTSOURCE
+        MENUITEM "Acquire...",                  ID_FILE_ACQUIRE
+        MENUITEM SEPARATOR
+        MENUITEM "Capture...",                  ID_FILE_CAPTURE
+        MENUITEM SEPARATOR
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "CxImage"
+    BEGIN
+        MENUITEM "Load Bitmap Resource",        ID_IMAGE_FROM_BITMAP
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About demo...",              ID_APP_ABOUT
+    END
+END
+
+IDR_DEMOTYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Select Source...",            ID_FILE_SELECTSOURCE
+        MENUITEM "Acquire...",                  ID_FILE_ACQUIRE
+        MENUITEM SEPARATOR
+        MENUITEM "Capture...",                  ID_FILE_CAPTURE
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM "Redo\tCtrl+Y",                ID_EDIT_REDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM SEPARATOR
+        MENUITEM "Str&etch mode",               ID_STRETCH_MODE
+        MENUITEM SEPARATOR
+        MENUITEM "Zoom In\t+",                  ID_VIEW_ZOOMIN
+        MENUITEM "Zoom Out\t-",                 ID_VIEW_ZOOMOUT
+        MENUITEM "Normal Viewing (1:1)\t/",     ID_VIEW_NORMALVIEWING11
+    END
+    POPUP "CxImage"
+    BEGIN
+        MENUITEM "Load Bitmap Resource",        ID_IMAGE_FROM_BITMAP
+        MENUITEM SEPARATOR
+        MENUITEM "Demo &Ellipse transform",     ID_TRANSFORM_ELLIPSE
+        MENUITEM SEPARATOR
+        MENUITEM "Mirror",                      ID_CXIMAGE_MIRROR
+        MENUITEM "Flip",                        ID_CXIMAGE_FLIP
+        MENUITEM "Negative",                    ID_CXIMAGE_NEGATIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Rotate...",                   ID_CXIMAGE_ROTATE
+        MENUITEM "Resample...",                 ID_CXIMAGE_RESAMPLE
+        MENUITEM SEPARATOR
+        MENUITEM "Set Transparency... (click on the image)", 
+                                                ID_CXIMAGE_SETTRANSPARENCY
+        MENUITEM "Remove Transparency",         ID_CXIMAGE_REMOVETRANSPARENCY
+
+        MENUITEM SEPARATOR
+        MENUITEM "Gray Scale",                  ID_CXIMAGE_GRAYSCALE
+        MENUITEM "Decrease Bpp...",             ID_CXIMAGE_DECREASEBPP
+        MENUITEM "Increase Bpp...",             ID_CXIMAGE_INCREASEBPP
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New Window",                 ID_WINDOW_NEW
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+        MENUITEM SEPARATOR
+        MENUITEM "Close All",                   ID_WINDOW_CLOSEALL
+        MENUITEM SEPARATOR
+        MENUITEM "Duplicate",                   ID_WINDOW_DUPLICATE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About demo...",              ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_ADD,         ID_VIEW_ZOOMIN,         VIRTKEY, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_DIVIDE,      ID_VIEW_NORMALVIEWING11, VIRTKEY, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Y",            ID_EDIT_REDO,           VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 217, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About demo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,10,10,20,20
+    LTEXT           "CImage Demo Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright © Julian Smart et al, 1997",IDC_STATIC,40,20,
+                    119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,32,14,WS_GROUP
+    LTEXT           "CxImage Demo Version 1.10.3",IDC_STATIC,40,30,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright © Davide Pizzolato, 2001",IDC_STATIC,40,40,
+                    119,8
+END
+
+IDD_DIALOG1 DIALOG DISCARDABLE  0, 0, 143, 46
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Rotate"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,86,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,86,24,50,14
+    EDITTEXT        IDC_EDIT1,10,25,51,12,ES_AUTOHSCROLL
+    LTEXT           "Angle [degrees]",IDC_STATIC,10,10,50,8
+END
+
+IDD_DIALOG2 DIALOG DISCARDABLE  0, 0, 297, 81
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Capture"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,5,60,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,60,60,50,14
+    LISTBOX         IDC_LIST1,5,5,285,45,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Warning: if the window is maximized or partially out of the screen, the screenshot will contain bad pixels!",
+                    IDC_STATIC,116,58,175,20
+END
+
+IDD_DIALOG3 DIALOG DISCARDABLE  0, 0, 143, 46
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Resample"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,86,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,86,24,50,14
+    EDITTEXT        IDC_EDIT1,10,15,51,12,ES_AUTOHSCROLL
+    LTEXT           "Factor",IDC_STATIC,10,5,21,8
+    CONTROL         "Fast",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    10,30,50,10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,0,0
+ PRODUCTVERSION 1,1,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x29L
+#else
+ FILEFLAGS 0x28L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", " \0"
+            VALUE "CompanyName", " \0"
+            VALUE "FileDescription", "DEMO CxImage Application\0"
+            VALUE "FileVersion", "1, 1, 0, 0\0"
+            VALUE "InternalName", "DEMO\0"
+            VALUE "LegalCopyright", "Copyright © 2001\0"
+            VALUE "LegalTrademarks", "Freeware!\0"
+            VALUE "OriginalFilename", "DEMO.EXE\0"
+            VALUE "PrivateBuild", "2\0"
+            VALUE "ProductName", "CxImage\0"
+            VALUE "ProductVersion", "1, 1, 0, 0\0"
+            VALUE "SpecialBuild", "0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 136
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 39
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 290
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+
+    IDD_DIALOG3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 136
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 39
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "demo"
+    IDR_DEMOTYPE            "\nDemo\nDemo\n\n\nDemo.Document\nDemo Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "demo"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+    ID_INDICATOR1           " "
+    ID_INDICATOR2           "                            "
+    ID_INDICATOR3           "                            "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_STRETCH_MODE         "Set stretch mode\nStretch mode"
+    ID_TRANSFORM_ELLIPSE    "Ellipse transform\nEllipse transform"
+    ID_IMAGE_FROM_BITMAP    "Make CxImage from Resource\nCxImage from Resource"
+    ID_CXIMAGE_MIRROR       "Mirror\nMirror"
+    ID_CXIMAGE_FLIP         "Flip\nFlip"
+    ID_WINDOW_DUPLICATE     "Duplicate\nDuplicate"
+    ID_CXIMAGE_NEGATIVE     "Negative\nNegative"
+    ID_CXIMAGE_GRAYSCALE    "Gray Scale"
+    ID_CXIMAGE_ROTATE       "Rotate"
+    ID_CXIMAGE_LOADJPEGRESOURCE "Load JPEG Resource"
+    ID_CXIMAGE_LOADICONRESOURCE "Load Icon Resource"
+    ID_CXIMAGE_LOADGIFRESOURCE "Load Gif Resource"
+    ID_CXIMAGE_LOADPNGRESOURCE "Load Png Resource"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_ZOOMIN          "Zoom In"
+    ID_VIEW_ZOOMOUT         "Zoom Out"
+    ID_VIEW_NORMALVIEWING11 "Normal Viewing (1:1)"
+    ID_FILE_CAPTURE         "Capture..."
+    ID_CXIMAGE_LOADTIFRESOURCE "Load Tif Resource"
+    ID_WINDOW_CLOSEALL      "Close all"
+    ID_CXIMAGE_SETTRANSPARENCY "Set Transparency"
+    ID_CXIMAGE_REMOVETRANSPARENCY "Remove Transparency"
+    ID_CXIMAGE_RESAMPLE     "Resample"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_SELECTSOURCE    "Select Source...\nSelect Source..."
+    ID_FILE_ACQUIRE         "Acquire from Twain source\nAcquire"
+END
+
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Italian (Italy) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+#ifdef _WIN32
+LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP  DISCARDABLE     "res\\bg.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_CXIMAGE1 MENU DISCARDABLE 
+BEGIN
+    POPUP "CxImage"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM "Redo\tCtrl+Y",                ID_EDIT_REDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Mirror",                      ID_CXIMAGE_MIRROR
+        MENUITEM "Flip",                        ID_CXIMAGE_FLIP
+        MENUITEM "Negative",                    ID_CXIMAGE_NEGATIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Rotate...",                   ID_CXIMAGE_ROTATE
+        MENUITEM "Resample...",                 ID_CXIMAGE_RESAMPLE
+        MENUITEM SEPARATOR
+        MENUITEM "Set Transparency... (click on the image)", 
+                                                ID_CXIMAGE_SETTRANSPARENCY
+        MENUITEM "Remove Transparency",         ID_CXIMAGE_REMOVETRANSPARENCY
+
+        MENUITEM SEPARATOR
+        MENUITEM "Gray Scale",                  ID_CXIMAGE_GRAYSCALE
+        MENUITEM "Decrease Bpp...",             ID_CXIMAGE_DECREASEBPP
+        MENUITEM "Increase Bpp...",             ID_CXIMAGE_INCREASEBPP
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG4 DIALOG DISCARDABLE  0, 0, 132, 103
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Decrease Bpp"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,75,5,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,75,20,50,14
+    CONTROL         "1",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,17,
+                    79,25,10
+    GROUPBOX        "Bpp",IDC_STATIC,7,66,118,30
+    CONTROL         "4",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,52,79,25,10
+    CONTROL         "8",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,87,79,25,10
+    GROUPBOX        "Palette",IDC_STATIC,7,5,63,35
+    CONTROL         "Standard",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,15,15,45,10
+    CONTROL         "Optimized",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,15,25,
+                    45,10
+    CONTROL         " Error Diffusion",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,43,84,10
+    CONTROL         "Limit max colors:",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,54,67,10
+    EDITTEXT        IDC_EDIT1,86,53,25,12,ES_AUTOHSCROLL
+END
+
+IDD_DIALOG5 DIALOG DISCARDABLE  0, 0, 132, 71
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Increase Bpp"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,75,5,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,75,20,50,14
+    CONTROL         "4",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,
+                    20,25,10
+    GROUPBOX        "Bpp",-1,5,5,60,60
+    CONTROL         "8",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,15,35,25,10
+    CONTROL         "24",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,15,50,25,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG4, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 125
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+
+    IDD_DIALOG5, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 125
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TRANSFORM_ELLIPSE    "Ellipse transform\nEllipse transform"
+    ID_IMAGE_FROM_BITMAP    "Make CxImage from Resource\nCxImage from Resource"
+    ID_CXIMAGE_MIRROR       "Mirror\nMirror"
+    ID_CXIMAGE_FLIP         "Flip\nFlip"
+    ID_CXIMAGE_NEGATIVE     "Negative\nNegative"
+    ID_CXIMAGE_GRAYSCALE    "Gray Scale"
+    ID_CXIMAGE_ROTATE       "Rotate"
+    ID_CXIMAGE_LOADJPEGRESOURCE "Load JPEG Resource"
+    ID_CXIMAGE_LOADICONRESOURCE "Load Icon Resource"
+    ID_CXIMAGE_LOADGIFRESOURCE "Load Gif Resource"
+    ID_CXIMAGE_LOADPNGRESOURCE "Load Png Resource"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_CXIMAGE_LOADTIFRESOURCE "Load Tif Resource"
+    ID_CXIMAGE_SETTRANSPARENCY "Set Transparency"
+    ID_CXIMAGE_REMOVETRANSPARENCY "Remove Transparency"
+    ID_CXIMAGE_RESAMPLE     "Resample"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+#endif    // Italian (Italy) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\demo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\demo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

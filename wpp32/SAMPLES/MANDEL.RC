@@ -1,0 +1,35 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: MANDEL.RC
+//
+#include "wpp.h"
+#include "mandel.h"
+
+AboutBitmap BITMAP "mandel.bmp"
+
+AppMenu MENU { 
+	POPUP "&File" { 
+		MENUITEM FileNew
+		MENUITEM HelpAbout
+		MENUITEM FileExit
+	}
+	MENUITEM "&Pause!",		IDM_PAUSE 
+}
+
+AppAccel ACCELERATORS
+BEGIN
+    AccFileNew
+    AccMemStats
+END
+
+DLGABOUT DIALOG  20,13,181,92
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS
+CAPTION "About Mandel"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL "&OK",IDOK,"Button",BS_DEFPUSHBUTTON | WS_TABSTOP | WS_CHILD | WS_VISIBLE,89,60,30,14
+    CONTROL "Written using Windows++ (C) 1996 Paul DiLascia",-1,"static",WS_CHILD | SS_LEFT,89,33,84,20
+    CONTROL "MANDEL",-1,"static",WS_CHILD | SS_LEFT,89,15,80,8
+    CONTROL "ABOUTBITMAP",ID_BITMAP,"button",BS_OWNERDRAW | WS_CHILD | WS_VISIBLE,5,8,74,75
+END
+

@@ -1,0 +1,41 @@
+// clipexam.odl : type library source for clipexam.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (clipexam.tlb).
+
+[ uuid(DBF687E6-868E-11D1-B99D-00A0C9763A0A), version(1.0) ]
+library Clipexam
+{
+	importlib("stdole32.tlb");
+	
+
+	//  Primary dispatch interface for CClipExamDoc
+	
+	[ uuid(DBF687E7-868E-11D1-B99D-00A0C9763A0A) ]
+	dispinterface IClipexam
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CClipExamDoc)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CClipExamDoc)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CClipExamDoc
+	
+	[ uuid(DBF687E5-868E-11D1-B99D-00A0C9763A0A) ]
+	coclass Document
+	{
+		[default] dispinterface IClipexam;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

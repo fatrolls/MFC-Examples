@@ -1,0 +1,53 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Nikolay Sokratov">
+<title>Docking Window - Table of Contents</title>
+<meta Name="description" Content="Source code for various types of docking windows">
+<meta Name="keywords" Content="DOCKING BAR">
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><h1><font COLOR="#FF0000">Docking Windows</font></h1>
+    </td>
+    <td></td>
+    <td width="10%"></td>
+    <td align="right"><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<hr>
+
+This section is now being maintained by <A HREF="mailto:nikolay@jriver.com">Nikolay Sokratov</A>.
+
+<ul>
+  <LI><A HREF="mrcext.shtml">Resizable Docking Window - Mark Conway</A>
+  <LI><A HREF="docking_window.shtml">Resizable Docking Window 2 - Cristi Posea</A>
+  <li><a href="devstudio_like_controlbar.shtml">A DevStudio like CControlBar - Alger Pike</a></li>
+  <li><a href="sizing_tabctrl_bar.shtml">Sizing TabControlBar - Dirk Clemens</a></li>
+  <li><a href="/advancedui/demo_ui_devstudio.shtml">DevStudio Example Project - Kirk Stowell</a></li>
+
+</ul>
+
+
+
+<hr align="center">
+
+<table COLS="3" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="34%"><p align="center"><font SIZE="-2">© 1997 - 1998 Zafir Anjum</font> </td>
+    <td WIDTH="33%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

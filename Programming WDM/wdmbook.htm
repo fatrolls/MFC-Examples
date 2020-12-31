@@ -1,0 +1,370 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>General Information</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<I><H1 ALIGN="CENTER">Programming the Microsoft Windows Driver Model</I><BR>
+Copyright &copy; 1999 by Walter Oney<BR>
+General Information</H1>
+<P>The companion disc for <I>Programming the Microsoft Windows Driver Model</I> contains more than 20 sample drivers and test programs to illustrate the topics covered by the book. The file you're viewing contains general information about the disc, as follows:</P>
+<P><A HREF="#samdirs">Directory Structure</A><BR>
+<A HREF="#directory">Directory of Sample Programs</A><BR>
+<A HREF="#fastinst">Using the FastInst Utility</A><BR>
+<A HREF="#win98inst">Installing Samples in Windows 98</A><BR>
+<A HREF="#wdmbuild">General Instructions for Building WDM Samples</A><BR>
+<A HREF="#usermodebuild">General Instructions for Building User-Mode Samples</A><BR>
+<A HREF="#usbtest">General Instructions for USB Samples</A><BR>
+<A HREF="#wdmwiz">Using WDMWIZ.AWX</A><BR>
+<A HREF="#wmi98">WMI Functionality in Windows 98</A><BR>
+<A HREF="#legalstuff">Definitions of EULA Terms</A><BR>
+<A HREF="#errors">How to Report Errors</A></P>
+<H1><A NAME="samdirs"></A>Directory Structure</H1>
+<P>The SAMPLES directory on the companion disc contains the setup program for the sample programs as well as some common tools used by all the samples. If you elect to install the book samples onto your hard disk, the setup program will copy those common tools too. If you elect not to install the samples onto your hard disk, the setup program will nonetheless install some of the common tools because you won’t otherwise be able to run the samples.</P>
+<P>For those book chapters that have sample programs, the companion disc contains a directory for that chapter. The chapter contains subdirectories for each sample program. In many cases, there’s a further subdivision into a SYS directory (containing the WDM driver) and a TEST subdirectory (containing a simple test program for exercising the driver). For example, Chapter 3 has two samples: FILEIO and SEHTEST. The disc therefore has the following directory structure:</P>
+<CODE><P>Chap3<BR>
+&nbsp;&nbsp;FileIo<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;Sys<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;objchk<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i386<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;Test<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debug<BR>
+&nbsp;&nbsp;SehTest<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;objchk<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i386</P>
+</CODE><P>Each sample also has an HTML file that describes the overall purpose of the sample and contains brief instructions about how to build and test the sample. Once you’ve installed a particular sample driver, you can easily read this HTML file by clicking on the "More Info" button in the "Sample Information" page of the Device Manager’s property page for the sample device. </P>
+<B><FONT COLOR="#ff0000"><P>I recommend that you read the information file before attempting to build, install, or test any sample. There are nuances for some of the samples that will drive you crazy unless you know about them ahead of time.</P>
+</B></FONT><H1><A NAME="directory"></A>Directory of Sample Programs</H1>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=4 WIDTH=500>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P><B><FONT SIZE=4>Chapter</B></FONT></TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<B><FONT SIZE=4><P>Sample Name</B></FONT></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<B><FONT SIZE=4><P>Brief Description</B></FONT></TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>Chap3</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap3/fileio/fileio.htm">FILEIO</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>File I/O operations (including Win98 workarounds)</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap3/sehtest/sehtest.htm">SEHTEST</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Illustrates use of structured exception handler</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>Chap6</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap6/pnpevent/pnpevent.htm">PNPEVENT</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>User-mode PnP events</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap6/pnpmon/pnpmon.htm">PNPMON</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Kernel-mode PnP events</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap6/mulfunc/mulfunc.htm">MULFUNC</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Nonstandard multifunction device</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>Chap7</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap7/pci42/pci42.htm">PCI42</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Simple PIO device using AMCC S5933 chip. Also includes a driver for the ISA card that accompanies the AMCC development kit</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap7/pktdma/pktdma.htm">PKTDMA</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Simple DMA device using AMCC S5933 chip</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap7/scatgath/scatgath.htm">SCATGATH</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>(Untested) driver using new DMA calls for scatter/gather</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>Chap8</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap8/wdmidle/wdmidle.htm">WDMIDLE</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Idle detection</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>Chap9</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap9/eventlog/eventlog.htm">EVENTLOG</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to log an event</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap9/evwait/evwait.htm">EVWAIT</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to share an event between user mode and kernel mode</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap9/filter/filter.htm">FILTER</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Simple filter driver that just logs IRPs that pass through</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap9/ioctl/ioctl.htm">IOCTL</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to handle simple DeviceIoControl operations</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap9/notify/notify.htm">NOTIFY</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to use an asynchronous I/O control operation to notify an application when something interesting happens</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap9/piofake/piofake.htm">PIOFAKE</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to setup a watchdog timer</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap9/polling/polling.htm">POLLING</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to use a system thread to poll a device</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap9/workitem/workitem.htm">WORKITEM</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to create an executive work item</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>Chap10</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap10/wmi42/wmi42.htm">WMI42</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to implement a simple WMI class</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap10/wmiextra/wmiextra.htm">WMIEXTRA</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Advanced WMI functionality</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>Chap11</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap11/feature/feature.htm">FEATURE</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Setting and clearing a feature</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap11/loopback/loopback.htm">LOOPBACK</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Handling bulk transfer endpoints</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap11/usb42/usb42.htm">USB42</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Simple input-only bulk endpoint</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap11/usbint/usbint.htm">USBINT</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Interrupt endpoint management</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap11/usbiso/usbiso.htm">USBISO</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Isochronous endpoint management</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>Chap12</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap12/samclass/samclass.htm">SAMCLASS</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Device Manager property page provider DLLs for Windows 2000 and Windows 98</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap12/devprop/devprop.htm">DEVPROP</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Obtain device properties in both kernel and user mode</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap12/fastinst/fastinst.htm">FASTINST</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Install single device in Windows 2000</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="chap12/autolaunch/autolaunch.htm">AUTOLAUNCH</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>How to launch an application automatically when the PnP Manager starts your device</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>AppendixA</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="appendixa/wdmstub/wdmstub.htm">WDMSTUB</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Stubs for selected functions missing from Windows 98</TD>
+</TR>
+<TR><TD WIDTH="13%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="16%" VALIGN="TOP">
+<P><A HREF="generic/generic.htm">GENERIC</A></TD>
+<TD WIDTH="71%" VALIGN="TOP">
+<P>Generic PnP and Power support for most of my samples</TD>
+</TR>
+</TABLE>
+
+<FONT SIZE=6><P>&nbsp;</P>
+</FONT><H1><A NAME="fastinst">Using the FastInst Utility</H1>
+<P>The Hardware Wizard in Windows 2000 is slow enough that you’ll quickly want to find a faster way to install new drivers. I wrote FastInst to speed up this process. </P>
+<B><I><P>Note: FastInst only runs in Windows 2000.</P>
+</B></I><P>Suppose you want to install the WDMIDLE sample from Chapter 8. You can issue these commands at a command prompt:</P>
+<CODE><P>C:&gt;<U>cd %wdmbook% <BR>
+</U>C:\Wdmbook&gt;<U>fastinst chap8\wdmidle\sys\device.inf</P>
+</U></CODE><P></A>Alternatively, open the INF file of interest in Windows Explorer (double-click on the file icon, or right-click and select Open from the context menu). The WDMBOOK setup program has installed FastInst as the open method for INF files, and you’ll end up invoking FastInst without the hassle of typing.</P>
+<P>FastInst will install the driver files for the first device mentioned in the model section for the first manufacturer named in the [manufacturer] section. If you want to override this selection for an INF file that describes multiple devices, specify the device identifier for the device you want:</P>
+<CODE><P>C:\Wdmbook&gt;<U>fastinst <I>path</I> device-id</P>
+</U></CODE><P>FastInst presents a progress dialog to reassure you that something is happening. The bar is driven simply off a timer and doesn't reflect the actual progress of the install. You may see the progress bar fill and start over again a number of times the first you run FastInst in a session. Be patient—the installation process can be slow even <I>with</I> FastInst in the picture!</P>
+<H1><A NAME="win98inst"></A>Installing Samples in Windows 98</H1>
+<P>Since you can’t use FastInst in Windows 98, you must use the regular Add New Hardware wizard. While there may be variations for certain sample programs, here’s a general description of the process:</P>
+<OL>
+
+<LI>Launch the Add New Hardware wizard from Control Panel. Press the Next button twice to dismiss the first two pages.</LI>
+<LI>If you see a dialog listing Plug and Play devices that aren’t working correctly, select the choice that reads, "No, the device isn't in the list" and press the Next button.</LI>
+<LI>If you see a dialog asking your permission to search for hardware that isn’t Plug and Play compatible, select the choice that reads, "No, I want to select the hardware from a list" and press the Next button.</LI>
+<LI>You’ll now see a dialog that asks you to "Select the type of hardware you want to install." Select the "WDM Book Samples" choice and press the Next button.</LI>
+<LI>You’ll now see a dialog that lists all the sample devices you’ve previously installed. If you’re installing a sample for the first time, press the "Have Disk" button. In the ensuing dialog, enter the directory where the sample’s INF file is located. This directory is generally the SYS subdirectory for the sample, but it might be the sample directory itself. The HTM file for the sample will indicate where the appropriate INF is.</LI>
+<LI>After selecting the appropriate INF directory, the device will be listed in the Models list box. There will only be one choice, since none of the sample INF files specifies more than one sample device. Select this choice and press Next.</LI>
+<LI>In the final dialog, press the Finish button. The wizard will now copy files to perform the installation. </LI></OL>
+
+<H1><A NAME="wdmbuild">General Instructions for Building WDM Samples</H1>
+<P>Each of the sample drivers includes a project file (with a file extension of DSP) for use with Microsoft Visual C++ 6.0. Most of the driver samples also include a SOURCES file for use with the standard Windows 2000 DDK BUILD utility. In addition to Visual C++ version 6.0, you will need the following software installed on your computer:</P>
+
+<UL>
+<LI>The Microsoft Platform SDK. I did my latest testing with the version that accompanied the RC1 release of Windows 2000. Be sure that the Visual C++ directory settings include the SDK directories. </LI>
+<LI>The Windows 2000 Device Driver Kit. </LI>
+<LI>For some of the samples only, the Windows 98 Device Driver Kit. You need the VxD-related headers and libraries from this kit—none of the WDM functionality of any of my samples relies on this kit.</LI></UL>
+
+<I><P>You will need either the Professional or Enterprise edition of Microsoft Visual C++ 6.0 to build all of the sample projects without error. Without either of these editions, you will get warnings about certain unsupported compiler options. In addition, the VxD projects will not link correctly because the compiler won't be in-lining string functions.</P>
+</I><P>To build a driver using Microsoft Visual C++ 6.0, first open the project file. You can review and maintain the project using the same techniques you would use for an application built with this compiler. Select the "Win32 Checked" configuration or the "Win32 Free" configuration and issue the Build menu command to build the checked or free version, respectively, of the driver.</P>
+<B><FONT COLOR="#ff0000"><P>Project changes:</B></FONT> I recommend that you change the project settings to request the generation of a browsing database (from the Project Settings dialog, select the Browse Info tab and check the "Build browse info file" check box). I couldn't do this for you because this option isn't controlled by the project file I put on the disc.</P>
+<B><FONT COLOR="#ff0000"><P>Directory changes:</B></FONT> From time to time, Microsoft changes the directory organization for the DDK. If you've installed a version of the DDK later than the RC-1 copy I was using, your builds may fail because of unfindable files. If this happens to you, take a quick look at the errata page on my <A HREF="http://www.oneysoft.com/">web site</A>. You can also edit the DSP files as text files and make appropriate changes.</P>
+<B><FONT COLOR="#ff0000"><P>Where files end up:</B></FONT> The drivers built by the sample projects end up in the OBJCHK\I386 or OBJFRE\I386 subdirectories. This is the same place that BUILD would put them.</P>
+<P>To build a driver using BUILD, open either the checked or free build environment using the shortcut created when you installed the Windows 2000 DDK. Change to the project directory and issue the command "build -cewz". If a directory doesn't contain a SOURCES file, it means that you can't build the corresponding project using BUILD. For example, BUILD can't cope with a few of my samples that require different compile options for different files or that generate a VxD. Additionally, we didn't attempt to make BUILD work for the user-mode test programs because we figured that even die-hard BUILD users were prepared to use the Visual C++ integrated development environment for them.</P>
+<P>The SETUP program for the companion disc should have initialized these environment variables on which the build process depends:</P>
+
+<UL>
+<LI>DDKPATH is the name of the base directory for the Windows 2000 Device Driver Kit. </LI>
+<LI>WDMBOOK is the name of the base directory where the book samples are stored. </LI>
+<LI>SIWPATH is the pathname of the directory where you’ve installed the Soft-Ice/W debugger from Numega Technologies. If you don’t have a copy of Soft-Ice/W, SIWPATH points to the WDMBOOK directory (where there's a dummy .BAT file) so that the build procedure will operate correctly. </LI>
+<LI>98DDK is the pathname of the directory where you’ve installed the Windows 98 Device Driver Kit (if you have). The Win98 DDK is only needed to build the VxD portion of certain sample drivers. If you do all your testing in Windows 2000, you’ll never need to use the Win98 DDK.</LI></UL>
+
+<P>The build scripts for these samples will copy the finished driver to the Drivers directory and create a symbol file (with an extension of .NMS) for use by the Numega Soft-Ice/W debugger. The next time you reboot the computer, you will be running the newly built driver. <B><I><FONT COLOR="#ff0000">None of my samples has a name that duplicates that of a standard driver file, but you should check for conflicts with other drivers you may have installed.</P>
+</B></I></FONT><P>In Windows 2000, use the <A HREF="#fastinst">FastInst</A> utility to install a sample driver for the first time. The fastest way to install a newer version of a driver is to Disable and re-Enable the device in the Device Manager. The Disable step unloads the current version. The Enable step loads the driver present in the Drivers directory, which by now will the one you’ve just rebuilt.</P>
+<P>In Windows 98, you need to use the <A HREF="#win98inst">Add New Hardware wizard</A> to install a sample driver for the first time. The fastest way to replace a driver is to use the Update Driver button from Device Manager.</P>
+<FONT COLOR="#ff0000"><P>If you use two computers,</FONT> be sure that GENERIC.SYS is in the Drivers directory on the computer where you run the sample drivers you build. The setup program for the samples will put it in the Drivers directory on the computer where you install the samples, so you can just copy it.</P>
+<H1><A NAME="usermodebuild"></A>General Instructions for Building User-Mode Samples</H1>
+<P>Many of the sample drivers include one or more user-mode components, such as test programs. Each such component has a project file (with a file extension of DSP) for use with Microsoft Visual C++ 6.0. If you want to build one of these components, open the project and use the Build menu command.</P>
+<H1><A NAME="usbtest"></A></A>General Instructions for USB Samples</H1>
+<P>You can test the USB sample drivers (Chap11 directory) if you have an Anchor Chips EZUSB development board (see <A HREF="http://www.anchorchips.com/">http://www.anchorchips.com)</A>. Each of these samples has an EZUSB subdirectory containing the firmware for the "device" that the driver works with. A pre-built firmware image with a file extension of .HEX is there.</P>
+<P>To install and test a USB sample driver, start with the Anchor development board in its default state. If you’re not sure of the state, press the Reset button, or unplug and replug the USB connector. Start the EzMr.EXE utility that comes with the Anchor kit. Use the Download button to download the .HEX firmware file to the device. This step will change the personality of the board to match the device that the sample driver expects. The PnP Manager will then detect the new device and ask you to point to the INF file for the driver. The INF file for a USB sample is always named DEVICE.INF and is in the SYS subdirectory for the sample.</P>
+<H1><A NAME="wdmwiz"></A>Using WDMWIZ.AWX</H1>
+<P>Appendix C contains detailed instructions about how to use WDMWIZ.AWX, which is the same custom application wizard I used with Microsoft Visual C++ 6.0 to build the code samples. I deliberately left out the following additional instructions so it would be easy to change them up until the very last minute.</P>
+<P>The Setup program leaves WDMWIZ.AWX in the WDMBOOK directory on your hard disk. You will need to copy this file to the Visual C++ template directory. The name of that directory on my computers is <FONT FACE="Courier New">c:\Program Files\Microsoft Visual Studio\Common\MSDev98\Template</FONT>. It might be different on your computer, depending on how you installed Visual C++. After you copy the file, the Projects tab on the New dialog in Visual Studio will include a choice labelled WDM Driver Wizard.</P>
+<P>WDMWIZ is able to set up most of the project options you need for building a driver. The custom wizard support in Visual Studio is still missing a couple of features, though, and you need to modify the project in these minor respects.</P>
+<OL>
+
+<LI>Close the workspace if it's open. From Explorer, right-click on the .DSP file that WDMWIZ created for you and select the Fix WDM Driver Project command from the resulting context menu. This will run the FixProj utility that Setup installed on your computer in order to change the names of the project configurations and the output directory structure to better match the DDK. You can then reopen the project in Visual Studio. You will receive a warning at this point that the previous default configuration no longer exists. This is normal, and you can ignore the warning.</LI>
+<LI>Open the Project/Settings property page. Select the choice "All Configurations" from the "Settings For" list.</LI>
+<LI>Tab to the "Browse Info" page and check "Build Browse Info File". I recommend doing this so you can easily locate the declarations of the kernel-mode support functions and structures your driver uses.</LI>
+<LI>Tab to the "Post-build step" page and enter these two commands in the "Post-build command(s)" control:<BR>
+<BR>
+<FONT FACE="Courier New">copy $(TargetPath) $(WINDIR)\system32\drivers<BR>
+$(SIWPATH)\nmsym -translate:source,package,always $(TargetPath)<BR>
+<BR>
+</FONT>The first of these commands copies the finished driver to the Drivers directory so it will be in place the next time you start your system. The second command invokes the Numega symbol utility to build a symbol file for Soft-Ice/W. If you don't own a copy of Soft-Ice/W, you might as well leave this command out of the build script.</LI>
+<LI>If you've requested support for IRP_MJ_SYSTEM_CONTROL, your project includes an MOF file. You will need to set the custom build step for the MOF file depending on where you've installed the MOF compiler. For example:<BR>
+<BR>
+<FONT FACE="Courier New">$(DDKPATH)\bin\mofcomp -wmi -b:$(InputName).bmf $(InputPath)<BR>
+$(DDKPATH)\bin\wmimofck $(InputName).bmf<BR>
+<BR>
+</FONT>The output file from the custom build is $(InputName).bmf, namely, the binary compiled MOF file.</LI></OL>
+
+<H1><A NAME="wmi98"></A>WMI Functionality in Windows 98</H1>
+<P>You basically can't test Windows Management Instrumentation (WMI) functionality in the original release of Windows 98, but you can do so in Windows 98, Second Edition. My samples depend on WMILIB.LIB, which wasn't shipped with the originally released version of Windows 98. In addition, there is a bug in the user-mode provider module that makes it impossible to perform WMI queries to WDM drivers.</P>
+<P>The setup program for Windows 98, Second Edition doesn't install the WBEM core by default. You must install it by hand at some point. To do so:</P>
+
+<UL>
+<LI>Open Add/Remove Programs in the Control Panel, and select the Windows Setup tab. </LI>
+<LI>Within the Internet Tools category, indicate that you want to install Web-Based Enterprise Mgmt. </LI>
+<LI>You may need to reboot your computer before WMI will work. The setup program doesn't indicate that you should, but some testers have reported this as a problem.</LI></UL>
+
+<H1><A NAME="legalstuff"></A>Definition of EULA Terms</H1>
+<P>The End User License Agreement (EULA) to which you agreed when you installed the sample programs uses two terms for which this document provides the definition:</P>
+<P>The term SAMPLE CODE includes all of the sample programs referred to in the Directory of Sample Programs earlier in this document. The following modules, present on the companion disc, are not SAMPLE CODE and therefore may not be redistributed in any form:</P>
+
+<UL>
+<LI>WDMWIZ.AWX (But any driver you generate by using WDMWIZ shall be considered SAMPLE CODE for purposes of the EULA.) </LI>
+<LI>FIXPROJ.EXE </LI>
+<LI>FASTINST.EXE </LI>
+<LI>DEVTEST.EXE and DEVSIM.VXD </LI>
+<LI>SAMCLASS.DLL and SAMCLS16.DLL (But any similar DLL that you generate based on my source code for your own devices or classes of devices shall be considered SAMPLE CODE for purposes of the EULA.) </LI></UL>
+
+<P>The following items of SAMPLE CODE, and any modules having the same names built, in whole or in part, from SAMPLE CODE, are designated as Non-Redistributable:</P>
+
+<UL>
+<LI>GENERIC.SYS </LI>
+<LI>POWCPL.DLL </LI>
+<LI>WDMSTUB.VXD </LI>
+<LI>AUTOLAUNCH.EXE </LI>
+<LI>ALNCH98.EXE </LI>
+<LI>STARTSERVICE.DLL</LI></UL>
+
+<P>You may request a separate, royalty-free license to redistribute these modules by writing directly to the author at <A HREF="mailto:waltoney@oneysoft.com">waltoney@oneysoft.com</A>. Please don't install a file with one of these names on an end-user system except in accordance with such a license, because you'll probably end up breaking drivers from other vendors and diminishing the end user experience of the operating system.</P>
+<H1><A NAME="errors"></A>How to Report Errors</H1>
+<P>There are errors in the book and in the code samples. If I knew what they were, they wouldn't be there. But I know there's a bunch of them lurking about. I maintain an errata page at my own Web site, which you can reach via <A HREF="http://mspress.microsoft.com/mspress/products/2507">http://mspress.microsoft.com/mspress/products/2507</A> or <A HREF="http://www.oneysoft.com/">http://www.oneysoft.com</A>. (Both of these URLs will lead to identical content. We believe there's safety in numbers when it comes to URLs that may break without warning, though.) If you discover a mistake, please send me e-mail at <A HREF="mailto:waltoney@oneysoft.com">waltoney@oneysoft.com</A>. Let me know if you want me to attribute your correction to you when I add it to the list of errors. I'll assume you prefer to remain anonymous unless you specifically ask for attribution.</P></BODY>
+</HTML>

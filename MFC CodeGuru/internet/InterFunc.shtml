@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Internet - HTTP Service Monitor</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<h3 align="center"><font COLOR="#AOAO99">Winsock2 Internet functions</font></h3>
+
+<hr>
+
+<p>This sample was contributed by <a href="mailto:sbryndin@advhealth.com">Steve Bryndin</a></p>
+
+<p>I have written a small MFC class that allows you to ping remote computers over
+internet. This class is very similar to one posted by Les Jordan but it doesn't use
+ICMP.DLL. Instead it uses normal ws2_32.dll.</p>
+
+<p>This class is a mixture of Les Jordan class(address resolution functions) and SDK ping
+example.</p>
+
+<p>You must make sure that WS2_32.DLL and WS2_32.LIB is present on your system(NT4.0 with
+service pack 3 normally should have this dll on the system, I didn't see on the Windows
+95, but Microsoft claims that it is available for 95 as well).</p>
+
+<p>Include WINSOCK2.H in STDAFX.H file. In linker specify WS2_32.LIB.</p>
+
+<p>You would have to call WSAStartup from Application entry point. Don't call
+AfxSocketInit(), it will not work.</p>
+
+<p>This class performs following functions: 
+
+<ul>
+  <li>Pings remote computer.</li>
+  <li>Retrieves time on remote computer(if their time service is running).</li>
+  <li>Checks alive ports on remote computer.</li>
+  <li>Resolves IP address to Host name.</li>
+  <li>Resolves Host name to IP address.</li>
+</ul>
+
+<p>This class includes 5 public functions:</p>
+<tt>
+
+<pre>
+	CString GetRemoteTime(CString strHost);
+	BOOL ScanPorts(CString strHost, LIVE_PORTS *pPorts, UINT nPort);
+	CString Ping(CString strHost, UINT nPacketSize);
+	CString ResolveHostToIP(CString strHost);
+	CString ResolveIPToHost(CString strIP);
+</tt></pre>
+
+<p><strong>GetRemoteTime</strong>: <br>
+accepts Host name in form &quot;ANYHOST.ANYDOMAIN.COM&quot;. It returns formatted CString
+that contain remote computer's time.</p>
+
+<p><strong>ScanPorts</strong>:<br>
+strHostOrIP - CString with Host name in form &quot;ANYHOST.ANYDOMAIN.COM&quot;.<br>
+pPorts - address of structure: <tt></p>
+
+<pre>	typedef struct tagLIVE_PORTS
+	{
+		CString	strName;      // Name of service running on this port
+		CString	strAliases;   // Service aliases.
+		short       s_port;   // Port number.
+   		CString     strProto; // Protocol used.
+	}LIVE_PORTS;
+</tt></pre>
+
+<p>nPort - Unsigned integer port number.<br>
+Return value: If functions succeeds return value is TRUE and structure LIVE_PORTS is
+populated with port data. If the function fails, return value is FALSE, structure is
+empty.</p>
+
+<p><strong>Ping</strong>: <br>
+strHost - Host name in form &quot;ANYHOST.ANYDOMAIN.COM&quot;.<br>
+nPacketSize - Size of packet in bytes. If the value is 0, then default 32 bytes sent to
+the remote computer.<br>
+Return value: Formatted CString in form &quot;64 bytes from 10.10.0.1: icmp_seq=0, time =
+3.1 ms&quot;. </p>
+
+<p><strong>ResolveHostToIP</strong>: accepts Host name in form
+&quot;ANYHOST.ANYDOMAIN.COM&quot;. It returns IP address in form
+&quot;xxx.xxx.xxx.xxx&quot;.</p>
+
+<p><strong>ResolveIPToHost</strong>: accepts IP address in form
+&quot;xxx.xxx.xxx.xxx&quot;. It returns Host name in form
+&quot;ANYHOST.ANYDOMAIN.COM&quot;. </p>
+
+<p><a HREF="InterFunc_source.zip">Download
+Source</a></p>
+
+<P>Posted on: April 10, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

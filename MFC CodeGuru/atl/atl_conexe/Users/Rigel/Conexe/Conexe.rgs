@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		{AB2E5103-F9F8-11D1-A7D8-0060083404B6} = s 'Conexe'
+		'Conexe.EXE'
+		{
+			val AppID = s {AB2E5103-F9F8-11D1-A7D8-0060083404B6}
+		}
+	}
+}

@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Change background color of individual rows</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Change background color of individual rows</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+Changing the color of a single row is achieved in essentially the same way as changing the background color of the entire control. 
+See <A HREF="ctrl_color.shtml">'Change background color'</A>.
+ 
+<p><img src="row_color.gif" width="276" height="222"></p>
+<p>Instead of using the same color for all rows, use a row specific color. If you want to be able to add any color to any row then you would have to track this information in some data structure. In the code below we simply highlight the alternate rows with yellow. This code belongs in the DrawItem() function. 
+See 
+<A HREF="sel_row.shtml">'Selection highlighting of entire row'</A>
+for more details.
+
+<PRE><TT><FONT COLOR="#990000">	// Draw the background color
+	if( bHighlight )
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+		pDC->SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
+
+		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_HIGHLIGHT)));
+	}
+	else
+	{
+		CRect rcClient, rcRow = rcItem;
+		GetClientRect(&rcClient);
+		rcRow.right = rcClient.right;
+
+<b>		pDC->FillRect(rcRow, &CBrush(nItem%2 ? ::GetSysColor(COLOR_WINDOW) :
+	 					RGB(255,255,0)));
+</b>	}
+</FONT></TT></PRE>
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

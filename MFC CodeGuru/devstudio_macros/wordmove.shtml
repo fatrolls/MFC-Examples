@@ -1,0 +1,239 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Jaroslav Pisk">
+   <TITLE>DevStudio Macros - Better caret movement by words</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">Better caret movement by words</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This macro was contributed by <A href="mailto:David.Cotton@marcgroup.com">David Cotton</A>
+
+<p>Macros for better word right/left caret movement within the IDE.</p>
+<p>Currently the word right/left caret movement in the IDE moves alternately from beginning to 
+ending of "words." Therefore it now takes more keystrokes to navigate through a line. These 
+macros separate the beginning to beginning and end to end movement. Providing faster and more 
+predictable movement.</p>
+<p>There are 8 macros:</p>
+<ol>
+<li>NewWordRight		Moves the caret to beginning of next word to the right</li>
+<li>NewWordRightExt	As above with selection</li>
+<li>NewWordLeft		Moves caret to beginning of next word to the left</li>
+<li>NewWordLeftExt	As above with selection</li>
+<li>NewEndWordRight	Moves the caret to the end of next word to the right</li>
+<li>NewEndWordRightExt	As above with selection</li>
+<li>NewEndWordLeft	Moves the caret to the end of next word to the Left</li>
+<li>NewEndWordLeftExt	As above with selection</li>
+</ol>
+<p>I have attached the NewWord macros to the ctrl/ctrl-shift arrow keys. The NewEndWord's I have 
+attached to corresponding alt/alt-shift arrow keys.</p>
+<p>Flaws: I have had occasion when the macro gets into an infinite loop when I press the arrow 
+keys in a fast and "random" pattern. At which time its necessary to double click on the macro 
+icon in the tray to terminate the macro. Other than this I have seen no other side effects.
+</p>
+
+<PRE><TT><FONT COLOR="#990000">
+Sub NewWordRight()
+'DESCRIPTION: Does a real word right
+	VarLtr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+	if len(ActiveDocument.Selection) <> 0 then
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharLeft
+	End if
+	ActiveDocument.Selection.CharRight dsExtend
+	while InStr ( VarLtr, ActiveDocument.Selection ) <> 0
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharRight dsExtend
+	wend
+	while InStr ( VarLtr, ActiveDocument.Selection ) = 0
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharRight dsExtend
+	wend
+	ActiveDocument.Selection.CharLeft
+End Sub
+
+Sub NewWordLeft()
+'DESCRIPTION: Does a real word left
+	VarLtr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+	if len(ActiveDocument.Selection) <> 0 then
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharRight
+	End if
+	ActiveDocument.Selection.CharLeft dsExtend
+	while InStr ( VarLtr, ActiveDocument.Selection ) = 0
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharLeft dsExtend
+	wend
+	while InStr ( VarLtr, ActiveDocument.Selection ) <> 0
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharLeft dsExtend
+	wend
+	ActiveDocument.Selection.CharRight
+End Sub
+
+Sub NewWordRightExt()
+'DESCRIPTION: Does a real word right extend select
+	VarLtr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+	dir = len(ActiveDocument.Selection)
+	ActiveDocument.Selection.CharRight dsExtend
+	if dir <> 0 then
+		if len(ActiveDocument.Selection) > dir then dir = 1 else dir = 0
+	else
+		dir = 1
+	End if
+	if dir then test = Right(ActiveDocument.Selection,1) else test = Left(ActiveDocument.Selection,1)
+	while InStr ( VarLtr, test ) <> 0
+		ActiveDocument.Selection.CharRight dsExtend
+		if dir then test = Right(ActiveDocument.Selection,1) else test = Left(ActiveDocument.Selection,1)
+	wend
+	while InStr ( VarLtr, test ) = 0
+		ActiveDocument.Selection.CharRight dsExtend
+		if dir then test = Right(ActiveDocument.Selection,1) else test = Left(ActiveDocument.Selection,1)
+	wend
+	if dir then ActiveDocument.Selection.CharLeft dsExtend
+End Sub
+
+Sub NewWordLeftExt()
+'DESCRIPTION: Does a real word left extend select
+	VarLtr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+	dir = len(ActiveDocument.Selection)
+	ActiveDocument.Selection.CharLeft dsExtend
+	if dir <> 0 then
+		if len(ActiveDocument.Selection) > dir then dir = 1 else dir = 0
+	else
+		dir = 1
+	End if
+	if dir then test = Left(ActiveDocument.Selection,1) else test = Right(ActiveDocument.Selection,1)
+	while InStr ( VarLtr, test ) = 0
+		ActiveDocument.Selection.CharLeft dsExtend
+		if dir then test = Left(ActiveDocument.Selection,1) else test = Right(ActiveDocument.Selection,1)
+	wend
+	while InStr ( VarLtr, test ) <> 0
+		ActiveDocument.Selection.CharLeft dsExtend
+		if dir then test = Left(ActiveDocument.Selection,1) else test = Right(ActiveDocument.Selection,1)
+	wend
+	if dir then ActiveDocument.Selection.CharRight dsExtend
+End Sub
+
+Sub NewEndWordRight()
+'DESCRIPTION: Does an end of word right
+	VarLtr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+	if len(ActiveDocument.Selection) <> 0 then
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharLeft
+	End if
+	ActiveDocument.Selection.CharRight dsExtend
+	while InStr ( VarLtr, ActiveDocument.Selection ) = 0
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharRight dsExtend
+	wend
+	while InStr ( VarLtr, ActiveDocument.Selection ) <> 0
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharRight dsExtend
+	wend
+	ActiveDocument.Selection.CharLeft
+End Sub
+
+Sub NewEndWordLeft()
+'DESCRIPTION: Does an end of word left
+	VarLtr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+	if len(ActiveDocument.Selection) <> 0 then
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharRight
+	End if
+	ActiveDocument.Selection.CharLeft dsExtend
+	while InStr ( VarLtr, ActiveDocument.Selection ) <> 0
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharLeft dsExtend
+	wend
+	while InStr ( VarLtr, ActiveDocument.Selection ) = 0
+		ActiveDocument.Selection.CharRight
+		ActiveDocument.Selection.CharLeft
+		ActiveDocument.Selection.CharLeft dsExtend
+	wend
+	ActiveDocument.Selection.CharRight
+End Sub
+
+Sub NewEndWordRightExt()
+'DESCRIPTION: Does an end of word right extend select
+	VarLtr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+	dir = len(ActiveDocument.Selection)
+	ActiveDocument.Selection.CharRight dsExtend
+	if dir <> 0 then
+		if len(ActiveDocument.Selection) > dir then dir = 1 else dir = 0
+	else
+		dir = 1
+	End if
+	if dir then test = Right(ActiveDocument.Selection,1) else test = Left(ActiveDocument.Selection,1)
+	while InStr ( VarLtr, test ) = 0
+		ActiveDocument.Selection.CharRight dsExtend
+		if dir then test = Right(ActiveDocument.Selection,1) else test = Left(ActiveDocument.Selection,1)
+	wend
+	while InStr ( VarLtr, test ) <> 0
+		ActiveDocument.Selection.CharRight dsExtend
+		if dir then test = Right(ActiveDocument.Selection,1) else test = Left(ActiveDocument.Selection,1)
+	wend
+	if dir then ActiveDocument.Selection.CharLeft dsExtend
+End Sub
+
+Sub NewEndWordLeftExt()
+'DESCRIPTION: Does an end of word left extend select
+	VarLtr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
+
+	dir = len(ActiveDocument.Selection)
+	ActiveDocument.Selection.CharLeft dsExtend
+	if dir <> 0 then
+		if len(ActiveDocument.Selection) > dir then dir = 1 else dir = 0
+	else
+		dir = 1
+	End if
+	if dir then test = Left(ActiveDocument.Selection,1) else test = Right(ActiveDocument.Selection,1)
+	while InStr ( VarLtr, test ) <> 0
+		ActiveDocument.Selection.CharLeft dsExtend
+		if dir then test = Left(ActiveDocument.Selection,1) else test = Right(ActiveDocument.Selection,1)
+	wend
+	while InStr ( VarLtr, test ) = 0
+		ActiveDocument.Selection.CharLeft dsExtend
+		if dir then test = Left(ActiveDocument.Selection,1) else test = Right(ActiveDocument.Selection,1)
+	wend
+	if dir then ActiveDocument.Selection.CharRight dsExtend
+End Sub
+</FONT></TT></PRE>
+
+<P>Posted on: June 9, 1998.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

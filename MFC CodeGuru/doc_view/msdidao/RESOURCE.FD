@@ -1,0 +1,40 @@
+!MS$FREEFORM
+! Microsoft Developer Studio generated include file.
+! Used by MSDIDao.rc
+!
+      integer, parameter :: IDD_ABOUTBOX                    = 100
+      integer, parameter :: IDD_DATABASE_FORM               = 101
+      integer, parameter :: IDD_CATEGORIES                  = 102
+      integer, parameter :: IDD_CATEG_PICTURE               = 102
+      integer, parameter :: IDR_MAINFRAME                   = 128
+      integer, parameter :: IDR_MDIDAOTYPE                  = 129
+      integer, parameter :: IDR_CATEGTYPE                   = 130
+      integer, parameter :: IDR_CUSTOTYPE                   = 131
+      integer, parameter :: IDR_EMPLTYPE                    = 132
+      integer, parameter :: IDR_DETAILTYPE                  = 133
+      integer, parameter :: IDR_ORDERTYPE                   = 134
+      integer, parameter :: IDR_PRODUCTTYPE                 = 135
+      integer, parameter :: IDR_SHIPPTYPE                   = 136
+      integer, parameter :: IDR_SUPPLTYPE                   = 137
+      integer, parameter :: IDS_ERROR_OPEN_TABLE            = 138
+      integer, parameter :: IDS_PRN_USER_NAME               = 139
+      integer, parameter :: IDS_PRN_APPLICATION_NAME        = 140
+      integer, parameter :: IDS_PRN_PAGE_FORMAT             = 141
+      integer, parameter :: IDS_PRN_DATE_FORMAT             = 142
+      integer, parameter :: IDR_DIBTYPE                     = 143
+      integer, parameter :: IDC_DATABASE_NAME               = 1000
+      integer, parameter :: IDC_DATABASE_VERSION            = 1001
+      integer, parameter :: IDC_CATEG_ID                    = 1002
+      integer, parameter :: IDC_CATEG_PICTURE               = 1003
+      integer, parameter :: IDC_CATEG_NAME                  = 1004
+      integer, parameter :: IDC_CATEG_DESCRIPTION           = 1005
+      integer, parameter :: ID_TABLE_CATEG                  = 32772
+      integer, parameter :: ID_TABLE_CUSTOM                 = 32773
+      integer, parameter :: ID_TABLE_EMPL                   = 32774
+      integer, parameter :: ID_TABLE_DETAIL                 = 32775
+      integer, parameter :: ID_TABLE_ORDER                  = 32776
+      integer, parameter :: ID_TABLE_PRODUCT                = 32777
+      integer, parameter :: ID_TABLE_SHIPP                  = 32778
+      integer, parameter :: ID_TABLE_SUPPL                  = 32779
+      integer, parameter :: ID_FORM_CATEG                   = 32780
+      integer, parameter :: ID_VIEW_DIB                     = 32781

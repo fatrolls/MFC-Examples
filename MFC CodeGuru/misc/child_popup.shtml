@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Change from child window to popup window (and back)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Change from child window to popup window (and back)</FONT></H3></CENTER>
+
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:>hou@tfn.com">Bing Hou</A>.
+
+
+
+
+
+
+<P> A window can be created as either a child or a popup. A child window 
+ can be moved only within its parent's rectangle area. Let's say one 
+ wants to do just the opposite, that is, to move a child window out of 
+ its parent's area, it is hard to switch its style without destroying 
+ and creating a new one. That is the original motivation for creating 
+ the CPopChildWnd.
+ 
+<P> CPopChildWnd is based on MFC's CWnd class, it actually uses two CWnd 
+ derivatives(one is created as child and the other as a popup) to give 
+ the appearence of its switchable style. To use it, user embeds a 
+ CPopChildWnd(or often time, its derivative) as a data member, and call 
+ its Create(...) function. When CPopChildWnd's create function is 
+ called, it creates two windows, as mentioned before, one is visible 
+ and the other is hidden. User then will be able to drag the window 
+ around by mouse, when it is in the parent's rectangle area, it is a 
+ child(actually the child window is shown), when it is outside of the 
+ parent's area, it is a popup window(the popup window shown). Because 
+ the drawing stuff is all handled by CPopChildWnd itself, therefore the 
+ two switchable windows appear to be the same.
+ 
+<P> I used it first as a hot-spot picture, where a portion of a view 
+ window's drawing is movable by mouse dragging, if you double-click(or 
+ right click) that portion, some action will take place. If you drag 
+ that portion out of the view window, it dangles on the desktop, yet it 
+ still is a hot-spot.
+ 
+<P> I also used it as a banner where some text and graphs were shown, user 
+ can move that banner out of the way to have more screen real estate to 
+ work with still be able to see the banner.
+ 
+<P> I can also imagine it be used as some sort of short cut bar where user 
+ can conveniently place it anywhere on the desktop.
+
+
+ 
+
+<P><A HREF="child_popup.zip">Download Project</A> 1.8 MB
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

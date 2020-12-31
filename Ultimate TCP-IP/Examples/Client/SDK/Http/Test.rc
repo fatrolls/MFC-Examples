@@ -1,0 +1,226 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "test.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+DIALOG_1 DIALOG DISCARDABLE  0, 0, 324, 285
+STYLE DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Ultimate TCP/IP - HTTP Client"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT,76,7,100,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PORT,201,7,18,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_COMMAND,76,24,143,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DATA,76,41,100,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Get",IDC_GET,223,7,43,14
+    PUSHBUTTON      "&Head",IDC_HEAD,271,7,43,14
+    PUSHBUTTON      "&Put",IDC_PUT_CMD,223,24,43,14
+    PUSHBUTTON      "P&OST",IDC_POST,272,24,43,14
+    CONTROL         "Fr&om file",IDC_PUT_FROM_FILE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,179,41,42,14
+    PUSHBUTTON      "Send cmd",IDC_SEND_CUSTOM,223,41,43,14
+    PUSHBUTTON      "&Delete",IDC_DELETE_BTN,274,41,43,14
+    COMBOBOX        IDC_HEADER_CB,76,58,143,153,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "C&lear Headers",IDC_DEL,223,58,94,14
+    PUSHBUTTON      "Add Header",IDC_ADD_HEADER,76,75,47,14
+    PUSHBUTTON      "Get Link Tag String",IDC_GETTAGSTRING,128,75,92,14
+    PUSHBUTTON      "Get Link Tag Count",IDC_GETTAGCOUNT,223,75,94,14
+    CONTROL         "&Connect through proxy:",IDC_PROXY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,76,94,89,10
+    EDITTEXT        IDC_PROXY_ADDRESS,76,107,143,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "A&bout...",IDC_ABOUT,223,107,43,14
+    PUSHBUTTON      "E&xit",IDC_EXIT,274,107,43,14
+    CONTROL         "",IDC_HISTORY,"CUH_Control",WS_BORDER | WS_VSCROLL | 
+                    WS_TABSTOP,7,128,310,149
+    LTEXT           "&Address:",IDC_STATIC,7,7,64,14,SS_CENTERIMAGE
+    LTEXT           "&Port:",IDC_STATIC,181,7,16,14,SS_CENTERIMAGE
+    LTEXT           "C&ustom Command:",IDC_STATIC,7,24,64,14,SS_CENTERIMAGE
+    LTEXT           "Da&ta or source file:",IDC_STATIC,7,41,64,14,
+                    SS_CENTERIMAGE
+    LTEXT           "&Header item:",IDC_STATIC,7,58,64,12,SS_CENTERIMAGE
+    ICON            IDI_ICON1,IDC_STATIC,7,101,20,20
+END
+
+IDD_DIALOG2 DIALOG DISCARDABLE  0, 0, 228, 60
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Header string"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Header string:",IDC_STATIC,7,7,45,8
+    EDITTEXT        IDC_HEADER,7,18,214,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Add",ID_ADD,117,39,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,171,39,50,14
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 250, 105
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About - Ultimate TCP/IP developers Kit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_EXIT,197,6,46,14
+    LTEXT           "Ultimate TCP/IP v 4.0",IDC_STATIC,43,6,84,8
+    LTEXT           "The Ultimate Toolbox.",IDC_STATIC,43,14,70,8
+    LTEXT           "Copyright 1995-2007",IDC_STATIC,43,25,66,8
+    GROUPBOX        " Contacting The Ultimate Toolbox ",IDC_STATIC,7,47,236,51
+    LTEXT           "Phone:",IDC_STATIC,25,57,24,8
+    LTEXT           "Fax:",IDC_STATIC,25,81,14,8
+    LTEXT           "EMail:",IDC_STATIC,133,57,20,8
+    LTEXT           "WWW:",IDC_STATIC,133,71,25,8
+    LTEXT           "1 416 467-5100",IDC_STATIC,54,68,59,8
+    LTEXT           "1 (800) 463 - 1492",IDC_STATIC,54,57,59,8
+    LTEXT           "1 416 422-4801 ",IDC_STATIC,54,81,59,8
+    LTEXT           "info@theultimatetoolbox.com",IDC_STATIC,160,57,64,8
+    LTEXT           "www.theultimatetoolbox.com",IDC_STATIC,166,71,58,8
+    ICON            IDI_ICON1,IDC_STATIC,7,6,20,20
+END
+
+IDD_PASSOWRD_DLG DIALOG DISCARDABLE  0, 0, 178, 79
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Site is password protected"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,49,60,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,104,60,50,14
+    EDITTEXT        IDC_RELEAM,32,7,120,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    EDITTEXT        IDC_USER_NAME,50,24,102,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PASSWORD,50,40,102,14,ES_PASSWORD | ES_AUTOHSCROLL
+    RTEXT           "Releam",IDC_STATIC,4,6,25,8
+    LTEXT           "User Name",IDC_STATIC,8,26,36,8
+    LTEXT           "Password",IDC_STATIC,10,42,32,8
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""test.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    "DIALOG_1", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 317
+        VERTGUIDE, 76
+        VERTGUIDE, 223
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 278
+        HORZGUIDE, 21
+        HORZGUIDE, 24
+        HORZGUIDE, 38
+        HORZGUIDE, 41
+        HORZGUIDE, 55
+        HORZGUIDE, 58
+        HORZGUIDE, 70
+        HORZGUIDE, 123
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 221
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 53
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        HORZGUIDE, 98
+    END
+
+    IDD_PASSOWRD_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 171
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 72
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

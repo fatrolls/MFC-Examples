@@ -1,0 +1,419 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Misc - Doing Excel Automation witch MSVC</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Doing Excel Automation witch MSVC</FONT></H3></CENTER>
+<HR>
+
+
+This article was contributed by <A HREF="mailto:blenkers@anachem.ruhr-uni-bochum.de"> Thomas Blenkers</A>.
+
+
+<P>Now fasten your seatbelt and be prepared for a real fast flight across
+MSVC, Excel and Automation. I don't really want to teach you understanding
+automation, rather I like to have your job done. :)
+
+<P>Please bear in mind, that I will describe one special task here: storing
+some information as an Excel sheet with auto-sized coloumns. I am using
+MSVC 5.0 and the MFC.
+
+<P>I already have a prepared text file containing the information I would
+like to store. I did this using semikolon (;) separated ascii-output with
+new-line\carriage-return pairs at the end of each line. (To say it in plain
+MFC, I used the CStdioFile class with the WriteString method)
+
+<P>If you are working with the Excel classes, you need to deal with the
+VARIANT data type or, more convient when using MFC, with the COleDispatch
+class, which has a built-in interface and is more easy to use.
+
+<P>A caveat of this approach that you have to modify the automation classes
+by hand, but this caveat is supersed by the ability of removing unneeded
+(and sometime ununderstood) parameters from the method calls.
+
+<P>Before going through the step-by-step procedure, something tells me
+that you probably like to <A HREF="excel_automation.zip">download my project
+file</A> (96K).
+
+<H4>Step zero: Record your task as Excel macro</H4>
+First of all, you will have to be used to Excel's VBA macro language. It
+is VERY helpful if you first do the task you'd like to do in Excel while
+recording this task as a macro.
+
+<P>The macro will look somewhat like this, hence, that VBA is nicely object
+oriented:
+
+<FONT COLOR="#990000">
+<P><TT>Sub Macro1()</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; Workbooks.OpenText Filename:="C:\Example.txt",
+Origin:= _</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xlWindows, StartRow:=1,
+DataType:=xlDelimited, TextQualifier _</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :=xlDoubleQuote, ConsecutiveDelimiter:=False,
+Tab:=False, _</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Semicolon:=True, Comma:=False,
+Space:=False, Other:=False, _</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FieldInfo:=Array(1,
+1)</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; Cells.Select</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; Selection.Columns.AutoFit</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; Workbook(1).SaveAs Filename:="C:\temp\README.xls",
+FileFormat:= _</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xlNormal, Password:="",
+WriteResPassword:="", _</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ReadOnlyRecommended:=False,
+CreateBackup:=False</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; ActiveWindow.Close</TT>
+<BR><TT>End Sub</TT>
+</FONT>
+
+
+<BR>&nbsp;
+<H4>Step one: Create the Excel automation classes</H4>
+In your Excel program directory you will find the Type Library for the
+Excel automation. I think, all of you will have the english version, Xl5en32.olb,
+along with perhaps some localized version of this (e.g. the german version
+is shipped with a Xl5de32.olb).
+
+<P>Using the Class Wizard, choose "New Class" and "from a type library"
+(I have the german version, so I don't know the exact english menu commands).
+You are then asked to enter the path and filename of the type library.
+Having done you get a list of classes. Looking at the Excel macro you see
+which classes are needed. I needed five flasses (Application, Range, Workbook,
+Workbooks, Worksheet). When in doubt you may choose all classes, but then
+you have a bunch of classes that you don't need.
+<BR>&nbsp;
+
+<H4>Step two: Add methods for opening and closing Excel</H4>
+In your class needing Excel create a member variable holding the Excel's
+application object
+
+<FONT COLOR="#990000">
+<P><TT><FONT COLOR="#3366FF">class</FONT> CMyDemoDlg : <FONT COLOR="#3366FF">public
+</FONT>CDialog</TT>
+<BR><TT>{</TT>
+<BR><TT><FONT COLOR="#009900">&nbsp;// the ususal things</FONT></TT>
+<BR><TT>&nbsp;...</TT>
+
+<P><TT><FONT COLOR="#3366FF">private:</FONT></TT>
+<BR><TT>&nbsp;Application m_Excel_en;</TT>
+
+<P><TT>&nbsp;...</TT>
+<BR><TT><FONT COLOR="#009900">&nbsp;// other usual things</FONT></TT>
+<BR><TT>}</TT>
+</FONT>
+
+<P>and the two functions OpenExcel() and CloseExcel() as follows:
+
+<FONT COLOR="#990000">
+<P><TT><FONT COLOR="#3366FF">bool </FONT>CMyDemoDlg::OpenExcel()</TT>
+<BR><TT>{</TT>
+<BR><TT><FONT COLOR="#3366FF">&nbsp;&nbsp;&nbsp; if </FONT>(!m_bExcelStarted)
+<FONT COLOR="#009900">// this is a member-variable of type bool</FONT></TT>
+<BR><TT><FONT COLOR="#3333FF">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if </FONT>(m_Excel.CreateDispatch("Excel.Application"))</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</TT>
+<BR><TT><FONT COLOR="#009900">//</FONT></TT>
+<BR><TT><FONT COLOR="#009900">// un-comment these lines, is you want to
+see what Excel is doing</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CWnd *pExelWnd = CWnd::FindWindow("XLMAIN", NULL);</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+if (pExelWnd )</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pExelWnd->ShowWindow(SW_SHOWNORMAL);</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pExelWnd->UpdateWindow();</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pExelWnd->BringWindowToTop();</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</FONT></TT>
+<BR><TT><FONT COLOR="#009900">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BringWindowToTop();</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+m_bExcelStarted=<FONT COLOR="#3366FF">true</FONT>;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</TT>
+<BR><TT><FONT COLOR="#3366FF">&nbsp;&nbsp;&nbsp; return </FONT>m_bExcelStarted;</TT>
+<BR><TT>}</TT>
+
+<P><TT><FONT COLOR="#3333FF">bool </FONT>CMyDemoDlg::CloseExcel()</TT>
+<BR><TT>{</TT>
+<BR><TT><FONT COLOR="#3333FF">&nbsp;&nbsp;&nbsp; if </FONT>(m_bExcelStarted)</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; {</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_Excel_en.Quit();</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_Excel_en.ReleaseDispatch();</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_bExcelStarted=false;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; }</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">return </FONT>m_bExcelStarted;</TT>
+<BR><TT>}</TT>
+</FONT>
+
+<P>In you application class add to the following lines to InitInstance():
+
+<FONT COLOR="#990000">
+<BR><TT>BOOL CMyDemoApp::InitInstance()</TT>
+<BR><TT>{</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; // initialize OLE libraries</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">if </FONT>(!AfxOleInit())</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; {</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AfxMessageBox(IDP_OLE_INIT_FAILED);</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">return</FONT>
+FALSE;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; }</TT><TT></TT>
+
+<P><TT>&nbsp;&nbsp;&nbsp; // do all the other things</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; ...</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">return </FONT>TRUE;</TT>
+<BR><TT>}</TT><TT></TT>
+</FONT>
+
+<P>In your stdafx-Header you need to add the following line to include
+the MFC automation support
+
+<FONT COLOR="#990000">
+<BR><TT>...</TT>
+<BR><TT><FONT COLOR="#3333FF">#include </FONT>&lt;afxdisp.h>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<FONT COLOR="#009900">// MFC OLE-automation classes</FONT></TT>
+<BR><TT>...</TT>
+<BR><TT></TT>&nbsp;
+</FONT>
+
+
+<H4>Step three-and-four-combined: Start building the Excel macro as C++ Code while modifying the automation classes.</H4>
+For every parameter you need, create a local variable of type COleVariant.
+In Excel's VBA you can omit parameter not needed. In the Excel automation
+classes you can omit the parameters you do not need IF AND ONLY IF they
+are at the end of the method's parameters list. In the Excel-class create
+a new overloaded member function with fewer parameters.
+
+<P>All automation functions, whose return value is used to create another automation
+object should be modified to return a LPDISPATCH pointer rather than a VARIANT!
+
+<P>So, for example, you should take the method
+
+<FONT COLOR="#990000">
+<BR><TT>VARIANT Application::Worksheets(<FONT COLOR="#3366FF">const </FONT>VARIANT&amp;
+Index)</TT>
+<BR><TT>{</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; VARIANT result;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">static </FONT>BYTE parms[]
+= VTS_VARIANT;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; InvokeHelper(0x1ee, DISPATCH_METHOD, VT_VARIANT,
+(<FONT COLOR="#3366FF">void</FONT>*)&amp;result, parms, &amp;Index);</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">return</FONT> result;</TT>
+<BR><TT>}</TT>
+</FONT>
+
+
+<P>and create two new methods (the second with an omitted parameter)
+
+<FONT COLOR="#990000">
+<P><TT>LPDISPATCH Application::Workbooks(const VARIANT&amp; Index)</TT>
+<BR><TT>{</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#009900">// function changed by
+T.B.</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; LPDISPATCH result;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">static </FONT>BYTE parms[]
+=&nbsp; VTS_VARIANT;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; InvokeHelper(0x23c, DISPATCH_METHOD, VT_DISPATCH,
+(<FONT COLOR="#3333FF">void</FONT>*)&amp;result, parms,</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;Index);</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">return </FONT>result;</TT>
+<BR><TT>}</TT><TT></TT>
+
+<P><TT>LPDISPATCH Application::Workbooks()</TT>
+<BR><TT>{</TT>
+<BR><TT><FONT COLOR="#009900">&nbsp;&nbsp;&nbsp; // new by T.B.</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; LPDISPATCH result;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; InvokeHelper(0x23c, DISPATCH_METHOD, VT_DISPATCH,
+(<FONT COLOR="#3333FF">void</FONT>*)&amp;result, NULL);</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; <FONT COLOR="#3333FF">return </FONT>result;</TT>
+<BR><TT>}</TT>
+</FONT>
+
+<P>To keep in mind, that you did something with the type library it is
+good practice to enter a short comment saying "I did something".
+
+<P>Do this anytime you are using a return value implicit or explicit.
+
+<P>My macro, ported to C++ now looks like this
+
+<FONT COLOR="#990000">
+<P><TT><FONT COLOR="#3333FF">void</FONT> CMyDemoDlg::DoExcelConversion(CString
+File)</TT>
+<BR><TT>{</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; CString XlsFile =</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Do.Some.Operations.To.Calculate.The.Excel.File.Name(File);</TT>
+<BR><TT>&nbsp;</TT>
+<BR><TT><FONT COLOR="#009900">&nbsp;&nbsp;&nbsp; // or say simply:</FONT></TT>
+<BR><TT><FONT COLOR="#009900">&nbsp;&nbsp;&nbsp; // XlsFile="C:\\temp\\demo.xls";</FONT></TT><TT></TT>
+
+<P><TT>&nbsp;&nbsp;&nbsp; COleVariant FilenameOpen(File),</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FilenameSave(XlsFile),</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Origin((<FONT COLOR="#3333FF">short</FONT>)2),
+<FONT COLOR="#009900">// xlWindows</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartRow((<FONT COLOR="#3333FF">short</FONT>)1),</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DataType((<FONT COLOR="#3333FF">shor</FONT>t)1),
+<FONT COLOR="#009900">// xlDelimited</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TextQualifier((<FONT COLOR="#3333FF">short</FONT>)1),
+<FONT COLOR="#009900">// xlDoubleQuote</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ConsecutiveDelimiter((<FONT COLOR="#3333FF">long</FONT>)FALSE,
+VT_BOOL),</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tab((<FONT COLOR="#3333FF">long</FONT>)FALSE,
+VT_BOOL),</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Semicolon((<FONT COLOR="#3333FF">long</FONT>)TRUE,
+VT_BOOL),</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fileformat((<FONT COLOR="#3333FF">short</FONT>)33),
+<FONT COLOR="#009900">// xlExcel4</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Save((<FONT COLOR="#3333FF">long</FONT>)FALSE,
+VT_BOOL);</TT><TT></TT>
+
+<P><TT>&nbsp;&nbsp;&nbsp; TRY</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; {</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Workbooks Wbs(m_Excel_en.Workbooks());</TT><TT></TT>
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wbs.OpenText(FilenameOpen, Origin,
+StartRow, DataType,</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TextQualifier, ConsecutiveDelimiter, Tab, Semicolon);</TT><TT></TT>
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Range ran(m_Excel_en.Columns(COleVariant("A:Z")));</TT>
+<BR><TT>&nbsp;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ran.AutoFit();</TT><TT></TT>
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Workbook Wb(m_Excel_en.Workbooks(COleVariant((short)1)));</TT><TT></TT>
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wb.SaveAs(FilenameSave, Fileformat);</TT><TT></TT>
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wb.Close(Save);</TT><TT></TT>
+
+<P><TT><FONT COLOR="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // perhaps
+you want to delete the text file,</FONT></TT>
+<BR><TT><FONT COLOR="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // because
+now you have an Excel sheet</FONT></TT>
+<BR><TT><FONT COLOR="#009900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // DeleteFile(File);</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; }</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; CATCH(COleDispatchException, e)</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; {</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TRACE(e->m_strDescription);</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MessageBox("Error
+creating Excel-file:\n"+e->m_strDescription,</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"My Demo Dialog", MB_OK);</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; }</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; END_CATCH;</TT>
+<BR><TT>}</TT>
+<BR>&nbsp;
+</FONT>
+
+
+<P>Some people wondered how I know the numerical value of the Excel constants, like xlWindows, 
+xlExcel4 and so on. This is simple, but not trivial. Follow this step by step procedure: 
+
+<p>A) Run Excel with an empty (or not) worksheet
+<p>B) Use Insert - Macro - Visual Basic Module
+<p>C) Type in a short dummy function. For example
+<PRE><TT><FONT COLOR="#990000">
+<p>      Sub Dummy()
+<br>      test = 1
+<br>      End Sub
+</FONT></TT></PRE>
+ <p>  Make sure you have the proper language settings, this is important
+only for users having a localized (non-english) version. For these
+languages Excel allows you to use the VBA with language-dependend
+keywords. If you are somewhat used in Basic with it'`s english keywords
+then it feels HORRIBLE to use the (badly translated)
+german-or-whatever-language-you-use keywords :)
+<p>[For our german-tongued friends:
+
+<PRE><TT><FONT COLOR="#990000">
+<p>For i=1 To 11 Step 2
+<br>Do.Some.Thing()
+<br>Next i
+</FONT></TT></PRE>
+<p>will become
+<PRE><TT><FONT COLOR="#990000">
+<p>Für i=1 bis 11 Schrittweite 2
+<br>Tue.Irgend.Etwas()
+<br>Nächste i
+</FONT></TT></PRE>
+<p>horrible...... :(
+]
+<p>D) Put the cursor back to the second line (test=1) and start the single
+step debugger(F8 key on my german system, or use Execute - single Step)
+<p>E) The debugger window pops up. Go to the "Watch" tab, make a right
+mouse click into the upper half (the watch area) and choose "Add Watch",
+just like you do in DevStudio. As the watch expression just enter the
+constant you need the value of, for example xlExcel4.
+
+<p>F) Ready. The watch window now tells you the value of xlWhateverYouLike
+
+<p>Some people wondered how I know the numerical value of the Excel constants. This is easy: just start excel with a short makro like this one: 
+<PRE><TT><FONT COLOR="#990000">Sub dummy() 
+    anotherDummy = 1 
+End Sub </FONT></TT></PRE>
+
+<p>Then trace into this macro with the single step debugger, go to the watch window and add as watch variable the constant you need. If you enter xlWindows,
+for example the watch window will tell you it has the value 2. There you are!<br>
+
+
+<p><H3>Step five: At the end, put all together</H3>
+Now you are nearly done. Somehow retrieve the full path of the file you
+wish to convert and do the following tree lines:
+
+<FONT COLOR="#990000">
+<P><TT>&nbsp;&nbsp;&nbsp; OpenExcel();&nbsp; <FONT COLOR="#009900">// may
+be called more than one time</FONT></TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; DoExcelConversion(FullPathName);</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; CloseExcel(); <FONT COLOR="#009900">// may be
+called without a preceeding OpenExcel()</FONT></TT>
+<BR>&nbsp;
+</FONT>
+<P>Now, at the end of my 200 lines page, I hope you are successful creating
+your Excel classes and all the rest. If you someday have created a neatly
+sold application using this knowledge and have made a billion dollar, remember
+me and send me a check :)
+
+<br><p>IMPORTANT NOTE (due to a lot of emails concerning this): this demonstration code DOES NOT WORK with Excel 97. It was only tested and proved
+working with Excel 5.0 and Excel 7.0 (some call it Excel 95) on both Windows NT 4.0 and Windows 95. I do not have Excel 97, if anyone is willing to
+sponsor me a licence, so please, and I will try to do a good job.... 
+
+If you find any errors or typos, please feel free to drop a mail.
+
+<P>Posted: 15 May 1998
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi/counters/counter.cgi"--></FONT></CENTER>
+</BODY>
+</HTML>
+ 

@@ -1,0 +1,5 @@
+DIRS= \
+powcpl \
+sys \
+test
+

@@ -1,0 +1,148 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Sorting list on Numeric Column</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Sorting list on Numeric Column</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+This code was contributed by <A HREF="mailto:3uj5deganit@vmsb.csd.mu.edu">Todd D. Degani</A>.
+This code is based on the article "Sorting the list based on text in any column" so read that 
+article for more information.
+
+<PRE><TT><FONT COLOR="#990000">
+bool CMyListCtrl::SortNumericItems( int nCol, BOOL bAscending,int low/*=0*/, int high/*=-1*/ )
+{
+	if( nCol >= ((CHeaderCtrl*)GetDlgItem(0))->GetItemCount() )
+		return FALSE;
+	
+	if( high == -1 ) high = GetItemCount() - 1;
+	int lo = low;   
+	int hi = high;
+	
+	int midItem;
+	
+	if( hi <= lo ) return FALSE;
+	
+	midItem = atoi(GetItemText( (lo+hi)/2, nCol ));
+	
+	// loop through the list until indices cross
+	while( lo <= hi )
+	{
+		// rowText will hold all column text for one row
+		CStringArray rowText;
+		
+		// find the first element that is greater than or equal to 
+		// the partition element starting from the left Index.
+		if( bAscending )
+			while( ( lo < high ) && (atoi(GetItemText(lo, nCol)) < midItem ) )
+				++lo;           
+		else
+			while( ( lo < high ) && (atoi(GetItemText(lo, nCol)) > midItem ) )
+				++lo;
+                
+		// find an element that is smaller than or equal to 
+		// the partition element starting from the right Index.
+		if( bAscending )
+			while( ( hi > low ) && (atoi(GetItemText(hi, nCol)) > midItem ) )
+				--hi;           
+		else
+			while( ( hi > low ) && (atoi(GetItemText(hi, nCol)) < midItem ) )
+				--hi;
+				
+		// if the indexes have not crossed, swap                
+		// and if the items are not equal
+		if( lo <= hi )
+		{
+			// swap only if the items are not equal
+			if(atoi(GetItemText(lo, nCol)) != atoi(GetItemText(hi, nCol)) )
+			{                               
+				// swap the rows
+				LV_ITEM lvitemlo, lvitemhi;
+                
+				int nColCount =
+							((CHeaderCtrl*)GetDlgItem(0))->GetItemCount();
+				rowText.SetSize( nColCount );
+                
+				int i;
+				for( i=0; i < nColCount; i++)
+							rowText[i] = GetItemText(lo, i);
+                
+				lvitemlo.mask = LVIF_IMAGE | LVIF_PARAM | LVIF_STATE;
+				lvitemlo.iItem = lo;
+				lvitemlo.iSubItem = 0;
+				lvitemlo.stateMask = LVIS_CUT | LVIS_DROPHILITED |
+							LVIS_FOCUSED |  LVIS_SELECTED |
+							LVIS_OVERLAYMASK | LVIS_STATEIMAGEMASK;
+				lvitemhi = lvitemlo;
+				lvitemhi.iItem = hi;
+                
+				GetItem( &lvitemlo );
+				GetItem( &lvitemhi );
+                
+				for( i=0; i< nColCount; i++)
+							SetItemText(lo, i, GetItemText(hi, i) );
+                
+				lvitemhi.iItem = lo;
+				SetItem( &lvitemhi );
+                
+				for( i=0; i< nColCount; i++)
+							SetItemText(hi, i, rowText[i]);
+                
+				lvitemlo.iItem = hi;
+				SetItem( &lvitemlo );
+			}
+			
+			++lo;
+			--hi;
+		}
+	}
+	
+	// If the right index has not reached the left side of array
+	// must now sort the left partition.
+	if( low < hi )
+		SortNumericItems( nCol, bAscending , low, hi);
+	
+	// If the left index has not reached the right side of array
+	// must now sort the right partition.
+	if( lo < high )
+		SortNumericItems( nCol, bAscending , lo, high );
+	
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

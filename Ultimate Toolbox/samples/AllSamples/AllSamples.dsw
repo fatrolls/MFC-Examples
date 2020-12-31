@@ -1,0 +1,1533 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "ActiveDesktop"="..\shell\ActiveDesktop\ActiveDesktop.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "AddressBook"="..\shell\AddressBook\AddressBook.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "AdvancedAssert"="..\utility\AdvancedAssert\AdvancedAssert.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "AdvancedTrace"="..\utility\AdvancedTrace\AdvancedTrace.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ApplicationBar"="..\gui\ApplicationBar\ApplicationBar.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "AutoComplete"="..\gui\AutoComplete\AutoComplete.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "BackgroundPainter"="..\gui\BackgroundPainter\BackgroundPainter.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "BitmapButtonDemo"="..\gui\BitmapButton\BitmapButtonDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "BitmapMenuDemo"="..\gui\BitmapMenuDemo\BitmapMenuDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CalculatorCtrl"="..\gui\CalculatorCtrl\CalculatorCtrl.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ClipDock"="..\utility\ClipDock\ClipDock.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ColorPickerButton"="..\gui\ColorPickerButton\ColorPickerButton.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ComboTree"="..\gui\ComboTree\ComboTree.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ContextHelp"="..\gui\ContextHelp\ContextHelp.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CoolCombo"="..\gui\CoolCombo\CoolCombo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CoolControls"="..\gui\CoolControls\CoolControls.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CsvTest"="..\database\csvtest\CsvTest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "CustomizeManager"="..\advanced\CustomizeManager\CustomizeManager.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DIBManager"="..\advanced\DIBManager\DIBManager.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DateTimePicker"="..\gui\DateTimePicker\DateTimePicker.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DockProp"="..\gui\DockProp\DockProp.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Docktest"="..\gui\DockView\Docktest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "EditList1"="..\gui\EditList1\EditList1.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "EventLog"="..\utility\EventLog\EventLog.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ExtTreeDemo"="..\gui\ExtTreeDemo\ExtTreeDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ExtendedEditControls"="..\gui\ExtendedEditControls\ExtendedEditControls.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ExtendedListBox"="..\gui\ExtendedListBox\ExtendedListBox.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ExtendedTreeControl"="..\gui\ExtendedTreeControl\ExtendedTreeControl.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "FileChanger"="..\utility\FileChanger\FileChanger.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "FileExplorer"="..\advanced\FileExplorer\FileExplorer.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "FileWatcher"="..\file\FileWatcher\FileWatcher.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "FontPickers"="..\gui\FontPickers\FontPickers.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "FullScreen"="..\gui\FullScreen\FullScreen.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "GridCtrl"="..\gui\GridCtrl\GridCtrl.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "HistoryComboDemo"="..\gui\HistCmbo\HistoryComboDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ImageListBox"="..\gui\ImageListBox\ImageListBox.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ImageViewer"="..\graphics\ImageViewer\ImageViewer.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "InstanceManagerDemo"="..\utility\InstanceManager\InstanceManagerDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ItemTips"="..\gui\ItemTips\ItemTips.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "JPGtest"="..\graphics\JPGtest\JPGtest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Layout"="..\gui\Layout\Layout.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LayoutManager"="..\gui\LayoutManager\LayoutManager.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "MCombo"="..\gui\MultiCombo\MCombo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "MaskedEditTest"="..\gui\maskededit\MaskedEditTest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "MetaFile"="..\graphics\Metafile\MetaFile.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "MonthCalendar"="..\gui\MonthCalendar\MonthCalendar.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "MultiPad"="..\gui\CaptionPainter\multipad.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "MultiPad2"="..\gui\CoolToolBar\multipad2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "NetBrowse"="..\gui\NetBrowse\NetBrowse.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Notes"="..\gui\Notes\Notes.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "NumberConversionDemo"="..\utility\NumberConversionDemo\NumberConversionDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "OXCalendarDemo1"="..\gui\OXCalendarDemo1\OXCalendarDemo1.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "OptionTree"="..\gui\OptionTree\OptionTree.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Outlook"="..\advanced\OutlookLikedemo\Outlook.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ParserView"="..\utility\Parser\ParserView.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "PhysicalTest"="..\gui\PhysicalTest\PhysicalTest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "PopupBar"="..\gui\PopupBar\PopupBar.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Preview"="..\gui\preview\Preview.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ROLL32"="..\gui\rollup\Roll32.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RegEvent"="..\utility\Regevent\RegEvent.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RegExpression"="..\utility\RegExpression\RegExpression.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RegistryDemo"="..\utility\RegistryDemo\RegistryDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ResFile"="..\utility\resfile\ResFile.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RoundedButton"="..\gui\RoundedButton\RoundedButton.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RulerBar"="..\gui\RulerBar\RulerBar.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SCRIBBLE"="..\gui\zoomvw\Scribble.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ScreenGrabber"="..\advanced\ScreenGrabber\ScreenGrabber.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ScrollTipDemo"="..\gui\scrolltips\ScrollTipDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Separator"="..\gui\Separator\Separator.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Service"="..\utility\Service\Service.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Shortcut"="..\utility\Shortcut\Shortcut.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ShortcutBar"="..\gui\Shortcutbar\ShortcutBar.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SideBySideToolbars"="..\gui\SideBySideToolbars\SideBySideToolbars.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SkinsDemo"="..\advanced\SkinsDemo\SkinsDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SoundManager"="..\utility\SoundManager\SoundManager.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SoundTest"="..\utility\SoundTest\SoundTest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SpinEx"="..\gui\spinex\SpinEx.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Splash"="..\graphics\Splash\Splash.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "StaticHyperLink"="..\gui\StaticHyperLink\StaticHyperLink.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "StaticText"="..\gui\StaticText\StaticText.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Statusbar"="..\gui\StatBar\Statusbar.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SysInfo1"="..\utility\SysInfo1\SysInfo1.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "SystemStateInfo"="..\advanced\SystemStateInfo\SystemStateInfo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TabViews"="..\gui\3DTabViews\TabViews.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Taskbar"="..\gui\TaskBarIcon\Taskbar.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ToolTipEx"="..\gui\ToolTipEx\ToolTipEx.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "URLDemo"="..\file\URLDemo\URLDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "VisualStudioLikeDemo"="..\advanced\VisualStudioLikeDemo\VisualStudioLikeDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "WorkspaceDemo"="..\utility\WorkspaceDemo\WorkspaceDemo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "calc"="..\gui\Calc\Calc.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "cgiscrpt"="..\communication\CGIscrpt\cgiscrpt.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "demo"="..\database\DAOclass\demo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "note"="..\gui\NOTE\Note.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "scrngrab"="..\utility\scrngrab\scrngrab.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "undo"="..\utility\Undo\undo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/UTB_Dev/Ultimate Toolbox/UTB_DevBranch/samples/AllSamples", ZRHGAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

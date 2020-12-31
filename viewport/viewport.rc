@@ -1,0 +1,368 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\viewport.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\viewport.ico"
+IDI_JMNCO               ICON    DISCARDABLE     "res\\jmnco.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 82
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About viewport"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "viewport Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright © 2005, Joseph M. Newcomer, All Rights Reserved",
+                    IDC_STATIC,41,50,176,18
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+    ICON            IDI_JMNCO,IDC_STATIC,12,49,20,20
+END
+
+IDD_VIEWPORT_DIALOG DIALOGEX 0, 0, 570, 292
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "viewport"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "SetViewportOrg",IDC_SETVIEWPORTORG_CAPTION,13,17,135,50
+    LTEXT           "x",IDC_STATIC,25,33,8,8
+    EDITTEXT        IDC_SETVIEWPORTORG_X,35,30,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINSETVIEWPORTORG_X,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,76,30,11,14
+    PUSHBUTTON      "R",IDC_RESETVIEWPORTORG,93,38,14,14
+    LTEXT           "y",IDC_STATIC,25,49,8,8
+    EDITTEXT        IDC_SETVIEWPORTORG_Y,35,46,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINSETVIEWPORTORG_Y,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,76,46,11,14
+    GROUPBOX        "SetViewportExt",IDC_SETVIEWPORTEXT_CAPTION,13,73,135,50
+    LTEXT           "x",IDC_SETVIEWPORTEXT_X_CAPTION,25,89,8,8
+    EDITTEXT        IDC_SETVIEWPORTEXT_X,35,86,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINSETVIEWPORTEXT_X,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,76,86,11,14
+    PUSHBUTTON      "R",IDC_RESETVIEWPORTEXT,93,94,14,14
+    LTEXT           "y",IDC_SETVIEWPORTEXT_Y_CAPTION,25,105,8,8
+    EDITTEXT        IDC_SETVIEWPORTEXT_Y,35,102,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINSETVIEWPORTEXT_Y,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,76,102,11,14
+    RTEXT           "100%",IDC_VIEWPORT_PERCENT_X,116,86,26,14,
+                    SS_CENTERIMAGE
+    RTEXT           "100%",IDC_VIEWPORT_PERCENT_Y,116,102,26,14,
+                    SS_CENTERIMAGE
+    GROUPBOX        "Viewport",IDC_VIEWPORT_CAPTION,7,7,147,126
+    GROUPBOX        "SetWindowOrg",IDC_SETWINDOWORG_CAPTION,13,172,135,50
+    LTEXT           "x",IDC_STATIC,24,188,8,8
+    EDITTEXT        IDC_SETWINDOWORG_X,34,185,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINSETWINDOWORG_X,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,75,185,11,14
+    PUSHBUTTON      "R",IDC_RESETWINDOWORG,93,193,14,14
+    LTEXT           "y",IDC_STATIC,24,204,8,8
+    EDITTEXT        IDC_SETWINDOWORG_Y,34,201,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINSETWINDOWORG_Y,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,75,201,11,14
+    GROUPBOX        "SetWindowExt",IDC_SETWINDOWEXT_CAPTION,13,228,135,50
+    LTEXT           "x",IDC_SETWINDOWEXT_X_CAPTION,24,244,8,8
+    EDITTEXT        IDC_SETWINDOWEXT_X,34,241,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINSETWINDOWEXT_X,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,75,241,11,14
+    PUSHBUTTON      "R",IDC_RESETWINDOWEXT,93,249,14,14
+    LTEXT           "y",IDC_SETWINDOWEXT_Y_CAPTION,24,260,8,8
+    EDITTEXT        IDC_SETWINDOWEXT_Y,34,257,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINSETWINDOWEXT_Y,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,75,257,11,14
+    RTEXT           "100.0%",IDC_WINDOW_PERCENT_X,116,241,26,14,
+                    SS_CENTERIMAGE
+    RTEXT           "100%",IDC_WINDOW_PERCENT_Y,116,257,26,14,SS_CENTERIMAGE
+    GROUPBOX        "Window",IDC_WINDOW_CAPTION,7,161,147,126
+    CONTROL         "MM_TEXT",IDC_MM_TEXT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,171,20,51,10
+    CONTROL         "MM_TWIPS",IDC_MM_TWIPS,"Button",BS_AUTORADIOBUTTON,171,
+                    37,55,10
+    CONTROL         "MM_LOENGLISH",IDC_MM_LOENGLISH,"Button",
+                    BS_AUTORADIOBUTTON,171,54,73,10
+    CONTROL         "MM_HIENGLISH",IDC_MM_HIENGLISH,"Button",
+                    BS_AUTORADIOBUTTON,171,71,71,10
+    CONTROL         "MM_LOMETRIC",IDC_MM_LOMETRIC,"Button",
+                    BS_AUTORADIOBUTTON,171,88,69,10
+    CONTROL         "MM_HIMETRIC",IDC_MM_HIMETRIC,"Button",
+                    BS_AUTORADIOBUTTON,171,104,67,10
+    CONTROL         "MM_ISOTROPIC",IDC_MM_ISOTROPIC,"Button",
+                    BS_AUTORADIOBUTTON,171,122,71,10
+    CONTROL         "MM_ANISOTROPIC",IDC_MM_ANISOTROPIC,"Button",
+                    BS_AUTORADIOBUTTON,171,139,81,10
+    GROUPBOX        "SetMapMode",IDC_STATIC,162,7,113,153
+    GROUPBOX        "Grid spacing",IDC_STATIC,162,161,113,126
+    RTEXT           "Device",IDC_STATIC,171,175,24,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_DEVICE_GRID,199,175,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin2",IDC_SPINDEVICE_GRID,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,238,175,11,14
+    RTEXT           "Logical",IDC_STATIC,171,197,24,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_LOGICAL_GRID,199,197,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin2",IDC_SPINLOGICAL_GRID,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,238,197,11,14
+    CONTROL         "Circles",IDC_CIRCLES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,175,215,37,10
+    CONTROL         "&Gridlines",IDC_GRID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,175,227,43,10
+    GROUPBOX        "Positive Line",IDC_STATIC,174,242,83,36
+    EDITTEXT        IDC_POSITIVE,199,256,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin3",IDC_SPINPOSITIVE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,238,257,11,14
+    GROUPBOX        "LP<>DP",IDC_STATIC,286,7,113,153
+    GROUPBOX        "Logical",IDC_STATIC,298,15,86,50
+    LTEXT           "x",IDC_STATIC,310,31,8,8
+    EDITTEXT        IDC_LOGICAL_X,320,29,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINLOGICAL_X,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,359,29,11,14
+    LTEXT           "y",IDC_STATIC,310,47,8,8
+    EDITTEXT        IDC_LOGICAL_Y,320,45,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINLOGICAL_Y,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,359,45,11,14
+    CONTROL         "",IDC_LPTODP,"Button",BS_OWNERDRAW | WS_TABSTOP,316,68,
+                    12,28
+    CONTROL         "",IDC_DPTOLP,"Button",BS_OWNERDRAW | WS_TABSTOP,356,68,
+                    12,28
+    GROUPBOX        "Device",IDC_STATIC,298,101,86,50
+    LTEXT           "x",IDC_STATIC,310,117,8,8
+    EDITTEXT        IDC_PHYSICAL_X,320,115,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINPHYSICAL_X,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,360,115,11,14
+    LTEXT           "y",IDC_STATIC,310,133,8,8
+    EDITTEXT        IDC_PHYSICAL_Y,320,131,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPINPHYSICAL_Y,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,360,131,11,14
+    GROUPBOX        "Mouse",IDC_STATIC,286,161,113,126
+    GROUPBOX        "Position",IDC_STATIC,291,171,99,52
+    LTEXT           "",IDC_MOUSE_LOGICAL,326,199,59,13,SS_CENTERIMAGE,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "",IDC_MOUSE_PHYSICAL,326,181,59,13,SS_CENTERIMAGE,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "",IDC_CANVAS,408,29,153,153,SS_NOTIFY
+    LTEXT           "Static",IDC_TOPLEFT,408,12,64,11,SS_CENTERIMAGE
+    RTEXT           "Static",IDC_BOTTOMRIGHT,497,186,64,11,SS_CENTERIMAGE
+    GROUPBOX        "Grid Line Style",IDC_STATIC,411,235,154,52
+    CONTROL         "PS_SOLID",IDC_PS_SOLID,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,416,248,51,10
+    CONTROL         "PS_DASH",IDC_PS_DASH,"Button",BS_AUTORADIOBUTTON,416,
+                    260,49,10
+    CONTROL         "PS_DOT",IDC_PS_DOT,"Button",BS_AUTORADIOBUTTON,416,272,
+                    45,10
+    CONTROL         "PS_DASHDOT",IDC_PS_DASHDOT,"Button",BS_AUTORADIOBUTTON,
+                    482,248,65,10
+    CONTROL         "PS_DASHDOTDOT",IDC_PS_DASHDOTDOT,"Button",
+                    BS_AUTORADIOBUTTON,482,260,80,10
+    RTEXT           "Device",IDC_STATIC,298,181,24,13,SS_CENTERIMAGE
+    RTEXT           "Logical",IDC_STATIC,297,199,24,13,SS_CENTERIMAGE
+    GROUPBOX        "Drag",IDC_DRAG_CAPTION,291,227,99,52
+    LTEXT           "",IDC_DRAG_LOGICAL,326,259,59,13,SS_CENTERIMAGE,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "",IDC_DRAG_DEVICE,326,241,59,13,SS_CENTERIMAGE,
+                    WS_EX_CLIENTEDGE
+    RTEXT           "Device",IDC_DRAG_DEVICE_CAPTION,298,241,24,13,
+                    SS_CENTERIMAGE
+    RTEXT           "Logical",IDC_DRAG_LOGICAL_CAPTION,297,259,24,13,
+                    SS_CENTERIMAGE
+    GROUPBOX        "Magnification Factor",IDC_MAGNIFICATION_CAPTION,7,133,
+                    147,27
+    RTEXT           "x",IDC_MAGNIFICATION_X_CAPTION,15,144,8,8,
+                    SS_CENTERIMAGE
+    RTEXT           "100%",IDC_MAGNIFICATION_X,31,144,29,8,SS_CENTERIMAGE
+    RTEXT           "y",IDC_MAGNIFICATION_Y_CAPTION,83,144,8,8,
+                    SS_CENTERIMAGE
+    RTEXT           "100%",IDC_MAGNIFICATION_Y,99,144,29,8,SS_CENTERIMAGE
+    LTEXT           "Click-drag to adjust window org\nCtrl+Click-drag to adjust viewport org",
+                    IDC_STATIC,415,210,122,23
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "viewport MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "viewport\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "viewport.EXE\0"
+            VALUE "ProductName", "viewport Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
+    END
+
+    IDD_VIEWPORT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 563
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 285
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About viewport..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\viewport.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

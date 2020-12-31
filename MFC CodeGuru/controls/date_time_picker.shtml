@@ -1,0 +1,104 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Use the Date/Time Picker common control (IE3+)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Use the Date/Time Picker common control (IE3+)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:tdgilman@best.com">Tim Gilman</A>.
+ 
+<p><img src="date_time_picker.gif" >
+
+<p>NOTE: You must also have the new COMCTL32.DLL (version 4.7 or later). This
+is installed with Internet Explorer 3 and will come standard with the new
+Windows 98. So if you are using VC++ 5 then you probably already have this
+DLL. 
+
+<p>The API support is available in VC++ 5.0.  Otherwise, you need to
+download the ActiveX SDK from the MS website.  To use the date/time
+picker, do the following:
+
+<p>Put the following in your app's InitInstance:
+
+<PRE><TT><FONT COLOR="#990000">
+        INITCOMMONCONTROLSEX icc;
+        icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
+        icc.dwICC = ICC_DATE_CLASSES;
+        InitCommonControlsEx(&icc);
+</FONT></TT></PRE>
+
+<p>Insert a custom control in your dialog where you want the date or
+time picker.  For the class name, enter "SysDateTimePick32".  For
+the style, see commctrl.h and search for the DTS_* style and enter
+the desired style (usually either DTS_SHORTDATEFORMAT or
+DTS_TIMEFORMAT).  Be sure to make the custom control visible and
+have a tabstop.
+
+<p>You can always use CreateEx() to create them manually.
+
+<p>You can DDX the control to a SYSTEMTIME structure with the following
+code:
+
+<PRE><TT><FONT COLOR="#990000">
+void AFXAPI DDX_DateTime(CDataExchange *pDX, int nIDC, 
+        SYSTEMTIME &SysTime)
+{
+        HWND hWnd = pDX->m_pDlgWnd->GetDlgItem(nIDC)->GetSafeHwnd();
+        ASSERT (hWnd != NULL);
+
+        if (pDX->m_bSaveAndValidate)
+        {
+                ::SendMessage(hWnd, DTM_GETSYSTEMTIME, 0, 
+                        (LPARAM)&SysTime);
+        }
+        else // initializing
+        {
+                ::SendMessage(hWnd, DTM_SETSYSTEMTIME, GDT_VALID,
+                        (LPARAM)&SysTime);
+        }
+}
+
+void CCtrlTestDlg::DoDataExchange(CDataExchange* pDX)
+{
+        CDialog::DoDataExchange(pDX);
+        //{{AFX_DATA_MAP(CCtrlTestDlg)
+        //}}AFX_DATA_MAP
+        // m_Date and m_Time  are SYSTEMTIME structures
+        DDX_DateTime(pDX, IDC_DATE, m_Date); 
+        DDX_DateTime(pDX, IDC_TIME, m_Time);
+}
+</FONT></TT></PRE>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

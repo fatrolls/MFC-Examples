@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The PIOFAKE Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The PIOFAKE Sample</H2>
+<P>The PIOFAKE Sample accompanies Chapter 9 and illustrates how to use a watchdog timer.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>PIOFAKE.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a user-mode test program that tries to write data to the PIOFAKE device.</LI></UL>
+
+<H3>Building PIOFAKE</H3>
+<P>To build PIOFAKE.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named PIOFAKE.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing PIOFAKE</H3>
+<P>Install the PIOFAKE "device." Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF. In Windows 98 only, take note of the IRQ and port address that the PnP Manager assigns.</P>
+<P>If you're running in Windows 2000, launch the TEST.EXE program from the TEST\DEBUG subdirectory. Wait about 10 seconds. The write operation that TEST performs will time out, and TEST will report an error.</P>
+<P>If you're running in Windows 98, you can launch the DEVTEST.EXE program that you'll find in the directory where you installed the book samples (e.g., WDMBOOK). Fill in the port address and IRQ, and then press the Initialize button:</P>
+<P><IMG SRC="devtest.gif" WIDTH=342 HEIGHT=235></P>
+<P>Now open a command prompt and launch TEST.EXE from the TEST\DEBUG subdirectory. The letter "H" should appear in the Device Data control of the DEVTEST dialog. If you press the Interrupt button before 10 seconds elapse, you'll see the second character of the output string TEST is trying to write. You can continue pressing the Interrupt button to see the rest of the message, but you'll be able to guess the contents long before it finishes printing. Delay more than 10 seconds to see the write operation time out.</P></BODY>
+</HTML>

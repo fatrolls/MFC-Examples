@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc/View - MultiSingle (MSDI) Document interface with DAO doc</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">MultiSingle (MSDI) Document interface with DAO doc</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:jclanz@bluewin.ch">Lanz Jean-Claude</A>.
+
+<P><A HREF="msdidao.zip">Download files</A> 497K.
+
+<H4>What is a MultiSingle document.</H4>
+For Multisingle document interface, please refer to the <A HREF="msdi.shtml">MSDI</A> with little change to the class name CviewFrame -> CMSDIViewFrame etc..
+
+<H4>Multisingle document with DAO Access.</H4>
+This sample shows a MSDI sample application to open an MS-ACCESS Database as an only one document. If you change to another Database, the actual database is closed with all views (like MS-ACCESS).
+
+<P>The document contains the Database object and the recordset objects. Only one recordset per table is opened. If two views open the same recordset, the recordset is shared between views. An open count is updated to see if the recordset must be closed (Opencount == 0 on close).
+
+<P>This sample works with the sampdata.mdb database only (from DAOVIEW MFC sample). For most TRUE applications, the tables are fixed and a generic table browser is not ideal (like DAOVIEW).
+
+<P>With a double click or return key on the list view, a CformView derived class will be opened.
+
+<P>The sample is not a whole application. Only specifics problem are resolved.
+
+<H4>Of interest in this sample.</H4>
+
+<P>- MSDI Sample Application likes MS-ACCESS.
+<P>- The Save as command saves really the whole database in another file.
+<P>- Structures and functions to create tables with index, not only to read existing tables.
+<P>- List view to display table.
+<P>- Print preview for list view with Header, footer and margins.
+<P>- Fit to page list view printing or splitting on multi page.
+<P>- Copy to for list view in the Clipboard.
+<P>- Extract and display bitmap from ClongBinary as a CDaoBitmap class.
+
+<H4>Future.</H4>
+If you have some questions or if you have significant generic add on, please contact me.
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

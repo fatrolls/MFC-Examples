@@ -1,0 +1,1304 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Main.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 Main"
+FONT 9, "宋体"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "Main 1.0 版",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "版权所有 (C) 2008",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "确定",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_MAIN_DIALOG DIALOGEX 0, 0, 354, 279
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "VC网络程序功能集成"
+FONT 8, "宋体", 0, 0, 0x1
+BEGIN
+    LISTBOX         IDC_LIST_FUNCTION,7,8,92,264,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "",IDC_STATIC_PLACE,104,17,243,255
+END
+
+IDD_START_SERVICE_DLG DIALOG DISCARDABLE  0, 0, 240, 288
+STYLE DS_SYSMODAL | DS_SETFOREGROUND | DS_CONTROL | WS_CHILD | WS_VISIBLE | 
+    WS_BORDER
+FONT 8, "宋体"
+BEGIN
+    PUSHBUTTON      "服务控制",IDC_BTN_SERVICE_MENU,173,219,50,14
+    GROUPBOX        "生成配置文件",IDC_STATIC,7,7,226,238
+    LISTBOX         IDC_LIST_EXE,13,21,213,71,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "添  加",IDC_BTN_ADD,47,96,50,14
+    PUSHBUTTON      "删  除",IDC_BTN_DELETE,141,95,50,14
+    LTEXT           "要添加的可执行文件：",IDC_STATIC,16,119,81,8
+    EDITTEXT        IDC_EDIT_EXE,97,114,126,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "命令行参数:",IDC_STATIC,15,138,45,8
+    EDITTEXT        IDC_EDIT_COMMANDLINE,97,132,127,14,ES_AUTOHSCROLL
+    LTEXT           "是否显示用户界面：",IDC_STATIC,15,154,73,8
+    COMBOBOX        IDC_COMBO_USERINTERFACE,97,149,48,64,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "启动等待时间:",IDC_STATIC,15,172,53,8
+    EDITTEXT        IDC_EDIT_PAUSESTART,97,167,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "秒",IDC_STATIC,140,170,9,8
+    LTEXT           "启动等待时间:",IDC_STATIC,17,190,53,8
+    EDITTEXT        IDC_EDIT_PAUSE_END,97,186,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "秒",IDC_STATIC,140,189,9,8
+    PUSHBUTTON      "创建配置文件",IDC_BTN_CREATE_SETTING_FILE,173,191,50,14
+    LTEXT           "服务名称：",IDC_STATIC,17,207,42,8
+    EDITTEXT        IDC_EDIT_SERVICENAME,97,203,56,14,ES_AUTOHSCROLL
+    LTEXT           "检查应用程序间隔时间：",IDC_STATIC,17,225,71,8
+    EDITTEXT        IDC_EDIT_INTERGAP,97,221,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "秒",IDC_STATIC,140,225,10,8
+    GROUPBOX        "",IDC_STATIC,163,207,70,36
+END
+
+IDD_GROUP_TALK_DLG DIALOGEX 0, 0, 243, 250
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "发送",IDC_SEND,197,224,34,14
+    LISTBOX         IDC_RECORD,13,17,216,100,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "聊天记录",IDC_STATIC,7,7,228,138
+    PUSHBUTTON      "清除",IDC_CLEAR,195,127,34,14
+    CONTROL         "面向组",IDC_SELGROUP,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT | WS_GROUP,41,161,42,12
+    CONTROL         "面向用户",IDC_SELUSER,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,103,161,48,12
+    COMBOBOX        IDC_USERS,161,159,71,128,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_SENDMSG,13,176,217,45,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_WANTRETURN
+    GROUPBOX        "发送消息",IDC_STATIC,7,149,229,94
+    LTEXT           "系统消息：",IDC_STATIC,13,129,41,10
+    EDITTEXT        IDC_SYSMSG,56,127,132,13,ES_READONLY | NOT WS_BORDER,
+                    WS_EX_STATICEDGE
+END
+
+IDD_IOCOMPLETEPORT_TALK_DLG DIALOG DISCARDABLE  0, 0, 242, 251
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LISTBOX         IDC_LIST_RECORD,7,17,149,142,LBS_NOINTEGRALHEIGHT | 
+                    LBS_NOSEL | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    LTEXT           "交谈内容：",IDC_STATIC,7,7,41,8
+    EDITTEXT        IDC_EDIT_SEND_MSG,7,179,228,48,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | 
+                    WS_VSCROLL | WS_HSCROLL
+    LTEXT           "请输入聊天内容：",IDC_STATIC,7,169,70,8
+    PUSHBUTTON      "发  送",IDC_BTN_SEND,185,230,50,14
+    PUSHBUTTON      "清  空",IDC_BTN_CLEAR,107,163,50,14
+    LTEXT           "在线 用户列表：",IDC_STATIC,159,7,61,8
+    LISTBOX         IDC_LIST_ONLINE_USER,159,17,76,160,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+END
+
+IDD_ComFile_DIALOG DIALOGEX 0, 0, 239, 253
+STYLE DS_CONTROL | WS_CHILD | WS_VISIBLE
+EXSTYLE WS_EX_APPWINDOW
+FONT 8, "宋体", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "打开端口",IDC_BUTTONOPEN,119,7,43,14
+    PUSHBUTTON      "关闭",IDC_BUTTONCLOSE,191,7,39,14
+    COMBOBOX        IDC_COMBOPORT,7,7,48,60,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_EDITFILE,78,35,116,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTONBROWSER,203,34,20,14
+    PUSHBUTTON      "发送",IDC_BUTTONSEND,169,52,55,14
+    LTEXT           "当前状态：",IDC_STATIC,7,73,41,8
+    EDITTEXT        IDC_STATUS,48,71,183,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "日志信息：",IDC_STATIC,7,89,41,8
+    EDITTEXT        IDC_EDITLOG,7,98,224,132,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    LTEXT           "要发送的文件：",IDC_STATIC,15,40,57,8
+    GROUPBOX        "文件发送",IDC_STATIC,7,26,223,44
+    PUSHBUTTON      "清空",IDC_BTN_CLEAR,179,232,50,14
+    COMBOBOX        IDC_BOUDRATE,59,7,42,82,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_NETSTAT_DLG DIALOG DISCARDABLE  0, 0, 247, 251
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LTEXT           "TCP连接表",IDC_STATIC,7,7,37,8
+    CONTROL         "List1",IDC_LIST_UDP_TABLE,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,136,225,108
+    LTEXT           "UDP连接表",IDC_STATIC,7,127,37,8
+    CONTROL         "List1",IDC_LIST_TCP_TABLE,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,17,226,108
+END
+
+IDD_NET_STATISTICS_DLG DIALOG DISCARDABLE  0, 0, 246, 250
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LTEXT           "IP统计数据",IDC_STATIC_TYPE,7,10,41,8
+    LTEXT           "",IDC_STATIC_PLACE,7,21,225,222
+    PUSHBUTTON      "网络统计",IDC_BTN_FUNCTION,182,4,50,14
+END
+
+IDD_IPHLP_MISC DIALOG DISCARDABLE  0, 0, 241, 252
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    GROUPBOX        "改变默认网关",IDC_STATIC,10,5,224,33
+    CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
+                    43,17,100,15
+    LTEXT           "新网关",IDC_STATIC,15,21,25,8
+    PUSHBUTTON      "更  改",IDC_BTN_CHANGE_DEFAULT_GATEWAY,163,18,50,14
+    GROUPBOX        "第一个网卡信息",IDC_STATIC,7,41,227,29
+    EDITTEXT        IDC_EDIT_FIRST_INTERFACE_DESC,15,51,212,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "Static",IDC_STATIC,7,74,227,41
+    LTEXT           "",IDC_STATIC_ADAPT_NAME,15,84,210,8
+    LTEXT           "",IDC_STATIC_ADAPTER_INDEX,15,93,213,8
+    LTEXT           "",IDC_STATIC_ADAPTER_NUM,15,103,210,8
+    GROUPBOX        "Static",IDC_STATIC,7,119,227,40
+    CONTROL         "IPAddress1",IDC_IPADDRESS2,"SysIPAddress32",WS_TABSTOP,
+                    46,127,100,15
+    PUSHBUTTON      "获取MAC地址",IDC_BTN_GET_MAC,153,130,69,14
+    LTEXT           "IP地址:",IDC_STATIC,13,131,29,8
+    LTEXT           "MAC地址:",IDC_STATIC,13,147,33,8
+    LTEXT           "",IDC_STATIC_MAC_ADDRESS,45,147,177,8
+END
+
+IDD_LSP_DLG DIALOG DISCARDABLE  0, 0, 241, 251
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    GROUPBOX        "",IDC_STATIC_PLACE,7,41,227,203
+    EDITTEXT        IDC_EDIT_LSP_DLL_PATH,85,7,149,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "请选择LSP Dll路径：",IDC_STATIC,7,13,76,8
+    PUSHBUTTON      "LSP功能",IDC_BTN_LSP,7,25,44,14
+    LTEXT           "LSP名称",IDC_STATIC,135,27,29,8
+    EDITTEXT        IDC_EDIT_LSP_NAME,181,25,40,14,ES_AUTOHSCROLL
+    LISTBOX         IDC_LISTINFO,7,42,227,108,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDITINFO,7,154,227,90,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL
+END
+
+IDD_HOOKAPI_DLG DIALOGEX 0, 0, 239, 253
+STYLE DS_CONTROL | WS_CHILD
+EXSTYLE WS_EX_CLIENTEDGE
+FONT 8, "宋体", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LIST_DATA,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,10,25,222,137
+    EDITTEXT        IDC_EDIT_SPECIFICDATA,7,182,222,50,ES_MULTILINE | 
+                    ES_READONLY | WS_VSCROLL
+    PUSHBUTTON      "目标",IDC_BTN_TARGET,7,7,26,14
+    PUSHBUTTON      "暂停",IDC_BTN_PAUSE,137,165,50,14
+    PUSHBUTTON      "关闭",IDC_BTN_CLOSE,36,7,24,14
+    PUSHBUTTON      "清除",IDC_BTN_CLEAR,31,165,50,14
+    CONTROL         "关闭发送",IDC_CHECK_CLOSESEND,"Button",BS_AUTOCHECKBOX | 
+                    BS_FLAT | WS_TABSTOP,68,7,48,10
+    CONTROL         "关闭接受",IDC_CHECK_CLOSERECV,"Button",BS_AUTOCHECKBOX | 
+                    BS_FLAT | WS_TABSTOP,122,7,48,10
+    CONTROL         "总在最前",IDC_CHECK_TOPMOST,"Button",BS_AUTOCHECKBOX | 
+                    BS_FLAT | WS_TABSTOP,174,7,48,10
+END
+
+IDD_ENUMDIALOG DIALOG DISCARDABLE  0, 0, 151, 255
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "选择目标程序"
+FONT 8, "宋体"
+BEGIN
+    DEFPUSHBUTTON   "打开",IDOK,21,234,50,14
+    CONTROL         "List1",IDC_PROLIST,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,3,5,144,222
+    PUSHBUTTON      "取消",IDCANCEL,79,234,50,14
+END
+
+IDD_IPHLP_MISC3 DIALOG DISCARDABLE  0, 0, 241, 251
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    PUSHBUTTON      "Button1",IDC_BUTTON1,13,17,50,14
+    COMBOBOX        IDC_COMBO_INDEX,177,17,48,100,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "网卡接口Index：",IDC_STATIC,106,19,61,8
+    COMBOBOX        IDC_COMBO_IPADDR,122,35,104,114,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "当前接口的IP地址：",IDC_STATIC,33,38,73,8
+    GROUPBOX        "管理ARP路由表",IDC_STATIC,7,7,227,64
+    LTEXT           "要添加的ARP路由表IP：",IDC_STATIC,33,57,87,8
+    CONTROL         "IPAddress1",IDC_IPADDRESS,"SysIPAddress32",WS_TABSTOP,
+                    122,53,102,15
+END
+
+IDD_HOOK_FIREWALL_DLG DIALOG DISCARDABLE  0, 0, 404, 295
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    DEFPUSHBUTTON   "功  能",IDC_BTN_MENU,7,7,50,14
+    CONTROL         "List1",IDC_LIST_RULES,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,24,384,264
+END
+
+IDD_ADDRULEDLG DIALOG DISCARDABLE  0, 0, 299, 257
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "添加过滤条件"
+FONT 8, "宋体"
+BEGIN
+    DEFPUSHBUTTON   "添加",IDOK,88,216,50,14
+    PUSHBUTTON      "取消",IDCANCEL,200,215,50,14
+    EDITTEXT        IDC_SOURCE_IP,79,35,88,14,ES_AUTOHSCROLL
+    LTEXT           "IP地址：",IDC_STATIC,39,36,33,8
+    GROUPBOX        "源地址",IDC_STATIC,23,17,253,69
+    EDITTEXT        IDC_SOURCE_PORT,225,36,40,14,ES_AUTOHSCROLL
+    LTEXT           "端口号：",IDC_STATIC,186,39,33,8
+    EDITTEXT        IDC_SOURCE_MASK,80,61,87,14,ES_AUTOHSCROLL
+    LTEXT           "掩位码：",IDC_STATIC,42,64,33,8
+    EDITTEXT        IDC_DEST_IP,80,106,86,14,ES_AUTOHSCROLL
+    LTEXT           "IP地址：",IDC_STATIC,36,109,33,8
+    GROUPBOX        "目标地址",IDC_STATIC,23,92,254,68
+    LTEXT           "端口号：",IDC_STATIC,185,112,33,8
+    EDITTEXT        IDC_DEST_PORT,225,108,40,14,ES_AUTOHSCROLL
+    LTEXT           "掩位码：",IDC_STATIC,38,139,33,8
+    EDITTEXT        IDC_DEST_MASK,79,135,86,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_PROTOCOL,76,175,48,66,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "协议：",IDC_STATIC,44,177,25,8
+    LTEXT           "动作：",IDC_STATIC,157,179,25,8
+    COMBOBOX        IDC_ACTION,193,177,48,61,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_P2P_UDP_SERVER_DLG DIALOG DISCARDABLE  0, 0, 241, 252
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LISTBOX         IDC_LIST_USER,7,18,227,163,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "在线用户列表",IDC_STATIC,7,7,49,8
+    LISTBOX         IDC_LIST_INFO,7,194,227,51,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "消息",IDC_STATIC,7,185,17,8
+END
+
+IDD_P2P_UDP_CLIENT_DLG DIALOG DISCARDABLE  0, 0, 358, 252
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LTEXT           "交谈内容:",IDC_STATIC,7,7,37,8
+    LISTBOX         IDC_LIST_CONTENT,7,16,224,110,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "用户列表",IDC_STATIC,233,7,33,8
+    LISTBOX         IDC_LIST_USER,237,16,114,210,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST_INFO,7,139,226,40,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "系统消息:",IDC_STATIC,7,129,37,8
+    EDITTEXT        IDC_EDIT_CONTENT,7,190,226,55,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_WANTRETURN
+    LTEXT           "请输入交谈内容",IDC_STATIC,7,182,57,8
+    PUSHBUTTON      "发  送",IDC_BTN_SEND,235,231,116,14
+END
+
+IDD_SNIFFER_DLG DIALOG DISCARDABLE  0, 0, 362, 229
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LTEXT           "本机网卡：",IDC_STATIC,7,11,43,8
+    COMBOBOX        IDC_COMBO_INTERFACE,50,7,108,152,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "开始嗅探",IDC_BTN_START_SNIFFER,171,7,50,14
+    CONTROL         "Tree1",IDC_TREE_DATA,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_LINESATROOT | TVS_FULLROWSELECT | WS_BORDER | 
+                    WS_TABSTOP,7,25,348,197
+    PUSHBUTTON      "停  止",IDC_BTN_STOP,240,7,50,14,WS_DISABLED
+END
+
+IDD_PING_DLG DIALOG DISCARDABLE  0, 0, 262, 264
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LTEXT           "起始IP:",IDC_STATIC,9,9,29,8
+    COMBOBOX        IDC_CMB_START_IP,38,7,89,147,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "终止IP:",IDC_STATIC_END_IP,130,7,29,8,WS_DISABLED
+    COMBOBOX        IDC_CMB_END_IP,161,7,94,164,CBS_DROPDOWN | WS_DISABLED | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Ping一个主机",IDC_CHECK_PING,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,27,64,10
+    ICON            IDI_ICON,IDC_PIC_FROM,7,41,20,20
+    ICON            IDI_ICONTO,IDC_PIC_TO,234,41,20,20
+    CONTROL         "List1",IDC_LIST_INFO,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,64,248,185
+    DEFPUSHBUTTON   "开  始",IDC_BTN_START_PING,205,25,50,14
+    LTEXT           "Ping次数",IDC_STATIC,93,27,33,8
+    EDITTEXT        IDC_EDIT_PING_TIMES,133,25,26,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN1,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,160,25,11,13
+END
+
+IDD_TRACEROUTE_DLG DIALOG DISCARDABLE  0, 0, 242, 245
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    CONTROL         "IPAddress1",IDC_IPADDRESS1,"SysIPAddress32",WS_TABSTOP,
+                    102,7,100,15
+    LTEXT           "请指定要跟踪路由的主机IP:",IDC_STATIC,7,14,94,8
+    PUSHBUTTON      "跟踪",IDC_BTN_TRACE,204,7,31,14
+    GROUPBOX        "",IDC_STATIC_INFO,7,37,228,201
+    LTEXT           "路由信息:",IDC_STATIC,7,27,228,8
+END
+
+IDD_NET_WAKE_MACHINE_DLG DIALOG DISCARDABLE  0, 0, 244, 252
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LISTBOX         IDC_LIST_HOST,7,33,62,212,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "唤醒远程机器",IDC_BTN_WAKE,185,7,52,14
+    LISTBOX         IDC_LIST_MAC,158,33,79,212,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "主机名称",IDC_STATIC,7,23,30,8
+    LTEXT           "网卡MAC地址",IDC_STATIC,158,23,42,8
+    LISTBOX         IDC_LIST_IP,74,33,80,212,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "IP地址",IDC_STATIC,74,21,24,8
+END
+
+IDD_REMOTEADMIN_DLG DIALOG DISCARDABLE  0, 0, 628, 368
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+END
+
+IDD_TIME_SETTINGS DIALOG DISCARDABLE  0, 0, 144, 64
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Time Settings"
+FONT 8, "宋体"
+BEGIN
+    EDITTEXT        IDC_EDIT_PROCESS_REFRESH,93,7,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_EDIT_SHUTDOWN_DELAY,93,25,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    DEFPUSHBUTTON   "确  定",IDOK,16,42,50,14
+    PUSHBUTTON      "取  消",IDCANCEL,70,43,50,14
+    LTEXT           "进程列表刷新时间 (秒)",IDC_STATIC,7,14,79,8
+    LTEXT           "关机延迟时间(秒)",IDC_STATIC,7,28,60,8
+END
+
+IDD_REMOTE_LOGON DIALOGEX 0, 0, 152, 84
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "登录"
+FONT 8, "宋体", 0, 0, 0x1
+BEGIN
+    CONTROL         "IPAddress1",IDC_REMOTEIP,"SysIPAddress32",WS_TABSTOP,43,
+                    7,100,15
+    EDITTEXT        IDC_LOGON,43,26,100,14,ES_AUTOHSCROLL,0,HIDC_LOGON
+    EDITTEXT        IDC_PASSWORD,43,43,102,14,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "确  定",IDOK,20,63,50,14
+    PUSHBUTTON      "取  消",IDCANCEL,81,63,50,14
+    LTEXT           "远程主机:",IDC_STATIC,7,13,34,8
+    LTEXT           "用户名:",IDC_STATIC,7,30,27,8
+    LTEXT           "密码 :",IDC_STATIC,7,49,24,8
+END
+
+IDD_PROGRESS_DLG DIALOGEX 0, 0, 225, 45
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Progress1",IDC_PROGRESS_BAR,"msctls_progress32",
+                    WS_DISABLED | WS_BORDER,12,24,200,14,WS_EX_CLIENTEDGE | 
+                    WS_EX_STATICEDGE
+    CTEXT           "",IDC_PROMPT,14,10,182,8
+END
+
+IDD_EXECUTE_PROCESS DIALOG DISCARDABLE  0, 0, 199, 139
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Remote Process Path"
+FONT 8, "宋体"
+BEGIN
+    EDITTEXT        IDC_EDIT_PROCESS_NAME,79,17,106,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_USER,79,55,106,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PASSWORD,79,76,106,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DOMAIN,79,95,106,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "确  定",IDOK,41,118,50,14
+    PUSHBUTTON      "取  消",IDCANCEL,107,118,50,14
+    LTEXT           "进程路径",IDC_STATIC,18,20,45,8
+    LTEXT           "密码",IDC_STATIC,18,80,34,8
+    LTEXT           "用户名",IDC_STATIC,18,58,41,8
+    LTEXT           "远程主机IP地址",IDC_STATIC,18,100,58,8
+    GROUPBOX        "",IDC_STATIC,13,7,179,107
+    LTEXT           "命令行参数",IDC_STATIC,18,42,38,8
+    EDITTEXT        IDC_EDIT_CMDLINE,79,36,106,14,ES_AUTOHSCROLL
+END
+
+IDD_IPHOOKDRV_VIEW DIALOG DISCARDABLE  0, 0, 429, 186
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    LTEXT           "过滤规则",IDC_STATIC,7,7,33,9
+    CONTROL         "List1",IDC_LISTRULES,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,17,415,162
+END
+
+IDD_IPHOOKDRV_DLG DIALOG DISCARDABLE  0, 0, 449, 244
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+END
+
+IDD_HIDE_PROCESS_DLG DIALOG DISCARDABLE  0, 0, 248, 335
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    PUSHBUTTON      "驱动服务工具",IDC_BUTTON1,7,20,50,14
+    EDITTEXT        IDC_EDIT_DRIVER_PATH,76,21,165,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "请选择驱动程序",IDC_STATIC,75,7,52,8
+END
+
+IDD_HIDEPROCESS_DETAIL_DLG DIALOG DISCARDABLE  0, 0, 187, 84
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "宋体"
+BEGIN
+    DEFPUSHBUTTON   "隐  藏",IDC_BTN_HIDE,7,63,50,14
+    PUSHBUTTON      "显  示",IDC_BTN_SHOW,67,63,50,14
+    EDITTEXT        IDC_EDIT1,56,7,57,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,55,28,58,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,55,46,58,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,122,7,58,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT5,122,28,58,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT6,121,46,59,14,ES_AUTOHSCROLL
+    LTEXT           "请输入要",IDC_STATIC,7,7,30,8
+    LTEXT           "隐藏的进程",IDC_STATIC,7,17,38,8
+    LTEXT           "名称",IDC_STATIC,7,29,16,8
+    PUSHBUTTON      "清  空",IDC_BTN_CLEAR,130,63,50,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Main Microsoft 基础类应用程序\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "Main\0"
+            VALUE "LegalCopyright", "版权所有 (C) 2008\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "Main.EXE\0"
+            VALUE "ProductName", "Main 应用程序\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_MAIN_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 347
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 272
+    END
+
+    IDD_START_SERVICE_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 281
+    END
+
+    IDD_GROUP_TALK_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_IOCOMPLETEPORT_TALK_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 244
+    END
+
+    IDD_ComFile_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 246
+    END
+
+    IDD_NETSTAT_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 240
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 244
+    END
+
+    IDD_NET_STATISTICS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 239
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_IPHLP_MISC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 234
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 245
+    END
+
+    IDD_LSP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 234
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 244
+    END
+
+    IDD_HOOKAPI_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 246
+    END
+
+    IDD_ENUMDIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 144
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 248
+    END
+
+    IDD_IPHLP_MISC3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 234
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 244
+    END
+
+    IDD_HOOK_FIREWALL_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 397
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 288
+    END
+
+    IDD_ADDRULEDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 292
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 250
+    END
+
+    IDD_P2P_UDP_SERVER_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 234
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 245
+    END
+
+    IDD_P2P_UDP_CLIENT_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 351
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 245
+    END
+
+    IDD_SNIFFER_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 355
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 222
+    END
+
+    IDD_PING_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 255
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 257
+    END
+
+    IDD_TRACEROUTE_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 238
+    END
+
+    IDD_NET_WAKE_MACHINE_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 237
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 245
+    END
+
+    IDD_REMOTEADMIN_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 621
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 361
+    END
+
+    IDD_TIME_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 137
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 57
+    END
+
+    IDD_REMOTE_LOGON, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 145
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 77
+    END
+
+    IDD_PROGRESS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 38
+    END
+
+    IDD_EXECUTE_PROCESS, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 192
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 132
+    END
+
+    IDD_IPHOOKDRV_VIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 422
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+
+    IDD_IPHOOKDRV_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 442
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 237
+    END
+
+    IDD_HIDE_PROCESS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 241
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 328
+    END
+
+    IDD_HIDEPROCESS_DETAIL_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 77
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "Dummy"
+    BEGIN
+        MENUITEM "安装服务",                    IDR_INSTALL_SERVICE
+        MENUITEM "卸载服务",                    IDR_UNINSTALL_SERVICE
+        MENUITEM "启动服务",                    IDR_START_SERVICE
+        MENUITEM "停止服务",                    IDR_STOP_SERVICE
+        MENUITEM "重启服务",                    IDR_RESTART_SERVICE
+    END
+END
+
+IDR_MENU2 MENU DISCARDABLE 
+BEGIN
+    POPUP "dummy"
+    BEGIN
+        MENUITEM "刷新",                        IDR_REFRESH
+    END
+END
+
+IDR_MENU3 MENU DISCARDABLE 
+BEGIN
+    POPUP "dummy"
+    BEGIN
+        MENUITEM "IP统计数据",                  IDM_IP_STATS
+        MENUITEM "ICMP统计数据",                IDM_ICMP_STATS
+        MENUITEM "TCP统计数据",                 IDM_TCP_STATS
+        MENUITEM "UDP统计数据",                 IDM_UDP_STATS
+    END
+END
+
+IDR_MENU4 MENU DISCARDABLE 
+BEGIN
+    POPUP "dummy"
+    BEGIN
+        MENUITEM "刷新ARP表",                   IDM_REFRESH_ARP_TABLE
+        MENUITEM "添加ARP条目",                 IDM_ADD_ARP_ENTRY
+        MENUITEM "删除ARP条目",                 IDM_DEL_ARP_ENTRY
+        MENUITEM SEPARATOR
+        MENUITEM "发送原始UDP包",               IDR_SEND_RAW_UDP_PACKET
+    END
+END
+
+IDR_MENU5 MENU DISCARDABLE 
+BEGIN
+    POPUP "dummy"
+    BEGIN
+        MENUITEM "枚举协议",                    IDM_ENUM_PROTOCOL
+        MENUITEM "安装LSP",                     IDM_INSTALL_LSP
+        MENUITEM "卸载 LSP",                    IDM_REMOVE_LSP
+        MENUITEM "挂钩Socket",                  IDM_HOOK_SOCKET
+        MENUITEM "解除挂钩",                    IDM_UNHOOK_SOCKET
+    END
+END
+
+IDR_MENU6 MENU DISCARDABLE 
+BEGIN
+    POPUP "dummy"
+    BEGIN
+        MENUITEM "保存规则",                    IDM_SAVE_RULES
+        MENUITEM "导入规则",                    IDM_IMPORT_RULES
+        MENUITEM SEPARATOR
+        MENUITEM "开始过滤",                    IDM_START_HOOK
+        MENUITEM "停止过滤",                    IDM_STOP_HOOK
+        MENUITEM SEPARATOR
+        MENUITEM "添加规则",                    IDM_ADD_RULE
+        MENUITEM "删除规则",                    IDM_DEL_RULE
+        MENUITEM SEPARATOR
+        MENUITEM "清除规则",                    IDM_CLEAR_RULES
+        MENUITEM "安装规则",                    IDM_INSTALL_RULES
+    END
+END
+
+IDR_MENU_MACHINE MENU DISCARDABLE 
+BEGIN
+    POPUP "dummy"
+    BEGIN
+        MENUITEM "添加主机",                    ID_FILE_ADD_MACHINE
+        MENUITEM "删除主机",                    ID_FILE_DELETE_MACHINE
+        POPUP "关闭"
+        BEGIN
+            MENUITEM "关机",                        ID_FILE_SHUTDOWN_HALT
+            MENUITEM "重启",                        ID_FILE_SHUTDOWN_REBOOT
+            MENUITEM "放弃",                        ID_FILESHUTDOWN_ABORTSHUTDOWN
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "刷新进程列表",                ID_FILE_REFRESHPROCESS
+        MENUITEM "执行程序",                    ID_FILE_EXECUTE_PROCESS
+    END
+END
+
+IDR_SYS_TRAY_CONTEXT MENU DISCARDABLE 
+BEGIN
+    POPUP "dummy"
+    BEGIN
+        MENUITEM "时间设置",                    ID_SETTINGS_TIMERS
+        POPUP "窗口"
+        BEGIN
+            MENUITEM "保持在最前面",                ID_SETTINGS_WINDOW_ALWAYSONTOP
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "添加主机",                    ID_FILE_ADD_MACHINE
+        MENUITEM "删除主机",                    ID_FILE_DELETE_MACHINE
+        POPUP "关闭"
+        BEGIN
+            MENUITEM "杀进程",                      ID_FILE_SHUTDOWN_HALT
+            MENUITEM "重启",                        ID_FILE_SHUTDOWN_REBOOT
+            MENUITEM "放弃",                        ID_FILESHUTDOWN_ABORTSHUTDOWN
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "刷新进程列表",                ID_FILE_REFRESHPROCESS
+        MENUITEM "执行程序",                    ID_FILE_EXECUTE_PROCESS
+        MENUITEM "杀进程",                      ID_FILE_KILL_PROCESS
+        MENUITEM SEPARATOR
+        MENUITEM "打开文件",                    ID_FILE_OPEN
+        MENUITEM "保存",                        ID_FILE_SAVE
+        MENUITEM "另存为",                      ID_FILE_SAVE_AS
+        MENUITEM "退出",                        ID_APP_EXIT
+    END
+END
+
+IDR_REMOTECONTROL MENU DISCARDABLE 
+BEGIN
+    POPUP "文件"
+    BEGIN
+        MENUITEM "添加主机",                    ID_FILE_ADD_MACHINE
+        MENUITEM "删除主机",                    ID_FILE_DELETE_MACHINE
+        POPUP "关闭"
+        BEGIN
+            MENUITEM "关机",                        ID_FILE_SHUTDOWN_HALT
+            MENUITEM "重启",                        ID_FILE_SHUTDOWN_REBOOT
+            MENUITEM "放弃",                        ID_FILESHUTDOWN_ABORTSHUTDOWN
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "打开文件",                    ID_FILE_OPEN
+        MENUITEM "保存",                        ID_FILE_SAVE
+        MENUITEM "另存为",                      ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "刷新进程列表",                ID_FILE_REFRESHPROCESS
+        MENUITEM "执行程序",                    ID_FILE_EXECUTE_PROCESS
+        MENUITEM "杀进程",                      ID_FILE_KILL_PROCESS
+        MENUITEM SEPARATOR
+        MENUITEM "最近文件",                    ID_FILE_MRU_FILE1
+    END
+    POPUP "设置"
+    BEGIN
+        MENUITEM "时间设置",                    ID_SETTINGS_TIMERS
+        POPUP "窗口"
+        BEGIN
+            MENUITEM "保持在最前面",                ID_SETTINGS_WINDOW_ALWAYSONTOP
+
+        END
+    END
+END
+
+IDR_MENU_END_PROCESS MENU DISCARDABLE 
+BEGIN
+    POPUP "dummy"
+    BEGIN
+        MENUITEM "杀进程",                      ID_FILE_KILL_PROCESS
+    END
+END
+
+IDR_IPHOOKDRV MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "文件(&F)"
+    BEGIN
+        MENUITEM "开始过滤(&S)\tCtrl+S",        ID_FILE_START
+        MENUITEM "停止过滤(&P)\tCtrl+P",        ID_FILE_STOP
+        MENUITEM SEPARATOR
+        MENUITEM "加载过滤条件(&L)...\tCtrl+L", ID_FILE_LOAD
+        MENUITEM "保存过滤条件(&V)...",         ID_FILE_CONSERVE
+        MENUITEM SEPARATOR
+        MENUITEM "退出(&X)",                    ID_APP_EXIT
+    END
+    POPUP "过滤条件(&R)"
+    BEGIN
+        MENUITEM "添加(&A)\t",                  ID_RULES_ADD
+        MENUITEM "删除(&D)\t",                  ID_RULES_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "安装(&I)\t",                  ID_RULES_INSTALL
+        MENUITEM "卸载(&U)\t",                  ID_RULES_UNINSTALL
+    END
+    POPUP "帮助(&H)"
+    BEGIN
+        MENUITEM "关于 Firewall(&A)...",        ID_APP_ABOUT
+    END
+END
+
+IDR_MENU_HIDE_PROCESS MENU DISCARDABLE 
+BEGIN
+    POPUP "HideProcess"
+    BEGIN
+        MENUITEM "安装驱动",                    IDM_INSTALL_DRIVER
+        MENUITEM "启动驱动",                    IDM_START_DRIVER
+        MENUITEM "停止驱动",                    IDM_STOP_DRIVER
+        MENUITEM "卸载驱动",                    IDM_UNINSTALL_DRIVER
+        MENUITEM SEPARATOR
+        MENUITEM "打开驱动",                    IDM_OPEN_CONTROL_DEVICE
+        MENUITEM SEPARATOR
+        MENUITEM "隐藏进程",                    IDM_HIDE_PROCESS
+        MENUITEM SEPARATOR
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_START_SERVICE_DLG DLGINIT
+BEGIN
+    IDC_COMBO_USERINTERFACE, 0x403, 3, 0
+0xc7ca, "\000" 
+    IDC_COMBO_USERINTERFACE, 0x403, 3, 0
+0xf1b7, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 24
+//
+
+1                       24      DISCARDABLE     "xptheme.xml"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// EXECUTABLES
+//
+
+IDR_REMOTEADMIN         EXECUTABLES DISCARDABLE "res\\RemoteAdminService.exe"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_IPHOOKDRV           ICON    DISCARDABLE     "res\\Firewall.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_IPHOOKDRV           BITMAP  MOVEABLE PURE   "res\\mainfram.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_IPHOOKDRV TOOLBAR DISCARDABLE  56, 47
+BEGIN
+    BUTTON      ID_FILE_START
+    BUTTON      ID_FILE_STOP
+    SEPARATOR
+    BUTTON      ID_RULES_ADD
+    BUTTON      ID_RULES_DELETE
+    BUTTON      ID_RULES_INSTALL
+    BUTTON      ID_RULES_UNINSTALL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 Main(&A)..."
+    IDS_APP_NAME            "VC网络程序集成 v1.0"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_ADD_MACHINE     "添加主机\t添加主机"
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\MachineOnNetwork.ico"
+IDI_MACHINE_ON_NETWORK  ICON    DISCARDABLE     "res\\machine_.ico"
+IDI_MACHINE             ICON    DISCARDABLE     "res\\Machine.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_REMOTECONTROL       BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_REMOTECONTROL TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_VIEW_LARGEICON
+    BUTTON      ID_VIEW_SMALLICON
+    BUTTON      ID_VIEW_LIST
+    BUTTON      ID_VIEW_DETAILS
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_ADD_MACHINE     "添加主机\n添加主机"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON                ICON    DISCARDABLE     "res\\icon1.ico"
+IDI_ICONTO              ICON    DISCARDABLE     "res\\ico00001.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LOG                 BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_ADD_MACHINE     "添加主机\t添加主机"
+END
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Unknown language: 0xD, 0x1 resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_HEB)
+#ifdef _WIN32
+LANGUAGE 0xD, 0x1
+#pragma code_page(1255)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_COMP2COMP           ICON    DISCARDABLE     "res\\Comp2Comp.ico"
+IDI_IPHeader            ICON    DISCARDABLE     "res\\TCPHeader.ico"
+IDI_TCPHEADER           ICON    DISCARDABLE     "res\\IPHeader.ico"
+#endif    // Unknown language: 0xD, 0x1 resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\Main.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

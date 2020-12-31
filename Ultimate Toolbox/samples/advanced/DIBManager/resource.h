@@ -1,0 +1,122 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Developer Studio generated include file.
+// Used by DIBManager.rc
+//
+#define IDC_SAVE_WORKSPACE              3
+#define ID_MIN_ZOOM_LEVEL               10
+#define IDR_MAINFRAME                   128
+#define IDR_DIBMANTYPE                  129
+#define IDR_DUMMY                       129
+#define IDD_DIALOG_TREE_FILES           130
+#define ID_INDICATOR_SIZE               130
+#define IDR_DUMMY_HOT                   130
+#define IDB_IMAGELIST                   131
+#define ID_INDICATOR_ZOOM               131
+#define IDB_CHECK                       132
+#define ID_INDICATOR_PARAMETERS         132
+#define ID_INDICATOR_PROGRESS           133
+#define IDR_MAINFRAME_COPY              133
+#define ID_DESCRIPTION_FILE             134
+#define IDR_MAINFRAME_HOT               135
+#define IDB_LOGO                        140
+#define IDB_LOGO_DUMMY                  141
+#define IDD_DIALOG_EXPORT               142
+#define IDD_DIALOG_IMPORT               143
+#define IDD_DIALOG_WORKSPACE            144
+#define IDD_DIALOG_ROLLUP               159
+#define IDD_IMAGE_INFO_DIALOG           164
+#define IDD_DIALOG_RESAMPLE             165
+#define IDB_LOGO_TEST                   172
+#define SIZE_ERROR_BUF                  255
+#define ID_MAX_ZOOM_LEVEL               800
+#define IDC_TREE_FILES                  1000
+#define IDC_FILENAME                    1001
+#define IDC_QUALITY                     1002
+#define IDC_SPIN_QUALITY                1003
+#define IDC_CHECK_SMOOTH                1004
+#define IDC_SMOOTH                      1005
+#define IDC_SPIN_SMOOTH                 1006
+#define IDC_CHECK_GRAYSCALE             1007
+#define IDC_CHECK_OPTIMIZE              1008
+#define IDC_CHECK_PROGRESSIVE           1009
+#define IDC_CHECK_BASELINE              1010
+#define IDC_RADIO_DCT_INT               1011
+#define IDC_RADIO_DCT_FAST              1012
+#define IDC_RADIO_DCT_FLOAT             1013
+#define IDC_CHECK_COLORS                1015
+#define IDC_COLORS                      1016
+#define IDC_SPIN_COLORS                 1017
+#define IDC_RADIO_ONE_TO_ONE            1018
+#define IDC_RADIO_ONE_TO_TWO            1019
+#define IDC_RADIO_ONE_TO_FOUR           1020
+#define IDC_RADIO_ONE_TO_EIGHT          1021
+#define IDC_CHECK_ONE_PASS              1022
+#define IDC_CHECK_NO_SMOOTH             1023
+#define IDC_RADIO_DM_FLOYD_STEIN        1024
+#define IDC_CHECK_SAVE_ON_EXIT          1024
+#define IDC_RADIO_DM_ORDERED            1025
+#define IDC_CHECK_LOAD_ON_ENTER         1025
+#define IDC_RADIO_DM_NONE               1026
+#define IDC_ZOOM_LEVEL                  1026
+#define IDC_SPIN_ZOOM_LEVEL             1028
+#define IDC_BUTTON_APPLY                1029
+#define IDC_PICTURE                     1030
+#define IDC_SPIN_WIDTH_PIXELS           1030
+#define IDC_SCALED_WIDTH                1031
+#define IDC_SPIN_HEIGHT_PIXELS          1031
+#define IDC_SCALED_HEIGHT               1032
+#define IDC_SPIN_WIDTH_PERCENTS         1032
+#define IDC_SPIN_HEIGHT_PERCENTS        1033
+#define IDC_FILE_NAME                   1035
+#define IDC_WIDTH                       1036
+#define IDC_HEIGHT                      1037
+#define IDC_WIDTH_PIXELS                1037
+#define IDC_SIZE_IN_MEMORY              1038
+#define IDC_HEIGHT_PIXELS               1038
+#define IDC_FILE_SIZE                   1039
+#define IDC_WIDTH_PERCENTS              1039
+#define IDC_FORMAT                      1040
+#define IDC_HEIGHT_PERCENTS             1040
+#define IDC_TYPE                        1041
+#define IDC_WIDTH_ORIG                  1041
+#define IDC_FILE_STATUS                 1042
+#define IDC_HEIGHT_ORIG                 1042
+#define IDC_CHECK_MAINTAIN_RATIO        1043
+#define IDC_CHECK_MATCH_ZOOM_LEVEL      1044
+#define IDC_COMBO_CONVERT_TO            1045
+#define IDC_CHECK_CONVERT_TO            1046
+#define ID_BUTTON_RESET                 1047
+#define IDC_BUTTON_DUMMY                1048
+#define ID_TIME_SHOWING_LOGO            5500
+#define MAX_INT                         32767
+#define ID_WINDOW_SYNCHRONIZE           32772
+#define ID_VIEW_ZOOM_IN                 32776
+#define ID_VIEW_ZOOM_OUT                32777
+#define ID_VIEW_ZOOM_TO_WINDOW          32778
+#define ID_VIEW_ZOOM_TO_100             32779
+#define ID_TREEFILESBAR                 32781
+#define ID_FILE_EXPORT                  32786
+#define ID_FILE_IMPORT                  32787
+#define ID_FILE_SET_PROTECTION          32788
+#define ID_FILE_REMOVE_PROTECTION       32789
+#define ID_FILE_PROTECTED               32796
+#define ID_VIEW_WORKSPACE               32798
+#define ID_VIEW_SCALE_DLG               32803
+#define ID_VIEW_ZOOM_LEVEL_DLG          32804
+#define ID_VIEW_TREE_BAR                32805
+#define ID_VIEW_IMAGE_INFO              32808
+#define ID_VIEW_RESAMPLE_IMAGE          32809
+#define ID_VIEW_ZOOM                    32810
+#define ID_VIEW_ZOOM_TOOLBAR            0xe883
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_3D_CONTROLS                     1
+#define _APS_NEXT_RESOURCE_VALUE        173
+#define _APS_NEXT_COMMAND_VALUE         32820
+#define _APS_NEXT_CONTROL_VALUE         1055
+#define _APS_NEXT_SYMED_VALUE           112
+#endif
+#endif

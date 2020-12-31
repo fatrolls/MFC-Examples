@@ -1,0 +1,101 @@
+<HTML>
+<!-- $Revision: 4 $ -->
+<H1>Release 37</H1>
+
+<H2>What's New</H2>
+
+<B><A HREF="CMemoryFile.htm">CMemoryFile</A></B> - 
+This provides a simple to use interface to memory
+mapped files.
+
+<P>
+
+<B><A HREF="CPhysicalDiskFile.htm">CPhysicalDiskFile</A></B> -
+This class makes it easy to read data from a disk
+in raw format. In other words, this class reads a disk
+like it was a file without regard to file system on that 
+disk. Want to read an individual sector on the disk? This
+is the class for you.
+
+<P>
+
+<H2>Bug Fixes/Enhancements</H2>
+
+<B><A HREF="CEvntLog.htm">CEventLog</A></B> - I added methods
+to create custom logs and enumerate through existing logs.
+
+<P>
+
+<B><A HREF="CQueue.htm">CQueue</A></B> -
+Fixed a problem where, on multiple CPU systems, the
+add index would sometimes cause an exception. This
+has been fixed. It has also been rewritten for speed
+optimization. Adding to the queue does not prevent
+another thread from reading from the queue.
+
+<P>
+
+<B><A HREF="CXMLD.htm">CExtensibleMarkupLanguageDocument</A></B> -
+Christopher Remington
+(<A HREF="mailto:chrisr@silversoft.net">chrisr@silversoft.net</A>)
+Found a bug where I wasn't initializing the
+<CODE>m_ParseErrorEncountered</CODE> member correctly. It is fixed now.
+
+<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> -
+Mats Johnsson
+(<A HREF="mailto:mats.johnsson@comfact.com">mats.johnsson@comfact.com</A>)
+Found a couple of problems. One was <B>AddAttribute</B>() was not
+normalizing attribute values according to section 3.3.3 of the
+<A HREF="http://www.w3.org/TR/" TARGET="_parent">XML</A>
+specification. He also added a new method called <B>GetAttributeByName</B>()
+the returns a pointer to the
+<A HREF="CXMLA.htm">CExtensibleMarkupLanguageAttribute</A>. Mats also
+suggested a method called <B>GetParent</B>() that accepts a name
+of an element and will return the pointer to that element in the
+parentage of this element.
+
+<P>
+
+<B><A HREF="CXMLE.htm">CExtensibleMarkupLanguageElement</A></B> -
+Pei-Chiang Ma (north@uni-scape.com)
+(<A HREF="mailto:north@uni-scape.com">north@uni-scape.com</A>)
+Found a bug in the section of code responsible for writing
+<CODE>CDATA</CODE> sections.
+
+<P>
+
+<B><A HREF="CFileTime.htm">CFileTime</A></B> - 
+David LeBlanc
+(<A HREF="mailto:whisper@accessone.com">whisper@accessone.com</A>)
+found a bug in the <CODE>dynamic_cast</CODE> operator in 
+Visual C++ 4.2. 
+
+<P>
+
+<B><A HREF="serial.htm">CSerialFile</A></B> - 
+Glenn Brude 
+(<A HREF="mailto:d40480@algonet.se">d40480@algonet.se</A>)
+found a bug in <B>Write</B>(). If everything didn't get
+sent in the first call, it would not loop. If you were sending
+lots of bytes, not all of them may have been sent. DOH!
+
+<P>
+
+<B><A HREF="serial.htm">CSerialFile</A></B> - 
+Jim Peng
+(<A HREF="mailto:jimp@datalink.net">jimp@datalink.net</A>)
+found a minor bug in <B>Purge</B>(). I was returning a
+value from <B><CODE>GetLastError</CODE></B>() instead
+of FALSE.
+
+<P>
+
+<HR>
+<A HREF="Release36.htm">Release 36 Notes</A><P>
+<ADDRESS>Sam Blackburn</ADDRESS>
+<ADDRESS><A HREF="mailto:wfc@pobox.com">wfc@pobox.com</A></ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</HTML>

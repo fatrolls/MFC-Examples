@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>GDI - Drawing dotted lines</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Drawing dotted lines</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:iamwired@geocities.com">Jean-Edouard Lachand-Robert</A>.
+
+
+<P>3 steps to show how to draw vertical and horizontal 
+dotted lines(1 pixel on 2) using GDI calls. This code works under all
+Win32 platforms. 
+
+
+<H4>Step 1 (initialization) </H4>
+
+A patterned brush is created during program (or view) initialization. 
+This brush will be used to draw the dotted lines :
+
+<PRE><TT><FONT COLOR="#990000">
+{
+	...
+
+	// Create a dotted monochrome bitmap
+	WORD b[8] = { 0xAAAA, 0x5555, 0xAAAA, 0x5555, 0xAAAA, 0x5555, 0xAAAA,
+	0x5555 };
+	BITMAP bm;
+	bm.bmType = 0;
+	bm.bmWidth = 16;
+	bm.bmHeight = 8;
+	bm.bmWidthBytes = 2;
+	bm.bmPlanes = 1;
+	bm.bmBitsPixel = 1;
+	bm.bmBits = b;
+	HBITMAP hbm = CreateBitmapIndirect(&bm);
+
+	// Create the brush from the bitmap bits
+	HBRUSH hPatternBrush = CreatePatternBrush(hbm);
+
+	// Delete the useless bitmap
+	DeleteObject(hbm);
+
+	...
+}
+</FONT></TT></PRE>
+
+
+<H4>Step 2 (drawing)</H4>
+
+Dotted lines are drawn using PatBlt() :
+
+<PRE><TT><FONT COLOR="#990000">
+{
+	...
+
+	// Select the patterned brush into the DC
+	HBRUSH oldBrush = (HBRUSH)SelectObject(hDC, hPatternBrush);
+
+	// Draw an horizontal line
+	PatBlt(hDC, 10, 10, 300, 1, PATCOPY);
+
+	// Invert a vertical line 2 pixels wide
+	PatBlt(hDC, 10, 10, 2, 300, PATINVERT);
+
+	// Clean up
+	SelectObject(hDC, oldBrush);
+
+	...
+}
+</FONT></TT></PRE>
+
+<P>If drawing occurs in a "scrollable view", don't forget to align the
+brush origin 
+into the DC BEFORE to select the brush :
+
+<PRE><TT><FONT COLOR="#990000">
+{
+	...
+
+	// We are in a CScrollView, the patterned brush must be aligned
+	UnrealizeObject(hPatternBrush);
+	CPoint sp = GetDeviceScrollPosition();
+	SetBrushOrgEx(hDC, -sp.x & 7, -sp.y & 7, NULL);
+
+	// Select the patterned brush into the DC
+	HBRUSH oldBrush = (HBRUSH)SelectObject(hDC, hPatternBrush);
+
+	...
+}
+</FONT></TT></PRE>
+
+
+<H4>Step 3 (destruction)</H4>
+
+When the patterned brush is useless, it must be destroyed :
+<PRE><TT><FONT COLOR="#990000">
+{
+	...
+
+	// Delete the patterned brush
+	DeleteObject(hPatternBrush);
+
+	...
+}
+
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

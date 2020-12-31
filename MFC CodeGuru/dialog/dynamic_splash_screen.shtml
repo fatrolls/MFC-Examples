@@ -1,0 +1,122 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Section - Title</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Splash screen with text on it that uses its own thread
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:mloibl@moss.de">Markus Loibl</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="dynamic_splash_screen.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+<p><IMG SRC="dynamic_splash_screen.gif">
+
+<h4>Purpose:</h4>
+
+Shows a splash screen with extra features:
+<ul>
+	<li>Enables dynamic writing of text on the splash-screen
+	<li>Enables dynamic displaying bitmaps transparently on the splash-screen
+	<li>All text-effects (text, sizes, fonts, positions) can be changed within a timer-procedure
+	This allows you to create "animated" splash-screens
+	<li>Uses a second thread, useful especially for long startup-time of application
+</ul>
+
+<h4>How to use:</h4>
+
+1. You have to create the spash within your CMainFrame::OnCreate().<br>
+Then, set bitmap, text and  some other settings (text-positions and how long the splash
+should appear) and call CreateThread().<br>
+That's all. The thread is destroyed and deleted automatically!
+
+<FONT COLOR="#990000"><TT><PRE>
+int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	CSplashThread *pThread = new CSplashThread();
+	pThread->AddStringHeaderMain("My Application");
+	// .. some other settings
+	pThread->SetTimerDuration(5000); // 5 seconds
+	pThread->CreateThread();
+
+
+	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	// ...
+}
+</tt></PRE></FONT>
+
+2. If you want extra features, create your own thread-class derived from CSplashThread
+(as done in the sample, download-size is 140 kB). Within this sample, the internal timer
+is activated. Each timer resets the position of the Header-text and repaints the splash.
+This creaes an animated splash-screen.
+
+<h4>How it works:</h4>
+* The splash-screen uses the class CSplashThread which is derived from CWinThread. The
+splash-Window is created from the internal CSplashThread::InitInstance(). This function
+is called when the thread is created with CWinThread::CreateThread().<br>
+* In InitInstance() the Splash-Window is created. Then the splash-window redirects some
+important messages,  like painting, timer, to the creating CSplashThread-class. This class
+handles these messages.<br>
+* The thread is destroyed when the "finish-timer arrives" with SetTimerDuration(). It calls
+HideSplashScreen()  (you can call this function also directly, like in the sample).
+HideSplashScreen() calls DestroyWindow() of the splash-window.<br>
+* If you want extras, just derive from the class and override some functions, as shown in the example.
+
+<h4>Remarks:</h4>
+* If you have enchancements to the code, mail to mloibl@moss.de<br>
+* The sample uses the function DrawTransparentBitmap(). The original code is from Q79212
+and  some places also here on www.codeguru.com. It is changed, because the code doesn't 
+work with mapping-modes other than MM_TEXT<br>
+* There should be no reason for the code not working with unicode<br>
+* This code was build with MFC shipped with VC++5.0,  Enterprise Edition, Service Pack 3<br>
+
+<!-- Remember to update this -->
+<p>Last updated: 14 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

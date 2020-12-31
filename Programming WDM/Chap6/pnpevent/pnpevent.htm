@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The PNPEVENT Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The PNPEVENT Sample</H2>
+<P>The PNPEVENT Sample accompanies Chapter 6 and illustrates how to intercept Plug and Play events in user mode.</P>
+<P>The sample includes two components:</P>
+
+<UL>
+<LI>PNPEVENT.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a user-mode test program for PNPEVENT.SYS.</LI></UL>
+
+<H3>Building PNPEVENT</H3>
+<P>To build PNPEVENT.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named PNPEVENT.DSP in the SYS subdirectory.</P>
+<P>To build TEST.EXE, follow the <A HREF="../../wdmbook.htm#usermodebuild">general instructions for building user-mode programs</A>. The Microsoft Visual C++ project file is named TEST.DSP in the TEST subdirectory.</P>
+<H3>Testing PNPEVENT</H3>
+<P>First launch the TEST.EXE program from the TEST\DEBUG subdirectory. TEST will present a simple dialog box with the title "PnP Event Driver Test Applet".</P>
+<P>With the TEST dialog visible, install the PNPEVENT driver. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF.</P>
+<B><I><P>In Windows 98, you’ll also need to have </B></I><A HREF="../../appendixa/wdmstub/wdmstub.htm">WDMSTUB.VXD</A><B><I> installed. PNPEVENT.SYS will otherwise fail to load because of its reference to IoReportTargetDeviceChangeAsynchronous.</P>
+</B></I><P>When you install PNPEVENT, it registers a device interface for which TEST has called RegisterDeviceNotification. You should see a message about the arrival of the device.</P>
+<P>Now try disabling PNPEVENT in the Device Manager. In Windows 2000, Device Manager will ask you if you’re sure you want to disable the device, and you should answer, "Yes." (In Windows 98, you'll be checking the check box labelled "Disable In This Hardware Profile" on the properties page, and the Device Manager won't acknowledge your selection.) TEST will also ask you if it’s OK to remove the device. Answering "No" at this point will prevent PNPEVENT from actually being removed until you reboot the computer.</P>
+<P>If you answer "Yes" to TEST’s query about removing the device, TEST will then present a message box to inform you it’s closing its device handle. Thereafter, you’ll see a message in TEST’s dialog to the effect that the PNPEVENT device has been removed.</P>
+<I><P>The Send Event button will be enabled while the PNPEVENT device is present, but you won’t be able to see what it does unless you run the </I><A HREF="../pnpmon/pnpmon.htm">PNPMON sample</A><I> at the same time.</P></I></BODY>
+</HTML>

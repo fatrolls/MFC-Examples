@@ -1,0 +1,275 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Misc - Retrieving version information from module resources (2)</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Retrieving version information from module resources (2)
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:mlaflamm@total.net">Manuel Laflamme </A>.
+
+<!-- The article... -->
+
+<p>Roberto Rocco already give us a class to get version information from module
+resources (.exe, .dll, etc.) it works great for the fixed information but
+you have to know the language-charset of the module for retrieving language
+dependant information.
+
+<p>My class, CFileVersion, allow you to get fixed and the language dependant
+information. The class use the first language-charset available from the
+module, so you don't have to worry about it.
+
+<p>Some of the most use information have predefined method like
+GetFileVersion(), GetCompanyName(), etc. You can also use QueryValue() if
+you need to get uncommon or custom data, or if you really want to get data
+from a specific language-charset.
+
+<p>You don't have to explicitly add version.lib on your project setting, a
+pragma directive take care of it.
+
+<p>And now the class:
+
+<FONT COLOR="#990000"><TT><PRE>
+// FileVersion.h: interface for the CFileVersion class.
+// by Manuel Laflamme
+//////////////////////////////////////////////////////////////////////
+
+#ifndef __FILEVERSION_H_
+#define __FILEVERSION_H_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+class CFileVersion
+{ 
+// Construction
+public: 
+    CFileVersion();
+
+// Operations	
+public: 
+    BOOL    Open(LPCTSTR lpszModuleName);
+    void    Close();
+
+    CString QueryValue(LPCTSTR lpszValueName, DWORD dwLangCharset = 0);
+    CString GetFileDescription()  {return QueryValue(_T("FileDescription")); };
+    CString GetFileVersion()      {return QueryValue(_T("FileVersion"));     };
+    CString GetInternalName()     {return QueryValue(_T("InternalName"));    };
+    CString GetCompanyName()      {return QueryValue(_T("CompanyName"));     }; 
+    CString GetLegalCopyright()   {return QueryValue(_T("LegalCopyright"));  };
+    CString GetOriginalFilename() {return QueryValue(_T("OriginalFilename"));};
+    CString GetProductName()      {return QueryValue(_T("ProductName"));     };
+    CString GetProductVersion()   {return QueryValue(_T("ProductVersion"));  };
+
+    BOOL    GetFixedInfo(VS_FIXEDFILEINFO& vsffi);
+    CString GetFixedFileVersion();
+    CString GetFixedProductVersion();
+
+// Attributes
+protected:
+    LPBYTE  m_lpVersionData; 
+    DWORD   m_dwLangCharset; 
+
+// Implementation
+public:
+    ~CFileVersion(); 
+}; 
+
+#endif  // __FILEVERSION_H_
+
+
+
+
+// FileVersion.cpp: implementation of the CFileVersion class.
+// by Manuel Laflamme 
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "FileVersion.h"
+
+#pragma comment(lib, "version")
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+
+CFileVersion::CFileVersion() 
+{ 
+    m_lpVersionData = NULL;
+    m_dwLangCharset = 0;
+}
+
+CFileVersion::~CFileVersion() 
+{ 
+    Close();
+} 
+
+void CFileVersion::Close()
+{
+    delete[] m_lpVersionData; 
+    m_lpVersionData = NULL;
+    m_dwLangCharset = 0;
+}
+
+BOOL CFileVersion::Open(LPCTSTR lpszModuleName)
+{
+    ASSERT(_tcslen(lpszModuleName) > 0);
+    ASSERT(m_lpVersionData == NULL);
+
+    // Get the version information size for allocate the buffer
+    DWORD dwHandle;     
+    DWORD dwDataSize = ::GetFileVersionInfoSize((LPTSTR)lpszModuleName, &dwHandle); 
+    if ( dwDataSize == 0 ) 
+        return FALSE;
+
+    // Allocate buffer and retrieve version information
+    m_lpVersionData = new BYTE[dwDataSize]; 
+    if (!::GetFileVersionInfo((LPTSTR)lpszModuleName, dwHandle, dwDataSize, 
+	                          (void**)m_lpVersionData) )
+    {
+        Close();
+        return FALSE;
+    }
+
+    // Retrieve the first language and character-set identifier
+    UINT nQuerySize;
+    DWORD* pTransTable;
+    if (!::VerQueryValue(m_lpVersionData, _T("\\VarFileInfo\\Translation"),
+                         (void **)&pTransTable, &nQuerySize) )
+    {
+        Close();
+        return FALSE;
+    }
+
+    // Swap the words to have lang-charset in the correct format
+    m_dwLangCharset = MAKELONG(HIWORD(pTransTable[0]), LOWORD(pTransTable[0]));
+
+    return TRUE;
+}
+
+CString CFileVersion::QueryValue(LPCTSTR lpszValueName, 
+                                 DWORD dwLangCharset /* = 0*/)
+{
+    // Must call Open() first
+    ASSERT(m_lpVersionData != NULL);
+    if ( m_lpVersionData == NULL )
+        return (CString)_T("");
+
+    // If no lang-charset specified use default
+    if ( dwLangCharset == 0 )
+        dwLangCharset = m_dwLangCharset;
+
+    // Query version information value
+    UINT nQuerySize;
+    LPVOID lpData;
+    CString strValue, strBlockName;
+    strBlockName.Format(_T("\\StringFileInfo\\%08lx\\%s"), 
+	                     dwLangCharset, lpszValueName);
+    if ( ::VerQueryValue((void **)m_lpVersionData, strBlockName.GetBuffer(0), 
+	                     &lpData, &nQuerySize) )
+        strValue = (LPCTSTR)lpData;
+
+    strBlockName.ReleaseBuffer();
+
+    return strValue;
+}
+
+BOOL CFileVersion::GetFixedInfo(VS_FIXEDFILEINFO& vsffi)
+{
+    // Must call Open() first
+    ASSERT(m_lpVersionData != NULL);
+    if ( m_lpVersionData == NULL )
+        return FALSE;
+
+    UINT nQuerySize;
+	VS_FIXEDFILEINFO* pVsffi;
+    if ( ::VerQueryValue((void **)m_lpVersionData, _T("\\"),
+                         (void**)&pVsffi, &nQuerySize) )
+    {
+        vsffi = *pVsffi;
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+CString CFileVersion::GetFixedFileVersion()
+{
+    CString strVersion;
+	VS_FIXEDFILEINFO vsffi;
+
+    if ( GetFixedInfo(vsffi) )
+    {
+        strVersion.Format ("%u,%u,%u,%u",HIWORD(vsffi.dwFileVersionMS),
+            LOWORD(vsffi.dwFileVersionMS),
+            HIWORD(vsffi.dwFileVersionLS),
+            LOWORD(vsffi.dwFileVersionLS));
+    }
+    return strVersion;
+}
+
+CString CFileVersion::GetFixedProductVersion()
+{
+    CString strVersion;
+	VS_FIXEDFILEINFO vsffi;
+
+    if ( GetFixedInfo(vsffi) )
+    {
+        strVersion.Format ("%u,%u,%u,%u", HIWORD(vsffi.dwProductVersionMS),
+            LOWORD(vsffi.dwProductVersionMS),
+            HIWORD(vsffi.dwProductVersionLS),
+            LOWORD(vsffi.dwProductVersionLS));
+    }
+    return strVersion;
+}
+</tt></PRE></FONT>
+
+ 
+<!-- Remember to update this -->
+<p>Last updated: 2 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

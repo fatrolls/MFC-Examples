@@ -1,0 +1,1243 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>C++ - AVLTree - template version </TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+AVLTree - template version
+
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:Jaeger-Geitersdorf@t-online.de">Andreas Jäger</A>.
+
+<!-- The article... -->
+<p>
+I have implemented the binary tree's of Addison-Velski and Landis
+(AVL-Tree's), which allow Standard-operation like Insert, Search and delete
+in logarithmical time. Ordinary binary trees can become very obscure, they
+can become a linear structure and the basic operations take linear and not
+logarithmical time. The advantage of the AVL-Tree's is a strategy of
+restructurate the tree after Insert- and Delete-operations. The
+restructuration itself only takes logarithmical time. So the trees are
+high-efficient binary trees to hold a large number of items. I use such
+trees to sort data. The sort of data using AVL-Trees takes n*log(n)-time,
+so you can sort a lot of data in optimal time. I have sorted with that
+technology hundrets of thousands of items, within a quarter of an hour. It
+is very easy to eliminate duplicates, duplicates will  not be inserted in
+the tree. What other algorithm works so efficient??? And the greatest
+advantage is, that the code is absolutely easy to use, 10 lines are enough
+to sort a file. The Trees are implemented as templates, so you can use
+everything you want as item. Items only must be comparable. The code is
+self-documentating. The classes are CAVLNode&lt;class T&gt;, CAVLTree&lt;class T&gt;
+and CAVLTreeIterator&lt;class T&gt;.
+<p>
+Here is an example to sort a file:
+
+<pre><tt><font COLOR="#990000">
+// sample code
+#include "AVLBaum.h"
+
+void SortFile(const char* iname, const char* ofname)
+{
+	ifstream is(ifname);
+	ofstream os(ofname);
+	char buffer[255];
+	CAVLTree&lt;CString&gt; tree;
+	while (is.getline(buffer, sizeof(buffer)-1)
+		tree.Insert(new CString(buffer));
+	CAVLTreeIterator&lt;CString&gt; iter(tree);
+	while (iter)
+	{
+		os &lt;&lt; *(iter.GetData()) &lt;&lt; endl;
+		iter++;
+	}
+}
+
+// end of sample code
+</font></tt></pre>
+And now the "AVLBaum.h":
+<pre><tt><font COLOR="#990000">
+// Creator: Andreas Jäger
+//          Ortsstr. Nr. 2
+//        D-07407 Geitersdorf
+//
+// Last updated: 04. April 1998
+// e-mail: Jaeger-Geitersdorf@t-online.de
+//
+// you can use and modify that code free when preserving
+// the name of the creator
+//
+// have fun!
+//
+////////////////////////////////////////////////////////////////
+// Note:                                                      //
+// there must be a function T::Compare(T&amp;)                    //
+// or the function Compare of teh Template-Klasse             //
+// CAVLNode&lt;T&gt; has to be overridden.                          //
+////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////
+// Vorbemerkungen:                                            //
+// Es muß eine Funktion T::Compare(T&amp;) definiert sein         //
+// oder es muß die Funktion Compare der Template-Klasse       //
+// CAVLNode&lt;T&gt; überschrieben werden.                          //
+////////////////////////////////////////////////////////////////
+
+// Forward-Deklarationen
+template &lt;class T&gt;
+class CAVLNode;
+
+template &lt;class T&gt;
+class CAVLTree;
+
+template &lt;class T&gt;
+class CAVLTreeIterator;
+
+/* siehe unter
+template &lt;class T&gt;
+class CAVLTreeDialog;
+*/
+
+////////////////////////////////////////////////////////////////
+// AVL-treenode (=subtree) (Template-Version)                 //
+////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////
+// AVL-Baumknoten (=Teilbaum) (Template-Variante)             //
+////////////////////////////////////////////////////////////////
+
+template &lt;class T&gt;
+class CAVLNode
+{
+public:
+	// standard constructor, constructors, destructor
+	// Standard-Konstruktor, Konstruktor(en) und Destruktor
+	CAVLNode(T* data, int balance = 0, CAVLNode&lt;T&gt;* parent = NULL,
+			CAVLNode&lt;T&gt;* left = NULL, CAVLNode&lt;T&gt;* right = 0);
+	virtual ~CAVLNode();
+
+	// searching
+	// Suchen
+	CAVLNode&lt;T&gt;* Search(const T* data);
+
+	// comparing
+	// Vergleich
+	static int Compare(const T&amp; t1, const T&amp; t2);
+
+	// information about the position in the tree
+	// Informationen über die Position im Baum
+	bool IsRoot() const;
+	bool IsLeftSibling() const;
+	bool IsRightSibling() const;
+	bool HasLeftSibling() const;
+	bool HasRightSibling() const;
+
+	// further information
+	// Weitere Informationen
+	int GetDepth() const;
+	int Level() const;
+	int NodesInTree() const;
+
+	// navigation in the tree
+	// Navigation im Baum
+	CAVLNode&lt;T&gt;* GetRoot();
+
+	CAVLNode&lt;T&gt;* GetLeftSibling();
+	CAVLNode&lt;T&gt;* GetRightSibling();
+
+	CAVLNode&lt;T&gt;* GetFirstNodeInOrder();
+	CAVLNode&lt;T&gt;* GetLastNodeInOrder();
+
+	CAVLNode&lt;T&gt;* GetPrevNodeInOrder();
+	CAVLNode&lt;T&gt;* GetNextNodeInOrder();
+
+	// restructuration
+	// Restrukturierungs-Maßnahmen
+	bool LeftRotation();
+	bool RightRotation();
+	bool DoubleRotationLeft();
+	bool DoubleRotationRight();
+
+	// drawing into a device context, not fully implemented
+	// Visualisierung in einem Gerätekontext
+	void Draw(CDC* dc, CRect&amp; rect);
+
+	// item-data
+	// Datenelement
+	T* Data;
+
+	// informationen about the height of the subtrees
+	// -1: left subtree is by 1 higher than the right one
+	//  0: both subtrees have the same height
+	//  1: right subtree is by 1 higher than the left one
+
+	// Informationen über die Tiefe der Teilbäume
+	// -1: linker Baum ist um 1 tiefer als rechter
+	//  0: beide Teilbäume haben die gleiche Tiefe
+	//  1: rechter Baum ist um 1 tiefer als linker
+
+	int Balance;
+
+	// parent node
+	// Übergeordneter Knoten
+	CAVLNode&lt;T&gt;* Parent;
+
+	// left and right subtree
+	// Linker und rechter Teilbaum
+	CAVLNode&lt;T&gt;* Left;
+	CAVLNode&lt;T&gt;* Right;
+private:
+	CAVLNode&lt;T&gt;* GetInsertPosition(const T* data);
+	bool RestructureInsert();
+	bool RestructureDelete();
+
+	CAVLNode(const CAVLNode&lt;T&gt;&amp; /*tree*/) {};
+	CAVLNode&amp; operator= (const CAVLNode&lt;T&gt;&amp; /*tree*/) {return *this;};
+
+	friend class CAVLTree&lt;T&gt;;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;::CAVLNode(T* data, int balance, CAVLNode&lt;T&gt;* parent,
+CAVLNode&lt;T&gt;* left, CAVLNode&lt;T&gt;* right)
+	: Data(data),
+	  Balance(balance),
+	  Parent(parent),
+	  Left(left),
+	  Right(right)
+{
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;::~CAVLNode()
+{
+	delete Left;
+	delete Right;
+	delete Data;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::RestructureInsert()
+{
+	CAVLNode&lt;T&gt;* item = this;
+	while (!item-&gt;IsRoot())
+	{
+		// rule 1
+		// Regel 1
+		if (item-&gt;IsLeftSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == 0)
+		{
+			item-&gt;Parent-&gt;Balance = -1;
+			item = item-&gt;Parent;
+			continue;
+		}
+		if (item-&gt;IsRightSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == 0)
+		{
+			item-&gt;Parent-&gt;Balance = 1;
+			item = item-&gt;Parent;
+			continue;
+		}
+		// rule 2
+		// Regel 2
+		if (item-&gt;IsLeftSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == 1)
+		{
+			item-&gt;Parent-&gt;Balance = 0;
+			break;
+		}
+		if (item-&gt;IsRightSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == -1)
+		{
+			item-&gt;Parent-&gt;Balance = 0;
+			break;
+		}
+		// rule 3
+		// Regel 3
+		if (item-&gt;IsLeftSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == -1)
+		{
+			if (item-&gt;Balance == 1)
+				item-&gt;Parent-&gt;DoubleRotationLeft();
+			else
+				item-&gt;Parent-&gt;RightRotation();
+			break;
+		}
+		if (item-&gt;IsRightSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == 1)
+		{
+			if (item-&gt;Balance == -1)
+				item-&gt;Parent-&gt;DoubleRotationRight();
+			else
+				item-&gt;Parent-&gt;LeftRotation();
+			break;
+		}
+	}
+	return true;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::RestructureDelete()
+{
+	// Regeln für den Elternknoten des gerade gelöschten Blattes
+	// anwenden, bevor mit dem eigentlichen Aufstieg begonnen
+	// werden kann
+	// Regel 1
+	CAVLNode&lt;T&gt;* item = this;
+	if (item-&gt;Balance == 0 &amp;&amp; item-&gt;Left == NULL)
+	{
+		item-&gt;Balance = 1;
+		return true;
+	}
+	if (item-&gt;Balance == 0 &amp;&amp; item-&gt;Right == NULL)
+	{
+		item-&gt;Balance = -1;
+		return true;
+	}
+	// Regel 2
+	if (item-&gt;Balance == -1 &amp;&amp; item-&gt;Left == NULL)
+	{
+		item-&gt;Balance = 0;
+	}
+	if (item-&gt;Balance == 1 &amp;&amp; item-&gt;Right == NULL)
+	{
+		item-&gt;Balance = 0;
+	}
+	// Regel 3
+	if (item-&gt;Balance == -1 &amp;&amp; item-&gt;Right == 0)
+	{
+		if (item-&gt;Left-&gt;Balance == 1)
+			item-&gt;DoubleRotationLeft();
+		else
+			item-&gt;RightRotation();
+		item = item-&gt;Parent; // Zeiger sind durch die Rotation etwas verrutscht
+		//return true;
+	}
+	if (item-&gt;Balance == 1 &amp;&amp; item-&gt;Left == 0)
+	{
+		if (item-&gt;Right-&gt;Balance == -1)
+			item-&gt;DoubleRotationRight();
+		else
+			item-&gt;LeftRotation();
+		item = item-&gt;Parent; // Zeiger sind durch die Rotation etwas verrutscht
+		//return true;
+	}
+	// Beginn des eigentlichen Aufstiegs
+	while (!item-&gt;IsRoot())
+	{
+		// Regel 1
+		if (item-&gt;IsLeftSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == 0)
+		{
+			item-&gt;Parent-&gt;Balance = 1;
+			break;
+		}
+		if (item-&gt;IsRightSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == 0)
+		{
+			item-&gt;Parent-&gt;Balance = -1;
+			break;
+		}
+		// Regel 2
+		if (item-&gt;IsLeftSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == -1)
+		{
+			item-&gt;Parent-&gt;Balance = 0;
+			item = item-&gt;Parent;
+			continue;
+		}
+		if (item-&gt;IsRightSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == 1)
+		{
+			item-&gt;Parent-&gt;Balance = 0;
+			item = item-&gt;Parent;
+			continue;
+		}
+		// Regel 3
+		if (item-&gt;IsRightSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == -1)
+		{
+			if (item-&gt;Parent-&gt;Left-&gt;Balance == 1)
+				item-&gt;Parent-&gt;DoubleRotationLeft();
+			else
+				item-&gt;Parent-&gt;RightRotation();
+			item = item-&gt;Parent-&gt;Parent; // Zeiger sind durch die Rotation etwas verrutscht
+			continue;
+		}
+		if (item-&gt;IsLeftSibling() &amp;&amp; item-&gt;Parent-&gt;Balance == 1)
+		{
+			if (item-&gt;Parent-&gt;Right-&gt;Balance == -1)
+				item-&gt;Parent-&gt;DoubleRotationRight();
+			else
+				item-&gt;Parent-&gt;LeftRotation();
+			item = item-&gt;Parent-&gt;Parent; // Zeiger sind durch die Rotation etwas verrutscht
+			continue;
+		}
+	}
+	return true;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::Search(const T* data)
+{
+	switch (Compare(*Data, *data))
+	{
+	case -1:
+		if (!Right) return NULL;
+		return Right-&gt;Search(data);
+	case  0: return this;
+	case  1:
+		if (!Left) return NULL;
+		return Left-&gt;Search(data);
+	}
+	return NULL;
+};
+
+template &lt;class T&gt;
+int CAVLNode&lt;T&gt;::Compare(const T&amp; t1, const T&amp; t2)
+{
+	return t1.Compare(t2);
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::IsRoot() const
+{
+	return Parent == NULL;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::IsLeftSibling() const
+{
+	return !IsRoot() &amp;&amp; Parent-&gt;Left == this;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::IsRightSibling() const
+{
+	return !IsRoot() &amp;&amp; Parent-&gt;Right == this;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::HasLeftSibling() const
+{
+	return !IsRoot() &amp;&amp; IsRightSibling() &amp;&amp; Parent-&gt;Left != NULL;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::HasRightSibling() const
+{
+	return !IsRoot() &amp;&amp; IsLeftSibling() &amp;&amp; Parent-&gt;Right != NULL;
+};
+
+template &lt;class T&gt;
+int CAVLNode&lt;T&gt;::GetDepth() const
+{
+	int i = 0;
+	if (Left != NULL)
+		i = Left-&gt;GetDepth();
+	if (Right != NULL)
+		i = max(i, Right-&gt;GetDepth());
+	return i+1;
+};
+
+template &lt;class T&gt;
+int CAVLNode&lt;T&gt;::Level() const
+{
+	CAVLNode&lt;T&gt;* item = this;
+	int level = 0;
+	while (item-&gt;Parent != NULL)
+	{
+		item = item-&gt;Parent;
+		level++;
+	}
+};
+
+template &lt;class T&gt;
+int CAVLNode&lt;T&gt;::NodesInTree() const
+{
+	int Nodes = 1;
+	if (Left != NULL)
+		Nodes += Left-&gt;NodesInTree();
+	if (Right != NULL)
+		Nodes += Right-&gt;NodesInTree();
+	return Nodes;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::GetRoot()
+{
+	CAVLNode&lt;T&gt;* item = this;
+	while (item-&gt;Parent != NULL) item = item-&gt;Parent;
+	return item;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::GetLeftSibling()
+{
+	if (IsRoot() || IsLeftSibling()) return NULL;
+	return Parent-&gt;Left;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::GetRightSibling()
+{
+	if (IsRoot() || IsRightSibling()) return NULL;
+	return Parent-&gt;Right;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::GetFirstNodeInOrder()
+{
+	CAVLNode&lt;T&gt;* item = this;
+	while (item-&gt;Left != NULL)
+	{
+		item = item-&gt;Left;
+	}
+	return item;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::GetLastNodeInOrder()
+{
+	CAVLNode&lt;T&gt;* item = this;
+	while (item-&gt;Right != NULL)
+	{
+		item = item-&gt;Right;
+	}
+	return item;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::GetPrevNodeInOrder()
+{
+	if (Left != NULL)
+	{
+		return Left-&gt;GetLastNodeInOrder();
+	}
+	if (IsRightSibling()) return Parent;
+	CAVLNode&lt;T&gt;* item = this;
+	while (!item-&gt;IsRoot())
+	{
+		if (item-&gt;IsLeftSibling())
+			item = item-&gt;Parent;
+		else
+			return item-&gt;Parent;
+	}
+	return NULL;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::GetNextNodeInOrder()
+{
+	if (Right != NULL)
+	{
+		return Right-&gt;GetFirstNodeInOrder();
+	}
+	if (IsLeftSibling()) return Parent;
+	CAVLNode&lt;T&gt;* item = this;
+	while (!item-&gt;IsRoot())
+	{
+		if (item-&gt;IsRightSibling())
+			item = item-&gt;Parent;
+		else
+			return item-&gt;Parent;
+	}
+	return NULL;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLNode&lt;T&gt;::GetInsertPosition(const T* data)
+{
+	switch (Compare(*Data, *data))
+	{
+	case -1:
+		if (!Right) return this;
+		return Right-&gt;GetInsertPosition(data);
+	case  0:
+		return NULL; // Fehler, Objekt schon im Baum
+		// error, object already in the tree (only inserted once!)
+	case  1:
+		if (!Left) return this;
+		return Left-&gt;GetInsertPosition(data);
+	}
+	return NULL; // tritt nie auf
+	// never happens
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::LeftRotation()
+{
+	ASSERT(Right != NULL);
+
+	if (Right == NULL) return false;
+
+	CAVLNode&lt;T&gt;* b = Right;
+	// Falls nicht die Wurzel: Knoten b wird Kind
+	if (!IsRoot())
+	{
+		if (IsLeftSibling())
+			Parent-&gt;Left = b;
+		else
+			Parent-&gt;Right = b;
+		b-&gt;Parent = Parent;
+	}
+	else
+	{
+		b-&gt;Parent = NULL;
+	}
+
+	// Zeiger korrekt umsetzen
+	Right = b-&gt;Left;
+	b-&gt;Left = this;
+
+	// Elternzeiger setzen
+	Parent = b;
+	if (Right != NULL) Right-&gt;Parent = this;
+
+	// Balancen setzen
+	if (b-&gt;Balance == 0)
+	{
+		Balance = 1;
+		b-&gt;Balance = -1;
+	}
+	else
+	{
+		Balance = 0;
+		b-&gt;Balance = 0;
+	}
+
+	return true;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::RightRotation()
+{
+	ASSERT(Left != NULL);
+
+	if (Left == NULL) return false;
+
+	CAVLNode&lt;T&gt;* b = Left;
+	// Falls nicht die Wurzel: Knoten b wird Kind
+	if (!IsRoot())
+	{
+		if (IsLeftSibling())
+			Parent-&gt;Left = b;
+		else
+			Parent-&gt;Right = b;
+		b-&gt;Parent = Parent;
+	}
+	else
+	{
+		b-&gt;Parent = NULL;
+	}
+
+	// Zeiger korrekt umsetzen
+	Left = b-&gt;Right;
+	b-&gt;Right = this;
+
+	// Elternzeiger setzen
+	Parent = b;
+	if (Left != NULL) Left-&gt;Parent = this;
+
+	// Balancen setzen
+	if (b-&gt;Balance == 0)
+	{
+		Balance = -1;
+		b-&gt;Balance = 1;
+	}
+	else
+	{
+		Balance = 0;
+		b-&gt;Balance = 0;
+	}
+
+	return true;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::DoubleRotationLeft()
+{
+	ASSERT(Left != NULL &amp;&amp; Left-&gt;Right != NULL);
+
+	if (Left == NULL || Left-&gt;Right == NULL) return false;
+
+	CAVLNode&lt;T&gt;* b = Left;
+	CAVLNode&lt;T&gt;* c = Left-&gt;Right;
+
+	// Falls nicht die Wurzel: Knoten c wird Kind
+	if (!IsRoot())
+	{
+		if (IsLeftSibling())
+			Parent-&gt;Left = c;
+		else
+			Parent-&gt;Right = c;
+	}
+
+	// Zeiger korrekt umsetzen
+	b-&gt;Right = c-&gt;Left;
+	Left = c-&gt;Right;
+	c-&gt;Left = b;
+	c-&gt;Right = this;
+
+	// Elternzeiger setzen
+	c-&gt;Parent = Parent;
+	Parent = c;
+	b-&gt;Parent = c;
+	if (b-&gt;Right != NULL) b-&gt;Right-&gt;Parent = b;
+	if (Left != NULL) Left-&gt;Parent = this;
+
+	// Balancen setzen
+	switch (c-&gt;Balance)
+	{
+	case -1:
+		Balance = 1;
+		b-&gt;Balance = 0;
+		break;
+	case 0:
+		Balance = 0;
+		b-&gt;Balance = 0;
+		break;
+	case 1:
+		Balance = 0;
+		b-&gt;Balance = -1;
+		break;
+	}
+	c-&gt;Balance = 0;
+
+	return true;
+};
+
+template &lt;class T&gt;
+bool CAVLNode&lt;T&gt;::DoubleRotationRight()
+{
+	ASSERT(Right != NULL &amp;&amp; Right-&gt;Left != NULL);
+
+	if (Right == NULL || Right-&gt;Left == NULL);
+
+	CAVLNode&lt;T&gt;* b = Right;
+	CAVLNode&lt;T&gt;* c = Right-&gt;Left;
+
+	// Falls nicht die Wurzel: Knoten c wird Kind
+	if (!IsRoot())
+	{
+		if (IsLeftSibling())
+			Parent-&gt;Left = c;
+		else
+			Parent-&gt;Right = c;
+	}
+
+	// Zeiger korrekt umsetzen
+	Right = c-&gt;Left;
+	b-&gt;Left = c-&gt;Right;
+	c-&gt;Left = this;
+	c-&gt;Right = b;
+
+	// Elternzeiger setzen
+	c-&gt;Parent = Parent;
+	Parent = c;
+	b-&gt;Parent = c;
+	if (Right != NULL) Right-&gt;Parent = this;
+	if (b-&gt;Left != NULL) b-&gt;Left-&gt;Parent = b;
+
+	// Balancen setzen
+	switch (c-&gt;Balance)
+	{
+	case -1:
+		Balance = 0;
+		b-&gt;Balance = 1;
+		break;
+	case 0:
+		Balance = 0;
+		b-&gt;Balance = 0;
+		break;
+	case 1:
+		Balance = -1;
+		b-&gt;Balance = 0;
+		break;
+	}
+	c-&gt;Balance = 0;
+
+	return true;
+};
+
+template &lt;class T&gt;
+void CAVLNode&lt;T&gt;::Draw(CDC* dc, CRect&amp; rect)
+{
+	int depth = GetDepth();
+	CSize Size = dc-&gt;GetTextExtent(*Data);
+	dc-&gt;TextOut((rect.left+rect.right)/2-Size.cx/2, rect.top, *Data);
+
+	if (Left != NULL)
+	{
+		CRect rect1 = rect;
+		rect1.top += 2*Size.cy;
+		rect1.right = (rect.right+rect.left)/2;
+		dc-&gt;MoveTo((rect.left+rect.right)/2, rect.top+Size.cy);
+		dc-&gt;LineTo((rect1.left+rect1.right)/2, rect1.top);
+		Left-&gt;Draw(dc, rect1);
+	}
+	if (Right != NULL)
+	{
+		CRect rect2 = rect;
+		rect2.top += 2*Size.cy;
+		rect2.left = (rect.right+rect.left)/2;
+		dc-&gt;MoveTo((rect.left+rect.right)/2, rect.top+Size.cy);
+		dc-&gt;LineTo((rect2.left+rect2.right)/2, rect2.top);
+		Right-&gt;Draw(dc, rect2);
+	}
+};
+
+////////////////////////////////////////////////////////////////
+// AVL-Tree (Template-Version)                                //
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+// AVL-Baum (Template-Variante)                               //
+////////////////////////////////////////////////////////////////
+
+// Requirements for the class T:
+// Objects of class T must be comparable.
+// A function
+// int T::Compare(const T&amp; t) const
+// must be implemented.
+// Return values:
+//    -1, if *this &lt;  t
+//     0, if *this == t
+//     1, if *this &gt;  t
+
+// Anforderungen an die Klasse T:
+// Objekte der Klasse T müssen vergleichbar sein.
+// Der Vergleich erfolgt über eine Funktion
+// int T::Compare(const T&amp; t) const
+// Rückgabewerte:
+//    -1, falls *this &lt;  t
+//     0, falls *this == t
+//     1, falls *this &gt;  t
+
+template &lt;class T&gt;
+class CAVLTree
+{
+public:
+	// construction and destruction
+	// Standard-Konstruktor, Konstruktor und Destruktor
+	CAVLTree();
+	virtual ~CAVLTree();
+
+	// information
+	// Informationen
+	bool IsEmpty() const;
+	int GetDepth() const;
+
+	// access to the root of the tree
+	// Zugriff auf die Wurzel
+	CAVLNode&lt;T&gt;* GetRoot();
+
+	// insert and delete
+	// Insert und Delete
+	CAVLNode&lt;T&gt;* Insert(T* data, bool autodelete = true);
+	bool Delete(T* data);
+
+	bool DeleteAll();
+
+	void Draw(CDC* dc, CRect&amp; rect);
+private:
+	CAVLNode&lt;T&gt;* Tree;
+
+	friend class CAVLTreeIterator&lt;T&gt;;
+	/* siehe unten
+	friend class CAVLTreeDialog&lt;T&gt;;
+	*/
+};
+
+template &lt;class T&gt;
+CAVLTree&lt;T&gt;::CAVLTree() : Tree(NULL)
+{
+};
+
+template &lt;class T&gt;
+CAVLTree&lt;T&gt;::~CAVLTree()
+{
+	delete Tree;
+};
+
+template &lt;class T&gt;
+bool CAVLTree&lt;T&gt;::IsEmpty() const
+{
+	return Tree == NULL;
+};
+
+template &lt;class T&gt;
+int CAVLTree&lt;T&gt;::GetDepth() const
+{
+	if (Tree == NULL) return 0;
+	return Tree-&gt;GetDepth();
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLTree&lt;T&gt;::Insert(T* data, bool autodelete)
+{
+	// if the tree is empty, the root is used to store the entry
+
+	// Wenn der Baum noch leer ist, kann (und muß) die Wurzel
+	// selbst dazu benutzt werden, um den Eintrag aufzunehmen
+	if (IsEmpty())
+	{
+		Tree = new CAVLNode&lt;T&gt;(data, 0, NULL, NULL, NULL);
+		return Tree;
+	}
+	// detect insert position
+	// Einfügeposition ermitteln
+	CAVLNode&lt;T&gt;* item = Tree-&gt;GetInsertPosition(data);
+	if (item == NULL)
+	{
+		if (autodelete)
+			delete data;
+		return NULL;
+	}
+	// create a new node
+	// Neuen Knoten erzeugen
+	CAVLNode&lt;T&gt;* newitem = new CAVLNode&lt;T&gt;(data, 0, item, NULL, NULL);
+	// link with parents
+	// Mit Eltern verknüpfen
+	if (CAVLNode&lt;T&gt;::Compare(*(item-&gt;Data), *data) == -1)
+		item-&gt;Right = newitem;
+	else
+		item-&gt;Left = newitem;
+	// restructuration
+	//Restrukturierungs-Maßnahmen
+	newitem-&gt;RestructureInsert();
+	Tree = Tree-&gt;GetRoot();
+	// return the new inserted node
+	// Rückgabe des neu eingefügten Knotens
+	return newitem;
+};
+
+template &lt;class T&gt;
+bool CAVLTree&lt;T&gt;::Delete(T* data)
+{
+	// if the tree is empty there is nothing to delete
+	// Wenn der Baum leer ist, gibt es auch nichts zu löschen
+	if (IsEmpty()) return false;
+	CAVLNode&lt;T&gt;* item = Tree-&gt;Search(data);
+	if (item == NULL) return false; // Element nicht im Baum
+	// element not in the tree
+
+	// if we want to delete the root item, we have to do some extra
+	// operation the preserve some pointers...
+	// Wenn die Wurzel gelöscht werden soll, müssen entsprechende
+	// Vorkehrungen getroffen werden, um den Zeiger nicht zu
+	// verlieren
+	if (item == Tree)
+	{
+		// the root is the only one node in the tree
+		// Die Wurzel ist der einzige Knoten im Baum
+		if (item-&gt;Left == NULL &amp;&amp; item-&gt;Right == NULL)
+		{
+			delete Tree;
+			Tree = NULL;
+			return true;
+		}
+	}
+	// start node for restructuration
+	// Startknoten für Restrukturierung
+	CAVLNode&lt;T&gt;* startitem = NULL;
+	// node to delete has no children
+	// Zu löschender Knoten hat keine Söhne
+	if (item-&gt;Left == NULL &amp;&amp; item-&gt;Right == NULL)
+	{
+		if (item-&gt;IsLeftSibling())
+			item-&gt;Parent-&gt;Left = NULL;
+		else
+			item-&gt;Parent-&gt;Right = NULL;
+		startitem = item-&gt;Parent;
+		delete item;
+		item = NULL;
+	}
+	// node to delete has only right son
+	// Zu löschender Knoten hat nur rechten Sohn
+	if (item != NULL &amp;&amp; item-&gt;Left == NULL &amp;&amp; item-&gt;Right != NULL)
+	{
+		delete item-&gt;Data;
+		item-&gt;Data = item-&gt;Right-&gt;Data;
+		item-&gt;Right-&gt;Data = NULL;
+		delete item-&gt;Right;
+		item-&gt;Right = NULL;
+		startitem = item;
+	}
+	// node to delete has only left son
+	// Zu löschender Knoten hat nur linken Sohn
+	if (item != NULL &amp;&amp; item-&gt;Left != NULL &amp;&amp; item-&gt;Right == NULL)
+	{
+		delete item-&gt;Data;
+		item-&gt;Data = item-&gt;Left-&gt;Data;
+		item-&gt;Left-&gt;Data = NULL;
+		delete item-&gt;Left;
+		item-&gt;Left = NULL;
+		startitem = item;
+	}
+	// node to delete has both sons
+	// Zu löschender Knoten hat beide Söhne
+	if (item != NULL &amp;&amp; item-&gt;Left != NULL &amp;&amp; item-&gt;Right != NULL)
+	{
+		CAVLNode&lt;T&gt;* y = item-&gt;Left-&gt;GetLastNodeInOrder();
+		CAVLNode&lt;T&gt;* z = y-&gt;Left;
+		delete item-&gt;Data;
+		item-&gt;Data = y-&gt;Data;
+		y-&gt;Data = NULL;
+		if (y-&gt;IsLeftSibling())
+			y-&gt;Parent-&gt;Left = z;
+		else
+			y-&gt;Parent-&gt;Right = z;
+		if (z != NULL)
+			z-&gt;Parent = y-&gt;Parent;
+		startitem = item;
+		delete y;
+	}
+	startitem-&gt;RestructureDelete();
+	Tree = Tree-&gt;GetRoot();
+	return true;
+};
+
+template &lt;class T&gt;
+CAVLNode&lt;T&gt;* CAVLTree&lt;T&gt;::GetRoot()
+{
+	return Tree;
+};
+
+template &lt;class T&gt;
+bool CAVLTree&lt;T&gt;::DeleteAll()
+{
+	delete Tree;
+	Tree = NULL;
+	return true;
+};
+
+template &lt;class T&gt;
+void CAVLTree&lt;T&gt;::Draw(CDC* dc, CRect&amp; rect)
+{
+	if (IsEmpty()) return;
+	Tree-&gt;Draw(dc, rect);
+};
+
+////////////////////////////////////////////////////////////////
+// Iterator durch einen AVL-Baum                              //
+////////////////////////////////////////////////////////////////
+template &lt;class T&gt;
+class CAVLTreeIterator
+{
+public:
+	// construction and destruction
+	// Konstruktor und Destruktor
+	CAVLTreeIterator(CAVLNode&lt;T&gt;* tree);
+	CAVLTreeIterator(CAVLTree&lt;T&gt;&amp; tree);
+	virtual ~CAVLTreeIterator();
+
+	// validity
+	// Gültigkeitsprüfung
+	operator bool();
+
+	// navigation
+	// Navigation
+	void operator ++();
+	void operator --();
+	void operator ++(int);
+	void operator --(int);
+	void Reset();
+	void MoveFirst();
+	void MoveLast();
+
+	// access to current node
+	// Zugriff auf aktuellen Knoten
+	T* GetData();
+	CAVLNode&lt;T&gt;* Current;
+private:
+	CAVLNode&lt;T&gt;* Tree;
+	CAVLTreeIterator(const CAVLTreeIterator&lt;T&gt;&amp; /*treeiterator*/) {};
+	CAVLTreeIterator&amp; operator= (const CAVLTreeIterator&lt;T&gt;&amp; /*treeiterator*/)
+{return *this;};
+};
+
+template &lt;class T&gt;
+CAVLTreeIterator&lt;T&gt;::CAVLTreeIterator(CAVLNode&lt;T&gt;* tree)
+	: Tree(tree)
+{
+	if (Tree != NULL)
+		Current = Tree-&gt;GetFirstNodeInOrder();
+	else
+		Current = NULL;
+};
+
+template &lt;class T&gt;
+CAVLTreeIterator&lt;T&gt;::CAVLTreeIterator(CAVLTree&lt;T&gt;&amp; tree)
+	: Tree(tree.Tree)
+{
+	if (Tree != NULL)
+		Current = Tree-&gt;GetFirstNodeInOrder();
+	else
+		Current = NULL;
+};
+
+template &lt;class T&gt;
+CAVLTreeIterator&lt;T&gt;::~CAVLTreeIterator()
+{
+};
+
+template &lt;class T&gt;
+void CAVLTreeIterator&lt;T&gt;::Reset()
+{
+	if (Tree)
+		Current = Tree-&gt;GetFirstNodeInOrder();
+	else
+		Current = NULL;
+};
+
+template &lt;class T&gt;
+void CAVLTreeIterator&lt;T&gt;::MoveLast()
+{
+	if (Tree)
+		Current = Tree-&gt;GetLastNodeInOrder();
+	else
+		Current = NULL;
+};
+
+template &lt;class T&gt;
+CAVLTreeIterator&lt;T&gt;::operator bool()
+{
+	return Current != NULL;
+};
+
+template &lt;class T&gt;
+void CAVLTreeIterator&lt;T&gt;::operator ++()
+{
+	if (Current == NULL) return;
+	Current = Current-&gt;GetNextNodeInOrder();
+};
+
+template &lt;class T&gt;
+void CAVLTreeIterator&lt;T&gt;::operator --()
+{
+	if (Current == NULL) return;
+	Current = Current-&gt;GetPrevNodeInOrder();
+};
+
+template &lt;class T&gt;
+void CAVLTreeIterator&lt;T&gt;::operator ++(int)
+{
+	if (Current == NULL) return;
+	Current = Current-&gt;GetNextNodeInOrder();
+};
+
+template &lt;class T&gt;
+void CAVLTreeIterator&lt;T&gt;::operator --(int)
+{
+	if (Current == NULL) return;
+	Current = Current-&gt;GetPrevNodeInOrder();
+};
+
+template &lt;class T&gt;
+T* CAVLTreeIterator&lt;T&gt;::GetData()
+{
+	if (Current)
+		return Current-&gt;Data;
+	else
+		return NULL;
+};
+
+/* Code kann bei entsprechender Resourcen-Definition wieder eingesetzt
+   werden, siehe Projekt ?????
+template &lt;class T&gt;
+class CAVLTreeDialog : public CDialog
+{
+public:
+	CAVLTreeDialog(CAVLTree&lt;T&gt;&amp; tree, CWnd* pParent = NULL);   // standard
+constructor
+
+// Dialog Data
+	enum { IDD = IDD_VEKTORTREEDIALOG1 };
+	CTreeCtrl	m_Tree;
+
+
+// Overrides
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+
+// Implementation
+protected:
+	CAVLTree&lt;T&gt;&amp; Tree;
+	CImageList	m_ctlImage;
+
+	virtual BOOL OnInitDialog();
+	virtual void Insert(CAVLNode&lt;T&gt;* item, HTREEITEM pos);
+};
+
+template &lt;class T&gt;
+CAVLTreeDialog&lt;T&gt;::CAVLTreeDialog(CAVLTree&lt;T&gt;&amp; tree, CWnd* pParent)
+	: CDialog(CTreeDialog::IDD, pParent), Tree(tree)
+{
+};
+
+template &lt;class T&gt;
+void CAVLTreeDialog&lt;T&gt;::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_TREE1, m_Tree);
+};
+
+template &lt;class T&gt;
+BOOL CAVLTreeDialog&lt;T&gt;::OnInitDialog()
+{
+	bool ret = CDialog::OnInitDialog();
+	m_ctlImage.Create(IDB_BITMAP1,16,0,RGB(255,0,255));
+	m_ctlImage.SetBkColor(GetSysColor(COLOR_WINDOW));
+	m_Tree.SetImageList(&amp;m_ctlImage, TVSIL_NORMAL);
+
+	Insert(Tree.Tree, TVI_ROOT);
+	return ret;
+};
+
+template &lt;class T&gt;
+void CAVLTreeDialog&lt;T&gt;::Insert(CAVLNode&lt;T&gt;* tree, HTREEITEM pos)
+{
+	if (tree == NULL)
+	{
+		m_Tree.InsertItem(_T("NULL"), 3, 3, pos);
+		return;
+	}
+	int image = 1 + tree-&gt;Balance;
+	HTREEITEM newpos = m_Tree.InsertItem(*(tree-&gt;Data), image, image, pos);
+	Insert(tree-&gt;Left, newpos);
+	Insert(tree-&gt;Right, newpos);
+};
+*/
+
+</font></tt></pre>
+
+
+<!-- Remember to update this -->
+<p>Last updated: 18 April 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+</BODY>
+</HTML>

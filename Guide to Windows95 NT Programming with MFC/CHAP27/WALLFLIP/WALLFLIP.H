@@ -1,0 +1,26 @@
+///////////////////////////////////////////////////////////////////
+//  Header  : WALLFLIP.H
+//
+//  Purpose : Interface for the CWallFlipApp application class.
+//
+//  Author  : Rob McGregor, rob_mcgregor@compuserve.com
+//        
+//  Date    : 06-27-96
+///////////////////////////////////////////////////////////////////
+
+#include "resource.h"		// main symbols
+
+///////////////////////////////////////////////////////////////////
+// CWallFlipApp Class
+
+class CWallFlipApp : public CWinApp
+{
+public:
+   void FlipWallpaper();
+   CString IntToString(INT nNum);
+
+   // Overrides
+   virtual BOOL InitInstance();
+};
+
+///////////////////////////////////////////////////////////////////

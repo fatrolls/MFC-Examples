@@ -1,0 +1,55 @@
+<HTML>
+<title>Yet Another COM Library (YACL) - Preview</title>
+
+<body bgcolor=#4040C0 text=#FFFFFF link=#C0FFC0 vlink=#C0FFC0 >
+<font face="Arial">
+<h1>Yet Another COM Library (YACL) - Preview</h1>
+<p>This is my first drop. It contains a family of preprocessor macros
+that automate the boilerplate activities used in COM programming. 
+
+<p>Please
+send comments and bug reports to <a href="mailto:cbbugs@braintrust.com">cbbugs@braintrust.com</a>
+<p>The freshest drop is always available at <a href="http://www.develop.com/dbox/yacl.zip">
+http://www.develop.com/dbox/yacl.zip</a>
+
+<h2>Design Goals (in Order)</h2>
+<ol>
+<li>Easily used without Wizard support
+<li>Easily kept in one's head
+<li>Modular (use only what you need and nothing else)
+<li>Extensible
+<li>Small Code
+<li>Fast Code
+<li>No DLL ever
+<li>Compiler-friendly
+<li>Platform-neutral where possible (including 16-bit Windows)
+</ol>
+
+<h2>Current Feature Set</h2>
+<ol>
+<li>Anal-rententive Smart Pointer
+<li>Efficient and intuitive Unicode handling
+<li>Table-driven QueryInterface
+<li>Table-driven Registration
+<li>Table-driven Class management
+<li>Generic Class Factory implementation.
+<li>Preprocessor macros for <em>de facto</em> IUnknown implementation techniques.
+<li>Preprocessor macros for <em>de facto</em> module management routines.
+<li>Preprocessor macros for <em>de facto</em> DllXXX routines.
+<li>Preprocessor macros for <em>de facto</em> out-of-proc CRCO/Wait/CRCO sequence.
+</ol>
+
+<h2>Planned Work</h2>
+<ol>
+<li>Performance/size tuning
+<li>Compiler/Platform testing
+<li>Verify ATL/MFC interoperation
+<li>Macro-ization of smart pointer for 16-bit windows
+<li>Add optional exception semantics to smart pointer
+<li>Map COM hresults/exception to C++ exceptions
+<li>Add support for IDispatch and friends
+<li>Add support for IConnectionPoint and friends
+<li>Add IEnum -> stl thunks
+</ol>
+</font>
+</HTML>

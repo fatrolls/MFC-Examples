@@ -1,0 +1,23 @@
+# date url category title author local_comment modification_comment
+# 
+# date -> The posting/modification date of the article (YYYY/MM/DD)
+# url -> The short name of the html file (i.e. no path information)
+# category -> If the list is going to be subdivided into sections then the section 
+#             name goes here.  This field can be blank.
+# title -> The article title.
+# author -> The article author.
+# local_comment -> A comment about the article that goes in the toc - can be blank
+# modification_comment -> A comment about the article that goes in the what's new - can be blank
+#
+# BTW the delimiters after the last non-blank field are optional.
+
+# dates prior to 1997 are all fake, and added simply to force the correct sort order
+
+1998/03/28|is_split.shtml||Splitter Window - Detect if window is split|Randy More
+1998/03/28|keyboard_split.shtml||Splitter Window - Split a view from a menu item or keystroke|Randy More
+1998/03/28|rowcol_of_view.shtml||Splitter Window - Determine the row and column of a view|Randy More
+1998/03/28|show_focus_view.shtml||Splitter Window - Highlight view with focus|Randy More
+1998/03/28|show_hide_static_panes.shtml||Splitter Window - Show/Hide static panes|Oleg Galkin
+1998/04/14|SplitterTog.shtml||Splitter Windows &#150; Toggling the Splitter Orientation|
+1998/03/27|flexible_splitter.shtml||Splitter Window - Outlook-style Flexible Splitter windows|
+1998/04/04|dynamic_splitter.shtml||Splitter Window - "True" dynamic splitter window|Andrew Slivker

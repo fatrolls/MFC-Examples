@@ -1,0 +1,182 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Alessandro Falappa">
+   <TITLE>GL enabled view for MDI environment</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->GL enabled view for MDI environment
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:a.falappa@flashnet.it">Alessandro Falappa</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="oglwrapperclass.gif" >
+
+
+<!-- Text / source code -->
+<p><H4>What is it</H4>
+<p>CGEnabledView is a view class designed to wrap all OpenGL stuff (initialization, managing of Rendering Contexts and palettes, destruction, etc.) allowing the creation of multiple views in a MDI application.
+<P>CGEnabledView also offers these basic services:
+<UL TYPE="square">
+	<LI>a function to get various information about OpenGL implementation.
+	<LI>manages internally the creation of display list and offers a primitive interface for display list execution.
+	<LI>define mouse cursor to use inside the views.
+</UL>
+<H4>Use</H4>
+<P>Since it's not adviseable to mix Windows GDI and OpenGL drawing commands some WM handlers have been made private, use the overridable virtual functions instead.<BR>
+To start experimenting OpenGL drawing you just need to follow these steps:
+<OL>
+<LI>Use AppWizard to geneate an MDI project.
+<LI>Substitute CView with <FONT COLOR="#800000">CGLEnabledView</FONT> in <tt><font COLOR="#990000">[YourProject]View.cpp</font></tt> and <tt><font COLOR="#990000">[YourProject]View.h</font></tt>.
+<LI>Use ClassWizard to remove the <FONT COLOR="#800000">OnDraw</FONT> and <FONT COLOR="#800000">PreCreateWindow</FONT> functions (delete the bodies too).
+<LI>Override the OnDrawGL function and issue some GL functions.
+<LI>Remember to link OpenGL libraries (look at the top of <FONT COLOR="#800000">GLEnabledView.cpp</FONT> for explanations).
+</OL>
+Other details are in the code (wich should be well commented). Below is the interface of the class:</p>
+
+<!-- start a block of source code -->
+<P><PRE><TT><FONT COLOR="#990000">
+// CGLEnabledView.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// Global type definitions
+	enum InfoField {VENDOR,RENDERER,VERSION,ACCELERATION,EXTENSIONS};
+	enum ColorsNumber{INDEXED,THOUSANDS,MILLIONS,MILLIONS_WITH_TRANSPARENCY};
+	enum ZAccuracy{NORMAL,ACCURATE};
+
+/////////////////////////////////////////////////////////////////////////////
+// CGLEnabledView view
+
+class CGLEnabledView : public CView
+{
+protected:
+	CGLEnabledView();           // protected constructor used by dynamic creation
+	DECLARE_DYNCREATE(CGLEnabledView)
+
+// Attributes
+public:
+
+// Operations
+public:
+// Display lists functions
+// NOTE: between BeginDispList and EndDispList should be present OpenGL calls only (see VC documentation for which are allowed and how are them treated)
+	void DrawDispLists();	// executes all the display lists
+	void BeginDispList();	// creates a new display list and opens a display list definition
+	void EndDispList();		// closes a display list definition
+// Information retrieval function
+	const CString GetInformation(InfoField type);
+// Mouse cursor function
+	void SetMouseCursor(HCURSOR mcursor=NULL);
+// Attribute retrieval function
+	double GetAspectRatio() {return m_dAspectRatio;};
+// Overridables
+	virtual void OnCreateGL(); // use to set bg color, activate z-buffer, and other global settings
+	virtual void OnSizeGL(int cx, int cy); // use to adapt the viewport to the window
+	virtual void OnDrawGL(); // use to issue drawing functions
+	virtual void VideoMode(ColorsNumber &c,ZAccuracy &z,BOOL &dbuf); // use to specify some video mode parameters
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CGLEnabledView)
+	private:
+	virtual void OnDraw(CDC* pDC);      // overridden to draw this view
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+	virtual ~CGLEnabledView();
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CGLEnabledView)
+	private:
+		afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+		afx_msg void OnDestroy();
+		afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+		afx_msg void OnSize(UINT nType, int cx, int cy);
+		afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+// member variables and helpers
+	private:
+	BOOL m_ExternDispListCall;
+	BOOL m_InsideDispList;
+	int m_DispListVector[20];
+	HCURSOR m_hMouseCursor;
+	CPalette m_CurrentPalette;
+	CPalette* m_pOldPalette;
+	CRect m_ClientRect;
+	double m_dAspectRatio;
+	CDC* m_pCDC;
+	HGLRC m_hRC;
+	unsigned char ComponentFromIndex(int i, UINT nbits, UINT shift);
+	void CreateRGBPalette();
+	BOOL bSetupPixelFormat();
+};
+<!-- end the block of source code -->
+</FONT></TT></PRE></p>
+
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="oglwrappersource.zip">Download demo project - 76KB</A>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="oglwrappersample.zip">Download source - 8KB</A>
+
+<!-- Posted / Update  date 05/18/98 - add to the list -->
+<p>Date Posted: 05/18/98
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+
+
+

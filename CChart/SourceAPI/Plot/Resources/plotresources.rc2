@@ -1,0 +1,1245 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "PlotResources.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_XYSETTINGS_TITLE DIALOG DISCARDABLE  0, 0, 187, 73
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Title"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Title",IDC_STATIC,10,11,20,8
+    EDITTEXT        IDC_PS_PLOT_TITLE,30,9,133,14,ES_AUTOHSCROLL
+    LTEXT           "Font",IDC_STATIC,11,30,15,8
+    LTEXT           "Title font description",IDC_PS_TITLE_FONT,30,30,75,19
+    PUSHBUTTON      "Choose Font...",IDC_PS_CHOOSE_TITLE_FONT,105,30,59,14
+    LTEXT           "Color:",IDC_STATIC,11,51,19,8
+    CONTROL         "Custom1",IDC_PS_COLOR_TITLE_FONT,"colorcontrol",
+                    WS_TABSTOP,34,51,35,8
+END
+
+IDD_XYSETTINGS_SUBTITLE DIALOG DISCARDABLE  0, 0, 187, 73
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Subtitle"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Title",IDC_STATIC,10,11,20,8
+    EDITTEXT        IDC_PS_PLOT_SUBTITLE,30,9,133,14,ES_AUTOHSCROLL
+    LTEXT           "Font",IDC_STATIC,11,30,15,8
+    LTEXT           "Info font description",IDC_PS_SUBTITLE_FONT,30,30,75,19
+    PUSHBUTTON      "Choose Font...",IDC_PS_CHOOSE_SUBTITLE_FONT,105,30,59,
+                    14
+    LTEXT           "Color:",IDC_STATIC,11,51,19,8
+    CONTROL         "Custom1",IDC_PS_COLOR_SUBTITLE_FONT,"colorcontrol",
+                    WS_TABSTOP,34,51,35,8
+    CONTROL         "Show sub title",IDC_PS_PLOT_SUBTITLESHOW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,105,49,70,10
+END
+
+IDD_XYSETTINGS_PLOTRANGES DIALOG DISCARDABLE  0, 0, 187, 54
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Plot Ranges"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "X range",IDC_STATIC,8,10,29,8
+    LTEXT           "Y range",IDC_STATIC,8,24,29,8
+    EDITTEXT        IDC_PS_XRANGE_LOW,42,8,33,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PS_XRANGE_HIGH,87,8,33,14,ES_AUTOHSCROLL
+    CTEXT           "-",IDC_STATIC,77,12,8,8
+    EDITTEXT        IDC_PS_YRANGE_LOW,42,22,33,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PS_YRANGE_HIGH,87,22,33,14,ES_AUTOHSCROLL
+    CTEXT           "-",IDC_STATIC,77,26,8,8
+    CONTROL         "Auto",IDC_PS_AUTO_XRANGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,124,11,31,10
+    CONTROL         "Auto",IDC_PS_AUTO_YRANGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,124,25,31,10
+END
+
+IDD_XYSETTINGS_MAJORGRIDS DIALOG DISCARDABLE  0, 0, 187, 76
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Major Grids"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Show major horizontal grids",
+                    IDC_PS_MAJOR_HORIZONTAL_GRIDS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,8,8,130,10
+    CONTROL         "Show major vertical grids",IDC_PS_MAJOR_VERTICAL_GRIDS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,20,130,10
+    LTEXT           "Color",IDC_STATIC,92,36,35,8
+    CONTROL         "Custom1",IDC_PS_COLOR_MAJOR_GRIDS,"colorcontrol",
+                    WS_TABSTOP,133,36,29,8
+    LTEXT           "Major grid size",IDC_STATIC,9,35,46,8
+    EDITTEXT        IDC_PS_MAJOR_GRID_SIZE,57,33,23,14,ES_AUTOHSCROLL
+    LTEXT           "Line style:",IDC_STATIC,8,51,32,8
+    COMBOBOX        IDC_PS_MAJOR_LINESTYLE,44,48,121,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_XYSETTINGS_MINORGRIDS DIALOG DISCARDABLE  0, 0, 187, 76
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Minor Grids"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Show minor horizontal grids",
+                    IDC_PS_MINOR_HORIZONTAL_GRIDS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,8,8,130,10
+    CONTROL         "Show minor vertical grids",IDC_PS_MINOR_VERTICAL_GRIDS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,20,130,10
+    LTEXT           "Color",IDC_STATIC,92,36,35,8
+    CONTROL         "Custom1",IDC_PS_COLOR_MINOR_GRIDS,"colorcontrol",
+                    WS_TABSTOP,133,36,30,8
+    LTEXT           "Minor grid size",IDC_STATIC,9,35,46,8
+    EDITTEXT        IDC_PS_MINOR_GRID_SIZE,57,33,23,14,ES_AUTOHSCROLL
+    LTEXT           "Line style:",IDC_STATIC,8,51,32,8
+    COMBOBOX        IDC_PS_MINOR_LINESTYLE,44,48,121,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_XYSETTINGS_BACKGROUND DIALOG DISCARDABLE  0, 0, 187, 75
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Background"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Bkground color",IDC_STATIC,9,9,56,8
+    LTEXT           "Border color",IDC_STATIC,9,23,49,8
+    CONTROL         "Custom1",IDC_PS_COLOR_BACKGROUND,"colorcontrol",
+                    WS_TABSTOP,71,7,14,8
+    CONTROL         "Custom1",IDC_PS_COLOR_BORDER,"colorcontrol",WS_TABSTOP,
+                    71,23,14,8
+    CONTROL         "Gradient",IDC_PS_BACKGROUND_GRADIENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,42,66,10
+    LTEXT           "Start color",IDC_STATIC,9,59,44,8
+    LTEXT           "Stop color",IDC_STATIC,85,59,42,8
+    CONTROL         "Custom1",IDC_PS_BKGND_COLOR1,"colorcontrol",WS_TABSTOP,
+                    53,59,29,8
+    CONTROL         "Custom1",IDC_PS_BKGND_COLOR2,"colorcontrol",WS_TABSTOP,
+                    133,59,29,8
+    CONTROL         "Horizontal(Vertical)",IDC_PS_BACKGROUND_GRADIENTHORV,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,81,42,90,8
+    LTEXT           "Data area color",IDC_STATIC,87,7,61,8
+    CONTROL         "Custom1",IDC_PS_COLOR_DATAAREA,"colorcontrol",
+                    WS_TABSTOP,151,7,14,8
+    LTEXT           "Border size",IDC_STATIC,87,23,46,8
+    EDITTEXT        IDC_PS_BORDER_SIZE,135,21,29,14,ES_AUTOHSCROLL
+END
+
+IDD_XYSETTINGS_AUTOSETTINGS DIALOG DISCARDABLE  0, 0, 187, 32
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Auto Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Auto line color",IDC_PS_DATA_COLOR_AUTO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,8,10,74,10
+    CONTROL         "Auto line style",IDC_PS_DATA_LINESTYLE_AUTO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,88,9,72,10
+END
+
+IDD_XYSETTINGS_LEGEND DIALOG DISCARDABLE  0, 0, 187, 55
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Legend"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Use legend",IDC_PS_PLOT_LEGEND,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,8,10,58,8
+    CONTROL         "Transparent",IDC_PS_PLOT_LEGENDTRANSPARENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,104,10,65,10
+    LTEXT           "Font",IDC_STATIC,10,24,15,8
+    LTEXT           "Info font description",IDC_PS_LEGEND_FONT,30,24,75,19
+    PUSHBUTTON      "Choose Font...",IDC_PS_CHOOSE_LEGEND_FONT,104,24,59,14
+END
+
+IDD_AXIS_SETTINGS DIALOG DISCARDABLE  0, 0, 367, 232
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Axis Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,310,211,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,256,211,50,14
+    PUSHBUTTON      "<< Previous",IDC_AXIS_PREVIOUS,7,211,50,14
+    PUSHBUTTON      "Next >>",IDC_AXIS_NEXT,59,211,50,14
+    GROUPBOX        "Axis 1 of 2",IDC_AS_LABEL,7,7,353,199
+    GROUPBOX        "Range",IDC_STATIC,14,136,168,32
+    EDITTEXT        IDC_AS_XRANGE_LOW,20,148,33,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_AS_XRANGE_HIGH,81,148,33,14,ES_AUTOHSCROLL
+    CTEXT           "-",IDC_STATIC,63,152,8,8
+    CONTROL         "Auto",IDC_AS_AUTO_XRANGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,141,150,31,10
+    GROUPBOX        "Major tick marks",IDC_STATIC,186,17,167,81
+    LTEXT           "Number of ticks",IDC_STATIC,194,29,69,8
+    LTEXT           "Number of ticks",IDC_STATIC,194,132,69,8
+    EDITTEXT        IDC_AS_NUMBER_MAJOR_TICKS,267,26,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_AS_NUMBER_MINOR_TICKS,267,129,40,14,ES_AUTOHSCROLL
+    CONTROL         "Auto",IDC_AS_AUTO_MAJOR_TICKS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,310,28,31,10
+    CONTROL         "Auto",IDC_AS_AUTO_MINOR_TICKS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,310,131,31,10
+    GROUPBOX        "Title",IDC_STATIC,14,17,168,67
+    LTEXT           "Title",IDC_STATIC,20,29,24,8
+    EDITTEXT        IDC_AS_PLOT_TITLE,44,26,132,14,ES_AUTOHSCROLL
+    LTEXT           "Font",IDC_STATIC,21,47,15,8
+    LTEXT           "Title font description",IDC_AS_TITLE_FONT,40,47,75,19
+    PUSHBUTTON      "Choose Font...",IDC_AS_CHOOSE_TITLE_FONT,115,47,58,17
+    LTEXT           "Color:",IDC_STATIC,21,71,19,8
+    CONTROL         "Custom1",IDC_AS_COLOR_TITLE_FONT,"colorcontrol",
+                    WS_TABSTOP,44,71,35,8
+    CONTROL         "Custom1",IDC_AS_COLOR_LABEL_FONT,"colorcontrol",
+                    WS_TABSTOP,45,122,35,8
+    LTEXT           "Length",IDC_STATIC,194,43,24,8
+    EDITTEXT        IDC_AS_MAJOR_TICK_LENGTH,223,41,40,14,ES_AUTOHSCROLL
+    LTEXT           "mm",IDC_STATIC,267,43,12,8
+    LTEXT           "Length",IDC_STATIC,194,148,24,8
+    EDITTEXT        IDC_AS_MINOR_TICK_LENGTH,223,146,40,14,ES_AUTOHSCROLL
+    LTEXT           "mm",IDC_STATIC,267,148,12,8
+    GROUPBOX        "Tick labels",IDC_STATIC,14,86,168,50
+    LTEXT           "Font",IDC_STATIC,21,98,15,8
+    LTEXT           "Title font description",IDC_AS_LABEL_FONT,40,98,75,19
+    PUSHBUTTON      "Choose Font...",IDC_AS_CHOOSE_LABEL_FONT,115,98,58,17
+    LTEXT           "Color:",IDC_STATIC,21,122,19,8
+    LTEXT           "Size",IDC_STATIC,193,58,23,8
+    LTEXT           "Size",IDC_STATIC,194,164,27,10
+    EDITTEXT        IDC_AS_MAJOR_TICK_SIZE,223,57,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_AS_MINOR_TICK_SIZE,223,162,40,14,ES_AUTOHSCROLL
+    LTEXT           "Color:",IDC_STATIC,273,60,19,8
+    CONTROL         "Custom1",IDC_AS_COLOR_MAJORTICK,"colorcontrol",
+                    WS_TABSTOP,296,60,35,8
+    LTEXT           "Color:",IDC_STATIC,274,165,19,8
+    CONTROL         "Custom1",IDC_AS_COLOR_MINORTICK,"colorcontrol",
+                    WS_TABSTOP,297,165,35,8
+    LTEXT           "Position",IDC_STATIC,194,74,39,10
+    LTEXT           "Position",IDC_STATIC,193,182,39,10
+    COMBOBOX        IDC_AS_MAJORTICK_POSITION,239,73,67,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_AS_MINORTICK_POSITION,239,179,67,113,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Custom1",IDC_AS_COLOR_AXIS,"colorcontrol",WS_TABSTOP,
+                    157,187,18,8
+    LTEXT           "Color:",IDC_STATIC,129,186,19,8
+    GROUPBOX        "Colors",IDC_STATIC,14,171,168,32
+    CONTROL         "Same Color as axis",IDC_AS_COLOR_SAMECHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,185,88,10
+    GROUPBOX        "Minor tick marks",IDC_STATIC,187,116,167,87
+END
+
+IDD_DATA_SETTINGS DIALOG DISCARDABLE  0, 0, 368, 200
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Data Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,310,180,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,256,180,50,14
+    PUSHBUTTON      "<< Previous",IDC_DATA_PREVIOUS,7,180,50,14
+    PUSHBUTTON      "Next >>",IDC_DATA_NEXT,59,180,50,14
+    GROUPBOX        "Data set 1 of 2",IDC_DATASET_LABEL,7,7,353,172
+    GROUPBOX        "Title",IDC_STATIC,14,17,168,27
+    LTEXT           "Title",IDC_STATIC,20,29,24,8
+    EDITTEXT        IDC_DS_DATA_TITLE,44,26,130,14,ES_AUTOHSCROLL
+    GROUPBOX        "Line",IDC_STATIC,13,48,168,57
+    LTEXT           "Color:",IDC_STATIC,20,57,19,8
+    CONTROL         "Custom1",IDC_DS_COLOR_LINE,"colorcontrol",WS_TABSTOP,44,
+                    58,35,8
+    CONTROL         "AutoColor",IDC_DS_COLOR_AUTO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,130,57,50,10
+    LTEXT           "Size:",IDC_STATIC,20,72,16,8
+    EDITTEXT        IDC_DS_LINE_SIZE,44,69,40,14,ES_AUTOHSCROLL
+    LTEXT           "Style:",IDC_STATIC,20,89,20,8
+    COMBOBOX        IDC_DS_LINESTYLE,44,87,85,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "AutoStyle",IDC_DS_LINESTYLE_AUTO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,130,87,50,10
+    GROUPBOX        "Chart type",IDC_STATIC,14,111,168,31
+    COMBOBOX        IDC_DS_CHART_TYPE,19,121,156,100,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Fill enclosed curve",IDC_STATIC,14,146,168,27
+    CONTROL         "Fill or not",IDC_DS_ENCLOSEDCURVE_FILL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,158,60,10
+    LTEXT           "Color:",IDC_STATIC,111,160,19,8
+    CONTROL         "Custom1",IDC_DS_COLOR_ENCLOSEDCURVE,"colorcontrol",
+                    WS_TABSTOP,135,161,35,8
+    GROUPBOX        "Markers",IDC_STATIC,186,17,167,112
+    LTEXT           "Shape",IDC_STATIC,192,28,22,8
+    COMBOBOX        IDC_DS_MARKER_SHAPE,218,26,124,119,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Size",IDC_STATIC,192,44,15,8
+    EDITTEXT        IDC_DS_MARKER_SIZE,218,44,40,14,ES_AUTOHSCROLL
+    LTEXT           "mm",IDC_STATIC,262,44,12,8
+    CONTROL         "Filled",IDC_DS_MARKER_FILL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,280,44,40,10
+    LTEXT           "Frequency",IDC_STATIC,192,59,36,8
+    CONTROL         "Every data point",IDC_DS_MARKER_FREQ_EVERY,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,201,69,77,10
+    CONTROL         "Every",IDC_DS_MARKER_FREQ_NTH,"Button",
+                    BS_AUTORADIOBUTTON,201,84,34,10
+    CONTROL         "A total of",IDC_DS_MARKER_FREQ_TOTAL,"Button",
+                    BS_AUTORADIOBUTTON,201,99,54,10
+    CONTROL         "No Markers",IDC_DS_MARKER_FREQ_NONE,"Button",
+                    BS_AUTORADIOBUTTON,201,114,77,10
+    EDITTEXT        IDC_DS_MARKER_FREQ_NUMBER,235,82,40,14,ES_AUTOHSCROLL
+    LTEXT           "data points",IDC_STATIC,278,83,36,8
+    EDITTEXT        IDC_DS_MARKER_FREQ_TOTAL_DATA,255,97,40,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "markers",IDC_STATIC,298,98,30,8
+    EDITTEXT        IDC_DS_NUMOFPOINTS,186,132,50,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "points in this data set",IDC_STATIC,240,132,112,12
+    PUSHBUTTON      "Load data",IDC_DATA_LOAD,152,180,39,14
+    PUSHBUTTON      "Save data",IDC_DATA_SAVE,203,180,39,14
+END
+
+IDD_XYSETTINGS_SELZONE DIALOG DISCARDABLE  0, 0, 187, 73
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Zone"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "X Direction",IDC_PS_ZONE_XSELECT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,11,61,11
+    EDITTEXT        IDC_PS_XZONE_START,88,9,31,15,ES_AUTOHSCROLL
+    LTEXT           "-",IDC_STATIC,125,13,8,8
+    EDITTEXT        IDC_PS_XZONE_END,134,8,31,15,ES_AUTOHSCROLL
+    CONTROL         "Y Direction",IDC_PS_ZONE_YSELECT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,29,61,11
+    EDITTEXT        IDC_PS_YZONE_START,88,27,31,15,ES_AUTOHSCROLL
+    LTEXT           "-",IDC_STATIC,125,31,8,8
+    EDITTEXT        IDC_PS_YZONE_END,134,26,31,15,ES_AUTOHSCROLL
+    LTEXT           "Color",IDC_STATIC,15,46,30,12
+    CONTROL         "Custom1",IDC_PS_COLOR_SELZONE,"colorcontrol",WS_TABSTOP,
+                    49,47,14,8
+END
+
+IDD_XYSETTINGS_CURSORS DIALOG DISCARDABLE  0, 0, 187, 79
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Cursors"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "H Cursor",IDC_PS_CURSOR_XUSE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,23,50,14
+    LTEXT           "Position",IDC_STATIC,72,11,31,11
+    EDITTEXT        IDC_PS_CURSER_XPOS,109,9,52,12,ES_AUTOHSCROLL
+    CONTROL         "V Cursor",IDC_PS_CURSOR_YUSE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,7,50,14
+    LTEXT           "Position",IDC_STATIC,71,26,31,11
+    EDITTEXT        IDC_PS_CURSER_YPOS,109,24,52,12,ES_AUTOHSCROLL
+    CONTROL         "Bind to curve",IDC_PS_CURSOR_BOND,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,42,67,9
+    LTEXT           "Color",IDC_STATIC,15,58,30,12
+    CONTROL         "Custom1",IDC_PS_COLOR_CURSOR,"colorcontrol",WS_TABSTOP,
+                    47,58,14,8
+    COMBOBOX        IDC_PS_CURSOR_CURVEBOND,85,44,89,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_AXISSETTINGS_TITLE DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Title",IDC_STATIC,7,10,24,8
+    EDITTEXT        IDC_AS_PLOT_TITLE,31,7,132,14,ES_AUTOHSCROLL
+    LTEXT           "Font",IDC_STATIC,9,28,15,8
+    LTEXT           "Title font description",IDC_AS_TITLE_FONT,27,28,75,19
+    PUSHBUTTON      "Choose Font...",IDC_AS_CHOOSE_TITLE_FONT,103,28,58,17
+    LTEXT           "Color:",IDC_STATIC,9,52,19,8
+    CONTROL         "Custom1",IDC_AS_COLOR_TITLE_FONT,"colorcontrol",
+                    WS_TABSTOP,31,52,35,8
+END
+
+IDD_AXISSETTINGS_TICKLABEL DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Custom1",IDC_AS_COLOR_LABEL_FONT,"colorcontrol",
+                    WS_TABSTOP,31,31,35,8
+    LTEXT           "Font",IDC_STATIC,7,7,15,8
+    LTEXT           "Title font description",IDC_AS_LABEL_FONT,26,7,75,19
+    PUSHBUTTON      "Choose Font...",IDC_AS_CHOOSE_LABEL_FONT,101,7,58,17
+    LTEXT           "Color:",IDC_STATIC,7,31,19,8
+    CONTROL         "Show Label",IDC_AS_LABEL_SHOW,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,100,27,60,13
+END
+
+IDD_AXISSETTINGS_RANGE DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_AS_XRANGE_LOW,7,7,33,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_AS_XRANGE_HIGH,69,7,33,14,ES_AUTOHSCROLL
+    CTEXT           "-",IDC_STATIC,51,11,8,8
+    CONTROL         "Auto",IDC_AS_AUTO_XRANGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,129,9,31,10
+END
+
+IDD_AXISSETTINGS_MAJORTICKS DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Number of ticks",IDC_STATIC,8,11,69,8
+    EDITTEXT        IDC_AS_NUMBER_MAJOR_TICKS,81,7,40,14,ES_AUTOHSCROLL
+    CONTROL         "Auto",IDC_AS_AUTO_MAJOR_TICKS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,124,9,31,10
+    LTEXT           "Length",IDC_STATIC,8,27,24,8
+    EDITTEXT        IDC_AS_MAJOR_TICK_LENGTH,37,23,40,15,ES_AUTOHSCROLL
+    LTEXT           "mm",IDC_STATIC,81,27,12,8
+    LTEXT           "Size",IDC_STATIC,8,43,23,8
+    EDITTEXT        IDC_AS_MAJOR_TICK_SIZE,37,41,40,14,ES_AUTOHSCROLL
+    LTEXT           "Color:",IDC_STATIC,88,44,19,8
+    CONTROL         "Custom1",IDC_AS_COLOR_MAJORTICK,"colorcontrol",
+                    WS_TABSTOP,111,44,35,8
+    LTEXT           "Position",IDC_STATIC,8,60,39,10
+    COMBOBOX        IDC_AS_MAJORTICK_POSITION,53,58,67,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_AXISSETTINGS_MINORTICKS DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Number of ticks",IDC_STATIC,8,11,69,8
+    EDITTEXT        IDC_AS_NUMBER_MINOR_TICKS,81,7,40,14,ES_AUTOHSCROLL
+    CONTROL         "Auto",IDC_AS_AUTO_MINOR_TICKS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,124,9,31,10
+    LTEXT           "Length",IDC_STATIC,8,27,24,8
+    EDITTEXT        IDC_AS_MINOR_TICK_LENGTH,37,23,40,16,ES_AUTOHSCROLL
+    LTEXT           "mm",IDC_STATIC,81,27,12,8
+    LTEXT           "Size",IDC_STATIC,8,43,27,10
+    EDITTEXT        IDC_AS_MINOR_TICK_SIZE,37,41,40,14,ES_AUTOHSCROLL
+    LTEXT           "Color:",IDC_STATIC,88,44,19,8
+    CONTROL         "Custom1",IDC_AS_COLOR_MINORTICK,"colorcontrol",
+                    WS_TABSTOP,111,44,35,8
+    LTEXT           "Position",IDC_STATIC,8,60,39,10
+    COMBOBOX        IDC_AS_MINORTICK_POSITION,53,58,67,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_AXISSETTINGS_AXISCOLOR DIALOG DISCARDABLE  0, 0, 188, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Custom1",IDC_AS_COLOR_AXIS,"colorcontrol",WS_TABSTOP,
+                    143,9,18,8
+    LTEXT           "Color:",IDC_STATIC,115,9,19,8
+    CONTROL         "Same Color as axis",IDC_AS_COLOR_SAMECHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,7,88,10
+    LTEXT           "Axis line size",IDC_STATIC,7,25,62,12
+    EDITTEXT        IDC_AS_AXIS_SIZE,71,23,41,12,ES_AUTOHSCROLL
+    LTEXT           "Axis line style",IDC_STATIC,7,41,62,10
+    COMBOBOX        IDC_AS_AXIS_STYLE,75,40,94,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_AXISSETTINGS DIALOG DISCARDABLE  0, 0, 347, 145
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Axis Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,230,124,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,290,124,50,14
+    CONTROL         "Tab1",IDC_AXIS_SETTINGS_TAB,"SysTabControl32",WS_BORDER,
+                    130,7,210,113
+    PUSHBUTTON      "<< Previous",IDC_AXIS_PREVIOUS,7,124,50,14
+    PUSHBUTTON      "Next >>",IDC_AXIS_NEXT,63,124,50,14
+    COMBOBOX        IDC_AS_LISTAXES,7,7,119,113,CBS_SIMPLE | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Save when switching",IDC_AS_SAVE_WHEN_SWITCHING,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,125,126,89,12
+END
+
+IDD_DATASETTINGS_TITLE DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Title",IDC_STATIC,7,10,24,8
+    EDITTEXT        IDC_DS_DATA_TITLE,31,7,149,14,ES_AUTOHSCROLL
+END
+
+IDD_DATASETTINGS_LINE DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Custom1",IDC_DS_COLOR_LINE,"colorcontrol",WS_TABSTOP,31,
+                    9,35,8
+    LTEXT           "Color:",IDC_STATIC,7,7,19,8
+    CONTROL         "AutoColor",IDC_DS_COLOR_AUTO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,117,7,50,10
+    LTEXT           "Size:",IDC_STATIC,7,23,16,8
+    EDITTEXT        IDC_DS_LINE_SIZE,31,20,40,14,ES_AUTOHSCROLL
+    LTEXT           "Style:",IDC_STATIC,7,39,20,8
+    COMBOBOX        IDC_DS_LINESTYLE,31,38,85,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "AutoStyle",IDC_DS_LINESTYLE_AUTO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,38,50,10
+END
+
+IDD_DATASETTINGS_CHARTTYPE DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_DS_CHART_TYPE,7,7,156,100,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_DATASETTINGS_MAKERS DIALOG DISCARDABLE  0, 0, 188, 113
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Shape",IDC_STATIC,7,9,22,8
+    COMBOBOX        IDC_DS_MARKER_SHAPE,33,7,124,119,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Size",IDC_STATIC,7,25,15,8
+    EDITTEXT        IDC_DS_MARKER_SIZE,33,25,40,14,ES_AUTOHSCROLL
+    LTEXT           "mm",IDC_STATIC,77,25,12,8
+    CONTROL         "Filled",IDC_DS_MARKER_FILL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,95,25,40,10
+    LTEXT           "Frequency",IDC_STATIC,7,40,36,8
+    CONTROL         "Every data point",IDC_DS_MARKER_FREQ_EVERY,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,17,50,77,10
+    CONTROL         "Every",IDC_DS_MARKER_FREQ_NTH,"Button",
+                    BS_AUTORADIOBUTTON,17,65,34,10
+    CONTROL         "A total of",IDC_DS_MARKER_FREQ_TOTAL,"Button",
+                    BS_AUTORADIOBUTTON,17,80,54,10
+    CONTROL         "No Markers",IDC_DS_MARKER_FREQ_NONE,"Button",
+                    BS_AUTORADIOBUTTON,17,92,77,10
+    EDITTEXT        IDC_DS_MARKER_FREQ_NUMBER,51,63,40,14,ES_AUTOHSCROLL
+    LTEXT           "data points",IDC_STATIC,93,64,36,8
+    EDITTEXT        IDC_DS_MARKER_FREQ_TOTAL_DATA,71,78,40,14,ES_AUTOHSCROLL
+    LTEXT           "markers",IDC_STATIC,113,79,30,8
+END
+
+IDD_DATASETTINGS_FILLENCLOSED DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Fill or not",IDC_DS_ENCLOSEDCURVE_FILL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,7,60,10
+    CONTROL         "Custom1",IDC_DS_COLOR_ENCLOSEDCURVE,"colorcontrol",
+                    WS_TABSTOP,123,10,35,8
+    LTEXT           "Color:",IDC_STATIC,99,9,19,8
+END
+
+IDD_DATASETTINGS_MANAGEMENT DIALOG DISCARDABLE  0, 0, 187, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Save data",IDC_DATA_SAVE,100,31,39,14
+    EDITTEXT        IDC_DS_NUMOFPOINTS,7,7,50,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "points in this data set",IDC_STATIC,61,7,112,12
+    PUSHBUTTON      "Load data",IDC_DATA_LOAD,38,31,39,14
+END
+
+IDD_DATASETTINGS DIALOGEX 0, 0, 335, 171
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Data Settings"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,216,149,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,278,149,50,14
+    CONTROL         "Tab1",IDC_DATA_SETTINGS_TAB,"SysTabControl32",WS_BORDER,
+                    114,7,214,137
+    PUSHBUTTON      "<< Previous",IDC_DATA_PREVIOUS,7,149,50,14
+    PUSHBUTTON      "Next >>",IDC_DATA_NEXT,64,149,50,14
+    COMBOBOX        IDC_DS_LISTDATASETS,7,7,106,137,CBS_SIMPLE | WS_VSCROLL | 
+                    WS_TABSTOP,WS_EX_STATICEDGE
+    CONTROL         "Save when switching",IDC_DS_SAVE_WHEN_SWITCHING,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,118,151,91,12
+END
+
+IDD_XY_SETTINGS DIALOG DISCARDABLE  0, 0, 371, 255
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "XY Plot Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,314,233,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,261,233,50,14
+    GROUPBOX        "Plot Settings",IDC_STATIC,7,7,357,224
+    GROUPBOX        "Plotting Ranges",IDC_STATIC,13,75,168,40
+    LTEXT           "X range",IDC_STATIC,21,86,29,8
+    LTEXT           "Y range",IDC_STATIC,21,100,29,8
+    EDITTEXT        IDC_PS_XRANGE_LOW,55,84,33,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PS_XRANGE_HIGH,100,84,33,14,ES_AUTOHSCROLL
+    CTEXT           "-",IDC_STATIC,90,88,8,8
+    EDITTEXT        IDC_PS_YRANGE_LOW,55,98,33,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PS_YRANGE_HIGH,100,98,33,14,ES_AUTOHSCROLL
+    CTEXT           "-",IDC_STATIC,90,102,8,8
+    CONTROL         "Auto",IDC_PS_AUTO_XRANGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,137,87,31,10
+    CONTROL         "Auto",IDC_PS_AUTO_YRANGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,137,101,31,10
+    GROUPBOX        "Grids",IDC_STATIC,185,75,174,127
+    CONTROL         "Show major horizontal grids",
+                    IDC_PS_MAJOR_HORIZONTAL_GRIDS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,196,86,130,10
+    CONTROL         "Show minor horizontal grids",
+                    IDC_PS_MINOR_HORIZONTAL_GRIDS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,196,144,130,10
+    CONTROL         "Show major vertical grids",IDC_PS_MAJOR_VERTICAL_GRIDS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,196,97,130,10
+    CONTROL         "Show minor vertical grids",IDC_PS_MINOR_VERTICAL_GRIDS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,196,155,130,10
+    LTEXT           "Color",IDC_STATIC,279,113,35,8
+    CONTROL         "Custom1",IDC_PS_COLOR_MAJOR_GRIDS,"colorcontrol",
+                    WS_TABSTOP,320,113,29,8
+    LTEXT           "Color",IDC_STATIC,279,170,35,8
+    CONTROL         "Custom1",IDC_PS_COLOR_MINOR_GRIDS,"colorcontrol",
+                    WS_TABSTOP,320,170,30,8
+    GROUPBOX        "Title",IDC_STATIC,13,16,168,59
+    EDITTEXT        IDC_PS_PLOT_TITLE,19,25,153,14,ES_AUTOHSCROLL
+    LTEXT           "Font",IDC_STATIC,20,44,15,8
+    LTEXT           "Title font description",IDC_PS_TITLE_FONT,39,44,75,19
+    PUSHBUTTON      "Choose Font...",IDC_PS_CHOOSE_TITLE_FONT,114,44,59,14
+    LTEXT           "Color:",IDC_STATIC,20,60,19,8
+    CONTROL         "Custom1",IDC_PS_COLOR_TITLE_FONT,"colorcontrol",
+                    WS_TABSTOP,43,61,35,8
+    LTEXT           "Bkground color",IDC_STATIC,18,172,56,8
+    LTEXT           "Border color",IDC_STATIC,18,184,49,8
+    CONTROL         "Custom1",IDC_PS_COLOR_BACKGROUND,"colorcontrol",
+                    WS_TABSTOP,79,171,14,8
+    CONTROL         "Custom1",IDC_PS_COLOR_BORDER,"colorcontrol",WS_TABSTOP,
+                    79,184,14,8
+    LTEXT           "Major grid size",IDC_STATIC,196,112,46,8
+    LTEXT           "Minor grid size",IDC_STATIC,195,170,46,8
+    EDITTEXT        IDC_PS_MAJOR_GRID_SIZE,244,110,23,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PS_MINOR_GRID_SIZE,246,167,23,14,ES_AUTOHSCROLL
+    LTEXT           "Line style:",IDC_STATIC,195,128,32,8
+    COMBOBOX        IDC_PS_MAJOR_LINESTYLE,231,125,121,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Line style:",IDC_STATIC,196,185,32,8
+    COMBOBOX        IDC_PS_MINOR_LINESTYLE,232,183,121,113,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Sub Title",IDC_STATIC,185,16,174,59
+    LTEXT           "Font",IDC_STATIC,192,44,15,8
+    LTEXT           "Info font description",IDC_PS_SUBTITLE_FONT,211,44,75,
+                    19
+    PUSHBUTTON      "Choose Font...",IDC_PS_CHOOSE_SUBTITLE_FONT,286,44,59,
+                    14
+    LTEXT           "Color:",IDC_STATIC,192,60,19,8
+    CONTROL         "Custom1",IDC_PS_COLOR_SUBTITLE_FONT,"colorcontrol",
+                    WS_TABSTOP,215,61,35,8
+    CONTROL         "Show sub title",IDC_PS_PLOT_SUBTITLESHOW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,286,59,70,10
+    GROUPBOX        "Auto Settings",IDC_STATIC,185,204,174,23
+    CONTROL         "Auto line color",IDC_PS_DATA_COLOR_AUTO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,192,214,74,10
+    CONTROL         "Auto line style",IDC_PS_DATA_LINESTYLE_AUTO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,272,213,72,10
+    GROUPBOX        "Background",IDC_STATIC,13,162,168,65
+    CONTROL         "Gradient",IDC_PS_BACKGROUND_GRADIENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,200,66,10
+    LTEXT           "Start color",IDC_STATIC,18,214,44,8
+    LTEXT           "Stop color",IDC_STATIC,93,214,42,8
+    CONTROL         "Custom1",IDC_PS_BKGND_COLOR1,"colorcontrol",WS_TABSTOP,
+                    62,214,29,8
+    CONTROL         "Custom1",IDC_PS_BKGND_COLOR2,"colorcontrol",WS_TABSTOP,
+                    141,214,29,8
+    GROUPBOX        "Legend",IDC_STATIC,13,115,168,45
+    CONTROL         "Use legend",IDC_PS_PLOT_LEGEND,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,18,125,58,8
+    CONTROL         "Transparent",IDC_PS_PLOT_LEGENDTRANSPARENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,113,125,65,10
+    LTEXT           "Font",IDC_STATIC,20,139,15,8
+    LTEXT           "Info font description",IDC_PS_LEGEND_FONT,40,139,75,19
+    PUSHBUTTON      "Choose Font...",IDC_PS_CHOOSE_LEGEND_FONT,114,139,59,14
+    CONTROL         "Horizontal(Vertical)",IDC_PS_BACKGROUND_GRADIENTHORV,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,89,200,90,8
+    LTEXT           "Data area color",IDC_STATIC,96,171,61,8
+    CONTROL         "Custom1",IDC_PS_COLOR_DATAAREA,"colorcontrol",
+                    WS_TABSTOP,159,171,14,8
+    LTEXT           "Border size",IDC_STATIC,96,184,46,8
+    EDITTEXT        IDC_PS_BORDER_SIZE,144,182,29,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PS_PLOT_SUBTITLE,191,25,159,14,ES_AUTOHSCROLL
+END
+
+IDD_XYSETTINGS_COPYRIGHT DIALOG DISCARDABLE  0, 0, 296, 92
+STYLE WS_CHILD | WS_CAPTION | WS_SYSMENU
+CAPTION "Copyright"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Copyright(C) 2006-2012, Yang Guojun",IDC_STATIC,7,7,282,
+                    9
+    LTEXT           "Version:",IDC_STATIC,7,26,45,9
+    EDITTEXT        IDC_PS_VERSION,59,26,230,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Author:",IDC_STATIC,7,45,37,9
+    EDITTEXT        IDC_PS_AUTHOR,59,45,230,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Contact:",IDC_STATIC,7,64,35,9
+    LTEXT           "baita00@yahoo.com.cn",IDC_STATIC,59,64,230,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_XYSETTINGS_TITLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 66
+    END
+
+    IDD_XYSETTINGS_SUBTITLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 66
+    END
+
+    IDD_XYSETTINGS_PLOTRANGES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 47
+    END
+
+    IDD_XYSETTINGS_MAJORGRIDS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 69
+    END
+
+    IDD_XYSETTINGS_MINORGRIDS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 69
+    END
+
+    IDD_XYSETTINGS_BACKGROUND, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 68
+    END
+
+    IDD_XYSETTINGS_AUTOSETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 25
+    END
+
+    IDD_XYSETTINGS_LEGEND, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_AXIS_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 360
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 225
+    END
+
+    IDD_DATA_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 360
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 194
+    END
+
+    IDD_XYSETTINGS_SELZONE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 66
+    END
+
+    IDD_XYSETTINGS_CURSORS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 72
+    END
+
+    IDD_AXISSETTINGS_TITLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_AXISSETTINGS_TICKLABEL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_AXISSETTINGS_RANGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_AXISSETTINGS_MAJORTICKS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_AXISSETTINGS_MINORTICKS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_AXISSETTINGS_AXISCOLOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 181
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_AXISSETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 340
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 138
+    END
+
+    IDD_DATASETTINGS_TITLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_DATASETTINGS_LINE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_DATASETTINGS_CHARTTYPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_DATASETTINGS_MAKERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 181
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 106
+    END
+
+    IDD_DATASETTINGS_FILLENCLOSED, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_DATASETTINGS_MANAGEMENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_DATASETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 328
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
+
+    IDD_XY_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 365
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 247
+    END
+
+    IDD_XYSETTINGS_COPYRIGHT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 289
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 85
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_XYSETTINGS_MAJORGRIDS DLGINIT
+BEGIN
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 30, 0
+0x6f53, 0x696c, 0x2064, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 
+0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x005f, 
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 35, 0
+0x6144, 0x6873, 0x6465, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 
+0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, "\000" 
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 51, 0
+0x6f44, 0x7474, 0x6465, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, "\000" 
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 
+0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    0
+END
+
+IDD_XYSETTINGS_MINORGRIDS DLGINIT
+BEGIN
+    IDC_PS_MINOR_LINESTYLE, 0x403, 30, 0
+0x6f53, 0x696c, 0x2064, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 
+0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x005f, 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 35, 0
+0x6144, 0x6873, 0x6465, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 
+0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, "\000" 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 51, 0
+0x6f44, 0x7474, 0x6465, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, "\000" 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 
+0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    0
+END
+
+IDD_DATA_SETTINGS DLGINIT
+BEGIN
+    IDC_DS_LINESTYLE, 0x403, 30, 0
+0x6f53, 0x696c, 0x2064, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 
+0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x005f, 
+    IDC_DS_LINESTYLE, 0x403, 35, 0
+0x6144, 0x6873, 0x6465, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 
+0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, "\000" 
+    IDC_DS_LINESTYLE, 0x403, 51, 0
+0x6f44, 0x7474, 0x6465, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, "\000" 
+    IDC_DS_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 
+0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_DS_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_DS_CHART_TYPE, 0x403, 8, 0
+0x6353, 0x7461, 0x6574, 0x0072, 
+    IDC_DS_CHART_TYPE, 0x403, 10, 0
+0x6f43, 0x6e6e, 0x6365, 0x6574, 0x0064, 
+    IDC_DS_CHART_TYPE, 0x403, 10, 0
+0x6948, 0x7473, 0x676f, 0x6172, 0x006d, 
+    IDC_DS_MARKER_SHAPE, 0x403, 11, 0
+0x6f4e, 0x6d20, 0x7261, 0x656b, 0x7372, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 15, 0
+0x7055, 0x6972, 0x6867, 0x2074, 0x7173, 0x6175, 0x6572, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 15, 0
+0x624f, 0x696c, 0x7571, 0x2065, 0x7173, 0x6175, 0x6572, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 14, 0
+0x654c, 0x7466, 0x7420, 0x6972, 0x6e61, 0x6c67, 0x0065, 
+    IDC_DS_MARKER_SHAPE, 0x403, 15, 0
+0x6952, 0x6867, 0x2074, 0x7274, 0x6169, 0x676e, 0x656c, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 12, 0
+0x7055, 0x7420, 0x6972, 0x6e61, 0x6c67, 0x0065, 
+    IDC_DS_MARKER_SHAPE, 0x403, 14, 0
+0x6f44, 0x6e77, 0x7420, 0x6972, 0x6e61, 0x6c67, 0x0065, 
+    IDC_DS_MARKER_SHAPE, 0x403, 7, 0
+0x6943, 0x6372, 0x656c, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 2, 0
+0x0058, 
+    IDC_DS_MARKER_SHAPE, 0x403, 4, 0
+0x6f44, 0x0074, 
+    0
+END
+
+IDD_AXIS_SETTINGS DLGINIT
+BEGIN
+    IDC_AS_MAJORTICK_POSITION, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_AS_MAJORTICK_POSITION, 0x403, 6, 0
+0x6e49, 0x656e, 0x0072, 
+    IDC_AS_MAJORTICK_POSITION, 0x403, 6, 0
+0x754f, 0x6574, 0x0072, 
+    IDC_AS_MAJORTICK_POSITION, 0x403, 5, 0
+0x6f42, 0x6874, "\000" 
+    IDC_AS_MINORTICK_POSITION, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_AS_MINORTICK_POSITION, 0x403, 6, 0
+0x6e49, 0x656e, 0x0072, 
+    IDC_AS_MINORTICK_POSITION, 0x403, 6, 0
+0x754f, 0x6574, 0x0072, 
+    IDC_AS_MINORTICK_POSITION, 0x403, 5, 0
+0x6f42, 0x6874, "\000" 
+    0
+END
+
+IDD_AXISSETTINGS_MAJORTICKS DLGINIT
+BEGIN
+    IDC_AS_MAJORTICK_POSITION, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_AS_MAJORTICK_POSITION, 0x403, 6, 0
+0x6e49, 0x656e, 0x0072, 
+    IDC_AS_MAJORTICK_POSITION, 0x403, 6, 0
+0x754f, 0x6574, 0x0072, 
+    IDC_AS_MAJORTICK_POSITION, 0x403, 5, 0
+0x6f42, 0x6874, "\000" 
+    0
+END
+
+IDD_AXISSETTINGS_MINORTICKS DLGINIT
+BEGIN
+    IDC_AS_MINORTICK_POSITION, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_AS_MINORTICK_POSITION, 0x403, 6, 0
+0x6e49, 0x656e, 0x0072, 
+    IDC_AS_MINORTICK_POSITION, 0x403, 6, 0
+0x754f, 0x6574, 0x0072, 
+    IDC_AS_MINORTICK_POSITION, 0x403, 5, 0
+0x6f42, 0x6874, "\000" 
+    0
+END
+
+IDD_DATASETTINGS_LINE DLGINIT
+BEGIN
+    IDC_DS_LINESTYLE, 0x403, 30, 0
+0x6f53, 0x696c, 0x2064, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 
+0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x005f, 
+    IDC_DS_LINESTYLE, 0x403, 35, 0
+0x6144, 0x6873, 0x6465, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 
+0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, "\000" 
+    IDC_DS_LINESTYLE, 0x403, 51, 0
+0x6f44, 0x7474, 0x6465, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, "\000" 
+    IDC_DS_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 
+0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_DS_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    0
+END
+
+IDD_DATASETTINGS_MAKERS DLGINIT
+BEGIN
+    IDC_DS_MARKER_SHAPE, 0x403, 11, 0
+0x6f4e, 0x6d20, 0x7261, 0x656b, 0x7372, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 15, 0
+0x7055, 0x6972, 0x6867, 0x2074, 0x7173, 0x6175, 0x6572, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 15, 0
+0x624f, 0x696c, 0x7571, 0x2065, 0x7173, 0x6175, 0x6572, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 14, 0
+0x654c, 0x7466, 0x7420, 0x6972, 0x6e61, 0x6c67, 0x0065, 
+    IDC_DS_MARKER_SHAPE, 0x403, 15, 0
+0x6952, 0x6867, 0x2074, 0x7274, 0x6169, 0x676e, 0x656c, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 12, 0
+0x7055, 0x7420, 0x6972, 0x6e61, 0x6c67, 0x0065, 
+    IDC_DS_MARKER_SHAPE, 0x403, 14, 0
+0x6f44, 0x6e77, 0x7420, 0x6972, 0x6e61, 0x6c67, 0x0065, 
+    IDC_DS_MARKER_SHAPE, 0x403, 7, 0
+0x6943, 0x6372, 0x656c, "\000" 
+    IDC_DS_MARKER_SHAPE, 0x403, 2, 0
+0x0058, 
+    IDC_DS_MARKER_SHAPE, 0x403, 4, 0
+0x6f44, 0x0074, 
+    0
+END
+
+IDD_DATASETTINGS_CHARTTYPE DLGINIT
+BEGIN
+    IDC_DS_CHART_TYPE, 0x403, 8, 0
+0x6353, 0x7461, 0x6574, 0x0072, 
+    IDC_DS_CHART_TYPE, 0x403, 10, 0
+0x6f43, 0x6e6e, 0x6365, 0x6574, 0x0064, 
+    IDC_DS_CHART_TYPE, 0x403, 10, 0
+0x6948, 0x7473, 0x676f, 0x6172, 0x006d, 
+    0
+END
+
+IDD_AXISSETTINGS_AXISCOLOR DLGINIT
+BEGIN
+    IDC_AS_AXIS_STYLE, 0x403, 30, 0
+0x6f53, 0x696c, 0x2064, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 
+0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x005f, 
+    IDC_AS_AXIS_STYLE, 0x403, 35, 0
+0x6144, 0x6873, 0x6465, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 
+0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, "\000" 
+    IDC_AS_AXIS_STYLE, 0x403, 51, 0
+0x6f44, 0x7474, 0x6465, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, "\000" 
+    IDC_AS_AXIS_STYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 
+0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_AS_AXIS_STYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    0
+END
+
+IDD_XY_SETTINGS DLGINIT
+BEGIN
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 30, 0
+0x6f53, 0x696c, 0x2064, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 
+0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x005f, 
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 35, 0
+0x6144, 0x6873, 0x6465, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 
+0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, "\000" 
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 51, 0
+0x6f44, 0x7474, 0x6465, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, "\000" 
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 
+0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_PS_MAJOR_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 30, 0
+0x6f53, 0x696c, 0x2064, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 
+0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x5f5f, 0x005f, 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 35, 0
+0x6144, 0x6873, 0x6465, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 
+0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, 0x5f20, "\000" 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 51, 0
+0x6f44, 0x7474, 0x6465, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 
+0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, 0x2e20, "\000" 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 
+0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 0x5f20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    IDC_PS_MINOR_LINESTYLE, 0x403, 41, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 0x5f20, 0x2e20, 0x2e20, 
+0x5f20, 0x2e20, "\000" 
+    0
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (New Zealand) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENZ)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_NZ
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "PlotResources.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (New Zealand) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

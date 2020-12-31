@@ -1,0 +1,155 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - CheckFrame Control</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">CheckFrame Control</FONT></H3></CENTER>
+
+<HR>
+
+
+<p>This article was contributed by <A HREF="mailto:csa@mail.jubii.dk">Christian Skovdal Andersen</A>. 
+
+
+<p>Sometimes it can be handy to exclude a set of options based on
+the users choice. For instance if the user do not want to save a
+log file, then it should be signalled, to the user, which options
+are relevant.</p>
+
+<p><img src="check_frame_unchecked.gif" width="347"
+height="197"><br>
+fig.1 The checkframe control are disabled, and so is its the
+contained controls.</p>
+
+<p><img src="check_frame_checked.gif" width="347"
+height="197"><br>
+fig. 2 The check frame is enabled and the controls can be used.</p>
+
+<p>&nbsp;</p>
+
+<p>The header file: CheckFrm.h</p>
+
+<pre><font color="#800000">BOOL IsRectContainedInRect(CRect &amp;rcChild, CRect &amp;rcMother);
+
+class CCheckFrame : public CObject
+{
+public:
+	virtual void Enable(BOOL bEnable);
+	void Set(CWnd *pParentWnd,UINT nFrmCtl);
+	
+	CWnd* m_pFrame; 
+	CWnd* m_pDialog;
+	CRect m_rFrm;
+	CDWordArray m_adwWndHandles;
+	
+	
+protected:
+};
+</font></pre>
+
+<p>The impementation file: CheckFrm.cpp<br>
+The code are futher commented in the source files.</p>
+
+<pre><font color="#800000">#include &quot;stdafx.h&quot;
+#include &quot;Checkfrm.h&quot;
+
+//////////////////////////////////////
+// EnumChildWnds Callback
+BOOL CALLBACK EnumChildWnds(HWND hwnd, CCheckFrame *pObj)
+{
+	CRect R;
+	GetWindowRect(hwnd, &amp;R);
+	pObj-&gt;m_pDialog-&gt;ScreenToClient(&amp;R);
+	
+	if (hwnd != pObj-&gt;m_pFrame-&gt;m_hWnd)
+	{
+		if (IsRectContainedInRect(R, pObj-&gt;m_rFrm))
+			pObj-&gt;m_adwWndHandles.Add((DWORD)hwnd);
+	}
+	
+	return TRUE;
+}
+
+
+//////////////////////////////////////
+// Function name	: Set
+void CCheckFrame::Set(CWnd *pParentWnd, UINT nFrmCtl)
+{
+	m_pDialog = pParentWnd;
+	
+	// Calculate the size of the rect that should contain the controls
+	m_pFrame = m_pDialog-&gt;GetDlgItem(nFrmCtl);
+	if (!m_pFrame)
+	{
+		AfxMessageBox(&quot;Unable to find frame control&quot;);
+		return;
+	}
+	m_pFrame-&gt;GetWindowRect(&amp;m_rFrm);
+	m_pDialog-&gt;ScreenToClient(&amp;m_rFrm);
+	
+	// Make sure the array is empty
+	m_adwWndHandles.RemoveAll();
+	
+	// The (control) windows contained within the boundaries of the frame control
+	// are enumerated and their associated window-handles collected in an array.
+	EnumChildWindows(m_pDialog-&gt;m_hWnd, (WNDENUMPROC)EnumChildWnds, (LONG)(CCheckFrame *)this);
+	
+}
+
+//////////////////////////////////////
+// Function name	: CCheckFrame::Enable
+void CCheckFrame::Enable(BOOL bEnable)
+{
+	for (int i=0 ; i&lt;m_adwWndHandles.GetSize() ; i++)
+		EnableWindow((HWND)m_adwWndHandles[i], bEnable);
+}
+
+//////////////////////////////////////
+// Function name	: IsRectContainedInRect
+BOOL IsRectContainedInRect(CRect &amp;rcChild, CRect &amp;rcMother)
+{	
+	if (rcMother.PtInRect(CPoint(rcChild.left, rcChild.top)) &amp;&amp;
+	rcMother.PtInRect(CPoint(rcChild.left, rcChild.bottom)) &amp;&amp;
+	rcMother.PtInRect(CPoint(rcChild.right, rcChild.top)) &amp;&amp;
+	rcMother.PtInRect(CPoint(rcChild.right, rcChild.bottom)))
+		return TRUE;
+	
+	return FALSE;
+}
+</font></pre>
+
+<p>Known problems:<br>
+If the checkbox control it self is disabled when the progrma
+exits, try to move it some pixels away from the border of the
+frame control.</p>
+
+<p><a href="check_frame.zip">Download the sample project (31 kb)</a></p>
+
+
+<P>Posted : March 12, 98
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+
+

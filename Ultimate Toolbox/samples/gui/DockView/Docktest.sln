@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Docktest", "Docktest.vcproj", "{6B354278-51B6-4AC9-97B7-D715C6DB9D07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release_Shared|Win32 = Release_Shared|Win32
+		Release|Win32 = Release|Win32
+		Unicode_Debug|Win32 = Unicode_Debug|Win32
+		Unicode_Release|Win32 = Unicode_Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Debug|Win32.Build.0 = Debug|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Release_Shared|Win32.ActiveCfg = Release_Shared|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Release_Shared|Win32.Build.0 = Release_Shared|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Release|Win32.ActiveCfg = Release|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Release|Win32.Build.0 = Release|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Unicode_Debug|Win32.ActiveCfg = Unicode_Debug|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Unicode_Debug|Win32.Build.0 = Unicode_Debug|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Unicode_Release|Win32.ActiveCfg = Unicode_Release|Win32
+		{6B354278-51B6-4AC9-97B7-D715C6DB9D07}.Unicode_Release|Win32.Build.0 = Unicode_Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

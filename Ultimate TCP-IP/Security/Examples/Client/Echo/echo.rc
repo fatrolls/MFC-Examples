@@ -1,0 +1,138 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 98
+    END
+
+    IDD_ECHO_CLIENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 275
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 248
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 250, 105
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About - Ultimate TCP/IP developers Kit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_EXIT,197,7,46,14
+    LTEXT           "Ultimate TCP/IP v 4.0",-1,43,7,84,8
+    LTEXT           "The Ultimate Toolbox.",-1,43,16,70,8
+    LTEXT           "Copyright 1995-2007",-1,43,25,66,8
+    GROUPBOX        " Contacting The Ultimate Toolbox ",-1,7,47,236,51
+    LTEXT           "Phone:",-1,25,57,24,8
+    LTEXT           "Fax:",-1,25,81,14,8
+    LTEXT           "EMail:",-1,133,57,20,8
+    LTEXT           "WWW:",-1,133,71,25,8
+    LTEXT           "1 (416) 467-5100",-1,54,68,55,8
+    LTEXT           "1 (800) 463-1492",-1,54,57,55,8
+    LTEXT           "1 (416) 422-4801",-1,54,81,55,8
+    LTEXT           "info@theultimatetoolbox.com",-1,160,57,64,8
+    LTEXT           "www.theultimatetoolbox.com",-1,166,71,58,8
+END
+
+IDD_ECHO_CLIENT DIALOG DISCARDABLE  0, 0, 282, 255
+STYLE DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Ultimate TCP/IP - ECHO Secure Client"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Server Parameters: ",IDC_STATIC,5,5,270,45
+    RTEXT           "Server Por&t:",IDC_STATIC,10,33,60,8
+    EDITTEXT        IDC_EDIT_PORT,75,30,130,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Connect",IDC_BUTTON_CONNECT,215,15,50,14
+    RTEXT           "Comman&d:",IDC_STATIC,10,68,60,8
+    EDITTEXT        IDC_EDIT_COMMAND,75,65,130,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Send",IDC_BUTTON_SEND,215,65,50,14
+    PUSHBUTTON      "A&bout...",IDC_ABOUT,215,30,50,14
+    CONTROL         "",IDC_STATUS,"CUH_Control",WS_BORDER,5,90,271,160
+    RTEXT           "Server Address:",IDC_STATIC,10,18,60,8
+    EDITTEXT        IDC_EDIT_ADDRESS,75,15,130,14,ES_AUTOHSCROLL
+    GROUPBOX        " Type in any text and click Send ",IDC_STATIC,5,55,270,
+                    31
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

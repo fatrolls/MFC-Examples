@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>Tools - ClassBuilder</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">ClassBuilder</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This tool was contributed by <a href="mailto:venemaj@ce.philips.nl">Jimmy Venema</a></p>
+
+<p>
+ClassBuilder is an Object Oriented C++ front end to your compiler. It lets
+you create, manipulate and navigate classes, class relations, class members
+and class methods at a high level of abstraction trough a graphical user 
+interface. Its rich feature list includes:
+<ul>
+  <li> Full code generation for the defined relations and their
+associated find  methods.
+  <li> Wizards to insert code, like iteration loops and navigation paths.
+  <li> Code syncronisation with compile environment.
+  <li> Full code generation for serializing the complete data model when used 
+  together with MFC. (The tool is build with itself and uses this feature 
+  to save to and read from file).
+  <li> Drag and drop support for many things. Adding a member to a class is just
+  drag with holding down the Ctrl-key and then drop it on the desired class.
+  <li> Documentation generation in RTF and HTML. 
+  <li> etc.
+</ul>
+
+<p>
+This is a demo version, it may be freely distributed as is, without
+modification. This demo version is limited to a 30 classes and 50 iterations of
+code generation per project.
+
+<p> The author (Jimmy Venema) can be contacted at <a
+href="mailto:venemaj@ce.philips.nl">venemaj@ce.philips.nl</a>.
+
+<p>This demo version can be downloaded from <a href="classbuilder_demo.zip">here</a>.
+
+<P>Posted on: April 14, 98.
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"> <CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

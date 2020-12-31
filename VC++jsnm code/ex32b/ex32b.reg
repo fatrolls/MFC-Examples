@@ -1,0 +1,30 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+HKEY_CLASSES_ROOT\.32B = Ex32b.Document
+HKEY_CLASSES_ROOT\Ex32b.Document\shell\open\command = EX32B.EXE %1
+HKEY_CLASSES_ROOT\Ex32b.Document\shell\open\ddeexec = [open("%1")]
+HKEY_CLASSES_ROOT\Ex32b.Document\shell\open\ddeexec\application = EX32B
+    ; note: the application is optional
+    ;  (it defaults to the app name in "command")
+
+HKEY_CLASSES_ROOT\Ex32b.Document = Ex32b Document
+HKEY_CLASSES_ROOT\Ex32b.Document\protocol\StdFileEditing\server = EX32B.EXE
+HKEY_CLASSES_ROOT\Ex32b.Document\protocol\StdFileEditing\verb\0 = &Edit
+HKEY_CLASSES_ROOT\Ex32b.Document\Insertable =
+HKEY_CLASSES_ROOT\Ex32b.Document\CLSID = {79EC2071-29CF-11D0-847C-00400526305B}
+
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B} = Ex32b Document
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\DefaultIcon = EX32B.EXE,1
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\LocalServer32 = EX32B.EXE
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\ProgId = Ex32b.Document
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\MiscStatus = 32
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\AuxUserType\3 = ex32b
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\AuxUserType\2 = Ex32b
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\Insertable = 
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\verb\1 = &Open,0,2
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\verb\0 = &Edit,0,2
+HKEY_CLASSES_ROOT\CLSID\{79EC2071-29CF-11D0-847C-00400526305B}\InprocHandler32 = ole32.dll

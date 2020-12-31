@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Shilpa Shamapant">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (WinNT; I) [Netscape]">
+   <TITLE>CListCtrl - Attacing System ImageList to ListControl</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" LINK="#B50029" VLINK="#8E2323" ALINK="#FF0000" BACKGROUND="back.gif" bgproperties="fixed">
+&nbsp;
+<TABLE WIDTH="100%" >
+<TR WIDTH="100%">
+<TD><A HREF="http://www.codeguru.com/cgi/ads.cgi?advert=genitor"><IMG SRC="genitor.gif" ALT="Genitor - award-winning Object Construction Suite for C/C++ development, documentation, and maintainance" BORDER=2 HEIGHT=60 WIDTH=468></A>
+<BR><FONT SIZE=-1><A HREF="http://www.codeguru.com/cgi/ads.cgi?advert=genitor">Click
+here to get a trail copy of Genitor V3.1</A></FONT></TD>
+
+<TD></TD>
+</TR>
+</TABLE>
+
+<CENTER>
+<H3>
+<FONT COLOR="#A0A099">Attaching System ImageList to ListControl</FONT></H3></CENTER>
+
+<HR WIDTH="100%">This code was contributed by <A HREF="mailto:matt_esterly@vds.com">Matt
+Esterly</A>.
+<PRE>
+<TT><FONT COLOR="#000000">A system image list contains each file, folder, shortcut, etc. 's icon.&nbsp; This can come&nbsp;
+in very handy for creating a custom explore type application.&nbsp; The first step consists
+of getting the small and large (if you want it) image lists from the system then attaching
+them to a CImageList and then adding them&nbsp; to your list control.&nbsp; Don't forget to Detach() them after you&nbsp;
+are done or else all the icons on the system will disappear and a reboot seems to be the only fix.&nbsp;
+
+Create the following member variables in you list control class:&nbsp;
+</FONT><FONT COLOR="#990000">CImageList m_smallImageList;&nbsp;
+CImageList m_largeImageList;&nbsp;
+
+</FONT><FONT COLOR="#000000">And add this function:&nbsp;
+</FONT><FONT COLOR="#990000">void CSystemListCtrl::InitializeSystemImageList()&nbsp;
+{&nbsp;
+</FONT><FONT COLOR="#009900">&nbsp;//image list setup&nbsp;
+</FONT><FONT COLOR="#990000">&nbsp;HIMAGELIST&nbsp; hSystemSmallImageList, hSystemLargeImageList;&nbsp;
+&nbsp;SHFILEINFO&nbsp;&nbsp;&nbsp; ssfi, lsfi;&nbsp;
+
+&nbsp;&nbsp;</FONT><FONT COLOR="#009900"> //get a handle to the system small icon list&nbsp;
+</FONT><FONT COLOR="#990000">&nbsp;hSystemSmallImageList =&nbsp;
+&nbsp; (HIMAGELIST)SHGetFileInfo(&nbsp;
+&nbsp; (LPCTSTR)_T("C:\\"),&nbsp;
+&nbsp; 0,&nbsp;
+&nbsp; &amp;ssfi,&nbsp;
+&nbsp; sizeof(SHFILEINFO),&nbsp;
+&nbsp; SHGFI_SYSICONINDEX | SHGFI_SMALLICON);&nbsp;
+</FONT><FONT COLOR="#009900">//attach it to the small image list&nbsp;
+//--DON'T FORGET TO PUT m_smallImageList.Detach();&nbsp; in your destructor&nbsp;
+
+</FONT><FONT COLOR="#990000">&nbsp;m_smallImageList.Attach(hSystemSmallImageList);&nbsp;
+
+&nbsp; </FONT><FONT COLOR="#009900">//do the same for the large&nbsp;
+</FONT><FONT COLOR="#990000">&nbsp;hSystemLargeImageList =&nbsp;
+&nbsp; (HIMAGELIST)SHGetFileInfo(&nbsp;
+&nbsp; (LPCTSTR)_T("C:\\"),&nbsp;
+&nbsp; 0,&nbsp;
+&nbsp; &amp;lsfi,&nbsp;
+&nbsp; sizeof(SHFILEINFO),&nbsp;
+&nbsp; SHGFI_SYSICONINDEX | SHGFI_ICON);&nbsp;
+&nbsp;m_largeImageList.Attach(hSystemLargeImageList);&nbsp;
+
+&nbsp;</FONT><FONT COLOR="#009900"> //Set the list control image list&nbsp;
+</FONT><FONT COLOR="#990000">&nbsp;SetImageList(&amp;m_smallImageList, LVSIL_SMALL);&nbsp;
+&nbsp;SetImageList(&amp;m_largeImageList, LVSIL_NORMAL);&nbsp;
+
+}</FONT></TT></PRE>
+
+<PRE><TT><FONT COLOR="#000000">You will also need a function to get the image ID for each item you would like to dispaly</FONT></TT></PRE>
+
+<PRE><TT><FONT COLOR="#990000">int CSystemListCtrl::GetIconIndex(const CString&amp; csFileName)&nbsp; </FONT><FONT COLOR="#009900">//full path and file name
+</FONT><FONT COLOR="#990000">{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SHFILEINFO&nbsp;&nbsp;&nbsp; sfi;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SHGetFileInfo(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (LPCTSTR)csFileName,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;sfi,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizeof(SHFILEINFO),&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SHGFI_SYSICONINDEX | SHGFI_SMALLICON );
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return sfi.iIcon;
+}</FONT></TT></PRE>
+
+<PRE><FONT COLOR="#000000">Feed this result back into you ListCtrl LV_ITEM struct and you are on your way.</FONT></PRE>
+
+<PRE><FONT COLOR="#000000">Note:&nbsp; Windows 95/98 returns a full image list upfront where as NT4.0 only will retreive the icons as you ask for them in the future.</FONT></PRE>
+
+<PRE><FONT COLOR="#000000">
+"If you do an imagecount on the imagelist right after you get the handle, you'll see the smaller imagelist.
+Only until you iterate throught the various documents are they added to the NT imagelist." - Gil Rosin</FONT></PRE>
+
+<PRE><FONT COLOR="#000000">
+Thanks to Robert Edward Caldecott and Gil Rosin for pointing this out!&nbsp;</FONT><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;
+</FONT></TT></PRE>
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<CENTER><FONT SIZE=-2>796</FONT></CENTER>
+
+</BODY>
+</HTML>

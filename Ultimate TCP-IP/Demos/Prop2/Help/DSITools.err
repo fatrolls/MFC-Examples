@@ -1,0 +1,15 @@
+Microsoft (R) Help Compiler
+HCRTF 4.03.0002
+Copyright (c) Microsoft Corp 1990 - 1995. All rights reserved.
+dsitools.hpj
+    HC3048: Warning: topic #1 of e:\ut40\demos\prop2\help\DSITools.rtf : 
+	Nonscrolling region defined after scrolling region.
+41	Topics
+0	Jumps
+1	Keyword
+0	Bitmaps
+
+
+Created e:\ut40\demos\prop2\help\DSITools.hlp, 25,918 bytes
+Compile time: 0 minutes, 0 seconds
+0 notes, 1 warning

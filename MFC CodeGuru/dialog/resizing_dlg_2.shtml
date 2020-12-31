@@ -1,0 +1,68 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Nikolay Sokratov">
+<title>Section - Title</title>
+</head>
+<!-- Set background properties -->
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+<!-- A word from our sponsors... -->
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Resizable Dialog Box
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <a href="mailto:elivingt@internet-zahav.net">Eli Vingot</a>
+
+<p><a HREF="resizing_dlg_2.zip">Download Source Code and Example</a> </p>
+
+<p>CResizingDialog is a CDialog derived class that allows the dialog controls to be reordered
+and resized with the Dialog Box.<br>
+<br>
+<br>
+To use CResizingDialog :<br>
+<ol>
+	<li> Replace the base class of you dialog box to CResizingDialog (instead of CDialog)<br>
+	<li> Change the dialog template to allow resizing border.<br>
+	<li> From the constructor (or any other place) call SetConrolInfo() to set the behavior of
+	each of your dialog controls on resize.<br>
+</ol>
+SetConrolInfo() determines how each control behaves when the user resize the dialog box.<br>
+The &quot;Windows default&quot; is ANCHORE_TOP | ANCHORE_LEFT) e.g. <br><br>
+For a right aligned OK button you'll probably call:<br>
+SetControlInfo(IDOK, ANCHORE_RIGHT)<br>
+For a text control that needs to resize with the dialog you may do:<br>
+SetControlInfo(IDD_MYEDITOR, RESIZE_BOTH)</p>
+<!-- Remember to update this -->
+
+<p>Last updated: 11 May 1998 </p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1997 - 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+<!-- Counter -->
+
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+/*
+ * DIALOGS.RC
+ *
+ * Icon, menus, strings, and dialogs.
+ *
+ * Copyright (c)1992 Microsoft Corporation, All Right Reserved
+ *
+ * Kraig Brockschmidt, Software Design Engineer
+ * Microsoft Systems Developer Relations
+ * One Microsoft Way
+ * Redmond, WA  98052
+ *
+ * Internet  :  kraigb@microsoft.com
+ * Compuserve:  70750,2344
+ * Fax       :  (206)936-7329
+ */
+
+
+#include <windows.h>
+#include <dlgs.h>
+//#include "dialogs.h"
+
+
+Icon        ICON dialogs.ico
+
+
+IDR_MENU    MENU MOVEABLE DISCARDABLE
+    BEGIN
+     POPUP "&Color"
+      BEGIN
+       MENUITEM "&Absolute Minimum...",       IDM_COLORABSOLUTEMINIMUM
+       MENUITEM "&Basic...",                  IDM_COLORBASIC
+       MENUITEM "&Fully Open...",             IDM_COLORFULLYOPEN
+       MENUITEM "&Prevent Open...",           IDM_COLORPREVENTOPEN
+       MENUITEM "&Hooked...",                 IDM_COLORHOOKED
+       MENUITEM "&Customized template...",    IDM_COLORCUSTOMIZEDTEMPLATE
+       MENUITEM "&Modeless, custom handle...",IDM_COLORCUSTOMIZEDUSINGHANDLE
+       MENUITEM SEPARATOR
+       MENUITEM "&Exit",                      IDM_EXIT
+      END
+
+     POPUP "&Font"
+      BEGIN
+       MENUITEM "&Select Font Flags...",      IDM_FONTSELECTFLAGS
+       MENUITEM SEPARATOR
+       MENUITEM "&Basic...",                  IDM_FONTBASIC
+       MENUITEM "&Effects...",                IDM_FONTEFFECTS
+       MENUITEM "&Hooked to Hide Color...",   IDM_FONTHOOKEDHIDECOLOR
+       MENUITEM "&Modeless with Apply...",    IDM_FONTMODELESS
+      END
+
+     POPUP "&File"
+      BEGIN
+       MENUITEM "Functional &Open...",        IDM_FILEFUNCTIONALOPEN
+       MENUITEM "Functional &Save As...",     IDM_FILEFUNCTIONALSAVEAS
+       MENUITEM "&Custom Filter...",          IDM_FILECUSTOMFILTER
+       MENUITEM "&Extra Initial Values...",   IDM_FILEEXTRAINITIALVALUES
+      END
+
+     POPUP "&Print"
+      BEGIN
+       MENUITEM "&Print...",                  IDM_PRINTPRINT
+       MENUITEM "Prin&ter Setup...",          IDM_PRINTPRINTERSETUP
+      END
+
+     POPUP "&Searching"
+      BEGIN
+       MENUITEM "&Find...",                   IDM_SEARCHFIND
+       MENUITEM "&Replace...",                IDM_SEARCHREPLACE
+      END
+
+     POPUP "&Help"
+      BEGIN
+       MENUITEM "&About...",                  IDM_HELPABOUT
+      END
+    END
+
+
+
+STRINGTABLE
+ BEGIN
+  IDS_DEFEXT,        "TXT"
+  IDS_FILTERS,       "Text (*.TXT)|*.TXT|Configurations (*.INI)|*.ini|Both (*.TXT, *.INI)|*.txt;*.ini|"
+  IDS_CUSTOMFILTER,  "Executables (*.com, *.exe, *.bat)|*.com;*.bat;*.exe|"
+ END
+
+
+
+rcinclude select.dlg
+rcinclude color.dlg
+
+
+IDD_ABOUT DIALOG 14, 22, 177, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About..."
+FONT 8, "Helv"
+BEGIN
+    ICON            "Icon", ID_NULL, 20, 9, 18, 16
+    CTEXT           "COMMDLG Examples 1.0", ID_NULL, 66, 7, 100, 9, NOT 
+                    WS_GROUP
+    CTEXT           "Copyright (c)1992 Microsoft Corp.", ID_NULL, 60, 18, 
+                    112, 12, NOT WS_GROUP
+    LTEXT           "Kraig Brockschmidt", ID_NULL, 5, 39, 109, 9, NOT 
+                    WS_GROUP
+    LTEXT           "Software Design Engineer", ID_NULL, 5, 50, 109, 8
+    LTEXT           "Microsoft Developer Relations", ID_NULL, 5, 60, 109, 10, 
+                    NOT WS_GROUP
+    LTEXT           "Internet:  kraigb@microsoft.com", ID_NULL, 5, 72, 109, 
+                    10, NOT WS_GROUP
+    LTEXT           "Compuserve:  70750,2344", ID_NULL, 5, 84, 109, 10, NOT 
+                    WS_GROUP
+    DEFPUSHBUTTON   "OK", IDOK, 130, 75, 42, 18
+END

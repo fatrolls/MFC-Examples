@@ -1,0 +1,140 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Converting DIB to DDB</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Converting DIB to DDB</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+You can render a device-independent bitmap (DIB) onto a device without having to convert it into a device-dependent bitmap (DDB). However, the process is slower when using a DIB and you also don't have access to few very versatile functions such as BitBlt() which handle only DDBs.
+
+<p>The basic steps involved in creating a device-dependent bitmap from a device-independent bitmap are:
+<ol>
+<li>Create a logical palette from the information in the DIB color table. You need to do this only if the device supports palettes. To create the palette, allocate enough memory for a LOGPALETTE structure with memory for the color table as well. Initialize the palVersion and palNumEntries fields and copy the color values from the color table in the DIB. Then call CreatePalette() using the LOGPALETTE structure we initialized.</li>
+<li>Select the logical palette into the device for which we are creating the DDB, then realize the palette.</li>
+<li>Create the DDB using the CreateDIBitmap() function.</li>
+<li>Don't forget to release any memory allocated for the LOGPALETTE structure.</li>
+</ol>
+
+<p>Although this function creates a logical palette, it doesn't return this information to the calling code. If the DIB represents a 256 color bitmap and the device supports only 256 colors, then rendering the DDB onto the device will probably not result in the proper image. That's because the system palette colors may not match the colors that are being used by the bitmap. You may, therefore, want to modify the function so that it returns the logical palette as well. You would have to select and realize this palette onto the device context before drawing the bitmap image.
+
+<PRE><TT><FONT COLOR="#990000">
+HBITMAP DIBToDDB( HANDLE hDIB )
+{
+	LPBITMAPINFOHEADER	lpbi;
+	HBITMAP 		hbm;
+	CPalette		pal;
+	CPalette*		pOldPal;
+	CClientDC		dc(NULL);
+
+	if (hDIB == NULL)
+		return NULL;
+
+	lpbi = (LPBITMAPINFOHEADER)hDIB;
+
+	int nColors = lpbi->biClrUsed ? lpbi->biClrUsed : 
+						1 << lpbi->biBitCount;
+
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	LPVOID lpDIBBits;
+	if( bmInfo.bmiHeader.biBitCount > 8 )
+		lpDIBBits = (LPVOID)((LPDWORD)(bmInfo.bmiColors + 
+			bmInfo.bmiHeader.biClrUsed) + 
+			((bmInfo.bmiHeader.biCompression == BI_BITFIELDS) ? 3 : 0));
+	else
+		lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+
+	// Create and select a logical palette if needed
+	if( nColors <= 256 && dc.GetDeviceCaps(RASTERCAPS) & RC_PALETTE)
+	{
+		UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+		LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+		pLP->palVersion = 0x300;
+		pLP->palNumEntries = nColors;
+
+		for( int i=0; i < nColors; i++)
+		{
+			pLP->palPalEntry[i].peRed = bmInfo.bmiColors[i].rgbRed;
+			pLP->palPalEntry[i].peGreen = bmInfo.bmiColors[i].rgbGreen;
+			pLP->palPalEntry[i].peBlue = bmInfo.bmiColors[i].rgbBlue;
+			pLP->palPalEntry[i].peFlags = 0;
+		}
+
+		pal.CreatePalette( pLP );
+
+		delete[] pLP;
+
+		// Select and realize the palette
+		pOldPal = dc.SelectPalette( &pal, FALSE );
+		dc.RealizePalette();
+	}
+
+	
+	hbm = CreateDIBitmap(dc.GetSafeHdc(),		// handle to device context
+			(LPBITMAPINFOHEADER)lpbi,	// pointer to bitmap info header 
+			(LONG)CBM_INIT,			// initialization flag
+			lpDIBBits,			// pointer to initialization data 
+			(LPBITMAPINFO)lpbi,		// pointer to bitmap info
+			DIB_RGB_COLORS );		// color-data usage 
+
+	if (pal.GetSafeHandle())
+		dc.SelectPalette(pOldPal,FALSE);
+
+	return hbm;
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

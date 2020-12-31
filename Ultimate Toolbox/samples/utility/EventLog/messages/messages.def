@@ -1,0 +1,7 @@
+; messages.def : Declares the module parameters for the DLL.
+
+LIBRARY      "MESSAGES"
+DESCRIPTION  'MESSAGES Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here

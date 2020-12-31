@@ -1,0 +1,258 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Combobox Color Picker</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Combobox Color Picker</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:baldvin@trafficsoftware.com">Baldvin Hansson</A>.
+
+
+<p>I recently wanted to allow certain color selection in one of my projects. The common control available
+is a great thing but I wanted the look-and-feel of something similar to what VC++ offers in it's options
+dialog box. The following code acomplishes exactly that.
+</p>
+
+<P>Just include the ComboColorPicker.h and ComboColorPicker.cpp files in your project and create a control 
+member variable for a regular combobox in VC's classwizard and you have your self a combobox for color selection.
+This combobox implements focus indication correctly but still lacks the [Automatic] option VC has.
+</p>
+
+<p><img src="combo_color_picker.gif"></p>
+
+<p>
+<b>ComboColorPicker.h</b>
+<PRE><TT><FONT COLOR="#990000">
+#if !defined(AFX_COMBOCOLORPICKER_H__B2348841_5541_11D1_8756_00A0C9181E86__INCLUDED_)
+#define AFX_COMBOCOLORPICKER_H__B2348841_5541_11D1_8756_00A0C9181E86__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// ComboColorPicker.h : header file
+// &copy; 1997 Baldvin Hansson
+
+/////////////////////////////////////////////////////////////////////////////
+// CComboColorPicker window
+
+class CComboColorPicker : public CComboBox
+{
+// Construction
+public:
+	CComboColorPicker();
+
+// Attributes
+private:
+	bool m_bInitialized;
+	static COLORREF m_rgStandardColors[];
+public:
+
+// Operations
+private:
+	void InitializeData();
+public:
+	COLORREF GetSelectedColor();
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CComboColorPicker)
+	protected:
+	virtual void PreSubclassWindow();
+	//}}AFX_VIRTUAL
+	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+
+// Implementation
+public:
+	virtual ~CComboColorPicker();
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CComboColorPicker)
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_COMBOCOLORPICKER_H__B2348841_5541_11D1_8756_00A0C9181E86__INCLUDED_)
+</FONT></TT></PRE>
+</p>
+
+<p>
+<b>ComboColorPicker.cpp</b>
+<PRE><TT><FONT COLOR="#990000">
+// ComboColorPicker.cpp : implementation file
+// &copy; 1997 Baldvin Hansson
+
+#include "stdafx.h"
+#include "ComboColorPicker.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CComboColorPicker
+
+COLORREF CComboColorPicker::m_rgStandardColors[] = {
+	RGB(0, 0, 0),			// Black
+	RGB(255, 255, 255),		// White
+	RGB(128, 0, 0),			// Dark Red
+	RGB(0, 128, 0),			// Dark Green
+	RGB(128, 128, 0),		// Dark Yellow
+	RGB(0, 0, 128),			// Dark Blue
+	RGB(128, 0, 128),		// Dark Magenta
+	RGB(0, 128, 128),		// Dark Cyan
+	RGB(192, 192, 192),		// Light Grey
+	RGB(128, 128, 128),		// Dark Grey
+	RGB(255, 0, 0),			// Red
+	RGB(0, 255, 0),			// Green
+	RGB(255, 255, 0),		// Yellow
+	RGB(0, 0, 255),			// Blue
+	RGB(255, 0, 255),		// Magenta
+	RGB(0, 255, 255),		// Cyan
+	};
+
+CComboColorPicker::CComboColorPicker()
+{
+	m_bInitialized = false;
+}
+
+CComboColorPicker::~CComboColorPicker()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CComboColorPicker, CComboBox)
+	//{{AFX_MSG_MAP(CComboColorPicker)
+	ON_WM_CREATE()
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CComboColorPicker message handlers
+
+int CComboColorPicker::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+{
+	if (CComboBox::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	
+	InitializeData();
+
+	return 0;
+}
+
+void CComboColorPicker::PreSubclassWindow() 
+{
+	InitializeData();
+	
+	CComboBox::PreSubclassWindow();
+}
+
+void CComboColorPicker::InitializeData()
+{
+	int nItem;
+
+	if (m_bInitialized)
+		return;
+
+	for (int nColor = 0; nColor < sizeof(m_rgStandardColors)/sizeof(COLORREF); nColor++)
+	{
+		nItem = AddString((LPCTSTR)m_rgStandardColors[nColor]);	// Here we could affect the sort order at run-time
+
+		if (CB_ERRSPACE == nItem)
+			break;
+	}
+
+	m_bInitialized = true;
+}
+
+void CComboColorPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	CDC dc;
+	CBrush brushBlack;
+	brushBlack.CreateStockObject(BLACK_BRUSH);
+	
+	if (!dc.Attach(lpDrawItemStruct->hDC))
+		return;
+
+	COLORREF rgbTextColor = dc.GetTextColor();
+	COLORREF rgbBkColor = dc.GetBkColor();
+
+	if (lpDrawItemStruct->itemAction & ODA_FOCUS)
+	{
+		dc.DrawFocusRect(&lpDrawItemStruct->rcItem);
+	}
+	else if (lpDrawItemStruct->itemAction & ODA_DRAWENTIRE)
+	{
+		if (lpDrawItemStruct->itemState & ODS_FOCUS)
+			dc.DrawFocusRect(&lpDrawItemStruct->rcItem);
+		else
+			dc.ExtTextOut(0, 0, ETO_OPAQUE, &lpDrawItemStruct->rcItem, _T(""), 0, NULL);
+	}
+
+	if (0 <= (int)lpDrawItemStruct->itemID)	// Any item selected?
+	{
+		::InflateRect(&lpDrawItemStruct->rcItem, -2, -2);
+		
+		dc.FillSolidRect(&lpDrawItemStruct->rcItem, (COLORREF)lpDrawItemStruct->itemData);
+		dc.FrameRect(&lpDrawItemStruct->rcItem, &brushBlack);
+	}
+
+	// Restore the DC state
+	dc.SetTextColor(rgbTextColor);
+	dc.SetBkColor(rgbBkColor);
+	dc.Detach();
+}
+
+COLORREF CComboColorPicker::GetSelectedColor()
+{
+	int nItem = GetCurSel();
+	if (CB_ERR == nItem)
+		return RGB(0, 0, 0);	// Default to black if nothing is selected
+
+	return m_rgStandardColors[nItem];
+}
+</FONT></TT></PRE>
+</p>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

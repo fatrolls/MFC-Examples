@@ -1,0 +1,139 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Leif Terje Fonnes">
+   <TITLE>Samples - Messenger</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Messenger
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:vasia@taide.lt"><!-- Author Name -->Audrius Vasiliauskas</A>.
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+I look to section samples, and find what this section very small. So I decide make big sample with code from codeguru.
+<BR>
+In this sample you can find:<BR>
+<LI>How solve "long operation problem"? Simples example you find in file AppIdle.cpp</LI>
+<LI>You use Recordset? Is little bit tough, so look to file MailMessage.cpp [LoadDAO, SaverDAO].</LI>
+<LI>How make splitters in splitter? Look to MainFrm.cpp [OnCreateClient].</LI>
+<LI>Need build version? Look to Messenger.cpp [CAbout::OnInitDialog]</LI>
+<LI>Use registry, how demands WinLogo? Look to Messenger.cpp  [CMessengerApp::InitInstance]</LI>
+<LI>Template window, it is possible? Look to PropDlg.cpp</LI>
+<LI>Automatically link with library. Look to file WNetEnum.</LI>
+<BR>
+<BR>
+<B>Some of the classes used here</B><BR>
+1. Coolmenu <BR>
+1.1. Cool menu by Paul DiLascia<BR>
+1.2. Custom caption by Paul DiLascia<BR>
+1.3. SubclassWindow with hook by Paul DiLascia<BR>
+2. ToolBarEx<BR>
+2.1. Toolbar extension by Joerg Koenig<BR>
+3. TreeCtrl<BR>
+3.1. Tree control extension [TreeCtrlEx + TreeCursor] parsed from MFC samples by Audrius Vasiliauskas<BR>
+3.2. Multiply selection tree control [MultiSelTreeCtrl] by Bendik Engebretsen<BR>
+3.3. ToolTips tree control [ToolTipsTreeCtr] by Audrius Vasiliauskas And Zafir Anjum<BR>
+3.4. Custom draw tree control [CustomTreeCtrl] by ...<BR>
+3.5. Setting individual properties for tree items [ColorTreeCtrl] by Audrius Vasiliauskas<BR>
+4. Wnet<BR>
+4.1. Windows network resource enum [WNetEnum + WNetResource] <BR>
+5. Tray<BR>
+5.1. How use system tray? [SystemTray] by Chris Maunder<BR>
+6. ListCtrl<BR>
+6.1. List control extension [ListCtrlEx] parsed from MFC samples by Audrius Vasiliauskas<BR>
+7. MailsSlot <BR>
+7.1. Mail slot function wrapper by PJ Naughter<BR>
+8. Persistence<BR>
+8.1. Save and loads program position [PersistenceFrame] by David Carballo<BR>
+9. NetworkTreeCtrl<BR>
+9.1. Browse network and shows in the tree. Use tree control extension and windows network enumeration [NetworkTreeCtrl] by Audrius Vasiliauskas<BR>
+10. TitledMenu<BR>
+10.1. Titled menu from codeguru.<BR>
+11. DaoExtensions<BR>
+11.1. DaoRecordset wrapper [DAOExtensions] by Audrius Vasiliauskas<BR>
+11.2. I want create table in Access database [DaoRecordsetCreate] by Audrius Vasiliauskas<BR>
+11.3. I want read OLE picture from Access database [SteamDIB] by MS and Audrius Vasiliauskas<BR>
+12. StealhFrame.<BR>
+12.1. I want remove program from taskbar [StealhFrame] by Audrius Vasiliauskas and Internet<BR>
+13. PropertiesDlg<BR>
+13.1. I want window like printer device settings.<BR>
+13.2. I want make template window and use in dialog and properties sheet.<BR>
+14. ColorPicker<BR>
+14.1. Color picker like MS Word by Chris Maunder<BR>
+15. Version<BR>
+15.1. I want build version.<BR>
+<BR>
+<BR>
+
+<B>How to use the program </B><BR>
+<I>You need a network to have some use of it.</I>
+<P><IMG SRC="msg.jpg" >
+<LI> In menu "View" you can see custom checkbox.</LI>
+<LI> In menu "Tools\Refresh Network Tree" item enabled only if focus is in the
+left panel. After pressing that item you fill network tree control [of cause
+if you computer switched to network].</LI>
+<LI>In network tree control you can select computer and send message [write
+message in the toolbar].</LI>
+<LI>In list control press right mouse button and from popup menu delete list
+items.</LI>
+<P><IMG SRC="msg_prop.jpg" >
+<LI>In "Tools\Properties Dialog" you can change Access DB file place in the
+disk [In tree: Properties\Program properties\Enter DB file name. 
+</LI>
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+
+
+<!-- end the block of source code -->
+</FONT></TT></PRE>
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="msg.zip">Download source - 293KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here --> 06/14/98
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>

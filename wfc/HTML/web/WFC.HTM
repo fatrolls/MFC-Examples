@@ -1,0 +1,63 @@
+<HTML>
+<!-- $Revision: 22 $ -->
+<HEAD>
+<TITLE>WFC - Win32 Foundation Classes</TITLE>
+<META name="keywords" content="WFC, MFC extension library, freeware class library, Win32, push technology, Extensible Markup Language, toolkit">
+<META name="description" contents="Freeware C++ class library for Win32">
+</HEAD>
+<FRAMESET ROWS="20%,80%">
+<FRAME SRC="title.htm">
+<FRAMESET COLS="33%,67%">
+<FRAME SRC="classes.htm">
+<FRAME SRC="release44.htm" NAME="Explain">
+</FRAMESET>
+</FRAMESET>
+<NOFRAMES>
+<BODY>
+<H1><CENTER>WFC</CENTER></H1>
+<H2><CENTER>Win32 Foundation Classes</CENTER></H2><P>
+<CENTER><B>This is Release 44, 2000-04-16</B></CENTER><P><HR><P>
+Click <A HREF="wfc.zip">here</A>
+or <A HREF="http://www.erols.com/sblackbu/WFC.ZIP">here</A>
+to download the latest version of WFC.
+
+<P>
+
+Click <A HREF="sample.zip">here</A>
+or <A HREF="http://www.erols.com/sblackbu/SAMPLE.ZIP">here</A>
+to download the samples for WFC.
+
+<P>
+
+What is WFC (Win32 Foundation Classes)? It is a set of C++ classes
+built upon MFC that let you develop Win32 applications. It encapsulates
+different groups of API's (like the Registry) into C++ classes
+to reduce the learning curve. For the most part I don't want to
+overlap MFC in functionality. However, I have a TCP/IP socket
+class and so does MFC (but mine works in Console applications).
+I am not the author of all of the code. If I've seen code that
+I can use I've rolled it into WFC. There's a lot of classes that
+encapsulate data structures. The reason for this is my programmers
+are constantly having problems initializing structures that have
+a data member holding the size of the structure (i.e. cbSize or
+dwLength members). Microsoft doesn't do a real good job of pointing
+out that you need to set the size of data structures <B>before</B>
+calling API's. This leads to a lot of heartache for first-time
+NT programmers (in my experience). Also, all members of the structures
+are zeroed out before use. WFC will be extended as it is used
+in more and more applications.<P>
+WFC contains no exception handling. Why? I hate exception handling.
+It is a religious issue with me. I prefer to check for failure
+all over the place.<P>
+How much does WFC cost? Nothing. Use it any way you like as long
+as you don't try to sell it. Please let me know of bugs or extensions
+so I can roll them into the next release. Feel free to tell me
+some good news too!
+<H3>What's New in this release:</H3><P>
+<A HREF="Classes.htm">Classes</A><P>
+Sam Blackburn<P>
+<ADDRESS>Internet: wfc@pobox.com</ADDRESS>
+<A HREF="homepage.htm" TARGET="_parent">Return to Sam's Home Page</A>
+</BODY>
+</NOFRAMES>
+</HTML>

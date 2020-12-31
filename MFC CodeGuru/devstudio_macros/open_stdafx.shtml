@@ -1,0 +1,104 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DevStudio Macros - Open stdafx.h and other macros</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Open stdafx.h and other macros</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+These macros were contributed by <A HREF="mailto:IanSouthwell@ApexSystems.COM">Ian Southwell</A>
+
+<P>Here is one to open the stdafx.h of the current project.
+
+<PRE><TT><FONT COLOR="#990000">
+Sub stdafx()
+	'DESCRIPTION: Opens the stdafx.h file of the current project.
+
+	proj_path = ActiveProject.fullname
+	ext = ""
+	pos = len (proj_path)
+	Do While ext <> "\"
+	ext = Mid(proj_path, pos, 1)
+	pos = pos -1
+	Loop
+	proj_dir = left(proj_path, pos+1) & "stdafx.h"
+	documents.open proj_dir
+End Sub
+</FONT></TT></PRE>
+
+<P>Something else I found a pain was having to change from the keyboard to
+the mouse because the MDI window wasn't in the correct place or the
+wrong size.  I wrote the following one-liners and associated them with
+the numeric keypad arrows and ctrl and alt to move/resize the windows.
+ie Ctrl + Alt and 6 to widen the window.  Its not the code more the idea
+I find it relieves RSI type strain when using the mouse to often.
+
+<PRE><TT><FONT COLOR="#990000">
+Sub WidenWindow()
+ActiveWindow.Width = ActiveWindow.Width + 100
+End Sub
+
+Sub ShrinkWindow()
+ActiveWindow.Width = ActiveWindow.Width - 100
+End Sub
+
+Sub MoveWindowLeft()
+ActiveWindow.Left = ActiveWindow.Left -30
+End Sub
+
+Sub MoveWindowRight()
+'DESCRIPTION: Guess
+ActiveWindow.Left = ActiveWindow.Left +30
+End Sub
+
+Sub MoveWindowUp()
+'DESCRIPTION: Hmmm... I wonder what this does
+ActiveWindow.Top = ActiveWindow.Top -30
+End Sub
+
+Sub MoveWindowDown()
+ActiveWindow.Top = ActiveWindow.Top +30
+End Sub
+
+Sub IncreaseWindowHeight()
+ActiveWindow.Height = ActiveWindow.Height +30
+End Sub
+
+Sub DecreaseWindowHeight()
+ActiveWindow.Height = ActiveWindow.Height -30
+End Sub
+
+Sub MoveNW()
+ActiveWindow.Left = 0
+ActiveWindow.Top = 0
+End Sub
+</FONT></TT></PRE>
+
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

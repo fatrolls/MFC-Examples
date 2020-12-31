@@ -1,0 +1,17 @@
+//--------------------------------------------------------------------
+// ¿…¶W : mltithrd.rc
+//--------------------------------------------------------------------
+#include <windows.h>
+#include "mltithrd.h"
+
+Multi1Icon ICON jjhour.ico
+
+Multi1Menu MENU
+BEGIN
+  MENUITEM "&Resume Threads",  IDM_RESUME
+  MENUITEM "&Suspend Threads", IDM_SUSPEND, GRAYED
+  MENUITEM "&for-loop dealy",  IDM_FOR
+  MENUITEM "S&leep delay",     IDM_SLEEP
+  MENUITEM "&No delay",        IDM_NODELAY, GRAYED
+END
+

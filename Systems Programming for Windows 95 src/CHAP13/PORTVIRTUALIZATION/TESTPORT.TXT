@@ -1,0 +1,21 @@
+a 100
+MOV     DI,0200
+MOV     DX,1234
+IN      AL,DX
+TEST    AL,AL
+JZ      010E
+STOSB
+JMP     0106
+MOV     BYTE PTR [DI],0D
+MOV     BYTE PTR [DI+01],0A
+MOV     BYTE PTR [DI+02],24
+MOV     DX,0200
+MOV     AH,09
+INT     21
+MOV     AX,4C00
+INT     21
+
+r cx
+25
+w
+q

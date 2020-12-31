@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- This is my XML test file. It contains all the dirty tricks
+I could think of to break parsers. -->
+
+<!-- First, let's test out the comment parser -->
+<!-- <declarations for <head> & <body> -->
+
+<!-- >>- -> <!- -> -
+-> ]]>
+<dog/>
+<![CDATA[> False CDATA section
+<BadElement>This test provided by Jeff Barczewski (jeff@snowflight.com)</BadElement>
+-->
+
+<!-- Now let's test the CDATA perser -->
+
+<![CDATA[>T
+<!CDATA[ sections are fun
+to
+
+parse]]]]]]>
+<!DOCTYPE greeting [
+  <!ELEMENT greeting (#PCDATA)>
+]>
+
+<!-- Element parser -->
+<PERSON Attribute="Two Words">Sammy</PERSON>
+<dog/>
+<dog/>
+
+<!-- Don't forget playing with string terminators in attributes -->
+<PERSON A1='"To Be"' A2="'Or not to be'">Billy Shakes</PERSON>

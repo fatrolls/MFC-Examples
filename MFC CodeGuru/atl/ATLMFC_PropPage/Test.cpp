@@ -1,0 +1,8 @@
+// Test.cpp : Implementation of CTest
+#include "stdafx.h"
+#include "ATLMFC.h"
+#include "Test.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// CTest
+

@@ -1,0 +1,213 @@
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="J&uuml;rgen Kraus">
+   <TITLE>Dynamically loading classes from DLLs</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Dynamically loading classes from DLLs
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:kraus@proxima.de"><!-- Author Name -->J&uuml;rgen Kraus</A>, by courtesy of <A HREF="http://www.proxima.de" >ProXima Engineering Office</A>.
+
+<!-- Sample image - gif or jpg -->
+<!--
+<P ALIGN=CENTER><A HREF="http://www.proxima.de" ><IMG SRC="dyndllclass_pxm.gif" ALT="ProXima Engineering Office" BORDER=0></A>
+-->
+
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+    Have you ever wondered whether there is a way to have an application extrinsically load a DLL
+	(e.g. via the LoadLibrary() function) which exports classes so that the loader of the DLL
+	can then use objects of the class ?
+
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+    This is basically no problem, the only thing that makes this a pain in the [censored] are the 
+	'C++ mangled names' of the methods in the DLL's export section (e.g. '?CreateObject@CFrameDoc@@SGPAVCObject@@XZ').
+    The simple trick get around this (and not using (D)COM) is:
+
+    If you have (e.g.) a class called CMyClass, declare it in the header file common to both application and DLL:
+
+<!-- start a block of source code -->
+<PRE><TT><FONT COLOR="#990000">
+#include ...
+
+#ifdef _DLL // assume this is defined when we build the DLL
+#define _DYNLINK __declspec( dllexport)
+#else
+#define _DYNLINK __declspec( dllimport)
+#endif
+
+class _DYNLINK CMyClass
+{ 
+public:
+            CMyClass ();
+    virtual ~CMyClass();
+
+    void    DoSomethingUseful(); 
+};
+</FONT></TT></PRE>
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+   then, export a function from the DLL that returns a pointer
+   to an instance of CMyClass, let's call    it 'CreateMyClass()'
+   - it basically should do 'return ( new CMyClass());'
+
+<PRE><TT><FONT COLOR="#990000">
+#ifndef _DLL
+typedef CMyClass* ( *PFNCREATEMYCLASS)();
+#else
+_DYNLINK CMyClass* CreateMyClass() 
+{ 
+	return ( new CMyClass());
+}
+#endif
+
+</FONT></TT></PRE>
+<p><!-- The 'p' starts a paragraph of normal text -->
+
+   Also provide a function from the DLL that performs a 'delete' on the object.
+   Let's call it 'DeleteMyClass()' - it basically should do 'delete pObj;'.
+   This function is necessary due to the fact that the CRT uses different
+   heaps and therefore different allocators for EXEs/DLLs, so that you're
+   just lucky if there's no crash...
+
+<PRE><TT><FONT COLOR="#990000">
+#ifndef _DLL
+typedef void ( *PFNDELETEMYCLASS)( CMyClass*);
+#else
+_DYNLINK void DeleteMyClass ( CMyClass* pObj) 
+{ 
+	delete pObj;
+}
+#endif
+
+</FONT></TT></PRE>
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+   Last but not least, we need a way to get access to the objects methods without 
+   'knowing' about the source code:
+
+<PRE><TT><FONT COLOR="#990000">
+typedef void ( CMyClass::*PMYCLASSMETHOD)();
+// the type created above ALWAYS points to a memer function of class 'CMyClass'
+// which takes no arguments and returns nothing
+
+#ifndef _DLL
+typedef PMYCLASSMETHOD ( *PFNGETCLASSMETHOD)();
+#else
+_DYNLINK PMYCLASSMETHOD GetClassMethod () 
+{ 
+	return &CMyClass::DoSomethingUseful;
+}
+#endif
+</FONT></TT></PRE>
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+   We also need a module definition file for our DLL. Remember: We use a C interface to our DLL!
+   (the 'PRIVATE' keyword instructs the linker not to list the function in the DLL's
+   import library).
+
+<PRE><TT><FONT COLOR="#990000">
+   LIBRARY dynclass.dll
+   EXPORTS
+    CreateMyClass               @2 PRIVATE          ; object creation
+    DeleteMyClass               @3 PRIVATE          ; object destruction
+    GetClassMethod              @4 PRIVATE          ; method access
+
+</FONT></TT></PRE>
+
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+In your application, load the DLL and get a pointer to 'CreateMyClass()'
+(error checking omitted for brevity)
+
+<PRE><TT><FONT COLOR="#990000">
+PFNCREATEMYCLASS	pfnCreateMyClass;
+PFNDELETEMYCLASS	pfnDeleteMyClass;
+PFNGETCLASSMETHOD	pfnGetClassMethod;
+PMYCLASSMETHOD		pDoSomethingUseful;
+CMyClass* pMyClass;
+
+HANDLE hDll;
+
+hDll = LoadLibrary ( ...);
+
+pfnCreateMyClass  = (PFNCREATEMYCLASS)  GetProcAddress ( hDll, "CreateMyClass");
+pfnDeleteMyClass  = (PFNDELETEMYCLASS)  GetProcAddress ( hDll, "DeleteMyClass");
+pfnGetClassMethod = (PFNGETCLASSMETHOD) GetProcAddress ( hDll, "GetClassMethod");
+
+// et voila - an instance of CMyClass!
+  pMyClass = ( pfnCreateMyClass) ();
+
+  pDoSomethingUseful = ( pfnGetClassMethod ());
+
+  ( pMyClass->*pDoSomethingUseful) ();
+
+  ( pfnDeleteMyClass ( pMyClass));
+</FONT></TT></PRE>
+
+<p><!-- The 'p' starts a paragraph of normal text -->
+Outlook:
+
+This article just intends to demonstrate the technology 'how to do it'.
+There's much work to do if you want to use it in your applications, e.g.
+creating just one function in the DLL that fills in a structure which holds
+all the function pointers you need, or even a proxy class that does this 
+automatically. Well, i'll keep this for a future update of this article.
+
+
+<!-- create more blocks of source code as needed -->
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="dyndllclass.zip">Download demo project - 7KB</A>
+
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 22-Jun-1998<!-- date here -->
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="/cgi/counters/counter.cgi"--></FONT></CENTER>
+
+
+</BODY>
+</HTML>
+
+
+

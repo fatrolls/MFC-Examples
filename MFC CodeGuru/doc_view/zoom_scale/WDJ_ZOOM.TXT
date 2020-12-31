@@ -1,0 +1,192 @@
+Brad Pirtle
+QuickLogic
+Article Rev D: 11/8/94
+
+Automatic Scaling in Windows
+
+	Many Windows applications need the ability to arbitrarily scale, or zoom, the 
+contents of a window.  An example of this is print preview, where you can zoom in 
+and out on a portion of the printed page.  Programming information on this subject 
+is minimal and very obfuscated.  Not any more!  In this article I explain how to easily 
+use the built it scaling capabilities of Windows, and apply it to a C++ MFC extension 
+class that I call CZoomView.
+
+Learning To Scale
+	Proper scaling in Microsoft Windows requires you to set the map mode, 
+window extent, window origin, viewport extent, and viewport origin for a window.  
+Are you confused yet?  Try reading the manual entries for any corresponding API - 
+SetWindowExt: “Sets the x- and y-extents of the window...”.  So it wasn’t just a 
+clever name.
+	A key phrase, however, comes next:  “defines how GDI maps points in the 
+logical coordinate system to points in the device coordinate system.”  Although this 
+information tells you nothing on how to use it, it is the clue to how it works -- mapping 
+from one coordinate system to another.  To make scaling easy, we want Windows 
+to do as much of this conversion work as possible.  Luckily for us, it can be done 
+easily if you arm yourself with just a little bit of API knowledge..
+	For a drawing page to be automatically scaled in a window, two concepts 
+must be understood.  The first is how to draw the page, and the second is how to 
+view the page. The Windows operating system uses both pieces of information 
+together so that a user can view your drawing in a window at any arbitrary zooming 
+scale. As a programmer, the easiest way to understand and implement scaling is to 
+“divide and conquer," handling each concept separately.
+
+Step One:  Drawing the Page
+	The first thing that you need to do is choose the “logical units” for your 
+drawing.  Think of this as the number of virtual horizontal and vertical units on a page 
+you will draw on. This is what Windows calls the “Window Extent," and is set by the 
+SetWindowExt API. A logical page size of x by y units would simply have a window 
+extent of {x, y}.  Keep in mind that “units” is an arbitrary amount of measure that you 
+pick, so do not be stuck thinking that it has to be pixels, inches, or any other 
+measure.
+	Once you choose a logical coordinate system, all GDI drawing will be done 
+using it. For example, lets say that you want to draw a line from the top left corner to 
+the bottom right corner of a page that has a window extent of 100 by 100 logical 
+units.  Using the MoveTo and LineTo API functions, you would pass {0, 0} as the 
+starting logical coordinate to MoveTo, and {100, 100} as the ending logical 
+coordinate to LineTo. Any other GDI function (Rectangle, Arc, CreateFont, TextOut, 
+etc.) will also use logical units.  // ADD DRAWING ONE HERE
+	Using logical units allows your program display device independence.  
+Drawing objects coordinates can all be stored in logical units, and you will use those 
+coordinates when painting your windows without needing to do any conversions for 
+scaling, different size screens, or different size windows.  Doing any device 
+dependent conversions, and determining which part of the drawing to actually scale 
+and display to the user in a window, will be handled automatically by Windows after 
+you follow the next step.
+
+Step 2: Viewing the Page
+	Now that you understand logical drawing on your page, the second part of 
+adding automatic scaling to your program is actually viewing it in a window.  
+Viewing functionality uses device coordinates, in pixel units.
+	With this in mind, you need to tell Windows the viewing size, in pixels, of your 
+entire drawing page. This is what Windows calls the “Viewport Extent," and is set by 
+the SetViewportExt API.  This does not confine a real window to that size, but rather 
+describes the mapping of your logical units into pixels.  By setting a window extent 
+to {100, 100} and a viewport extent of {200, 200}, you are telling Windows that 100 
+by 100 logical units is exactly equal to 200 by 200 pixels.  Note: to help in translating 
+back and forth from logical to device units, the Windows API supplies the LPtoDP 
+function to convert logical to device units, and the DPtoLP function to convert back.
+	When you set window and viewport extents you are required to change the 
+mapping mode, set by the SetMapMode API. When using the SetWindowExtent 
+and SetViewportExtent API’s, only two mapping modes are allowed -- 
+MM_ISOTROPIC and MM_ANISOTROPIC. The MM_ISOTROPIC mode is used 
+when you want identical logical units for both the x and y axes, where 
+MM_ANISOTROPIC is used for arbitrary logical x and y axis units.  For our generic 
+scaling requirements, we will use the MM_ANISOTROPIC map mode.
+	The final puzzle piece that Windows needs to do automatic scaling is the 
+size of the client area of the physical window that will display your drawing (also in 
+pixels).  Because this information is inherent to the window, no API call is 
+necessary.  The pixel size of the window client area is how many pixels of the 
+viewport will be shown.  For example, setting the viewport extent to be the same 
+number of pixels as the client area of the window would scale the entire logical 
+drawing to fit the window.  Setting the viewport extent to twice the size of the 
+window's client area would make the user see one forth (half the width and half the 
+height) of the page, and the drawing will appear larger (or “zoomed in”). // ADD 
+DRAWING TWO HERE
+	The viewport extent is where you control the scaling factor for a window.  To 
+zoom in, increase its size.  To zoom out, decrease its size.  It really is that easy!  
+Keep in mind that in order to maintain the original width to height ratio of your logical 
+drawing, always set the viewport extent to the same ratio as the window extent, and 
+scale it the same in both the x and y direction.
+
+A Quick Scrolling Primer
+	Once a window has the ability to scale, zooming in shows only a portion of 
+the entire drawing.  By adding scrolling to the window, the entire drawing can be 
+viewed without requiring zooming back out.  If you are using the MFC C++ class 
+library, a scrolling class called CScrollView is supplied, which encapsulates all the 
+necessary Window’s scrolling code.  For SDK users and those of you that don’t 
+want to read the 700+ lines of code in CScrollView, I will briefly explain the scrolling 
+concepts needed when using automatic scaling.
+	To set up scrolling, you need to manipulate the viewport origin using the 
+SetViewportOrg Window’s API.  This is the viewport’s origin in relation to your 
+window’s origin.  Because we are scaling by manipulating the viewport only, the 
+window origin, set with the SetWindowOrg API, should remain {0, 0}.
+	A good way to visualize origin manipulation for scrolling is to think of your 
+drawing as a transparency, and the window to display it in as an overhead projector.  
+The upper left corner of the transparency is the viewport origin, and the upper left 
+corner of the projector is your window’s origin (always {0, 0}).  If the transparency is 
+too big to see all at once (zoomed in), you need to slide it around with your hand 
+(scroll) to see all of it.  To see more to the right, you slide the paper to the left.  To 
+see more down, you slide the paper up.
+	Applying this back to Windows, to scroll n pixels in a given direction, change 
+the viewport origin n pixels in the opposite direction.  For example, if you started 
+with both origins at {0, 0} and wanted to scroll 10 pixels to the right and 10 pixels 
+down, simply set the viewport origin to {-10, -10}.
+
+Putting the Concept to Work in MFC
+	To demonstrate the above scaling concepts, I have encapsulated it all in an 
+MFC extension class that I call CZoomView.  This class is derived from the MFC 
+class CScrollView, allowing me to just write the code for scaling. It could of just as 
+easily be done using straight SDK C code, but then you would have to write your 
+own scrolling code that MFC provides for free.
+	Using the CZoomView class requires only three things: derive your view from 
+CZoomView, set the logical units using the SetZoomSizes member function, and do 
+all drawing in your OnDraw member function (like the WM_PAINT message) in 
+terms of your logical units (step one, above).  The class handles all the scaling (step 
+two, above) and scrolling for you.
+
+How CZoomView Works
+	For each device context handle (HDC) you use, you must set its map mode, 
+window extent, viewport extent and viewport origin.  MFC handles when to do this 
+automatically by supplying the CView::OnPrepareDC member function.  This is 
+where CZoomView sets up everything.
+	To control the scaling, CZoomView keeps track of the window extent in the 
+m_totalLog member variable, and the viewport extent in the m_totalDev member 
+variable.  In the OnPrepareDC member function, the map mode is set to 
+MM_ANISOTROPIC and the window and viewport extent’s are set using the 
+appropriate member variable.  If your derived class needs to do some processing 
+during this function, make sure you call CZoomView::OnPrepareDC first.
+	Zooming is handled by keeping track of the current zoom scale (starting at 
+1.0) in the m_zoomScale member variable.  To change the viewport extent for a 
+given zoom scale, the original viewport extent (stored in m_origTotalDev) is 
+multiplied by the m_zoomScale variable.
+	To zoom in (using the DoZoomIn member function), the zoom scale is 
+multiplied by a constant, defaulted to 1.25.  This increases the size of the viewport 
+extent, making the drawing appear larger or “zoomed in." To zoom out (using the 
+DoZoomOut member function), the zoom scale is divided by the same constant.  
+This decreases the viewport extent, making the drawing appear smaller or “zoomed 
+out."
+	
+Binding Zooming to the User Interface
+	The CZoomView class was written to be flexible!  Proper zooming requires a 
+user interface that a user would be comfortable using.  I wrote three possible types 
+of zooming into CZoomView:  default zooming, point zooming, and selection 
+zooming.  Described below, all three methods are demonstrated in the sample 
+program supplied.
+	Default zooming is where the current view is zoomed in or out by a small 
+constant ratio, maintaining the same center reference point.  This could be triggered 
+by a user pressing a function key, where say F7 zooms in, and F8 zooms out, or by 
+toolbar buttons.  To implement this from within the class, call the DoZoomIn and 
+DoZoomOut member functions with no arguments.
+	Point zooming is where the current view is zoomed in or out, again by a small 
+constant ratio, centering on a given reference point.  This is best applied to a 
+mouse, where the user selects whether to zoom in or out from a key combination or 
+toolbar button, then clicks on the view with the mouse where the zoom should occur.  
+To implement this from within the class, call the DoZoomIn and DoZoomOut 
+member functions with a logical CPoint for the new center point.
+	Selection zooming applies to zooming in, where a specific region of the 
+logical drawing to made to fit within the window.  The best way to implement this is 
+to again have the user select zoom in from a key press or toolbar button, then drag a 
+box with the mouse indicating the region that should be zoomed to fit the window.  
+To implement this from within the class, call the DoZoomIn member function with a 
+logical CRect for the region to fit into the window.  Special considerations are made 
+for this type of zooming.  Since users will most likely select an abnormally sized 
+region, the class forces the region to the correct window extent ratio by shrinking 
+either the width or height of the region if necessary. // ADD DRAWING THREE 
+HERE
+
+Wrapping It All Up
+	Adding scaling or zooming capabilities to a Windows program is fairly 
+simple and straight forward if you know which Windows API to use, and how to use 
+them.  This article explains the needed API’s, and lays out the steps required for you 
+to add automatic scaling to your own program.  If you use the given C++ class it will 
+be very easy and requires as little as three steps, however applying this to a straight 
+C SDK program would be just as straight forward.  Three methods of zoom 
+interactions with the user are implemented in an example program written in MFC, 
+supplied with this article.  So don’t be scared by the manuals, add automatic scaling 
+easily to your program today!
+
+
+About the Author
+I am a recovering Software Engineer for QuickLogic in Santa Clara, CA, where I 
+specialize in user interface programming.  My Compuserve ID is 72450,1156, and 
+my Internet address is pirtle@qlogic.com.

@@ -1,0 +1,173 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Scott Miller">
+   <TITLE>Miscellaneous - Gradient color caption bar</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Gradient color caption bar</FONT></H3></CENTER>
+
+<HR>
+
+
+This article was contributed by <A HREF="mailto:corkum@rocscience.com">Brent Corkum</A>.
+You can also visit Brent's site at <A HREF="http://www.rocscience.com/~corkum/caption3.html">http://www.rocscience.com/~corkum/caption3.html</A>
+for the latest update of this article.
+
+<P><IMG SRC="graded_caption.gif"></P>
+<P>This class overides the default caption painting in MFC and replaces it with a graded caption bar. The source code for the class along with a sample application can be found at <A HREF="ftp://ftp.rocscience.com/caption3.zip">ftp://ftp.rocscience.com/caption3.zip</A> . The code originates from the MSJ article in January 1997 and then again in June 1997. I've made a few modifications, cleaned it up and have simplified the installation process. Some of the new features include support for the modified state and the synchronization of MainFrame and ChildFrame caption text. I also explain how to easily update ChildFrame caption text through the view class and add modified state support to the ChildFrame captions.
+<P>&nbsp;</P>
+<FONT ><P>Steps for adding color graded caption bars to your MFC MDI application:</P>
+<P>&nbsp;</P>
+<OL>
+
+<LI>Add the PaintCap.c , PaintCap.h , SubClass.cpp, and SubClass.h files to your project.</LI>
+<LI>Add the following lines to the protected section of the CMainFrame class definition (MainFrm.h)</LI>
+</FONT><FONT COLOR="#990000"><PRE>&#9;CCaptionPainter m_capp;
+&#9;virtual void OnUpdateFrameTitle(BOOL bAddToTitle);
+&#9;LRESULT OnPaintMyCaption(WPARAM wp,LPARAM lp);</PRE>
+</FONT><FONT ><LI>Add the following include to the top of the MainFrm.h file</LI>
+</FONT><FONT COLOR="#990000"><PRE>#include "PaintCap.h"</PRE>
+</FONT><FONT ><LI>Add the following to the CMainFrame::OnCreate member function just after the toolbar stuff (MainFrm.cpp):</LI>
+</FONT><FONT COLOR="#990000"><PRE>m_capp.Install(this,WM_PAINTMYCAPTION);</PRE>
+</FONT><FONT ><LI>Add the following to the top of the MainFrm.cpp file:</LI>
+</FONT><FONT COLOR="#990000"><PRE>const UINT WM_PAINTMYCAPTION = WM_USER+5;</PRE>
+</FONT><FONT ><LI>Place the following message map definition to the CMainFrame class (MainFrm.cpp). Make sure it's after the grayed out AFX_MSG_MAP block;</LI>
+</FONT><FONT COLOR="#990000"><PRE>ON_MESSAGE(WM_PAINTMYCAPTION,OnPaintMyCaption)</PRE>
+</FONT><FONT ><LI>Add the following two member functions to the CMainFrame class:</LI>
+</FONT><FONT COLOR="#990000"><PRE>void CMainFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
+{
+&#9;m_capp.UpdateFrameTitle(m_hWnd,m_strTitle);
+}
+&nbsp;
+LRESULT CMainFrame::OnPaintMyCaption(WPARAM bActive, LPARAM lParam)
+{
+m_capp.PaintMyCaption(bActive,lParam,m_strTitle);
+&#9;return 0;
+}</PRE>
+</FONT><FONT ><P>&nbsp;</P>
+<P>Programs like VC++ modify the document name in the caption bar if the document has been modified (using SetModifiedFlag()) by appending an asterix (*) to the document name. To add this functionality requires a few modifications:</P>
+<P>&nbsp;</P>
+<LI>In the CMainFrame::OnCreate member function</FONT><FONT > </FONT><FONT >change the m_capp.Install call added in step 2 above to:</LI>
+</FONT><FONT COLOR="#990000"><PRE>m_capp.Install(this,WM_PAINTMYCAPTION,TRUE);</PRE>
+</FONT><FONT ><LI>Add a public virtual function override for the SetModifiedFlag do your CDocument derived class:</LI>
+</FONT><FONT COLOR="#990000"><P>virtual void SetModifiedFlag(BOOL);</P>
+</FONT><FONT ><LI>Add the member function definition to your CDocument derived cpp file:</LI>
+</FONT><FONT COLOR="#990000"><PRE>void CYourDoc::SetModifiedFlag(BOOL flag)
+{
+  CDocument::SetModifiedFlag(flag);
+  ((CMainFrame *)AfxGetMainWnd())-&gt;RedrawCaption();
+}</PRE>
+</FONT><FONT ><P>IMPORTANT: Make sure you change the above CYourDoc class name to the name of your CDocument derived class name.</P>
+<LI>Add the MainFrm.h include to the top of your CDocument derived cpp file:</LI>
+</FONT><FONT FACE="Courier New"  COLOR="#990000"><P>#include "MainFrm.h"</P>
+</FONT><FONT ><LI>Add a public member function called RedrawCaption to your CMainFrame class in MainFrm.h:</LI>
+</FONT><FONT COLOR="#990000"><PRE>void RedrawCaption(void);</PRE>
+</FONT><FONT ><LI>Add the member function definition to the MainFrm.cpp file:</LI>
+</FONT><FONT COLOR="#990000"><PRE>void CMainFrame::RedrawCaption(void)
+{
+  m_capp.Invalidate();
+  m_capp.PaintCaption();
+}</PRE>
+</FONT><FONT ><P>&nbsp;</P>
+<P>Programs like VC++ also modify the view name in the caption bar of all the views associated with the modified document by appending an asterix (*) to the view name. To add this functionality requires a few modifications:</P>
+<P>&nbsp;</P>
+<LI>Let's first add an update handler for the caption text so that we can modify it and save it with the ChildFrame. Add the following public virtual function definition to the CChildFrame class in the CChildFrm.h file:</LI>
+</FONT><FONT FACE="Courier New"  COLOR="#990000"><P>virtual void OnUpdateFrameTitle(BOOL bAddToTitle);</P>
+</FONT><FONT ><LI>Add the following OnUpdateFrameTitle virtual member function to your CChildFrm.cpp file:</LI>
+</FONT><FONT COLOR="#990000"><PRE>void CChildFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
+{
+&#9;CDocument* pDoc = GetActiveDocument();
+&#9;if (bAddToTitle &amp;&amp; pDoc != NULL)
+&#9;{
+&#9;&#9;CString strCurCaption, strWindowText, strNewCaption;
+&#9;&#9;// Get the current child window caption text
+&#9;&#9;GetWindowText(strCurCaption);
+&#9;&#9;// Get the special view name through the view's window text
+&#9;&#9;GetActiveView()-&gt;GetWindowText(strWindowText);
+&#9;&#9;// Get the doc name attached to this window
+&#9;&#9;const CString&amp; strDocTitle = pDoc-&gt;GetTitle();
+&#9;&#9;// generate our new window caption
+&#9;&#9;strNewCaption = strDocTitle;
+&#9;&#9;if(m_nWindow &gt; 0){
+&#9;&#9;&#9;strNewCaption += ":";
+&#9;&#9;&#9;CString temp;
+&#9;&#9;&#9;temp.Format("%d",m_nWindow);
+&#9;&#9;&#9;strNewCaption += temp;
+&#9;&#9;}
+&#9;&#9;if(!strWindowText.IsEmpty()){
+&#9;&#9;    &#9;strNewCaption += " - ";
+&#9;&#9;&#9;strNewCaption += strWindowText;
+&#9;&#9;}
+&#9;&#9;if(pDoc-&gt;IsModified())strNewCaption += "*";
+&#9;&#9;// Only switch to the new caption if it differs from the old
+&#9;&#9;// (this reduces flicker--MFC uses AfxSetCaption)
+&#9;&#9;if (strNewCaption != strCurCaption)
+&#9;&#9;&#9;SetWindowText(strNewCaption);
+&#9;}
+&#9;// give the MDI frame window a chance to update its title
+&#9;GetMDIFrame()-&gt;OnUpdateFrameTitle(bAddToTitle);
+}</PRE>
+</FONT><FONT ><P>*Note that a call to SetWindowText from within the view class will now update the caption on the views frame. Refer to the OnSettext() View member function in the sample program for more info. If you wish to change how the caption text is displayed in the child frames edit the above function.</P>
+<LI>Modify the SetModifiedFlag function you added in step 10 above to:</LI>
+</FONT><FONT COLOR="#990000"><PRE>void CCaptionDoc::SetModifiedFlag(BOOL flag)
+{
+  CDocument::SetModifiedFlag(flag);
+  ((CMainFrame *)AfxGetMainWnd())-&gt;RedrawCaption();
+  POSITION pos = GetFirstViewPosition();
+  CView *pView;
+  CChildFrame *pChild;
+  while(pos!=NULL){
+    pView = GetNextView(pos);
+    if(pView){
+      pChild = (CChildFrame *)pView-&gt;GetParent();
+      if(pChild)pChild-&gt;OnUpdateFrameTitle(TRUE);
+    }
+  }
+}</PRE>
+</FONT><LI>Add the include file ChildFrm.h to the top of the file containing the SetModifiedFlag code in step 16:</LI></OL>
+<DIR>
+<DIR>
+
+<FONT COLOR="#990000"><PRE>#include "ChildFrm.h"</PRE>
+</FONT><P>&nbsp;</P>
+<P>&nbsp;</P></DIR>
+</DIR>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: 10 June 1998
+
+<P><A HREF="graded_caption.zip">Download project</A> 52KB
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

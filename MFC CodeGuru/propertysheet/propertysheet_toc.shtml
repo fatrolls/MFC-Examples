@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Property Sheet & Property Pages - Table of Contents</TITLE>
+   <META Name="description" Content="Source code for Property Sheet">
+   <META Name="keywords" Content="SOURCE CODE MFC WINDOWS PROGRAMMER DEVELOPER APPLY HIDE BUTTON 
+   SINGLE ROW PAGE RESIZE SHEET TAB CONTROL LABEL CHANGE IMAGE SHORTCUT FORMVIEW DIALOG WIZARD">
+</HEAD>
+<body background="../fancyhome/back.gif" tppabs="http://www.codeguru.com/fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">Property Sheet & Property Pages</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<HR>
+
+
+<UL>
+<LI><A HREF="hide_apply.shtml">Hiding the Apply button - Zafir Anjum</A></LI>
+<LI><A HREF="hide_standard_buttons.shtml">Hiding the Standard Buttons - Zafir Anjum</A></LI>
+<LI><A HREF="single_tab_row.shtml">Display only One Row of Tabs - Zafir Anjum</A></LI>
+<LI><A HREF="font_prop_page.shtml">Add a Font Property Page - Zafir Anjum</A></LI>
+<LI><A HREF="resize_sheet.shtml">Resizing the Property Sheet - Zafir Anjum</A></LI>
+<LI><A HREF="resize_tab_ctrl.shtml">Resizing the Tab Control - Zafir Anjum</A></LI>
+<LI><A HREF="move_resize_page.shtml">Moving and Resizing the Property Pages - Zafir Anjum</A></LI>
+<LI><A HREF="move_standard_buttons.shtml">Moving the Standard Buttons - Zafir Anjum</A></LI>
+<LI><A HREF="move_standard_buttons2.shtml">Moving the Standard Buttons - Roger Onslow</A></LI>
+<LI><A HREF="add_control_to_sheet.shtml">Adding a Control to the Property Sheet - Zafir Anjum</A></LI>
+<LI><A HREF="change_tab_label.shtml">Changing the Tab Label - Zafir Anjum</A></LI>
+<LI><A HREF="change_tab_font.shtml">Changing the Tab Label Font - Zafir Anjum</A></LI>
+<LI><A HREF="tab_image.shtml">Use Images with Tab Labels - Zafir Anjum</A></LI>
+<LI><A HREF="shortcut_keys.shtml">Using Shortcut Keys for Property Pages - Zafir Anjum</A></LI>
+<LI><A HREF="inside_formview.shtml">Creating a Property Sheet Inside a Form View - Asaf Levy</A></LI>
+<LI><A HREF="inside_dialog.shtml">Creating a Property Sheet Inside a Dialog - Zafir Anjum</A></LI>
+<LI><A HREF="disable_tab.shtml">Disable Tab - Kevin Lussier</A></LI>
+<LI><A HREF="wizprop.shtml">Wizard Property Sheets and Pages - Lennart Steinke</A></LI>
+<LI><A HREF="creating_a_wizard.shtml">Creating a Wizard - Peter Pearson</A></LI>
+<LI><A HREF="creating_cprop_appl.shtml">Creating a full application using the CPropertySheet - Panagiotis Piperopoulos</A></LI>
+<LI><A HREF="add_bitmap.shtml">Placing A Bitmap In The PropertySheet Button Area - Jeremy Davis</A></LI>
+<LI><A HREF="add_3d_text.shtml">Placing a 3D Logo Text In the PropertySheet Button Area - Nikolay Sokratov</A></LI>
+<LI><A HREF="safeproppage.shtml">Modifying property sheet templates on Win95 - Petr Novotny</A></LI>
+<LI><A HREF="propview.shtml">Using a modeless property sheet as a 'view' in a Frame - John Z. Czopowik</A></LI>
+<LI><A HREF="AutoArrangeControls.shtml">Automaticaly arange visible controls below the tab control - Michael Brannan</A></LI>
+
+</UL>
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="../index.htm" tppabs="http://www.codeguru.com/">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT></CENTER>
+</TD>
+
+<TD WIDTH="33%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

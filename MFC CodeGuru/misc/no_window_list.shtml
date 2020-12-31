@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Miscellaneous - Getting rid of Window List from MDI applications</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Getting rid of Window List from MDI applications</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+<p>This article was contributed by <A HREF="mailto:S.Saxena@pbc.be.philips.com">Sushil Saxena</A>. 
+
+<p>The MDI apps typically have a list of open windows. The list is 
+appended to a menu item which is 1 position to the left of the right 
+most menu item.
+
+<p>This is just ONE (simpler?) way of getting rid of it. There are other 
+methods which duplicate some MFC code in application and then suppress 
+WM_MDIREFRESHMENU message send.
+
+<p>I have not noticed any side effects of this. But use it at your own 
+risk.
+
+
+<p>1. Define a popup menu item under the menu item which is one position 
+left to the rightmost menu item. For example, given the following 
+layout, add an item under "Windows".
+<pre>File    Edit    View    Windows  Help
+
+Dummy
+</pre>
+
+<p>2. Add a Menu Update Handler:
+
+<PRE><TT><FONT COLOR="#990000">
+void MyApp::OnUpdateDummy(CCmdUI* pCmdUI) 
+{
+	// TODO: Add your command update UI handler code here
+	
+	if (!m_pMainWnd)
+	{
+		return;
+	}
+	
+	CMenu* pMenu = m_pMainWnd->GetMenu();
+	
+	ASSERT(pMenu);
+	
+//	CMenu* pWindowList = pMenu->GetSubMenu(4); //or 3? or 5?
+	CMenu* pWindowList =
+		((CMDIFrameWnd*)AfxGetMainWnd())->GetWindowMenuPopup(pMenu->m_hMenu);
+
+	
+	ASSERT (pWindowList);
+	
+	CCmdUI item;
+	item.m_pMenu = pWindowList;
+	
+	item.m_nIndexMax = pWindowList->GetMenuItemCount();
+	item.m_nIndex = 0;
+	
+	//loop thru all menu items
+	for (;item.m_nIndex < item.m_nIndexMax; item.m_nIndex++)
+	{
+		item.m_nID = pWindowList->GetMenuItemID(item.m_nIndex);
+		switch(item.m_nID)
+		{
+        case ID_DUMMY:
+			//do whatever
+			item.Enable(TRUE);
+			break;
+        default:
+			pWindowList->DeleteMenu(item.m_nID, MF_BYCOMMAND);
+			break;
+		}
+	}
+}
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>PropertySheet - Changing the Tab Label Font</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Changing the Tab Label Font</FONT>
+<HR></H3></CENTER>
+We can change the font used by the tab control to draw the labels by using the SetFont() function in the CWnd class. The code given below is very simple and does not bother with resizing the tab control or the property sheet. This works fine for fonts that are smaller than the font being used by the tab control or about the same size. A good place to put this code in is the OnInitDialog() of the CPropertySheet derived class.
+<PRE><TT><FONT COLOR="#990000">
+	// m_fontEdit is a member variable
+	// Create a bold font
+	m_fontEdit.CreateFont( -8, 0, 0, 0, 700, 0, 0, 0, 1, 
+			0, 0, 0, 0, _T("MS Sans Serif") );
+	GetTabControl()->SetFont( &m_fontEdit );
+</FONT></TT></PRE>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

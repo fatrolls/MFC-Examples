@@ -1,0 +1,105 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc/View - Open most recent file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Open most recent file</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:adam@solesby.com">Adam Solesby</A>
+and extended by <A HREF="mailto:nico.van.ravenstein@pi.net">Nico van Ravenstein </A>.
+
+
+<P>This is very simple, but I had never seen it anywhere else until I had
+to do it myself. It should save everyone some digging through the
+documentation.
+
+<P>To make your program re-open the most recently used file, simply add the
+following code to your App's InitInstance() between the calls to
+ParseCommandLine() and ProcessShellCommand().
+
+
+<PRE><TT><FONT COLOR="#990000">
+// Parse command line for standard shell commands, DDE, file open
+CCommandLineInfo cmdInfo;
+ParseCommandLine(cmdInfo);
+
+// ====================== Begin Inserted code ==============================
+// If a file is not specified on the command line, open the last file
+if ( ! cmdInfo.m_strFileName.GetLength() )
+{
+	CString strFileName;
+	if (m_pRecentFileList->GetDisplayName(strFileName, 0, "", 0, true))
+	{
+		cmdInfo.m_strFileName = strFileName;
+		cmdInfo.m_nShellCommand =
+		CCommandLineInfo::FileOpen;
+	}
+}
+// ====================== End Inserted code ==============================
+
+
+// Dispatch commands specified on the command line
+if (!ProcessShellCommand(cmdInfo))
+return FALSE;
+</FONT></TT></PRE>
+
+
+<p><A HREF="mailto:nico.van.ravenstein@pi.net">Nico van Ravenstein </A> adds:
+
+<p>There is a problem with opening the most recent file when the filepath is too long.
+The directory gets abbreviated by the function <FONT COLOR="#990000"><TT>AbbreviateName
+</tt></FONT> like C:\some path\...\file.txt.
+Thats nice for a windows title or in the last used list but you can't open a file with it.
+
+<p>So a better way is this:
+
+<FONT COLOR="#990000"><TT><PRE>    // Add this to your applications InitInstance function
+    //
+    // If a file is not specified on the command line, open the last file
+    if (!cmdInfo.m_strFileName.GetLength())
+    { 
+        if (m_pRecentFileList->m_nSize > 0 && 
+		    !m_pRecentFileList->m_arrNames[0].IsEmpty())
+        {
+            cmdInfo.m_strFileName = m_pRecentFileList->m_arrNames[0];
+            cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen; 
+        }
+    }
+</tt></PRE></FONT>
+
+<p>Updated 4 April 1998
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

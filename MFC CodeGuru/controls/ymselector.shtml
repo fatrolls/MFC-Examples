@@ -1,0 +1,114 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Year and Month Selector Control</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Year and Month Selector Control
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+<p>This article was contributed by <a HREF="mailto:shekarnarayanan@hotmail.com">Shekar
+Narayanan</a>. 
+
+<!-- Sample image and source code/demo project --> </p>
+<p><img src="ymselector.jpg" width="537" height="365"
+alt="year month selector image (24721 bytes)"><br>
+<a HREF="ymselector.zip">Download Source Code and Example</a> </p>
+
+<!-- The article... -->
+
+<p>The idea is for drawing the button and pop-up window is taken from <a
+href="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</a>'s contributions!</p>
+
+<h3>What is this?</h3>
+
+<p>This is a custom control which allows you to select a month and year from a drop down
+window.</p>
+
+<p>This custom control actually consists of two classes - one derived from CButton which
+acts like the regular combo box and other derived directly from generic CWnd object which
+is the pop-up window.</p>
+
+<p>The CButton derived object is the one you would use in the&nbsp; dialog boxes or form
+views and it is called CYMSelector. </p>
+
+<p>When CYMSelector receives the message 'clicked', it will create the pop-up window and
+disables the parent window from any activity. The user can either make the selection using
+the mouse or press Esc key to abort. The - and + sign at the top corners of the window
+allows the selection of the year.</p>
+
+<p>The default color of the window is controlled by the OS's settings. Since you have the
+source, you could control it if you want to.</p>
+
+<p>&nbsp;</p>
+
+<h3>How do I use it in my project?</h3>
+
+<ol>
+  <li>Insert the YMSelector.cpp in your project and include the YMSelector.h in stdafx.h. </li>
+  <li>Open the Dialog box or Form View resource and insert a regular button control </li>
+  <li>Change the property of this button to Owner Draw </li>
+  <li>From Class Wizard, create a member variable for this button - as a control. </li>
+  <li>Open the corresponding header file and change the variable type from CButton to
+    CYMSelector </li>
+  <li>Alternatively, you could rebuild the .clw file by deleting it. This way, from class
+    wizard, you can directly create the variable as CYMSelector instead of CButton, and you
+    don't have to change the header file. </li>
+</ol>
+
+<p>That is it. It has the following public methods to play around: 
+
+<ul>
+  <li>GetYear()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //
+    Returns the selected year as integer</li>
+  <li>GetMonth()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Returns the
+    selected month as integer 1 for Jan and 12 for Dec</li>
+  <li>GetMonthString()&nbsp; // Returns the selected month as string like 'January'</li>
+  <li>SetYear(int)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Sets the year value for
+    the control. Pass a value like 1998 etc...</li>
+  <li>SetMonth(int)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Sets the month value for the control.
+    Pass between 1 and 12</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p>If you have any comments or identified any bugs, please send them to me. It will help
+others using this control.</p>
+
+<p>&nbsp;</p>
+
+<!-- Remember to update this -->
+<p>Last updated: 4 July 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+<TD WIDTH="33%"><CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER></TD>
+<TD WIDTH="34%"><DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV></TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<!-- COUNTER REMOVED -->
+
+</BODY>
+</HTML>

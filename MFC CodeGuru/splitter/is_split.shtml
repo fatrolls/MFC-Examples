@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Splitter Window - Detect if window is split</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Detect if window is split</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:rmore@cri.com">Randy More</A>.
+
+<P>Many times it is necessary to know whether a view is currently split or not. This method will return TRUE if the view is split and FALSE if it is not. NOTE: It does NOT detect multiple views, so don't use it to determine whether UpdateAllViews should be called!
+
+<PRE><TT><FONT COLOR="#990000">
+int CMySplitterView::IsSplit(void)
+{
+	CSplitterWnd * parent;
+	parent = (CSplitterWnd*)GetParent();
+	int rows;
+	rows = parent->GetRowCount();
+	if(rows>1)
+	{
+		return(TRUE);
+	}
+	int cols;
+	cols = parent->GetColumnCount();
+	if(cols>1)
+	{
+		return(TRUE);
+	}
+	return(FALSE);
+}
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

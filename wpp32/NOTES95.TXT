@@ -1,0 +1,34 @@
+Notes on proting Windws++ to Win32/Windows 95
+
+*** I don't know if it works in NT or not. ***
+
+-Eliminated all near/far medium/large model stuff.
+
+-Eliminated all memory allocation stuff -- new/delete is fine.
+
+-Eliminated APPCLASS -- just use class
+
+-Modified WPRect and WPPoint to be derived from RECT and POINT like
+ they should have been from the start! I don't know what got into me.
+
+-Replace printer Escape sequences with new functionsl like StartPage,
+ SetAbortProc, etc.
+
+-Modified code for changed Win32 messages like WM_COMMAND, EM_GETSEL, etc. I
+ don't know if I got all of them
+
+-Eliminated WPEvent functions so now WPWin unpacks the event.
+
+-Changed all "private" access decls to "protected" to make
+ customizing easier.
+
+-Both Microsoft and Borland support DLL version now Zortech/Semantec not
+ proven, but should probably work.
+
+I'm sure there are several minor bugs due to WORD/int problems and
+WM_ messages that have changed slightly. I could only test with the
+sample programs, which all seem to work.
+
+Paul DiLascia
+October 1996
+

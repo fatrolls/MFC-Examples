@@ -1,0 +1,117 @@
+//Microsoft Developer Studio generated resource script.
+//
+#ifndef _OXWEBVIEW_RC__
+#define _OXWEBVIEW_RC__
+#include "OXMainRes.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_OX_WEBVIEW_BAR TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_OX_WEBVIEW_BACK
+    BUTTON      ID_OX_WEBVIEW_FORWARD
+    BUTTON      ID_OX_WEBVIEW_STOP
+    BUTTON      ID_OX_WEBVIEW_REFRESH
+    BUTTON      ID_OX_WEBVIEW_HOME
+    BUTTON      ID_OX_WEBVIEW_SEARCH
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_OX_WEBVIEW_BAR         BITMAP  DISCARDABLE     "res\\OXWebBar.bmp"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Dutch (Belgium) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLB)
+#ifdef _WIN32
+LANGUAGE LANG_DUTCH, SUBLANG_DUTCH_BELGIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resrc1.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_OX_WEBVIEW_BACK         "Navigates to previous page\nBack"
+    ID_OX_WEBVIEW_STOP         "Stops downloading the current page\nStop"
+    ID_OX_WEBVIEW_HOME         "Navigates to your start page\nHome"
+    ID_OX_WEBVIEW_SEARCH       "Navigates to your search page\nSearch"
+    ID_OX_WEBVIEW_FORWARD      "Navigates to next page\nForward"
+    ID_OX_WEBVIEW_REFRESH      "Refreshes the current page\nRefresh"
+END
+
+#endif    // Dutch (Belgium) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+#endif //_OXWEBVIEW_RC__

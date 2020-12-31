@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g711Decode", "g711Decode.vcproj", "{68DAC36C-9109-4687-B2DC-A58160D193FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68DAC36C-9109-4687-B2DC-A58160D193FA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{68DAC36C-9109-4687-B2DC-A58160D193FA}.Debug|Win32.Build.0 = Debug|Win32
+		{68DAC36C-9109-4687-B2DC-A58160D193FA}.Release|Win32.ActiveCfg = Release|Win32
+		{68DAC36C-9109-4687-B2DC-A58160D193FA}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

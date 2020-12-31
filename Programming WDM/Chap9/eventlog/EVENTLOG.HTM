@@ -1,0 +1,21 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The EVENTLOG Sample</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The EVENTLOG Sample</H2>
+<P>The EVENTLOG Sample accompanies Chapter 9 and illustrates how to log an event.</P>
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>EVENTLOG.SYS is a WDM driver for a non-existent hardware device. </LI></UL>
+
+<H3>Building EVENTLOG</H3>
+<P>To build EVENTLOG.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named EVENTLOG.DSP.</P>
+<H3>Testing EVENTLOG</H3>
+<P>Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named DEVICE.INF. Each time you start the EVENTLOG device (including the first time, which occurs during installation), it will write an entry to the log. To view the log, open the Administrative Tools applet in Control Panel and launch Event Viewer.</P>
+<P>Since Windows 98 doesn’t have an event log, EVENTLOG doesn’t try to write any entries to the log under Windows 98. There’s no point in installing this device in Windows 98, in other words.</P></BODY>
+</HTML>

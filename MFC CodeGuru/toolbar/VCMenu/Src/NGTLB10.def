@@ -1,0 +1,6 @@
+; NGTLB10.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "NGTLB10"
+DESCRIPTION  'VC style menus and toolbars'
+
+EXPORTS

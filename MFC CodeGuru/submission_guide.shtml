@@ -1,0 +1,309 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+<title>MFC Programmer's SourceBook - Submission Guide</title>
+</head>
+<!-- Set background properties -->
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000" bgproperties="fixed">
+<!-- A word from our sponsors... -->
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><a HREF="http://www.codeguru.com/cgi/ads.cgi?advert=myad2"><img
+    SRC="http://209.66.99.126/advertise2.gif" ALT BORDER="2" width="400" height="60"></a></td>
+    <td></td>
+  </tr>
+</table>
+<!-- Article Title -->
+
+<h3 align="center"><font COLOR="#AOAO99">Submission Guide </font></h3>
+
+<hr align="center">
+<!-- The article... -->
+
+<p><a href="submission_guide.shtml#Sourcecode">Sourcecode Guidlines</a><br>
+<a href="submission_guide.shtml#Documentation">Documentation Guidelines</a><br>
+<a href="submission_guide.shtml#Bug Fixes, etc.">Bug Fixes, etc.</a><br>
+<a href="submission_guide.shtml#Submission">Submitting your article</a><br>
+<a href="submission_guide.shtml#HTMLGuide">Guide to Simple HTML</a><br>
+<br>
+</p>
+
+<h4>OK so you have this cool code, now what do you do?</h4>
+
+<p>To make life easier all round we would ask that you bear the following guidelines in
+mind when preparing your article. Some of these are only really appropriate if the
+submission is a larger article rather than a small tip, but the differences should be
+fairly obvious. We would still rather get submissions than scare you off. </p>
+
+<p><br>
+<a name="Sourcecode"></p>
+
+<h3>Sourcecode Guidlines</h3>
+</a>
+
+<p>First and foremost, does the code actually work? We do sometimes get code that, for one
+reason or another, just does not work. Please check that the source code you send compiles
+cleanly, and if part of a larger demo application, that the application itself runs OK. </p>
+
+<p><b>Sample Executable:</b> If providing a sample executable, please make sure it is
+linked with the release libraries (eg. Make sure it is not linked with the UNICODE or
+debug libraries). The whole point of a demo executable is to give developers a quick intro
+to your code. If they have to recomnpile in order to get the application to run on their
+system then there is no use in supplying the executable in the first place. Secondly try
+to conservative about just how big a sample you upload, a 4Mb sample just isn't going to
+interest a lot of people.</p>
+
+<p><b>Sample Project:</b>It is reccomended that you also include a sample project. When
+creating a ZIP file for the sample project, please do not include either the Debug or 
+the Release directories. They simply inflate the size of the ZIP file. Also, do not
+include the *.clw, *.dsw and other such files that are automatically recreated.
+
+<p><b>Style:</b> We cannot (and will not) dictate coding style, but we do ask that the
+general MFC guidlines be adhered to so that other programmers can understand your code
+easily. Conventions that help other programmers read your code are: 
+
+<ul>
+  <li>The use of Hungarian notation (eg Variable prefixes such as &quot;n&quot; for int,
+    &quot;d&quot; for double etc.) </li>
+  <li>The &quot;m_&quot; prefix for member variables </li>
+  <li>The use of MFC types such as UINT, LPCTSTR etc </li>
+</ul>
+
+<p>A few other things that you may want to consider when preparing a article are: 
+
+<ul>
+  <li>If appropriate, is the code const correct? (And if you don't know what this means the
+    answer is probably no).<br>
+    That's not necessarily bad BTW, there are classes that I cannot see ever wanting to have
+    const versions of. </li>
+  <li>Does the code compile cleanly under the highest compiler warning level (that's level 4
+    right now)?<br>
+    I have to say that if the answer to this is no, then I'd be tempted to tell you to rebuild
+    the prog and remove all of the warnings :-) (I might make exceptions for STL based code
+    since the current MS libraries simply won't compile cleanly at level 4 and it's arguable
+    that using lots of #pragmas rather defeats the whole point.)</li>
+  <li>It is OK to use others code as a base as long as you make it totally clear that
+    some/most of the code isn't yours, and keep all copyright notices in the original code. </li>
+</ul>
+
+<p>I want to re-emphasize this last point (and you can draw your own conclusions as to
+why). <strong>If you use someone else's code then DO NOT remove their copyright notices.</strong>
+&nbsp; There is a lot of code reuse here, that's the point after all.&nbsp; As far as the
+articles that are being posted here we expect to see credit where credit's due, in the
+code and the HTML as appropriate.</p>
+<a name="Documentation">
+
+<p>While we are talking about copyrights, you retain copyright of your article and code but
+by submitting it to CodeGuru you give it permission to use it in a fair manner and also
+permit all developers to freely use the code in their own applications - even if they are
+commercial. </p>
+
+<h3>Documentation Guidelines</h3>
+</a>
+
+<p>First and foremost, <b>we need <i>some</i> documentation</b>. This doesn't have to be
+anything fancy, though we don't mind if it is, but if you think about answering the
+following questions then you should be off to a good start. I'd like to think that these
+are fairly obvious, but this has proved not to be the case :-(. 
+
+<ul>
+  <li>What does the code do? </li>
+  <li>How do I integrate it with my existing code or how do I use it? </li>
+  <li>If there is a similar article on CodeGuru already, then how does this one differ? Why
+    would someone want to use your version?</li>
+  <li>Is there some aspect of the code that is of particular interest that perhaps wants to be
+    covered in the documentation and put on the web page? </li>
+  <li>Does the code work under UNICODE? If not, is there a reason? </li>
+  <li>What version of MFC was this code built with? Right now this may be fairly obvious, but
+    given the inevitable upgrade pace set by Microsoft, this may not remain so obvious.</li>
+</ul>
+
+<p>The idea is to give the reader a clear of idea of the purpose of your code, instead of
+forcing them to download a project, build it and then hunt around to find out what the
+sample does. </p>
+
+<p>The quickest way to get your code posted is to provide a simple HTML file. Our
+preferences on documentation are: 
+
+<ol>
+  <li>A simple HTML file, edited by a plain text editor, using the <a href="template.zip">template
+    HTML file</a> provided, </li>
+  <li>A plain ol' text file, </li>
+  <li>Everything else. </li>
+  <li>HTML file exported from MS Word. </li>
+</ol>
+
+<p>All the articles at codeguru.com have the same look and feel which is achieved by only
+the most basic HTML features. If you send us a HTML file with different fonts and colours
+and fancy bits, chances are it will all be stripped out to make it conform to the codeguru
+standard. All documentation is edited <b>by hand</b>, so it can be a real nightmare wading
+through masses of horrible HTML produced by such things as MS Word. For hints on how to
+make life easy for us here at codeguru, check out the <a
+href="submission_guide.shtml#HTMLGuide">guide to simple HTML.</a> </p>
+
+<p><b>Images:</b> If the code is for a GUI element, provide a picture. GIF or jpeg only
+please. Please be careful about the size of the image, most people still think that their
+modem is too slow, let's not make it any worse than necessary. If you want a specific
+guideline, 20K is good, 100K is bad. (If you can't get a picture small enough then try
+cutting down on the number of colors used, this can make a huge difference.)</p>
+
+<h3><a name="Bug Fixes, etc.">Bug Fixes, etc.</a></h3>
+
+<p>We are beginning to get a number of modifications to existing posts, which can be a
+good thing. In these cases can we ask that you attempt to contact the original author
+first and then try to liaise with him/her to produce an update to the original article.
+&nbsp; This way we can retain continuity with the original article as well as reducing the
+number of completely new pages that need posting.</p>
+
+<h3><a name="Submission">Submitting your article</a></h3>
+
+<p>Please post all your articles to <a href="mailto:submit@codeguru.com">submit@codeguru.com</a>.
+Your article will then be forwarded on to the person responsible for the section in which
+your article will be posted. Please refrain from posting articles directly to individuals
+unless they specifically ask you or are expecting an email from you. </p>
+
+<p>When emailing the article please state the title of the article in the subject line.
+Also if you think it neatly fits in one of the categories, please let us know.</p>
+
+<p>If your article comprises code that is more than a few lines long, it is much easier to
+send this as a zipped attachment. Embedding it in an email message directly often does
+horrible things to the formatting. </p>
+
+<p>If you do want to send an archive, please use a plain zip file rather than a self
+extracting executable. Remember that if your project contains long file names, then you
+ought to use an appropriately modern zip program to create the archive. InfoZip, WinZIP
+and PK-Zip, to name a few products, all have programs that do this correctly. </p>
+
+<p>If appropriate, a small sample project that shows the code in action is helpful. This
+is certainly optional but goes some way to letting the reader analyze the usefulness of
+your code to him. </p>
+
+<p><b>File naming convention:</b> If your contribution comprises a HTML article, source
+code and an image, then to make life easy for us we ask that you follow the following
+filename conventions. Suppose your article is called coolcode.html. The filenames should
+be of the form:<br>
+<br>
+</p>
+
+<table width="100%">
+  <tr>
+    <td width="30%">coolcode.html</td>
+    <td width="70%">The HTML documentation for your article</td>
+  </tr>
+  <tr>
+    <td width="30%">coolcode.zip</td>
+    <td width="70%">The zipped source code for your article</td>
+  </tr>
+  <tr>
+    <td width="30%">coolcode.gif</td>
+    <td width="70%">An image to accompany your article</td>
+  </tr>
+</table>
+
+<p>Alternatively, if you have source code, a demo project and a number of images, then
+your filenames would be along the lines of:<br>
+<br>
+</p>
+
+<table width="100%">
+  <tr>
+    <td width="30%">coolcode.html</td>
+    <td width="70%">The HTML documentation for your article</td>
+  </tr>
+  <tr>
+    <td width="30%">coolcode_src.zip</td>
+    <td width="70%">The zipped source code for your article</td>
+  </tr>
+  <tr>
+    <td width="30%">coolcode_demo.zip</td>
+    <td width="70%">The zipped demo project for your article</td>
+  </tr>
+  <tr>
+    <td width="30%">coolcode1.gif</td>
+    <td width="70%">An image to accompany your article</td>
+  </tr>
+  <tr>
+    <td width="30%">coolcode2.gif</td>
+    <td width="70%">A second image to accompany your article</td>
+  </tr>
+</table>
+<a name="HTMLGuide">
+
+<p></a>BTW, don't use the name coolcode, try to find something more relevant :-)<a
+name="HTMLGuide"></p>
+</a>
+
+<h4><a name="HTMLGuide">What do I mean by Simple HTML?</a></h4>
+
+<p>As you look around this site, you can see that there is a fairly consistent look to it.
+To maintain this we want to be able to apply a set of consistent formats to the articles
+that we post. To do this we generally do the following when converting text to HTML, or
+massaging HTML prior to posting: 
+
+<ul>
+  <li>You can ignore everything that you see in the headers and footers of these pages. They
+    are all boiler plate code, and we'll paste them into your article for you. </li>
+  <li>We want a title for the article. Generally we try to use the one that you choose, though
+    sometimes this has to be modified to avoid clashes with other articles. </li>
+  <li>We add the contribution line to the article with your name and email address. </li>
+  <li>Then we start reformatting stuff. If there are any specific font tags we generally
+    remove all of them. This is particularly true of the size modifiers that FrontPage seems
+    to insist in riddling its HTML with. </li>
+  <li>We add paragraph markers where appropriate to either side of each paragraph. This is a
+    &lt;p&gt; ... &lt;/p&gt; pair </li>
+  <li>Formatting C or C++ source code takes a bit of care. Generally we want to do this before
+    it is embedded in the HTML file since a number of the characters that we want to replace
+    occur correctly in the HTML.<br>
+    We do a number of search and replaces (the order here matters): <ol>
+      <li>Replace <strong><tt>&amp;</tt></strong> with <strong><tt>&amp;amp;</tt></strong> note
+        that this <strong>does</strong> include the semi-colon. </li>
+      <li>Replace <strong><tt>&lt;</tt></strong> with <strong><tt>&amp;lt;</tt></strong> </li>
+      <li>Replace <strong><tt>&gt;</tt></strong> with <strong><tt>&amp;gt;</tt></strong> </li>
+    </ol>
+    <p>Wrap the whole code section in:<br>
+    <strong><tt>&lt;pre&gt;&lt;tt&gt;&lt;font COLOR=&quot;#990000&quot;&gt;<br>
+    </tt></strong>&nbsp;&nbsp;&nbsp;&nbsp;your code ...<br>
+    <strong><tt>&lt;/font&gt;&lt;/tt&gt;&lt;/pre&gt;</tt></strong> </p>
+  </li>
+  <li>Any section headings are generally wrapped with <strong><tt>&lt;H4&gt; &lt;/H4&gt;</tt></strong>.
+    This is the heading style used in this page. </li>
+  <li>As for links to downloadable samples; feel free to add them where appropriate, and we'll
+    change them if needed when we post the article. </li>
+</ul>
+
+<p>Other than that, a well formed HTML page is likely to be posted quicker than one where
+we have to do a lot of work. This means that there may well be a preference when it comes
+to posting articles for ones that we can post quickly. </p>
+
+<p>To assist in this process, we've provided a <a href="template.zip">template HTML file</a>,
+you certainly don't have to use it, but it may help to get you started. </p>
+
+<p>A final note. A number of articles are from people whose native language is not
+English. We want to encourage this to continue. After all, your so called 'bad' English is
+nearly always going to be better than my (Guy not Zafir here) attempt at your language, so
+please don't let this deter you. If you would feel more comfortable with someone tidying
+up your grammar, then just ask. I doubt that we'll rewrite the whole article since we
+quite simply don't have the time, but sometimes it only takes a few changes to make the
+whole piece more readable. </p>
+
+<p>Last updated: 6 June 1998 by <a href="mailto:guy@wyrdrune.com">Guy Gascoigne - Piggford</a>.</p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1997 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+</body>
+</html>

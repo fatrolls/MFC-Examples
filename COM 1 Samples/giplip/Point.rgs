@@ -1,0 +1,24 @@
+HKCR
+{
+	Point.Point.1 = s 'Point Class'
+	{
+		CLSID = s '{CCA7F35E-DAF3-11D0-8C53-0080C73925BA}'
+	}
+	Point.Point = s 'Point Class'
+	{
+		CurVer = s 'Point.Point.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CCA7F35E-DAF3-11D0-8C53-0080C73925BA} = s 'Point Class'
+		{
+			ProgID = s 'Point.Point.1'
+			VersionIndependentProgID = s 'Point.Point'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

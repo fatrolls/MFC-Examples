@@ -1,0 +1,362 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS DISCARDABLE 
+BEGIN
+    VK_F12,         ID_HELP_ABOUT,          VIRTKEY, NOINVERT
+    "W",            ID_FILE_RUNWIZARD,      VIRTKEY, CONTROL, NOINVERT
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "From the book ""Peter Norton's Guide to Windows 95 Programming with MFC""\0"
+            VALUE "CompanyName", "Screaming Tiki (tm)\0"
+            VALUE "FileDescription", "Sample MFC application demonstrating a Windows Wizard\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "DIALOG2\0"
+            VALUE "LegalCopyright", "Copyright © 1996 Rob McGregor\0"
+            VALUE "OriginalFilename", "WIZARD1.EXE\0"
+            VALUE "ProductName", "Wizard1 Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Run Wizard\tCtrl+W",          ID_FILE_RUNWIZARD
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit\tAlt+F4",               ID_FILE_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About\tF12",                 ID_HELP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "wizard1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 247, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,18,20
+    LTEXT           "Demonstrates how to create a Windows Wizard in an MFC application.",
+                    IDC_STATIC,40,25,135,22,SS_NOPREFIX,WS_EX_STATICEDGE
+    DEFPUSHBUTTON   "OK",IDOK,193,7,47,14,WS_GROUP
+    LTEXT           "Wizard1",IDC_STATIC,38,7,140,8
+END
+
+IDD_PAGE2 DIALOG DISCARDABLE  0, 0, 267, 141
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Page2"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         115,IDC_INTROBITMAP,"Static",SS_BITMAP | SS_SUNKEN,0,0,
+                    80,140
+    LTEXT           "Title here...",IDC_TITLE,85,0,180,35
+    CONTROL         "Radio1",IDC_PAGE2_1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,85,65,175,10
+    LTEXT           "Question here...",IDC_PAGE2_TEXT,85,40,180,20
+    CONTROL         "Radio2",IDC_PAGE2_2,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,85,80,175,10
+    CONTROL         "Radio3",IDC_PAGE2_3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,85,95,175,10
+    CONTROL         "Radio4",IDC_PAGE2_4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,85,110,175,10
+END
+
+IDD_PAGE4 DIALOG DISCARDABLE  0, 0, 272, 135
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Page4"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         111,IDC_INTROBITMAP,"Static",SS_BITMAP,0,0,80,140
+    LTEXT           "Done!",IDC_TITLE,130,0,135,25
+    LTEXT           "Static",IDC_PAGE4_TEXT,130,35,140,80
+END
+
+IDD_INTRO DIALOG DISCARDABLE  0, 0, 272, 140
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Welcome"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Title here...",IDC_TITLE,85,0,180,40
+    LTEXT           "Some intro text here...",IDC_INTRO1,85,45,180,50
+    CONTROL         116,IDC_INTROBITMAP,"Static",SS_BITMAP | SS_SUNKEN,0,0,
+                    80,140
+    LTEXT           "Some more text here...",IDC_INTRO2,85,100,180,40
+END
+
+IDD_PAGE1 DIALOG DISCARDABLE  0, 0, 272, 140
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Page1"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_FIRSTNAME,85,35,170,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_LASTNAME,85,66,170,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_COMPANY,85,95,170,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EMAIL,85,125,170,15,ES_AUTOHSCROLL
+    LTEXT           "Your E-Mail:",IDC_STATIC,88,115,70,10
+    CONTROL         114,IDC_INTROBITMAP,"Static",SS_BITMAP | SS_SUNKEN,0,0,
+                    80,140
+    LTEXT           "Your First Name:",IDC_STATIC,87,25,70,10
+    LTEXT           "Your Company:",IDC_STATIC,88,85,70,10
+    LTEXT           "Title here...",IDC_TITLE,85,0,180,20
+    LTEXT           "Your Last Name:",IDC_STATIC,87,55,70,10
+END
+
+IDD_PAGE3 DIALOG DISCARDABLE  0, 0, 267, 141
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Page3"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Question here...",IDC_PAGE3_TEXT,85,40,180,20
+    LTEXT           "Title here...",IDC_TITLE,85,0,180,35
+    CONTROL         113,IDC_INTROBITMAP,"Static",SS_BITMAP | SS_SUNKEN,0,0,
+                    80,140
+    CONTROL         "Radio1",IDC_PAGE3_1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,85,65,175,10
+    CONTROL         "Radio2",IDC_PAGE3_2,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,85,80,175,10
+    CONTROL         "Radio3",IDC_PAGE3_3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,85,95,175,10
+    CONTROL         "Radio4",IDC_PAGE3_4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,85,110,175,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        RIGHTMARGIN, 245
+    END
+
+    IDD_PAGE2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 260
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 134
+    END
+
+    IDD_PAGE4, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+
+    IDD_INTRO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_PAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_PAGE3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 260
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 134
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_INTRO               BITMAP  DISCARDABLE     "pc_earth.bmp"
+IDB_DONE                BITMAP  DISCARDABLE     "doneflag.bmp"
+IDB_SERVER              BITMAP  DISCARDABLE     "server.bmp"
+IDB_QUESTION            BITMAP  DISCARDABLE     "question.bmp"
+IDB_FOOD                BITMAP  DISCARDABLE     "food.bmp"
+IDB_WIZARD              BITMAP  DISCARDABLE     "wizard.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Wizard Demo App"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_RUNWIZARD       "Runs the Wizard Sample"
+    ID_HELP_ABOUT           "Provides information about the application"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    IDS_INTRO1              "In this space you can put any kind of text you want. This inroductory page is used to put the user at ease, and to help the user get ready to walk through a complex series of steps."
+    IDS_INTRO2              "You can also put some more text down here if you want to...and say something profound like, ""Click the Next button to continue."""
+    IDS_PAGE1_TITLE         "About You..."
+    IDS_PAGE2_1             "Pizza and Beer"
+    IDS_PAGE2_2             "Twinkies and Beer"
+    IDS_PAGE2_3             "Crunch Berries (with milk, not beer)"
+    IDS_PAGE2_4             "Coffee and Doughnuts"
+    IDS_PAGE2_TEXT          "Please select your preferred late-night  programming snack:"
+    IDS_PAGE2_TITLE         "Food for Thought"
+    IDS_PAGE3_1             "Borland C++"
+    IDS_PAGE3_2             "Microsoft Visual C++"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PAGE3_3             "Symantec C++"
+    IDS_PAGE3_4             "Visual Cobol"
+    IDS_PAGE3_TEXT          "Please choose your favorite Windows development tool or programming system:"
+    IDS_PAGE3_TITLE         "Compiler Decisions"
+    IDS_WELCOME             "Welcome to the Sample Wizard!"
+    IDS_PAGE4_TITLE         "Finished!"
+    IDS_PAGE4_TEXT          "Congratulations! You've completed this Wizard successfully. Press the finish button and a report will be generated for you."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_EXIT            "Exits the application"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

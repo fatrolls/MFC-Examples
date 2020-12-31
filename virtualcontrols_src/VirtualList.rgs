@@ -1,0 +1,34 @@
+HKCR
+{
+	BVVirtualControls.VirtualList.1 = s 'VirtualList Class'
+	{
+		CLSID = s '{19DBFA10-8A29-11D3-82A4-0080AD509054}'
+	}
+	BVVirtualControls.VirtualList = s 'VirtualList Class'
+	{
+		CLSID = s '{19DBFA10-8A29-11D3-82A4-0080AD509054}'
+		CurVer = s 'BVVirtualControls.VirtualList.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {19DBFA10-8A29-11D3-82A4-0080AD509054} = s 'VirtualList Class'
+		{
+			ProgID = s 'BVVirtualControls.VirtualList.1'
+			VersionIndependentProgID = s 'BVVirtualControls.VirtualList'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'Insertable'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 101'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '131473'
+			}
+			'TypeLib' = s '{19DBFA01-8A29-11D3-82A4-0080AD509054}'
+			'Version' = s '1.0'
+		}
+	}
+}

@@ -1,0 +1,167 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Selecting multiple files in File Open dialog</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Selecting multiple files in File Open dialog</FONT></H3></CENTER>
+<HR>
+
+
+
+
+<p>This code was contributed by <a href="mailto:kg@it-gmbh.de">Klaus Gütter</a>. </p>
+
+<p>Many professional MDI applications support selecting more than one file in the 
+File Open dialog. It is easy to add this support to MFC applications.</p>
+
+<p>Opening files (and other document mamangement activities) is implemented in MFC's CDocMananger
+class (see source file docmgr.cpp). 
+CWinApp contains a member variable m_pDocManager poining to the CDocManager object
+to use. If you want to modify the standard MFC behaviour, simply provide your own CDocManager-derived
+object.</p>
+
+<p>For adding the "multi open" support, I derived a class CMultiOpenDocManager from CDocManager and
+overrode the OnFileOpen function. A new DoPromptFileNames function is a utility function similar to the existing DoPromptFileName function
+but capable of returning more than one file name.</p>
+
+<pre><font color="#990000"><tt>class CMultiOpenDocManager : public CDocManager
+{
+public:
+	CMultiOpenDocManager() { }
+	virtual void OnFileOpen();
+	virtual BOOL DoPromptFileNames(CStringList& fileNames, UINT nIDSTitle, DWORD lFlags, BOOL bOpenFileDialog, CDocTemplate* pTemplate);
+};
+</tt></font></pre>
+
+<p>Using the feature is as simple as adding the following line in your app's InitInstance function:</p>
+
+<pre><font color="#990000"><tt>	m_pDocManager = new CMultiOpenDocManager;</tt></font></pre>
+
+<p>The implementation of the OnFileOpen function is very similar to the original implementation. I just replaced the call to
+DoPromptFileName with a call to my new function DoPromptFileNames, added the OFN_ALLOWMULTISELECT flag
+and introduced a loop around the OpenDocumentFile call:</p>
+
+<pre><font color="#990000"><tt>void CMultiOpenDocManager::OnFileOpen()
+{
+	CStringList newNames;
+	if (!DoPromptFileNames(newNames, AFX_IDS_OPENFILE,
+	  OFN_HIDEREADONLY | OFN_FILEMUSTEXIST | OFN_ALLOWMULTISELECT, TRUE, NULL))
+		return; // open cancelled
+
+	POSITION pos = newNames.GetHeadPosition();
+	while (pos)
+	{
+		CString newName = newNames.GetNext(pos);
+		AfxGetApp()->OpenDocumentFile(newName);
+	}
+}</tt></font></pre>
+
+<p>Now for the DoPromptFileNames function: It is a nearly perfect copy of the original function. 
+I marked the modifications by a comment. The implementation uses a function AppendFilterSuffix which
+is defines as a file local (static) function in docmgr.cpp. You will have to copy the function
+into the file where CMultiOpenDocManager::DoPromptFileNames is implemented.</p>
+
+<pre><font color="#990000"><tt>BOOL CMultiOpenDocManager::DoPromptFileNames(CStringList& fileNames, UINT nIDSTitle, DWORD lFlags, BOOL bOpenFileDialog, CDocTemplate* pTemplate)
+{
+	CFileDialog dlgFile(bOpenFileDialog);
+
+	CString title;
+	VERIFY(title.LoadString(nIDSTitle));
+
+	dlgFile.m_ofn.Flags |= lFlags;
+
+	CString strFilter;
+	CString strDefault;
+	if (pTemplate != NULL)
+	{
+		ASSERT_VALID(pTemplate);
+		AppendFilterSuffix(strFilter, dlgFile.m_ofn, pTemplate, &strDefault);
+	}
+	else
+	{
+		// do for all doc template
+		POSITION pos = m_templateList.GetHeadPosition();
+		BOOL bFirst = TRUE;
+		while (pos != NULL)
+		{
+			CDocTemplate* pTemplate = (CDocTemplate*)m_templateList.GetNext(pos);
+			AppendFilterSuffix(strFilter, dlgFile.m_ofn, pTemplate,
+				bFirst ? &strDefault : NULL);
+			bFirst = FALSE;
+		}
+	}
+
+	// append the "*.*" all files filter
+	CString allFilter;
+	VERIFY(allFilter.LoadString(AFX_IDS_ALLFILTER));
+	strFilter += allFilter;
+	strFilter += (TCHAR)'\0';   // next string please
+#ifndef _MAC
+	strFilter += _T("*.*");
+#else
+	strFilter += _T("****");
+#endif
+	strFilter += (TCHAR)'\0';   // last string
+	dlgFile.m_ofn.nMaxCustFilter++;
+
+	dlgFile.m_ofn.lpstrFilter = strFilter;
+#ifndef _MAC
+	dlgFile.m_ofn.lpstrTitle = title;
+#else
+	dlgFile.m_ofn.lpstrPrompt = title;
+#endif
+	// --- Begin modifications ---
+	// - use a big buffer for the file names 
+	// (note that pre-SP2 versions of NT 4.0 will nevertheless
+	// truncate the result)
+	CString strFileNames;
+	dlgFile.m_ofn.lpstrFile = strFileNames.GetBuffer(2048);
+	dlgFile.m_ofn.nMaxFile = 2048;
+
+	BOOL bResult = dlgFile.DoModal() == IDOK ? TRUE : FALSE;
+	strFileNames.ReleaseBuffer();
+
+	if (!bResult)
+		return FALSE; // open cancelled
+
+	// - copy the file names to a string list
+	POSITION pos = dlgFile.GetStartPosition();
+	while (pos)
+	{
+		fileNames.AddTail(dlgFile.GetNextPathName(pos));
+	}
+	return TRUE;
+	// --- End modifications ---
+}</tt></font></pre>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

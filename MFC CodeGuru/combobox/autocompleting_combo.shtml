@@ -1,0 +1,209 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Auto-completion ComboBox</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Auto-completion ComboBox</FONT></H3></CENTER>
+<HR>
+
+This sample was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<p>
+<img src="autocompleting_combo.gif" border=0 alt="Auto-complete combobox" align="bottom">
+
+<P><A HREF="autocompleting_combo.zip">Download sample project and source files</A>
+</p>
+
+
+<p>I had a need for a combobox that would auto-complete, very much like
+the URL edit box in the toolbar of Netscape Navigator. It was actually
+surprisingly simple since the base CComboBox is so rich in functionality.
+</p>
+
+<p>The basic idea is that every time the text in the edit box changes,
+check to see if there is any text in the drop down list that is prefixed
+by this edit box text. Handle the CBN_EDITUPDATE message to get the text
+change notifications, and use GetWindowText() to get the text.
+CComboBox::SelectString will look for a string in the list which is prefixed 
+by the given string, and select it into the edit box. I then select the 
+portion of text that was added to the users typed text so that they can 
+continue typing and have the additions ignored if they wish. That takes 
+care of 90% of the work.
+</p>
+
+<p>The only trick is in handling backspaces and deletes. When a user hits
+delete, the text is changed, and the auto-completion routine will try to
+restore that text back again. Just check in PreTranslateMessage for a
+KEY_DOWN message with a virtual key of VK_DELETE or VK_BACK, and temporarily
+disable the auto-complete mechanism for those key strokes.
+</p>
+
+
+<h3>Source code</h3>
+
+<PRE><TT><FONT COLOR="#990000">
+#if !defined(AFX_COMBOBOXEX_H__115F422E_5CD5_11D1_ABBA_00A0243D1382__INCLUDED_)
+#define AFX_COMBOBOXEX_H__115F422E_5CD5_11D1_ABBA_00A0243D1382__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+
+// ComboBoxEx.h : header file
+//
+// Copyright (c) Chris Maunder 1997.
+// Please feel free to use and distribute.
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CComboBoxEx window
+
+class CComboBoxEx : public CComboBox
+{
+// Construction
+public:
+	CComboBoxEx();
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CComboBoxEx)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+	virtual ~CComboBoxEx();
+
+	BOOL m_bAutoComplete;
+
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CComboBoxEx)
+	afx_msg void OnEditUpdate();
+	//}}AFX_MSG
+
+	DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_COMBOBOXEX_H__115F422E_5CD5_11D1_ABBA_00A0243D1382__INCLUDED_)
+
+
+
+
+// ComboBoxEx.cpp : implementation file
+//
+// Copyright (c) Chris Maunder 1997.
+// Please feel free to use and distribute.
+
+#include "stdafx.h"
+#include "ComboBoxEx.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CComboBoxEx
+
+CComboBoxEx::CComboBoxEx()
+{
+	m_bAutoComplete = TRUE;
+}
+
+CComboBoxEx::~CComboBoxEx()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CComboBoxEx, CComboBox)
+	//{{AFX_MSG_MAP(CComboBoxEx)
+	ON_CONTROL_REFLECT(CBN_EDITUPDATE, OnEditUpdate)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CComboBoxEx message handlers
+
+BOOL CComboBoxEx::PreTranslateMessage(MSG* pMsg)
+{
+	// Need to check for backspace/delete. These will modify the text in
+	// the edit box, causing the auto complete to just add back the text
+	// the user has just tried to delete. 
+
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		m_bAutoComplete = TRUE;
+
+		int nVirtKey = (int) pMsg->wParam;
+		if (nVirtKey == VK_DELETE || nVirtKey == VK_BACK)
+			m_bAutoComplete = FALSE;
+	}
+
+	return CComboBox::PreTranslateMessage(pMsg);
+}
+
+void CComboBoxEx::OnEditUpdate() 
+{
+	// if we are not to auto update the text, get outta here
+	if (!m_bAutoComplete) return;
+
+	// Get the text in the edit box
+	CString str;
+	GetWindowText(str);
+	int nLength = str.GetLength();
+
+	// Search for, and select in, and string in the combo box that is prefixed
+	// by the text in the edit box
+	if (SelectString(-1, str) == CB_ERR) 
+		SetWindowText(str);		// No text selected, so restore what was there before
+
+	// Set the text selection as the additional text that we have added
+	SetEditSel(nLength,-1);
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

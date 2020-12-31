@@ -1,0 +1,370 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CTreeCtrl - Using a bitmap as a background image</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using a bitmap as a background image</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+The tree view control does not support an owner drawn control - not yet. This makes it somewhat difficult to display an image as a background. However, it can be done and we will discuss how. The basic approach is to let the control draw in a memory device context, draw this transparently over the background image and then draw the final image onto the control client area. Off course, there are a few details involved.
+
+<p><img src="background_image.gif" width="270" height="276"></p>
+
+<p>One good use of having an image in the background is to display the company logo. Make sure though that the image is such that it does not make the text difficult to read.
+
+<p>The technique given below uses a 256 color (16 color would also be fine) image that has been added as a bitmap resource. If the image is smaller than the control, then the image is tiled to cover the client area. For faster redraws the image scrolls along with the items.
+
+
+
+
+
+<h4>Step 1: Add bitmap to resource</h4>
+Add a bitmap that you want to use as the background image to the resource file. Use the import feature of the resource editor to get the image in. A copy-paste operation usually results in the colors of the bitmap getting messed up. You may add more than one bitmap and allow the user to choose one of the images or decide not to use any.
+
+<h4>Step 2: Add member variables</h4>
+It is not efficient to reload the bitmap or recreate the logical palette each time an item needs to be repainted. We therefore add member variables to store the bitmap, the logical palette and the dimensions of the bitmap. Declare these as protected members since we will provide a function to set the background image.
+
+<PRE><TT><FONT COLOR="#990000">protected:
+	CPalette m_pal;
+	CBitmap m_bitmap;
+	int m_cxBitmap, m_cyBitmap;
+</FONT></TT></PRE>
+
+<h4>Step 3: Add member functions to set background image</h4>
+We add two overloaded member functions to set the background image. These functions should be public member functions. The first function takes the resource ID as an argument and the second takes the resource name as an argument. 
+
+<p>These functions can be called to change the image if one has already been specified. The first thing the function does is delete the bitmap and palette gdi object if one has been created. It then loads the bitmap and attaches it to the CBitmap object. We use a call to the global ::LoadImage() rather than to the CBitmap::LoadBitmap(). The reason for this is that we want to be able to access the DIBSECTION of the bitmap and the reason why we want the DIBSECTION is because we want to create a logical palette that matches the colors used by the bitmap. My guess is you already know why we need a logical palette. Without going into too much detail lets just say that if you do not set up and use a logical palette then the image is likely to appear very dull on a 256 color display. You'd be fine if the display supported 64K or more colors. We also save the dimensions of the bitmap for later use.
+
+<p>Once we have the bitmap set, we start working on creating the logical palette. We determine the number of colors used by the bitmap by getting access to the DIBSECTION by calling the Cbitmap::GetObject() function. Note that the documentation for this function does not mention the DIBSECTION, you'd have to look up the documention of the ::GetObject() function in the API section instead. Sometimes the BITMAPINFOHEADER which is part of the DIBSECTION does not specify how many colors it uses. If this is the case we infer the color count from the number of bits it uses for the each pixel. For example, 8 bits can represent 256 different values and therefore indicates 256 colors. Similarly, 16 bits indicates 64K colors.
+
+<p>A bitmap that uses more than 256 colors does not have a color table. In this situation we simply create a halftone palette compatible with the device context. A halftone palette is basically a palette that contains a sampling of all the different colors. This is certainly not the best solution but it is the simplest.
+
+<p>If the bitmap has 256 colors or less, we do create the palette. We allocate enough space to hold the color table of the bitmap and call the function ::GetDIBColorTable() to retrieve it from the bitmap. We also allocate enough memory to create a logical palette and copy the color entries from the bitmap's color table. The palVersion field should be 0x300.
+
+<p>After creating the CPalette object, we deallocate the memory blocks allocated earlier and invalidate the window so that it can be redrawn using the new image.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CTreeCtrlX::SetBkImage(UINT nIDResource)
+{
+	return SetBkImage( (LPCTSTR)nIDResource );
+}
+
+BOOL CTreeCtrlX::SetBkImage(LPCTSTR lpszResourceName)
+{
+
+	// If this is not the first call then Delete GDI objects
+	if( m_bitmap.m_hObject != NULL )
+		m_bitmap.DeleteObject();
+	if( m_pal.m_hObject != NULL )
+		m_pal.DeleteObject();
+	
+	
+	HBITMAP hBmp = (HBITMAP)::LoadImage( AfxGetInstanceHandle(), 
+			lpszResourceName, IMAGE_BITMAP, 0,0, LR_CREATEDIBSECTION );
+
+	if( hBmp == NULL ) 
+		return FALSE;
+
+	m_bitmap.Attach( hBmp );
+	BITMAP bm;
+	m_bitmap.GetBitmap( &bm );
+	m_cxBitmap = bm.bmWidth;
+	m_cyBitmap = bm.bmHeight;
+
+
+	// Create a logical palette for the bitmap
+	DIBSECTION ds;
+	BITMAPINFOHEADER &bmInfo = ds.dsBmih;
+	m_bitmap.GetObject( sizeof(ds), &ds );
+
+	int nColors = bmInfo.biClrUsed ? bmInfo.biClrUsed : 1 << bmInfo.biBitCount;
+
+	// Create a halftone palette if colors > 256. 
+	CClientDC dc(NULL);			// Desktop DC
+	if( nColors > 256 )
+		m_pal.CreateHalftonePalette( &dc );
+	else
+	{
+		// Create the palette
+
+		RGBQUAD *pRGB = new RGBQUAD[nColors];
+		CDC memDC;
+		memDC.CreateCompatibleDC(&dc);
+
+		memDC.SelectObject( &m_bitmap );
+		::GetDIBColorTable( memDC, 0, nColors, pRGB );
+
+		UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+		LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+		pLP->palVersion = 0x300;
+		pLP->palNumEntries = nColors;
+
+		for( int i=0; i < nColors; i++)
+		{
+			pLP->palPalEntry[i].peRed = pRGB[i].rgbRed;
+			pLP->palPalEntry[i].peGreen = pRGB[i].rgbGreen;
+			pLP->palPalEntry[i].peBlue = pRGB[i].rgbBlue;
+			pLP->palPalEntry[i].peFlags = 0;
+		}
+
+		m_pal.CreatePalette( pLP );
+
+		delete[] pLP;
+		delete[] pRGB;
+	}
+	Invalidate();
+
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<h4>Step 4: Add handler for WM_PAINT</h4>
+The OnPaint() function is where the action is. There are two distinct situation that the OnPaint() function has to handle. No image might have been specified, in which case the control should display in the default manner. The other situation is of course when an image has been specified by calling the SetBkImage() function set out in the previous step. This is where we have to go through extra gyrations to get the task done. It is easier and more efficient to let the default window handle the painting completely when no image has been specified. However, if you want further specialization of the control, such as displaying different items in different colors and font, then it is easier to plug in that code into the one listed below.
+
+<p>One of the first things we do is create a memory device context that is compatible with the paint DC. We let the default window procedure of the control draw in the memory DC. If not image has been specified then we simply copy the content of the memory DC to the paint DC.
+
+<p>If a background image has been specified we create a mask bitmap from the content of the memory device context. We have to use a new device context for the mask bitmap. A mask bitmap is essentially a monochrome bitmap in which one color indicates the background color in the source bitmap and the other color indicates all the bits that are not the background color. 
+
+<p>We create another device context to hold the image bitmap. We create yet another device context to hold the tiled image of the bitmap. The 'imageDC' should have the proper palette selected into it before the tiled image is drawn on it. Forgetting to do so results in loss of color information on displays with 256 or fewer colors. The palette is also selected into, and realized for the main device context. Since only the invalidated items are repainted, it is important to offset the tiled image properly so that it appears continuous rather than as image strips. This is where the call to GetItemRect() and GetScrollPos() comes in.
+
+<p>The tiled image is drawn onto the 'imageDC', then the image from the memory DC is copied transparently onto the 'imageDC' and finally the result is copied onto the screen.To draw the image transparently we create a mask bitmap using yet another device context. A mask bitmap is a monochrome bitmap in which one color indicates the background color in the source bitmap and the other color indicates all the bits that are not the background color. We need the mask bitmap to copy only the foreground color from the memory DC to the image DC.
+
+<p>Once we have the mask bitmap, we draw the background color using the paint DC and then draw the image in the memory DC transparently over the paint DC. I had initially used MaskBlt() for drawing the image transparently but found out that it was supported on NT only and not Windows 95. Here's what we do. The image in memDC is the foreground image. When drawing this image we have to somehow make the background color have no effect. We achieve this by setting the background to black using the mask bitmap. When we later use the SRCPAINT raster operation, the black color has no effect on the destination color. Similarly we use the mask bitmap to set the foreground color of the image in the paint DC to black. We finally combine the two images.
+
+
+<p>We could have painted the tiled image directly onto the paint DC, and then drawn the content of the memory DC onto it. The reason for not doing so is because we avoid the excess flickering that this would have caused.
+
+
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::OnPaint() 
+{
+	// Remove comments from next five lines if you don't need any 
+	// specialization beyond adding a background image
+//	if( m_bitmap.m_hObject == NULL )
+//	{
+//		CTreeCtrl::OnPaint();
+//		return;
+//	}
+
+	CPaintDC dc(this);
+
+	CRect rcClip, rcClient;
+	dc.GetClipBox( &rcClip );
+	GetClientRect(&rcClient);
+
+	// Create a compatible memory DC 
+	CDC memDC;
+	memDC.CreateCompatibleDC( &dc );
+	
+	// Select a compatible bitmap into the memory DC
+	CBitmap bitmap, bmpImage;
+	bitmap.CreateCompatibleBitmap( &dc, rcClient.Width(), rcClient.Height() );
+	memDC.SelectObject( &bitmap );
+
+	
+	// First let the control do its default drawing.
+	CWnd::DefWindowProc( WM_PAINT, (WPARAM)memDC.m_hDC, 0 );
+
+	// Draw bitmap in the background if one has been set
+	if( m_bitmap.m_hObject != NULL )
+	{
+		// Now create a mask
+		CDC maskDC;
+		maskDC.CreateCompatibleDC(&dc);
+		CBitmap maskBitmap;
+
+		// Create monochrome bitmap for the mask
+		maskBitmap.CreateBitmap( rcClient.Width(), rcClient.Height(), 
+						1, 1, NULL );
+		maskDC.SelectObject( &maskBitmap );
+		memDC.SetBkColor( ::GetSysColor( COLOR_WINDOW ) );
+
+		// Create the mask from the memory DC
+		maskDC.BitBlt( 0, 0, rcClient.Width(), rcClient.Height(), &memDC, 
+					rcClient.left, rcClient.top, SRCCOPY );
+
+		
+		CDC tempDC;
+		tempDC.CreateCompatibleDC(&dc);
+		tempDC.SelectObject( &m_bitmap );
+
+		CDC imageDC;
+		CBitmap bmpImage;
+		imageDC.CreateCompatibleDC( &dc );
+		bmpImage.CreateCompatibleBitmap( &dc, rcClient.Width(), 
+						rcClient.Height() );
+		imageDC.SelectObject( &bmpImage );
+
+		if( dc.GetDeviceCaps(RASTERCAPS) & RC_PALETTE && m_pal.m_hObject != NULL )
+		{
+			dc.SelectPalette( &m_pal, FALSE );
+			dc.RealizePalette();
+
+			imageDC.SelectPalette( &m_pal, FALSE );
+		}
+
+		// Get x and y offset
+		CRect rcRoot;
+		GetItemRect( GetRootItem(), rcRoot, FALSE );
+		rcRoot.left = -GetScrollPos( SB_HORZ );
+
+		// Draw bitmap in tiled manner to imageDC
+		for( int i = rcRoot.left; i < rcClient.right; i += m_cxBitmap )
+			for( int j = rcRoot.top; j < rcClient.bottom; j += m_cyBitmap )
+				imageDC.BitBlt( i, j, m_cxBitmap, m_cyBitmap, &tempDC, 
+							0, 0, SRCCOPY );
+
+		// Set the background in memDC to black. Using SRCPAINT with black and any other
+		// color results in the other color, thus making black the transparent color
+		memDC.SetBkColor(RGB(0,0,0));        
+		memDC.SetTextColor(RGB(255,255,255));
+		memDC.BitBlt(rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), &maskDC, 
+				rcClip.left, rcClip.top, SRCAND);
+
+		// Set the foreground to black. See comment above.
+		imageDC.SetBkColor(RGB(255,255,255));
+		imageDC.SetTextColor(RGB(0,0,0));
+		imageDC.BitBlt(rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), &maskDC, 
+				rcClip.left, rcClip.top, SRCAND);
+
+		// Combine the foreground with the background
+		imageDC.BitBlt(rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), 
+					&memDC, rcClip.left, rcClip.top,SRCPAINT);
+
+		// Draw the final image to the screen		
+		dc.BitBlt( rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), 
+					&imageDC, rcClip.left, rcClip.top, SRCCOPY );
+	}
+	else
+	{
+		dc.BitBlt( rcClip.left, rcClip.top, rcClip.Width(), 
+				rcClip.Height(), &memDC, 
+				rcClip.left, rcClip.top, SRCCOPY );
+	}
+}
+</FONT></TT></PRE>
+
+<h4>Step 5: Handle the scroll messages</h4>
+The only reason we need to handle the scroll messages is because it helps in reducing the flicker caused by the control update. The default handling the WM_HSCROLL and the WM_VSCROLL messages is that the control is scrolled by the window proc and then the exposed area is invalidated. By calling InvalidateRect() we make sure that the control gets updated only once.
+
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+{
+	if( m_bitmap.m_hObject != NULL )
+		InvalidateRect(NULL);
+	CTreeCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
+void CTreeCtrlX::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+{
+	if( m_bitmap.m_hObject != NULL )
+		InvalidateRect(NULL);
+	CTreeCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+</FONT></TT></PRE>
+
+<h4>Step 6: Handle TVN_ITEMEXPANDING</h4>
+We handle the TVN_ITEMEXPANDING message for the same reason that we handle the scroll messages.
+
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::OnItemExpanding(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+
+	if( m_bitmap.m_hObject != NULL )
+		InvalidateRect(NULL);
+	
+	*pResult = 0;
+}
+</FONT></TT></PRE>
+
+<h4>Step 7: Add handler for WM_ERASEBKGND</h4>
+Since we are already drawing the background in the OnPaint() function handling this function and simply returning TRUE ensures that the default window procedure does not erase the background. Adding this handler prevents extra updates to the control's client area and thus reduces flicker.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CTreeCtrlX::OnEraseBkgnd(CDC* pDC) 
+{
+	if( m_bitmap.m_hObject != NULL )
+		return TRUE;
+	return CTreeCtrl::OnEraseBkgnd(pDC);
+}
+</FONT></TT></PRE>
+
+<h4>Step 8: Handle WM_QUERYNEWPALETTE & WM_PALETTECHANGED</h4>
+The WM_QUERYNEWPALETTE message is sent to a window when it is about to receive input focus. It gives the window an oppurtunity to realize its logical palette so that it can present itself in the best form. The WM_PALETTECHANGED message is sent to a window whenever that system palette is changed. If we do not handle these messages and another application changes the system palette then the colors in our background image will look terrible. Unfortunately both these messages are sent to top level windows. We will deal with that in the next step.
+
+<p>The OnQueryNewPalette() function first checks whether it needs to reselect the palette. Once it realizes the logical palette it invalidates the window if any of the color were remapped. The OnPaletteChanged() function returns without any further processing if the tree view control itself was responsible for the message because it changed the palette. It then calls OnQueryNewPalette() to rerealize the palette. 
+
+<PRE><TT><FONT COLOR="#990000">BOOL CTreeCtrlX::OnQueryNewPalette() 
+{
+	CClientDC dc(this);
+	if( dc.GetDeviceCaps(RASTERCAPS) & RC_PALETTE && m_pal.m_hObject != NULL )
+	{
+		dc.SelectPalette( &m_pal, FALSE );
+		BOOL result = dc.RealizePalette();
+		if( result )
+			Invalidate();
+		return result;
+	}
+	
+	return CTreeCtrl::OnQueryNewPalette();
+}
+
+void CTreeCtrlX::OnPaletteChanged(CWnd* pFocusWnd) 
+{
+	CTreeCtrl::OnPaletteChanged(pFocusWnd);
+	
+	if( pFocusWnd == this )
+		return;
+
+	OnQueryNewPalette();
+}
+</FONT></TT></PRE>
+
+<h4>Step 9: Forward palette messages from top level window</h4>
+As I've already mentioned in the previous step, the WM_QUERYNEWPALETTE & WM_PALETTECHANGED messages are sent only to top level windows. Since the list view control had changed the palette we have to forward these messages to the list view control. I had used a dialog based application to test this so here's what the handlers look like.
+
+<PRE><TT><FONT COLOR="#990000">void CTreeViewDlg::OnPaletteChanged(CWnd* pFocusWnd) 
+{
+	CDialog::OnPaletteChanged(pFocusWnd);
+	
+	m_tree.SendMessage( WM_PALETTECHANGED, (WPARAM)pFocusWnd->m_hWnd );	
+}
+
+BOOL CTreeViewDlg::OnQueryNewPalette() 
+{
+	CDialog::OnQueryNewPalette();
+
+	return m_tree.SendMessage( WM_QUERYNEWPALETTE );
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

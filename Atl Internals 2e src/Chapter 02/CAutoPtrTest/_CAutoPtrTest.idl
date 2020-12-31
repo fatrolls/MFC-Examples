@@ -1,0 +1,41 @@
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\prsht.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtml.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dimm.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\dispex.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\mshtmhst.idl";
+import "c:\program files\microsoft sdks\windows\v7.0a\include\docobj.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\exdisp.idl";
+import "C:\Program Files\Microsoft SDKs\Windows\v7.0A\include\objsafe.idl";
+
+[
+	object,
+	uuid(64A6A06E-782A-4700-B4A3-7853546C3B12),
+	oleautomation,
+	helpstring("ICalc Interface"),
+	pointer_default(unique)
+] 
+#line 14 "d:\\vc++\\atl internals 2e src\\chapter 02\\cautoptrtest\\calc.h"
+interface ICalc : IUnknown {
+#line 16 "d:\\vc++\\atl internals 2e src\\chapter 02\\cautoptrtest\\calc.h"
+	[id(1),helpstring("method Add")] HRESULT  Add([in] DOUBLE Op1, [in] DOUBLE Op2, [out,retval] DOUBLE *Result);
+};
+
+
+[ version(1.0), uuid(86CC14CA-8320-4DBE-AE2E-9DC4C86E35CC), helpstring("CAutoPtrTest 1.0 Type Library") ]
+library CAutoPtrTest
+{
+	importlib("stdole2.tlb");
+	importlib("olepro32.dll");
+
+	[
+		version(1.0),
+		uuid(88E83AB4-3E22-4190-9A7D-0416A3AB12FC),
+		helpstring("Calc Class")
+	] 
+#line 32 "d:\\vc++\\atl internals 2e src\\chapter 02\\cautoptrtest\\calc.h"
+	coclass CCalc {
+		interface ICalc;
+	};
+
+}
+

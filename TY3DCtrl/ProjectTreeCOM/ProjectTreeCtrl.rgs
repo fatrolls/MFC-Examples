@@ -1,0 +1,32 @@
+HKCR
+{
+	TY3DCtrl.ProjectTreeCtrl.1 = s 'ProjectTreeCtrl Class'
+	{
+		CLSID = s '{C9C78852-A65F-476B-B00B-1051C69DF66E}'
+	}
+	TY3DCtrl.ProjectTreeCtrl = s 'ProjectTreeCtrl Class'
+	{		
+		CurVer = s 'TY3DCtrl.ProjectTreeCtrl.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C9C78852-A65F-476B-B00B-1051C69DF66E} = s 'ProjectTreeCtrl Class'
+		{
+			ProgID = s 'TY3DCtrl.ProjectTreeCtrl.1'
+			VersionIndependentProgID = s 'TY3DCtrl.ProjectTreeCtrl'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove Control
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 107'
+			MiscStatus = s '0'
+			{
+			    '1' = s '%OLEMISC%'
+			}
+			TypeLib = s '{D4740250-87F6-4DFB-80FB-7411DDB8D555}'
+			Version = s '1.0'
+		}
+	}
+}

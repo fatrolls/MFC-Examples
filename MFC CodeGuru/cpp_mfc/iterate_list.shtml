@@ -1,0 +1,158 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>C++ & MFC - Iterating through List Containers</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Iterating through List Containers</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+<P>This article was contributed by <A HREF="mailto:codor@eunet.yu">Zoran M.Todorovic</A>.
+
+<P>When using containers in a program, I declare a class which represents
+an item in a container:
+
+<P><TT><FONT COLOR="#CC0000">// Can also be a struct</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">class CMyClass : public CObject {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; // Program specific</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; ...</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">typedef CTypedPtrList&lt;CPtrList,CMyClass*>
+TMyList;</FONT></TT>
+
+<P>Separate class (container) has the actual container object:
+
+<P><TT><FONT COLOR="#CC0000">class CMyClassList : public CObject {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; private:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TMyList List;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Maybe some other data members too</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; public:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Usual stuff (construction, destruction etc.)</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+void Flush(void);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BOOL Add(CMyClass *ptr);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CMyClass *Find(...);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BOOL Del(...);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P>If the container is associated with a user interface object (tree control,
+list control etc.), one must iterate through the container and perform
+an action for each item (or for those that satisfy some criteria). Easy
+way to do it is to move a List variable to a public part of the class declaration
+and then access it directly. This is bad since it violates a data encapsulation
+principle (in all but trivial examples, class declaration has a lot more
+member variables and methods and performs some useful job too).
+
+<P>One approach is to use a public member function and a supplied callback
+function which is executed for each item. This is messy since supplied
+callback function is usually a member function of another class so for
+each different callback function, class CMyClassList must have an overloaded
+member function. If a callback function is a static non-member function,
+one must use a DWORD function argument to pass a "this" pointer to a static
+callback function, then from within a callback function cast a DWORD to
+pointer to a class object and then invoke a method which actually performs
+some action with a container item.
+
+<P>Much easier and more elegant approach is to use special iterator class.
+New class declaration is slightly modified:
+
+<P><TT><FONT COLOR="#CC0000">class CMyClassListIterator;</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">class CMyClassList : public CObject {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; private:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TMyClassList List;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Maybe something else</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; public:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Usual stuff (construction, destruction etc.)</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+void Flush(void);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BOOL Add(CMyClass *ptr);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CMyClass *Find(...);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BOOL Del(...);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; friend CMyClassListIterator;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// New stuff</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P>New iterator class is declared as follows:
+
+<P><TT><FONT COLOR="#CC0000">class CMyClassListIterator : public CObject
+{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp; private:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; CMyClassList&amp; Owner;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; POSITION Pos;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp; public:</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; CMyClassListIterator(TProcess&amp;
+obj)</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+:CObject(),Owner(obj) { Reset(); }</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; void Reset(void)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ Pos = Owner.List.GetHeadPosition(); }</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; void Next(void)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ Owner.List.GetNext(Pos); }</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; CMyClass *Current(void)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ return (CMyClass*)Owner.List.GetAt(Pos); }</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; BOOL IsDone(void)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ return (Pos == NULL) ? TRUE : FALSE; }</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P>Now, all you need to do to iterate thru the list is to implement the
+following peace of code:
+
+<P><TT><FONT COLOR="#CC0000">CMyClassList MyList;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">........</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">CMyClassListIterator iterator(MyList);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">while (!iterator.IsDone()) {</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; CMyClass *ptr = iterator.Current();</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; // Use ptr but do not
+delete it.</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; // You can modify its
+contents however.</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; iterator.Next();</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">};</FONT></TT>
+
+<P>You can also easily implement a nested iteration. Good side effect of
+this implementation is that your code for list iteration is focused on
+the job that must be done since all the code is implemented in one function
+(no callbacks). Also, data encapsulation is preserved since List object
+is not directly visible.
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

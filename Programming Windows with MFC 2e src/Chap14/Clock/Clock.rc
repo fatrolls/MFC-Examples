@@ -1,0 +1,4 @@
+#include <afxres.h>
+#include "Resource.h"
+
+IDI_APPICON ICON Clock.ico

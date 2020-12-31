@@ -1,0 +1,263 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BIRD                BITMAP                  "res\\bird.bmp"
+IDB_BUS                 BITMAP                  "res\\bus.bmp"
+IDB_MP_CHANNEL          BITMAP                  "res\\mp_channel.bmp"
+IDB_MP_CHANNEL_ACTIVE   BITMAP                  "res\\mp_channel_active.bmp"
+IDB_MP_THUMB            BITMAP                  "res\\mp_thumb.bmp"
+IDB_MP_THUMB_ACTIVE     BITMAP                  "res\\mp_thumb_active.bmp"
+IDB_ROAD                BITMAP                  "res\\road.bmp"
+IDB_SKY                 BITMAP                  "res\\sky.bmp"
+IDB_VOL_OFF             BITMAP                  "res\\vol_off.bmp"
+IDB_VOL_ON              BITMAP                  "res\\vol_on.bmp"
+IDB_BALLOON             BITMAP                  "res\\balloon.bmp"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_MP_THUMB_DISABLE    BITMAP                  "res\\mp_thumb_disable.bmp"
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\CBitmapSlider Demo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\CBitmapSlider Demo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG  0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About CBitmapSlider Demo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "CBitmapSlider v1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2003 Joon-ho Ryu",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_CBITMAPSLIDERDEMO_DIALOG DIALOGEX 0, 0, 518, 249
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "CBitmapSlider Demo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Apply",IDC_APPLY,74,50,35,14
+    EDITTEXT        IDC_MIN,12,33,28,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_POS,77,33,28,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAX,143,33,28,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_SLIDER_MP,"Static",SS_BLACKFRAME | SS_NOTIFY | WS_TABSTOP,17,17,315,15
+    CONTROL         139,IDC_SLIDER_VOL,"Static",SS_BITMAP | SS_NOTIFY | WS_TABSTOP,15,95,73,25
+    CONTROL         139,IDC_SLIDER_VOL2,"Static",SS_BITMAP | SS_NOTIFY | WS_TABSTOP,96,95,73,25
+    LTEXT           "Bird",IDC_SLIDER_BIRD,385,114,22,103,SS_NOTIFY | WS_TABSTOP
+    CONTROL         137,IDC_SLIDER_ROAD,"Static",SS_BITMAP | SS_NOTIFY | WS_TABSTOP,7,132,504,29
+    CONTROL         138,IDC_SLIDER_BALLOON,"Static",SS_BITMAP | SS_NOTIFY | WS_TABSTOP,434,45,50,184
+    GROUPBOX        "Media Player",IDC_STATIC,7,7,492,62
+    GROUPBOX        "Without Thumb",IDC_STATIC,7,73,170,53
+    LTEXT           "Normal",IDC_STATIC,42,84,23,8
+    LTEXT           "Transparent",IDC_STATIC,113,84,39,8
+    GROUPBOX        "Vertical",IDC_STATIC,378,99,34,120
+    LTEXT           "min",IDC_STATIC,20,52,12,8
+    LTEXT           "max",IDC_STATIC,150,52,14,8
+    PUSHBUTTON      "Disable",IDC_BUTTON_DISABLE,105,64,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,5,0,0
+ PRODUCTVERSION 1,5,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "CBitmapSlider Demo MFC Application"
+            VALUE "FileVersion", "1, 5, 0, 0"
+            VALUE "InternalName", "CBitmapSlider Demo"
+            VALUE "LegalCopyright", "Copyright (C) 2003 Joon-ho Ryu"
+            VALUE "OriginalFilename", "CBitmapSlider Demo.EXE"
+            VALUE "ProductName", "CBitmapSlider Demo Application"
+            VALUE "ProductVersion", "1, 5, 0, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_CBITMAPSLIDERDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 511
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 242
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About CBitmapSlider Demo..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\CBitmapSlider Demo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

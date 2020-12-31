@@ -1,0 +1,254 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Nikolay Sokratov">
+   <TITLE>Section - Title</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+A Simple Dialog Layout Manager
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:info@et-soft.de">Erwin Tratar</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+<A HREF="dlg_layout_mgr.zip">Download Source Code and Example</A>
+</p>
+<br>
+
+<!-- The article... -->
+
+If you often use Dialogs and want to resize them you will have noticed, that there is no
+feature in the MFC that helps you. You have to do it by hand. Maybe you have seen
+the GridBagLayout in Java(tm), then this one will look familiar to you.
+
+The idea behind is to split the dialog in Panes. Each pane has some attributes an can also 
+contain Panes itself. Resizing your Dialog can now be as easy as requesting the root pane
+to fit in the current client area! Actually this is done automatically in the OnSize handler,
+so you just have to define the layout.
+
+<H4>Instructions:</H4>
+<OL>
+
+<LI> Add <I>DialogMgr.cpp</I> to your current project (e.g. Menu Project->Add to project->Add files)
+
+<LI> Create a new dialog or skip to the next point if you already have one. I assume this
+	class to be named <I>CMyDialog</I>. (Note: Do not forget to make the Dialog resizable,
+	i.e. in the Dialog Editor change the border style to <I>resizing</I>)
+
+<LI> Change the Base of your Dialog from CDialog to CDialogMgr (simple search for all
+	references to CDialog and replace them), do not forget to
+	include the header. 
+
+<LI> In your class Declaration add a DECLARE_LAYOUT like this:
+
+<pre><tt><font COLOR="#990000">
+class CMyDialog : public CDialogMgr
+{
+public:
+	CMyDialog(CWnd* pParent = NULL);   // standard constructor
+	DECLARE_LAYOUT();
+
+	[...]
+</font></tt></pre>
+
+<LI> In your class Implementation add an IMPLEMENT_LAYOUT statement like this:
+
+<pre><tt><font COLOR="#990000">
+/////////////////////////////////////////////////////////////////////////////
+// CMyDialog dialog
+
+IMPLEMENT_LAYOUT(CMyDialog);
+
+CMyDialog::CMyDialog(CWnd* pParent /*=NULL*/)
+	: CDialogMgr(CMyDialog::IDD, pParent)
+{
+	[...]
+</font></tt></pre>
+
+<LI> Now comes the really important step: You have to define what your Layout
+	looks like. Assume this to be your Dialog template (I added the ControlIDs
+	as red text because I will refer to them later):<BR>
+
+	<br><IMG SRC="dlg_layout_mgr.gif"><BR>
+	<br>
+
+	If we want to have this Dialog layouted automatically, we have to define
+	the panes. In this example I decided to define the panes like this:<BR>
+
+	<br><IMG SRC="dlg_layout_mgr1.gif"><br>
+	<BR>
+
+	The root pane is marked red and contains 5 Items. The 5th Item is
+	a Pane itself (marked green), which contains 3 Items.
+
+	To define this layout you would have an OnInitDialog like this:
+
+<pre><tt><font COLOR="#990000">
+BOOL CMyDialog::OnInitDialog() 
+{
+	CDialogMgr::OnInitDialog();
+
+	// define the Layout
+	CPane*	pane2 = new CPane(CPane::HORIZONTAL);
+</font></tt></pre>
+
+	First of all a the Subpane (green) is created. It is a horizontal pane. Next 
+	you would add the Items:
+
+<pre><tt><font COLOR="#990000">
+	pane2->addItem( new CPaneItem( NULL, CPaneBase::GREEDY));			// greedy
+	pane2->addItem( new CPaneItem( IDOK, this, CPaneBase::NORESIZE));
+	pane2->addItem( new CPaneItem( IDCANCEL, this, CPaneBase::NORESIZE));
+</font></tt></pre>
+
+	The first Item actually does not specify a Control but just a placeholder. The
+	Term <I>greedy</I> in this context means that it will eat up all space that is
+	left. 
+
+	The second Item is the OK Button, the CPaneBase::ABSOLUTE_HORZ means, that it's
+	size is fixed. The actuall size could be appended as additional parameters, but
+	if you leave them it will take the size from the current size of the control.
+
+	An Item can have several mode flags. A flag of 0 like in the first line
+	denotes a greedy Item, you could also add Items with an absulute size (like in 
+	line 2 and 3) or some items with a relative size in percent.
+
+	The Layout Engine first allocates space to ABSOLUTE_* items. What is left will
+	be allocated to RELATVIVE items and the remaining space is divided into equal
+	pieces for greedy items.
+
+<pre><tt><font COLOR="#990000">
+	m_pRootPane = new CPane(CPane::VERTICAL);
+</font></tt></pre>
+
+	Now the root pane is created (as denoted by <I>m_pRootPane</I>). 
+
+<pre><tt><font COLOR="#990000">
+	m_pRootPane->addItem( new CPaneItem( IDC_STATIC_1, this, CPaneBase::ABSOLUTE_VERT));
+	m_pRootPane->addItem( new CPaneItem( IDC_EDIT1, this, CPaneBase::ABSOLUTE_VERT));
+	m_pRootPane->addItem( new CPaneItem( IDC_STATIC_2, this, CPaneBase::ABSOLUTE_VERT));
+	m_pRootPane->addItem( new CPaneItem( IDC_LIST1, this));
+	m_pRootPane->addItem( pane2, CPaneBase::ABSOLUTE_VERT );
+</font></tt></pre>
+
+	The first 3 rows shall be more or less fixed, their current (vertical) size is been
+	preserved. We want the 4th item (the ListCtrl) to be the only one that grows
+	and shrinks.
+
+<pre><tt><font COLOR="#990000">
+	m_pRootPane->addItem( pane2, CPaneBase::ABSOLUTE_VERT );
+</font></tt></pre>
+
+	Last but not least the previously created SubPane is added to the root Pane. We 
+	use a special feature here: CPaneBase::ABSOLUTE_VERT denotes that the vertical
+	size is fixed. As we did not provide one, the maximum height of all Items of
+	pane2 is computed and used as the fixed height.
+
+<pre><tt><font COLOR="#990000">
+	UpdateLayout();
+</font></tt></pre>
+
+	Do not forget to call this one or the Layout will only get effective when
+	you resize the Border.
+
+<pre><tt><font COLOR="#990000">
+	return TRUE;  // return TRUE unless you set the focus to a control
+		          // EXCEPTION: OCX Property Pages should return FALSE
+}
+</font></tt></pre>
+
+<LI> Optionally: Add a call to Load() and Save() to (Re-)Store the Dimensions in/from
+	the registry.
+
+<LI> That's it! Now the Dialog is autmatically resized. Note that it also computes a minumum 
+	tracking size! Please take a look at the headerfile (DialogMgr.h) as all the 
+	features and functions are described there.
+</OL>
+
+<H4>Version 1.2</h4>
+
+Reworked the support for TabCtrls and added some more constants.
+
+Added the ability for somewhat more complicated layouts. Consider this example:<BR>
+
+<br><IMG SRC="dlg_layout_mgr2.gif"><BR>
+<br>
+
+What is different here? First of all we would like to have the ListCtrl placed inside
+the tab, which is pane. So I derived a new class from CPane named CPaneTag, which
+also resizes a TabCtrl along with its own size and places all childs within the
+tab (see CTabCtrl::AdjustRect() ). It also manages the minimum tracking size so that
+the Tabs are always visible!
+
+The code to describe the layout above looks like:
+
+<pre><tt><font COLOR="#990000">
+	// define the layout
+	////////////////////
+
+	// the bottom pane
+	CPane*	paneBottom = new CPane(CPane::HORIZONTAL);
+	paneBottom->addItem( new CPaneItem( NULL, CPaneBase::GREEDY));			// Greedy
+	paneBottom->addItem( new CPaneItem( IDOK, this, CPaneBase::NORESIZE));
+	paneBottom->addItem( new CPaneItem( IDCANCEL, this, CPaneBase::NORESIZE));
+
+
+	// (green) holding a spacer and the ListCtrl
+	CPane*	paneList = new CPane(CPane::VERTICAL);
+	paneList->addItem( new CPaneItem( &m_list, CPaneBase::GREEDY));
+
+	// (blue) the pane with the tab attached with an ExtraBorder
+	CPane* paneTab  = new CPaneTab(&m_tab, CPane::HORIZONTAL);
+	paneTab->addItem( paneList );
+
+	// (red) the root pane 
+	m_pRootPane = new CPane(CPane::VERTICAL);
+	m_pRootPane->addItem( paneTab );
+	m_pRootPane->addItem( paneBottom, CPaneBase::ABSOLUTE_VERT );
+
+	UpdateLayout();
+
+</font></tt></pre>
+
+<!-- Remember to update this -->
+<p>Last updated: 15 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 - 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>

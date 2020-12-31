@@ -1,0 +1,99 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>PropertySheet - Modifying property sheet templates on Win95</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Modifying Property Sheet Templates on Win95
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:Petr.Novotny@antek.cz">Petr Novotny</A>.
+
+<!-- Sample image and source code/demo project -->
+<P>
+Download the <A HREF="safeproppage.zip">source</A></p>
+
+<!-- The article... -->
+
+<p>
+This code is written to fix the bug in CPropertySheet::DoModal() or 
+CPropertySheet::Create() as described in MSKB article ID: Q158552.
+
+<p>
+<h4>The description of the bug:</h4>
+
+<p> (This bug is present for comctl32.dll version <4.70 and Windows95.)
+When a property sheet displays its property pages, it has to modify
+their templates. It tries to write into the memory; that works under
+Win32s (because the resources are writable) and it works under WinNT
+(because BeginResourceUpdate exists) but it fails under Win95 and
+raises an Access Violation. If you are not working with exceptions
+(try/catch(...), __try/__except, _set_se_translator) everything's OK -
+the OS gets the exception, unlocks the resources (or copies them to
+writable memory). However, if you're trying to be a good programmer
+and you add some code to your app to catch OS exceptions you are in a
+deep trouble.
+
+<p> The suggested fix #1 in the KB article (make the .rsrc section
+writable) is OK but error-prone. It is not a very aestheticly pleasing
+solution either.
+
+<p> The suggested fix #2 in the KB article is nonsense - or I didn't
+understand correctly what it says.
+
+<p> The suggested fix #3 is unusable if you want to have
+__try/__except.  Also, you can't catch access violations when the
+property sheet is active.
+
+
+<p> In this article, I offer another solution: I created a
+CSafePropertyPage class based on CPropertyPage. The one and only
+difference is that this modified property page uses a (potentially
+writable) copy of a dialog template instead of just using resource
+ID. It uses undocumented MFC class CDialogTemplate (defined in
+afxpriv.h) but you may look up the source code of CDialogTemplate and
+supply your own CDialogTemplate::Load if you desperately want to keep
+the documented/undocumented paradigm of MFC.
+
+
+<p> Attached are the source files - just include the header where you
+need it and use CSafePropertyPage anywhere you'd use CPropertyPage.
+
+
+<!-- Remember to update this -->
+<p>Last updated: 30 June 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

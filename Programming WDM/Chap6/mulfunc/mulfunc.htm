@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The MULFUNC Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The MULFUNC Sample</H2>
+<P>The MULFUNC Sample accompanies Chapter 6 and illustrates how to create a driver for a non-standard multifunction device.</P>
+<B><I><P>You would not use the MULFUNC method for a USB, PCI, or PCMCIA multifunction device unless the device doesn't conform to the bus specification. Refer to the DDK documentation on multifunction devices for more information.</P>
+</B></I><P>The sample includes three components:</P>
+
+<UL>
+<LI>MULFUNC.SYS (SYS subdirectory) is a WDM driver for a non-existent multifunction device. </LI>
+<LI>CHILDA.SYS (ChildA subdirectory) is a WDM driver for one of the functions of the MULFUNC device. </LI>
+<LI>CHILDB.SYS (ChildB subdirectory) is a WDM driver for the other function of the MULFUNC device.</LI></UL>
+
+<H3>Building MULFUNC</H3>
+<P>To build MULFUNC.SYS, CHILDA.SYS, and CHILDB.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project files are named MULFUNC.DSP, CHILDA.DSP, and CHILDB.DSP in the SYS, CHILDA, and CHILDB subdirectories, respectively.</P>
+<H3>Testing MULFUNC</H3>
+<P>Install the MULFUNC "device". Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF.</P>
+<P>Following the installation of MULFUNC, the system will automatically install the CHILDA and CHILDB drivers. You will see this happening because I didn't take any steps to suppress the user interface.</P></BODY>
+</HTML>

@@ -1,0 +1,491 @@
+<HTML>
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>String - Extended Strings</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Extended Strings
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<p>This article was contributed by <a
+href="mailto:Joachim.Raidl@iname.com">Joachim Raidl</a>. </p>
+
+<p>The <strong>XString</strong>-class is a powerfull extension to
+the standard CString-class. Whereever you use a CString you can
+now use a XString with much more functionality. The class
+includes many string-functions I missed in CString, like
+removing, replacing or inserting strings into another,
+convertingfunctions to double or int and case-insensitive find,
+replace and remove. But the most powerfull extension is a method
+I called 'Elementstrings'. Most of the functions are const and
+return a XString, so you can use them in an expression. The
+functionality of this class is not very difficult to understand
+or to implement, but in my case, it saves a lot of time in my
+projects.</p>
+
+<p>If you miss some functions which could be usefull to extend
+this class please contact me.</p>
+
+<p><a href="#stringfkt">Additional String functions</a><br>
+<a href="#elementstring">What are Elementstrings?</a><br>
+<a href="#elemstringfkt">Elementstring functions</a><br>
+<a href="#friends">Friend functions</a></p>
+
+<table border="0" width="100%">
+    <tr>
+        <td align="center" width="30%"><a href="xstring_source.zip">Download
+        source file (8 KB)</a></td>
+        <td align="right" colspan="2" width="30%">(comments in
+        german)</td>
+    </tr>
+</table>
+
+<h4><a name="stringfkt"></a>Additional Stringfunctions:</h4>
+
+<table border="1" cellspacing="1">
+    <tr>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Function</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Description</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Example</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Result</strong></font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        num(&quot;12.345&quot;);</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>Double</strong></td>
+        <td>Convertion to double</td>
+        <td><font color="#990000">num.Double()</font></td>
+        <td><font color="#000000">12.345</font></td>
+    </tr>
+    <tr>
+        <td><strong>Int</strong></td>
+        <td>Convertion to int</td>
+        <td><font color="#990000">num.Int()</font></td>
+        <td><font color="#000000">12</font></td>
+    </tr>
+    <tr>
+        <td><strong>Char</strong></td>
+        <td>Convertion to char</td>
+        <td><font color="#990000">num.Char()</font></td>
+        <td><font color="#000000">1</font></td>
+    </tr>
+    <tr>
+        <td><strong>Bool</strong></td>
+        <td>Convertion to bool</td>
+        <td><font color="#990000">num.Bool()</font></td>
+        <td><font color="#000000">true</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        test(&quot;Test Test&quot;);</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>Remove</strong></td>
+        <td>Remove first occurence of a string, char or range</td>
+        <td><font color="#990000">test.Remove('e')</font></td>
+        <td><font color="#000000">&quot;Tst Test&quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>RemoveAll</strong></td>
+        <td>Remove all occurences of a string or char</td>
+        <td><font color="#990000">test.RemoveAll(&quot;e&quot;)</font></td>
+        <td><font color="#000000">&quot;Tst Tst&quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>Replace</strong></td>
+        <td>Replace first occurence of a string, char or range
+        with another string</td>
+        <td><font color="#990000">test.Replace(&quot;x&quot;,
+        &quot;e&quot;)</font></td>
+        <td><font color="#000000">&quot;Txst Test&quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>ReplaceAll</strong></td>
+        <td>Replace all occurences of a string or char with
+        another string</td>
+        <td><font color="#990000">test.ReplaceAll(&quot;x&quot;,
+        &quot;e&quot;)</font></td>
+        <td><font color="#000000">&quot;Txst Txst&quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>Insert</strong></td>
+        <td>Inserts a string at a given position</td>
+        <td><font color="#990000">test.Insert(&quot;e&quot;, 1)</font></td>
+        <td><font color="#000000">&quot;Teest Test&quot;</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        op(&quot;Test&quot;);<br>
+        XString leer;</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>operator--</strong></td>
+        <td>Remove last character of the string</td>
+        <td><font color="#990000">op--, --op</font></td>
+        <td><font color="#000000">&quot;Tes&quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>operator!</strong></td>
+        <td>Indicates, wheter the string was empty</td>
+        <td><font color="#990000">!op<br>
+        !lee</font></td>
+        <td><font color="#000000">false<br>
+        true</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        test(&quot;Test&quot;);</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>NCFind<br>
+        NCRemove<br>
+        NCReplace</strong></td>
+        <td>Like Find, Remove or Replace, but case-insensitiv (<strong>N</strong>o
+        <strong>C</strong>ase)</td>
+        <td><font color="#990000">test.Find(&quot;E&quot;)<br>
+        test.NCFind(&quot;E&quot;)</font></td>
+        <td><font color="#000000">-1<br>
+        1</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        test(&quot; Test &quot;);</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>Reverse</strong></td>
+        <td>Reverses the string</td>
+        <td><font color="#990000">test.Reverse()</font></td>
+        <td><font color="#000000">&quot; tseT &quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>Trim</strong></td>
+        <td>Delete leading and trailing whitespaces</td>
+        <td><font color="#990000">test..Trim()</font></td>
+        <td><font color="#000000">&quot;Test&quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>Lower</strong></td>
+        <td>Returns lowercase string</td>
+        <td><font color="#990000">test.Lower()</font></td>
+        <td><font color="#000000">&quot; test &quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>Upper</strong></td>
+        <td>Returns uppercase string</td>
+        <td><font color="#990000">test.Upper()</font></td>
+        <td><font color="#000000">&quot; TEST &quot;</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        test(&quot;Test Test&quot;);</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>FromTo</strong></td>
+        <td>Like Mid, but using positions</td>
+        <td><font color="#990000">test.FromTo(5, 7)</font></td>
+        <td><font color="#000000">&quot;Tes&quot;</font></td>
+    </tr>
+    <tr>
+        <td><strong>Count</strong></td>
+        <td>Counts the occurence of a string or char in another
+        string</td>
+        <td><font color="#990000">test.Count('e')</font></td>
+        <td><font color="#000000">2</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        test(&quot;Test&quot;)</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>FindIndex</strong></td>
+        <td>Search the position of the first occurence of a char</td>
+        <td><font color="#990000">test.FindIndex('s')</font></td>
+        <td><font color="#000000">2</font></td>
+    </tr>
+    <tr>
+        <td><strong>Fill</strong></td>
+        <td>Fill the string to the specified length with trailing
+        spaces</td>
+        <td><font color="#990000">test.Fill(5)</font></td>
+        <td><font color="#000000">&quot;Test &quot;</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        error(&quot;Error * in Line *&quot;);</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>ReplaceTabs</strong></td>
+        <td>Replace all \t in the string with the corresponding
+        number of spaces</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><strong>ReplaceText</strong></td>
+        <td>Replace '*' with specified text.<br>
+        When using more than one '*' devide the replace-texts
+        with '|'</td>
+        <td><font color="#990000">error.ReplaceText(&quot;75|120&quot;)</font></td>
+        <td><font color="#000000">&quot;Error 75 in Line
+        120&quot;</font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        format(&quot;###.##&quot;);</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>GetDoubleFormatString</strong></td>
+        <td>Translate a formatting-string into C-notation</td>
+        <td><font color="#990000">format.GetDoubleFormatString()</font></td>
+        <td><font color="#000000">&quot;%6.2lf&quot;</font></td>
+    </tr>
+</table>
+
+<h4><a name="elementstring"></a>What are Elementstrings?</h4>
+
+<p>Elementstrings are a special sort of short (and dynamic)
+stringarrays. Every array-entry was divided with a separator from
+the next entry. For example, the elementstring
+&quot;zero|one|two|three&quot; has four elemententrys. With this
+class you can easyly get, set or find a specified element. You
+don't have to specify the size of the 'array', because it's only
+one string. The entries can be strings, chars, doubles, ints or
+bools. If you set an entry, the numbers are converted into
+strings and if you get one, it was back converted to the
+specified type. Normaly the separator is '|', but it's possible
+to use every other character.</p>
+
+<h4><a name="elemstringfkt"></a>Elementstringfunctions:</h4>
+
+<table border="1" cellspacing="1">
+    <tr>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Function</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Description</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Example</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Result</strong></font></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000"><em>XString
+        str(&quot;zero|one|22|3.3|four|5||7&quot;)</em></font></td>
+    </tr>
+    <tr>
+        <td><strong>Element</strong></td>
+        <td>Return the given element as string</td>
+        <td><font color="#990000">str.Element(1)</font></td>
+        <td>&quot;one&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>Elements</strong></td>
+        <td>Return the given elements as an elementstring</td>
+        <td><font color="#990000">str.Elements(1, 4)</font></td>
+        <td>&quot;one|22|3.3|four&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>operator()</strong></td>
+        <td>same as Element or Elements</td>
+        <td><font color="#990000">str(3)</font></td>
+        <td>&quot;3.3&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>GetString<br>
+        GetDouble<br>
+        GetInt<br>
+        GetChar<br>
+        GetBool</strong></td>
+        <td>Return the given element as specified type</td>
+        <td><font color="#990000">str.GetString(3)<br>
+        str.GetDouble(3)<br>
+        str.GetInt(3)<br>
+        str.GetChar(3)<br>
+        str.GetBool(3)</font></td>
+        <td>&quot;3.3&quot;<br>
+        3.3<br>
+        3<br>
+        '3'<br>
+        true</td>
+    </tr>
+    <tr>
+        <td><strong>SetElement</strong></td>
+        <td>Set the element at the given index with a<br>
+        string, double, int, char or bool</td>
+        <td><font color="#990000">str.SetElement(3, 99)<br>
+        str.SetElement(9, 'x')</font></td>
+        <td>&quot;zero|one|22|99|four|5||7&quot;<br>
+        &quot;zero|one|22|99|four|5||7||x&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>ElementIndex</strong></td>
+        <td>Retrieve the index of the specified element</td>
+        <td><font color="#990000">str.ElementIndex(&quot;four&quot;)<br>
+        str.ElementIndex(1)</font></td>
+        <td>4<br>
+        -1</td>
+    </tr>
+    <tr>
+        <td><strong>ElementSortString<br>
+        ElementSortDouble<br>
+        ElementSortInt<br>
+        ElementSortChar<br>
+        ElementSort</strong></td>
+        <td>Sort the elementstring by using the specified type</td>
+        <td><font color="#990000">str.ElementSortString()<br>
+        str.ElementSortInt()<br>
+        str.ElementSortDouble()</font></td>
+        <td>&quot;|22|3.3|5|7|four|one|zero&quot;<br>
+        &quot;0|0|0|0|3|5|7|22&quot;<br>
+        &quot;0|0|0|0|3.3|5|7|22&quot;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><strong>SetSeparator</strong></td>
+        <td>Defines a new separator</td>
+        <td><font color="#990000">XString::SetSeparator('#')</font></td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><strong>RestoreSeparator</strong></td>
+        <td>Restores temporary separators</td>
+        <td><font color="#990000">XString::RestoreSeparator()</font></td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td colspan="2"><font color="#990000">XString
+        str(&quot;one#two#three&quot;)</font></td>
+    </tr>
+    <tr>
+        <td colspan="2">You can use all functions with an
+        additional parameter as temporar separator.</td>
+        <td><font color="#990000">str.Element(1)<br>
+        str.Element(1, '#')</font></td>
+        <td>&quot;one#two#three&quot;<br>
+        &quot;two&quot;</td>
+    </tr>
+</table>
+
+<h4><a name="friends"></a>Friendfunctions:</h4>
+
+<table border="1" cellspacing="1">
+    <tr>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Function</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Description</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Example</strong></font></td>
+        <td bgcolor="#C0C0C0"><font color="#000000"><strong>Result</strong></font></td>
+    </tr>
+    <tr>
+        <td><strong>itoa</strong></td>
+        <td>Create a XString from an int</td>
+        <td><font color="#990000">itoa(5)</font></td>
+        <td>&quot;5&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>utoa</strong></td>
+        <td>Create a XString from an unsinged int</td>
+        <td><font color="#990000">utoa(2)</font></td>
+        <td>&quot;2&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>dtoa</strong></td>
+        <td>Create a XString from a doube</td>
+        <td><font color="#990000">dtoa(3.14)<br>
+        dtoa(3.14, 5)</font></td>
+        <td>&quot;3.14&quot;<br>
+        &quot;3.14000&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>Repeat</strong></td>
+        <td>Create a XString with copies of a given string or
+        char</td>
+        <td><font color="#990000">Repeat('x', 10)<br>
+        Repeat(&quot;Test&quot;, 3&quot;)</font></td>
+        <td>&quot;xxxxxxxxxx&quot;<br>
+        &quot;TestTestTest&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>GetStringTableEntry</strong></td>
+        <td>Return the entry of a stringtableresource</td>
+        <td><font color="#990000">GetStringTableEntry(<br>
+        AFX_IDS_IDLEMESSAGE)</font></td>
+        <td>&quot;Ready&quot;</td>
+    </tr>
+    <tr>
+        <td><strong>Concat</strong></td>
+        <td>Create an elementstring of 1 to 16 strings</td>
+        <td><font color="#990000">Concat(&quot;This&quot;,
+        &quot;Is&quot;, &quot;A&quot;, &quot;Test&quot;)</font></td>
+        <td>&quot;This|Is|A|Test&quot;</td>
+    </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p>If you've questions, contact me at <a
+href="mailto:Joachim.Raidl@iname.com">Joachim.Raidl@iname.com</a></p>
+
+<!-- Remember to update this -->
+<p>Last updated: 8 May 1998
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+</BODY>
+</HTML>

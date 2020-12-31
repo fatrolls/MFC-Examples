@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+   <TITLE>DevStudio Macros - Code Template add-in for Visual C++ 5.0</TITLE>
+</HEAD>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%"><tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Code Template add-in for Visual C++ 5.0
+</FONT></H3></CENTER>
+
+<CENTER><H3><HR></H3></CENTER>
+
+This code was contributed by <A HREF="mailto:darrenr@gissing-consulting.co.uk">Darren Richards</a>
+
+<br><br><A HREF="code_template_source.zip">Download project</A><br><br>
+
+<!-- start -->
+<h4>Introduction</h4>
+
+<p>The CodeTmpl add-in provides a simple mechanism for
+inserting commonly used text blocks into your source
+code.</p>
+
+<h4>Install</h4>
+
+<p>Build the CodeTmpl project using the Win32 MinDependency
+build configuration, and copy the CodeTmpl.txt file into
+your DevStudio\SharedIDE directory. Install the CodeTmpl
+add-in by selecting Customize from the Tools Menu and
+browsing for the DLL on the 'Add-ins and Macro files'
+tab. The add-in should appear as 'CTAddIn Class' in the
+list of active add-ins. Once installed a new toolbar
+with a single button should appear for the CodeTmpl add-in.</p>
+
+<h4>Overview</h4>
+
+<p>So what does this thing do for me you're wondering. Well the
+CodeTmpl.txt that you copied into your SharedIDE directory
+contains chunks of source code delimited into named blocks.
+When you click on the CodeTmpl toolbar button you'll see those
+same names appear on a popup menu, and should you select one,
+then the appropriate chunk of source code will be glued into
+your current source code document at the insertion point.</p>
+
+<h4>Configuration</h4>
+
+<p>Clearly my idea of useful bits of code is probably not yours,
+so the CodeTmpl add-in is completely configurable, by simply
+editting the CodeTmpl.txt file.</p>
+
+<p>The format of the CodeTmpl.txt file is extremely simple. Basically
+you paste your favourite blocks of source code into the file and put
+a pair of 'tags' at the beginning and end of each block. The tag
+'#{' goes at the beginning of the block and the tag '#}' goes at the
+end. The '#{' tag should be followed by a name for that block that will
+appear on the popup menu. The tags must appear at the beginning of a new
+line. Any text outside of the tags is ignored, with the exception of
+a string of 2 or more hashes which cause a separator to appear on the pop
+up menu.</p>
+
+<h4>For example :</h4>
+<PRE><TT><FONT COLOR="#990000">
+#{Hello World - Console
+#include <stdio.h>
+
+int main()
+{
+    puts("Hello, World");
+}
+#}
+
+##########################
+
+#{Hello World - GUI
+#include <windows.h>
+
+int PASCAL WinMain(HANDLE hInstance,
+                   HANDLE hPrevInstance,
+                   LPSTR lpszCommandLine,
+                   int cmdShow)
+{
+    MessageBox(NULL, "Hello, World", "Example", MB_OK);
+}
+#}
+</FONT></TT></PRE>
+
+<p>If your CodeTmpl.txt contained the above text then clicking the
+CodeTmpl toolbar button would display a popup menu containing the
+options 'Hello World - Console' and 'Hello World - GUI', with a
+separator between them. Selecting 'Hello World - Console' would
+paste the text shown between the '#{' and '#}' tags into your
+source.
+
+<h4>Tips</h4>
+
+<p>If you click the CodeTmpl toolbar button with the 'Control' key down,
+then the CodeTmpl.txt is re-read by the add-in before the popup
+menu is displayed. This is to allow for on the fly configuration
+changes.
+
+<P>When editting the CodeTmpl.txt file in DevStudio, right hand mouse
+click the window in which it is open, select Properties from the
+context menu and set Language to C/C++ from the property dialog.
+This will give you color coding and make the tab key do what is
+ought to.
+
+
+<h4>Contact me</h4>
+
+I hope you will find this add-in useful either for its intended
+purpose or just as a source code example. Either way feel free
+to e-mail me with any comments, suggestions etc.
+
+<A HREF="mailto:darrenr@gissing-consulting.co.uk">Darren Richards.</A>
+<!-- end -->
+
+<P>Posted on: April 11, 1998.
+<P>
+<HR>
+
+<TABLE BORDER=0 WIDTH="100%"><TR>
+
+<TD WIDTH="33%">
+<FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR></TABLE>
+
+</BODY>
+</HTML>
+</HTML>

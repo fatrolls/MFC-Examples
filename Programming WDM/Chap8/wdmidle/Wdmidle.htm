@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>The WDMIDLE Sample</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<H2>The WDMIDLE Sample</H2>
+<P>The WDMIDLE Sample accompanies Chapter 8 and illustrates how to arrange for the Power Manager to automatically power down a device when the device has been idle for a user-specified period.</P>
+<P>The sample includes three components:</P>
+
+<UL>
+<LI>WDMIDLE.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </LI>
+<LI>POWCPL.CPL (POWCPL subdirectory) is a shell extension DLL that provides a class-specific property page to augment the Power control panel applet. </LI>
+<LI>TEST.EXE (TEST subdirectory) is a console-mode application that you can use to exercise the WDM driver.</LI></UL>
+
+<H3>Building WDMIDLE</H3>
+<P>To build WDMIDLE.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named SYS\WDMIDLE.DSP. To build either POWCPL.CPL or TEST.EXE, follow <A HREF="../../wdmbook.htm#usermodebuild">the general instructions for building user-mode sample programs</A>. The project files are POWCPL\POWCPL.DSP and TEST\TEST.DSP, respectively.</P>
+<H3>Testing WDMIDLE</H3>
+<P>First install WDMIDLE.SYS. Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in Windows 2000 or the <A HREF="../../wdmbook.htm#win98inst">Add New Hardware</A> wizard in Windows 98. The INF file is named SYS\DEVICE.INF.</P>
+<P>In Windows 2000, open the Power Options control panel applet. (It's called Power Management in Windows 98). There will be a page named Other devices. On this page, one instance of WDMIDLE should appear in the Devices list box. You can configure WDMIDLE to shutdown after specific periods of time, or you can request an immediate shutdown. You’ll need to look at a log of debugging messages to know when the idle shutdown actually occurs. (Either run under control of a debugger, or else use the DbgView utility from <A HREF="http://www.sysinternals.com/">http://www.sysinternals.com/</A>.)</P>
+<P>You can exercise the automatic power-on feature of WDMIDLE by opening a command prompt and running TEST.EXE from the TEST\DEBUG subdirectory.</P></BODY>
+</HTML>

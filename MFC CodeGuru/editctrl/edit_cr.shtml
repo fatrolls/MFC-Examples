@@ -1,0 +1,98 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Guy Gascoigne - Piggford">
+<title>Controls - Eating returns in a single line edit</title>
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000" bgproperties="fixed">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<h3 align="center"><font COLOR="#AOAO99">Eating returns in a single line edit</font></h3>
+
+<hr align="center">
+
+<p>This code was contributed by <a HREF="mailto:Petr.Novotny@antek.cz">Petr Novotny</a>
+
+<!-- start -->
+<p>I was quite frustrated in my app - I have a dialog with a few 
+single-line edit controls; after updating the edits, when I pressed 
+Enter the dialog was closed (IDOK was the default button).
+"Want return" option is unfortunately valid only for multiline edits.</p>
+
+<p>Here is my fix:</p>
+<p>I override PreTranslateMessage. If there is WM_KEYDOWN with VK_ENTER 
+going to the edit, I set the focus to the default button and discard 
+the message. If the dialog has no defualt button, I let VK_ENTER 
+through - no problem this time.</p>
+
+<p>I check if the window is an editbox by calling GetClassName and 
+comparing the return value to "Edit". There are much more 
+possibilities - comparing the FromHandle(hwnd) to array of CWnd*, to 
+array of IDs (comparing to GetDlgItem() return values) etc.</p>
+
+<p>For the code to be completely correct, it should check for the edit's 
+windows style and it should not act if it is multi-line, want-return 
+edit. [I haven't done that as I don't use multiline edits.]</p>
+
+<p>1. To your override of CDialog, add the following method:</p>
+<pre><tt><FONT COLOR="#990000">
+	virtual BOOL PreTranslateMessage(MSG *);
+</pre></tt></font>
+
+<p>2. Implement this function, for example:</p>
+
+<pre><tt><FONT COLOR="#990000">
+BOOL CMyDialog::PreTranslateMessage(MSG *pMsg)
+{
+	if (pMsg->message==WM_KEYDOWN &amp;&amp; pMsg->wParam==VK_RETURN)
+	{
+		DWORD def_id=GetDefID();
+		if (def_id!=0)
+		{
+			CWnd *wnd=FromHandle(pMsg-&gt;hwnd);
+			// you may implement other ways of testing, e.g.
+			//  comparing to array of CWnd*, comparing to array of IDs etc.
+			char class_name[16];
+			if (GetClassName(wnd->GetSafeHwnd(),class_name,sizeof(class_name))!=0)
+			{
+				if (strnicmp(class_name,"edit",5)==0)
+				{
+					GetDlgItem(LOWORD(def_id))-&gt;SetFocus();
+					return TRUE;
+					// discard the message!
+				}
+			}
+		}
+	}
+	// be a good citizen - call the base class
+	return CDialog::PreTranslateMessage(pMsg);
+}
+</pre></tt></font>
+
+<!-- end -->
+<p>Posted on: April 11, 98. </p>
+
+<hr>
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font>
+    </td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+</font>
+</body>
+</html>

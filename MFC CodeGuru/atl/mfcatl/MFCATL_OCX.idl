@@ -1,0 +1,90 @@
+// MFCATL_OCX.odl : type library source for ActiveX Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (MFCATL_OCX.tlb) that will become a resource in
+// MFCATL_OCX.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(A9EE6E81-5F04-11D1-934C-E4CFDA000000), version(1.0),
+  helpfile("MFCATL_OCX.hlp"),
+  helpstring("MFCATL_OCX ActiveX Control module"),
+  control ]
+library MFCATL_OCXLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	[
+		object,
+		uuid(C107FF51-5F0F-11d1-934C-E4CFDA000000),
+		dual,
+		helpstring("IMyATLObject Interface"),
+		pointer_default(unique)
+	]
+	interface IMyATLObject : IDispatch
+	{
+	};
+
+	//  Primary dispatch interface for CMFCATL_OCXCtrl
+
+	[ uuid(A9EE6E82-5F04-11D1-934C-E4CFDA000000),
+	  helpstring("Dispatch interface for MFCATL_OCX Control"), hidden ]
+	dispinterface _DMFCATL_OCX
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CMFCATL_OCXCtrl)
+			//}}AFX_ODL_PROP
+
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CMFCATL_OCXCtrl)
+			//}}AFX_ODL_METHOD
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+	};
+
+	//  Event dispatch interface for CMFCATL_OCXCtrl
+
+	[ uuid(A9EE6E83-5F04-11D1-934C-E4CFDA000000),
+	  helpstring("Event interface for MFCATL_OCX Control") ]
+	dispinterface _DMFCATL_OCXEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CMFCATL_OCXCtrl)
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CMFCATL_OCXCtrl
+
+	[ 
+		uuid(A9EE6E84-5F04-11D1-934C-E4CFDA000000),
+		helpstring("MFCATL_OCX Control"), control 
+	]
+	coclass MFCATL_OCX
+	{
+		[default] dispinterface _DMFCATL_OCX;
+		[default, source] dispinterface _DMFCATL_OCXEvents;
+	};
+
+	[
+		uuid(C107FF50-5F0F-11d1-934C-E4CFDA000000),
+		helpstring("MyATLObject Class")
+	]
+	coclass MyATLObject
+	{
+		[default] interface IMyATLObject;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

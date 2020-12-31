@@ -1,0 +1,149 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Toolbar - Custom status messages and tooltips</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Toolbar - Custom status messages and tooltips</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:pal.k.tonder@matek.sintef.no">Pål K. Tønder</A>
+
+<P>By default MFC uses string resources with the same ID as
+the toolbar buttons for status messages and tooltip text.
+
+<P>Sometimes you might want to change some of these messages
+or texts in runtime. This requires a little work. The following
+explanations are written for MDI.
+
+<P>The easiest first; custom statusbar messages:
+
+<P>For this you must override the GetMessageString function
+of the CMDIFrameWnd. The following is an example:
+
+<PRE><TT><FONT COLOR="#990000">
+void CMainFrame::GetMessageString(UINT nID, CString& rMessage) const
+{
+	// load appropriate string
+	if(!m_bCustomMessage) {
+		CFrameWnd::GetMessageString(nID, rMessage);
+		return;
+	}
+	
+	switch(nID) {
+	case ID_LOOK_UP:
+		rMessage = _T("Look out");
+		break;
+	case ID_LOOK_DOWN:
+		rMessage = _T("Look down");
+		break;
+	default:
+		CFrameWnd::GetMessageString(nID, rMessage);
+	}
+}
+</FONT></TT></PRE>
+
+
+<P>Instead of hardcoding the messages, other string resources
+than the default can be loaded and assigned. This above functionality
+works also for menus.
+
+<P>Now for something slightly more difficult; custom tooltip text.
+I had to dig a little for this. To override the default tooltip
+text handling two messages must be intercepted in the CMDIChildFrame,
+namely TTN_NEEDTEXTW and TTN_NEEDTEXTA. One of these (depending on
+unicode/not unicode) is sent when tooltip text is needed for
+a toolbar button.
+
+<PRE><TT><FONT COLOR="#990000">
+BEGIN_MESSAGE_MAP(CMyChildFrame, CMDIChildWnd)
+//{{AFX_MSG_MAP(CNetbasChildFrame)
+ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CMyChildFrame message handlers
+BOOL CMyChildFrame::GetToolText( UINT nID, CString& strTipText )
+{
+	switch(nID) {
+	case ID_LOOK_UP:
+		strTipText = _T("Tip out");
+		return TRUE;
+	case ID_LOOK_DOWN:
+		strTipText = _T("Tip down");
+		return TRUE;
+	}
+	return FALSE;
+}
+
+#define _countof(array) (sizeof(array)/sizeof(array[0]))
+
+BOOL CMyChildFrame::OnToolTipText(UINT nID, NMHDR* pNMHDR,
+								  LRESULT*pResult)
+{
+	ASSERT(pNMHDR->code == TTN_NEEDTEXTA || pNMHDR->code == TTN_NEEDTEXTW);
+	
+	TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
+	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+	
+	CString strTipText;
+	if ( GetToolText( pNMHDR->idFrom, strTipText ) )
+	{
+#ifndef _UNICODE
+		if (pNMHDR->code == TTN_NEEDTEXTA)
+			lstrcpyn(pTTTA->szText, strTipText, _countof(pTTTA->szText));
+		else
+			_mbstowcsz(pTTTW->szText, strTipText, _countof(pTTTW->szText));
+#else
+		if (pNMHDR->code == TTN_NEEDTEXTA)
+			_wcstombsz(pTTTA->szText, strTipText, _countof(pTTTA->szText));
+		else
+			lstrcpyn(pTTTW->szText, strTipText, _countof(pTTTW->szText));
+#endif
+		return TRUE;
+	}
+
+	return CMDIChildWnd::OnToolTipText( nID, pNMHDR, pResult );
+}
+</FONT></TT></PRE>
+
+<P>Here I have implemented a helper function that checks if we want to
+override the given button. In
+that case we assign a tooltip text. Otherwise we let the message pass
+through.
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

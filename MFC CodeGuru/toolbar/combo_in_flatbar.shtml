@@ -1,0 +1,259 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Toolbar - Using ComboBox on a Flat Toolbar</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Using ComboBox on a Flat Toolbar</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:cartek@prodigy.net">Kenneth Carter</A>.
+
+
+<P>This was tricky i spent week and a half on this but I solved it by
+studying the messages that a combobox gives off.
+I want to thank joerg for helping me get the combobox on the toolbar
+this class was written to take advantage of th CToolBarEx as a base
+class that Joerg had contributated.
+
+<P>There is a message CBN_SELENDOK that is immediatly posted before
+CBN_SELCHANGE.
+
+<P>Using these two messages and a static variable you can pass the current
+sel that you selected to class outside of the Combobar class. the nice
+thing is that the api handles the setting the focus correctly.
+
+<P>Here is some code on how it was down.
+
+<P>combobar.cpp
+
+<PRE><TT><FONT COLOR="#990000">
+BEGIN_MESSAGE_MAP(CComboBar, CToolBarEx)
+//{{AFX_MSG_MAP(CComboBar)
+ON_CBN_SELENDOK(IDW_TOOLCOMBO, OnSelEndOk)
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+BOOL CComboBar::Create(CFrameWnd * pParent, UINT nID, UINT nComboID,
+					   const int nWidth,
+					     const int nHeight)
+{
+	// Create the toolbar as CMainFrame::OnCreate() would do
+	if (!CToolBar::Create(pParent) ||
+		  !LoadToolBar(nID))
+	{
+		  TRACE0("Falied to create the toolbar.\n");
+		  return FALSE;      // fail to create
+	}
+	
+	// set the size of combo-control
+	CRect rect(-nWidth, -nHeight, 0, 0);
+	
+	// make the button, that is selected to be the combo-control,
+	// a separator and resize that separator
+	ASSERT(CommandToIndex(nComboID) >= 0); // make sure the id is valid
+	SetButtonInfo(CommandToIndex(nComboID), nComboID, TBBS_SEPARATOR,
+		nWidth);
+	
+	// create the combo-control itself, reposition it in the
+	// client-area and show it
+	if (!m_pWndBox.Create(WS_CHILD | CBS_DROPDOWN |
+		  CBS_AUTOHSCROLL | WS_VSCROLL | CBS_HASSTRINGS, rect, this,
+		  nComboID))
+	{
+		  TRACE("Failed to create the combo-box %p .\n", nComboID);
+		  return FALSE;
+	}
+	
+	GetItemRect(CommandToIndex(nComboID), &rect);
+	m_pWndBox.SetWindowPos(0, rect.left, rect.top, 0, 0,
+		SWP_NOZORDER|SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOCOPYBITS);
+	m_pWndBox.SetFont(&m_GuiFont);
+	m_pWndBox.ShowWindow(SW_SHOW);
+	
+	if (!OnInitialCreate())
+	{
+		  TRACE("Failed to add strings to %p\n", nComboID);
+		  return FALSE;
+	}
+	
+	// yup - now we should be able to see a toolbar with a combo-box
+	return TRUE;
+}
+
+BOOL CComboBar::OnInitialCreate()
+{
+	if(m_pWndBox.m_hWnd != NULL)
+	{
+		  //This is where you add your strings
+		  m_pWndBox.AddString("Page Width");
+		  m_pWndBox.AddString("150 %");
+		  m_pWndBox.AddString("125 %");
+		  m_pWndBox.AddString("100 %");
+		  m_pWndBox.AddString("75  %");
+		  m_pWndBox.AddString("50  %");
+		  m_pWndBox.AddString("25  %");
+		  //Don't forget the initial position.
+		  m_pWndBox.SetCurSel(0);
+		
+		  return TRUE;
+	}
+	return FALSE;
+}
+
+int CComboBar::m_cbIndex = 0;
+
+void CComboBar::OnSelEndOk()
+{
+	m_cbIndex = m_pWndBox.GetCurSel();
+}
+</FONT></TT></PRE>
+
+combobar.h
+
+<PRE><TT><FONT COLOR="#990000">
+class CComboBar : public CToolBarEx
+{
+	// Construction
+public:
+	CComboBar();
+	CComboBox m_pWndBox;
+	//This is the storage variable for the index value of the combobox
+	static int m_cbIndex;
+	
+	// Attributes
+public:
+	
+	// Operations
+public:
+	BOOL OnInitialCreate();
+	// <nID> is the toolbar-resource to load
+	// <nComboID> is the ID of the button, that shall be used as the
+	combo-control
+		BOOL Create(CFrameWnd * pParent, UINT nID, UINT nComboID, const int
+		nWidth,
+		  const int nHeight);
+	
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CComboBar)
+public:
+	virtual void OnFinalRelease();
+	//}}AFX_VIRTUAL
+	
+	// Implementation
+public:
+	virtual ~CComboBar();
+	
+	// Generated message map functions
+protected:
+	//{{AFX_MSG(CComboBar)
+	//}}AFX_MSG
+	
+	DECLARE_MESSAGE_MAP()
+		// Generated OLE dispatch map functions
+		//{{AFX_DISPATCH(CComboBar)
+		  // NOTE - the ClassWizard will add and remove member functions here.
+		  afx_msg void OnSelEndOk();
+	//}}AFX_DISPATCH
+	DECLARE_DISPATCH_MAP()
+		DECLARE_INTERFACE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
+
+#endif //!defined(AFX_COMBOBAR_H__1A26E666_6D60_11D1_81F9_0020781030ED__INCLUDED_)
+</FONT></TT></PRE>
+
+
+
+to use this stuff in another class you need to include
+
+<PRE><TT><FONT COLOR="#990000">
+#include "combobar.h"
+</FONT></TT></PRE>
+
+then using the ON_CBN_SELCHANGE message you retrieve the index like this
+
+<PRE><TT><FONT COLOR="#990000">
+void CDSViewView::OnSelChange()
+{
+	int nCase = m_ComboBox.m_cbIndex;
+	
+	switch(nCase)
+	{
+	case 0:
+		  //code for m_cbIndex = 0
+		  break;
+	case 1:
+		  //code for m_cbInex = 1
+		  break;
+	default:
+		  //default code here
+	}
+	
+}
+</FONT></TT></PRE>
+
+
+
+<P>In CToolBarEx in the header file.I move the following code around.
+
+<PRE><TT><FONT COLOR="#990000">
+private:
+	CFont m_GuiFont;
+</FONT></TT></PRE>
+
+to 
+
+<PRE><TT><FONT COLOR="#990000">
+public:
+	CFont m_GuiFont;
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

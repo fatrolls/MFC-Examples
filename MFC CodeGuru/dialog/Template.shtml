@@ -1,0 +1,61 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Chris Maunder">
+<title>Section - Title</title>
+</head>
+<!-- Set background properties -->
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+<!-- A word from our sponsors... -->
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+<!-- Article Title -->
+
+<h3 align="center"><font COLOR="#AOAO99">Title </font></h3>
+
+<hr align="center">
+<!-- Author and contact details -->
+
+<p>This article was contributed by <a HREF="mailto:author@address">Author</a>. <!-- Sample image and source code/demo project --> </p>
+
+<p><img SRC="article.gif">&nbsp;<a HREF="article.zip">Download Source Code and Example</a>
+</p>
+
+<p><br>
+<!-- The article... --></p>
+
+<p>Article text goes here... <font COLOR="#990000"><tt></p>
+
+<pre>
+Code in this format...
+</tt></pre>
+</font><!-- Remember to update this -->
+
+
+<p>Last updated: 29 April 1998 </p>
+
+<hr>
+<!-- Codeguru contact details -->
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="33%"><p align="center"><font SIZE="-2">© 1997 - 1998 Zafir Anjum</font>&nbsp; </td>
+    <td WIDTH="34%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+<!-- Counter -->
+
+
+</body>
+</html>

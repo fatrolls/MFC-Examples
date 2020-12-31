@@ -1,0 +1,17 @@
+///////////////////////////////////////////////////////////////////
+// WAVES1 resource script
+
+#include "resource.h"
+
+///////////////////////////////////////////////////////////////////
+// An icon
+
+IDR_ICON1  ICON  DISCARDABLE  "res\\waves.ico"
+
+///////////////////////////////////////////////////////////////////
+// Wave data that can be linked into and called by an application
+
+IDR_WAVE1  WAVE  MOVEABLE PURE  "RES\\1.WAV"
+IDR_WAVE2  WAVE  MOVEABLE PURE  "RES\\2.WAV"
+IDR_WAVE3  WAVE  MOVEABLE PURE  "RES\\3.WAV"
+IDR_WAVE4  WAVE  MOVEABLE PURE  "RES\\4.WAV"

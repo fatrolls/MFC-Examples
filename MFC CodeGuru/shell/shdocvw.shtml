@@ -1,0 +1,162 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>SHDOCVW.DLL a fun surprise .. from Microsoft</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">SHDOCVW.DLL The pleasent Surprise Gift from Microsoft</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This code was contributed by <A HREF="mailto:Girish_Bharadwaj@Pictel.com">Girish Bharadwaj</A>.
+
+<P>If you are someone who likes surprises, I am your friend. I got a pleasent
+surprise when I was looking thru the Microsoft Internet control (WebBrowser)
+as most people know it.. I opened the shdocvw.dll which comes along with
+the <U>Internet explorer 4.0 </U>and surprise, surprise, I found that It
+contains&nbsp; Interfaces for the Shell, Shell Link and other stuff which
+the shell normally handles and which are painful to implement in C or C++..
+See the implementation for the CDirDialog for a sample. This is not present
+in IE 3.x ..
+
+<P>Now, In order to use these Interfaces, You need to some work.:-( well,
+But this is mucho simpler than the ones we have seen till now.
+
+<P>What I am showing below is just a tip of an Iceberg, You have got a
+lot of stuff there. Check out the .H and .CPP files generated and the .ODL
+file which I am pasting here. You can do a lot of stuff with this..
+<P>Pay close attention to the description strings along with the funtions
+. They usually provide a neat pointer as to what the function is supposed
+to do..
+
+<P>You can generate the .ODL&nbsp; file by Opening the shdocvw.dll (you
+can find it in windows\system directory) in the OLEVIEW.EXE which comes
+along with VC++ 5.0. I think its also downloadable from <A HREF="http://www.microsoft.com">Microsoft</A>
+site.
+
+<P>After generating the .ODL file, Create a new MFC&nbsp; project in VC++
+to your taste. .. Then, Add class from .tlb and select shdocvw.dll.. Select
+all the interfaces listed in the list box shown and ask it to create the
+wrapper class.
+<P>It will be created as shdocvw.h and shdocvw.cpp. These are also there
+in the ZIP file attached..
+<P>Since, these interfaces are undocumented, I must caution you about
+the fact that this might change.. But, then It might not..
+<P>Anyway, Add the following lines to your .CPP file where you want to
+call the interface functions..
+
+<P><TT><FONT COLOR="#CC0000">#include "initguid.h"</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">//13709620-C279-11CE-A49E-444553540000</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">DEFINE_GUID(CLSID_Shell,0x13709620,0xc279,0x11ce,0xa4,0x9e,0x44,0x45,0x53,0x54,0x00,0x00);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">//9BA05971-F6A8-11CF-A442-00A0C90A8F39</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">DEFINE_GUID(CLSID_ShellFolderViewOC ,0x9BA05971,0xF6A8,0x11CF,0xa4,0x43,0x00,0xa0,0xc9,0x0a,0x8f,0x39);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">//9BA05972-F6A8-11CF-A442-00A0C90A8F39</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">DEFINE_GUID(CLSID_ShellWindows,0x9BA05972,0xF6A8,0x11CF,0xa4,0x43,0x00,0xa0,0xc9,0x0a,0x8f,0x39);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">//11219420-1768-11D1-95BE-00609797EA4F</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">DEFINE_GUID(CLSID_ShellLinkObject,0x11219420,0x1768,0x11D1,0x95,0xbe,0x00,0x60,0x97,0x97,0xea,0x4f);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">//62112AA1-EBE4-11CF-A5FB-0020AFE7292D</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">DEFINE_GUID(CLSID_ShellFolderView,0x62112AA1,0xEBE4,0x11CF,0xA5,0xfb,0x00,0x20,0xaf,0xe7,0x29,0x2d);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">//64AB4BB7-111E-11D1-8F79-00C04FC2FBE1</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">DEFINE_GUID(CLSID_ShellUIHelper,0x64AB4BB7,0x111E,0x11D1,0x8f,0x79,0x00,0xc0,0x4f,0xc2,0xfb,0xe1);</FONT></TT>
+
+<P>Of course, before calling any functions, Make sure that the SHDOCVW.DLL
+is of the correct version..4.71.1712.5.
+<P>You can use the <A HREF="http://www.codeguru.com/dll/dll_version.shtml">technique
+Eran Yariv has pointed out</A>. You might want to do that in the beginning
+of your program so that you dont have to do that again until the execution
+is over.
+
+<P>Now, after this,, Its left to you to do what you want to do..
+<P>Following is a trivial example of invoking "Start-Run" dialog from
+your program.
+<BR>&nbsp;
+
+<P><TT><FONT COLOR="#CC0000">{</FONT></TT>
+<UL><TT><FONT COLOR="#CC0000">IShellDispatch disp; //Create a IShellDispatch
+variable</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">&nbsp;WCHAR szValue[80] ;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;CLSID clsid;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;HRESULT sc;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; sc = ::CoCreateInstance(
+CLSID_Shell, NULL, CLSCTX_SERVER, IID_IDispatch, (void**)&amp;disp ) ;
+//&lt;== Create an instance of the shell</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;if (FAILED (sc))</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CString str;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp; str.Format(_T("Failed to create Instance
+:-( "));</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TRACE( str) ;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp; return;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;}</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">&nbsp;disp.FileRun(); //&lt;== Call FileRun</FONT></TT></UL>
+<TT><FONT COLOR="#CC0000">}</FONT></TT>
+<BR>&nbsp;
+
+<P>Another example for IShellDispatch ,,
+<P>The following example is to BrowseForFolder and get the Folder interface
+pointer.
+
+<P><TT><FONT COLOR="#CC0000">{</FONT></TT>
+<UL><TT><FONT COLOR="#CC0000">IShellDispatch disp;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;IDispatch * iDisp;</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">&nbsp;WCHAR szValue[80] ;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;CLSID clsid;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;HRESULT sc;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp; sc = ::CoCreateInstance(
+CLSID_Shell, NULL, CLSCTX_SERVER, IID_IDispatch, (void**)&amp;disp ) ;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;if (FAILED (sc))</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;{</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+CString str;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp; str.Format(_T("Failed to create Instance
+:-( "));</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TRACE( str) ;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp; return;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;}</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;VARIANT var;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;ZeroMemory (&amp;var, sizeof (VARIANT));</FONT></TT>
+
+<P><TT><FONT COLOR="#CC0000">&nbsp; iDisp = disp.BrowseForFolder(NULL,"Whatever",BIF_RETURNFSANCESTORS|BIF_RETURNONLYFSDIRS,var);&nbsp;</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;Folder ifolder(iDisp);</FONT></TT>
+<BR><TT><FONT COLOR="#CC0000">&nbsp;CString str = ifolder.GetTitle ();</FONT></TT></UL>
+<TT><FONT COLOR="#CC0000">}</FONT></TT>
+
+<P>Of course, There is lot to be researched .. I will be doing it and put
+up an update as I get time.. Hope this will be good for the times to come..
+
+<P><A HREF="shelldocvw.zip">Download File</A> (31KB)
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

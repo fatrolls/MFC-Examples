@@ -1,0 +1,397 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Fade in / Fade out Images using Palette animation</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Fade in / Fade out Images using Palette animation</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+
+Consider that your window has a white background and you need to draw an image on it. You could either simply draw the image or for effect you could let the image fade in from the white background. On the other hand if you already have an image on the window and you want to remove it, you can fade out the image into the background.
+
+<p>The code below shows you how to use palette animation to achieve these fade in and fade out effects. You can start with any color to fade the image in or end with any color when fading an image out. Note that palette animation is supported only on 256 color displays (actually 16 colors too). If you run the same code on a high color display, you won't see any fading effect but the image would draw properly. This code has another limitation that it will work only with bitmaps that have 256 colors or less. The reason is that bitmaps with greater number of colors do not have color tables so you would have to write more code to transform it into a 256 color bitmap.
+<h4>Function 1: Create a palette with reserved palette entries</h4>
+For palette animation to work, the palette selected into the device has to be somewhat different than regular palettes. Any color entry that can change has to be marked with the PC_RESERVED flag. Only these colors can change when we animate the palette. There is another issue that we have to address when we create this special palette. During the palette animation we do not want to affect the system colors used by windows. There are 20 such colors. We, therefore, reduce the number of colors in the palette used by the image by upto 20 colors, thus resulting in a palette with at most 236 colors. 
+
+<p>Here's what the CreateReservedPalette() function does. If the color table has more than 236 colors, it scans through the bitmap bits and creates a count of how frequently each color is used. Based on this count, it removes the least used colors so that it ends up with only 236 colors. It then creates a palette with the PC_RESERVED flag for all the palette entries. If the bitmap has 236 or less colors then it simply uses all of them to create the palette.
+
+<P>The CreateReservedPalette() function needs a device-independent bitmap because the DIB has the color information and it also provides simple access to all the bitmap bits without having to worry about color planes. Scanning through a DDB would be too cumbersome.
+
+<PRE><TT><FONT COLOR="#990000">
+// CreateReservedPalette	- Create a palette using the PC_RESERVED flag
+//				  Limit the colors to 236 colors
+// Returns			- Handle to a palette object
+// hDIB				- Handle to a device-independent bitmap
+//
+HPALETTE CreateReservedPalette(HANDLE hDIB)
+{
+	HPALETTE hPal = NULL;    // handle to a palette
+	
+	if (!hDIB)
+		return NULL;
+	
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+					1 << bmInfo.bmiHeader.biBitCount;
+
+	if( nColors > 256 ) 
+		return NULL;		// No Palette
+
+	
+	//allocate memory block for logical palette
+	UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+	LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+
+	// Initialize the palette version
+	pLP->palVersion = 0x300;
+
+	// If it is a 256 color DIB, then let's find the most used 236 colors 
+	// and make a palette out of those colors
+	if (nColors > 236)
+	{
+		typedef struct _tagBESTCOLORS
+		{
+			DWORD dwColorCnt;	//Count of how many times a color is used
+			BOOL  bDontUse;	//Should we use this color?
+		} BESTCOLORS;
+		
+		BESTCOLORS bc[256];
+		BYTE dwLeastUsed[20];		// Least used color indices
+		LPSTR lpBits;			// pointer to D.I. bits of a DIB
+		int   nWidth, nHeight, nBytesPerLine, cx, cy;   
+		
+		::ZeroMemory( bc, 256*sizeof(BESTCOLORS));
+		
+		lpBits = (LPSTR)(bmInfo.bmiColors + nColors);
+		nWidth = bmInfo.bmiHeader.biWidth;
+		nHeight = bmInfo.bmiHeader.biHeight;
+		nBytesPerLine = ((((bmInfo.bmiHeader.biWidth * 
+					bmInfo.bmiHeader.biBitCount) + 31) & ~31) / 8);
+		
+		// Traverse through all of the bits in the bitmap and place the 
+		// color count of each color in the BESTCOLORS array
+		for (cy = 0; cy < nHeight; cy++)
+			for (cx = 0; cx < nWidth; cx++)
+				bc[*(LPBYTE)(lpBits+cy*nBytesPerLine+cx)].dwColorCnt++;
+			
+		// Let's arbitrarily place the first few colors in the "Least Used" list.
+		int nReject = nColors - 236;
+		for (cx=0; cx < nReject; cx++)
+		{
+			bc[cx].bDontUse = TRUE;
+			dwLeastUsed[cx] = cx;
+		}
+		
+		// Now, let's traverse through all of the colors and 
+		// sort out the least used
+		for (cx=0; cx < nColors; cx++)
+		{
+			cy = 0;
+			while ((!(bc[cx].bDontUse)) && cy < nReject)
+			{
+				if (bc[cx].dwColorCnt < bc[dwLeastUsed[cy]].dwColorCnt) 
+				{     
+					bc[dwLeastUsed[cy]].bDontUse = FALSE;
+					dwLeastUsed[cy] = cx;
+					bc[cx].bDontUse = TRUE;
+				}
+				cy++;
+			}
+		}
+		
+		// We want only 236 colors, so that the 20 system colors 
+		// are left untouched
+		pLP->palNumEntries = 236;
+		
+		cx = 0;
+		for(int i = 0; i < nColors; i++)
+		{
+			// Should we use this color?
+			if (!((bc[i].bDontUse)))
+			{  
+				pLP->palPalEntry[cx].peRed = bmInfo.bmiColors[i].rgbRed;
+				pLP->palPalEntry[cx].peGreen = 
+								bmInfo.bmiColors[i].rgbGreen;
+				pLP->palPalEntry[cx].peBlue = bmInfo.bmiColors[i].rgbBlue;
+				pLP->palPalEntry[cx].peFlags = PC_RESERVED;
+				cx++;
+			}
+		}
+
+	}
+	else if (nColors)
+	{
+		// We have enough room for all the colors
+		
+		pLP->palNumEntries = nColors;
+		
+		// Copy the colors
+		for(int i = 0; i < nColors; i++)
+		{
+			pLP->palPalEntry[i].peRed = bmInfo.bmiColors[i].rgbRed;
+			pLP->palPalEntry[i].peGreen = bmInfo.bmiColors[i].rgbGreen;
+			pLP->palPalEntry[i].peBlue = bmInfo.bmiColors[i].rgbBlue;
+			pLP->palPalEntry[i].peFlags = PC_RESERVED;
+		}
+	}
+	
+
+	hPal = CreatePalette( pLP );
+	delete[] pLP;
+	
+	// return handle to DIB's palette 
+	return hPal;
+}
+</FONT></TT></PRE>
+
+<H4>Function 2: Fade in an image starting with a given color</H4>
+The FadeIn() function draws the start color and makes the image emerge from that color. As I have already explained, we need a special palette to work with palette animation. In this case we start with a palette in which all the entries are the start color. When the image is first displayed, it will cause the entire image to display in the only color in the palette. 
+
+<p>There is, however, one problem with this. When we draw an image using BitBlt() or SetDIBitsToDevice(), all the colors in the bitmap are mapped to colors in the selected palette. We would therefore end up with all the pixels using the same palette entry. To overcome this hurdle, we use an optimization in the GDI code. This optimization works like this. If the source device context and the target device context have the same palette (an identity palette) then the function does not bother with remapping the colors. Here's what we do. We create a compatible memory device context, select the palette and realize it and then draw the image in this device context. Since it's the memory DC, nothing happens on the screen yet. We select the same palette into the target device and then animate the palette so that all the color entries are the same as the starting color we desire. Now we can copy the image from the memory DC to the target DC without the color getting remapped. When we have finished with the BitBlt() to transfer the image, the image appears in a single color in the target device. 
+
+<p>Once we have the image in the target device, we simply animate the palette till all the entries in the palette are the colors needed to display the image properly.
+
+
+<PRE><TT><FONT COLOR="#990000">
+// FadeIn	- Draws a start color and fades the bitmap in.
+// pDC		- Pointer to the device context to draw in
+// hDIB		- Handle to a device-independent bitmap
+// clrStart	- The start color of the bitmap
+// xDest	- x-coordinate of upper-left corner of dest. rect. 
+// yDest	- y-coordinate of upper-left corner of dest. rect. 
+// nLoops	- How many loops to fade the image in
+// nDelay	- Delay in milli-seconds between each loop
+//
+void FadeIn( CDC *pDC, HANDLE hDIB, COLORREF clrStart, int xDest, int yDest, 
+							int nLoops, int nDelay )
+{
+	HPALETTE hPal;
+	PALETTEENTRY peAnimate[256];
+	PALETTEENTRY peOriginal[256];
+	CPalette pal;
+
+	// Create a 236 colors or less logical palette with PC_RESERVED set
+	if (!(hPal = CreateReservedPalette(hDIB)))
+		return;
+
+	// The palette will be deleted when the CPalette object is destroyed
+	pal.Attach( hPal );
+
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+					1 << bmInfo.bmiHeader.biBitCount;
+	int nWidth = bmInfo.bmiHeader.biWidth;
+	int nHeight = bmInfo.bmiHeader.biHeight;
+
+	// Obtain the original entries in the palette
+	GetPaletteEntries(hPal, 0, nColors, (LPPALETTEENTRY)&peOriginal);
+
+	// Change all the entries in the palette to the start color
+	int clrRValue = GetRValue(clrStart);
+	int clrGValue = GetGValue(clrStart);
+	int clrBValue = GetBValue(clrStart);
+	for (int j = 0; j < nColors; j++) 
+	{  
+		peAnimate[j].peRed = clrRValue;
+		peAnimate[j].peGreen = clrGValue;
+		peAnimate[j].peBlue = clrBValue;
+		peAnimate[j].peFlags = PC_RESERVED;
+	}
+
+	// Select the palette
+	CPalette *pOldPalette = pDC->SelectPalette(&pal, FALSE);
+	pDC->RealizePalette();
+
+	// We need to draw the image so that it appears as a rectangle
+	// with the start color. At the same time we don't want the 
+	// colors to be remapped, otherwise all the pixels would remain
+	// the same color. We use a memory DC to achieve this.
+	CDC memDC;
+	memDC.CreateCompatibleDC( pDC );
+	CBitmap bmp;
+	bmp.CreateCompatibleBitmap( pDC, nWidth, nHeight );
+	CBitmap *pOldBitmap = memDC.SelectObject( &bmp );
+	CPalette *pOldMemPalette = memDC.SelectPalette(&pal, FALSE);
+	memDC.RealizePalette();
+
+	// Draw the image to memDC
+	LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+	
+	::SetDIBitsToDevice(memDC.m_hDC,	// hDC
+		0,				// XDest
+		0,				// YDest
+		nWidth,				// nDestWidth
+		nHeight,			// nDestHeight
+		0,				// XSrc
+		0,				// YSrc
+		0,				// nStartScan
+		nHeight,			// nNumScans
+		lpDIBBits,			// lpBits
+		(LPBITMAPINFO)hDIB,		// lpBitsInfo
+		DIB_RGB_COLORS);		// wUsage
+
+	// Set the color to start color
+	AnimatePalette(hPal, 0, nColors, (LPPALETTEENTRY)&peAnimate);
+
+	// Now copy the image from the memory DC
+	// Since the palettes in memDC and pDC are the same, no color mapping
+	// takes place. The image will appear in the start color
+	pDC->BitBlt(xDest, yDest, nWidth, nHeight, &memDC,0,0,SRCCOPY );
+
+	// Fade in
+	for( int i=1; i <= nLoops; i++ )
+	{
+		for (j = 0; j < nColors; j++) 
+		{  
+			peAnimate[j].peRed = clrRValue - 
+					((clrRValue-peOriginal[j].peRed)*i)/nLoops;
+			peAnimate[j].peGreen = clrGValue - 
+					((clrGValue-peOriginal[j].peGreen)*i)/nLoops;
+			peAnimate[j].peBlue = clrBValue - 
+					((clrBValue-peOriginal[j].peBlue)*i)/nLoops;
+		}
+
+		pal.AnimatePalette(0, nColors, (LPPALETTEENTRY)&peAnimate);
+
+		// Delay...
+		Sleep(nDelay);
+	}
+
+	// Reselect old objects into DC
+	memDC.SelectPalette(pOldMemPalette, FALSE);
+	memDC.SelectObject( pOldBitmap );
+	pDC->SelectPalette(pOldPalette, FALSE);
+}
+</FONT></TT></PRE>
+
+<h4>Function 3: Fade out an image to a given color</h4>
+Fading out an image is much simpler than fading it in. We don't have to bother with an identity palette. After creating the reserved palette, we can select it into the device context, realize and then draw the image onto the device context. Now we have the image on the target device and we need to animate the palette so that at the end the colors in the palette are all the same.
+
+<PRE><TT><FONT COLOR="#990000">
+// FadeOut	- Draws a bitmap and fades it out to the desired end color
+// pDC		- Pointer to the device context to draw in
+// hDIB		- Handle to a device-independent bitmap
+// clrEnd	- The final color of the bitmap
+// xDest	- x-coordinate of upper-left corner of dest. rect. 
+// yDest	- y-coordinate of upper-left corner of dest. rect. 
+// nLoops	- How many loops to fade the image out.
+// nDelay	- Delay in milli-seconds between each loop
+//
+void FadeOut( CDC *pDC, HANDLE hDIB, COLORREF clrEnd, int xDest, int yDest, 
+							int nLoops, int nDelay )
+{
+	HPALETTE hPal;
+	PALETTEENTRY peAnimate[256];
+	PALETTEENTRY peOriginal[256];
+	CPalette pal;
+
+	// Create a 236 colors or less logical palette with PC_RESERVED set
+	if (!(hPal = CreateReservedPalette(hDIB)))
+		return;
+
+	// The palette will be deleted when the CPalette object is destroyed
+	pal.Attach( hPal );
+
+	BITMAPINFO &bmInfo = *(LPBITMAPINFO)hDIB ;
+	
+	int nColors = bmInfo.bmiHeader.biClrUsed ? bmInfo.bmiHeader.biClrUsed : 
+					1 << bmInfo.bmiHeader.biBitCount;
+	int nWidth = bmInfo.bmiHeader.biWidth;
+	int nHeight = bmInfo.bmiHeader.biHeight;
+
+	// Obtain the original entries in the palette 
+	GetPaletteEntries(hPal, 0, nColors, (LPPALETTEENTRY)&peAnimate);
+	GetPaletteEntries(hPal, 0, nColors, (LPPALETTEENTRY)&peOriginal);
+
+	// Get end color values
+	int clrRValue = GetRValue(clrEnd);
+	int clrGValue = GetGValue(clrEnd);
+	int clrBValue = GetBValue(clrEnd);
+
+	// Select the palette
+	CPalette *pOldPalette = pDC->SelectPalette(&pal, FALSE);
+	pDC->RealizePalette();
+
+	// Draw the image 
+	LPVOID lpDIBBits = (LPVOID)(bmInfo.bmiColors + nColors);
+	
+	::SetDIBitsToDevice(pDC->m_hDC,	// hDC
+		xDest,				// XDest
+		yDest,				// YDest
+		nWidth,				// nDestWidth
+		nHeight,			// nDestHeight
+		0,				// XSrc
+		0,				// YSrc
+		0,				// nStartScan
+		nHeight,			// nNumScans
+		lpDIBBits,			// lpBits
+		(LPBITMAPINFO)hDIB,		// lpBitsInfo
+		DIB_RGB_COLORS);		// wUsage
+
+
+	// Fade out
+	for( int i=1; i <= nLoops; i++ )
+	{
+		for (int j = 0; j < nColors; j++) 
+		{  
+			peAnimate[j].peRed = peOriginal[j].peRed - 
+				((peOriginal[j].peRed - clrRValue)*i)/nLoops;
+			peAnimate[j].peGreen = peOriginal[j].peGreen - 
+				((peOriginal[j].peGreen - clrGValue)*i)/nLoops;
+			peAnimate[j].peBlue = peOriginal[j].peBlue - 
+				((peOriginal[j].peBlue - clrBValue)*i)/nLoops;
+		}
+
+		pal.AnimatePalette(0, nColors, (LPPALETTEENTRY)&peAnimate);
+
+		// Delay...
+		Sleep(nDelay);
+	}
+
+	// Reselect old objects into DC
+	pDC->SelectPalette(pOldPalette, FALSE);
+}
+</FONT></TT></PRE>
+
+
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

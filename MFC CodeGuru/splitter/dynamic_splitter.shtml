@@ -1,0 +1,413 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Splitter Window - "True" dynamic splitter window</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align="center"><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Splitter Window - "True" dynamic splitter window</FONT></H3></CENTER>
+
+<HR>
+
+
+<p>This article was contributed by <a href="mailto:Saga@gis.net">Andrew Slivker</a>. </p>
+
+
+<p>If you want to implement splitter window in your MFC based application
+that redraws its panes dynamically
+(like Microsoft Windows Explorer does when you have IE4.0 installed)
+then you can use my simple 
+class CDynSplitterWnd. Dragging CDynSplitterWnd splitter bar does not
+show a hatched line, instead it immediately redraws itself at a new
+position as well as forces all its panes to redraw themselves.
+
+<p>To implement CDynSplitterWnd window simply:
+
+<p>1.	Change declaration of your splitter window instances to be
+instances of the CDynSplitterWnd class rather than CSplitterWnd class.
+
+<p>2.	Or derive your own CSplitterWnd based classes (if you have them)
+from CDynSplitterWnd instead, and 
+	don't forget about BEGIN_MESSAGE_MAP(CYourSplitterWnd,
+CDynSplitterWnd) macro.
+
+<p>CDynSplitterWnd works best for the "1column 2 rows static
+splitter" situation. If you have MFC dynamic splitters create them with
+SIZE sizeMin parameter in CSplitterWnd ::Create(...) function set to
+CSize(1,1) or CSize(0,0).
+
+
+<PRE><TT><FONT COLOR="#990000">
+// DynSplitterWnd.h file
+//
+class CDynSplitterWnd : public CSplitterWnd
+{
+	// Construction
+	public:
+		CDynSplitterWnd();
+		
+		// Attributes
+	public:
+		BOOL	IsDynamic()
+			
+		{ return m_bDynSplit; }
+		void	SetDynamic(BOOL bDynSplit = TRUE) 
+		{ m_bDynSplit = bDynSplit; }
+		
+		// Operations
+	public:
+		
+		// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CDynSplitterWnd)
+		virtual void OnInvertTracker(const CRect& rect);
+		virtual void StartTracking(int ht);
+		virtual void StopTracking(BOOL bAccept);
+		//}}AFX_VIRTUAL
+		
+		// Implementation
+	public:
+		virtual ~CDynSplitterWnd();
+		
+	protected:
+		CPoint  m_OldPoint;
+		BOOL	m_bDynSplit;
+		
+		enum HitTestValue
+		{
+			noHit                   = 0,
+				vSplitterBox            = 1,
+				hSplitterBox            = 2,
+				bothSplitterBox         = 3,        // just for
+				keyboard
+				vSplitterBar1           = 101,
+				vSplitterBar15          = 115,
+				hSplitterBar1           = 201,
+				hSplitterBar15          = 215,
+				splitterIntersection1   = 301,
+				splitterIntersection225 = 525
+		};
+		
+		
+		// Generated message map functions
+	protected:
+		//{{AFX_MSG(CDynSplitterWnd)
+		afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+		//}}AFX_MSG
+		DECLARE_MESSAGE_MAP()
+};
+
+#include "stdafx.h"
+#include lt;afxext.h>
+#include "DynSplitterWnd.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+#define CX_BORDER	1
+#define CY_BORDER	1
+
+#define FAR_POINT_XY		-10000
+
+
+
+////////////////////////////////////////////////////////////////////////
+/////
+// CDynSplitterWnd
+
+CDynSplitterWnd::CDynSplitterWnd() 
+:m_OldPoint(FAR_POINT_XY,FAR_POINT_XY),
+m_bDynSplit(TRUE)
+{
+}
+
+CDynSplitterWnd::~CDynSplitterWnd()
+{
+}
+
+
+void CDynSplitterWnd::OnInvertTracker(const CRect& rect)
+{
+	if(!m_bDynSplit)
+		CSplitterWnd::OnInvertTracker(rect);
+	else
+		return;
+}
+
+void CDynSplitterWnd::StartTracking(int ht)
+{
+	if(!m_bDynSplit)
+	{
+		CSplitterWnd::StartTracking(ht);
+		return;
+	}
+	
+	ASSERT_VALID(this);
+	if (ht == noHit)
+		return;
+	
+	// GetHitRect will restrict 'm_rectLimit' as appropriate
+	GetInsideRect(m_rectLimit);
+	
+	if (ht >= splitterIntersection1 && ht lt;=
+		splitterIntersection225)
+	{
+		// split two directions (two tracking
+		rectangles)
+			int row = (ht - splitterIntersection1) / 15;
+		int col = (ht - splitterIntersection1) % 15;
+		
+		GetHitRect(row + vSplitterBar1, m_rectTracker);
+		int yTrackOffset = m_ptTrackOffset.y;
+		m_bTracking2 = TRUE;
+		GetHitRect(col + hSplitterBar1, m_rectTracker2);
+		m_ptTrackOffset.y = yTrackOffset;
+	}
+	else if (ht == bothSplitterBox)
+	{
+		// hit on splitter boxes (for keyboard)
+		GetHitRect(vSplitterBox, m_rectTracker);
+		int yTrackOffset = m_ptTrackOffset.y;
+		m_bTracking2 = TRUE;
+		GetHitRect(hSplitterBox, m_rectTracker2);
+		m_ptTrackOffset.y = yTrackOffset;
+		
+		// center it
+		m_rectTracker.OffsetRect(0,
+			m_rectLimit.Height()/2);
+		m_rectTracker2.OffsetRect(m_rectLimit.Width()/2,
+			0);
+	}
+	else
+	{
+		// only hit one bar
+		GetHitRect(ht, m_rectTracker);
+	}
+	
+	// steal focus and capture
+	SetCapture();
+	
+	// set tracking state and appropriate cursor
+	m_bTracking = TRUE;
+	m_htTrack = ht;
+	SetSplitCursor(ht);
+}
+
+
+void CDynSplitterWnd::StopTracking(BOOL bAccept)
+{
+	ASSERT_VALID(this);
+	
+	if (!m_bTracking)
+		return;
+	
+	ReleaseCapture();
+	
+	// erase tracker rectangle
+	OnInvertTracker(m_rectTracker);
+	if (m_bTracking2)
+		OnInvertTracker(m_rectTracker2);
+	m_bTracking = m_bTracking2 = FALSE;
+	
+	// save old active view
+	CWnd* pOldActiveView = GetActivePane();
+	
+	// m_rectTracker is set to the new splitter position
+	(without border)
+		// (so, adjust relative to where the border will be)
+		m_rectTracker.OffsetRect(-CX_BORDER , -CY_BORDER);
+	m_rectTracker2.OffsetRect(-CX_BORDER, -CY_BORDER);
+	
+	if (bAccept)
+	{
+		if (m_htTrack == vSplitterBox)
+		{
+			SplitRow(m_rectTracker.top);
+		}
+		else if (m_htTrack >= vSplitterBar1 && m_htTrack
+			lt;= vSplitterBar15)
+		{
+			// set row height
+			TrackRowSize(m_rectTracker.top,
+				m_htTrack - vSplitterBar1);
+			RecalcLayout();
+		}
+		else if (m_htTrack == hSplitterBox)
+		{
+			SplitColumn(m_rectTracker.left);
+		}
+		else if (m_htTrack >= hSplitterBar1 && m_htTrack
+			lt;= hSplitterBar15)
+		{
+			// set column width
+			TrackColumnSize(m_rectTracker.left,
+				m_htTrack - hSplitterBar1);
+			RecalcLayout();
+		}
+		else if (m_htTrack >= splitterIntersection1 &&
+			m_htTrack lt;= splitterIntersection225)
+		{
+			// set row height and column width
+			int row = (m_htTrack -
+				splitterIntersection1) / 15;
+			int col = (m_htTrack -
+				splitterIntersection1) % 15;
+			
+			TrackRowSize(m_rectTracker.top, row);
+			TrackColumnSize(m_rectTracker2.left,
+				col);
+			RecalcLayout();
+		}
+		else if (m_htTrack == bothSplitterBox)
+		{
+			// rectTracker is vSplitter (splits
+			rows)
+				// rectTracker2 is hSplitter (splits
+				cols)
+				SplitRow(m_rectTracker.top);
+			SplitColumn(m_rectTracker2.left);
+		}
+	}
+	
+	if ( (pOldActiveView == GetActivePane()) &&
+		(pOldActiveView != NULL)
+		)
+		SetActivePane(-1, -1, pOldActiveView);
+	// re-activate
+}
+
+
+BEGIN_MESSAGE_MAP(CDynSplitterWnd, CSplitterWnd)
+//{{AFX_MSG_MAP(CDynSplitterWnd)
+ON_WM_MOUSEMOVE()
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+
+
+////////////////////////////////////////////////////////////////////////
+/////
+// CDynSplitterWnd message handlers
+
+
+void CDynSplitterWnd::OnMouseMove(UINT nFlags, CPoint pt) 
+{
+	if(!m_bDynSplit)
+	{
+		CSplitterWnd::OnMouseMove(nFlags, pt);
+		return;
+	}
+	
+	if (GetCapture() != this)
+		StopTracking(FALSE);
+	
+	if (m_bTracking)
+	{
+		// move tracker to current cursor position
+		pt.Offset(m_ptTrackOffset); // pt is the upper
+		right of hit detect
+			// limit the point to the valid split range
+			if (pt.y lt; m_rectLimit.top)
+				pt.y = m_rectLimit.top;
+			else if (pt.y > m_rectLimit.bottom)
+				pt.y = m_rectLimit.bottom;
+			if (pt.x lt; m_rectLimit.left)
+				pt.x = m_rectLimit.left;
+			else if (pt.x > m_rectLimit.right)
+				pt.x = m_rectLimit.right;
+			
+			if (m_htTrack == vSplitterBox ||
+				m_htTrack >= vSplitterBar1 && m_htTrack
+				lt;= vSplitterBar15)
+			{
+				if (m_rectTracker.top != pt.y)
+				{
+					OnInvertTracker(m_rectTracker);
+					m_rectTracker.OffsetRect(0, pt.y
+						- m_rectTracker.top);
+					OnInvertTracker(m_rectTracker);
+				}
+			}
+			else if (m_htTrack == hSplitterBox ||
+				m_htTrack >= hSplitterBar1 && m_htTrack
+				lt;= hSplitterBar15)
+			{
+				if (m_rectTracker.left != pt.x)
+				{
+					OnInvertTracker(m_rectTracker);
+					m_rectTracker.OffsetRect(pt.x -
+						m_rectTracker.left, 0);
+					OnInvertTracker(m_rectTracker);
+				}
+			}
+			else if (m_htTrack == bothSplitterBox ||
+				(m_htTrack >= splitterIntersection1 &&
+				m_htTrack lt;= splitterIntersection225))
+			{
+				if (m_rectTracker.top != pt.y)
+				{
+					OnInvertTracker(m_rectTracker);
+					m_rectTracker.OffsetRect(0, pt.y
+						- m_rectTracker.top);
+					OnInvertTracker(m_rectTracker);
+				}
+				if (m_rectTracker2.left != pt.x)
+				{
+					OnInvertTracker(m_rectTracker2);
+					m_rectTracker2.OffsetRect(pt.x -
+						m_rectTracker2.left, 0);
+					OnInvertTracker(m_rectTracker2);
+				}
+			}
+			
+			OnLButtonUp(MK_LBUTTON,pt);
+			OnLButtonDown(MK_LBUTTON,pt);
+			if(m_OldPoint != pt)
+			{
+				RedrawWindow(NULL, NULL, RDW_ALLCHILDREN
+					| RDW_UPDATENOW);
+				m_OldPoint = pt;
+			}
+	}
+	else
+	{
+		// simply hit-test and set appropriate cursor
+		int ht = HitTest(pt);
+		SetSplitCursor(ht);
+	}
+}
+</FONT></TT></PRE>
+
+
+
+<p><a href="dynamic_splitter.zip">Download file</a> 52K
+
+
+<p>Updated 4 April 1998
+
+<hr>
+
+<table COLS="3" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="34%"><p align="center"><font SIZE="-2">© 1998 Zafir Anjum</font> </td>
+    <td WIDTH="33%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

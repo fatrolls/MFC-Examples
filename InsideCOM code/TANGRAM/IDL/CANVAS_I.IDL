@@ -1,0 +1,26 @@
+///////////////////////////////////////////////////////////
+//
+// TangramCanvas - Interface descriptions
+//
+///////////////////////////////////////////////////////////
+//
+// Interface ITangramCanvas 
+//
+[
+	object,
+	uuid(b53313ca-20c4-11d0-9c6c-00a0c90a632c),
+	helpstring("ITangramCanvas Interface"),
+	pointer_default(unique)
+]
+interface ITangramCanvas : IUnknown
+{
+	import "unknwn.idl" ; 
+
+	HRESULT Initialize([in] HWND hWnd, [in] long cx, [in] long cy) ;
+	HRESULT Paint([in] HDC hdcDest, [in] RECT rectUpdate) ;
+	HRESULT Update([in] RECT rectUpdate) ;
+	HRESULT GetHDC([out] HDC* pHDC) ;  
+	HRESULT SetPalette([in]HPALETTE hPal); 
+	HRESULT OnQueryNewPalette([in] HWND hWndReceived) ;
+};
+

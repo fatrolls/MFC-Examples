@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.0 [en] (WinNT; I) [Netscape]">
+   <TITLE>Using overlay images</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Using overlay images</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+The tree view in conjunction with the image list allows upto four overlay
+images. Overlay images are images that are drawn transparently over another
+image. The overlay images are supported only for the item images and not
+for the state images. Unlike what the documentation says, you can choose
+any image in the image list to serve as an overlay image – it need not
+be among the first 15.
+<BR>&nbsp;
+<H4>
+Step 1: Set up the overlay images</H4>
+The image list has to be set up with the overlay images by calling the
+function SetOverlayImage(). Upto four images can be added to the list of
+overlay images. Call this function for the image list object associated
+with the tree view control for the item images. We can call this function
+before we associate the image list with the tree view control or after
+– it does not matter. Normally this code would be clubbed with the code
+where you create the image list and associate it with the tree view control.
+
+<P>The SetOverlayImage() takes two arguments. The first argument is the
+index of the image within the image list that you want to use as an overlay
+mask. If you want the third image in the list to be an overlay mask then
+this value would be 2 and if you want the tenth image, this value would
+be 9.
+
+<P>The second argument is the one-based index of the overlay mask. This
+argument can have a value of 1 to 4 inclusive. This serves as the identifier
+for the overlay mask. If you are using only one image as an overlay mask,
+you can choose any of the four index – it need not be one necessarily.
+Also, if you call SetOverlayImage() for two different images with the same
+overlay mask index then the latter call will supercede the previous call.
+
+<P>&nbsp;
+<PRE><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_tree.m_image.SetOverlayImage(15, 1 );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_tree.m_image.SetOverlayImage(16, 2 );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_tree.m_image.SetOverlayImage(18, 3 );
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m_tree.m_image.SetOverlayImage(20, 4 );</FONT></TT></PRE>
+&nbsp;
+<H4>
+Step 2: Set the item state to use the overlay mask</H4>
+You can specify the overlay mask when inserting a new item or you can specify
+it later by calling SetItemState(). We actually use to the macro INDEXTOOVERLAYMASK()
+to specify the overlay mask index.
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Use third overlay mask
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetItemState( hItem, INDEXTOOVERLAYMASK(3), TVIS_OVERLAYMASK );
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Remove overlay mask by using index zero.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetItemState( hti, INDEXTOOVERLAYMASK(0), TVIS_OVERLAYMASK );</FONT></TT>
+</PRE>
+<FONT COLOR="#990000"></FONT>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

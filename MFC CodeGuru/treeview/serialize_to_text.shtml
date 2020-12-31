@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CTreeCtrl - Serializing to / from a text file</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Serializing to / from a text file</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+To serialize the tree view control override the Serialize() function. The
+Serialize() function is a virtual function defined in Cobject.
+
+<P>In the code below we save the outline to a text file and can read it
+back from a text file. When saving the outline to the archive, tabs are
+used to indent the item text. Again, when reading back, tabs are used to
+determine the level that the newly read item should be placed at. 
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void CTreeCtrlX::Serialize(CArchive& ar) 
+{
+	if (ar.IsStoring())
+	{	
+		// storing code
+		HTREEITEM hti = GetRootItem();
+		while( hti )
+		{
+			int indent = GetIndentLevel( hti );
+			while( indent-- )
+				ar.WriteString( "\t" );
+			ar.WriteString( GetItemText( hti ) + "\r\n");
+			hti = GetNextItem( hti );
+		}
+		
+	}
+	else
+	{	
+		// loading code
+		CString sLine;
+		if( !ar.ReadString( sLine ) )
+			return;
+
+		HTREEITEM hti = NULL;
+		int indent, baseindent = 0;
+		while( sLine[baseindent] == '\t' )
+			baseindent++;
+		do
+		{
+			if( sLine.GetLength() == 0 )
+				continue;
+			for( indent = 0; sLine[indent] == '\t'; indent++ )
+				;		// We don't need a body
+			sLine = sLine.Right( sLine.GetLength() - indent );
+			indent -= baseindent;
+
+			HTREEITEM parent;
+			int previndent = GetIndentLevel( hti );
+			if( indent ==  previndent)
+				parent = GetParentItem( hti );
+			else if( indent > previndent )
+				parent = hti;
+			else
+			{
+				int nLevelsUp = previndent - indent;
+				parent = GetParentItem( hti );
+				while( nLevelsUp-- )
+					parent = GetParentItem( parent );
+			}
+			hti = InsertItem( sLine, parent ? parent : TVI_ROOT, TVI_LAST );
+		}while( ar.ReadString( sLine ) );
+
+	}
+}
+
+
+
+int CTreeCtrlX::GetIndentLevel( HTREEITEM hItem )
+{
+	int iIndent = 0;
+
+	while( (hItem = GetParentItem( hItem )) != NULL )
+		iIndent++;
+	return iIndent;
+}
+
+
+// GetNextItem	- Get next item as if outline was completely expanded
+// Returns		- The item immediately below the reference item
+// hItem		- The reference item
+HTREEITEM CTreeCtrlX::GetNextItem( HTREEITEM hItem )
+{
+	HTREEITEM	hti;
+
+	if( ItemHasChildren( hItem ) )
+		return GetChildItem( hItem );		// return first child
+	else{
+		// return next sibling item
+		// Go up the tree to find a parent's sibling if needed.
+		while( (hti = GetNextSiblingItem( hItem )) == NULL ){
+			if( (hItem = GetParentItem( hItem ) ) == NULL )
+				return NULL;
+		}
+	}
+	return hti;
+}
+</FONT></TT>
+</PRE>
+&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

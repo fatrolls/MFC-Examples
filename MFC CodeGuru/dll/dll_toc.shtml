@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>DLL : Table of Contents</TITLE>
+   <META Name="description" Content="Source code related to DLL">
+   <META Name="keywords" Content="DIALOG DLL">
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td>
+<H1><FONT COLOR="#a0a0ff">DLL</FONT></H1>
+<td>
+<td width=10%></td>
+<td align=right><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<HR>
+<p>This section is maintained by <A HREF="mailto:UltraMaroon@email.msn.com">Rob Manderson</A>
+<UL>
+<LI><A HREF="dialog_in_dll.shtml">Dialogs in DLL - Randy More</A>
+<LI><A HREF="dll_version.shtml">Determine DLL version number - Eran Yariv</A>
+<LI><A HREF="dialog_in_extdll.shtml">Export dialogs in MFC Extension DLLs - Andreas Leitner</A>
+<LI><A HREF="use_dll_in_dll.shtml">Using one extension DLL in another - Randy More</A>
+<LI><A HREF="dll_rcremap.shtml">Remapping resource script ID's - John Weeder</A>
+
+</UL>
+
+
+
+<CENTER>
+<HR></CENTER>
+
+<TABLE COLS=3 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="34%">
+<FONT SIZE=-2><CENTER>&copy; 1998 Zafir Anjum</CENTER></FONT>
+</TD>
+
+<TD WIDTH="33%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

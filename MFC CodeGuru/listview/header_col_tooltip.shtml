@@ -1,0 +1,256 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Tooltip for individual column header</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Tooltip for individual column header</FONT></H3></CENTER>
+
+<HR WIDTH="100%">There can be many uses for providing tooltips for column headers. One situation where I find column header tooltip to be especially useful is when the column width is limited. The tooltip can convey what the column header is unable to because of its limited width. To keep the code modular, we will implement the tooltip functionality within the CListCtrl derived class. Here are the steps involved.
+
+<h4>Step 1: Add member of type CToolTipCtrl</h4>
+Add a member variable of type CToolTipCtrl in your CListCtrl derived class.
+
+<PRE><TT><FONT COLOR="#990000">CToolTipCtrl	m_tooltip;
+</FONT></TT></PRE>
+
+<h4>Step 2: Create the tooltip object</h4>
+Override PreSubclassWindow() in your CListCtrl derived class. After calling the base class PreSubclassWindow(), create the tooltip object. We override the PreSubclassWindow() instead of OnCreate() because the control is usually attached to the C++ object after it has already been created - usually from a dialog resource - and therefore OnCreate is never called for the object. It is important to note that the call to GetDlgItem(0) may fail if the control was created with a style other than LVS_REPORT.
+
+<p>If you are deriving from CListView then the code to create the tooltip and add a tool to it can be moved to OnCreate() or the OnInitialUpdate() function.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::PreSubclassWindow() 
+{
+	CListCtrl::PreSubclassWindow();
+
+	// Add initialization code
+	m_tooltip.Create( this );
+} 
+</FONT></TT></PRE>
+
+<h4>Step 3: Call RelayEvents() function of the tooltip object</h4>
+Override PreTranslateMessage() and call the RelayEvents() function of the CToolTipCtrl object. Calling RelayEvents() gives the tooltip an oppurtunity to determine whether the mouse entered any of the tool areas. Although we pass on every message that the list view control gets, the tooltip control processes only the WM_?BUTTONDOWN, WM_?BUTTONUP and the WM_MOUSEMOVE messages.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::PreTranslateMessage(MSG* pMsg) 
+{
+	m_tooltip.RelayEvent( pMsg );	
+	return CListCtrl::PreTranslateMessage(pMsg);
+}
+</FONT></TT></PRE>
+
+<h4>Step 4: Add helper function to add tooltips</h4>
+A single tooltip control can handle multiple tools or multiple rectangular areas for which a tooltip is needed. The helper function AddHeaderToolTip() simply adds a new tool to the tooltip control.
+
+<PRE><TT><FONT COLOR="#990000">// AddHeaderToolTip	- Add a tooltip for the column header
+//			  The control mode should be LVS_REPORT
+// Returns		- TRUE on success
+// nCol			- the column index
+// sTip			- the tooltip text. A NULL will use the 
+//			  column header text
+BOOL CMyListCtrl::AddHeaderToolTip(int nCol, LPCTSTR sTip /*= NULL*/)
+{
+	const int TOOLTIP_LENGTH = 80;
+	char buf[TOOLTIP_LENGTH+1];
+
+	CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+	int nColumnCount = pHeader->GetItemCount();
+	if( nCol >= nColumnCount)
+		return FALSE;
+
+	if( (GetStyle() & LVS_TYPEMASK) != LVS_REPORT )
+		return FALSE;
+
+	// Get the header height
+	RECT rect;
+	pHeader->GetClientRect( &rect );
+	int height = rect.bottom;
+
+	RECT rctooltip;
+	rctooltip.top = 0;
+	rctooltip.bottom = rect.bottom;
+
+	// Now get the left and right border of the column
+	rctooltip.left = 0 - GetScrollPos( SB_HORZ );
+	for( int i = 0; i < nCol; i++ )
+		rctooltip.left += GetColumnWidth( i );
+	rctooltip.right = rctooltip.left + GetColumnWidth( nCol );
+
+	if( sTip == NULL )
+	{
+		// Get column heading
+		LV_COLUMN lvcolumn;
+		lvcolumn.mask = LVCF_TEXT;
+		lvcolumn.pszText = buf;
+		lvcolumn.cchTextMax = TOOLTIP_LENGTH;
+		if( !GetColumn( nCol, &lvcolumn ) )
+			return FALSE;
+	}
+
+
+	m_tooltip.AddTool( GetDlgItem(0), sTip ? sTip : buf, &rctooltip, nCol+1 );
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<h4>Step 5: Update tooltip control whenever a column is resized</h4>
+Override OnNotify() to track changes to the column widths. If we do not update the tooltip information after the user has finished risizing a column, the tooltip will no longer reflect the proper column.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+{
+	HD_NOTIFY	*pHDN = (HD_NOTIFY*)lParam;
+
+	if((pHDN->hdr.code == HDN_ENDTRACKA || pHDN->hdr.code == HDN_ENDTRACKW))
+	{
+		// Update the tooltip info
+		CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+		int nColumnCount = pHeader->GetItemCount();
+
+		CToolInfo toolinfo;
+		toolinfo.cbSize = sizeof( toolinfo );
+
+		// Cycle through the tooltipinfo for each effected column
+		for( int i = pHDN->iItem; i <= nColumnCount; i++ )
+		{
+			m_tooltip.GetToolInfo( toolinfo, pHeader, i + 1 );
+
+			int dx;				// store change in width
+			if( i == pHDN->iItem )
+				dx = pHDN->pitem->cxy - 
+					(toolinfo.rect.right - toolinfo.rect.left);
+			else 
+				toolinfo.rect.left += dx;
+			toolinfo.rect.right += dx;
+			m_tooltip.SetToolInfo( &toolinfo );
+		}
+	}
+	
+	return CListCtrl::OnNotify(wParam, lParam, pResult);
+}
+</FONT></TT></PRE>
+
+
+<h4>Enhancement Step: Consolidate tooltip update code</h4>
+This step was suggested by <A HREF="mailto:Roger_Onslow@compsys.com.au">Roger Onslow</A> and will help
+the code look more readable and less error prone. You will notice that the tooltip rectangle is 
+calculated in two places - the AddHeaderToolTip() and OnNotify() functions. 
+
+<p>Here's what Roger had to say.
+
+<p>The method you have on your site duplicates some code between the
+    recalc routine and the creation routine.
+
+<p>I have actually split the common code into my RecalcHeaderTip method
+
+<p>I have a DefineColumn method which wraps up the column definition code.
+    This method creates the tooltip for the column after defining it as
+    follows...
+
+<PRE><TT><FONT COLOR="#990000">     CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+     if (pHeader) {
+          // Get the header height
+          RECT rect; pHeader->GetClientRect(&rect);
+          RECT rctooltip; rctooltip.top = 0; rctooltip.bottom = rect.bottom;
+          rctooltip.left = 0 - GetScrollPos(SB_HORZ);
+          for (int i = 0; i < col; i++ ) rctooltip.left += GetColumnWidth(i);
+          rctooltip.right = rctooltip.left + GetColumnWidth(col);
+          m_tooltip.AddTool(pHeader,tip?tip:text,&rctooltip,col+1);
+     }
+</FONT></TT></PRE>
+
+<p>Then I call RecalcHeaderTip in my AutoSizeColumns and my OnNotify methods
+
+
+<p>Call this routine (below) to automatically size columns to fit the contents.  
+(See also <a href="autosize_col.shtml">Autosize a column to fit its content</a>)
+You should call this in you Endlabeledit handler or whenever the contents of
+the columns changes (eg after adding or deleting a row).
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::AutoSizeColumns() {
+     // Call this after your list control is filled
+     SetRedraw(false);   // turn off drawing while we update
+     CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+     int numcol = pHeader->GetItemCount();
+     for (int col = 0; col < numcol; col++) {
+          SetColumnWidth(col,LVSCW_AUTOSIZE);
+     }
+     RecalcHeaderTips(); // update your header tips here if you have them
+     SetRedraw(true);    // allow drawing
+     Invalidate();       // and do the repaint
+}
+</FONT></TT></PRE>
+
+<p>Note the call to RecalcHeaderTips.  This updates header tool tips because
+the column positions have changed.
+
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::RecalcHeaderTips() {
+     // Update the tooltip info
+     CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+     RECT rect; pHeader->GetClientRect(&rect);
+     RECT rctooltip; rctooltip.top = 0; rctooltip.bottom = rect.bottom;
+     rctooltip.left = 0 - GetScrollPos(SB_HORZ);
+     CToolInfo toolinfo; toolinfo.cbSize = sizeof(toolinfo);
+     // Cycle through the tooltipinfo for each column
+     int numcol = pHeader->GetItemCount();
+     for (int col = 0; col <= numcol; col++ ) {
+          m_tooltip.GetToolInfo(toolinfo,pHeader,col+1);
+          rctooltip.right = rctooltip.left + GetColumnWidth(col);
+          toolinfo.rect = rctooltip;
+          m_tooltip.SetToolInfo (&toolinfo);
+          rctooltip.left += GetColumnWidth(col);
+     }
+}
+</FONT></TT></PRE>
+
+<p>NOTE: you should also call this when you get a HDN_ENDTRACKA|W notify for
+manual column adjustment.  For example
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+     HD_NOTIFY *pHDN = reinterpret_cast<HD_NOTIFY*>(lParam);
+     switch (pHDN->hdr.code) {
+     // ...
+     // other message handling here
+     // ...
+     case HDN_ENDTRACKA:
+     case HDN_ENDTRACKW:
+          {
+               bool ok = CListCtrl::OnNotify(wParam, lParam, pResult);
+               RecalcHeaderTips();
+               return ok;
+          }
+          break;
+     }
+     return CListCtrl::OnNotify(wParam, lParam, pResult);
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

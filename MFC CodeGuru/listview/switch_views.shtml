@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Switching Views</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Switching Views</FONT></H3></CENTER>
+
+<HR WIDTH="100%">The list view control supports four different view styles.
+The four styles are LVS_ICON , LVS_SMALLICON, LVS_LIST and LVS_REPORT.
+To switch between views we have to modify the window style using GetWindowLong()
+and SetWindowLong().
+<PRE><TT><FONT COLOR="#990000">	// Switch to report view
+	ModifyStyle( LVS_TYPEMASK, LVS_REPORT);
+</FONT></TT></PRE>
+The LVS_TYPEMASK is a bit mask representing the bits for all the view styles.
+Here is code for a SetView() member function for an extended list view
+control class.
+<BR>
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::SetView(DWORD dwView) 
+{ 
+	ModifyStyle( LVS_TYPEMASK, dwView & LVS_TYPEMASK );
+} 
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

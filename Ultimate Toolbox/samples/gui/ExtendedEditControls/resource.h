@@ -1,0 +1,124 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Developer Studio generated include file.
+// Used by ExtendedEditControls.rc
+//
+#define IDM_ABOUTBOX                    0x0010
+#define IDS_ABOUTBOX                    101
+#define IDD_EXTENDEDEDITCONTROLS_DIALOG 102
+#define ID_DESCRIPTION_FILE             102
+#define IDR_MAINFRAME                   128
+#define IDD_NUMERICEDIT_DIALOG          129
+#define IDD_CURRENCYEDIT_DIALOG         130
+#define IDD_EXTENDEDEDIT_DIALOG         131
+#define IDD_PHYSICALEDIT_DIALOG         132
+#define IDD_MASKEDEDIT_DIALOG           133
+#define IDD_DROPEDIT_DIALOG             134
+#define IDD_DIALOG_CALCULATOR           135
+#define IDC_EDIT_TEST                   1000
+#define IDC_LENGTH                      1000
+#define IDC_BUTTON_BACKCOLOR            1001
+#define IDC_BUTTON_TEXTCOLOR            1002
+#define IDC_BUTTON_FONT                 1003
+#define IDC_STATIC_FONT                 1004
+#define IDC_BUTTON_TEXTCOLOR_NEGATIVE   1005
+#define IDC_EDIT_TEST2                  1005
+#define IDC_BUTTON_APPLY                1012
+#define IDC_CHECK_LEADING_ZERO          1014
+#define IDC_STATIC_CONTROL_APPEARANCE   1016
+#define IDC_STATIC_NUMERIC_EDIT         1018
+#define IDC_STATIC_NUMERIC_EDIT_SETTINGS 1019
+#define IDC_COMBO_DECIMAL_DIGIT_COUNT   1020
+#define IDC_CHECK_DECIMAL_DIGIT_COUNT_INDEFINITE 1021
+#define IDC_COMBO_FRACTIONAL_DIGIT_COUNT 1022
+#define IDC_COMBO_NEGATIVE_VALUE_FORMAT 1023
+#define IDC_COMBO_DECIMAL_SEPARATOR     1024
+#define IDC_COMBO_GROUP_SEPARATOR       1025
+#define IDC_COMBO_GROUP_LENGTH          1026
+#define IDC_CHECK_NO_GROUP              1027
+#define IDC_COMBO_MASK                  1028
+#define IDC_STATIC_BOTTOM               1029
+#define IDC_COMBO_POSITIVE_VALUE_FORMAT 1029
+#define IDC_COMBO_CURRENCY_NAME         1030
+#define IDC_EDIT_TOOLTIP                1030
+#define IDC_TIME                        1031
+#define IDC_TEMPERATURE                 1032
+#define IDC_ANGLE                       1034
+#define IDC_LENGTH_LIST                 1035
+#define IDC_TIME_LIST                   1036
+#define IDC_TEMPERATURE_LIST            1037
+#define IDC_ANGLE_LIST                  1038
+#define IDC_CHECK_SHOW_UNIT             1039
+#define IDC_STATIC_CONVERT              1040
+#define IDC_STATIC_VALUE                1041
+#define IDC_COMBO_MASKS                 1043
+#define IDC_BUTTON_EMPTY                1044
+#define IDC_EDIT_PROMPT                 1045
+#define IDC_CHECK_AUTOTAB               1046
+#define IDC_STATIC_BROWSE16_EDIT        1048
+#define IDC_EDIT_BROWSE16               1049
+#define IDC_STATIC_BROWSE32_EDIT        1050
+#define IDC_BUTTON_CLEAR                1050
+#define IDC_EDIT_BROWSE32               1051
+#define IDC_BUTTON_CLEARNUMBER          1051
+#define IDC_STATIC_BROWSEFILE_EDIT      1052
+#define IDC_BUTTON_BACK                 1052
+#define IDC_EDIT_BROWSEFILE             1053
+#define IDC_BUTTON_7                    1053
+#define IDC_STATIC_BROWSECOLOR_EDIT     1054
+#define IDC_BUTTON_8                    1054
+#define IDC_EDIT_BROWSECOLOR            1055
+#define IDC_BUTTON_9                    1055
+#define IDC_STATIC_NUMERICWITHCALCULATOR_EDIT 1056
+#define IDC_BUTTON_4                    1056
+#define IDC_STATIC_MENU_EDIT            1056
+#define IDC_EDIT_NUMERICWITHCALCULATOR  1057
+#define IDC_BUTTON_5                    1057
+#define IDC_EDIT_MENU                   1057
+#define IDC_BUTTON_6                    1058
+#define IDC_STATIC_CALCULATOR           1058
+#define IDC_BUTTON_1                    1059
+#define IDC_EDIT_CALCULATOR             1059
+#define IDC_BUTTON_2                    1060
+#define IDC_BUTTON_3                    1061
+#define IDC_BUTTON_DIVIDE               1062
+#define IDC_BUTTON_MULTIPLY             1063
+#define IDC_BUTTON_SUBTRACT             1064
+#define IDC_BUTTON_ADD                  1065
+#define IDC_BUTTON_EQUAL                1066
+#define IDC_BUTTON_0                    1067
+#define IDC_BUTTON_CHANGESIGN           1068
+#define IDC_BUTTON_DELIMITER            1069
+#define IDC_BUTTON_SQRT                 1070
+#define IDC_BUTTON_MOD                  1071
+#define IDC_BUTTON_RECIPROCAL           1072
+#define IDC_COMBO_NUMBER_SYSTEM         1073
+#define IDC_BUTTON_PI                   1074
+#define IDC_BUTTON_COS                  1075
+#define IDC_BUTTON_SIN                  1076
+#define IDC_BUTTON_TAN                  1077
+#define IDC_BUTTON_COTAN                1078
+#define IDC_CHECK_SCIENTIFIC            1079
+#define IDC_BUTTON_FACTORIAL            1080
+#define IDC_STATIC_DISPLAY              1081
+#define IDC_BUTTON_POWER                1082
+#define IDC_CHECK_LEFTALIGNED           1082
+#define IDC_BUTTON_NATURAL_LOGARITHM    1083
+#define IDC_CHECK_SHOW_DROPDOWN         1083
+#define IDC_BUTTON_LOGARITHM            1085
+#define IDC_BUTTON_A                    1087
+#define IDC_BUTTON_B                    1088
+#define IDC_BUTTON_C                    1089
+#define IDC_BUTTON_D                    1090
+#define IDC_BUTTON_E                    1091
+#define IDC_BUTTON_F                    1092
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_CONTROL_VALUE         1085
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

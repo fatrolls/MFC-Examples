@@ -1,0 +1,54 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Zafir Anjum">
+<title>Win32 - Table of Contents</title>
+<meta Name="description" Content="Source code for win32 API">
+<meta Name="keywords" Content="win32 API">
+</head>
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+
+<table WIDTH="100%">
+  <tr WIDTH="100%">
+    <td><h1><font COLOR="#FF0000">Win32 API</font></h1>
+    </td>
+    <td></td>
+    <td width="10%"></td>
+    <td align="right"><!--#exec cgi="/cgi/ads.cgi"--></td>
+    <td></td>
+  </tr>
+</table>
+
+<hr>
+
+This section is now being maintained by <A HREF="mailto:kraus@proxima.de">J&uuml;rgen Kraus</A>.
+
+
+<ul>
+  <li><a HREF="dyndllclass.shtml">Dynamically loading classes from DLLs</a> - J&uuml;rgen Kraus</li>
+  <li><a HREF="free_resource_95.shtml">Getting free resource under Windows 95</a> - Iuri Apollonio</li>
+  <li><a HREF="ps.shtml">PS (Process Status) for Windows 95 and Windows NT</a> - Jerry Coffin</li>
+  <li><a HREF="cplframework.shtml">Control Panel Applet Framework</a> - Len Holgate</li>
+</ul>
+
+
+
+
+
+<hr align="center">
+
+<table COLS="3" WIDTH="100%">
+  <tr>
+    <td WIDTH="33%"><font SIZE="-1"><a HREF="http://www.codeguru.com">Goto HomePage</a></font></td>
+    <td WIDTH="34%"><p align="center"><font SIZE="-2">© 1997 - 1998 Zafir Anjum</font> </td>
+    <td WIDTH="33%"><font SIZE="-1"><p align="right">Contact me: <a
+    HREF="mailto:zafir@home.com">zafir@home.com</a>&nbsp;</font> </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

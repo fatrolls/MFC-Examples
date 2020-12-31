@@ -1,0 +1,137 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap & Palette - Invert (mirror) a bitmap</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Invert (mirror) a bitmap</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+
+
+
+We can invert an image either laterally or vertically. The effect of the inversions is shown in the image below. The image on the top left is the normal image, the image on the top right is laterally inverted, the image on the bottom left is vertically inverted and the image on the bottom right has been inverted twice - once laterally and once vertically. The effect of applying both kinds of inversion is that the image gets rotated by 180 degrees.
+
+<p><img src="invert_bitmap.gif" border="1" width="393" height="356"></p>
+
+
+<p>Two functions have been listed below, one of them will draw the image onto a device context after inverting it and the other will create a new bitmap with the inverted image.
+
+<h4>Function 1: DrawInvertedBitmap</h4>
+The DrawInvertedBitmap() function draws an inverted image of a bitmap at the specified location. It uses StretchBlt() to do the actual inversion. When the signs of the source width and the destination width are different then the image is inverted along the x-axis. When the signs of the source height and the destination height are different then the image is inverted along the y-axis.
+
+<PRE><TT><FONT COLOR="#990000">
+// DrawInvertedBitmap	- Draws the bitmap after inverting it
+// hBimtap		- Bitmap handle
+// hPal			- Palette to use when drawing the bitmap
+// bLateral		- Flag to indicate whether to invert laterally or vertically
+// xDest		- X coordinate of top left corner to draw at
+// yDest		- Y coordinate of top left corner to draw at
+void DrawInvertedBitmap( CDC *pDC, HBITMAP hBitmap, HPALETTE hPal, BOOL bLateral, 
+							int xDest, int yDest )
+{
+	// Create a memory DC compatible with the destination DC
+	CDC memDC;
+	memDC.CreateCompatibleDC( pDC );
+
+	// Get logical coordinates
+	BITMAP bm;
+	::GetObject( hBitmap, sizeof( bm ), &bm );
+
+	//memDC.SelectObject( &bitmap );
+	HBITMAP hBmOld = (HBITMAP)::SelectObject( memDC.m_hDC, hBitmap );
+	
+	
+	// Select and realize the palette
+	if( hPal && pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE)
+	{
+		SelectPalette( pDC->GetSafeHdc(), hPal, FALSE );
+		pDC->RealizePalette();
+	}
+	if( bLateral )
+		pDC->StretchBlt( xDest, yDest, bm.bmWidth, bm.bmHeight, &memDC, 
+				bm.bmWidth-1, 0, -bm.bmWidth, bm.bmHeight, SRCCOPY );
+	else
+		pDC->StretchBlt( xDest, yDest, bm.bmWidth, bm.bmHeight, &memDC, 
+				0, bm.bmHeight-1, bm.bmWidth, -bm.bmHeight, SRCCOPY );
+
+	// Restore the old bitmap
+	::SelectObject( memDC.m_hDC, hBmOld );
+}
+</FONT></TT></PRE>
+
+<h4>Function 2: GetInvertedBitmap</h4>
+The GetInvertedBitmap() function creates a new bitmap to store the inverted image. This function too uses the StretchBlt() function for the actual inversion. In this case the destination device context is another memory device context so that the image is rendered into a bitmap.
+
+<PRE><TT><FONT COLOR="#990000">
+// GetInvertedBitmap	- Creates a new bitmap with the inverted image
+// Returns		- Handle to a new bitmap with inverted image
+// hBitmap		- Bitmap to invert
+// bLateral		- Flag to indicate whether to invert laterally or vertically
+HBITMAP GetInvertedBitmap( HBITMAP hBitmap, BOOL bLateral )
+{
+	// Create a memory DC compatible with the display
+	CDC sourceDC, destDC;
+	sourceDC.CreateCompatibleDC( NULL );
+	destDC.CreateCompatibleDC( NULL );
+
+	// Get logical coordinates
+	BITMAP bm;
+	::GetObject( hBitmap, sizeof( bm ), &bm );
+
+	// Create a bitmap to hold the result
+	HBITMAP hbmResult = ::CreateCompatibleBitmap(CClientDC(NULL), 
+						bm.bmWidth, bm.bmHeight);
+
+	// Select bitmaps into the DCs
+	HBITMAP hbmOldSource = (HBITMAP)::SelectObject( sourceDC.m_hDC, hBitmap );
+	HBITMAP hbmOldDest = (HBITMAP)::SelectObject( destDC.m_hDC, hbmResult );
+	
+	if( bLateral )
+		destDC.StretchBlt( 0, 0, bm.bmWidth, bm.bmHeight, &sourceDC, 
+				bm.bmWidth-1, 0, -bm.bmWidth, bm.bmHeight, SRCCOPY );
+	else
+		destDC.StretchBlt( 0, 0, bm.bmWidth, bm.bmHeight, &sourceDC, 
+				0, bm.bmHeight-1, bm.bmWidth, -bm.bmHeight, SRCCOPY );
+
+	// Reselect the old bitmaps
+	::SelectObject( sourceDC.m_hDC, hbmOldSource );
+	::SelectObject( destDC.m_hDC, hbmOldDest );
+
+	return hbmResult;
+}
+</FONT></TT></PRE>
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

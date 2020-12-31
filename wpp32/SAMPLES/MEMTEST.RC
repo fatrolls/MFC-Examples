@@ -1,0 +1,5 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: MEMTEST.RC
+//
+AppIcon ICON memtest.ico

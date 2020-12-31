@@ -1,0 +1,85 @@
+SEH - to - C++ exceptions
+-------------------------
+
+The class COXSEHException implements the functionality to convert 
+Structured Exception Handling of WIN 32 to MFC C++ Exception Handling.
+In this way you can catch the native exceptions of WIN 32 using TRY/CATCH or
+try/catch.
+
+Now you can make your application very robust.  It will never end with a cryptic
+message and you will always be able to warn the user with a clear statement.
+
+To enable this feature you have only to call the static function 
+COXSEHException::EnableSEHTrapping().  From that moment on all WIN 32 
+exceptions are converted to C++ exceptions :
+	COXSEHMemoryException
+	COXSEHMathException
+	COXSEHSpecialException
+
+Now you can catch access violations, numeric overflow, divide by zero and 
+other critical conditions.  For some exceptions additional information is
+provided.  When an access violation occurs you can see whether it was a read
+or write fault and which virtual memory address was accessed incorrectly.
+
+Look at the following example :
+
+	COXSEHException::EnableSEHTrapping();
+ 	TRY
+ 		{
+		// Use invalid memory address
+		int* pa = NULL;
+		*pa = 0;
+		}
+	CATCH(COXSEHMemoryException, px)
+		{
+		if (px->GetCause() == EXCEPTION_ACCESS_VIOLATION)
+			{
+			CString sMsg;
+			sMsg.Format("Access violation trapped with TRY, CATCH "
+						"while trying to %s at address 0x%8.8lx",
+						px->GetReadWriteFlag() ? "READ" : "WRITE", 
+						px->GetAddress());
+			AfxMessageBox(sMsg);
+			}
+		else
+			AfxMessageBox("Memory exception trapped with TRY, CATCH");
+		}
+	END_CATCH
+
+
+By default, Windows NT has all the Floating Point exceptions turned off and computations result in NAN or INFINITY rather than in an exception.
+But this can be enabled by supplying TRUE as first parameter when enabling
+the conversion.
+
+	COXSEHException::EnableSEHTrapping(TRUE);
+ 	TRY
+ 		{
+		// Divide by zero
+		double x = 1.0;
+		double a = 0.0;
+		x = x / a;
+		}
+	CATCH(COXSEHMathException, px)
+		{
+		if (px->GetCause() == EXCEPTION_FLT_DIVIDE_BY_ZERO)
+			AfxMessageBox("Float divide by zero trapped with TRY, CATCH");
+		else
+			AfxMessageBox("Other math exception trapped with TRY, CATCH");
+		}
+	END_CATCH
+
+Because all of the exception classes used are derived from CException,
+you can install a global handler that will trap all the exceptions.
+ 	TRY
+ 		{
+		// Start program
+		// ...
+		}
+	CATCH(CException, px)
+		{
+		// Handle the exception
+		if (px->IsKindOf(RUNTIME_CLASS(COXSEHMathException)))
+			// Handle math exceptions
+		// ...
+		}
+	END_CATCH

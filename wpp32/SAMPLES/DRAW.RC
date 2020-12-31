@@ -1,0 +1,83 @@
+//////////////////////////////////////////////////////////
+// WINDOWS++ CLASS LIBRARY.  Copyright 1992 Paul DiLascia.
+// FILE: DRAW.RC
+//
+#include "wpp.h"
+#include "draw.h"
+
+AppIcon	ICON draw.ico
+
+CrsDrag	CURSOR drag.cur
+CrsNew	CURSOR new.cur
+
+AppMenu MENU { 
+	POPUP "&File" { 
+		MENUITEM FileNew
+		MENUITEM FilePrint
+		MENUITEM HelpAbout
+		MENUITEM SEPARATOR
+		MENUITEM FileExit
+	}
+	POPUP "&Edit" { 
+		POPUP "&New" {
+			MENUITEM "Line\tCtrl-L",		ID_NEWLINE
+			MENUITEM "Rectangle\tCtrl-R",	ID_NEWRECT
+			MENUITEM "Ellipse\tCtrl-E",	ID_NEWELLIPSE
+		}
+		MENUITEM EditDelete
+		MENUITEM "D&uplicate\tCtrl-U",	ID_EDITDUP
+		MENUITEM SEPARATOR
+		POPUP "&Edge Color" {
+			MENUITEM "Black",			ID_EDGE+ID_COLORBLACK
+			MENUITEM "White",			ID_EDGE+ID_COLORWHITE
+			MENUITEM "Red",			ID_EDGE+ID_COLORRED
+			MENUITEM "Green",			ID_EDGE+ID_COLORGREEN
+			MENUITEM "Blue",			ID_EDGE+ID_COLORBLUE
+			MENUITEM SEPARATOR
+			MENUITEM "Random",		ID_EDGE+ID_COLORRANDOM
+			MENUITEM "None",			ID_EDGE+ID_COLORNONE
+		}
+		POPUP "F&ill Color" {
+			MENUITEM "Black",			ID_FILL+ID_COLORBLACK
+			MENUITEM "White",			ID_FILL+ID_COLORWHITE
+			MENUITEM "Red",			ID_FILL+ID_COLORRED
+			MENUITEM "Green",			ID_FILL+ID_COLORGREEN
+			MENUITEM "Blue",			ID_FILL+ID_COLORBLUE
+			MENUITEM SEPARATOR
+			MENUITEM "Random",		ID_FILL+ID_COLORRANDOM
+			MENUITEM "None",			ID_FILL+ID_COLORNONE
+		}
+		MENUITEM SEPARATOR
+		MENUITEM "&Front\tCtrl-F",	ID_FRONT
+		MENUITEM "&Back\tCtrl-B",	ID_BACK
+	}
+}
+
+AppAccel ACCELERATORS
+BEGIN
+	"^L", ID_NEWLINE
+	"^R", ID_NEWRECT
+	"^E", ID_NEWELLIPSE
+	"^U", ID_EDITDUP
+	"^F",	ID_FRONT
+	"^B",	ID_BACK
+	"^A",	ID_TOGGLEBUF
+	AccFileNew
+	AccFilePrint
+	AccMemStats
+END
+
+DLGABOUT DIALOG  72,21,122,54
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS
+CAPTION "About Draw"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL "OK",IDOK,"Button",BS_DEFPUSHBUTTON | WS_TABSTOP | WS_CHILD | WS_VISIBLE,31,35,30,14
+    CONTROL "GPP Draw Program",-1,"static",WS_CHILD | SS_LEFT,31,4,82,9
+    CONTROL "(C) 1996 Paul DiLascia",-1,"static",WS_CHILD | SS_LEFT,31,12,85,8
+    CONTROL "appicon",-1,"static",SS_ICON | WS_CHILD,8,4,16,16
+    CONTROL "Implemented using Windows++",-1,"static",WS_CHILD | SS_LEFT,8,22,108,8
+END
+
+#include "wpprint.dlg"
+

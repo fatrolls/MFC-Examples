@@ -1,0 +1,346 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Stationary Columns</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Stationary Columns</FONT></H3></CENTER><hr>
+
+This article was contributed by <a href="mailto:lauram3017@aol.com">Laura Michaels</a>.
+
+
+<p>There were two things I had to do in order to get stationary
+columns in a CListCtrl.  One was to make sure the CListCtrl 
+redraws its contents when horizontal scrolling occurs.  The 
+other was to properly redraw the text for the stationary columns
+in DrawItem.  To do this, I placed the DrawText for the stationary
+columns near the end of DrawItem.  I used FillRect to blank out 
+the area underneath before calling DrawText.  I also needed 
+to properly set the rectangle DrawText uses for drawing.
+
+<p>The CListCtrl moves the location of the text to be drawn
+when scrolling occurs.  The GetItemRect call in DrawItem
+reflects the change in text location.  To keep items from
+scrolling, you can draw them at their original positions
+instead of the current position returned by GetItemRect.
+In the example code, when drawing a stationary column, I use the
+current vertical position from GetItemRect.  However, I use
+a horizontal position of 0 and a width equivalent to the width
+of the column.  The CListCtrl maintains the top right location
+in its client area as 0 even when scrolling occurs.  Only the
+coordinates returned from GetItemRect change during scrolling.
+
+<p>The example only makes the first column stationary.  The technique
+can be extended to multiple columns.  To do so, move the DrawText
+code for the stationary columns after the code for drawing regular
+columns.  Clear the area underneath each stationary column using 
+FillRect before drawing.  Set the horizontal position (the x 
+location and width) used by DrawText to the original horizontal 
+coordinates of the column instead of the horizontal coordinates 
+returned by GetItemRect.
+
+<hr>
+<p>I put together a very simple test case by placing the following
+in a header file in a view or dialog class:
+
+<PRE><TT><FONT COLOR="#990000">CListCtrlCol lv;
+</FONT></TT></PRE>
+
+This code goes in the .cpp file for that class:
+
+<PRE><TT><FONT COLOR="#990000">
+if (lv.Create (WS_CHILD | WS_BORDER | WS_VISIBLE | WS_TABSTOP,
+   CRect (10, 10, 200, 200), this, IDC_LIST) != FALSE)
+{
+   LV_COLUMN lvc;
+   lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
+   lvc.iSubItem = 0;
+   lvc.fmt =  LVCFMT_LEFT;
+   lvc.pszText = "Column 1";
+   lvc.cx = 75;
+   lvc.iSubItem = 0;
+   lv.InsertColumn(0, &lvc);
+   lvc.pszText = "Column 2";
+   lvc.iSubItem = 1;
+   lvc.cx = 75;
+   lv.InsertColumn(1, &lvc);
+   lvc.iSubItem = 2;
+   lvc.pszText = "Column 3";
+   lvc.cx = 75;
+   lv.InsertColumn(2, &lvc);
+
+   LV_ITEM lvi;
+   lvi.mask = LVIF_TEXT;
+   lvi.iSubItem = 0;
+   lvi.iItem = 0;
+   lvi.pszText = "String 1";
+   lv.InsertItem(&lvi);
+   lv.SetItemText(0, 1, "String 2");
+   lv.SetItemText(0, 2, "String 3");
+   lvi.iItem = 1;
+   lvi.pszText = "String a";
+   lv.InsertItem(&lvi);
+   lvi.iItem = 2;
+   lvi.pszText = "String b";
+   lv.InsertItem(&lvi);
+}
+
+
+
+
+
+
+
+// ListCtrlCol.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "test3.h"
+#include "ListCtrlCol.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CListCtrlCol
+
+CListCtrlCol::CListCtrlCol ()
+{
+}
+
+CListCtrlCol::~CListCtrlCol ()
+{
+}
+
+
+BEGIN_MESSAGE_MAP(CListCtrlCol, CListCtrl)
+        //{{AFX_MSG_MAP(CListCtrlCol)
+        ON_WM_HSCROLL()
+        //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CListCtrlCol message handlers
+
+BOOL CListCtrlCol::PreCreateWindow (CREATESTRUCT& cs) 
+{
+        // TODO: Add your specialized code here and/or call the base class
+   cs.style &= ~LVS_TYPEMASK;
+   cs.style |= LVS_REPORT | LVS_OWNERDRAWFIXED | LVS_ALIGNTOP | 
+      LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS;
+        
+        return CListCtrl::PreCreateWindow (cs);
+}
+
+void CListCtrlCol::OnHScroll (UINT nSBCode, UINT nPos, CScrollBar*
+pScrollBar) 
+{
+        // TODO: Add your message handler code here and/or call default
+        CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
+// Needed to ensure redraw of listctrl is done properly when 
+//      scrolling occurs.
+   CRect clientrect;
+   GetClientRect (clientrect);
+   InvalidateRect (clientrect);
+}
+
+
+void CListCtrlCol::DrawItem (LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+   CDC* pDC = CDC::FromHandle (lpDrawItemStruct->hDC);
+   CRect rcItem (lpDrawItemStruct->rcItem);
+   int nItem = lpDrawItemStruct->itemID;
+   char szItem[256];
+   char szSubItem[256];
+   COLORREF clrTextSave;
+   COLORREF clrBkSave;
+
+// Get information on item to be drawn.
+   LV_ITEM lvi;
+   lvi.mask = LVIF_TEXT | LVIF_STATE;
+   lvi.iItem = nItem;
+   lvi.iSubItem = 0;
+   lvi.pszText = szItem;
+   lvi.cchTextMax = sizeof (szItem);
+   lvi.stateMask = 0xFFFF;      
+   GetItem(&lvi);
+
+   CRect clientrect;
+   CRect rcAllLabels;
+   GetItemRect (nItem, rcAllLabels, LVIR_BOUNDS);
+   GetClientRect (clientrect);
+   if (rcAllLabels.right < clientrect.right)
+      rcAllLabels.right = clientrect.right;
+
+   BOOL bSelected = lvi.state & LVIS_SELECTED;
+
+// Set colors for drawing.
+   if (bSelected)
+   {
+      pDC->FillRect(rcAllLabels, &CBrush (::GetSysColor(COLOR_HIGHLIGHT)));
+      clrTextSave = pDC->SetTextColor (::GetSysColor(COLOR_HIGHLIGHTTEXT));
+      clrBkSave = pDC->SetBkColor (::GetSysColor(COLOR_HIGHLIGHT));
+   }
+   else
+      pDC->FillRect (rcAllLabels, &CBrush (::GetSysColor(COLOR_WINDOW)));
+   
+   GetItemRect (nItem, rcItem, LVIR_LABEL);
+
+
+// Draw labels for subitem columns.
+   LV_COLUMN lvc;
+   lvc.mask = LVCF_FMT | LVCF_WIDTH;
+
+   rcItem.right;
+   for (int nColumn = 1; GetColumn (nColumn, &lvc); nColumn++)
+   {
+      rcItem.left = rcItem.right;
+      rcItem.right += lvc.cx;
+
+      int nRetLen = GetItemText (nItem, nColumn, szSubItem, sizeof
+(szSubItem));
+      if (nRetLen != 0)
+      {
+
+         UINT nJustify = DT_LEFT;
+
+         switch(lvc.fmt & LVCFMT_JUSTIFYMASK)
+         {
+            case LVCFMT_RIGHT:
+               nJustify = DT_RIGHT;
+                 break;
+            case LVCFMT_CENTER:
+               nJustify = DT_CENTER;
+                 break;
+            default:
+                 break;
+         }
+ 
+         pDC->DrawText (szSubItem, -1, rcItem, nJustify | DT_SINGLELINE |
+            DT_NOPREFIX | DT_NOCLIP | DT_VCENTER | DT_END_ELLIPSIS);
+
+      }
+   }
+
+// Draw stationary columns.
+   GetItemRect (nItem, rcItem, LVIR_LABEL);
+
+   rcItem.right = rcItem.right - rcItem.left;
+   rcItem.left = 0;
+
+// Clear the area underneath the stationary columns before drawing
+// the text for these columns.   
+   if (bSelected)
+      pDC->FillRect (rcItem, &CBrush (::GetSysColor(COLOR_HIGHLIGHT)));
+   else
+      pDC->FillRect (rcItem, &CBrush (::GetSysColor(COLOR_WINDOW)));
+
+   pDC->DrawText(szItem, -1, rcItem, DT_LEFT | DT_SINGLELINE | DT_NOPREFIX |
+      DT_NOCLIP | DT_VCENTER | DT_END_ELLIPSIS);
+
+// Reset original colors, if item was selected.
+   if (bSelected)
+   {
+      pDC->SetTextColor (clrTextSave);
+      pDC->SetBkColor (clrBkSave);
+   }
+}
+
+
+
+
+
+
+
+
+
+#if !defined(AFX_LISTCTRLCOL_H__A78627B9_2530_11D1_B92C_0800097E3AEF__INCLUDED_)
+#define AFX_LISTCTRLCOL_H__A78627B9_2530_11D1_B92C_0800097E3AEF__INCLUDED_
+
+#if _MSC_VER >= 1000
+#pragma once
+#endif // _MSC_VER >= 1000
+// ListCtrlCol.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CListCtrlCol window
+
+class CListCtrlCol : public CListCtrl
+{
+// Construction
+public:
+        CListCtrlCol();
+
+// Attributes
+public:
+
+// Operations
+public:
+
+// Overrides
+        // ClassWizard generated virtual function overrides
+        //{{AFX_VIRTUAL(CListCtrlCol)
+        protected:
+        virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+        //}}AFX_VIRTUAL
+
+// Implementation
+public:
+        virtual ~CListCtrlCol();
+
+        // Generated message map functions
+protected:
+        //{{AFX_MSG(CListCtrlCol)
+        afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+        //}}AFX_MSG
+
+        DECLARE_MESSAGE_MAP()
+   virtual void DrawItem (LPDRAWITEMSTRUCT lpDrawItemStruct);
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Developer Studio will insert additional declarations immediately
+before the previous line.
+
+#endif //
+!defined(AFX_LISTCTRLCOL_H__A78627B9_2530_11D1_B92C_0800097E3AEF__INCLUDED_)
+</FONT></TT></PRE>
+
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

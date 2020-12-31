@@ -1,0 +1,75 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Change the background color of individual columns</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Change the background color of individual columns</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+To set the background color of a column, the list view control has to be owner drawn. In an owner drawn control, each row is drawn by the application program rather than by the control. So when drawing a row, the background color can be set to our choice within the rectangle occupied by a particular column. To implement an owner drawn control 
+see the topic <A HREF="sel_row.shtml">'Selection highlighting of entire row'</A>.
+
+<p><img src="col_color.gif" width="276" height="221"></p>
+<p>The code segment below illustrates how to set yellow as the background color for alternate columns. The code shown is part of the DrawItem() function. The first segment draws the background color just before drawing the state icon. The second segment draws the background color within the loop that draws the labels for the remaining columns.
+ 
+<PRE><TT><FONT COLOR="#990000">	// Set clip region
+	rcCol.right = rcCol.left + GetColumnWidth(0);
+	CRgn rgn;
+	rgn.CreateRectRgnIndirect(&rcCol);
+	pDC->SelectClipRgn(&rgn);
+	rgn.DeleteObject();
+
+<b>	// Draw column background
+	if( !bHighlight )
+		pDC->FillRect(rcCol, &CBrush(RGB(255,255,0)));
+</b>
+	// Draw state icon
+	if (lvi.state & LVIS_STATEIMAGEMASK)
+
+	:
+	:
+	:
+	:
+				   
+	for(int nColumn = 1; GetColumn(nColumn, &lvc); nColumn++)
+	{
+		rcCol.left = rcCol.right;
+		rcCol.right += lvc.cx;
+
+<b>		// Draw column background
+		if( !bHighlight || ( bHighlight && m_nHighlight == HIGHLIGHT_NORMAL ) )
+			if( (nColumn+1) % 2 )
+				pDC->FillRect(rcCol, &CBrush(RGB(255,255,0)));
+</b>
+</FONT></TT></PRE>
+<BR>&nbsp;
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

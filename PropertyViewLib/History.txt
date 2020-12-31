@@ -1,0 +1,99 @@
+PropertyViewLib
+
+Developers history of changes
+
+2005-07-27
+
+- Splitter added to enable comment pane resize
+
+  EPropCtrl now adds splitter between tab and comment pane, to allow user
+  to resize comment panel in steps of comment line height.
+
+- Cursor added to splitter
+
+  EPropListCtrl now sets IDC_SIZEWE cursor when hovering or moving
+  vertical splitter.
+
+2005-07-26
+
+- Thousand separator bug fixed
+
+  Numeric values entered by user with thousand separators can now be
+  interpreted by the control
+
+- Flicker free comment pane
+
+  Comment pane would flicker on resizing views with alot of comment text,
+  this has now been fixed using memory dc.
+
+- Numeric types now support hex user input
+
+  User can now enter hexidecimal value at numeric properties, use 0x as
+  prefix eg 0xff would transform to 255.
+
+2005-07-25
+
+- Fixed significant digits problem for numeric properties
+
+  Now handling signicant digits better in ENumericProperty::GetTextValue()
+
+2005-07-14
+
+- Ignoring null parameters in EPropList::AddPropHost()
+
+  Would crash if parsing null pointers to this method, now ignoring null
+  pointers doing nothing.
+
+2005-07-05
+
+- Now skipping properties outside view
+
+  For performance, the view vill totally skip drawing properties outside
+  the view. Property rects are checked against the viwe rect.
+
+- Animated node openings
+
+  When opening indent nodes, the view will animate. Nodes after the parent
+  node will fall to their new position.
+
+- Flicker free drawing
+
+  Drawing on memory dc then blit entire image to view.
+
+- Combo box now opens its menu correctly when view is scrolled
+
+  Combo menu would open in the wrong place if view is scrolled. Now
+  using the CButton's windowrect.
+
+- Created shared ENumericProperty base class
+
+  Same base class for numeric types double, float and integer. This allows
+  for all numeric types to share the same scaling capabilities and
+  special case etc.
+
+- Added AddSpecialCaseText() for all numeric types
+
+  The numeric property will display the particular text string in case
+  the numeric has som special value. This is useful eg in read only fields
+  where som special value means something special. That could be
+  0="triangle", 1="circle" or similar
+
+- Better support for integer types
+
+  SetType() allows for specifying the type of integer in question. The byte
+  with and signed/unsigned. Use 1 for byte (8 bit), 2 for short (16 bit),
+  or 4 for int (32 bit).
+
+2005-07-04
+
+- Fixed resize problem. Failed to redraw correctly when parent CWnd was resized. 
+ 
+
+2005-05-12
+
+- Hosts adding child hosts PropList.AddPropHost(this,&m_SomeHost) are now notified on child change
+- Multidouble property added to support monitoring a list of doubles
+- Scrollbars now update on node open/close
+- Commentpane changed appearence to one single clickable pane
+- String that don't fit now gets "..." untill fit
+

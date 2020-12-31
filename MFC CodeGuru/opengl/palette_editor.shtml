@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>OpenGL - Palette editor</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Palette editor</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:pierre.alliez@cnet.francetelecom.fr">Pierre ALLIEZ</A>.
+
+</B></FONT><P><A HREF="Palette.zip">Download</A></P>
+
+<FONT SIZE=2><P>The CDialogPalette class permit easy edition of 256 colors ramps. We can also save and load predefined ramps. The ramp editing is made using nodes, ramps are recalculated between every defined nodes. by example : for a single grey scale ramp, only the first and the last nodes are necessary (black and white), the rainbow ramp is defined using a few nodes, in fact in a few mouse events. Adaptation is possible to insert this class in applications which need ramp definition...</P></FONT>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=4 WIDTH=368>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P ALIGN="CENTER"><A HREF="Palette1.gif"><IMG SRC="Palette1_small.gif" BORDER=0 WIDTH=150 HEIGHT=142></A></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P ALIGN="CENTER"><A HREF="Palette2.gif"><IMG SRC="Palette2_small.gif" BORDER=0 WIDTH=150 HEIGHT=142></A></TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P ALIGN="CENTER"><A HREF="Palette3.gif"><IMG SRC="Palette3_small.gif" BORDER=0 WIDTH=150 HEIGHT=142></A></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P ALIGN="CENTER"><A HREF="Palette4.gif"><IMG SRC="Palette4_small.gif" BORDER=0 WIDTH=150 HEIGHT=142></A></TD>
+</TR>
+</TABLE>
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

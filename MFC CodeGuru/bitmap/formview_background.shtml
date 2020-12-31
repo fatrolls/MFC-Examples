@@ -1,0 +1,231 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Bitmap - Painting the background for a CFormView derived class</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Painting the background for a CFormView derived class</FONT></H3></CENTER>
+
+<CENTER>
+<H3><HR></H3></CENTER>
+
+This article was contributed by <A HREF="mailto:aroman@medanet.ro">Adrian Roman</A>. 
+
+<P>I wanted to paint bitmaps on forms, like Access does. So I wrote some code for that: First, add in your derived CFormView two members: </P>
+<FONT COLOR="#800000"><TT><PRE>
+CPalette m_palette;
+CBitmap m_bitmap;</PRE>
+</FONT></TT><P>Add the following functions to your derived class: OnDraw overrides the base class' function, and OnCtlColor is a handler for WM_CTLCOLOR message. Call in OnInitialUpdate the function: </P>
+<FONT COLOR="#800000"><TT><PRE>
+&#9;GetBitmapAndPalette( IDB_BACK, m_bitmap, m_palette );</PRE>
+</FONT></TT><P>where IDB_BACK is the identifier for the bitmap you want as background. </P>
+<P>The code uses Keith Rule's CMemDC class. I added it here, so you don't have to search for it.</P>
+<P>Add to your view a handler for WM_ERASEBKGND message:</P>
+<FONT COLOR="#800000"><P>BOOL CMyView::OnEraseBkgnd(CDC* pDC) </P>
+<P>{</P>
+<P>&#9;// TODO: Add your message handler code here and/or call default</P>
+<P>&#9;return FALSE;</P>
+<P>}</P>
+</FONT><P>&nbsp;</P>
+<FONT COLOR="#800000"><TT><PRE>
+
+
+void CMyFormView::OnDraw(CDC* pDC) 
+{
+&#9;// TODO: Add your specialized code here and/or call the base class
+</TT>&#9;::DrawTheBackground(this,pDC,&amp;m_palette,&amp;m_bitmap); 
+<TT>}
+&nbsp;
+HBRUSH CMyFormView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+{
+&#9;HBRUSH hbr = CDaoRecordView::OnCtlColor(pDC, pWnd, nCtlColor); //replace with your own base class
+&#9;
+&#9;// TODO: Change any attributes of the DC here
+&#9;if(nCtlColor==CTLCOLOR_STATIC){
+&#9;&#9;//this is only an example - you may have to modify here the code in order to work properly for you
+&#9;&#9;if(pWnd-&gt;GetDlgCtrlID()==IDC_STATIC){
+&#9;&#9;&#9;pDC-&gt;SetBkMode(TRANSPARENT);
+&#9;&#9;&#9;//pDC-&gt;SetTextColor(RGB(255,255,255)); //you can change here the color of static text
+&#9;&#9;&#9;return (HBRUSH)::GetStockObject(NULL_BRUSH);
+&#9;&#9;}
+&#9;}else pDC-&gt;SetBkMode(OPAQUE);&#9;
+&#9;
+&#9;// TODO: Return a different brush if the default is not desired
+&#9;return hbr;
+}
+&nbsp;
+&nbsp;
+&nbsp;
+BOOL CMyFormView::GetBitmapAndPalette(UINT nIDResource, CBitmap &amp;bitmap, CPalette &amp;pal)
+{
+&#9;LPCTSTR lpszResourceName = (LPCTSTR)nIDResource;
+&#9;HBITMAP hBmp = (HBITMAP)::LoadImage( AfxGetInstanceHandle(), 
+&#9;&#9;lpszResourceName, IMAGE_BITMAP, 0,0, LR_CREATEDIBSECTION );
+&#9;if( hBmp == NULL )return FALSE;
+&#9;bitmap.Attach( hBmp );
+&#9;// Create a logical palette for the bitmap
+&#9;DIBSECTION ds;
+&#9;BITMAPINFOHEADER &amp;bmInfo = ds.dsBmih;
+&#9;bitmap.GetObject( sizeof(ds), &amp;ds );
+&#9;int nColors = bmInfo.biClrUsed ? bmInfo.biClrUsed : 1 &lt;&lt; bmInfo.biBitCount;
+&#9;// Create a halftone palette if colors &gt; 256. 
+&#9;CClientDC dc(NULL);&#9;&#9;&#9;// Desktop DC
+&#9;if( nColors &gt; 256 )&#9;pal.CreateHalftonePalette( &amp;dc );
+&#9;else{
+&#9;&#9;// Create the palette
+&#9;&#9;RGBQUAD *pRGB = new RGBQUAD[nColors];
+&#9;&#9;CDC memDC;
+&#9;&#9;memDC.CreateCompatibleDC(&amp;dc);
+&#9;&#9;memDC.SelectObject( &amp;bitmap );
+&#9;&#9;::GetDIBColorTable( memDC, 0, nColors, pRGB );
+&#9;&#9;UINT nSize = sizeof(LOGPALETTE) + (sizeof(PALETTEENTRY) * nColors);
+&#9;&#9;LOGPALETTE *pLP = (LOGPALETTE *) new BYTE[nSize];
+&#9;&#9;pLP-&gt;palVersion = 0x300;
+&#9;&#9;pLP-&gt;palNumEntries = nColors;
+&#9;&#9;for( int i=0; i &lt; nColors; i++){
+&#9;&#9;&#9;pLP-&gt;palPalEntry[i].peRed = pRGB[i].rgbRed;
+&#9;&#9;&#9;pLP-&gt;palPalEntry[i].peGreen = pRGB[i].rgbGreen;
+&#9;&#9;&#9;pLP-&gt;palPalEntry[i].peBlue = pRGB[i].rgbBlue;
+&#9;&#9;&#9;pLP-&gt;palPalEntry[i].peFlags = 0;
+&#9;&#9;}
+&#9;&#9;pal.CreatePalette( pLP );
+&#9;&#9;delete[] pLP;
+&#9;&#9;delete[] pRGB;
+&#9;}
+&#9;return TRUE;
+}
+
+
+</TT>void DrawTheBackground(CDaoRecordView *view,CDC *pDC,CPalette *mp_palette,CBitmap *mp_bitmap)
+{
+&#9;if(pDC-&gt;IsPrinting())return;
+&#9;CRect rect;
+&#9;CPalette *old_palette=NULL;
+&#9;// Select and realize the palette
+&#9;if( pDC-&gt;GetDeviceCaps(RASTERCAPS) &amp; RC_PALETTE &amp;&amp; mp_palette-&gt;m_hObject != NULL ){
+&#9;&#9;old_palette=pDC-&gt;SelectPalette( mp_palette, FALSE );
+&#9;&#9;pDC-&gt;RealizePalette();
+&#9;}
+&#9;view-&gt;GetClientRect(rect);
+&#9;pDC-&gt;DPtoLP(rect);
+&#9;CMemDC DC(pDC,rect);
+&#9;CDC dcImage;
+&#9;if (!dcImage.CreateCompatibleDC(pDC))return;
+&#9;BITMAP bm;
+&#9;mp_bitmap-&gt;GetBitmap(&amp;bm);
+&#9;// Paint the image.
+&#9;CBitmap* pOldBitmap = dcImage.SelectObject(mp_bitmap);
+&#9;for(int i=((int)floor((double)rect.left/bm.bmWidth))*bm.bmWidth;i&lt;=rect.right/*rect.Width()*/;i+=bm.bmWidth)
+&#9;     for(int j=((int)floor((double)rect.top/bm.bmHeight))*bm.bmHeight;j&lt;=rect.bottom/*rect.Height()*/;j+=bm.bmHeight)
+&#9;&#9;DC-&gt;BitBlt(i, j, bm.bmWidth, bm.bmHeight, &amp;dcImage, 0, 0, SRCCOPY);
+&#9;dcImage.SelectObject(pOldBitmap);&#9;
+&#9;pDC-&gt;SelectPalette(old_palette,FALSE);
+&#9;pDC-&gt;RealizePalette();&#9;
+}
+<TT>
+
+
+</TT>#ifndef _MEMDC_H_
+#define _MEMDC_H_
+//////////////////////////////////////////////////
+// CMemDC - memory DC
+//
+// Author: Keith Rule
+// Email:&nbsp; keithr@europa.com
+// Copyright 1996-1997, Keith Rule
+//
+// You may freely use or modify this code provided this
+// Copyright is included in all derived versions.
+//
+// History - 10/3/97 Fixed scrolling bug.
+//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Added print support.
+//&#9;
+// This class implements a memory Device Context
+
+
+class CMemDC : public CDC {
+private:
+&#9;CBitmap m_bitmap; // Offscreen bitmap
+&#9;CBitmap* m_oldBitmap; // bitmap originally found in CMemDC
+&#9;CDC* m_pDC; // Saves CDC passed in constructor
+&#9;CRect m_rect; // Rectangle of drawing area.
+&#9;BOOL m_bMemDC; // TRUE if CDC really is a Memory DC.
+public:
+&#9;CMemDC(CDC* pDC, CRect &amp;rect) : CDC(), m_oldBitmap(NULL), m_pDC(pDC)
+&#9;{
+&#9;&#9;ASSERT(m_pDC != NULL); // If you asserted here, you passed in a NULL CDC.
+&#9;&#9;m_bMemDC = !pDC-&gt;IsPrinting();
+&#9;&#9;m_rect=rect;
+&#9;&#9;if (m_bMemDC){
+&#9;&#9;&#9;// Create a Memory DC
+&#9;&#9;&#9;CreateCompatibleDC(pDC);
+&#9;&#9;&#9;pDC-&gt;GetClipBox(&amp;m_rect);
+&#9;&#9;&#9;m_bitmap.CreateCompatibleBitmap(pDC, m_rect.Width(), m_rect.Height());
+&#9;&#9;&#9;m_oldBitmap = SelectObject(&amp;m_bitmap);
+&#9;&#9;&#9;SetWindowOrg(m_rect.left, m_rect.top);
+&#9;&#9;} else {
+&#9;&#9;&#9;// Make a copy of the relevent parts of the current DC for printing
+&#9;&#9;&#9;m_bPrinting = pDC-&gt;m_bPrinting;
+&#9;&#9;&#9;m_hDC = pDC-&gt;m_hDC;
+&#9;&#9;&#9;m_hAttribDC = pDC-&gt;m_hAttribDC;
+&#9;&#9;}
+&#9;}
+
+&#9;
+&#9;~CMemDC()
+&#9;{
+&#9;&#9;if (m_bMemDC) {
+&#9;&#9;&#9;// Copy the offscreen bitmap onto the screen.
+&#9;&#9;&#9;m_pDC-&gt;BitBlt(m_rect.left, m_rect.top, m_rect.Width(), m_rect.Height(),
+&#9;&#9;&#9;&#9;this, m_rect.left, m_rect.top, SRCCOPY);
+&#9;&#9;&#9;//Swap back the original bitmap.
+&#9;&#9;&#9;SelectObject(m_oldBitmap);
+&#9;&#9;} else {
+&#9;&#9;&#9;// All we need to do is replace the DC with an illegal value,
+&#9;&#9;&#9;// this keeps us from accidently deleting the handles associated with
+&#9;&#9;&#9;// the CDC that was passed to the constructor.
+&#9;&#9;&#9;m_hDC = m_hAttribDC = NULL;
+&#9;&#9;}
+&#9;}
+&#9;// Allow usage as a pointer
+&#9;CMemDC* operator-&gt;() {return this;}
+&#9;// Allow usage as a pointer
+&#9;operator CMemDC*() {return this;}
+};
+
+
+#endif
+<TT>
+
+</PRE>
+</FONT></TT>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

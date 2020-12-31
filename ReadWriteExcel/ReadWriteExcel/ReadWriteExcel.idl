@@ -1,0 +1,29 @@
+// ReadWriteExcel.idl : ReadWriteExcel.exe 的类型库源
+
+// 此文件将由 MIDL 编译器处理以产生
+// 类型库(ReadWriteExcel.tlb)。
+
+[ uuid(7884A9A5-2E64-451D-A402-B616940EE342), version(1.0) ]
+library ReadWriteExcel
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//  CReadWriteExcelDoc 的主调度接口
+	
+	[ uuid(AF2A28C6-8ECD-4D30-9DAA-1A7C0EBA8D1C) ]
+	dispinterface IReadWriteExcel
+	{
+		properties:
+			
+		methods:
+	};
+
+	//  CReadWriteExcelDoc 的类信息
+	
+	[ uuid(B2359DC3-377F-45D3-AF2A-77278B400702) ]
+	coclass ReadWriteExcel
+	{
+		[default] dispinterface IReadWriteExcel;
+	};
+};

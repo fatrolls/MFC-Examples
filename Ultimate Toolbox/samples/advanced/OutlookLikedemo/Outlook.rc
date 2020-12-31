@@ -1,0 +1,520 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP5             BITMAP  MOVEABLE PURE   "res\\outlook2003.bmp"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+IDB_BITMAP1             BITMAP  MOVEABLE PURE   "res\\large.bmp"
+IDB_BITMAP2             BITMAP  MOVEABLE PURE   "res\\small.bmp"
+IDB_BITMAP3             BITMAP  MOVEABLE PURE   "res\\TreeImages.bmp"
+IDB_BITMAP4             BITMAP  MOVEABLE PURE   "res\\bitmap4.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE MOVEABLE PURE 
+BEGIN
+    "#include ""utsampleabout.rc""\r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Outlook.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""OXBitmapButton.rc""\r\n"
+    "#include ""OXBitmapMenu.rc""\r\n"
+    "#include ""OXCoolToolBar.rc""\r\n"
+    "#include ""OXPopupBarCtrl.rc""\r\n"
+    "#include ""OXShortcutBar.rc""\r\n"
+    "#include ""OXMenubar.rc""\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Outlook.ico"
+IDR_OUTLOOTYPE          ICON    DISCARDABLE     "res\\OutlookDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR MOVEABLE PURE  16, 16
+BEGIN
+    BUTTON      ID_NEW_MESSAGE
+    SEPARATOR
+    BUTTON      ID_BACK
+    BUTTON      ID_FORWARD
+    SEPARATOR
+    BUTTON      ID_UP_ONE_FOLDER
+    BUTTON      ID_TOGGLE_TREE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_FILE_PRINT_PREVIEW
+    SEPARATOR
+    BUTTON      ID_MOVE_TO_FOLDER
+    BUTTON      ID_DELETE
+    SEPARATOR
+    BUTTON      ID_REPLY
+    BUTTON      ID_REPLY_TO_ALL
+    BUTTON      ID_FORWARD_MESSAGE
+    SEPARATOR
+    BUTTON      ID_ADDRESS_BOOK
+    SEPARATOR
+    BUTTON      ID_GROUP_BY_BOX
+    BUTTON      ID_AUTO_PREVIEW
+    SEPARATOR
+    BUTTON      ID_FIND_ITEMS
+    SEPARATOR
+    BUTTON      ID_OFFICE_ASSISTANT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Print",                      ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "Message"
+    BEGIN
+        MENUITEM "&Reply",                      ID_REPLY
+        MENUITEM "Reply to &all",               ID_REPLY_TO_ALL
+        MENUITEM "&Forward",                    ID_FORWARD_MESSAGE
+        MENUITEM SEPARATOR
+        MENUITEM "&Move to folder",             ID_MOVE_TO_FOLDER
+        MENUITEM "&Delete",                     ID_DELETE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Forward",                    ID_FORWARD
+        MENUITEM "&Back",                       ID_BACK
+        MENUITEM "&Up",                         ID_UP_ONE_FOLDER
+        MENUITEM SEPARATOR
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Skin"
+    BEGIN
+        MENUITEM "&Classic",                    ID_SKIN_CLASSIC
+        MENUITEM "Office &XP",                  ID_SKIN_OFFICEXP
+        MENUITEM "&Office 2003",                ID_SKIN_OFFICE2003
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About OutlookLikeDemo...",   ID_APP_ABOUT
+    END
+END
+
+IDR_POPUP_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "_POPUP_"
+    BEGIN
+        MENUITEM "&New Message",                ID_NEW_MESSAGE
+        MENUITEM "&Post in this Folder",        ID_POST_IN_FOLDER
+        MENUITEM SEPARATOR
+        MENUITEM "&Appointment",                ID_APPOINTMENT
+        MENUITEM "&Meeting Request",            ID_MEETING_REQUEST
+        MENUITEM "&Contact",                    ID_CONTACT
+        MENUITEM "&Task",                       ID_TASK
+        MENUITEM "Task &Request",               ID_TASK_REQUEST
+        MENUITEM "N&ote",                       ID_NOTE
+        MENUITEM "&Office Document...",         ID_OFFICE_DOCUMENT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SHBPROPERTIES_DIALOG DIALOGEX 0, 0, 280, 146
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ShortcutBar properties"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CLRBACK,"Button",BS_OWNERDRAW | WS_TABSTOP,87,16,
+                    55,14
+    CONTROL         "",IDC_HDRCLRBACK,"Button",BS_OWNERDRAW | WS_TABSTOP,87,
+                    33,55,14
+    PUSHBUTTON      "Text...",IDC_TEXTFONT,13,68,39,13
+    PUSHBUTTON      "Header...",IDC_HDRFONT,13,85,39,13
+    EDITTEXT        IDC_EDIT_HDRHEIGHT,61,108,27,12,ES_AUTOHSCROLL
+    CONTROL         "Apply to expanded group only",IDC_CHECK_APPLYTOEXPANDED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,126,109,10
+    EDITTEXT        IDC_EDIT_GRPMARGIN,242,18,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_LEFTMARGIN,183,50,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TOPMARGIN,242,50,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_RIGHTMARGIN,183,66,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_BOTTOMMARGIN,242,66,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SCROLLBTNWIDTH,183,101,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SCROLLBTNHEIGHT,242,101,26,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,154,125,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,223,125,50,14
+    GROUPBOX        "Colors",IDC_STATIC,7,7,141,44
+    LTEXT           "Background",IDC_STATIC,14,19,40,8
+    LTEXT           "Header Background",IDC_STATIC,14,36,65,8
+    GROUPBOX        "Fonts",IDC_STATIC,7,56,141,48
+    CONTROL         "Static",IDC_NAMETEXTFONT,"Static",SS_SIMPLE | SS_SUNKEN | 
+                    WS_GROUP,61,68,81,12,WS_EX_STATICEDGE
+    CONTROL         "Static",IDC_NAMEHDRFONT,"Static",SS_LEFTNOWORDWRAP | 
+                    SS_SUNKEN | WS_GROUP,61,85,81,12,WS_EX_STATICEDGE
+    GROUPBOX        "Static",IDC_STATIC,154,7,119,112
+    LTEXT           "Margin between groups",IDC_STATIC,161,20,75,8
+    LTEXT           "Child Window Margins",IDC_STATIC,161,38,71,8
+    LTEXT           "Left",IDC_STATIC,161,52,13,8
+    LTEXT           "Top",IDC_STATIC,216,52,14,8
+    LTEXT           "Right",IDC_STATIC,161,68,18,8
+    LTEXT           "Bottom",IDC_STATIC,216,68,23,8
+    LTEXT           "Scroll Button Size",IDC_STATIC,160,90,56,8
+    LTEXT           "Width",IDC_STATIC,161,103,20,8
+    LTEXT           "Height",IDC_STATIC,216,103,22,8
+    LTEXT           "Header Height",IDC_STATIC,7,111,47,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "Outlook MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "Outlook\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998\0"
+            VALUE "OriginalFilename", "Outlook.EXE\0"
+            VALUE "ProductName", "Outlook Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO MOVEABLE PURE 
+BEGIN
+    IDD_SHBPROPERTIES_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 273
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "OutlookLikeDemo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Outlook"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Look at a print preview of the active document\nPrint Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEW_MESSAGE          "Compose a E-mail New Message\nNew Message"
+    ID_BACK                 "Go Back\nBack"
+    ID_FORWARD              "Go Forward\nForward"
+    ID_UP_ONE_FOLDER        "Move Up One Folder\nUp One Level"
+    ID_TOGGLE_TREE          "Shows or hides the Tree Window\nTree View"
+    ID_MOVE_TO_FOLDER       "Move to the selected Folder\nMove to Folder"
+    ID_DELETE               "Delete the selected item\nDelete"
+    ID_REPLY                "Reply to the current message\nReply"
+    ID_REPLY_TO_ALL         "Reply to all receipients in the message\nReply to All"
+    ID_ADDRESS_BOOK         "Shows the address book\nAddress Book"
+    ID_GROUP_BY_BOX         "Group by Box\nGroup by Box"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_AUTO_PREVIEW         "See an Auto Preview\nAuto Preview"
+    ID_FIND_ITEMS           "Find the selected items\nFind Items"
+    ID_OFFICE_ASSISTANT     "Popup the Office Assistant for help\nOffice Assistant"
+    IDC_COMBO               "Combobox of items\nItem list"
+    ID_FORWARD_MESSAGE      "Forward the current message\nForward Message"
+    ID_POST_IN_FOLDER       "Post a new item into this folder\nPost in this Folder"
+    ID_APPOINTMENT          "Schedule a new appointment\nAppointment"
+    ID_MEETING_REQUEST      "Allows you to request a meeting\nMeeting Request"
+    ID_CONTACT              "Add a new contact\nContact"
+    ID_TASK                 "Task\nTask"
+    ID_TASK_REQUEST         "Request a task\nTask Request"
+    ID_NOTE                 "Add a note\nNote"
+    ID_OFFICE_DOCUMENT      "Open an existing office document\nOffice Document"
+    ID_VIEW_OUTLOOKBAR      "Shows or hides the Outlook Bar\nOutlook Bar"
+    ID_VIEW_FOLDERVIEW      "Shows or hides the folder list\nFolder List"
+    ID_DESCRIPTION_FILE     "OutlookInfo.rtf"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "utsampleabout.rc"
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Outlook.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "OXBitmapButton.rc"
+#include "OXBitmapMenu.rc"
+#include "OXCoolToolBar.rc"
+#include "OXPopupBarCtrl.rc"
+#include "OXShortcutBar.rc"
+#include "OXMenubar.rc"
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

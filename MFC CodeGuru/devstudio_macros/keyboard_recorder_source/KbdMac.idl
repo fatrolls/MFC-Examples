@@ -1,0 +1,57 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+//                           Public Domain.
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+//
+//  File     :   KbdMac.idl
+//
+//  Author   :   Darren Richards
+//
+//  Date     :   25th February 98
+//
+//  Synopsis :   IDL description of KbdMac add-in object.
+//               (ATL Wizard generated)
+//
+////////////////
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+		object,
+		uuid(CF6847F2-AE24-11D1-AE27-00A0C91BA903),
+		dual,
+		helpstring("IKMAddIn Interface"),
+		pointer_default(unique)
+	]
+	interface IKMAddIn : IDispatch
+	{
+		[id(1)] HRESULT KMPlay();
+		[id(2)] HRESULT KMStop();
+		[id(3)] HRESULT KMRecord();
+	};
+[
+	uuid(CF6847E5-AE24-11D1-AE27-00A0C91BA903),
+	version(1.0),
+	helpstring("KbdMac Add-In")
+]
+library KBDMACLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	importlib("devshl.dll");
+	importlib("ide\devdbg.pkg");
+	
+
+	[
+		uuid(CF6847F3-AE24-11D1-AE27-00A0C91BA903),
+		helpstring("KMAddIn Class")
+	]
+	coclass KMAddIn
+	{
+		[default] interface IKMAddIn;
+	};
+};

@@ -1,0 +1,154 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Change tooltips at runtime</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Change tooltips at runtime</FONT></H3></CENTER>
+<HR>
+
+
+
+
+This article was contributed by <A HREF="mailto:hansw@flash.net">Hans Wedemeyer</A>.
+
+<P>This example demonstrates the various aspects of changing the text of the
+tool tips at runtime. It is far from perfect but does the job and has been
+stable in several application where I use it.
+
+<P>Need to override the OnToolTipText()
+
+<PRE><TT><FONT COLOR="#990000">
+virtual afx_msg BOOL OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult );
+</FONT></TT></PRE>
+
+Add message handlers for
+<PRE><TT><FONT COLOR="#990000">
+    ON_NOTIFY_EX_RANGE( TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
+    ON_NOTIFY_EX_RANGE( TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
+</FONT></TT></PRE>
+
+
+This is the handler.Also does  UNICODE.
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CToolTipView::OnToolTipText(UINT nID, NMHDR* pNMHDR, LRESULT* pResult )
+{
+    ASSERT ( pNMHDR->code == TTN_NEEDTEXTA || TTN_NEEDTEXTW );
+	
+    TOOLTIPTEXTA* pTTTA = ( TOOLTIPTEXTA *)pNMHDR;
+    TOOLTIPTEXTW* pTTTW = ( TOOLTIPTEXTW *)pNMHDR;
+	
+    CString strTipText;
+    CString strMessage;
+	
+    if( GetToolText(pNMHDR->idFrom, strTipText, strMessage))
+    {
+#ifndef _UNICODE
+        if(pNMHDR->code == TTN_NEEDTEXTA)
+            lstrcpyn(pTTTA->szText,strTipText,_countof(pTTTA->szText));
+        else
+            _mbstowcsz(pTTTW->szText,strTipText,_countof(pTTTW->szText));
+#else
+        if(pNMHDR->code == TTN_NEEDTEXTA)
+            _wcstombsz(pTTTA->szText,strTipText,_countof(pTTTA->szText));
+        else
+            lstrcpyn(pTTTW->szText,strTipText,_countof(pTTTW->szText));
+		
+#endif
+		
+		// change status bar message here, need a pointer to CMainFrame
+		// SetMessageText(strMessage);
+		
+		// ok we handled the message, return TRUE
+		return TRUE;
+	}
+	
+	// we did NOT handle the message, pass it on, this is important, don't miss it!
+	return CToolTipView::OnToolTipText(nID,pNMHDR,pResult);
+	
+}
+</FONT></TT></PRE>
+
+<P>Here we do the actual work of changing the text. Each Item must be handled
+and can be done by a switch.
+
+<PRE><TT><FONT COLOR="#990000">
+BOOL CToolTipView::GetToolText( UINT nID, CString& strTipText, CString& /*strMessage*/)
+{
+    CString strFullString;
+	
+    switch( nID )
+    {
+	case ID_FILE_NEW:  // have to handle all toolbar tool tip messages here
+	case ID_FILE_OPEN:
+	case ID_FILE_SAVE:
+	case ID_EDIT_CUT:
+	case ID_EDIT_COPY:
+	case ID_EDIT_PASTE:
+	case ID_FILE_PRINT:
+	case ID_APP_ABOUT:
+		if (strFullString.LoadString(nID))
+			AfxExtractSubString ( strTipText, strFullString, 1,'\n');
+		break;
+		
+        // demonstrates how to change the tool tip for a specific button 
+	case ID_CHANGE_TOOL_TIP:
+		// local CString containg the new text, which you can set anytime at runtime
+		// and will be displayed here when the user puts the mouse on the button.
+		strTipText = m_strNewToolTipText;
+		
+		// if the user tried to enter a zero legth string, it could
+		// cause confusion, so put the default sring back in
+		if ( strTipText.GetLength()  ==  0 )  // then  put back the default string
+		{
+			if (strFullString.LoadString (ID_CHANGE_TOOL_TIP))
+				AfxExtractSubString ( strTipText, strFullString, 1,'\n' );
+		}
+		break;
+    }
+	
+    return TRUE;
+}
+</FONT></TT></PRE>
+
+
+<H4>A Note!</H4>
+I wrote this code with the help of these mfc-l members about a year ago.
+<br>Michael Hupp, Kostya Sebov, Tim Hodgson, Thibault Mangold, Dicky Singh,
+David Little and David Elliot.
+
+
+
+
+
+<P><A HREF="change_tooltip.zip">Download Zip File</A>
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,74 @@
+// Calendar.odl : type library source for ActiveX Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (Calendar.tlb) that will become a resource in
+// Calendar.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(68932D19-CFE2-11D2-9282-00C04F8ECF0C), version(1.0),
+  helpfile("Calendar.hlp"),
+  helpstring("Calendar ActiveX Control module"),
+  control ]
+library CALENDARLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	//  Primary dispatch interface for CCalendarCtrl
+
+	[ uuid(68932D1A-CFE2-11D2-9282-00C04F8ECF0C),
+	  helpstring("Dispatch interface for Calendar Control"), hidden ]
+	dispinterface _DCalendar
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CCalendarCtrl)
+			[id(DISPID_BACKCOLOR), bindable, requestedit] OLE_COLOR BackColor;
+			[id(1)] boolean RedSundays;
+			//}}AFX_ODL_PROP
+
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CCalendarCtrl)
+			[id(2)] DATE GetDate();
+			[id(3)] boolean SetDate(short nYear, short nMonth, short nDay);
+			//}}AFX_ODL_METHOD
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+	};
+
+	//  Event dispatch interface for CCalendarCtrl
+
+	[ uuid(68932D1B-CFE2-11D2-9282-00C04F8ECF0C),
+	  helpstring("Event interface for Calendar Control") ]
+	dispinterface _DCalendarEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CCalendarCtrl)
+			[id(1)] void NewDay(short nDay);
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CCalendarCtrl
+
+	[ uuid(ED780D6B-CC9F-11D2-9282-00C04F8ECF0C),
+	  helpstring("Calendar Control"), control ]
+	coclass Calendar
+	{
+		[default] dispinterface _DCalendar;
+		[default, source] dispinterface _DCalendarEvents;
+	};
+
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

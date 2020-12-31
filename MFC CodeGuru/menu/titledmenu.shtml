@@ -1,0 +1,329 @@
+<html>
+<!-- Header information-->
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta NAME="Author" CONTENT="Mark E. Pennell">
+<title>Section - Title</title>
+</head>
+<!-- Set background properties -->
+
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323"
+alink="#FF0000">
+
+<h3 align="center"><font COLOR="#AOAO99">Creating Popup Menus with Titles</font></h3>
+
+<hr align="center">
+<!-- Author and contact details -->
+
+<p>This article was contributed by <a HREF="#author">Mark E. Pennell</a>. </p>
+
+<h4><br>
+<!-- The article... -->Introduction</h4>
+
+<p>Popups, popups everywhere!&nbsp; Have you noticed that we now live in an age of the
+endless collection of popup menus?&nbsp; In practically every modern application, there
+exists several UI objects which have their own popup menus.&nbsp; One must admit that
+these &quot;context&quot; menus have provided a needed boost in working with applications
+with 'heavy' UIs.&nbsp; However, there are times where the user of your application may be
+a little confused about to which 'item' the invoked popup menu refers. </p>
+
+<table border="0" width="100%" height="101">
+  <tr>
+    <td width="62%" height="97">Let's give an example, however contrived it may be. Imagine
+    using a home architecting product in which you can click items in your room layout to
+    invoke context menus. When you click on the chair in the living room, you get the context
+    menu to the right. Now, you select the 'Remove' command.&nbsp; <font color="#FF0000">Oops!</font>&nbsp;
+    Your carefully designed Persian rug disappears from under the chair you thought you had
+    selected.</td>
+    <td width="38%" height="97">&nbsp;&nbsp; <img src="menu1.gif" width="109" height="81"
+    alt="menu1.gif (2879 bytes)"></td>
+  </tr>
+</table>
+
+<p>Okay ... maybe not the best example I could have found, but hopefully you are both
+laughing (not just at me) and understanding that there are cases where a slightly more
+user friendly approach to context menus might be useful.&nbsp; So what might this be?</p>
+
+<h4>Titled Popup Menus</h4>
+
+<p>There has been a recent UI trend involving the addition of titles to popup menus.
+&nbsp; These titles are used to convey the exact object to which the context applies.
+&nbsp; These are also being used to prompt the user with clear information on why they
+should make a menu selection.&nbsp; As an example of the latter, you may have seen
+pulldown toolbar buttons where you can also select the 'default' action to occur when the
+toolbar button is left clicked.&nbsp; It is common to see the popup menu for the button
+start with the title &quot;Set Default&quot; appearing in bold as the first item in the
+menu.&nbsp; This item is not selectable, but is a visual indicator better describing the
+use/reason for the menu.</p>
+
+<table border="0" width="100%">
+  <tr>
+    <td width="62%">So to finish our example above, to the right is a titled context menu
+    which might have better helped our user.</td>
+    <td width="38%">&nbsp; <img src="menu2.gif" width="126" height="103"
+    alt="menu2.gif (3813 bytes)"></td>
+  </tr>
+</table>
+
+<p>Disclaimer for UI purists - This article is not meant to give an opinion on whether or
+not this is good UI style, but rather to provide information on implementing this feature
+to those who are interested.&nbsp; If you wish to add titled popup menus to your product,
+I hope this code helps you accomplish your goal.</p>
+
+<h4>Method 1 - SetMenuDefaultItem(...)</h4>
+
+<p>The Win32 API provides a single function which will "bold" a menu item to
+indicate that it is the default menu item.  You can disable the menu item as
+well to meet most of our goals above.  The item will still invert as you move
+the mouse over it, which is not as desireable as our example/description above.</p>
+
+<pre><font color="#990000">
+//
+// This function adds a title entry to a popup menu
+//
+void AddMenuTitle(CMenu* popup, LPCSTR title)
+{
+&nbsp;&nbsp;&nbsp; // insert a separator item at the top
+&nbsp;&nbsp;&nbsp; popup->InsertMenu(0, MF_BYPOSITION | MF_SEPARATOR, 0, title);
+
+&nbsp;&nbsp;&nbsp; // insert title item
+&nbsp;&nbsp;&nbsp; // note: item is not selectable (disabled) but not grayed
+&nbsp;&nbsp;&nbsp; popup->InsertMenu(0, MF_BYPOSITION | MF_STRING | MF_DISABLED, 0, title);
+
+&nbsp;&nbsp;&nbsp; SetMenuDefaultItem(popup->m_hMenu, 0, TRUE);
+}
+</font></pre>
+
+<h4>Method 2 - Owner Drawn Item</h4>
+
+<p>This method is more involved, but it gives you full control over the display
+of the titled item.  With this method, moving the mouse over the item does
+not cause it to highlight as in Method 1.<p>
+
+<p>This method also doubles as a good tutorial on owner drawn menu items in general.<p>
+
+<h4>Utilization Example Code</h4>
+
+<p>The following steps can be used to create titled popup menus in your application
+utilizing the supplied implementation code for Method 2:
+
+<ol>
+  <li>Add the supplied helper code and header to your project</li>
+  <li>Add OnMeasureItem and OnDrawItem to the window handling the popup menu</li>
+  <li>Call the helper functions to handle the measuring and drawing of your popup menu title
+    item</li>
+  <li>Setup the popup menu to have a title just before displaying (tracking) the popup menu</li>
+</ol>
+
+<p>The following is a code snippet from a simple dialog class which added the above example
+titled popup menu:</p>
+
+<pre><font color="#990000">
+<p>void CExampleDlg::OnContextMenu(CWnd* pWnd, CPoint point) 
+{
+&nbsp;&nbsp; // load the popup menu to display
+&nbsp;&nbsp;&nbsp;CMenu menu;
+&nbsp;&nbsp;&nbsp;menu.LoadMenu(idrMenu1);
+&nbsp;&nbsp;&nbsp;CMenu* popup = menu.GetSubMenu(0);
+
+</font><font color="#000080">&nbsp;&nbsp;&nbsp;// call the helper function to setup this as a titled popup menu
+&nbsp;&nbsp; AddMenuTitle(popup);
+</font><font color="#990000">
+&nbsp;&nbsp; // display the popup menu
+&nbsp;&nbsp; popup-&gt;TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
+}
+
+void CExampleDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
+{
+&nbsp;&nbsp; if (ODT_MENU == lpDrawItemStruct-&gt;CtlType)
+&nbsp;&nbsp; {
+</font><font color="#000080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // call our helper function to draw the item title
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DrawPopupMenuTitle(lpDrawItemStruct, &quot;Persian Rug&quot;);
+</font><font color="#990000">&nbsp;&nbsp; }
+&nbsp;&nbsp; else
+&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
+&nbsp;&nbsp; }
+}
+
+void CExampleDlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct) 
+{
+&nbsp;&nbsp; if (ODT_MENU == lpMeasureItemStruct-&gt;CtlType)
+&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font><font color="#000080">// call our helper function to measure the item title
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MeasurePopupMenuTitle(lpMeasureItemStruct, &quot;Persian Rug&quot;);</font><font color="#990000">
+&nbsp;&nbsp; }
+&nbsp;&nbsp; else
+&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CDialog::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
+&nbsp;&nbsp; }
+}
+</p>
+</font></pre>
+
+<h2>The header file.... (TitledMenu.h)...</h2>
+
+<pre><font color="#990000">
+<p>#ifndef __TitledMenu_h
+#define __TitledMenu_h
+
+void AddMenuTitle(CMenu* popup);
+void MeasurePopupMenuTitle(LPMEASUREITEMSTRUCT mi, LPCSTR menuTitle);
+void DrawPopupMenuTitle(LPDRAWITEMSTRUCT di, LPCSTR menuTitle);
+
+#endif
+</p></font></pre>
+
+<h2>The Implementation File (TitledMenu.cpp)</h2>
+
+<pre><font color="#990000">
+<p>#include &quot;stdafx.h&quot;
+#include &quot;TitledMenu.h&quot;
+
+//
+// This function adds a title entry to a popup menu
+//
+void AddMenuTitle(CMenu* popup)
+{
+&nbsp;&nbsp;&nbsp; // insert a separator item at the top
+&nbsp;&nbsp;&nbsp; popup-&gt;InsertMenu(0, MF_BYPOSITION | MF_SEPARATOR, 0, (LPSTR)0);
+
+&nbsp;&nbsp;&nbsp; // insert an empty owner-draw item at top to serve as the title
+&nbsp;&nbsp;&nbsp; // note: item is not selectable (disabled) but not grayed
+&nbsp;&nbsp;&nbsp; popup-&gt;InsertMenu(0, MF_BYPOSITION | MF_OWNERDRAW | MF_STRING | MF_DISABLED, 0, (LPSTR)0);
+}
+
+//
+// This function creates the bold font for the popup menu's title
+//
+static HFONT CreatePopupMenuTitleFont()
+{
+&nbsp;&nbsp;&nbsp; // start by getting the stock menu font
+&nbsp;&nbsp;&nbsp; HFONT font = (HFONT)GetStockObject(ANSI_VAR_FONT);
+&nbsp;&nbsp;&nbsp; if (font)
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // now, get the complete LOGFONT describing this font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LOGFONT lf;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (GetObject(font, sizeof(LOGFONT), &amp;lf))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // set the weight to bold
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lf.lfWeight = FW_BOLD;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // recreate this font with just the weight changed
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; font = CreateFontIndirect(&amp;lf);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp; // return the new font - Note: Caller now owns this GDI object
+&nbsp;&nbsp;&nbsp; return font;
+}
+
+//
+// This is a helper function to measure the popup menu's title item
+//
+void MeasurePopupMenuTitle(LPMEASUREITEMSTRUCT mi, LPCSTR menuTitle)
+{
+&nbsp;&nbsp;&nbsp; // create the font we will use for the title
+&nbsp;&nbsp;&nbsp; HFONT font = CreatePopupMenuTitleFont();
+&nbsp;&nbsp;&nbsp; if (font)
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // get the screen dc to use for retrieving size information
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CDC dc;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dc.Attach(::GetDC(NULL));
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // select the title font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CFont* old = (CFont*)dc.SelectObject(CFont::FromHandle(font));
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // compute the size of the title
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CSize size = dc.GetTextExtent(menuTitle);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // deselect the title font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dc.SelectObject(old);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // delete the title font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteObject(font);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // add in the left margin for the menu item
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; size.cx += GetSystemMetrics(SM_CXMENUCHECK)+8;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // return the width and height
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mi-&gt;itemWidth = size.cx;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mi-&gt;itemHeight = size.cy;
+&nbsp;&nbsp;&nbsp; }
+}
+
+//
+// This is a helper function to draw the popup menu's title item
+//
+void DrawPopupMenuTitle(LPDRAWITEMSTRUCT di, LPCSTR menuTitle)
+{
+&nbsp;&nbsp;&nbsp; // create the font we will use for the title
+&nbsp;&nbsp;&nbsp; HFONT font = CreatePopupMenuTitleFont();
+&nbsp;&nbsp;&nbsp; if (font)
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // create the background menu brush
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HBRUSH bgb = CreateSolidBrush(GetSysColor(COLOR_MENU));
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // fill the rectangle with this brush
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FillRect(di-&gt;hDC, &amp;di-&gt;rcItem, bgb);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // delete the brush
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DeleteObject(bgb);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // set text mode to transparent
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int mode = SetBkMode(di-&gt;hDC, TRANSPARENT);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // set text color to menu text color
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; COLORREF color = SetTextColor(di-&gt;hDC, GetSysColor(COLOR_MENUTEXT));
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // select this font into the dc
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HFONT old = (HFONT)SelectObject(di-&gt;hDC, font);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // add the menu margin offset
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; di-&gt;rcItem.left += GetSystemMetrics(SM_CXMENUCHECK)+8;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // draw the text left aligned and vertically centered
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DrawText(di-&gt;hDC, menuTitle, -1, &amp;di-&gt;rcItem, DT_SINGLELINE|DT_VCENTER|DT_LEFT);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // deselect the font
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SelectObject(di-&gt;hDC, old);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // restore the text background mode
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetBkMode(di-&gt;hDC, mode);
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // restore the text color
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SetTextColor(di-&gt;hDC, color);
+&nbsp;&nbsp;&nbsp; }
+}
+</p>
+</font></pre>
+
+<h4><a name="Author"></a>About the Author</h4>
+
+<p><a href="mailto:mark@funtown.com">Mark E. Pennell</a> is a Senior Engineer for
+Visioneer, Inc. of Fremont, CA., and a former Windows Programming instructor for the
+University of California - Santa Cruz Extension.&nbsp; Mark telecommutes to work from his
+home in Austin, TX.</p>
+<!-- Remember to update this -->
+
+<p>Last updated: 13 May 1998 </p>
+
+<hr>
+
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

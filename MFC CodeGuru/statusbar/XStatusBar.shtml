@@ -1,0 +1,372 @@
+<HTML>
+
+<!-- Header information-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <!-- add your name in the CONTENT field below -->
+   <META NAME="Author" CONTENT="Tom Moor">
+   <TITLE><!-- Section Title -->Statusbar - <!-- Article Title -->Extended statusbar with bitmap, progress bar and mouse action</TITLE>
+</HEAD>
+
+<!-- Set background properties -->
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<!-- A word from our sponsors... -->
+<table WIDTH="100%">
+<tr WIDTH="100%"><td align=center><!--#exec cgi="/cgi/ads.cgi"--><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+<!-- Article Title -->Extended statusbar with bitmap, progress bar and mouse action
+</FONT></H3></CENTER>
+<HR>
+
+<!-- Author and contact details -->
+This article was contributed by <!-- Author Email --><A HREF="mailto:Joachim.Raidl@iname.com"><!-- Author Name -->Joachim Raidl</A>.
+
+<!-- Sample image - gif or jpg -->
+<P><IMG SRC="XStatusBar.gif" >
+
+
+<!-- Text / source code -->
+<p><!-- The 'p' starts a paragraph of normal text -->
+With the <strong>XStatusBar</strong>-class it is very easy to
+display text, numbers, bitmaps or progressbars in a statusbar. It
+also provides temporary display of text in any pane with
+automatic restore of the normal appearance. For example, it is
+possible to display a scrolling bitmap in a pane but during a
+long operation, a progressbar indicates how long it takes. The
+class also provides actions when you click in any pane (also in
+dialogbased applications).
+
+
+<p>In this example, the first pane temporarily changes to a
+progressbar. When the long operation ends, it automaticly changes
+back to a normal textpane.
+
+<h4>What have you to do, to use this class?</h4>
+
+<p>The use the <strong>XStatusBar</strong>-class is quite simple.
+First you have change the existing CStatusBar-member
+m_wndStatusBar to XStatusBar in your mainframe-headerfile.
+
+<PRE><TT><FONT COLOR="#990000">
+XStatusBar m_wndStatusBar;
+</FONT></TT></PRE>
+
+<p>Second, replace the creation-functions in the
+OnCreate()-method of CMainFrame by:
+
+<PRE><TT><FONT COLOR="#990000">
+	if(!m_wndStatusBar.CreateStatusBar(this, indicators, sizeof(indicators)/sizeof(UINT)))
+		{
+		TRACE0(&quot;Failed to create status bar\n&quot;);
+		return -1; 
+		}
+</FONT></TT></PRE>
+
+<p>Third, define the appearance of the panes. For example
+
+<PRE><TT><FONT COLOR="#990000">
+	m_wndStatusBar.SetMode(1, XSB_TEXT | DT_CENTER | DT_VCENTER);
+	m_wndStatusBar.SetMode(2, XSB_NUMBER | DT_CENTER);
+	m_wndStatusBar.SetMode(3, XSB_BITMAP| XSB_REPEAT);
+</FONT></TT></PRE>
+
+<p>For each pane, you can combine the following modes:
+
+<table border="1" cellspacing="1">
+    <tr>
+        <td>XSB_TEST</td>
+        <td>Display text in this pane</td>
+    </tr>
+    <tr>
+        <td>XSB_NUMBER</td>
+        <td>Display a number in this pane</td>
+    </tr>
+    <tr>
+        <td>XSB_BITMAP</td>
+        <td>Display a bitmap in this pane</td>
+    </tr>
+    <tr>
+        <td>XSB_PROGRESS</td>
+        <td>Display a progressbar in this pane</td>
+    </tr>
+    <tr>
+        <td>XSB_HSCROLL</td>
+        <td>Scroll the text, number or bitmap in this pane
+        horizontal</td>
+    </tr>
+    <tr>
+        <td>XSB_VSCROLL</td>
+        <td>Scroll the text, number or bitmap in this pane
+        vertical</td>
+    </tr>
+    <tr>
+        <td>XSB_DSCROLL</td>
+        <td>Scroll horizontal and vertical</td>
+    </tr>
+    <tr>
+        <td>XSB_REPEAT</td>
+        <td>Draw the text, number or bitmap multiple times to
+        fill the pane</td>
+    </tr>
+    <tr>
+        <td>XSB_STRETCH</td>
+        <td>Grow or shrink the bitmap, so that the entire pane
+        was filled</td>
+    </tr>
+    <tr>
+        <td>XSB_SMOOTH</td>
+        <td>Progressbar was drawn smooth</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>XSB_TOP</td>
+        <td>Align top (like DT_TOP)</td>
+    </tr>
+    <tr>
+        <td>XSB_LEFT</td>
+        <td>Align left (like DT_LEFT)</td>
+    </tr>
+    <tr>
+        <td>XSB_CENTER</td>
+        <td>Align center (like DT_CENTER)</td>
+    </tr>
+    <tr>
+        <td>XSB_RIGHT</td>
+        <td>Align right (like DT_RIGHT)</td>
+    </tr>
+    <tr>
+        <td>XSB_VCENTER</td>
+        <td>Align vertical center (like DT_VCENTER)</td>
+    </tr>
+    <tr>
+        <td>XSB_BOTTOM</td>
+        <td>Align bottom (like DT_BOTTOM)</td>
+    </tr>
+</table>
+
+<p>You can change the mode for every Pane whenever you want.
+
+<p>Fourth, after the mode-definition, you have to tell the panes about further information:
+
+<PRE><TT><FONT COLOR="#990000">
+	m_wndStatusBar.SetFgColor(1, RGB( 0, 0, 0), RGB(255, 255, 255));
+	m_wndStatusBar.SetBkColor(1, RGB( 0, 255, 255), RGB(128, 0, 0));
+	m_wndStatusBar.SetNumber(2, 0, 0);
+	m_wndStatusBar.SetBitmap(3, &quot;BM1&quot;, &quot;BM2&quot;);
+</FONT></TT></PRE>
+
+<p>There are a couple of functions to change the appearance of
+the panes:
+
+<table border="1" cellspacing="1">
+    <tr>
+        <td><strong>Method</strong></td>
+        <td><strong>Description</strong></td>
+        <td><strong>Default</strong></td>
+    </tr>
+    <tr>
+        <td>SetFgColor</td>
+        <td>Set the pane's textcolor (Mode XSB_TEXT or
+        XSB_NUMBER) *</td>
+        <td>enabled: standard textcolor (e.g. black)
+        disabled: greyed text (e.g. grey)</td>
+    </tr>
+    <tr>
+        <td>SetBkColor</td>
+        <td>Set the pane's backgroundcolor (Mode XSB_TEXT or
+        XSB_NUMBER) *</td>
+        <td>std-backgroundcolor (e.g. light grey)</td>
+    </tr>
+    <tr>
+        <td>SetBitmap</td>
+        <td>Set the pane's bitmap (Mode XSB_BITMAP)*
+        The bitmaps are defined as stringresources.
+        If you use int-resource use MAKEINTRESOURCE(..)</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>SetText</td>
+        <td>Set the pane's text (Mode XSB_TEXT or XSB_NUMBER) *</td>
+        <td>Indicatortext (e.g. CAPS, NUM, ...)</td>
+    </tr>
+    <tr>
+        <td>SetNumber</td>
+        <td>Set the pane's number (Mode XSB_TEXT or XSB_NUMBER) *</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>SetFont</td>
+        <td>Set the pane's font (LOGFONT or CFont, Mode XSB_TEXT
+        or XSB_NUMBER)</td>
+        <td>standard textfont (e.g. MS Sans Serif 10pt)</td>
+    </tr>
+    <tr>
+        <td>SetFontSize</td>
+        <td>Set the pane's fontsize (Mode XSB_TEXT or XSB_NUMBER)</td>
+        <td>standard textfontsize (e.g. 10pt)</td>
+    </tr>
+    <tr>
+        <td>SetFontName</td>
+        <td>Set the pane's fontname (Mode XSB_TEXT or XSB_NUMBER)</td>
+        <td>standard textfontname (e.g. MS Sans Serif)</td>
+    </tr>
+    <tr>
+        <td>SetRange</td>
+        <td>Set the pane's progressbarrange (see CProgressBar,
+        Mode XSB_PROGRESS)</td>
+        <td>0 .. 100</td>
+    </tr>
+    <tr>
+        <td>SetPos</td>
+        <td>Set the pane's progressbarposition (see CProgressBar,
+        Mode XSB_PROGRESS)</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>SetOffset</td>
+        <td>Set the pane's progressbaroffset (see CProgressBar,
+        Mode XSB_PROGRESS)</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>SetStep</td>
+        <td>Set the pane's progressbarstep (see CProgressBar,
+        Mode XSB_PROGRESS)</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>Increment</td>
+        <td>Incremet the pane's numbervalue (Mode XSB_NUMBER)</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>Decrement</td>
+        <td>Decremet the pane's numbervalue (Mode XSB_NUMBER)</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="3">* Remeber: You can set two values, one
+        for the enabled pane and one for the disabled pane</td>
+    </tr>
+</table>
+
+<p>&nbsp;
+
+<p>If you only need textpanes, like the standard-statusbar you
+don't need to do step 3 and 4. Now you are ready to use the
+class.
+
+<h4>What have you to do, to temporarily display a progress bar?</h4>
+
+<p>First you have to save the pane's appearance with <strong>SavePane(ix)</strong>.
+Then you can change the mode of the pane to XSB_PROGRESS and set
+the progress bars parameters (e.g. <strong>SetRange(ix, 0, 100)</strong>,
+<strong>SetStep(ix, 2)</strong>, ...). Now it's time to do your
+long operation and step your progressbar (<strong>StepIt(ix)</strong>).
+At last, restore the pane's appearance (<strong>RestorePane(ix)</strong>).
+
+<PRE><TT><FONT COLOR="#990000">
+	m_wndStatusBar.SavePane(0);
+	m_wndStatusBar.SetMode(0, XSB_PROGRESS);
+	m_wndStatusBar.SetRange(0, 0, 100);
+	...
+	(long operation)
+	...
+	m_wndStatusBar.RestorePane(0);
+</FONT></TT></PRE>
+
+<h4>What have you to do, to temporarily display a text?</h4>
+
+<p>There is another class called <strong>XPaneText</strong>, to
+simplify this action. When you want to show temporar text in a
+pane (no matter if the pane is enabled or disabled) just create a
+XPaneText-object with the specified text. When you destroy the
+object, the original appearance of the pane was restored. For
+example, the following code displays the text &quot;Display this
+text&quot; in the first pane until you end the dialog. There's no
+matter if the pane was in bitmap-mode or if it was disabled.
+
+<PRE><TT><FONT COLOR="#990000">
+{
+	XPaneText(&quot;Display this text&quot;);
+	CTestDialog dlg;
+	dlg.DoModal();
+} // Destroy the XPaneText-object ==&gt; Restore pane
+</FONT></TT></PRE>
+
+<h4>How does the application know, which pane was clicked?</h4>
+
+<p>First you have to add a normal handler for the mouse-event
+(for example ON_WM_LBUTTONDBLCLK()). In the eventhandler, use the
+function <strong>GetPaneAtPosition(point)</strong> to determine,
+wich pane belongs to the mouse-position. This function also works
+fine in dialogs, because in this case, the point was translatet
+into client-corrdinates.
+
+<PRE><TT><FONT COLOR="#990000">
+void CMainFrame::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	if (m_wndStatusBar.GetPaneAtPosition(point) == 3)
+		AfxMessageBox(&quot;Pane 3 doubleclicked&quot;);
+	else
+		...
+}
+</FONT></TT></PRE>
+
+
+
+<!-- demo project -->
+<p><!-- first the filename (zip files) --><A HREF="XStatusBar.zip">Download demo project - 11KB</A>
+
+<!-- Zipped source -->
+<p><!-- first the filename (zip files) --><A HREF="XStatusBarProject.zip">Download source - 43KB</A>
+
+<!-- Posted / Update  date mm/dd/yy - add to the list -->
+<p>Date Posted: <!-- date here --> 20 May 1998
+
+
+
+<P><HR>
+
+<!-- Codeguru contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+<!-- Counter -->
+
+
+
+</BODY>
+</HTML>
+
+
+

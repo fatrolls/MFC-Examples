@@ -1,0 +1,862 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "OXCommon.h" 
+
+#include "afxres.h"
+#include <dlgs.h>
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""OXCommon.h"" \r\n"
+    "\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include <dlgs.h>\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""OXCommon.rc"" \r\n"
+    "#include ""OXBitmapButton.rc"" \r\n"
+    "#include ""OXBitmapMenu.rc""\r\n"
+    "#include ""OXCoolBar.rc""\r\n"
+    "#include ""OXCoolToolBar.rc""\r\n"
+    "#include ""OXFrameWndDock.rc""\r\n"
+    "#include ""OxDockCtrlBars.rc""\r\n"
+    "#include ""UTSampleAbout.rc"" \r\n"
+    "#include ""OXHistoryCombo.rc"" \r\n"
+    "#include ""OXMenuBar.rc""\r\n"
+    "#include ""OXPreviewDialog.rc""\r\n"
+    "#include ""OXRollUp.rc""  // Roll up class  resources\r\n"
+    "#include ""OXSpinCtrl.rc""         // Spin ctrl resources\r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\DIBManager.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\DIBManager.ico"
+IDR_DIBMANTYPE          ICON    DISCARDABLE     "res\\DIBManagerDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME_HOT       BITMAP  MOVEABLE PURE   "res\\ToolbarHot.bmp"
+IDB_IMAGELIST           BITMAP  DISCARDABLE     "res\\imagelis.bmp"
+IDB_CHECK               BITMAP  DISCARDABLE     "res\\check.bmp"
+IDB_LOGO                BITMAP  DISCARDABLE     "res\\logo.BMP"
+IDB_LOGO_DUMMY          BITMAP  DISCARDABLE     "res\\logo_dum.bmp"
+IDR_DUMMY               BITMAP  MOVEABLE PURE   "res\\dummy.bmp"
+IDR_DUMMY_HOT           BITMAP  MOVEABLE PURE   "res\\dummyhot.bmp"
+IDR_MAINFRAME_COPY      BITMAP  MOVEABLE PURE   "res\\mainfram_copy.bmp"
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\toolbar.bmp"
+IDB_LOGO_TEST           BITMAP  DISCARDABLE     "RES\\BMPdemo.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME_HOT TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_CLOSE
+    BUTTON      ID_FILE_SAVE
+    BUTTON      ID_FILE_SAVE_AS
+    SEPARATOR
+    BUTTON      ID_FILE_IMPORT
+    BUTTON      ID_FILE_EXPORT
+    SEPARATOR
+    BUTTON      ID_FILE_PROTECTED
+    SEPARATOR
+    BUTTON      ID_VIEW_ZOOM_IN
+    BUTTON      ID_VIEW_ZOOM_OUT
+    BUTTON      ID_VIEW_ZOOM_TO_WINDOW
+    BUTTON      ID_VIEW_ZOOM_TO_100
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_FILE_PRINT_PREVIEW
+    SEPARATOR
+    BUTTON      ID_WINDOW_NEW
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_WINDOW_ARRANGE
+    BUTTON      ID_WINDOW_SYNCHRONIZE
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_DUMMY TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_VIEW_ZOOM_IN
+    BUTTON      ID_VIEW_ZOOM_OUT
+    BUTTON      ID_VIEW_ZOOM_TO_WINDOW
+    BUTTON      ID_VIEW_ZOOM_TO_100
+END
+
+IDR_DUMMY_HOT TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_VIEW_ZOOM_IN
+    BUTTON      ID_VIEW_ZOOM_OUT
+    BUTTON      ID_VIEW_ZOOM_TO_WINDOW
+    BUTTON      ID_VIEW_ZOOM_TO_100
+END
+
+IDR_MAINFRAME_COPY TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_CLOSE
+    BUTTON      ID_FILE_SAVE
+    BUTTON      ID_FILE_SAVE_AS
+    SEPARATOR
+    BUTTON      ID_FILE_IMPORT
+    BUTTON      ID_FILE_EXPORT
+    SEPARATOR
+    BUTTON      ID_FILE_PROTECTED
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_FILE_PRINT_PREVIEW
+    SEPARATOR
+    BUTTON      ID_VIEW_ZOOM_IN
+    BUTTON      ID_VIEW_ZOOM_OUT
+    BUTTON      ID_VIEW_ZOOM_TO_WINDOW
+    BUTTON      ID_VIEW_ZOOM_TO_100
+    SEPARATOR
+    BUTTON      ID_WINDOW_NEW
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_WINDOW_ARRANGE
+    BUTTON      ID_WINDOW_SYNCHRONIZE
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_CLOSE
+    BUTTON      ID_FILE_SAVE
+    BUTTON      ID_FILE_SAVE_AS
+    SEPARATOR
+    BUTTON      ID_FILE_IMPORT
+    BUTTON      ID_FILE_EXPORT
+    SEPARATOR
+    BUTTON      ID_FILE_PROTECTED
+    SEPARATOR
+    BUTTON      ID_VIEW_ZOOM_IN
+    BUTTON      ID_VIEW_ZOOM_OUT
+    BUTTON      ID_VIEW_ZOOM_TO_WINDOW
+    BUTTON      ID_VIEW_ZOOM_TO_100
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_FILE_PRINT_PREVIEW
+    SEPARATOR
+    BUTTON      ID_WINDOW_NEW
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_WINDOW_ARRANGE
+    BUTTON      ID_WINDOW_SYNCHRONIZE
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "&Import ...",                 ID_FILE_IMPORT
+        MENUITEM SEPARATOR
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "T&ree bar",                   ID_TREEFILESBAR
+        MENUITEM SEPARATOR
+        MENUITEM "&WorkSpace ...",              ID_VIEW_WORKSPACE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About DIBManager...",        ID_APP_ABOUT
+    END
+END
+
+IDR_DIBMANTYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Save",                       ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Import ...",                 ID_FILE_IMPORT
+        MENUITEM "&Export ...",                 ID_FILE_EXPORT
+        MENUITEM SEPARATOR
+        MENUITEM "&Protect Image",              ID_FILE_PROTECTED
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "T&ree bar",                   ID_TREEFILESBAR
+        MENUITEM SEPARATOR
+        MENUITEM "Resam&ple Image ...",         ID_VIEW_RESAMPLE_IMAGE
+        MENUITEM "&Image Info ...",             ID_VIEW_IMAGE_INFO
+        MENUITEM SEPARATOR
+        MENUITEM "Zoom &In",                    ID_VIEW_ZOOM_IN
+        MENUITEM "Zoom &Out",                   ID_VIEW_ZOOM_OUT
+        MENUITEM "Zoom to &Window",             ID_VIEW_ZOOM_TO_WINDOW
+        MENUITEM "Zoom to &100%",               ID_VIEW_ZOOM_TO_100
+        MENUITEM "Zoom &Level Dialog ...",      ID_VIEW_ZOOM_LEVEL_DLG
+        MENUITEM SEPARATOR
+        MENUITEM "&WorkSpace ...",              ID_VIEW_WORKSPACE
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New Window",                 ID_WINDOW_NEW
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+        MENUITEM SEPARATOR
+        MENUITEM "&Synchronize views",          ID_WINDOW_SYNCHRONIZE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About DIBManager...",        ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_TREE_FILES DIALOGEX 0, 0, 185, 214
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Tree1",IDC_TREE_FILES,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | 
+                    TVS_SHOWSELALWAYS | WS_TABSTOP,0,0,185,214,
+                    WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
+END
+
+IDD_DIALOG_EXPORT DIALOG DISCARDABLE  0, 0, 312, 119
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Export"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_FILENAME,23,7,228,66,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_QUALITY,39,33,37,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_QUALITY,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,77,33,
+                    10,13
+    CONTROL         "&Smooth",IDC_CHECK_SMOOTH,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,113,34,40,10
+    EDITTEXT        IDC_SMOOTH,156,33,37,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_SMOOTH,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,33,
+                    10,13
+    CONTROL         "&Grayscale",IDC_CHECK_GRAYSCALE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,56,47,10
+    CONTROL         "&Optimize",IDC_CHECK_OPTIMIZE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,69,43,10
+    CONTROL         "&Progressive",IDC_CHECK_PROGRESSIVE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,82,53,10
+    CONTROL         "&Baseline",IDC_CHECK_BASELINE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,95,43,10
+    CONTROL         "DCT &int",IDC_RADIO_DCT_INT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,112,68,59,8
+    CONTROL         "DCT &Fast Int",IDC_RADIO_DCT_FAST,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,112,80,59,8
+    CONTROL         "DCT F&loat",IDC_RADIO_DCT_FLOAT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,112,93,59,8
+    DEFPUSHBUTTON   "&Export",IDOK,255,25,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,255,43,50,14
+    LTEXT           "&File",IDC_STATIC,7,9,12,8
+    LTEXT           "&Quality",IDC_STATIC,13,35,22,8
+    GROUPBOX        "Discrete Cosinus Transformation",IDC_STATIC,104,55,138,
+                    52
+    GROUPBOX        "Options",IDC_STATIC,7,23,244,90
+END
+
+IDD_DIALOG_IMPORT DIALOG DISCARDABLE  0, 0, 312, 149
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Import"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_FILENAME,23,7,228,66,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "&Colors",IDC_CHECK_COLORS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,35,35,10
+    EDITTEXT        IDC_COLORS,56,33,47,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_COLORS,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,104,33,
+                    11,13
+    CONTROL         "&Grayscale",IDC_CHECK_GRAYSCALE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,54,47,10
+    CONTROL         "One &Pass",IDC_CHECK_ONE_PASS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,67,47,10
+    CONTROL         "No &Smooth",IDC_CHECK_NO_SMOOTH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,80,51,10
+    CONTROL         "1/&1",IDC_RADIO_ONE_TO_ONE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,23,107,38,8
+    CONTROL         "1/&2",IDC_RADIO_ONE_TO_TWO,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,23,120,38,8
+    CONTROL         "1/&4",IDC_RADIO_ONE_TO_FOUR,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,69,107,38,8
+    CONTROL         "1/&8",IDC_RADIO_ONE_TO_EIGHT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,69,120,38,8
+    CONTROL         "DCT &int",IDC_RADIO_DCT_INT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,126,41,59,8
+    CONTROL         "DCT &Fast",IDC_RADIO_DCT_FAST,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,54,59,8
+    CONTROL         "DCT F&loat",IDC_RADIO_DCT_FLOAT,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,67,59,8
+    CONTROL         "Flo&yd Stein",IDC_RADIO_DM_FLOYD_STEIN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,126,96,59,8
+    CONTROL         "O&rdered",IDC_RADIO_DM_ORDERED,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,126,107,59,8
+    CONTROL         "&None",IDC_RADIO_DM_NONE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,126,120,59,8
+    DEFPUSHBUTTON   "&Import",IDOK,255,27,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,255,45,50,14
+    LTEXT           "&File",IDC_STATIC,7,9,12,8
+    GROUPBOX        "Discrete Cosinus Transformation",IDC_STATIC,118,30,127,
+                    50
+    GROUPBOX        "Options",IDC_STATIC,7,21,244,120
+    GROUPBOX        "Scale",IDC_STATIC,13,95,96,40
+    GROUPBOX        "Dither Method",IDC_STATIC,118,83,127,52
+END
+
+IDD_DIALOG_WORKSPACE DIALOG DISCARDABLE  0, 0, 143, 61
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "WorkSpace"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Save WorkSpace on &Exit",IDC_CHECK_SAVE_ON_EXIT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,7,111,10
+    CONTROL         "Load WorkSpace on En&ter",IDC_CHECK_LOAD_ON_ENTER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,21,117,10
+    DEFPUSHBUTTON   "&OK",IDOK,7,40,40,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,51,40,40,14
+    PUSHBUTTON      "&Save",IDC_SAVE_WORKSPACE,96,40,40,14
+END
+
+IDD_DIALOG_ROLLUP DIALOGEX 0, 0, 184, 123
+STYLE WS_POPUP | WS_BORDER
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_ZOOM_LEVEL,133,20,34,12
+    CONTROL         "Spin1",IDC_SPIN_ZOOM_LEVEL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,20,
+                    12,12
+    DEFPUSHBUTTON   "&Apply",IDC_BUTTON_APPLY,115,104,64,14
+    CONTROL         "",IDC_PICTURE,"Static",SS_GRAYRECT | SS_REALSIZEIMAGE,
+                    51,62,13,12,WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
+    LTEXT           "&Scale",IDC_STATIC,114,22,19,8
+    GROUPBOX        "Scaled Size",IDC_STATIC,115,46,64,40
+    LTEXT           "Width:",IDC_STATIC,119,58,20,8
+    LTEXT           "Height:",IDC_STATIC,119,70,24,8
+    EDITTEXT        IDC_SCALED_WIDTH,147,56,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_SCALED_HEIGHT,147,69,27,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    GROUPBOX        "",IDC_STATIC,4,14,108,104
+END
+
+IDD_IMAGE_INFO_DIALOG DIALOG DISCARDABLE  0, 0, 223, 173
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Image Info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,86,153,50,14
+    LTEXT           "Name",IDC_STATIC,12,17,20,8
+    LTEXT           "Width",IDC_STATIC,12,31,20,8
+    LTEXT           "Height",IDC_STATIC,13,47,22,8
+    LTEXT           "Size in memory",IDC_STATIC,12,62,48,8
+    LTEXT           "Original file size",IDC_STATIC,12,78,49,8
+    LTEXT           "Format",IDC_STATIC,12,94,22,8
+    LTEXT           "Type",IDC_STATIC,12,109,17,8
+    CONTROL         "Static",IDC_FILE_NAME,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,66,17,150,8
+    LTEXT           "Static",IDC_WIDTH,66,31,133,8
+    LTEXT           "Static",IDC_HEIGHT,66,46,133,8
+    LTEXT           "Static",IDC_SIZE_IN_MEMORY,66,62,133,8
+    LTEXT           "Static",IDC_FILE_SIZE,66,78,133,8
+    LTEXT           "Static",IDC_FORMAT,66,94,133,8
+    LTEXT           "Static",IDC_TYPE,66,109,133,8
+    GROUPBOX        "",IDC_STATIC,6,6,212,118
+    LTEXT           "Static",IDC_FILE_STATUS,7,130,211,18
+END
+
+IDD_DIALOG_RESAMPLE DIALOG DISCARDABLE  0, 0, 184, 162
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Resample Image"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_WIDTH_PIXELS,80,24,27,12,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    CONTROL         "Spin1",IDC_SPIN_WIDTH_PIXELS,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,108,24,
+                    11,12
+    EDITTEXT        IDC_HEIGHT_PIXELS,80,41,27,12,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    CONTROL         "Spin1",IDC_SPIN_HEIGHT_PIXELS,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,108,41,
+                    11,12
+    EDITTEXT        IDC_WIDTH_PERCENTS,130,24,27,12,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    CONTROL         "Spin1",IDC_SPIN_WIDTH_PERCENTS,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,158,24,
+                    11,12
+    EDITTEXT        IDC_HEIGHT_PERCENTS,130,41,27,12,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    CONTROL         "Spin1",IDC_SPIN_HEIGHT_PERCENTS,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,158,41,
+                    11,12
+    CONTROL         "Maintain Aspect &Ratio",IDC_CHECK_MAINTAIN_RATIO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,9,61,85,10
+    CONTROL         "Match &Zoom Level",IDC_CHECK_MATCH_ZOOM_LEVEL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,9,74,85,10
+    CONTROL         "Convert to:",IDC_CHECK_CONVERT_TO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,101,51,10
+    COMBOBOX        IDC_COMBO_CONVERT_TO,58,99,121,32,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&OK",IDOK,4,143,53,14
+    PUSHBUTTON      "&Reset",ID_BUTTON_RESET,66,143,53,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,126,143,53,14
+    GROUPBOX        "Image Size",IDC_STATIC,4,2,175,90
+    LTEXT           "&Width:",IDC_STATIC,9,26,20,8
+    LTEXT           "&Height:",IDC_STATIC,9,43,24,8
+    LTEXT           "Static",IDC_WIDTH_ORIG,39,26,28,8
+    LTEXT           "Static",IDC_HEIGHT_ORIG,39,43,28,8
+    LTEXT           "Pixels",IDC_STATIC,80,13,19,8
+    LTEXT           "Percents",IDC_STATIC,130,13,29,8
+    DEFPUSHBUTTON   "Dummy",IDC_BUTTON_DUMMY,12,120,39,10,NOT WS_VISIBLE | 
+                    NOT WS_TABSTOP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "DIBManager MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "DIBManager\0"
+            VALUE "LegalCopyright", "Copyright (C) 1997\0"
+            VALUE "OriginalFilename", "DIBManager.EXE\0"
+            VALUE "ProductName", "DIBManager Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_DIALOG_EXPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 305
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_DIALOG_IMPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 305
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+    END
+
+    IDD_DIALOG_WORKSPACE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 136
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 54
+    END
+
+    IDD_DIALOG_ROLLUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 179
+        BOTTOMMARGIN, 118
+    END
+
+    IDD_IMAGE_INFO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 218
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 167
+    END
+
+    IDD_DIALOG_RESAMPLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 179
+        BOTTOMMARGIN, 157
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DIALOG_EXPORT DLGINIT
+BEGIN
+    IDC_FILENAME, 0x403, 1, 0
+"\000" 
+    0
+END
+
+IDD_DIALOG_IMPORT DLGINIT
+BEGIN
+    IDC_FILENAME, 0x403, 1, 0
+"\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "DIBManager"
+    IDR_DIBMANTYPE          "\nDIBMan\nDIBMan\nBitmap Files (*.bmp)\n.BMP\nDIBManager.Document\nDIBMan Document"
+    ID_INDICATOR_SIZE       "0000000000"
+    ID_INDICATOR_ZOOM       "1000%"
+    ID_INDICATOR_PARAMETERS "000000000"
+    ID_INDICATOR_PROGRESS   "progress indicator"
+    ID_DESCRIPTION_FILE     "DIBManagerInfo.rtf"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "DIBManager"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_SYNCHRONIZE   "Synchronize image window with tree\nSynchronize"
+    ID_VIEW_ZOOM_IN         "Zoom image in\nZoom In"
+    ID_VIEW_ZOOM_OUT        "Zoom image out\nZoom Out"
+    ID_VIEW_ZOOM_TO_WINDOW  "Zoom image to size of window\nZoom to Window"
+    ID_VIEW_ZOOM_TO_100     "Zoom to image's original size\nZoom to original size"
+    ID_TREEFILESBAR         "Show or hide the Tree bar\nToggle TreeBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_EXPORT          "Save DIB file in different formats\nExport "
+    ID_FILE_IMPORT          "Open file of different format\nImport"
+    ID_FILE_SET_PROTECTION  "Protect image via encryption\nSet Protection"
+    ID_FILE_REMOVE_PROTECTION "Encode encrypted image\nRemove Protection"
+    ID_FILE_PROTECTED       "Protect image via encryption\nSet Protection On/Off"
+    ID_VIEW_WORKSPACE       "Change settings for saving and loading workspace\nWorkSpace Settings"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_SCALE_DLG       "Popup dialog to customize zoom level of viewing imagr/nZoom Level Dialog"
+    ID_VIEW_ZOOM_LEVEL_DLG  "Popup dialog to customize zoom level of viewing imagr/nZoom Level Dialog"
+    ID_VIEW_TREE_BAR        "Show or hide the Tree bar\nToggle TreeBar"
+    ID_VIEW_IMAGE_INFO      "get information about active image\nImage Info"
+    ID_VIEW_RESAMPLE_IMAGE  "Change size or convert current image\nResample Image"
+    ID_VIEW_ZOOM            "Zoom image/nZoom"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "OXCommon.rc" 
+#include "OXBitmapButton.rc" 
+#include "OXBitmapMenu.rc"
+#include "OXCoolBar.rc"
+#include "OXCoolToolBar.rc"
+#include "OXFrameWndDock.rc"
+#include "OxDockCtrlBars.rc"
+#include "UTSampleAbout.rc" 
+#include "OXHistoryCombo.rc" 
+#include "OXMenuBar.rc"
+#include "OXPreviewDialog.rc"
+#include "OXRollUp.rc"  // Roll up class  resources
+#include "OXSpinCtrl.rc"         // Spin ctrl resources
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\DIBManager.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

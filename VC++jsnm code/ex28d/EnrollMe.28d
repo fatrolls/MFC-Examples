@@ -1,0 +1,1 @@
+ˆODBC;DSN=Student registration;DBQ=C:\database\access\STDREG32.MDB;DefaultDir=C:\database\access;DriverId=25;FIL=MS Access;PageTimeout=5;select * from Enrollment

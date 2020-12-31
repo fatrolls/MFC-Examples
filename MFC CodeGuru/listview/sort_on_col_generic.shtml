@@ -1,0 +1,217 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Sort list based on text/numeric/date-time in any column</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Sort list based on text/numeric/date-time in any column</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+
+
+
+This code was contributed by <A HREF="mailto:tal@security7.com">Tal J. Rosen</A>. 
+<br>Note: The CmpItems() function uses the column number to determine the type
+of the data displayed in the column. It would be better to change the column
+number argument to a column type argument to make the function more generic.
+
+
+<P>This code is based on the articls
+<br>"Sorting the list based on text in any column" &
+<br>"Sorting list on Numeric Column".
+
+<P>The follwing code combines both articals and adds a new sort type  Date/Time
+sort.
+
+<PRE><TT><FONT COLOR="#990000">
+#include <afxole.h>         // MFC Ole
+#include <afxdisp.h>        // Ole TimeData something...
+</FONT></TT></PRE>
+
+<P>Add function
+
+<PRE><TT><FONT COLOR="#990000">
+// Compare two string by their column types
+//
+// returns:
+//    Zero if the strings are identical,
+//    < 0 if cstL is less than cstR,
+//    > 0 if cstL is greater than cstR.
+//
+int CMyListCtrl::CmpItems(CString cstL, CString cstR, int nCol)
+{
+   switch (nCol) {
+      //Date time column(s)
+      //***********************
+      case 0:
+
+         COleDateTime odtL;
+         COleDateTime odtR;
+         odtL.ParseDateTime(cstL);
+         odtR.ParseDateTime(cstR);
+         COleDateTimeSpan spanElapsed = odtL - odtR;
+         if (spanElapsed.GetStatus() == COleDateTimeSpan::invalid ) {
+            // Invalid Date time.
+            ASSERT(FALSE);
+            return(0);
+         }
+         return((int)spanElapsed.GetTotalSeconds());
+      }
+
+      //Numbers column(s)
+      //***********************
+      case 1:
+      case 4:
+         return(atoi(cstL) - atoi(cstR));
+
+      // Strings column(s)
+      //***********************
+      //***********************
+      default:
+         return (cstL.Compare(cstR));
+   }
+}
+</FONT></TT></PRE>
+
+
+<P>Modified lines  ==>  /*!!!*/
+
+
+<PRE><TT><FONT COLOR="#990000">
+bool CMyListCtrl::SortNumericItems( int nCol, BOOL bAscending,int low/*=0*/, int high/*=-1*/ )
+{
+	if( nCol >= ((CHeaderCtrl*)GetDlgItem(0))->GetItemCount() )
+		return FALSE;
+
+	if( high == -1 ) high = GetItemCount() - 1;
+
+	int lo = low;
+	int hi = high;
+	CString midItem;
+
+	if( hi <= lo )
+	      return FALSE;
+
+	midItem = GetItemText( (lo+hi)/2, nCol );
+
+	// loop through the list until indices cross
+	while( lo <= hi )
+	{
+ 		// rowText will hold all column text for one row
+ 		CStringArray rowText;
+
+ 		// find the first element that is greater than or equal to
+ 		// the partition element starting from the left Index.
+  
+		if( bAscending )
+  			//while( ( lo < high ) && (atoi(GetItemText(lo, nCol)) < midItem ) )
+			/*!!!*/  while( ( lo < high ) && ( CmpItems( GetItemText(lo, nCol) , midItem, nCol) < 0 ) )
+   				++lo;
+ 		else
+  			//while( ( lo < high ) && (atoi(GetItemText(lo, nCol)) > midItem ) )
+			/*!!!*/  while( ( lo < high ) && ( CmpItems( GetItemText(lo, nCol) , midItem, nCol) > 0 ) )
+   			++lo;
+
+ 		// find an element that is smaller than or equal to
+ 		// the partition element starting from the right Index.
+ 		if( bAscending )
+  			//while( ( hi > low ) && (atoi(GetItemText(hi, nCol)) > midItem ) )
+			/*!!!*/  while( ( hi > low ) && ( CmpItems(GetItemText(hi, nCol) , midItem, nCol ) > 0 ) )
+   				--hi;
+ 		else
+  			//while( ( hi > low ) && (atoi(GetItemText(hi, nCol)) < midItem ) )
+			/*!!!*/  while( ( hi > low ) && ( CmpItems(GetItemText(hi, nCol) , midItem, nCol ) < 0 ) )
+   			--hi;
+
+ 		// if the indexes have not crossed, swap
+ 		// and if the items are not equal
+ 		if( lo <= hi )
+ 		{
+			// swap only if the items are not equal
+			//if(atoi(GetItemText(lo, nCol)) != atoi(GetItemText(hi, nCol)) )
+			/*!!!*/  if( CmpItems (GetItemText(lo, nCol) , GetItemText(hi, nCol), Col  ) != 0) {
+	   			// swap the rows
+	   			LV_ITEM lvitemlo, lvitemhi;
+
+	   			int nColCount = ((CHeaderCtrl*)GetDlgItem(0))->GetItemCount();
+	   			rowText.SetSize( nColCount );
+
+	   			int i;
+	   			for( i=0; i < nColCount; i++)
+	      			rowText[i] = GetItemText(lo, i);
+
+	   			lvitemlo.mask = LVIF_IMAGE | LVIF_PARAM | LVIF_STATE;
+	   			lvitemlo.iItem = lo;
+	   			lvitemlo.iSubItem = 0;
+	   			lvitemlo.stateMask = LVIS_CUT | LVIS_DROPHILITED |
+	      					LVIS_FOCUSED |  LVIS_SELECTED |
+	      					LVIS_OVERLAYMASK | LVIS_STATEIMAGEMASK;
+	   			lvitemhi = lvitemlo;
+	   			lvitemhi.iItem = hi;
+
+	   			GetItem( &lvitemlo );
+	   			GetItem( &lvitemhi );
+
+	   			for( i=0; i< nColCount; i++)
+	      			SetItemText(lo, i, GetItemText(hi, i) );
+
+	   			lvitemhi.iItem = lo;
+	   			SetItem( &lvitemhi );
+
+	   			for( i=0; i< nColCount; i++)
+	      			SetItemText(hi, i, rowText[i]);
+
+	   			lvitemlo.iItem = hi;
+	   			SetItem( &lvitemlo );
+	  		}
+
+	  		++lo;
+	  		--hi;
+	 	}
+	}
+
+	// If the right index has not reached the left side of array
+	// must now sort the left partition.
+	if( low < hi )
+ 		SortNumericItems( nCol, bAscending , low, hi);
+
+	// If the left index has not reached the right side of array
+	// must now sort the right partition.
+	if( lo < high )
+ 		SortNumericItems( nCol, bAscending , lo, high );
+
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

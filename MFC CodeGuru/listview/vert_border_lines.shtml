@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Vertical lines for column borders</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Vertical lines for column borders</FONT></H3></CENTER>
+
+<HR WIDTH="100%">The list view control does not provide for any visual
+delineation between the columns in the report mode. The code below shows
+how to add vertical lines between columns. To do our own drawing we override
+the OnPaint() function. Since we don’t want to do all the rendering of
+the control, we let DefWindowProc() take care of it before we start drawing
+the lines. We also make sure that the list view control is indeed in the
+report mode.
+<p><img src="vert_border_lines.gif" width="274"
+height="219"></p>
+<BR>&nbsp;
+<PRE><TT><FONT COLOR="#990000">void CMyListCtrl::OnPaint() 
+{
+	// First let the control do its default drawing.
+	const MSG *msg = GetCurrentMessage();
+	DefWindowProc( msg->message, msg->wParam, msg->lParam );
+
+	// Draw the lines only for LVS_REPORT mode
+	if( (GetStyle() & LVS_TYPEMASK) == LVS_REPORT )
+	{
+		// Get the number of columns
+		CClientDC dc(this );
+		CHeaderCtrl* pHeader = (CHeaderCtrl*)GetDlgItem(0);
+		int nColumnCount = pHeader->GetItemCount();
+
+		// The bottom of the header corresponds to the top of the line 
+		RECT rect;
+		pHeader->GetClientRect( &rect );
+		int top = rect.bottom;
+
+		// Now get the client rect so we know the line length and
+		// when to stop
+		GetClientRect( &rect );
+
+		// The border of the column is offset by the horz scroll
+		int borderx = 0 - GetScrollPos( SB_HORZ );
+		for( int i = 0; i < nColumnCount; i++ )
+		{
+			// Get the next border
+			borderx += GetColumnWidth( i );
+
+			// if next border is outside client area, break out
+			if( borderx >= rect.right ) break;
+
+			// Draw the line.
+			dc.MoveTo( borderx-1, top);
+			dc.LineTo( borderx-1, rect.bottom );
+		}
+	}
+	
+	// Do not call CListCtrl::OnPaint() for painting messages
+}
+</FONT></TT></PRE>
+To draw the vertical lines, we use the header control to determine the
+column dimensions and also the effective client area after taking into
+account the header control itself. Finally, we draw a line to the right
+of each column.
+
+<P>Note that the horizontal scrollbars position is taken into account when
+determining the border. If we don’t do this, we might end up with a line
+right in the middle of a column when the list has been horizontally scrolled.
+The GetScrollPos() function returns 0 if there is no scrollbar so we don’t
+need to make a prior check on whether the list view control does have a
+horizontal scrollbar. We could also have used GetItemRect() function, but
+it works only if the list has atleast one item.
+
+<P>The line is actually drawn one pixel left of the column border. This
+aligns it better with the column header. It also introduces a bug. When
+you increase a column width, the column area below the last visible item
+is not updated, thus leaving traces of the previous line. There are two
+approaches you can take to resolve this. First, draw the line exactly on
+the column border (e.i. do not subtract 1 from borderx). The second approach
+is to handle the HDN_TRACK notification from the header control
+ and invalidate the exposed area so that it gets redrawn.
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><A HREF="http://www.codeguru.com">Goto HomePage</A></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997</FONT><FONT SIZE=-1> </FONT><FONT SIZE=-2>Zafir
+Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: </FONT><A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

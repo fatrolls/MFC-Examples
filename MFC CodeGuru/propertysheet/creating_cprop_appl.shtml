@@ -1,0 +1,132 @@
+<HTML>
+
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Robbert E. Peters">
+   <TITLE>PropertySheet - Creating a full application using the CPropertySheet.</TITLE>
+</HEAD>
+
+<body background="/fancyhome/back.gif" bgcolor="#FFFFFF">
+
+<table WIDTH="100%">
+<tr WIDTH="100%"><td><td></tr>
+</table>
+
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">
+Creating a full application using the CPropertySheet.
+</FONT></H3></CENTER>
+<HR>
+
+This article was contributed by <A HREF="mailto:doctor@med.auth.gr">Panagiotis Piperopoulos</A>.
+
+
+<p>
+
+Hello Windows Programmers.<br>
+<br>
+I discovered recently that it is possible to create a full application using the CPropertySheet as the class for the main window of the application.<br>
+<br>
+If you read the source of the small demo you will understand better what i mean.<br>
+<br>
+<P><IMG SRC="creating_cprop_appl.gif" >
+<br><br>
+I created a new class named CSheet that has CPropertySheet as the base class.<br>
+CSheet does have four member variables of type CPropertyPage, named: Page1, Page2, Page3 and Page4.<br>
+It also contains a CMenu variable.<br>
+<br>
+When the CSheet constructor is called i am creating the four pages and i am adding them to the property sheet.<br>
+<br>
+CSheet is overloading the virtual OnInitDialog function and in this function its doing two thinks.<br>
+    1) Hides the property sheet buttons OK, CANCEL and APPLY.<br>
+    2) Loads the applications menu.<br>
+<br>
+
+<PRE><TT><FONT COLOR="#990000">
+	BOOL OnInitDialog( )
+	{
+		CPropertySheet::OnInitDialog();
+
+		GetDlgItem( IDOK )->ShowWindow( SW_HIDE );
+		GetDlgItem( IDCANCEL )->ShowWindow( SW_HIDE );
+		GetDlgItem( ID_APPLY_NOW )->ShowWindow( SW_HIDE );
+
+		Menu.LoadMenu( IDR_MENU );
+		SetMenu( &Menu );
+		
+		return TRUE;
+	}
+</FONT></TT></PRE>
+
+
+CSheet does have a message map, which redirects the menu message to the display member function which displays the page selected.<br>
+<br>
+
+<PRE><TT><FONT COLOR="#990000">
+BEGIN_MESSAGE_MAP( CSheet, CPropertySheet )
+	
+	ON_COMMAND_RANGE( IDM_1, IDM_4, DisplayPage )
+
+END_MESSAGE_MAP()
+
+	void DisplayPage( int Page )
+	{
+		switch( Page )
+		{
+			case IDM_1 :
+				SetActivePage( &Page1 );
+				break;
+			case IDM_2 :
+				SetActivePage( &Page2 );
+				break;
+			case IDM_3 :
+				SetActivePage( &Page3 );
+				break;
+			case IDM_4 :
+				SetActivePage( &Page4 );
+				break;
+		}
+	}
+
+	DECLARE_MESSAGE_MAP()
+};
+
+</FONT></TT></PRE>
+
+After defining the CSheet class, i am creating a CWinApp derived class that creates a CSheet Window as its main window and thats all.<br>
+I have an application that is based on CPropertySheet as the main window class.<br>
+<br>
+I hope that my code will help you.<br>
+May the SOURCE be with you.<br>
+
+
+
+<p><A HREF="creating_cprop_appl.zip">Download demo project - 91KB</A>
+
+<p>Date Posted: 05/03/98
+
+
+<P><HR>
+
+
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+
+
+
+
+</BODY>
+</HTML>

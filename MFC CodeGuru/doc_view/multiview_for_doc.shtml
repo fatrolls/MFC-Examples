@@ -1,0 +1,96 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Doc/View - Multiple views for a single document (MDI)</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Multiple views for a single document (MDI)</FONT></H3></CENTER>
+
+<CENTER>
+<H3>
+
+<HR></H3></CENTER>
+This article was contributed by <A HREF="mailto:aroman@medanet.ro">Adrian Roman</A>.
+
+<P>I add here the code that could be used to add multiple views to a document, in a MDI application. I usually make database applications, and I don't want that the document
+to be created/destroyed by the framework, so I create the document myself (and of course I destroy it J ), and in document's constructor I set the m_bAutoDelete flag to
+FALSE. 
+
+<P>The CMyApp class contains as public member a pointer to my document. I also make document templates for all views, and I keep the pointers in CMyApp. You should have
+something like this in InitInstance():
+
+<PRE><TT><FONT COLOR="#990000">
+m_pView1Templ=new CMultiDocTemplate( IDR_VIEW1TYPE,
+RUNTIME_CLASS( CMyDoc ),
+RUNTIME_CLASS( CChildFrame ),
+RUNTIME_CLASS( CView1 ) );
+AddDocTemplate(m_pView1Templ);
+// m_pView1Templ is member of CMyApp 
+</FONT></TT></PRE>
+
+<P>After you created all necessary document templates, add the following code:
+
+<PRE><TT><FONT COLOR="#990000">
+// create main MDI Frame window
+CMainFrame* pMainFrame = new CMainFrame;
+mp_doc=new CTimeClkDoc;
+mp_doc->SetTitle("Just a demo");
+CCreateContext context;
+context.m_pCurrentDoc=mp_doc;
+context.m_pNewViewClass=NULL;
+context.m_pNewDocTemplate=NULL;
+context.m_pLastView=NULL;
+context.m_pCurrentFrame=NULL;
+if (!pMainFrame->LoadFrame(IDR_MAINFRAME,WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE,NULL, &context ))
+	return FALSE;
+m_pMainWnd = pMainFrame;
+</FONT></TT></PRE>
+
+<P>This code will allow opening the application without any open view and also avoids the dialog box that asks to choose a document template. 
+Add for each view command handlers similar with this one:
+ 
+<PRE><TT><FONT COLOR="#990000">
+void CMyApp::OnView1() 
+{
+	// TODO: Add your command handler code here
+	CChildFrame* pFrame = new CChildFrame();
+	CCreateContext context;
+	context.m_pCurrentDoc=mp_doc; //that's the way I avoid to create new document every time I open a new view
+	context.m_pNewViewClass=RUNTIME_CLASS(CView1);
+	context.m_pNewDocTemplate=m_pView1Templ;
+	context.m_pLastView=(((CMainFrame *)m_pMainWnd)->GetActiveFrame() ? ((CMainFrame *)m_pMainWnd)->GetActiveFrame()->GetActiveView() : NULL);
+	context.m_pCurrentFrame=((CMainFrame *)m_pMainWnd)->GetActiveFrame();
+	if (!pFrame->LoadFrame(IDR_VIEW1TYPE,WS_OVERLAPPEDWINDOW | FWS_PREFIXTITLE ,m_pMainWnd, &context ))return;
+	pFrame->InitialUpdateFrame(mp_doc,TRUE);
+}
+</FONT></TT></PRE>
+
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

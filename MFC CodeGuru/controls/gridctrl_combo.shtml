@@ -1,0 +1,190 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Chris Maunder">
+   <TITLE>Controls - Using a Combobox to edit cells in the Grid Control</TITLE>
+</HEAD>
+
+<!-- document properties -->
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+
+<!-- advertisment -->
+<table WIDTH="100%"><tr WIDTH="100%"><td><!--#exec cgi="/cgi/ads.cgi"--><td></tr></table>
+
+<!-- Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Using a Combobox to edit cells in the Grid Control
+</FONT></H3></CENTER>
+
+<HR>
+
+This article was contributed by <A HREF="mailto:Chris.Maunder@cbr.clw.csiro.au">Chris Maunder</A>.
+
+<!-- Image and download files -->
+<P><IMG SRC="gridctrl_combo.gif" width="274" height="213" ALT="gridctrl with combo example image" BORDER=0  ALIGN=BOTTOM>
+Download <A HREF="gridctrl_combo_demo.zip">sample project</A>.</p>
+
+<!-- Environment -->
+<u>Environment:</u> VC++ 5.0 (SP3) NT 4.0 (SP3), Win95
+
+<!-- the article... -->
+<p>Since I posted my <a href="gridctrl.shtml">MFC grid control</a> I've had a lot
+of requests asking how to use other methods of editing cells in the grid. I've
+created a demo project that shows how to replace the default editing with a 
+dropdown list of choices. This is achieved by deriving a new class from CGridCtrl
+and overridding CGridCtrl::OnEditCell.
+
+<p>The In-Place list that I use to edit the cells instead of the in-place edit
+control is not the greatest - but it does demonstrate how to replace the default
+editting.
+
+<br><br>
+
+<p>The first step is to derive a new class from CGridCtrl - I call it
+CComboGridCtrl - and override OnEditCell. There are a number of things
+to be aware of when you override this function. OnEditCell receives the
+row and column to be edited plus the initial character that caused
+editing to commence (or VK_LBUTTON if the mouse was clicked on the current
+cell). 
+
+<ul>
+<li>You must check that the cell given by (row, column) is valid, that
+it is visible, and that it (and the grid in general) is in fact editable.
+<li>You must send a GVN_BEGINLABELEDIT notification message to the parent
+to inform it that editing will be commencing.
+<li>Your editing control must self-delete when it loses input focus.
+<li>Your editing object should handle mouse keys in a way that allows
+the user to navigate between cells while editing. If the control gets an
+arrow key for instance, it should cancel editing and return the last key
+it encountered back to the grid via the GVN_ENDLABELEDIT notification
+message.
+</ul>
+
+<p>I pass the character that initiated editing to the edit control itself so
+that it can deal with keys appropriately. For instance in the default edit control,
+if the edit control is passed a normal character or arrow key as the "initiating"
+key, then it will cease editing when it encounters an arrow key (to allow navigation
+using the keyboard). If the edit control is passed VK_LBUTTON (meaning editing
+was initiated by a mouse click) then arrow keys will not cause the editing to
+cease.
+
+<p>Once the control has finished editing (for whatever reason) it should
+send a GVN_ENDLABELEDIT notification using the following code as an example:
+
+ <FONT COLOR="#990000"><TT><PRE>
+    // This code should appear in your editing control (editbox, list etc)
+    // Send Notification that editing has finished to the parent grid
+
+    GV_DISPINFO dispinfo;
+
+    dispinfo.hdr.hwndFrom = GetSafeHwnd();
+    dispinfo.hdr.idFrom   = GetDlgCtrlID();
+    dispinfo.hdr.code     = GVN_ENDLABELEDIT;
+ 
+    dispinfo.item.mask    = LVIF_TEXT|LVIF_PARAM;
+    dispinfo.item.row     = m_nRow;
+    dispinfo.item.col     = m_nCol;
+    dispinfo.item.szText  = str;
+    dispinfo.item.lParam  = (LPARAM) m_nLastChar; 
+ 
+    CWnd* pOwner = GetOwner();
+    if (IsWindow(pOwner->GetSafeHwnd()))
+        pOwner->SendMessage(WM_NOTIFY, GetDlgCtrlID(), (LPARAM)&dispinfo );
+</tt></PRE></FONT>
+
+<p>where m_nRow and m_nColumn are member variables of the edit control that were
+used to store the row and column, and m_nLastChar stores the value of the last
+character encountered by the control. See the <a href="gridctrl.shtml">GridCtrl</a>
+docs for more info on the GV_DISPINFO structure.
+
+<p>To actually catch the GVN_ENDLABELEDIT notification in your derived grid you
+should place a message map entry as such:
+
+<FONT COLOR="#990000"><TT><PRE>
+BEGIN_MESSAGE_MAP(CComboGridCtrl, CGridCtrl)
+    //{{AFX_MSG_MAP(CComboGridCtrl)
+    //}}AFX_MSG_MAP
+    ON_NOTIFY(GVN_ENDLABELEDIT, IDC_IPLIST, OnEndInPlaceEdit)
+END_MESSAGE_MAP()
+</tt></PRE></FONT>
+
+<p>where IDC_IPLIST is the ID of the drop down list control used to edit the cells.
+
+<p>Once you have an edit control ready to be used, override OnEditCell and use
+your own edit control instead of the default in-place edit control.
+
+<FONT COLOR="#990000"><TT><PRE>
+void CComboGridCtrl::OnEditCell(int nRow, int nCol, UINT nChar)
+{
+    CCellID cell(nRow, nCol);
+    if (!m_bEditable ||!IsCellVisible(nRow, nCol) || !IsValid(cell)) 
+        return;
+
+    if (GetItemState(nRow, nCol) & GVIS_READONLY)
+        return;
+
+    CRect rect;
+    if (!GetCellRect(cell, rect)) return;
+
+    // Send message to parent letting it know we are about to edit
+    NM_GRIDVIEW nmgv;
+    nmgv.iRow    = nRow;
+    nmgv.iColumn = nCol;
+    nmgv.hdr.hwndFrom = m_hWnd;
+    nmgv.hdr.idFrom = GetDlgCtrlID();
+    nmgv.hdr.code = GVN_BEGINLABELEDIT;
+
+    CWnd* pParent = GetOwner();
+    if (pParent)        
+        pParent->SendMessage(WM_NOTIFY, nmgv.hdr.idFrom, (LPARAM)&nmgv);
+
+    // Fill a string array with possible choices for the list control to present.
+    CString text = GetItemText(nRow, nCol);
+    CStringArray Items;
+    Items.Add("Choice 1");
+    Items.Add("Choice 2");
+    Items.Add("Choice 3");
+    Items.Add("Choice 4");
+    Items.Add("Choice 5");
+
+    // InPlaceList and auto-deletes itself
+    new CInPlaceList(this,          // parent of the edit control (this grid)
+                     rect,          // cell boundary
+                     nRow, nCol,    // Row and Column
+                     Items,         // A list of items for the drop down list
+                     text,          // Initial selection
+                     nChar);        // Character that cuased editing (may be VK_LBUTTON)
+}
+</tt></PRE></FONT>
+
+<p>The <A HREF="gridctrl_demo.zip">sample project</A> includes the source code for the CInPlaceList control presented
+above.
+
+<br>
+<P>Last Updated: June 16, 1998.
+
+
+<P><HR>
+
+<!-- Contact details -->
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1997 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+
+</TR>
+</TABLE>
+
+<!-- Counter -->
+<CENTER><FONT SIZE=-2><!--#exec cgi="../cgi/counters/counter.cgi"--></FONT></CENTER>
+
+</BODY>
+</HTML>

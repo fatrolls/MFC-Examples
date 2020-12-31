@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>Controls - Static text to display long filenames with ellipses</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER><H3><FONT COLOR="#AOAO99">Static text to display long filenames with ellipses</FONT></H3></CENTER>
+<HR>
+
+
+
+This article was contributed by <A HREF="mailto:ravib@matrixsoftware.com">Ravi Bhavnani</A>.
+<p>
+The CStaticFilespec control is a lightweight class suitable for displaying long filespecs
+that may need to be truncated or compressed, in order to fit the size of the display.
+Here's and example of what the control looks like when used in a dialog box.
+
+<p>
+<img src="cstatic_filespec.gif" border=0 width=242 height=172 alt="CStaticFilespec example">
+<p>
+
+By default, CStaticFilespec supports 2 drawing styles: <tt>DT_END_ELLIPSIS</tt> and
+<tt>DT_PATH_ELLIPSIS</tt>.  The former displays a truncated filespec with trailing
+ellipses while the latter adds embedded ellipses to a compressed filespec.
+
+<p>
+Using CStaticFilespec in a dialog is quite simple:
+<ol>
+  <li>  Include <tt>CStaticFilespec.h</tt> in your dialog class' header file.
+        <p>
+
+  <li>  Add member variables of type <tt>CStaticFilespec</tt> for every static text
+        control you want to subclass.
+        <p>
+
+  <li>  Subclass the static text controls in your dialog's <tt>OnInitDialog()</tt> method
+        and set the controls' style.
+        <p>
+        <tt><font color="#990000">
+        &nbsp;&nbsp;m_wndStaticFileEnd.SubclassDlgItem (IDC_FILE_END, this);<br>
+        &nbsp;&nbsp;m_wndStaticFilePath.SubclassDlgItem (IDC_FILE_PATH, this);<br>
+        &nbsp;&nbsp;m_wndStaticFilePath.SetPath (TRUE);
+        </font></tt>
+        <p>
+</ol>
+
+<p>
+You can also use any other <tt>DT_</tt> drawing style you like.  For example, to draw right
+justified text that is vertically centered and has trailing ellipses, do:
+<p>
+<tt><font color="#990000">
+<pre>
+&nbsp;&nbsp;m_wndStaticText.SubclassDlgItem (IDC_STATIC_TEXT, this);
+&nbsp;&nbsp;m_wndStaticText.SetFormat (DT_RIGHT | DT_VCENTER);
+&nbsp;&nbsp;m_wndStaticText.SetWindowText ("d:\\There\\Is\\Always\\One\\More\\Bug.cpp");
+</pre>
+</font></tt>
+<p>
+
+<p>
+<a href="cstatic_filespec.zip">Download source files (3 K)</a> CStaticFilespec.cpp, CStaticFilespec.h
+<br>
+<a href="cstatic_filespec_demo.zip">Download example project (14 K)</a> (includes sources)
+
+
+
+<P>
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

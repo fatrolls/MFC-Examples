@@ -1,0 +1,53 @@
+		VC/Office style dockable menus & toolbars
+		-----------------------------------------
+
+Contributors:
+
+Tony Hoyle (tmh@netfusion.co.uk)
+George H. Stahl (GStahl@VipMail.com)
+
+---------------------------------------------------------------------------------
+
+This program is free software; you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program;
+if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+----------------------------------------------------------------------------------
+
+1.04 - TMH 17/4/98
+
+Restructure directories
+Rename MDIMenuFrameWnd and SDIMenuFrameWnd for consistency
+Convert to MFC Extension DLL
+Fix compatibility with CToolbar::Create
+#define AUTO_SUBCLASS makes implementation trivial
+
+1.03 - GHS 16/4/98
+
+Made SDI Version
+Modified MDI stuff a little
+Added CNMiniDockFrameWnd
+Added CNGenericToolBar::GetGenericToolBarStyle, and 
+CNGenericToolBar::ModifyGenericToolBarStyle
+
+1.02 - TMH 30/3/98
+
+Menu border draws correctly.  Added system menu icon. 
+Made CNGenericToolBar::SetVisualState static.
+
+1.01 - TMH ??/3/98
+
+Fixed sizing bugs on toolbar
+
+1.00 - TMH ??/3/98
+
+First version based on toolbar code by Roger Onslow 
+First release on www.codeguru.com
+

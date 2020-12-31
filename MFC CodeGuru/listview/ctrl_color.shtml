@@ -1,0 +1,94 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Zafir Anjum">
+   <TITLE>CListCtrl - Change background color</TITLE>
+</HEAD>
+<body background="../fancyhome/back.gif" bgcolor="#FFFFFF" link="#B50029" vlink="#8E2323" alink="#FF0000" bgproperties="fixed">
+<table WIDTH="100%">
+<tr WIDTH="100%">
+<td align=center><!--#exec cgi="/cgi/ads.cgi"--><td>
+</tr>
+</table>
+
+
+<CENTER>
+<H3>
+<FONT COLOR="#AOAO99">Change background color</FONT></H3></CENTER>
+
+<HR WIDTH="100%">
+Changing the background color of a listview control is very easy if you are 
+already using an owner drawn control. See 
+<A HREF="sel_row.shtml">'Selection highlighting of entire row'</A>
+ 
+for code on how to implement an owner drawn listview control. Once the basic owner 
+draw code is in place all you need to do to get a different background color is to 
+fill the row rectangle with the desired color before drawing the individual elements of the row.
+<p><img src="ctrl_color.gif" width="277" height="224"></p>
+<p>If you are using the implementation shown in 
+<A HREF="sel_row.shtml">'Selection highlighting of entire row'</A>
+ then you can change the code to draw the background color or highlight in the DrawItem() function. 
+ Change the code given below
+
+<PRE><TT><FONT COLOR="#990000">	// Draw the background color
+	if( bHighlight )
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+		pDC->SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
+
+		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_HIGHLIGHT)));
+	}
+	else
+		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_WINDOW)));
+</FONT></TT></PRE>
+
+<p>to the following code. This well set the background to yellow.
+
+<PRE><TT><FONT COLOR="#990000">	// Draw the background color
+	if( bHighlight )
+	{
+		pDC->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+		pDC->SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
+
+		pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_HIGHLIGHT)));
+	}
+	else
+	<b>{
+		CRect rcClient, rcRow = rcItem;
+		GetClientRect(&rcClient);
+		rcRow.right = rcClient.right;
+
+		pDC->FillRect(rcRow, &CBrush(RGB(255,255,0));
+// Remove	pDC->FillRect(rcHighlight, &CBrush(::GetSysColor(COLOR_WINDOW)));
+	}</b>
+</FONT></TT></PRE>
+<p>You also have to add a handler for the WM_ERASEBKGND message. This message is sent when the background needs to be painted. This is necessary because the DrawItem() function is called only for list rows. This leaves the area below the last row and to the right of the last column and that's where the WM_ERASEBKGND handler comes in. Here's the code.
+
+<PRE><TT><FONT COLOR="#990000">BOOL CMyListCtrl::OnEraseBkgnd(CDC* pDC) 
+{
+	CRect rcClient;
+	GetClientRect( &rcClient );
+
+	pDC->FillRect(rcClient, &CBrush(RGB(255,255,0)));
+	return TRUE;
+}
+</FONT></TT></PRE>
+
+<P>
+<HR>
+<TABLE BORDER=0 WIDTH="100%" >
+<TR>
+<TD WIDTH="33%"><FONT SIZE=-1><A HREF="http://www.codeguru.com">Goto HomePage</A></FONT></TD>
+
+<TD WIDTH="33%">
+<CENTER><FONT SIZE=-2>&copy; 1998 Zafir Anjum</FONT>&nbsp;</CENTER>
+</TD>
+
+<TD WIDTH="34%">
+<DIV ALIGN=right><FONT SIZE=-1>Contact me: <A HREF="mailto:zafir@home.com">zafir@home.com</A>&nbsp;</FONT></DIV>
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

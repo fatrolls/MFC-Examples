@@ -1,0 +1,323 @@
+// ===================================================================
+//      File: UTPing.idl
+//
+//	IDL source for UTPing.dll
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (UTPing.tlb) and marshalling code.
+//
+// ===================================================================
+// Ultimate TCP-IP v4.2
+// This software along with its related components, documentation and files ("The Libraries")
+// is © 1994-2007 The Code Project (1612916 Ontario Limited) and use of The Libraries is
+// governed by a software license agreement ("Agreement").  Copies of the Agreement are
+// available at The Code Project (www.codeproject.com), as part of the package you downloaded
+// to obtain this file, or directly from our office.  For a copy of the license governing
+// this software, you may contact us at legalaffairs@codeproject.com, or by calling 416-849-8900.
+// ===================================================================
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+
+
+// Include the error codes enumeration in the generated header
+cpp_quote("#include \"UTErr.h\" ")
+cpp_quote("#include \"UT_ICMP.h\" ")
+
+// Avoid redeclaration of error codes enumeration
+cpp_quote("#ifdef _AVOID_ERRORS_REDECLARATION")  
+#include "UTErr.h"
+#include "UT_ICMP.h"
+cpp_quote("#endif")  
+
+	[
+		object,
+		uuid(741EFDDD-03DE-11D3-A465-0080C858F182),
+		dual,
+		helpstring("IPing Interface"),
+		pointer_default(unique)
+	]
+	interface IPing : IDispatch
+	{
+
+		//===========================================
+		//	Interface methods IDs
+		//===========================================
+		const int DISPID_GET_ERROR_TEXT			= 1;
+		const int DISPID_CANCEL_PING			= 2;
+		const int DISPID_PING					= 3;
+		const int DISPID_TRACE_ROUTE			= 4;
+		const int DISPID_BLOCKING_MODE			= 5;
+		const int DISPID_DO_LOOKUP				= 6;
+		const int DISPID_MAX_TIME_OUTS			= 7;
+		const int DISPID_GET_RESPONSE_SIZE		= 8;
+		const int DISPID_GET_RESPONSE_MSG		= 9;
+		const int DISPID_GET_RESPONSE_ADDRESS	= 10;
+		const int DISPID_GET_RESPONSE_NAME		= 11;
+		const int DISPID_GET_RESPONSE_DURATION	= 12;
+		const int DISPID_GET_RESPONSE_TYPE		= 13;
+		const int DISPID_GET_RESPONSE_CODE		= 14;
+		const int DISPID_GET_RESPONSE_SEQUENCE	= 15;
+
+		//===========================================
+		//	Data Get methods
+		//===========================================
+		[id(DISPID_GET_RESPONSE_SIZE), helpstring("Gets the size of the response vector.")] 
+			HRESULT GetResponseSize([out,retval] long *Size);
+
+		[id(DISPID_GET_RESPONSE_MSG), helpstring("method GetResponseMessage")] 
+			HRESULT GetResponseMessage([in, defaultvalue(-1)] long Index, [out,retval] BSTR *Message);
+
+		[id(DISPID_GET_RESPONSE_ADDRESS), helpstring("method GetResponseAddress")] 
+			HRESULT GetResponseAddress([in, defaultvalue(-1)] long Index, [out, retval] BSTR * Address);
+
+		[id(DISPID_GET_RESPONSE_NAME), helpstring("method GetResponseName")] 
+			HRESULT GetResponseName([in, defaultvalue(-1)] long Index, [out, retval] BSTR *Name);
+
+		[id(DISPID_GET_RESPONSE_DURATION), helpstring("method GetResponseDuration")] 
+			HRESULT GetResponseDuration([in, defaultvalue(-1)] long Index, [out,retval] long *Duration);
+
+		[id(DISPID_GET_RESPONSE_TYPE), helpstring("method GetResponseType")] 
+			HRESULT GetResponseType([in, defaultvalue(-1)] long Index, [out,retval] long *Type);
+
+		[id(DISPID_GET_RESPONSE_CODE), helpstring("method GetResponseCode")] 
+			HRESULT GetResponseCode([in, defaultvalue(-1)] long Index, [out,retval] long *Code) ;
+
+		[id(DISPID_GET_RESPONSE_SEQUENCE), helpstring("method GetResponseSequence")] 
+			HRESULT GetResponseSequence([in, defaultvalue(-1)] long Index, [out,retval] long *Sequence);
+			
+
+		//===========================================
+		//	Properties Set/Get methods
+		//===========================================
+		[propget, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_BLOCKING_MODE), helpstring("Blocking mode flag")] 
+			HRESULT BlockingMode([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_DO_LOOKUP), helpstring("property DoLookup")] 
+			HRESULT DoLookup([out, retval] VARIANT_BOOL *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_DO_LOOKUP), helpstring("property DoLookup")] 
+			HRESULT DoLookup([in] VARIANT_BOOL newVal);
+
+		[propget, bindable, requestedit, id(DISPID_MAX_TIME_OUTS), helpstring("property MaxTimeOuts")] 
+			HRESULT MaxTimeOuts([out, retval] long *pVal);
+
+		[propput, bindable, requestedit, id(DISPID_MAX_TIME_OUTS), helpstring("property MaxTimeOuts")] 
+			HRESULT MaxTimeOuts([in] long newVal);
+
+
+		//===========================================
+		//	Interface methods
+		//===========================================
+		[id(DISPID_GET_ERROR_TEXT), helpstring("Get error message text by error code")] 
+			HRESULT GetErrorText([in] long ErrorCode, [out, retval] BSTR *ErrorText);
+
+		[id(DISPID_CANCEL_PING), helpstring("Cancel Ping request")] 
+			HRESULT CancelPing();
+
+		[id(DISPID_ABOUTBOX), helpstring("Shows About Box")] 
+			HRESULT AboutBox();
+
+		[id(DISPID_PING), helpstring("Ping address")] HRESULT 
+			Ping([in] BSTR Address, [in, defaultvalue(5)] int Count, [in, defaultvalue(2000)] int TimeOut, [in, defaultvalue(500)] int Interval, [in, defaultvalue(32)] int DataSize, [out, retval] int *Result);
+
+		[id(DISPID_TRACE_ROUTE), helpstring("Trace route address")] 
+			HRESULT TraceRoute([in] BSTR Address,  [in, defaultvalue(2000)] int TimeOut,  [in, defaultvalue(30)] int MaxHops, [in, defaultvalue(32)] int DataSize, [out, retval] int *Result);
+
+	};
+
+[
+	uuid(741EFDCF-03DE-11D3-A465-0080C858F182),
+	version(1.4),
+	helpstring("Ultimate TCP/IP Ping Control 4.2")
+]
+library UTPINGLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(741EFDDF-03DE-11D3-A465-0080C858F182),
+		helpstring("_IPingEvents Interface")
+	]
+	dispinterface _IPingEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method OnPing")] HRESULT OnPing([in] long Result);
+		[id(2), helpstring("method OnTraceRoute")] HRESULT OnTraceRoute(long Result);
+		[id(3), helpstring("method OnReceiveICMP")] HRESULT OnReceiveICMP();
+	};
+
+	[
+		uuid(741EFDDE-03DE-11D3-A465-0080C858F182),
+		licensed,
+		helpstring("Ultimate TCP/IP Ping Control 4.2")
+	]
+	coclass Ping
+	{
+		[default] interface IPing;
+		[default, source] dispinterface _IPingEvents;
+	};
+
+	//===========================================
+	//	Error codes enumeration
+	//===========================================
+	typedef [uuid (3EFFB4E5-03E3-11d3-A465-0080C858F182), helpstring("Ping Error Codes")]
+	enum PingErrorCodes
+	{
+		[helpstring("Successful")]				ecSuccess				= UTE_SUCCESS,
+		[helpstring("Invalid Address Format")]	ecInvalidAddressFormat	= UTE_INVALID_ADDRESS_FORMAT,
+		[helpstring("Invalid Address")]			ecInvalidAddress		= UTE_INVALID_ADDRESS,
+		[helpstring("Socket creation failed")]	ecCreateSocketFailed	= UTE_SOCK_CREATE_FAILED,
+		[helpstring("Socket send error")]		ecSocketSendFailed		= UTE_SOCK_SEND_ERROR,
+		[helpstring("Socket receive error")]	ecSocketReceiveFailed	= UTE_SOCK_RECEIVE_ERROR,
+		[helpstring("Aborted")]					ecAborted				= UTE_ABORTED,
+		[helpstring("Timed out")]				ecTimeOut				= UTE_CONNECT_TIMEOUT,
+		[helpstring("In use")]					ecInUse					= UTE_ALREADY_IN_USE,
+		[helpstring("Internal error")]			ecInternalError			= UTE_INTERNAL_ERROR,
+		[helpstring("Data is ready")]			ecDataIsReady			= 1000
+
+	} PingErrorCodes;
+
+	//===========================================
+	// ICMP message Types 
+	// http://www.isi.edu/in-notes/iana/assignments/icmp-parameters
+	//===========================================
+	typedef [uuid (CD4FCD2D-5FB4-11d3-A4DB-0080C858F182), helpstring("ICMP message Types")]
+	enum MessageType
+	{
+		[helpstring("EchoReply RFC792")]		icmpEchoReply		= UTT_ICMP_ECHO_REPLY,
+		[helpstring("DestUnrch RFC792")]		icmpDestUnrch		= UTT_ICMP_DEST_UNRCH,
+		[helpstring("SourceQueNch RFC792")]		icmpSourceQueNch	= UTT_ICMP_SOURCE_QUENCH,
+		[helpstring("Redirect RFC792")]			icmpRedirect		= UTT_ICMP_REDIRECT,
+		[helpstring("AltHostAddr")]				icmpAltHostAddr		= UTT_ICMP_ALT_HOST_ADDR,
+		[helpstring("Echo RFC792")]				icmpEcho			= UTT_ICMP_ECHO,
+		[helpstring("RouterAdvert RFC 1256")]	icmpRouterAdvert	= UTT_ICMP_ROUTER_ADVERT,
+		[helpstring("RouterSelect RFC 1256")]	icmpRouterSelect	= UTT_ICMP_ROUTER_SELECT,
+		[helpstring("TimeExceeded RFC792")]		icmpTimeExceeded	= UTT_ICMP_TIME_EXCEEDED,
+		[helpstring("ParamProblem RFC792")]		icmpParamProblem	= UTT_ICMP_PARAM_PROBLEM,
+		[helpstring("TimeStamp RFC792")]		icmpTimeStamp		= UTT_ICMP_TIMESTAMP,
+		[helpstring("TimeStampReply RFC792")]	icmpTimeStampReply	= UTT_ICMP_TIMESTAMP_REPLY,
+		[helpstring("InfoReq RFC792")]			icmpInfoReq			= UTT_ICMP_INFO_REQ,
+		[helpstring("InfoReply RFC792")]		icmpInfoReply		= UTT_ICMP_INFO_REPLY,
+		[helpstring("AddrMaskReq RFC950")]		icmpAddrMaskReq		= UTT_ICMP_ADDR_MASK_REQ,
+		[helpstring("AddrMaskReply RFC950")]	icmpAddrMaskReply	= UTT_ICMP_ADDR_MASK_REPLY,
+		[helpstring("TraceRoute RFC1393")]		icmpTraceRoute		= UTT_ICMP_TRACEROUTE,
+		[helpstring("DgarmConvErr RFC1475")]	icmpDgarmConvErr	= UTT_ICMP_DGRAM_CONV_ERR,
+		[helpstring("MobHstRedir")]				icmpMobHstRedir		= UTT_ICMP_MOB_HST_REDIR,
+		[helpstring("IPV6WAU (where are you)")]	icmpIPV6WAU			= UTT_ICMP_IPV6_WAY,
+		[helpstring("IPV6IAH (i am here)")]		icmpIPV6IAH			= UTT_ICMP_IPV6_IAH,
+		[helpstring("MobRegReq")]				icmpMobRegReq		= UTT_ICMP_MOB_REG_REQ,
+		[helpstring("MobRegReply")]				icmpMobRegReply		= UTT_ICMP_MOB_REG_REPLY,
+		[helpstring("DomNameReq")]				icmpDomNameReq		= UTT_ICMP_DOM_NAME_REQ,
+		[helpstring("DomNameReply")]			icmpDomNameReply	= UTT_ICMP_DOM_NAME_REPLY,
+		[helpstring("Skip")]					icmpSkip			= UTT_ICMP_SKIP,
+		[helpstring("Photuris")]				icmpPhoturis		= UTT_ICMP_PHOTURIS,
+		[helpstring("No Response")]				icmpNoResponse		= UTT_NO_RESPONSE
+
+	} MessageType;
+ 
+	//===========================================
+	// ICMP message type sub-codes for Destination Unreachable
+	// http://www.isi.edu/in-notes/iana/assignments/icmp-parameters
+	//===========================================
+	typedef [uuid (CD4FCD2F-5FB4-11d3-A4DB-0080C858F182), helpstring("Sub-codes for Destination Unreachable")]
+	enum DestUnrchSubCode
+	{
+		[helpstring("Net Unreachable")]		
+			scNetUR			= UTC_NET_UR,
+		[helpstring("Host Unreachable")]		
+			scHostUR		= UTC_HOST_UR,
+		[helpstring("Protocol Unreachable")]		
+			scProtocolUR	= UTC_PROTOCOL_UR,
+		[helpstring("Port Unreachable")]		
+			scPortUR		= UTC_PORT_UR,
+		[helpstring("Fragmentation Needed and Don't Fragment was Set")]		
+			scFragNeeded	= UTC_FRAG_NEEDED,
+		[helpstring("Source Route Failed")]		
+			scSrcRteFailed	= UTC_SOURCE_RTE_FAILED,
+		[helpstring("Destination Network Unknown")]		
+			scDestNetUnkn	= UTC_DEST_NET_UNKNOWN,
+		[helpstring("Destination Host Unknown")]		
+			scDestHostUnkn	= UTC_DEST_HOST_UNKNOWN,
+		[helpstring("Source Host Isolated")]		
+			scSrcHostIsolated	= UTC_SOURCE_HOST_ISOLATED,
+		[helpstring("Communication with Destination Network is Administratively Prohibited")]		
+			scNetCommAdminProhibit		= UTC_NET_COMM_ADMIN_PROHIBIT,
+		[helpstring("Communication with Destination Host is Administratively Prohibited")]		
+			scHostCommAdminProhibit		= UTC_HOST_COMM_ADMIN_PROHIBIT,
+		[helpstring("Destination Network Unreachable for Type of Service")]		
+			scNetUrForTos	= UTC_NET_UR_FOR_TOS,
+		[helpstring("Destination Host Unreachable for Type of Service")]		
+			scHostUrForTos	= UTC_HOST_UR_FOR_TOS,
+		[helpstring("Communication Administratively Prohibited RFC1812")]		
+			scCommAdminProhibit	= UTC_COMM_ADMIN_PROHIBIT,
+		[helpstring("Host Precedence Violation RFC1812")]		
+			scHostPrecViolate	= UTC_HOST_PREC_VIOLATE,
+		[helpstring("Precedence cutoff in effect RFC1812")]		
+			scPrecCutOff	= UTC_PREC_CUTOFF
+
+	} DestUnrchSubCode;
+
+	//===========================================
+	// ICMP message type sub-codes for Redirect
+	// http://www.isi.edu/in-notes/iana/assignments/icmp-parameters
+	//===========================================
+	typedef [uuid (CD4FCD32-5FB4-11d3-A4DB-0080C858F182), helpstring("Sub-codes for Redirect")]
+	enum RedirectSubCode
+	{
+		[helpstring("Redirect Datagram for the Network (or subnet)")]		
+			scRedirectNet		= UTC_REDIRECT_NET,
+		[helpstring("Redirect Datagram for the Host")]		
+			scRedirecthost		= UTC_REDIRECT_HOST,
+		[helpstring("Redirect Datagram for the Type of Service and Network")]		
+			scRedirectNetTos	= UTC_REDIRECT_NET_TOS,
+		[helpstring("Redirect Datagram for the Type of Service and Host")]		
+			scRedirectHostTos	= UTC_REDIRECT_HOST_TOS
+
+	} RedirectSubCode;
+
+	//===========================================
+	// ICMP message type sub-codes for Time Exceeded
+	// http://www.isi.edu/in-notes/iana/assignments/icmp-parameters
+	//===========================================
+	typedef [uuid (CD4FCD34-5FB4-11d3-A4DB-0080C858F182), helpstring("Sub-codes for Time Exceeded")]
+	enum TimeExceededSubCode
+	{
+		[helpstring("Time to Live exceeded in Transit")]		
+			scTTLExceeded		= UTC_TTL_EXCEEDED,
+		[helpstring("Fragment Reassembly Time Exceeded")]		
+			scFragReasmExceeded	= UTC_FRAG_REASM_EXCEEDED
+
+	} TimeExceededSubCode;
+
+	//===========================================
+	// ICMP message type sub-codes for Parameter Problem
+	// http://www.isi.edu/in-notes/iana/assignments/icmp-parameters
+	//===========================================
+	typedef [uuid (CD4FCD36-5FB4-11d3-A4DB-0080C858F182), helpstring("Sub-codes for Parameter Problem")]
+	enum ParamProblemSubCode
+	{
+		[helpstring("Pointer indicates the error")]		
+			scPointer		= UTC_POINTER,
+		[helpstring("Missing a Required Option RFC1108")]		
+			scOptionRequired= UTC_OPTION_REQUIRED,
+		[helpstring("Bad Length")]		
+			scBadLength		= UTC_BAD_LENGTH
+
+	} ParamProblemSubCode;
+
+	[
+		uuid(455C54FF-597A-11D3-A4D3-0080C858F182),
+		helpstring("PingProp Class")
+	]
+	coclass PingProp
+	{
+		interface IUnknown;
+	};
+};

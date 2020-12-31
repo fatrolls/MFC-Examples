@@ -1,0 +1,48 @@
+// ex24b.odl : type library source for ex24b.dll
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (ex24b.tlb).
+
+[ uuid(A9515ACA-5B85-11D0-848F-00400526305B), version(1.0) ]
+library Ex24b
+{
+	// library name for Excel's object borrower
+	importlib("stdole32.tlb");
+	
+	// primary dispatch interface for CEx24bAuto
+	
+	[ uuid(A9515AD7-5B85-11D0-848F-00400526305B) ]
+	
+	// GUID from component's interface map--matches Registry Interface
+	//  entry
+
+	dispinterface IEx24bAuto
+	{
+		// name used in VBA Dim statement and Object list
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CEx24bAuto)
+			[id(1)] long LongData;
+			[id(2)] VARIANT TextData;
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CEx24bAuto)
+			[id(3)] boolean DisplayDialog();
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  component's clsid
+
+	[ uuid(A9515AD8-5B85-11D0-848F-00400526305B) ]
+	coclass Ex24bAuto
+	{
+		[default] dispinterface IEx24bAuto;
+	};
+
+	//{{AFX_APPEND_ODL}}
+};

@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Readme</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<p>In a project that I am working with about 6 people, we were
+using spin controls and edit controls to allow the operator to
+change certain values. We decided we needed one way to handle
+invalid data typed in the edit control by the operator. The best
+solution we came up with was to sub-class CEdit, and validate the
+operators key-strokes.</p>
+
+<ol>
+    <li>Ensure that the edit control has the number only style
+        set to TRUE. </li>
+    <li>Then you need to include the &quot;CRangeEdit.h&quot; in
+        your dialog definition file, and declare CRangeEdit
+        member variables for each edit control that you need to
+        check the range of an operators input.</li>
+    <li>Then you must set the range the CRangeEdit will accept
+        from the operator, using the CRangeEdit::SetRange()
+        method. The CRangeEdit will default to 0-100 range. </li>
+    <li>Set the default contents of the control using
+        CWnd::SetWindowText().</li>
+</ol>
+
+<p>You should be ready to go!</p>
+
+<p>If you have any questions or comments, please contact me. </p>
+
+<p>Donald R. Kichline</p>
+
+<p><a href="mailto:drkich@csrlink.net">drkich@csrlink.net</a></p>
+
+<p>&nbsp;</p>
+</body>
+</html>
